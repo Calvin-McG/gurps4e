@@ -104,7 +104,7 @@ export class gurpsActorSheet extends ActorSheet {
         break;
       case "fp":
         fieldValue = "data.secondaryAttributes.fp.value";
-        value = (game.settings.get("gurps4e", "useHalfFPIncrements") ? change / 2 : change) + this.actor.data.data.secondaryAttributes.fp.value;
+        value = change + this.actor.data.data.secondaryAttributes.fp.value;
         this.actor.setConditions(value, fieldValue);
         break;
       case "hp":

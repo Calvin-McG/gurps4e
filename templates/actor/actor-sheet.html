@@ -61,7 +61,7 @@
             </div>
             <div class="minus-content-plus">
               <span class="far fa-minus-square minus"><input type="hidden" name="fp" value="-1" /></span>
-              <label for="data.secondaryAttributes.fp.value" name="data.secondaryAttributes.fp.value" class="title">{{numberFormat data.secondaryAttributes.fp.value decimals=1 sign=false}}</label>
+              <label for="data.secondaryAttributes.fp.value" name="data.secondaryAttributes.fp.value" class="title">{{numberFormat data.secondaryAttributes.fp.value decimals=0 sign=false}}</label>
               <span class="far fa-plus-square plus"><input type="hidden" name="fp" value="1" /></span>
             </div>
           </div>
@@ -176,93 +176,6 @@
               <span class="far fa-plus-square plus"><input type="hidden" name="dmod" value="1" /></span>
             </div>
           </div>
-        </div>
-
-        <!-- There are eighteen slots for modifier rolls. The labels are editable and are displayed in the chat output -->
-        <div id="checks">
-          {{#each data.modifiers as |modifier id|}}
-          <div class="check {{#if modifier.inEffect}}inEffect{{/if}}">
-            <div class="title">
-              <input type="text" name="data.modifiers.{{id}}.label" value="{{modifier.label}}" data-dtype="String" />
-            </div>
-            <div class="roll-content">
-              <input type="checkbox" name="data.modifiers.{{id}}.inEffect" {{checked modifier.inEffect}}
-                data-dtype="Boolean" />
-              <input type="text" name="data.modifiers.{{id}}.value"
-                value="{{numberFormat modifier.value decimals=0 sign=true}}" data-dtype="Number" />
-            </div>
-          </div>
-          {{/each}}
-        </div>
-
-        <!-- There are eighteen slots for check rolls. The labels are editable and are displayed in the chat output -->
-        <div id="checks">
-          {{#each data.checks as |check id|}}
-          <div class="check">
-            <div class="title">
-              <input type="text" name="data.checks.{{id}}.label" value="{{check.label}}" data-dtype="String" />
-            </div>
-            <div class="roll-content">
-              <label for="data.checks.{{id}}.value" class="fa fa-dice-six rollable" data-level="{{check.value}}"
-                data-label="Makes a &lt;b&gt;{{check.label}}&lt;/b&gt; check." data-type="skill"></label>
-              <input type="text" name="data.checks.{{id}}.value" value="{{check.value}}" data-dtype="Number" />
-            </div>
-          </div>
-          {{/each}}
-        </div>
-
-        <!-- There are eight slots for attack rolls. The labels are editable and are displayed in the chat output -->
-        <div id="attacks">
-          {{#each data.attacks as |attack id|}}
-          <div class="attack">
-            <div class="left-title">
-              <input type="text" name="data.attacks.{{id}}.wpnName" value="{{attack.wpnName}}" data-dtype="String" />
-            </div>
-            <div class="roll-content">
-              <label for="data.attacks.{{id}}.skill" class="fa fa-dice-six rollable" data-level="{{attack.skill}}"
-                data-label="Attacks with &lt;b&gt;{{attack.wpnName}}&lt;/b&gt;." data-type="skill"></label>
-              <input type="text" name="data.attacks.{{id}}.skill" value="{{attack.skill}}" data-dtype="Number" />
-            </div>
-            {{#if ../actor.flags.useTextBoxForDamage}}
-            <div class="right-roll-content">
-              <input type="text" class="damage-dice" name="data.attacks.{{id}}.formula" value="{{attack.formula}}"
-                data-dtype="String" />
-              <label for="data.attacks.{{id}}.formula" class="fa fa-dice-six rollable" data-roll="{{attack.formula}}"
-                data-label="Rolls &lt;b&gt;{{attack.woundType}}&lt;/b&gt; damage for &lt;b&gt;{{attack.wpnName}}&lt;/b&gt;."
-                data-type="damage"></label>
-            </div>
-            {{else}}
-            <div class="minus-content-plus">
-              <span class="far fa-minus-square minus"><input type="hidden" name="{{id}}" value="-1" /></span>
-              <label for="data.attacks.{{id}}.formula" name="data.attacks.{{id}}.formula" class="damage-dice rollable"
-                data-roll="{{attack.formula}}"
-                data-label="Rolls &lt;b&gt;{{attack.woundType}}&lt;/b&gt; damage for &lt;b&gt;{{attack.wpnName}}&lt;/b&gt;."
-                data-type="damage">{{attack.formula}}</label>
-              <span class="far fa-plus-square plus"><input type="hidden" name="{{id}}" value="1" /></span>
-            </div>
-            {{/if}}
-            <div class="title">
-              <input type="text" name="data.attacks.{{id}}.woundType" value="{{attack.woundType}}"
-                data-dtype="String" />
-            </div>
-          </div>
-          {{/each}}
-        </div>
-
-        <!-- There are fifteen slots for skill rolls. The labels are editable and are displayed in the chat output -->
-        <div id="checks">
-          {{#each data.skills as |skill id|}}
-          <div class="check">
-            <div class="title">
-              <input type="text" name="data.skills.{{id}}.label" value="{{skill.label}}" data-dtype="String" />
-            </div>
-            <div class="roll-content">
-              <label for="data.skills.{{id}}.value" class="fa fa-dice-six rollable" data-level="{{skill.value}}"
-                data-label="Makes a &lt;b&gt;{{skill.label}}&lt;/b&gt; roll." data-type="skill"></label>
-              <input type="text" name="data.skills.{{id}}.value" value="{{skill.value}}" data-dtype="Number" />
-            </div>
-          </div>
-          {{/each}}
         </div>
 
         {{!-- Biography Tab --}}
