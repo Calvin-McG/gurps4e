@@ -126,9 +126,10 @@
       <div class="tab stats" data-tab="stats" data-group="primary">
 
         <div id="attributes_defences">
+
           <!-- Here are the four primary attributes -->
           {{#each data.primaryAttributes as |attr id|}}
-          <div class="check">
+          <div class="primary-attribute">
             <div class="title">
               <label>{{attr.abbr}}</label>
             </div>
@@ -138,9 +139,14 @@
                 data-type="skill"></label>
               <input type="text" name="data.primaryAttributes.{{id}}.value" value="{{attr.value}}"
                 data-dtype="Number" />
+              <input type="text" name="data.primaryAttributes.{{id}}.mod" value="{{attr.mod}}"
+                     data-dtype="Number" />
+              <input type="text" name="data.primaryAttributes.{{id}}.points" value="{{attr.points}}"
+                     data-dtype="Number" />
             </div>
           </div>
           {{/each}}
+
           <!-- The Global Modifier applies to every roll and then is reset -->
           <div class="global-modifier check">
             <div class="title">

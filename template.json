@@ -69,19 +69,27 @@
         "primaryAttributes": {
           "strength": {
             "abbr": "ST",
-            "value": 10
+            "value": 10,
+            "mod": 0,
+            "points": 0
           },
           "dexterity": {
             "abbr": "DX",
-            "value": 10
+            "value": 10,
+            "mod": 0,
+            "points": 0
           },
           "intelligence": {
             "abbr": "IQ",
-            "value": 10
+            "value": 10,
+            "mod": 0,
+            "points": 0
           },
           "health": {
             "abbr": "HT",
-            "value": 10
+            "value": 10,
+            "mod": 0,
+            "points": 0
           }
         }
       }
