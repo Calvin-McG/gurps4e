@@ -100,8 +100,15 @@ export class gurpsActor extends Actor {
 			this.update({ ['data.primaryAttributes.strength.value']: value });
 
 			//Update point totals
-			attributePoints = +points + +this.data.data.primaryAttributes.dexterity.points +
-				+this.data.data.primaryAttributes.intelligence.points + +this.data.data.primaryAttributes.health.points;
+			attributePoints = +this.data.data.primaryAttributes.dexterity.points +
+				+this.data.data.primaryAttributes.intelligence.points +
+				+this.data.data.primaryAttributes.health.points +
+				+this.data.data.primaryAttributes.perception.points +
+				+this.data.data.primaryAttributes.will.points +
+				+this.data.data.primaryAttributes.fright.points +
+				+this.data.data.primaryAttributes.speed.points +
+				+this.data.data.primaryAttributes.move.points +
+				+points;
 			this.update({ ['data.points.attributes']: attributePoints });
         }
 		else if (name.includes("dexterity")){
@@ -109,8 +116,15 @@ export class gurpsActor extends Actor {
 			this.update({ ['data.primaryAttributes.dexterity.value']: value });
 
 			//Update point totals
-			attributePoints = +this.data.data.primaryAttributes.strength.points + +points +
-				+this.data.data.primaryAttributes.intelligence.points + +this.data.data.primaryAttributes.health.points;
+			attributePoints = +this.data.data.primaryAttributes.strength.points +
+				+this.data.data.primaryAttributes.intelligence.points +
+				+this.data.data.primaryAttributes.health.points +
+				+this.data.data.primaryAttributes.perception.points +
+				+this.data.data.primaryAttributes.will.points +
+				+this.data.data.primaryAttributes.fright.points +
+				+this.data.data.primaryAttributes.speed.points +
+				+this.data.data.primaryAttributes.move.points +
+				+points;
 			this.update({ ['data.points.attributes']: attributePoints });
 		}
 		else if (name.includes("intelligence")){
@@ -118,8 +132,15 @@ export class gurpsActor extends Actor {
 			this.update({ ['data.primaryAttributes.intelligence.value']: value });
 
 			//Update point totals
-			attributePoints = +this.data.data.primaryAttributes.strength.points + +this.data.data.primaryAttributes.dexterity.points +
-				+points + +this.data.data.primaryAttributes.health.points;
+			attributePoints = +this.data.data.primaryAttributes.strength.points +
+				+this.data.data.primaryAttributes.dexterity.points +
+				+this.data.data.primaryAttributes.health.points +
+				+this.data.data.primaryAttributes.perception.points +
+				+this.data.data.primaryAttributes.will.points +
+				+this.data.data.primaryAttributes.fright.points +
+				+this.data.data.primaryAttributes.speed.points +
+				+this.data.data.primaryAttributes.move.points +
+				+points;
 			this.update({ ['data.points.attributes']: attributePoints });
 		}
 		else if (name.includes("health")){
@@ -127,11 +148,97 @@ export class gurpsActor extends Actor {
 			this.update({ ['data.primaryAttributes.health.value']: value });
 
 			//Update point totals
-			attributePoints = +this.data.data.primaryAttributes.strength.points + +this.data.data.primaryAttributes.dexterity.points +
-				+this.data.data.primaryAttributes.intelligence.points + +points;
+			attributePoints = +this.data.data.primaryAttributes.strength.points +
+				+this.data.data.primaryAttributes.dexterity.points +
+				+this.data.data.primaryAttributes.intelligence.points +
+				+this.data.data.primaryAttributes.perception.points +
+				+this.data.data.primaryAttributes.will.points +
+				+this.data.data.primaryAttributes.fright.points +
+				+this.data.data.primaryAttributes.speed.points +
+				+this.data.data.primaryAttributes.move.points +
+				+points;
 			this.update({ ['data.points.attributes']: attributePoints });
 		}
+		else if (name.includes("perception")){
+			value = +value + +this.data.data.primaryAttributes.perception.mod + +Math.floor(points/5);
+			this.update({ ['data.primaryAttributes.perception.value']: value });
 
+			//Update point totals
+			attributePoints = +this.data.data.primaryAttributes.strength.points +
+				+this.data.data.primaryAttributes.dexterity.points +
+				+this.data.data.primaryAttributes.intelligence.points +
+				+this.data.data.primaryAttributes.health.points +
+				+this.data.data.primaryAttributes.will.points +
+				+this.data.data.primaryAttributes.fright.points +
+				+this.data.data.primaryAttributes.speed.points +
+				+this.data.data.primaryAttributes.move.points +
+				+points;
+			this.update({ ['data.points.attributes']: attributePoints });
+		}
+		else if (name.includes("will")){
+			value = +value + +this.data.data.primaryAttributes.will.mod + +Math.floor(points/5);
+			this.update({ ['data.primaryAttributes.will.value']: value });
+
+			//Update point totals
+			attributePoints = +this.data.data.primaryAttributes.strength.points +
+				+this.data.data.primaryAttributes.dexterity.points +
+				+this.data.data.primaryAttributes.intelligence.points +
+				+this.data.data.primaryAttributes.health.points +
+				+this.data.data.primaryAttributes.perception.points +
+				+this.data.data.primaryAttributes.fright.points +
+				+this.data.data.primaryAttributes.speed.points +
+				+this.data.data.primaryAttributes.move.points +
+				+points;
+			this.update({ ['data.points.attributes']: attributePoints });
+		}
+		else if (name.includes("fright")){
+			value = +value + +this.data.data.primaryAttributes.fright.mod + +Math.floor(points/2);
+			this.update({ ['data.primaryAttributes.fright.value']: value });
+
+			//Update point totals
+			attributePoints = +this.data.data.primaryAttributes.strength.points +
+				+this.data.data.primaryAttributes.dexterity.points +
+				+this.data.data.primaryAttributes.intelligence.points +
+				+this.data.data.primaryAttributes.health.points +
+				+this.data.data.primaryAttributes.perception.points +
+				+this.data.data.primaryAttributes.will.points +
+				+this.data.data.primaryAttributes.speed.points +
+				+this.data.data.primaryAttributes.move.points +
+				+points;
+			this.update({ ['data.points.attributes']: attributePoints });
+		}
+		else if (name.includes("speed")){
+			value = +value + +this.data.data.primaryAttributes.speed.mod + +Math.floor(points/20) - +5;
+			this.update({ ['data.primaryAttributes.speed.value']: value });
+
+			//Update point totals
+			attributePoints = +this.data.data.primaryAttributes.strength.points +
+				+this.data.data.primaryAttributes.dexterity.points +
+				+this.data.data.primaryAttributes.intelligence.points +
+				+this.data.data.primaryAttributes.health.points
+				+this.data.data.primaryAttributes.perception.points +
+				+this.data.data.primaryAttributes.will.points +
+				+this.data.data.primaryAttributes.fright.points +
+				+this.data.data.primaryAttributes.move.points +
+				+points;
+			this.update({ ['data.points.attributes']: attributePoints });
+		}
+		else if (name.includes("move")){
+			value = +value + +this.data.data.primaryAttributes.move.mod + +Math.floor(points/5) - +5;
+			this.update({ ['data.primaryAttributes.move.value']: value });
+
+			//Update point totals
+			attributePoints = +this.data.data.primaryAttributes.strength.points +
+				+this.data.data.primaryAttributes.dexterity.points +
+				+this.data.data.primaryAttributes.intelligence.points +
+				+this.data.data.primaryAttributes.health.points +
+				+this.data.data.primaryAttributes.perception.points +
+				+this.data.data.primaryAttributes.will.points +
+				+this.data.data.primaryAttributes.fright.points +
+				+this.data.data.primaryAttributes.speed.points +
+				+points;
+			this.update({ ['data.points.attributes']: attributePoints });
+		}
 
 
 		this.recalcPointsAtr(attributePoints);
