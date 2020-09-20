@@ -72,8 +72,8 @@ export class gurpsActor extends Actor {
 		const data = actorData.data;
 
 		// Set minimum HP and FP
-		data.secondaryAttributes.hp.min = -data.secondaryAttributes.hp.max * 5;
-		data.secondaryAttributes.fp.min = -data.secondaryAttributes.fp.max;
+		data.reserves.hp.min = -data.reserves.hp.max * 5;
+		data.reserves.fp.min = -data.reserves.fp.max;
 
 		// Set Movement rates
 		// let move = data.primaryAttributes.move.value;
@@ -323,84 +323,84 @@ export class gurpsActor extends Actor {
 			// Assign the variables
 			if (attrName.includes('.max')) {
 				attrMax = newValue;
-				attrValue = this.data.data.secondaryAttributes.hp.value;
+				attrValue = this.data.data.reserves.hp.value;
 			} else {
 				attrValue = newValue;
-				attrMax = this.data.data.secondaryAttributes.hp.max;
+				attrMax = this.data.data.reserves.hp.max;
 			}
 			let ratio = attrValue / attrMax;
 			// set the limits
 			switch (Math.trunc(ratio)) {
 				case 0: {
 					if (ratio <= 0) { // collapse
-						attrState = '[C]';
+						attrState = 'Collapse';
 						break;
 					} else if (attrValue < (attrMax / 3)) { // reeling
-						attrState = '[R]';
+						attrState = 'Reeling';
 						break;
 					}
 					// healthy, no break
 				}
 				case 1: { // healthy
-					attrState = '[H]';
+					attrState = 'Healthy';
 					break;
 				}
 				case -1: { // death check at -1
-					attrState = '[-X]';
+					attrState = 'Death 1';
 					break;
 				}
 				case -2: { // death check at -2
-					attrState = '[-2X]';
+					attrState = 'Death 2';
 					break;
 				}
 				case -3: { // death check at -3
-					attrState = '[-3X]';
+					attrState = 'Death 3';
 					break;
 				}
 				case -4: { // death check at -4
-					attrState = '[-4X]';
+					attrState = 'Death 4';
 					break;
 				}
 				default: { // dead
-					attrState = '[DEAD]';
+					attrState = 'Dead';
 					break;
 				}
 			}
-			this.update({ ['data.secondaryAttributes.hp.state']: attrState });
+			this.update({ ['data.reserves.hp.state']: attrState });
 		} else { // Fatigue points update
 
 			// Assign the variables
 			if (attrName.includes('.max')) {
 				attrMax = newValue;
-				attrValue = this.data.data.secondaryAttributes.fp.value;
+				attrValue = this.data.data.reserves.fp.value;
 			} else {
 				attrValue = newValue;
-				attrMax = this.data.data.secondaryAttributes.fp.max;
+				attrMax = this.data.data.reserves.fp.max;
 			}
 			let ratio = attrValue / attrMax;
 			// set the limits
 			switch (Math.trunc(ratio)) {
 				case 0: {
 					if (ratio <= 0) { // collapse
-						attrState = '[C]';
+						attrState = 'Collapse';
 						break;
 					} else if (attrValue < (attrMax / 3)) { // tired
-						attrState = '[T]';
+						attrState = 'Tired';
 						break;
 					}
 					// fresh, no break
 				}
 				case 1: { // fresh
-					attrState = '[F]';
+					attrState = 'Fresh';
 					break;
 				}
 				default: { // unconscious
-					attrState = '[UNC]';
+					attrState = 'Unconscious';
 					break;
 				}
 			}
 			// update the actor
-			this.update({ ['data.secondaryAttributes.fp.state']: attrState });
+			this.update({ ['data.reserves.fp.state']: attrState });
 		}
 	}
 }

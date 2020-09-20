@@ -112,10 +112,7 @@ export class gurpsActorSheet extends ActorSheet {
     var value;
     var fieldValue;
 
-    if (fieldName == "gmod") {
-      fieldValue = "data.gmod.value";
-      value = change + this.actor.data.data.gmod.value;
-    } else if (fieldName == "dmod") {
+    if (fieldName == "dmod") {
       fieldValue = "data.dmod.value";
       value = change + this.actor.data.data.dmod.value;
     } else {

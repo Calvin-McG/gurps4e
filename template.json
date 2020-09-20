@@ -1,7 +1,7 @@
 {
   "Actor": {
     "types": [
-      "minchar"
+      "fullchar"
     ],
     "templates": {
       "base": {
@@ -17,10 +17,6 @@
           "label": "Posture",
           "value": "Standing"
         },
-        "gmod": {
-          "label": "G-Mod",
-          "value": 0
-        },
         "dmod": {
           "label": "DB",
           "value": 0
@@ -33,22 +29,23 @@
           "skills": 0,
           "unspent": 150
         },
-        "secondaryAttributes": {
+        "reserves": {
           "hp": {
             "label": "HP",
-            "state": "[H]",
+            "state": "Healthy",
             "value": 10,
             "max": 10
           },
           "fp": {
             "label": "FP",
-            "state": "[F]",
+            "state": "Fresh",
             "value": 10,
             "max": 10
           },
-          "dr": {
-            "label": "DR",
-            "value": 0
+          "er": {
+            "label": "ER",
+            "value": 10,
+            "max": 10
           }
         },
         "defences": {
@@ -63,6 +60,16 @@
           "block": {
             "label": "Block",
             "value": 0
+          }
+        },
+        "baseDamage": {
+          "swing": {
+            "dice": 1,
+            "adds": 0
+          },
+          "thrust": {
+            "dice": 1,
+            "adds": -2
           }
         },
         "primaryAttributes": {
@@ -123,309 +130,10 @@
         }
       }
     },
-    "minchar": {
-      "templates": [
-        "base"
-      ],
-      "attacks": {
-        "attackA": {
-          "wpnName": "",
-          "skill": 10,
-          "woundType": "",
-          "seed": 5
-        },
-        "attackB": {
-          "wpnName": "",
-          "skill": 10,
-          "woundType": "",
-          "seed": 5
-        },
-        "attackC": {
-          "wpnName": "",
-          "skill": 10,
-          "woundType": "",
-          "seed": 5
-        },
-        "attackD": {
-          "wpnName": "",
-          "skill": 10,
-          "woundType": "",
-          "seed": 5
-        },
-        "attackE": {
-          "wpnName": "",
-          "skill": 10,
-          "woundType": "",
-          "seed": 5
-        },
-        "attackF": {
-          "wpnName": "",
-          "skill": 10,
-          "woundType": "",
-          "seed": 5
-        },
-        "attackG": {
-          "wpnName": "",
-          "skill": 10,
-          "woundType": "",
-          "seed": 5
-        },
-        "attackH": {
-          "wpnName": "",
-          "skill": 10,
-          "woundType": "",
-          "seed": 5
-        }
-      },
-      "skills": {
-        "skilla": {
-          "label": "",
-          "value": 10
-        },
-        "skillb": {
-          "label": "",
-          "value": 10
-        },
-        "skillc": {
-          "label": "",
-          "value": 10
-        },
-        "skilld": {
-          "label": "",
-          "value": 10
-        },
-        "skille": {
-          "label": "",
-          "value": 10
-        },
-        "skillf": {
-          "label": "",
-          "value": 10
-        },
-        "skillg": {
-          "label": "",
-          "value": 10
-        },
-        "skillh": {
-          "label": "",
-          "value": 10
-        },
-        "skilli": {
-          "label": "",
-          "value": 10
-        },
-        "skillj": {
-          "label": "",
-          "value": 10
-        },
-        "skillk": {
-          "label": "",
-          "value": 10
-        },
-        "skilll": {
-          "label": "",
-          "value": 10
-        },
-        "skillm": {
-          "label": "",
-          "value": 10
-        },
-        "skilln": {
-          "label": "",
-          "value": 10
-        },
-        "skillo": {
-          "label": "",
-          "value": 10
-        },
-        "skillp": {
-          "label": "",
-          "value": 10
-        },
-        "skillq": {
-          "label": "",
-          "value": 10
-        },
-        "skillr": {
-          "label": "",
-          "value": 10
-        }
-      },
-      "checks": {
-        "chkA": {
-          "label": "",
-          "value": 10
-        },
-        "chkB": {
-          "label": "",
-          "value": 10
-        },
-        "chkC": {
-          "label": "",
-          "value": 10
-        },
-        "chkD": {
-          "label": "",
-          "value": 10
-        },
-        "chkE": {
-          "label": "",
-          "value": 10
-        },
-        "chkF": {
-          "label": "",
-          "value": 10
-        },
-        "chkG": {
-          "label": "",
-          "value": 10
-        },
-        "chkH": {
-          "label": "",
-          "value": 10
-        },
-        "chkI": {
-          "label": "",
-          "value": 10
-        },
-        "chkJ": {
-          "label": "",
-          "value": 10
-        },
-        "chkK": {
-          "label": "",
-          "value": 10
-        },
-        "chkL": {
-          "label": "",
-          "value": 10
-        },
-        "chkM": {
-          "label": "",
-          "value": 10
-        },
-        "chkN": {
-          "label": "",
-          "value": 10
-        },
-        "chkO": {
-          "label": "",
-          "value": 10
-        },
-        "chkP": {
-          "label": "",
-          "value": 10
-        },
-        "chkQ": {
-          "label": "",
-          "value": 10
-        },
-        "chkR": {
-          "label": "",
-          "value": 10
-        }
-      },
-      "modifiers": {
-        "modA": {
-          "label": "",
-          "inEffect": false,
-          "value": 0
-        },
-        "modB": {
-          "label": "",
-          "inEffect": false,
-          "value": 0
-        },
-        "modC": {
-          "label": "",
-          "inEffect": false,
-          "value": 0
-        },
-        "modD": {
-          "label": "",
-          "inEffect": false,
-          "value": 0
-        },
-        "modE": {
-          "label": "",
-          "inEffect": false,
-          "value": 0
-        },
-        "modF": {
-          "label": "",
-          "inEffect": false,
-          "value": 0
-        },
-        "modG": {
-          "label": "",
-          "inEffect": false,
-          "value": 0
-        },
-        "modH": {
-          "label": "",
-          "inEffect": false,
-          "value": 0
-        },
-        "modI": {
-          "label": "",
-          "inEffect": false,
-          "value": 0
-        },
-        "modJ": {
-          "label": "",
-          "inEffect": false,
-          "value": 0
-        },
-        "modK": {
-          "label": "",
-          "inEffect": false,
-          "value": 0
-        },
-        "modL": {
-          "label": "",
-          "inEffect": false,
-          "value": 0
-        },
-        "modM": {
-          "label": "",
-          "inEffect": false,
-          "value": 0
-        },
-        "modN": {
-          "label": "",
-          "inEffect": false,
-          "value": 0
-        },
-        "modO": {
-          "label": "",
-          "inEffect": false,
-          "value": 0
-        },
-        "modP": {
-          "label": "",
-          "inEffect": false,
-          "value": 0
-        },
-        "modQ": {
-          "label": "",
-          "inEffect": false,
-          "value": 0
-        },
-        "modR": {
-          "label": "",
-          "inEffect": false,
-          "value": 0
-        }
-      }
-    },
     "fullchar": {
       "templates": [
         "base"
-      ],
-      "attacks": {},
-      "skills": {},
-      "checks": {},
-      "modifiers": {}
+      ]
     }
   },
   "Item": {

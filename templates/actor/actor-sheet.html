@@ -15,14 +15,14 @@
 				<div id="racegender">
 					<div id="race">
 						<div class="bold label right">
-							<input type="text" name="data.secondaryAttributes.race.value"
-								value="{{data.secondaryAttributes.race.value}}" placeholder="Race" />
+							<input type="text" name="data.reserves.race.value"
+								value="{{data.reserves.race.value}}" placeholder="Race" />
 						</div>
 					</div>
 					<div id="gender">
 						<div class="bold label right">
-							<input type="text" name="data.secondaryAttributes.gender.value"
-								value="{{data.secondaryAttributes.gender.value}}" placeholder="Gender" />
+							<input type="text" name="data.reserves.gender.value"
+								value="{{data.reserves.gender.value}}" placeholder="Gender" />
 						</div>
 					</div>
 				</div>
@@ -56,50 +56,40 @@
 				<div id="secondaryAttributes">
 					<div id="hitpoints">
 						<div class="header">
-							<label for="data.secondaryAttributes.hp.value"
-								class="resource-label">{{data.secondaryAttributes.hp.label}}</label>
+							<label for="data.reserves.hp.value"
+								class="resource-label">{{data.reserves.hp.label}}</label>
 						</div>
 						<div class="center">
-							<input class="sec-attr" type="text" name="data.secondaryAttributes.hp.max"
-								value="{{data.secondaryAttributes.hp.max}}" data-dtype="Number" />
+							<input class="sec-attr" type="text" name="data.reserves.hp.max"
+								value="{{data.reserves.hp.max}}" data-dtype="Number" />
 						</div>
 						<div class="header">
-							<label for="data.secondaryAttributes.hp.state"
-								class="resource-label">{{data.secondaryAttributes.hp.state}}</label>
+							<label for="data.reserves.hp.state"
+								class="resource-label">{{data.reserves.hp.state}}</label>
 						</div>
 						<div class="minus-content-plus">
 							<span class="far fa-minus-square minus"><input type="hidden" name="hp" value="-1" /></span>
-							<label for="data.secondaryAttributes.hp.value" name="data.secondaryAttributes.hp.value" class="title">{{numberFormat data.secondaryAttributes.hp.value decimals=0 sign=false}}</label>
+							<label for="data.reserves.hp.value" name="data.reserves.hp.value" class="title">{{numberFormat data.reserves.hp.value decimals=0 sign=false}}</label>
 							<span class="far fa-plus-square plus"><input type="hidden" name="hp" value="1" /></span>
 						</div>
 					</div>
 					<div id="fatpoints">
 						<div class="header">
-							<label for="data.secondaryAttributes.fp.value"
-								class="resource-label">{{data.secondaryAttributes.fp.label}}</label>
+							<label for="data.reserves.fp.value"
+								class="resource-label">{{data.reserves.fp.label}}</label>
 						</div>
 						<div class="center">
-							<input class="sec-attr" type="text" name="data.secondaryAttributes.fp.max"
-								value="{{data.secondaryAttributes.fp.max}}" data-dtype="Number" />
+							<input class="sec-attr" type="text" name="data.reserves.fp.max"
+								value="{{data.reserves.fp.max}}" data-dtype="Number" />
 						</div>
 						<div class="header">
-							<label for="data.secondaryAttributes.fp.state"
-								class="resource-label">{{data.secondaryAttributes.fp.state}}</label>
+							<label for="data.reserves.fp.state"
+								class="resource-label">{{data.reserves.fp.state}}</label>
 						</div>
 						<div class="minus-content-plus">
 							<span class="far fa-minus-square minus"><input type="hidden" name="fp" value="-1" /></span>
-							<label for="data.secondaryAttributes.fp.value" name="data.secondaryAttributes.fp.value" class="title">{{numberFormat data.secondaryAttributes.fp.value decimals=0 sign=false}}</label>
+							<label for="data.reserves.fp.value" name="data.reserves.fp.value" class="title">{{numberFormat data.reserves.fp.value decimals=0 sign=false}}</label>
 							<span class="far fa-plus-square plus"><input type="hidden" name="fp" value="1" /></span>
-						</div>
-					</div>
-					<div id="damresist">
-						<div class="header">
-							<label for="data.secondaryAttributes.dr.value"
-								class="resource-label">{{data.secondaryAttributes.dr.label}}</label>
-						</div>
-						<div class="center">
-							<input type="text" name="data.secondaryAttributes.dr.value" value="{{data.secondaryAttributes.dr.value}}"
-								data-dtype="Number" />
 						</div>
 					</div>
 				</div>
@@ -157,17 +147,6 @@
 						{{/each}}
 					</div>
 
-					<!-- The Global Modifier applies to every roll and then is reset -->
-					<div class="global-modifier check">
-						<div class="title">
-							<label>{{data.gmod.label}}</label>
-						</div>
-						<div class="minus-content-plus">
-							<span class="far fa-minus-square minus"><input type="hidden" name="gmod" value="-1" /></span>
-							<label for="data.gmod.value" name="data.gmod.value" class="counter">{{data.gmod.value}}</label>
-							<span class="far fa-plus-square plus"><input type="hidden" name="gmod" value="1" /></span>
-						</div>
-					</div>
 					<!-- These four slots are for the active defences and a total modifier for Defensive Bonuses -->
 					{{#each data.defences as |defence id|}}
 					<div class="check">

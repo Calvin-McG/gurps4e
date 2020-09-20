@@ -130,13 +130,13 @@ export class gurpsActorSheet extends ActorSheet {
 				value = change + this.actor.data.data.dmod.value;
 				break;
 			case "fp":
-				fieldValue = "data.secondaryAttributes.fp.value";
-				value = change + this.actor.data.data.secondaryAttributes.fp.value;
+				fieldValue = "data.reserves.fp.value";
+				value = change + this.actor.data.data.reserves.fp.value;
 				this.actor.setConditions(value, fieldValue);
 				break;
 			case "hp":
-				fieldValue = "data.secondaryAttributes.hp.value";
-				value = change + this.actor.data.data.secondaryAttributes.hp.value;
+				fieldValue = "data.reserves.hp.value";
+				value = change + this.actor.data.data.reserves.hp.value;
 				this.actor.setConditions(value, fieldValue);
 				break;
 			default:
