@@ -1,12 +1,12 @@
 {
   "name": "gurps4e",
-  "title": "Generic Universal RolePlaying System (any) Edition - Unofficial",
-  "description": "A Generic Universal RolePlaying System (any) Edition system for FoundryVTT!",
-  "version": "2.8.3",
+  "title": "GURPS4E",
+  "description": "A GURPS4E system that automates as much as possible",
+  "version": "0.1",
   "minimumCoreVersion": "0.5.5",
   "compatibleCoreVersion": "0.6.6",
   "templateVersion": 2,
-  "author": "James Huddleston",
+  "author": "Calvin",
   "esmodules": [
     "./gurps4e.js",
     "./module/utility-gurps4e.js",
@@ -33,8 +33,8 @@
   "gridUnits": "yd",
   "primaryTokenAttribute": "secondaryAttributes.hp",
   "secondaryTokenAttribute": "secondaryAttributes.fp",
-  "url": "https://gitlab.com/jbhuddleston/gurps4e",
-  "manifest": "https://gitlab.com/jbhuddleston/gurps4e/-/raw/master/system.json",
-  "download": "https://gitlab.com/jbhuddleston/gurps4e/-/archive/master/gurps4e-master.zip",
-  "license": "LICENSE.txt"
+  "url": "",
+  "manifest": "",
+  "download": "",
+  "license": ""
 }
