@@ -65,8 +65,12 @@ export class gurpsActorSheet extends ActorSheet {
 		html.find('.sec-attr').change(this._onSecondaryAttributeChange.bind(this));
 
 
-		// Track changes to attribute point values
-		html.find('.points').change(this._onAttributePointsChange.bind(this));
+		// Track changes to unspent points
+		html.find('.unspentEntry').change(this._onUnspentPointsChange.bind(this));
+
+		// Track changes to attributes
+		html.find('.atrPoints').change(this._onAttributePointsChange.bind(this));
+		html.find('.atrMod').change(this._onAttributeModChange.bind(this));
 	}
 
 	/* -------------------------------------------- */
@@ -86,8 +90,22 @@ export class gurpsActorSheet extends ActorSheet {
 
     _onAttributePointsChange(event) {
         event.preventDefault();
-        console.log(event);
+		let points = event.target.value;
+		let name = event.target.name;
+		this.actor.setAtrPoints(points, name);
     }
+
+	_onAttributeModChange(event) {
+		event.preventDefault();
+		let mod = event.target.value;
+		let name = event.target.name;
+		this.actor.setAtrMod(mod, name);
+	}
+
+	_onUnspentPointsChange(event) {
+		let unspent = event.target.value;
+		this.actor.setTotalPoints(unspent);
+	}
 
 	/**
 	 * Handle the behaviour of the plus and minus 'buttons' related to a label.
@@ -96,7 +114,6 @@ export class gurpsActorSheet extends ActorSheet {
 	 */
 	_onPlusMinus(event) {
 		event.preventDefault();
-        console.log(event);
 		let field = event.currentTarget.firstElementChild;
 		let fieldName = field.name;
 		let change = parseInt(field.value);

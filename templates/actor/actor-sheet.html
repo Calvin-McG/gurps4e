@@ -26,6 +26,33 @@
 						</div>
 					</div>
 				</div>
+
+				<div id="pointTotals">
+					<table>
+						<tr>
+							<td class="">Total:</td>
+							<td class="pointTotal">{{numberFormat data.points.total decimals=0}}</td>
+						</tr>
+						<tr>
+							<td class="">Attributes:</td>
+							<td class="pointTotal">{{numberFormat data.points.attributes decimals=0}}</td>
+						</tr>
+						<tr>
+							<td class="">Traits:</td>
+							<td class="pointTotal">{{numberFormat data.points.traits decimals=0}}</td>
+						</tr>
+						<tr>
+							<td class="">Skills:</td>
+							<td class="pointTotal">{{numberFormat data.points.skills decimals=0}}</td>
+						</tr>
+						<tr>
+							<td class="">Unspent:</td>
+							<td><input type="text" name="data.points.unspent" class="pointTotal unspentEntry" value="{{data.points.unspent}}" data-dtype="Number"/></td>
+						</tr>
+					</table>
+
+				</div>
+
 				<div id="secondaryAttributes">
 					<div id="hitpoints">
 						<div class="header">
@@ -137,11 +164,11 @@
 						{{#each data.primaryAttributes as |attr id|}}
 						<div class="primary-attribute">
 								<label>{{attr.abbr}}</label>
-								<input type="text" name="data.primaryAttributes.{{id}}.value" value="{{attr.value}}"
+								<input type="text" name="data.primaryAttributes.{{id}}.value" class="atrVal" value="{{attr.value}}"
 									data-dtype="Number" disabled />
-								<input type="text" name="data.primaryAttributes.{{id}}.mod" value="{{attr.mod}}"
+								<input type="text" name="data.primaryAttributes.{{id}}.mod" class="atrMod" value="{{attr.mod}}"
 											 data-dtype="Number" />
-								<input type="text" name="data.primaryAttributes.{{id}}.points" class="points" value="{{attr.points}}"
+								<input type="text" name="data.primaryAttributes.{{id}}.points" class="atrPoints" value="{{attr.points}}"
 											 data-dtype="Number" />
 							<label for="data.primaryAttributes.{{id}}.value" class="fa fa-dice-six rollable"
 										 data-level="{{attr.value}}" data-label="Makes a &lt;b&gt;{{attr.abbr}}&lt;/b&gt; check."

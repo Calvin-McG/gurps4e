@@ -26,6 +26,13 @@
           "value": 0
         },
         "biography": "",
+        "points": {
+          "total": 150,
+          "attributes": 0,
+          "traits": 0,
+          "skills": 0,
+          "unspent": 150
+        },
         "secondaryAttributes": {
           "hp": {
             "label": "HP",
@@ -88,6 +95,36 @@
           "health": {
             "abbr": "HT",
             "value": 10,
+            "mod": 0,
+            "points": 0
+          },
+          "perception": {
+            "abbr": "Per",
+            "value": 10,
+            "mod": 0,
+            "points": 0
+          },
+          "will": {
+            "abbr": "Will",
+            "value": 10,
+            "mod": 0,
+            "points": 0
+          },
+          "fright": {
+            "abbr": "Fr",
+            "value": 10,
+            "mod": 0,
+            "points": 0
+          },
+          "speed": {
+            "abbr": "Speed",
+            "value": 5,
+            "mod": 0,
+            "points": 0
+          },
+          "move": {
+            "abbr": "Move",
+            "value": 5,
             "mod": 0,
             "points": 0
           }
