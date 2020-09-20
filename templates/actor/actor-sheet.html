@@ -1,414 +1,412 @@
 <form class="{{cssClass}} flexcol" autocomplete="off">
 
-  <div id="sheet">
+	<div id="sheet">
 
-    {{!-- Sheet Header --}}
-    <header class="sheet-header">
+		{{!-- Sheet Header --}}
+		<header class="sheet-header">
 
-      <div id="personal">
-        <div id="portrait">
-          <img class="portrait" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
-        </div>
-        <div id="actorname">
-          <input class="charname" name="name" type="text" value="{{actor.name}}" placeholder="Name" />
-        </div>
-        <div id="racegender">
-          <div id="race">
-            <div class="bold label right">
-              <input type="text" name="data.secondaryAttributes.race.value"
-                value="{{data.secondaryAttributes.race.value}}" placeholder="Race" />
-            </div>
-          </div>
-          <div id="gender">
-            <div class="bold label right">
-              <input type="text" name="data.secondaryAttributes.gender.value"
-                value="{{data.secondaryAttributes.gender.value}}" placeholder="Gender" />
-            </div>
-          </div>
-        </div>
-        <div id="secondaryAttributes">
-          <div id="hitpoints">
-            <div class="header">
-              <label for="data.secondaryAttributes.hp.value"
-                class="resource-label">{{data.secondaryAttributes.hp.label}}</label>
-            </div>
-            <div class="center">
-              <input class="sec-attr" type="text" name="data.secondaryAttributes.hp.max"
-                value="{{data.secondaryAttributes.hp.max}}" data-dtype="Number" />
-            </div>
-            <div class="header">
-              <label for="data.secondaryAttributes.hp.state"
-                class="resource-label">{{data.secondaryAttributes.hp.state}}</label>
-            </div>
-            <div class="minus-content-plus">
-              <span class="far fa-minus-square minus"><input type="hidden" name="hp" value="-1" /></span>
-              <label for="data.secondaryAttributes.hp.value" name="data.secondaryAttributes.hp.value" class="title">{{numberFormat data.secondaryAttributes.hp.value decimals=0 sign=false}}</label>
-              <span class="far fa-plus-square plus"><input type="hidden" name="hp" value="1" /></span>
-            </div>
-          </div>
-          <div id="fatpoints">
-            <div class="header">
-              <label for="data.secondaryAttributes.fp.value"
-                class="resource-label">{{data.secondaryAttributes.fp.label}}</label>
-            </div>
-            <div class="center">
-              <input class="sec-attr" type="text" name="data.secondaryAttributes.fp.max"
-                value="{{data.secondaryAttributes.fp.max}}" data-dtype="Number" />
-            </div>
-            <div class="header">
-              <label for="data.secondaryAttributes.fp.state"
-                class="resource-label">{{data.secondaryAttributes.fp.state}}</label>
-            </div>
-            <div class="minus-content-plus">
-              <span class="far fa-minus-square minus"><input type="hidden" name="fp" value="-1" /></span>
-              <label for="data.secondaryAttributes.fp.value" name="data.secondaryAttributes.fp.value" class="title">{{numberFormat data.secondaryAttributes.fp.value decimals=0 sign=false}}</label>
-              <span class="far fa-plus-square plus"><input type="hidden" name="fp" value="1" /></span>
-            </div>
-          </div>
-          <div id="damresist">
-            <div class="header">
-              <label for="data.secondaryAttributes.dr.value"
-                class="resource-label">{{data.secondaryAttributes.dr.label}}</label>
-            </div>
-            <div class="center">
-              <input type="text" name="data.secondaryAttributes.dr.value" value="{{data.secondaryAttributes.dr.value}}"
-                data-dtype="Number" />
-            </div>
-          </div>
-          <div id="basicmove">
-            <div class="header">
-              <label for="data.secondaryAttributes.move.value"
-                class="resource-label">{{data.secondaryAttributes.move.label}}</label>
-            </div>
-            <div class="center">
-              <input type="text" name="data.secondaryAttributes.move.value"
-                value="{{data.secondaryAttributes.move.value}}" data-dtype="String" />
-            </div>
-          </div>
-          <div id="basicspeed">
-            <div class="header">
-              <label for="data.secondaryAttributes.bs.value"
-                class="resource-label">Speed</label>
-            </div>
-            <div class="center">
-              <input type="text" name="data.secondaryAttributes.bs.value" value="{{data.secondaryAttributes.bs.value}}"
-                data-dtype="Number" />
-            </div>
-          </div>
-        </div>
-      </div>
+			<div id="personal">
+				<div id="portrait">
+					<img class="portrait" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+				</div>
+				<div id="actorname">
+					<input class="charname" name="name" type="text" value="{{actor.name}}" placeholder="Name" />
+				</div>
+				<div id="racegender">
+					<div id="race">
+						<div class="bold label right">
+							<input type="text" name="data.secondaryAttributes.race.value"
+								value="{{data.secondaryAttributes.race.value}}" placeholder="Race" />
+						</div>
+					</div>
+					<div id="gender">
+						<div class="bold label right">
+							<input type="text" name="data.secondaryAttributes.gender.value"
+								value="{{data.secondaryAttributes.gender.value}}" placeholder="Gender" />
+						</div>
+					</div>
+				</div>
+				<div id="secondaryAttributes">
+					<div id="hitpoints">
+						<div class="header">
+							<label for="data.secondaryAttributes.hp.value"
+								class="resource-label">{{data.secondaryAttributes.hp.label}}</label>
+						</div>
+						<div class="center">
+							<input class="sec-attr" type="text" name="data.secondaryAttributes.hp.max"
+								value="{{data.secondaryAttributes.hp.max}}" data-dtype="Number" />
+						</div>
+						<div class="header">
+							<label for="data.secondaryAttributes.hp.state"
+								class="resource-label">{{data.secondaryAttributes.hp.state}}</label>
+						</div>
+						<div class="minus-content-plus">
+							<span class="far fa-minus-square minus"><input type="hidden" name="hp" value="-1" /></span>
+							<label for="data.secondaryAttributes.hp.value" name="data.secondaryAttributes.hp.value" class="title">{{numberFormat data.secondaryAttributes.hp.value decimals=0 sign=false}}</label>
+							<span class="far fa-plus-square plus"><input type="hidden" name="hp" value="1" /></span>
+						</div>
+					</div>
+					<div id="fatpoints">
+						<div class="header">
+							<label for="data.secondaryAttributes.fp.value"
+								class="resource-label">{{data.secondaryAttributes.fp.label}}</label>
+						</div>
+						<div class="center">
+							<input class="sec-attr" type="text" name="data.secondaryAttributes.fp.max"
+								value="{{data.secondaryAttributes.fp.max}}" data-dtype="Number" />
+						</div>
+						<div class="header">
+							<label for="data.secondaryAttributes.fp.state"
+								class="resource-label">{{data.secondaryAttributes.fp.state}}</label>
+						</div>
+						<div class="minus-content-plus">
+							<span class="far fa-minus-square minus"><input type="hidden" name="fp" value="-1" /></span>
+							<label for="data.secondaryAttributes.fp.value" name="data.secondaryAttributes.fp.value" class="title">{{numberFormat data.secondaryAttributes.fp.value decimals=0 sign=false}}</label>
+							<span class="far fa-plus-square plus"><input type="hidden" name="fp" value="1" /></span>
+						</div>
+					</div>
+					<div id="damresist">
+						<div class="header">
+							<label for="data.secondaryAttributes.dr.value"
+								class="resource-label">{{data.secondaryAttributes.dr.label}}</label>
+						</div>
+						<div class="center">
+							<input type="text" name="data.secondaryAttributes.dr.value" value="{{data.secondaryAttributes.dr.value}}"
+								data-dtype="Number" />
+						</div>
+					</div>
+					<div id="basicmove">
+						<div class="header">
+							<label for="data.secondaryAttributes.move.value"
+								class="resource-label">{{data.secondaryAttributes.move.label}}</label>
+						</div>
+						<div class="center">
+							<input type="text" name="data.secondaryAttributes.move.value"
+								value="{{data.secondaryAttributes.move.value}}" data-dtype="String" />
+						</div>
+					</div>
+					<div id="basicspeed">
+						<div class="header">
+							<label for="data.secondaryAttributes.bs.value"
+								class="resource-label">Speed</label>
+						</div>
+						<div class="center">
+							<input type="text" name="data.secondaryAttributes.bs.value" value="{{data.secondaryAttributes.bs.value}}"
+								data-dtype="Number" />
+						</div>
+					</div>
+				</div>
+			</div>
 
-    </header>
+		</header>
 
-    {{!-- Sheet Tab Navigation --}}
-    <nav id="tabselect" class="sheet-tabs tabs" data-group="primary">
-        <div class="header">
-            <a class="item" data-tab="stats">Main</a>
-        </div>
-        <div class="header">
-            <a class="item" data-tab="traits">Traits</a>
-        </div>
-        <div class="header">
-            <a class="item" data-tab="rollable">Skills & Techniques</a>
-        </div>
-        <div class="header">
-            <a class="item" data-tab="combat">Combat</a>
-        </div>
-        <div class="header">
-            <a class="item" data-tab="items">Items</a>
-        </div>
-    </nav>
+		{{!-- Sheet Tab Navigation --}}
+		<nav id="tabselect" class="sheet-tabs tabs" data-group="primary">
+				<div class="header">
+						<a class="item" data-tab="stats">Main</a>
+				</div>
+				<div class="header">
+						<a class="item" data-tab="traits">Advantages & Disadvantages</a>
+				</div>
+				<div class="header">
+						<a class="item" data-tab="rollable">Skills & Techniques</a>
+				</div>
+				<div class="header">
+						<a class="item" data-tab="combat">Combat</a>
+				</div>
+				<div class="header">
+						<a class="item" data-tab="items">Items</a>
+				</div>
+		</nav>
 
-    {{!-- Sheet Body --}}
-    <section class="sheet-body">
+		{{!-- Sheet Body --}}
+		<section class="sheet-body">
 
-      {{!-- Stats Tab --}}
-      <div class="tab stats" data-tab="stats" data-group="primary">
+			{{!-- Stats Tab --}}
+			<div class="tab stats" data-tab="stats" data-group="primary">
 
-        <div id="attributes_defences">
+				<div id="attributes_defences">
 
-          <!-- Here are the four primary attributes -->
-          {{#each data.primaryAttributes as |attr id|}}
-          <div class="primary-attribute">
-            <div class="title">
-              <label>{{attr.abbr}}</label>
-            </div>
-            <div class="roll-content">
-              <label for="data.primaryAttributes.{{id}}.value" class="fa fa-dice-six rollable"
-                data-level="{{attr.value}}" data-label="Makes a &lt;b&gt;{{attr.abbr}}&lt;/b&gt; check."
-                data-type="skill"></label>
-              <input type="text" name="data.primaryAttributes.{{id}}.value" value="{{attr.value}}"
-                data-dtype="Number" />
-              <input type="text" name="data.primaryAttributes.{{id}}.mod" value="{{attr.mod}}"
-                     data-dtype="Number" />
-              <input type="text" name="data.primaryAttributes.{{id}}.points" value="{{attr.points}}"
-                     data-dtype="Number" />
-            </div>
-          </div>
-          {{/each}}
+					<!-- Here are the four primary attributes -->
+					<div class="attribute-block">
+						{{#each data.primaryAttributes as |attr id|}}
+						<div class="primary-attribute">
+								<label>{{attr.abbr}}</label>
+								<input type="text" name="data.primaryAttributes.{{id}}.value" value="{{attr.value}}"
+									data-dtype="Number" />
+								<input type="text" name="data.primaryAttributes.{{id}}.mod" value="{{attr.mod}}"
+											 data-dtype="Number" />
+								<input type="text" name="data.primaryAttributes.{{id}}.points" value="{{attr.points}}"
+											 data-dtype="Number" />
+							<label for="data.primaryAttributes.{{id}}.value" class="fa fa-dice-six rollable"
+										 data-level="{{attr.value}}" data-label="Makes a &lt;b&gt;{{attr.abbr}}&lt;/b&gt; check."
+										 data-type="skill"></label>
+						</div>
+						{{/each}}
+					</div>
 
-          <!-- The Global Modifier applies to every roll and then is reset -->
-          <div class="global-modifier check">
-            <div class="title">
-              <label>{{data.gmod.label}}</label>
-            </div>
-            <div class="minus-content-plus">
-              <span class="far fa-minus-square minus"><input type="hidden" name="gmod" value="-1" /></span>
-              <label for="data.gmod.value" name="data.gmod.value" class="counter">{{data.gmod.value}}</label>
-              <span class="far fa-plus-square plus"><input type="hidden" name="gmod" value="1" /></span>
-            </div>
-          </div>
-          <!-- These four slots are for the active defences and a total modifier for Defensive Bonuses -->
-          {{#each data.defences as |defence id|}}
-          <div class="check">
-            <div class="title">
-              <label>{{defence.label}}</label>
-            </div>
-            <div class="roll-content">
-              <label for="data.defences.{{id}}.value" class="fa fa-dice-six rollable" data-level="{{defence.value}}"
-                data-label="Attempts to &lt;b&gt;{{defence.label}}&lt;/b&gt;." data-type="defense"></label>
-              <input type="text" name="data.defences.{{id}}.value" value="{{defence.value}}" data-dtype="Number" />
-            </div>
-          </div>
-          {{/each}}
-          <!-- The Defensive Modifier applies only to active defences and is never reset -->
-          <div class="defensive-modifier check">
-            <div class="title">
-              <label>{{data.dmod.label}}</label>
-            </div>
-            <div class="minus-content-plus">
-              <span class="far fa-minus-square minus"><input type="hidden" name="dmod" value="-1" /></span>
-              <label for="data.dmod.value" name="data.dmod.value" class="counter">{{data.dmod.value}}</label>
-              <span class="far fa-plus-square plus"><input type="hidden" name="dmod" value="1" /></span>
-            </div>
-          </div>
-        </div>
+					<!-- The Global Modifier applies to every roll and then is reset -->
+					<div class="global-modifier check">
+						<div class="title">
+							<label>{{data.gmod.label}}</label>
+						</div>
+						<div class="minus-content-plus">
+							<span class="far fa-minus-square minus"><input type="hidden" name="gmod" value="-1" /></span>
+							<label for="data.gmod.value" name="data.gmod.value" class="counter">{{data.gmod.value}}</label>
+							<span class="far fa-plus-square plus"><input type="hidden" name="gmod" value="1" /></span>
+						</div>
+					</div>
+					<!-- These four slots are for the active defences and a total modifier for Defensive Bonuses -->
+					{{#each data.defences as |defence id|}}
+					<div class="check">
+						<div class="title">
+							<label>{{defence.label}}</label>
+						</div>
+						<div class="roll-content">
+							<label for="data.defences.{{id}}.value" class="fa fa-dice-six rollable" data-level="{{defence.value}}"
+								data-label="Attempts to &lt;b&gt;{{defence.label}}&lt;/b&gt;." data-type="defense"></label>
+							<input type="text" name="data.defences.{{id}}.value" value="{{defence.value}}" data-dtype="Number" />
+						</div>
+					</div>
+					{{/each}}
+					<!-- The Defensive Modifier applies only to active defences and is never reset -->
+					<div class="defensive-modifier check">
+						<div class="title">
+							<label>{{data.dmod.label}}</label>
+						</div>
+						<div class="minus-content-plus">
+							<span class="far fa-minus-square minus"><input type="hidden" name="dmod" value="-1" /></span>
+							<label for="data.dmod.value" name="data.dmod.value" class="counter">{{data.dmod.value}}</label>
+							<span class="far fa-plus-square plus"><input type="hidden" name="dmod" value="1" /></span>
+						</div>
+					</div>
+				</div>
 
-        {{!-- Biography Tab --}}
-        <div id="biography">
-          <p>Notes</p>
-          <textarea rows="13" name="data.biography">{{{data.biography}}}</textarea>
-        </div>
-      </div>
+				{{!-- Biography Tab --}}
+				<div id="biography">
+					<p>Notes</p>
+					<textarea rows="13" name="data.biography">{{{data.biography}}}</textarea>
+				</div>
+			</div>
 
-        {{!-- Traits Tab --}}
-        <div id="traits" class="tab items" data-tab="traits" data-group="primary">
-            <ol class="items-list">
-                <li class="item flexrow item-header">
-                    <div class="item-image"></div>
-                    <div class="item-name">Name</div>
-                    <div class="item-notes">Notes</div>
-                    <div class="item-rolls">Skill - - Damage - - ArmDiv</div>
-                    <div class="item-controls">
-                        <!--<a class="item-control item-create" title="Create item" data-type="item"><i class="fas fa-plus"></i> Add</a>-->
-                    </div>
-                </li>
-                {{#each actor.items as |item id|}}
-                {{#if (eq type "Trait") }}
-                <li class="item flexrow" data-item-id="{{item._id}}">
-                    <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24" /></div>
-                    <div class="item-name">
-                        <input type="text" value="{{item.name}}" title="{{item.name}}" style="text-align:left;" />
-                    </div>
-                    <div class="item-notes">
-                        <input type="text" value="{{data.notes}}" title="{{data.notes}}" style="text-align:left;" />
-                    </div>
-                    {{#if (ne data.level undefined)}}
-                    {{#if (or (eq type "Melee-Attack") (eq type "Ranged-Attack") ) }}
-                    <div class="item-attack">
-                        <label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
-                               data-label="Attacks with &lt;b&gt;{{name}}&lt;/b&gt;." data-type="skill"></label>
-                        {{data.level}} -
-                        - <label for="data.damage" class="fa fa-dice-six rollable" data-roll="{{data.damage}}"
-                                 data-label="Rolls &lt;b&gt;{{data.damageType}}&lt;/b&gt; damage for &lt;b&gt;{{name}}&lt;/b&gt;."
-                                 data-type="damage"></label>
-                        {{data.damage}}
-                        <label>{{data.damageType}} -</label>
-                        <label>- /{{data.armourDiv}}</label>
-                    </div>
-                    {{else}}
-                    <div class="item-skill">
-                        <label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
-                               data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
-                        {{data.level}}
-                    </div>
-                    {{/if}}
-                    {{else}}
-                    <div></div>
-                    {{/if}}
-                    <div class="item-controls">
-                        <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-                        <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
-                    </div>
-                </li>
-                {{/if}}
-                {{/each}}
-            </ol>
-        </div>
+				{{!-- Traits Tab --}}
+				<div id="traits" class="tab items" data-tab="traits" data-group="primary">
+						<ol class="items-list">
+								<li class="item flexrow item-header">
+										<div class="item-image"></div>
+										<div class="item-name">Name</div>
+										<div class="item-notes">Notes</div>
+										<div class="item-rolls">Skill - - Damage - - ArmDiv</div>
+										<div class="item-controls">
+												<!--<a class="item-control item-create" title="Create item" data-type="item"><i class="fas fa-plus"></i> Add</a>-->
+										</div>
+								</li>
+								{{#each actor.items as |item id|}}
+								{{#if (eq type "Trait") }}
+								<li class="item flexrow" data-item-id="{{item._id}}">
+										<div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24" /></div>
+										<div class="item-name">
+												<input type="text" value="{{item.name}}" title="{{item.name}}" style="text-align:left;" />
+										</div>
+										<div class="item-notes">
+												<input type="text" value="{{data.notes}}" title="{{data.notes}}" style="text-align:left;" />
+										</div>
+										{{#if (ne data.level undefined)}}
+										{{#if (or (eq type "Melee-Attack") (eq type "Ranged-Attack") ) }}
+										<div class="item-attack">
+												<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
+															 data-label="Attacks with &lt;b&gt;{{name}}&lt;/b&gt;." data-type="skill"></label>
+												{{data.level}} -
+												- <label for="data.damage" class="fa fa-dice-six rollable" data-roll="{{data.damage}}"
+																 data-label="Rolls &lt;b&gt;{{data.damageType}}&lt;/b&gt; damage for &lt;b&gt;{{name}}&lt;/b&gt;."
+																 data-type="damage"></label>
+												{{data.damage}}
+												<label>{{data.damageType}} -</label>
+												<label>- /{{data.armourDiv}}</label>
+										</div>
+										{{else}}
+										<div class="item-skill">
+												<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
+															 data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
+												{{data.level}}
+										</div>
+										{{/if}}
+										{{else}}
+										<div></div>
+										{{/if}}
+										<div class="item-controls">
+												<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+												<a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+										</div>
+								</li>
+								{{/if}}
+								{{/each}}
+						</ol>
+				</div>
 
-      {{!-- Rollable Tab --}}
-      <div id="rollable" class="tab items" data-tab="rollable" data-group="primary">
-        <ol class="items-list">
-          <li class="item flexrow item-header">
-            <div class="item-image"></div>
-            <div class="item-name">Name</div>
-            <div class="item-notes">Notes</div>
-            <div class="item-rolls">Skill - - Damage - - ArmDiv</div>
-            <div class="item-controls">
-              <!--<a class="item-control item-create" title="Create item" data-type="item"><i class="fas fa-plus"></i> Add</a>-->
-            </div>
-          </li>
-          {{#each actor.items as |item id|}}
-          {{#if (eq type "Rollable") }}
-          <li class="item flexrow" data-item-id="{{item._id}}">
-            <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24" /></div>
-            <div class="item-name">
-              <input type="text" value="{{item.name}}" title="{{item.name}}" style="text-align:left;" />
-            </div>
-            <div class="item-notes">
-              <input type="text" value="{{data.notes}}" title="{{data.notes}}" style="text-align:left;" />
-            </div>
-            {{#if (ne data.level undefined)}}
-            {{#if (or (eq type "Melee-Attack") (eq type "Ranged-Attack") ) }}
-            <div class="item-attack">
-              <label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
-                     data-label="Attacks with &lt;b&gt;{{name}}&lt;/b&gt;." data-type="skill"></label>
-              {{data.level}} -
-              - <label for="data.damage" class="fa fa-dice-six rollable" data-roll="{{data.damage}}"
-                       data-label="Rolls &lt;b&gt;{{data.damageType}}&lt;/b&gt; damage for &lt;b&gt;{{name}}&lt;/b&gt;."
-                       data-type="damage"></label>
-              {{data.damage}}
-              <label>{{data.damageType}} -</label>
-              <label>- /{{data.armourDiv}}</label>
-            </div>
-            {{else}}
-            <div class="item-skill">
-              <label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
-                     data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
-              {{data.level}}
-            </div>
-            {{/if}}
-            {{else}}
-            <div></div>
-            {{/if}}
-            <div class="item-controls">
-              <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-              <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
-            </div>
-          </li>
-          {{/if}}
-          {{/each}}
-        </ol>
-      </div>
+			{{!-- Rollable Tab --}}
+			<div id="rollable" class="tab items" data-tab="rollable" data-group="primary">
+				<ol class="items-list">
+					<li class="item flexrow item-header">
+						<div class="item-image"></div>
+						<div class="item-name">Name</div>
+						<div class="item-notes">Notes</div>
+						<div class="item-rolls">Skill - - Damage - - ArmDiv</div>
+						<div class="item-controls">
+							<!--<a class="item-control item-create" title="Create item" data-type="item"><i class="fas fa-plus"></i> Add</a>-->
+						</div>
+					</li>
+					{{#each actor.items as |item id|}}
+					{{#if (eq type "Rollable") }}
+					<li class="item flexrow" data-item-id="{{item._id}}">
+						<div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24" /></div>
+						<div class="item-name">
+							<input type="text" value="{{item.name}}" title="{{item.name}}" style="text-align:left;" />
+						</div>
+						<div class="item-notes">
+							<input type="text" value="{{data.notes}}" title="{{data.notes}}" style="text-align:left;" />
+						</div>
+						{{#if (ne data.level undefined)}}
+						{{#if (or (eq type "Melee-Attack") (eq type "Ranged-Attack") ) }}
+						<div class="item-attack">
+							<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
+										 data-label="Attacks with &lt;b&gt;{{name}}&lt;/b&gt;." data-type="skill"></label>
+							{{data.level}} -
+							- <label for="data.damage" class="fa fa-dice-six rollable" data-roll="{{data.damage}}"
+											 data-label="Rolls &lt;b&gt;{{data.damageType}}&lt;/b&gt; damage for &lt;b&gt;{{name}}&lt;/b&gt;."
+											 data-type="damage"></label>
+							{{data.damage}}
+							<label>{{data.damageType}} -</label>
+							<label>- /{{data.armourDiv}}</label>
+						</div>
+						{{else}}
+						<div class="item-skill">
+							<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
+										 data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
+							{{data.level}}
+						</div>
+						{{/if}}
+						{{else}}
+						<div></div>
+						{{/if}}
+						<div class="item-controls">
+							<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+							<a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+						</div>
+					</li>
+					{{/if}}
+					{{/each}}
+				</ol>
+			</div>
 
-      {{!-- Combat Tab --}}
-      <div id="weapons" class="tab items" data-tab="combat" data-group="primary">
-        <ol class="items-list">
-          <li class="item flexrow item-header">
-            <div class="item-image"></div>
-            <div class="item-name">Name</div>
-            <div class="item-notes">Notes</div>
-            <div class="item-rolls">Skill - - Damage - - ArmDiv</div>
-            <div class="item-controls">
-              <!--<a class="item-control item-create" title="Create item" data-type="item"><i class="fas fa-plus"></i> Add</a>-->
-            </div>
-          </li>
-          {{#each actor.items as |item id|}}
-          {{#if (or (eq type "Melee-Attack") (eq type "Ranged-Attack") ) }}
-          <li class="item flexrow" data-item-id="{{item._id}}">
-            <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24" /></div>
-            <div class="item-name">
-              <input type="text" value="{{item.name}}" title="{{item.name}}" style="text-align:left;" />
-            </div>
-            <div class="item-notes">
-              <input type="text" value="{{data.notes}}" title="{{data.notes}}" style="text-align:left;" />
-            </div>
-            {{#if (ne data.level undefined)}}
-            {{#if (or (eq type "Melee-Attack") (eq type "Ranged-Attack") ) }}
-            <div class="item-attack">
-              <label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
-                data-label="Attacks with &lt;b&gt;{{name}}&lt;/b&gt;." data-type="skill"></label>
-              {{data.level}} -
-              - <label for="data.damage" class="fa fa-dice-six rollable" data-roll="{{data.damage}}"
-                data-label="Rolls &lt;b&gt;{{data.damageType}}&lt;/b&gt; damage for &lt;b&gt;{{name}}&lt;/b&gt;."
-                data-type="damage"></label>
-              {{data.damage}}
-              <label>{{data.damageType}} -</label>
-              <label>- /{{data.armourDiv}}</label>
-            </div>
-            {{else}}
-            <div class="item-skill">
-              <label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
-                data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
-              {{data.level}}
-            </div>
-            {{/if}}
-            {{else}}
-            <div></div>
-            {{/if}}
-            <div class="item-controls">
-              <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-              <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
-            </div>
-          </li>
-          {{/if}}
-          {{/each}}
-        </ol>
-      </div>
+			{{!-- Combat Tab --}}
+			<div id="weapons" class="tab items" data-tab="combat" data-group="primary">
+				<ol class="items-list">
+					<li class="item flexrow item-header">
+						<div class="item-image"></div>
+						<div class="item-name">Name</div>
+						<div class="item-notes">Notes</div>
+						<div class="item-rolls">Skill - - Damage - - ArmDiv</div>
+						<div class="item-controls">
+							<!--<a class="item-control item-create" title="Create item" data-type="item"><i class="fas fa-plus"></i> Add</a>-->
+						</div>
+					</li>
+					{{#each actor.items as |item id|}}
+					{{#if (or (eq type "Melee-Attack") (eq type "Ranged-Attack") ) }}
+					<li class="item flexrow" data-item-id="{{item._id}}">
+						<div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24" /></div>
+						<div class="item-name">
+							<input type="text" value="{{item.name}}" title="{{item.name}}" style="text-align:left;" />
+						</div>
+						<div class="item-notes">
+							<input type="text" value="{{data.notes}}" title="{{data.notes}}" style="text-align:left;" />
+						</div>
+						{{#if (ne data.level undefined)}}
+						{{#if (or (eq type "Melee-Attack") (eq type "Ranged-Attack") ) }}
+						<div class="item-attack">
+							<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
+								data-label="Attacks with &lt;b&gt;{{name}}&lt;/b&gt;." data-type="skill"></label>
+							{{data.level}} -
+							- <label for="data.damage" class="fa fa-dice-six rollable" data-roll="{{data.damage}}"
+								data-label="Rolls &lt;b&gt;{{data.damageType}}&lt;/b&gt; damage for &lt;b&gt;{{name}}&lt;/b&gt;."
+								data-type="damage"></label>
+							{{data.damage}}
+							<label>{{data.damageType}} -</label>
+							<label>- /{{data.armourDiv}}</label>
+						</div>
+						{{else}}
+						<div class="item-skill">
+							<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
+								data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
+							{{data.level}}
+						</div>
+						{{/if}}
+						{{else}}
+						<div></div>
+						{{/if}}
+						<div class="item-controls">
+							<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+							<a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+						</div>
+					</li>
+					{{/if}}
+					{{/each}}
+				</ol>
+			</div>
 
-      {{!-- Items Tab --}}
-      <div id="items" class="tab items" data-tab="items" data-group="primary">
-        <ol class="items-list">
-          <li class="item flexrow item-header">
-            <div class="item-image"></div>
-            <div class="item-name">Name</div>
-            <div class="item-notes">Notes</div>
-            <div class="item-rolls">Skill - - Damage - - ArmDiv</div>
-            <div class="item-controls">
-              <!--<a class="item-control item-create" title="Create item" data-type="item"><i class="fas fa-plus"></i> Add</a>-->
-            </div>
-          </li>
-          {{#each actor.items as |item id|}}
-          {{#if (eq type "Equipment") }}
-          <li class="item flexrow" data-item-id="{{item._id}}">
-            <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24" /></div>
-            <div class="item-name">
-              <input type="text" value="{{item.name}}" title="{{item.name}}" style="text-align:left;" />
-            </div>
-            <div class="item-notes">
-              <input type="text" value="{{data.notes}}" title="{{data.notes}}" style="text-align:left;" />
-            </div>
-            {{#if (ne data.level undefined)}}
-            {{#if (or (eq type "Melee-Attack") (eq type "Ranged-Attack") ) }}
-            <div class="item-attack">
-              <label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
-                     data-label="Attacks with &lt;b&gt;{{name}}&lt;/b&gt;." data-type="skill"></label>
-              {{data.level}} -
-              - <label for="data.damage" class="fa fa-dice-six rollable" data-roll="{{data.damage}}"
-                       data-label="Rolls &lt;b&gt;{{data.damageType}}&lt;/b&gt; damage for &lt;b&gt;{{name}}&lt;/b&gt;."
-                       data-type="damage"></label>
-              {{data.damage}}
-              <label>{{data.damageType}} -</label>
-              <label>- /{{data.armourDiv}}</label>
-            </div>
-            {{else}}
-            <div class="item-skill">
-              <label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
-                     data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
-              {{data.level}}
-            </div>
-            {{/if}}
-            {{else}}
-            <div></div>
-            {{/if}}
-            <div class="item-controls">
-              <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-              <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
-            </div>
-          </li>
-          {{/if}}
-          {{/each}}
-        </ol>
-      </div>
-    </section>
+			{{!-- Items Tab --}}
+			<div id="items" class="tab items" data-tab="items" data-group="primary">
+				<ol class="items-list">
+					<li class="item flexrow item-header">
+						<div class="item-image"></div>
+						<div class="item-name">Name</div>
+						<div class="item-notes">Notes</div>
+						<div class="item-rolls">Skill - - Damage - - ArmDiv</div>
+						<div class="item-controls">
+							<!--<a class="item-control item-create" title="Create item" data-type="item"><i class="fas fa-plus"></i> Add</a>-->
+						</div>
+					</li>
+					{{#each actor.items as |item id|}}
+					{{#if (eq type "Equipment") }}
+					<li class="item flexrow" data-item-id="{{item._id}}">
+						<div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24" /></div>
+						<div class="item-name">
+							<input type="text" value="{{item.name}}" title="{{item.name}}" style="text-align:left;" />
+						</div>
+						<div class="item-notes">
+							<input type="text" value="{{data.notes}}" title="{{data.notes}}" style="text-align:left;" />
+						</div>
+						{{#if (ne data.level undefined)}}
+						{{#if (or (eq type "Melee-Attack") (eq type "Ranged-Attack") ) }}
+						<div class="item-attack">
+							<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
+										 data-label="Attacks with &lt;b&gt;{{name}}&lt;/b&gt;." data-type="skill"></label>
+							{{data.level}} -
+							- <label for="data.damage" class="fa fa-dice-six rollable" data-roll="{{data.damage}}"
+											 data-label="Rolls &lt;b&gt;{{data.damageType}}&lt;/b&gt; damage for &lt;b&gt;{{name}}&lt;/b&gt;."
+											 data-type="damage"></label>
+							{{data.damage}}
+							<label>{{data.damageType}} -</label>
+							<label>- /{{data.armourDiv}}</label>
+						</div>
+						{{else}}
+						<div class="item-skill">
+							<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
+										 data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
+							{{data.level}}
+						</div>
+						{{/if}}
+						{{else}}
+						<div></div>
+						{{/if}}
+						<div class="item-controls">
+							<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+							<a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+						</div>
+					</li>
+					{{/if}}
+					{{/each}}
+				</ol>
+			</div>
+		</section>
 </form>

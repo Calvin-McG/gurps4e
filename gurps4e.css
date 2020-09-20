@@ -118,7 +118,7 @@
 
 #tabselect {
   display: grid;
-  grid-template-columns: repeat(3,0fr);
+  grid-template-columns: repeat(6,0fr);
   border-top: 2px groove darkgoldenrod;
 }
 
@@ -188,7 +188,7 @@
 
 .primary-attribute {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: repeat(5,1fr);
   padding: 2px;
   border: 1px dotted grey;
   margin: 1px;
