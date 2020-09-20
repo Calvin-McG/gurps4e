@@ -190,6 +190,10 @@
 	width: 5ch !important;
 }
 
+.atrVal {
+	width: 5ch !important;
+}
+
 .attack {
 	display: grid;
 	grid-template-columns: 1fr auto auto 32px;

@@ -76,11 +76,10 @@ export class gurpsActor extends Actor {
 		data.secondaryAttributes.fp.min = -data.secondaryAttributes.fp.max;
 
 		// Set Movement rates
-		let move = data.secondaryAttributes.move;
-		move.step = Math.ceil(move.value / 5);
-		move.half = Math.ceil(move.value / 2);
-		move.sprint = Math.ceil(move.value * 1.2);
-
+		// let move = data.primaryAttributes.move.value;
+		// move.step = Math.ceil(move.value / 5);
+		// move.half = Math.ceil(move.value / 2);
+		// move.sprint = Math.ceil(move.value * 1.2);
 
 		// Set the formulae for all the attack dice if useTextBoxForDamage is false
 		if (actorData.flags.useTextBoxForDamage === undefined || !actorData.flags.useTextBoxForDamage) {
@@ -208,7 +207,7 @@ export class gurpsActor extends Actor {
 			this.update({ ['data.points.attributes']: attributePoints });
 		}
 		else if (name.includes("speed")){
-			value = +value + +this.data.data.primaryAttributes.speed.mod + +Math.floor(points/20) - +5;
+			value = Math.floor((+value + +this.data.data.primaryAttributes.speed.mod + +(points/20) - +5) * +4) / +4;
 			this.update({ ['data.primaryAttributes.speed.value']: value });
 
 			//Update point totals
@@ -240,7 +239,6 @@ export class gurpsActor extends Actor {
 			this.update({ ['data.points.attributes']: attributePoints });
 		}
 
-
 		this.recalcPointsAtr(attributePoints);
 	}
 
@@ -263,6 +261,27 @@ export class gurpsActor extends Actor {
 			value = +value + +mod + +Math.floor(this.data.data.primaryAttributes.health.points/10);
 			this.update({ ['data.primaryAttributes.health.value']: value });
 		}
+		else if (name.includes("perception")){
+			value = +value + +mod + +Math.floor(this.data.data.primaryAttributes.perception.points/5);
+			this.update({ ['data.primaryAttributes.perception.value']: value });
+		}
+		else if (name.includes("will")){
+			value = +value + +mod + +Math.floor(this.data.data.primaryAttributes.will.points/5);
+			this.update({ ['data.primaryAttributes.will.value']: value });
+		}
+		else if (name.includes("fright")){
+			value = +value + +mod + +Math.floor(this.data.data.primaryAttributes.fright.points/2);
+			this.update({ ['data.primaryAttributes.fright.value']: value });
+		}
+		else if (name.includes("speed")){
+			value = Math.floor((+value + +mod + +(this.data.data.primaryAttributes.speed.points/20) - +5) * +4) / +4;
+			this.update({ ['data.primaryAttributes.speed.value']: value });
+		}
+		else if (name.includes("move")){
+			value = +value + +mod + +Math.floor(this.data.data.primaryAttributes.move.points/5) - +5;
+			this.update({ ['data.primaryAttributes.move.value']: value });
+		}
+
 	}
 
 	setTotalPoints(unspent) {
@@ -273,13 +292,23 @@ export class gurpsActor extends Actor {
 		this.update({ ['data.points.total']: total });
 	}
 
+	recalcPoints() {
+		var unspent;
+		var spent;
+
+		spent = +this.data.data.points.attributes + +this.data.data.points.traits + +this.data.data.points.skills;
+
+		unspent = +this.data.data.points.total - +spent;
+
+		this.update({ ['data.points.unspent']: unspent });
+	}
+
 	recalcPointsAtr(attributePoints) {
 		var unspent;
 		var spent;
 
 		spent = +attributePoints + +this.data.data.points.traits + +this.data.data.points.skills;
-
-		var unspent = +this.data.data.points.total - +spent;
+		unspent = +this.data.data.points.total - +spent;
 
 		this.update({ ['data.points.unspent']: unspent });
 	}

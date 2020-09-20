@@ -49,14 +49,6 @@
           "dr": {
             "label": "DR",
             "value": 0
-          },
-          "move": {
-            "label": "Move",
-            "value": "5"
-          },
-          "bs": {
-            "label": "BS",
-            "value": 5
           }
         },
         "defences": {
