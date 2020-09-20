@@ -5,7 +5,7 @@
     "GURPS4E.attributes.fp" : "FP",
     "GURPS4E.attributes.dr" : "DR",
     "GURPS4E.attributes.move" : "Move",
-    "GURPS4E.attributes.bs" : "BS",
+    "GURPS4E.attributes.bs" : "Basic Speed",
 
     "SETTINGS.InitRule" : "Initiative Rules",
     "SETTINGS.InitHint" : "Choose which method is used to determine who acts first in combat.",
