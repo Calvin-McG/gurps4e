@@ -1,0 +1,53 @@
+<form class="{{cssClass}}" autocomplete="off">
+
+    {{!-- Sheet Header --}}
+    <header class="sheet-header">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+        <div class="header-fields">
+            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+            <div class="">
+                <div class="flexrow">
+                    <label class="resource-label">On Main Tab</label>
+                    <input type="checkbox" name="data.onMain" {{checked data.onMain}} data-dtype="Boolean"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">In Effect</label>
+                    <input type="checkbox" name="data.inEffect" {{checked data.inEffect}} data-dtype="Boolean"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Modifier</label>
+                    <input type="text" name="data.modifier" value="{{data.modifier}}" data-dtype="Number"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Modifies Attack Rolls</label>
+                    <input type="checkbox" name="data.attack" {{checked data.attack}} data-dtype="Boolean"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Modifies Defence Rolls</label>
+                    <input type="checkbox" name="data.defence" {{checked data.defence}} data-dtype="Boolean"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Modifies Success Rolls</label>
+                    <input type="checkbox" name="data.success" {{checked data.success}} data-dtype="Boolean"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Modifies Reaction Rolls</label>
+                    <input type="checkbox" name="data.reaction" {{checked data.reaction}} data-dtype="Boolean"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Modifies Damage Rolls</label>
+                    <input type="checkbox" name="data.damage" {{checked data.damage}} data-dtype="Boolean"/>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        <hr>
+        <h3>Notes</h3>
+        <div class="tab">
+            <textarea rows="8" name="data.notes">{{{data.notes}}}</textarea>
+        </div>
+    </section>
+</form>

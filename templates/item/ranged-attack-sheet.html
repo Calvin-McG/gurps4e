@@ -1,0 +1,69 @@
+<form class="{{cssClass}}" autocomplete="off">
+
+    {{!-- Sheet Header --}}
+    <header class="sheet-header">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+        <div class="header-fields">
+            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+            <div class="">
+                <div class="flexrow">
+                    <label class="resource-label">On Main Tab</label>
+                    <input type="checkbox" name="data.onMain" {{checked data.onMain}} data-dtype="Boolean"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Level</label>
+                    <input type="text" name="data.level" value="{{data.level}}" data-dtype="Number"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Damage</label>
+                    <input type="text" name="data.damage" value="{{data.damage}}" data-dtype="String"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Damage Type</label>
+                    <input type="text" name="data.damageType" value="{{data.damageType}}" data-dtype="String"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Armour Divisor</label>
+                    <input type="text" name="data.armourDiv" value="{{data.armourDiv}}" data-dtype="Number"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Minimum ST</label>
+                    <input type="text" name="data.minST" value="{{data.minST}}" data-dtype="String"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Accuracy</label>
+                    <input type="text" name="data.accuracy" value="{{data.accuracy}}" data-dtype="String"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Range</label>
+                    <input type="text" name="data.range" value="{{data.range}}" data-dtype="String"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Rate of Fire</label>
+                    <input type="text" name="data.rof" value="{{data.rof}}" data-dtype="Number"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Shots</label>
+                    <input type="text" name="data.shots" value="{{data.shots}}" data-dtype="String"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Bulk</label>
+                    <input type="text" name="data.bulk" value="{{data.bulk}}" data-dtype="Number"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Recoil</label>
+                    <input type="text" name="data.recoil" value="{{data.recoil}}" data-dtype="String"/>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        <hr>
+        <h3>Notes</h3>
+        <div class="tab">
+            <textarea rows="8" name="data.notes">{{{data.notes}}}</textarea>
+        </div>
+    </section>
+</form>

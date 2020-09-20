@@ -1,0 +1,11 @@
+{
+  "name": "gurps4e",
+  "version": "1.0.0",
+  "description": "Compiler for the Generic Universal Roleplaying System (any) Edition system",
+  "author": "James Huddleston",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "gurps-foundry-roll-lib": "git+https://gitlab.com/gurps-foundry/roll-lib.git"
+  }
+}

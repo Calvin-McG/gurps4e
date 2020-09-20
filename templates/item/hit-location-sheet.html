@@ -1,0 +1,41 @@
+<form class="{{cssClass}}" autocomplete="off">
+
+    {{!-- Sheet Header --}}
+    <header class="sheet-header">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+        <div class="header-fields">
+            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+            <div class="">
+                <div class="flexrow">
+                    <label class="resource-label">Damage Resistance</label>
+                    <input type="text" name="data.damageResistance" value="{{data.damageResistance}}" data-dtype="Number"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">To Cripple</label>
+                    <input type="text" name="data.toCripple" value="{{data.toCripple}}" data-dtype="String"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Crippled</label>
+                    <input type="checkbox" name="data.crippled" {{checked data.crippled}} data-dtype="Boolean"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">To Hit Rolls</label>
+                    <input type="text" name="data.toHitRoll" value="{{data.toHitRoll}}" data-dtype="String"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">To Hit Penalty</label>
+                    <input type="text" name="data.toHitPenalty" value="{{data.toHitPenalty}}" data-dtype="Number"/>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        <hr>
+        <h3>Notes</h3>
+        <div class="tab">
+            <textarea rows="8" name="data.notes">{{{data.notes}}}</textarea>
+        </div>
+    </section>
+</form>

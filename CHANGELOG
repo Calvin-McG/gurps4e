@@ -1,0 +1,122 @@
+v2.8.3
+- Highlighting applied to active modifiers
+- reorganised the actor data structure (no effect on existing actors)
+
+v2.8.2
+- Exxar upgraded the roll-library to include modifiers for damage rolls
+
+v2.8.1
+- Gave FP and HP a plus-minus to make changes to current value
+- created a system variable to permit 1/2 point increments for FP
+
+v2.8
+- This release does not appear to break existing actors
+- added modifiers to the sheet which will modify any roll except damage when 
+checked. You do have to enter all the details as they are fully configurable.
+- added another three skill slots by restyling them. Becoming cramped.
+
+v2.7
+- This release should not break current actors but will give problems for some 
+of the new item types as they have been reorganised and refined.
+- realised after a play session that the undetected bug from v2.6, wasn't a bug
+- Added a dev-readme for people who want to contribute.
+- Added Items for Modifiers and Defences. (Conditions may not be necessary in 
+addition to modifiers)
+- Exxar's Size-Speed-Range ruler is integrated into the project and need not 
+be imported as a module
+- Exxar's Roll-Library is integrated into the project and need not be imported
+as a module.
+    - only Gmod and Dmod are currently supported but others will be soon
+- The rollable items are usable from the items tab but others have no effect at this time.
+
+v2.6.2
+- Styled the items so they don't annoy me to look at them
+- removed the + Add Item until I figure out how to make it choose from the 
+different types rather than the legacy one. Not urgent because drag and drop 
+works fine.
+
+v2.6.1
+- fixes to Items:
+    - changed effectiveSkill to level
+    - changed cost to String and removed currency
+    - removed defaulting and consolidated the Skill, Spell, Technique and RM Spell
+    into Rollable with a category for filtering
+    - added Armour Divisor for weapons
+    - show Armour Divisor and Damage Type in the item list on an actor sheet
+
+v2.6
+- fixed an undetected bug that would add G-Mod to damage rolls
+- implemented a new set of rudimentary Items
+    - Equipment
+    - Hit Location
+    - Melee attack
+    - Ranged attack
+    - Skill
+    - Technique
+    - Spell
+    - Ritual Magic Spell
+    - Trait
+- kept the legacy Item for backwards compatibility (deprecated)
+- there is a long way to go to make these more functional and prettier
+
+v2.5
+- borrowed heavily from WFRP to enable:
+    - internationalisation
+    - custom status effects
+    - preparing actors on creation
+    - configuration information storage
+    - foundation for future migration capability
+    - more I may be forgetting
+
+v2.4.2
+- fixed broken attack name inputs
+- fixed layout issues (probably over-styled :-) Used a style hammer.
+
+v2.4.1
+- reverted the name change mess
+- edited the presentation to reflect "any" GURPS edition.
+
+v2.4.0
+- WARNING: This version introduces some optional system settings and flags set in an actor 
+at creation. If you wish to continue with the existing damage dice behaviour, you should 
+have no problems with your existing actors. If you wish to use the new TextBox option you 
+will have to duplicate your existing actors to set the flag for that in them. I have not yet
+figured out how migration works; apologies.
+- input text boxes now stretch to fill the available space.
+- there are now three options for initiative determination in System Settings.
+    - Game Settings > Configure Settings > System Settings
+- you may use a System Setting to choose to enter damage dice using a TextBox or continue 
+with the current method.
+
+v2.3.1
+- removed the useless reference to type fullchar so you don't have to pick an actor type
+
+v2.3.0
+- introduced a non-functional fullchar option to work on (don't make any, they don't work)
+- refactored many attributes into the base template so they could be reused by fullchar
+    - this has prevented older character versions from simply adding the extra field slots below but doesn't break them.
+- fixed the tab functionality and created 'Main' and 'Items'
+- increased the number of "check" slots to 18 in two rows.
+- increased the number of attack slots to eight.
+- increased the number of skill slots to 15.
+- notes remains at the bottom of the Main page, while Items move to their own tab.
+
+v2.2.1
+- fixed the initiative rolls broken because of changed field names
+
+v2.2.0
+- added three more skill slots for twelve.
+
+v2.1.0
+- added an automated HP and FP status indicator on the sheet next to each title.
+    - changes made to those fields on the sheet or the token will update the status
+    - HP status values are: [H], [R], [C], [-X], -2X], [-3X], [-4X], [DEAD]
+    - FP status values are: [F], [T], [C], [UNC]
+
+v2.0.0
+- gmod and dmod are both changed using plus-minus
+- primary attributes are on the same row as defences and gmod and dmod
+- there are nine configurable "check" slots - edit both name and value for a different success roll
+- the six attacks are merged with their damage rolls
+    - attacks operate like checks while damage uses plus-minus
+- squeezed in a ninth skill slot without pushing the notes too far down the sheet
