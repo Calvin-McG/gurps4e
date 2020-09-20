@@ -1,396 +1,396 @@
 @import url("https://fonts.googleapis.com/css2?family=Martel:wght@400;800&family=Roboto:wght@300;400;500&display=swap");
 /* Global styles */
 .window-app {
-  font-family: "Roboto", sans-serif;
-  font-size: 9pt;
+	font-family: "Roboto", sans-serif;
+	font-size: 9pt;
 }
 
 .rollable:hover, .rollable:focus, .plus:hover, .minus:hover {
-  color: #000;
-  text-shadow: 0 0 10px red;
-  cursor: pointer;
+	color: #000;
+	text-shadow: 0 0 10px red;
+	cursor: pointer;
 }
 
 .inEffect {
-  background-color: #88cc88;
+	background-color: #88cc88;
 }
 
 #sheet {
-  display: grid;
-  grid-template-rows: 120px 0fr 0fr auto auto;
+	display: grid;
+	grid-template-rows: 120px 0fr 0fr auto auto;
 }
 
 #personal {
-  grid-area: personal;
-  display: grid;
-  grid-template:
-    "portrait actorname racegender"
-    "portrait secondaryAttributes secondaryAttributes";
-  grid-template-columns: 100px 1fr 96px;
-  grid-template-rows: 55px 50px;
-  grid-gap: 5px;
+	grid-area: personal;
+	display: grid;
+	grid-template:
+		"portrait actorname racegender"
+		"portrait secondaryAttributes secondaryAttributes";
+	grid-template-columns: 100px 1fr 96px;
+	grid-template-rows: 55px 50px;
+	grid-gap: 5px;
 }
 
 #portrait {
-  grid-area: portrait;
-  display: grid;
-  align-self: center;
+	grid-area: portrait;
+	display: grid;
+	align-self: center;
 }
 
 .portrait {
-  min-width: 100px;
-  min-height: 100px;
+	min-width: 100px;
+	min-height: 100px;
 }
 
 #actorname {
-  grid-area: actorname;
-  display: grid;
-  height: 55px;
-  font-size: 150%;
-  font-weight: bold;
-  align-items: center;
+	grid-area: actorname;
+	display: grid;
+	height: 55px;
+	font-size: 150%;
+	font-weight: bold;
+	align-items: center;
 }
 
 .charname {
-  align-self: center;
-  min-height: 50px;
+	align-self: center;
+	min-height: 50px;
 }
 
 #racegender {
-  grid-area: racegender;
-  display: grid;
-  grid-template-rows: repeat(2, 1fr);
-  align-items: center;
+	grid-area: racegender;
+	display: grid;
+	grid-template-rows: repeat(2, 1fr);
+	align-items: center;
 }
 
 #secondaryAttributes {
-  grid-area: secondaryAttributes;
-  display: grid;
-  grid-template:
-    "hitpoints fatpoints damresist basicmove basicspeed";
-  grid-template-columns: repeat(5,auto);
-  grid-gap: 5px;
+	grid-area: secondaryAttributes;
+	display: grid;
+	grid-template:
+		"hitpoints fatpoints damresist basicmove basicspeed";
+	grid-template-columns: repeat(5,auto);
+	grid-gap: 5px;
 }
 
 #hitpoints {
-  grid-area: hitpoints;
+	grid-area: hitpoints;
 }
 
 #fatpoints {
-  grid-area: fatpoints;
+	grid-area: fatpoints;
 }
 
 #hitpoints,
 #fatpoints {
-  display: grid;
-  grid-template-rows: repeat(2, auto);
-  grid-template-columns: repeat(2, auto);
-  border: 2px groove darkgoldenrod;
+	display: grid;
+	grid-template-rows: repeat(2, auto);
+	grid-template-columns: repeat(2, auto);
+	border: 2px groove darkgoldenrod;
 }
 
 #currmax {
-  display: grid;
-  grid-template-columns: 36px 0fr 36px;
+	display: grid;
+	grid-template-columns: 36px 0fr 36px;
 }
 
 #damresist {
-  grid-area: damresist;
-  min-width: 36px;
+	grid-area: damresist;
+	min-width: 36px;
 }
 
 #basicmove {
-  grid-area: basicmove;
-  min-width: 56px;
+	grid-area: basicmove;
+	min-width: 56px;
 }
 
 #basicspeed {
-  grid-area: basicspeed;
-  min-width: 56px;
+	grid-area: basicspeed;
+	min-width: 56px;
 }
 
 #basicspeed,
 #basicmove,
 #damresist {
-  display: grid;
-  grid-template-rows: repeat(2, auto);
-  border: 2px groove darkgoldenrod;
+	display: grid;
+	grid-template-rows: repeat(2, auto);
+	border: 2px groove darkgoldenrod;
 }
 
 #tabselect {
-  display: grid;
-  grid-template-columns: repeat(6,0fr);
-  border-top: 2px groove darkgoldenrod;
+	display: grid;
+	grid-template-columns: repeat(6,0fr);
+	border-top: 2px groove darkgoldenrod;
 }
 
 #modifiers {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border-top: 2px groove darkgoldenrod;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	border-top: 2px groove darkgoldenrod;
 }
 
 #primary-attributes {
-  display: grid;
-  grid-template-columns: repeat(9,auto);
-  border-top: 2px groove darkgoldenrod;
+	display: grid;
+	grid-template-columns: repeat(9,auto);
+	border-top: 2px groove darkgoldenrod;
 }
 
 #checks {
-  display: grid;
-  grid-template-columns: repeat(9,auto);
-  border-top: 2px groove darkgoldenrod;
+	display: grid;
+	grid-template-columns: repeat(9,auto);
+	border-top: 2px groove darkgoldenrod;
 }
 
 #attributes_defences {
-  display: grid;
-  grid-template-columns: repeat(9,1fr);
-  border-top: 2px groove darkgoldenrod;
+	display: grid;
+	grid-template-columns: repeat(9,1fr);
+	border-top: 2px groove darkgoldenrod;
 }
 
 .global-modifier {
-  display: grid;
-  padding: 2px;
-  margin: 1px;
-  justify-items: center;
-  border-left: 2px groove darkgoldenrod;
-  border-right: 2px groove darkgoldenrod;
-  background-color: #d8e8D8;
+	display: grid;
+	padding: 2px;
+	margin: 1px;
+	justify-items: center;
+	border-left: 2px groove darkgoldenrod;
+	border-right: 2px groove darkgoldenrod;
+	background-color: #d8e8D8;
 }
 
 .defensive-modifier {
-  display: grid;
-  padding: 2px;
-  margin: 1px;
-  justify-items: center;
-  background-color: #e8d8D8;
+	display: grid;
+	padding: 2px;
+	margin: 1px;
+	justify-items: center;
+	background-color: #e8d8D8;
 }
 
 #attacks {
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
-  border-top: 2px groove darkgoldenrod;
+	display: grid;
+	grid-template-columns: repeat(2,1fr);
+	border-top: 2px groove darkgoldenrod;
 }
 
 #skills {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-top: 2px groove darkgoldenrod;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	border-top: 2px groove darkgoldenrod;
 }
 
 .attack {
-  display: grid;
-  grid-template-columns: 1fr auto auto 32px;
-  gap: 2px;
-  padding: 2px;
-  border: 1px dotted grey;
-  margin: 1px;
-  width: 100%;
+	display: grid;
+	grid-template-columns: 1fr auto auto 32px;
+	gap: 2px;
+	padding: 2px;
+	border: 1px dotted grey;
+	margin: 1px;
+	width: 100%;
 }
 
 .primary-attribute {
-  display: grid;
-  grid-template-columns: repeat(5,1fr);
-  padding: 2px;
-  border: 1px dotted grey;
-  margin: 1px;
+	display: grid;
+	grid-template-columns: repeat(5,1fr);
+	padding: 2px;
+	border: 1px dotted grey;
+	margin: 1px;
 }
 
 .primary-attribute .title {
-  grid-column: 1 / 3;
-  justify-self: center;
-  align-items: center;
-  width: 100%;
+	grid-column: 1 / 3;
+	justify-self: center;
+	align-items: center;
+	width: 100%;
 }
 
 .check {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  padding: 2px;
-  border: 1px dotted grey;
-  margin: 1px;
+	display: grid;
+	grid-template-columns: 1fr auto;
+	padding: 2px;
+	border: 1px dotted grey;
+	margin: 1px;
 }
 
 .check .title {
-  grid-column: 1 / 3;
-  justify-self: center;
-  align-items: center;
-  width: 100%;
+	grid-column: 1 / 3;
+	justify-self: center;
+	align-items: center;
+	width: 100%;
 }
 
 .roll-content {
-  display: grid;
-  grid-template-columns: 16px 28px;
-  justify-content: center;
-  align-items: center;
+	display: grid;
+	grid-template-columns: 16px 28px;
+	justify-content: center;
+	align-items: center;
 }
 
 .title,
 .left-title {
-  justify-self: center;
-  align-items: center;
-  text-align: center;
-  width: 100%;
+	justify-self: center;
+	align-items: center;
+	text-align: center;
+	width: 100%;
 }
 
 .right-roll-content {
-  display: grid;
-  grid-template-columns: 48px 16px;
-  justify-content: center;
-  align-items: center;
+	display: grid;
+	grid-template-columns: 48px 16px;
+	justify-content: center;
+	align-items: center;
 }
 
 .single-content {
-  display: grid;
-  grid-template-columns: 28px;
-  justify-content: center;
-  align-items: center;
+	display: grid;
+	grid-template-columns: 28px;
+	justify-content: center;
+	align-items: center;
 }
 
 .minus-content-plus {
-  display: grid;
-  grid-template-columns: 16px auto 16px;
-  justify-items: center;
-  align-items: center;
+	display: grid;
+	grid-template-columns: 16px auto 16px;
+	justify-items: center;
+	align-items: center;
 }
 
 .damage-dice {
-  width: 40px;
-  text-align: center;
+	width: 40px;
+	text-align: center;
 }
 
 .counter {
-  width: 15px;
-  font-size: 150%;
-  text-align: center;
+	width: 15px;
+	font-size: 150%;
+	text-align: center;
 }
 
 .sheet input {
-  text-align: center;
-  height: auto;
-  margin: auto;
+	text-align: center;
+	height: auto;
+	margin: auto;
 }
 
 .right-roll-content input,
 .left-title input,
 .title input {
-  font-weight: bold;
-  background: none;
-  border-style: hidden;
-  width: 100%;
+	font-weight: bold;
+	background: none;
+	border-style: hidden;
+	width: 100%;
 }
 
 .title label {
-  text-align: center;
-  font-weight: bold;
-  color: rgb(144, 144, 144);
-  background: none;
-  border-style: hidden;
+	text-align: center;
+	font-weight: bold;
+	color: rgb(144, 144, 144);
+	background: none;
+	border-style: hidden;
 }
 .header {
-  text-align: center;
-  padding-left: 2px;
-  padding-right: 2px;
-  font-size: 80%;
-  font-weight: bold;
-  align-self: center;
-  color: rgb(144, 144, 144);
+	text-align: center;
+	padding-left: 2px;
+	padding-right: 2px;
+	font-size: 80%;
+	font-weight: bold;
+	align-self: center;
+	color: rgb(144, 144, 144);
 }
 
 .label {
-  font-size: 80%;
-    white-space: nowrap;
+	font-size: 80%;
+		white-space: nowrap;
 }
 
 .bold {
-  font-weight: bold;
+	font-weight: bold;
 }
 
 .right {
-  text-align: right;
-  padding-left: 2px;
-  padding-right: 2px;
-  align-self: center;
-  color: rgb(144, 144, 144);
+	text-align: right;
+	padding-left: 2px;
+	padding-right: 2px;
+	align-self: center;
+	color: rgb(144, 144, 144);
 }
 
 .center {
-  text-align: center;
-  padding-left: 2px;
-  padding-right: 2px;
-  align-self: center;
-  color: rgb(144, 144, 144);
+	text-align: center;
+	padding-left: 2px;
+	padding-right: 2px;
+	align-self: center;
+	color: rgb(144, 144, 144);
 }
 
 .left {
-  text-align: left;
-  padding-left: 2px;
-  padding-right: 2px;
-  align-self: center;
-  color: rgb(144, 144, 144);
+	text-align: left;
+	padding-left: 2px;
+	padding-right: 2px;
+	align-self: center;
+	color: rgb(144, 144, 144);
 }
 
 /* Styles limited to gurps4e sheets */
 .gurps4e .item-form {
-  font-family: "Roboto", sans-serif;
+	font-family: "Roboto", sans-serif;
 }
 
 .gurps4e .sheet-body,
 .gurps4e .sheet-body .tab,
 .gurps4e .sheet-body .tab .editor {
-  height: 100%;
+	height: 100%;
 }
 
 .gurps4e.sheet .editor .tox-toolbar-overlord,
 .gurps4e.sheet .editor .tox-toolbar__primary {
-  background: none;
+	background: none;
 }
 
 .gurps4e .tox .tox-editor-container {
-  background: none;
+	background: none;
 }
 
 .gurps4e .tox .tox-edit-area {
-  padding: 0 8px;
+	padding: 0 8px;
 }
 
 .gurps4e .items-list {
-  list-style: none;
-  margin: 7px 0;
-  padding: 0;
-  overflow-y: auto;
+	list-style: none;
+	margin: 7px 0;
+	padding: 0;
+	overflow-y: auto;
 }
 
 .gurps4e .items-list .item-header {
-  font-weight: bold;
+	font-weight: bold;
 }
 
 .gurps4e .items-list .item {
-  height: 30px;
-  line-height: 24px;
-  border-bottom: 1px solid #BBB;
+	height: 30px;
+	line-height: 24px;
+	border-bottom: 1px solid #BBB;
 }
 
 .gurps4e .items-list .item .item-image {
-  flex: 0 0 24px;
-  margin-right: 5px;
+	flex: 0 0 24px;
+	margin-right: 5px;
 }
 
 .gurps4e .items-list .item img {
-  display: block;
+	display: block;
 }
 
 .gurps4e .items-list .item-name {
-  margin: 0;
+	margin: 0;
 }
 
 .gurps4e .items-list .item-controls {
-  flex: 0 0 36px;
-  text-align: right;
+	flex: 0 0 36px;
+	text-align: right;
 }
 
 /* how to add icons to the sheet */
 .icanhazicon {
-  width:20px;
-  height:20px;
-  background-image: url('icons/anIconName.png');
-  background-size: cover;
+	width:20px;
+	height:20px;
+	background-image: url('icons/anIconName.png');
+	background-size: cover;
 }
