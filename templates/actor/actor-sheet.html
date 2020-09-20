@@ -129,14 +129,19 @@
 
 					<!-- Here are the four primary attributes -->
 					<div class="attribute-block">
+                        <div class="primary-attribute-header">
+                            <label class="title">Val</label>
+                            <label class="title">Mod</label>
+                            <label class="title">Pts</label>
+                        </div>
 						{{#each data.primaryAttributes as |attr id|}}
 						<div class="primary-attribute">
 								<label>{{attr.abbr}}</label>
 								<input type="text" name="data.primaryAttributes.{{id}}.value" value="{{attr.value}}"
-									data-dtype="Number" />
+									data-dtype="Number" disabled />
 								<input type="text" name="data.primaryAttributes.{{id}}.mod" value="{{attr.mod}}"
 											 data-dtype="Number" />
-								<input type="text" name="data.primaryAttributes.{{id}}.points" value="{{attr.points}}"
+								<input type="text" name="data.primaryAttributes.{{id}}.points" class="points" value="{{attr.points}}"
 											 data-dtype="Number" />
 							<label for="data.primaryAttributes.{{id}}.value" class="fa fa-dice-six rollable"
 										 data-level="{{attr.value}}" data-label="Makes a &lt;b&gt;{{attr.abbr}}&lt;/b&gt; check."
