@@ -50,6 +50,23 @@
             "points": 0
           }
         },
+        "encumbrance" : {
+          "none" : {
+            "title": "None"
+          },
+          "light" : {
+            "title": "Light"
+          },
+          "medium" : {
+            "title": "Medium"
+          },
+          "heavy" : {
+            "title": "Heavy"
+          },
+          "xheavy" : {
+            "title": "X-Heavy"
+          }
+        },
         "baseDamage": {
           "swing": {
             "dice": 1,

@@ -28,14 +28,15 @@ export class gurpsActor extends Actor {
 	 */
 	prepareData() {
 		super.prepareData();
-		console.log("Prepare Doota")
+		console.log("Prepare Doota");
 
 		//Total up spent and remaining points
-		this.recalcAtrPoints()
-		this.recalcPointTotals()
+		this.recalcAtrPoints();
+		this.recalcPointTotals();
 
 		//Convert spent points into their effective values
-		this.recalcAtrValues()
+		this.recalcAtrValues();
+		this.recalcEncValues();
 	}
 
 	/**
@@ -118,6 +119,12 @@ export class gurpsActor extends Actor {
 		//ER
 		var er = +0 + +this.data.data.reserves.er.mod + +Math.floor(this.data.data.reserves.er.points/3);
 		this.update({ ['data.reserves.er.max']: er });
+	}
+
+	recalcEncValues(){
+		var st = this.data.data.primaryAttributes.strength.mod;
+
+
 	}
 
 	setTotalPoints(unspent) {

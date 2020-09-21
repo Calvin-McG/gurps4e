@@ -182,6 +182,14 @@
 	border-top: 2px groove darkgoldenrod;
 }
 
+.encumbranceTable {
+	display: grid;
+	grid-template-columns: 2fr 2fr 2fr 2fr;
+	padding: 2px;
+	border: 1px dotted grey;
+	margin: 1px;
+}
+
 .pointTotal {
 
 }
