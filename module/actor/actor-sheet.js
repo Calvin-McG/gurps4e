@@ -189,8 +189,6 @@ export class gurpsActorSheet extends ActorSheet {
 		event.preventDefault();
 		const element = event.currentTarget;
 		const dataset = element.dataset;
-		const actorData = this.actor.data.data;
-		const actorMods = actorData.modifiers;
 
 		const executeRoll = (roll, renderer) => {
 			roll.roll();
@@ -208,26 +206,8 @@ export class gurpsActorSheet extends ActorSheet {
 		const prepareModList = mods => mods.map(mod => ({ ...mod, modifier: parseInt(mod.modifier, 10) })).filter(mod => mod.modifier !== 0);
 
 		const modList = prepareModList([
-			{ modifier: actorData.gmod.value, description: 'global modifier' },
-			(dataset.type === 'defense') ? { modifier: actorData.dmod.value, description: 'DB' } : { modifier: 0, description: '' },
-			actorMods.modA.inEffect ? { modifier: actorMods.modA.value, description: actorMods.modA.label } : { modifier: 0, description: '' },
-			actorMods.modB.inEffect ? { modifier: actorMods.modB.value, description: actorMods.modB.label } : { modifier: 0, description: '' },
-			actorMods.modC.inEffect ? { modifier: actorMods.modC.value, description: actorMods.modC.label } : { modifier: 0, description: '' },
-			actorMods.modD.inEffect ? { modifier: actorMods.modD.value, description: actorMods.modD.label } : { modifier: 0, description: '' },
-			actorMods.modE.inEffect ? { modifier: actorMods.modE.value, description: actorMods.modE.label } : { modifier: 0, description: '' },
-			actorMods.modF.inEffect ? { modifier: actorMods.modF.value, description: actorMods.modF.label } : { modifier: 0, description: '' },
-			actorMods.modG.inEffect ? { modifier: actorMods.modG.value, description: actorMods.modG.label } : { modifier: 0, description: '' },
-			actorMods.modH.inEffect ? { modifier: actorMods.modH.value, description: actorMods.modH.label } : { modifier: 0, description: '' },
-			actorMods.modI.inEffect ? { modifier: actorMods.modI.value, description: actorMods.modI.label } : { modifier: 0, description: '' },
-			actorMods.modJ.inEffect ? { modifier: actorMods.modJ.value, description: actorMods.modJ.label } : { modifier: 0, description: '' },
-			actorMods.modK.inEffect ? { modifier: actorMods.modK.value, description: actorMods.modK.label } : { modifier: 0, description: '' },
-			actorMods.modL.inEffect ? { modifier: actorMods.modL.value, description: actorMods.modL.label } : { modifier: 0, description: '' },
-			actorMods.modM.inEffect ? { modifier: actorMods.modM.value, description: actorMods.modM.label } : { modifier: 0, description: '' },
-			actorMods.modN.inEffect ? { modifier: actorMods.modN.value, description: actorMods.modN.label } : { modifier: 0, description: '' },
-			actorMods.modO.inEffect ? { modifier: actorMods.modO.value, description: actorMods.modO.label } : { modifier: 0, description: '' },
-			actorMods.modP.inEffect ? { modifier: actorMods.modP.value, description: actorMods.modP.label } : { modifier: 0, description: '' },
-			actorMods.modQ.inEffect ? { modifier: actorMods.modQ.value, description: actorMods.modQ.label } : { modifier: 0, description: '' },
-			actorMods.modR.inEffect ? { modifier: actorMods.modR.value, description: actorMods.modR.label } : { modifier: 0, description: '' }
+			{ modifier: 0, description: 'global modifier' },
+			(dataset.type === 'defense') ? { modifier: 0, description: 'DB' } : { modifier: 0, description: '' }
 		]);
 
 		if (dataset.type === 'skill' || dataset.type === 'defense') {

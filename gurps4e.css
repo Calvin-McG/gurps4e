@@ -24,9 +24,9 @@
 	grid-area: personal;
 	display: grid;
 	grid-template:
-		"portrait actorname racegender pointTotals"
-		"portrait secondaryAttributes secondaryAttributes pointTotals";
-	grid-template-columns: 100px 1fr 96px;
+		"portrait actorname reserves pointTotals"
+		"portrait racegender reserves pointTotals";
+	grid-template-columns: 100px 2fr 1fr auto;
 	grid-template-rows: 55px 50px;
 	grid-gap: 5px;
 }
@@ -206,7 +206,7 @@
 
 .primary-attribute {
 	display: grid;
-	grid-template-columns: 1fr 2fr 2fr 2fr 1fr;
+	grid-template-columns: auto 2fr 2fr 2fr 2fr;
 	padding: 2px;
 	border: 1px dotted grey;
 	margin: 1px;
@@ -221,6 +221,21 @@
 }
 
 .primary-attribute-header .title {
+	font-weight: bolder;
+	justify-self: center;
+	align-items: center;
+	width: 100%;
+}
+
+.reserves-header {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	padding: 2px;
+	border: 1px dotted grey;
+	margin: 1px;
+}
+
+.reserves-header .title {
 	font-weight: bolder;
 	justify-self: center;
 	align-items: center;

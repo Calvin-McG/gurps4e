@@ -17,10 +17,6 @@
           "label": "Posture",
           "value": "Standing"
         },
-        "dmod": {
-          "label": "DB",
-          "value": 0
-        },
         "biography": "",
         "points": {
           "total": 150,
@@ -31,35 +27,27 @@
         },
         "reserves": {
           "hp": {
-            "label": "HP",
+            "abbr": "HP",
             "state": "Healthy",
             "value": 10,
-            "max": 10
+            "mod": 0,
+            "max": 10,
+            "points": 0
           },
           "fp": {
-            "label": "FP",
+            "abbr": "FP",
             "state": "Fresh",
             "value": 10,
-            "max": 10
+            "mod": 0,
+            "max": 10,
+            "points": 0
           },
           "er": {
-            "label": "ER",
+            "abbr": "ER",
             "value": 10,
-            "max": 10
-          }
-        },
-        "defences": {
-          "parry": {
-            "label": "Parry",
-            "value": 0
-          },
-          "dodge": {
-            "label": "Dodge",
-            "value": 0
-          },
-          "block": {
-            "label": "Block",
-            "value": 0
+            "mod": 0,
+            "max": 10,
+            "points": 0
           }
         },
         "baseDamage": {
@@ -124,6 +112,12 @@
           "move": {
             "abbr": "Move",
             "value": 5,
+            "mod": 0,
+            "points": 0
+          },
+          "dodge": {
+            "abbr": "Dodge",
+            "value": 8,
             "mod": 0,
             "points": 0
           }

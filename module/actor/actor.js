@@ -28,7 +28,7 @@ export class gurpsActor extends Actor {
 	 */
 	prepareData() {
 		super.prepareData();
-
+		console.log("Prepare Doota")
 		const actorData = this.data;
 
 		// Make separate methods for each Actor type (minchar, npc, etc.) to keep
@@ -71,10 +71,6 @@ export class gurpsActor extends Actor {
 	_prepareCharacterData(actorData) {
 		const data = actorData.data;
 
-		// Set minimum HP and FP
-		data.reserves.hp.min = -data.reserves.hp.max * 5;
-		data.reserves.fp.min = -data.reserves.fp.max;
-
 		// Set Movement rates
 		// let move = data.primaryAttributes.move.value;
 		// move.step = Math.ceil(move.value / 5);
@@ -107,6 +103,7 @@ export class gurpsActor extends Actor {
 				+this.data.data.primaryAttributes.fright.points +
 				+this.data.data.primaryAttributes.speed.points +
 				+this.data.data.primaryAttributes.move.points +
+				+this.data.data.primaryAttributes.dodge.points +
 				+points;
 			this.update({ ['data.points.attributes']: attributePoints });
         }
@@ -123,6 +120,7 @@ export class gurpsActor extends Actor {
 				+this.data.data.primaryAttributes.fright.points +
 				+this.data.data.primaryAttributes.speed.points +
 				+this.data.data.primaryAttributes.move.points +
+				+this.data.data.primaryAttributes.dodge.points +
 				+points;
 			this.update({ ['data.points.attributes']: attributePoints });
 		}
@@ -139,6 +137,7 @@ export class gurpsActor extends Actor {
 				+this.data.data.primaryAttributes.fright.points +
 				+this.data.data.primaryAttributes.speed.points +
 				+this.data.data.primaryAttributes.move.points +
+				+this.data.data.primaryAttributes.dodge.points +
 				+points;
 			this.update({ ['data.points.attributes']: attributePoints });
 		}
@@ -155,6 +154,7 @@ export class gurpsActor extends Actor {
 				+this.data.data.primaryAttributes.fright.points +
 				+this.data.data.primaryAttributes.speed.points +
 				+this.data.data.primaryAttributes.move.points +
+				+this.data.data.primaryAttributes.dodge.points +
 				+points;
 			this.update({ ['data.points.attributes']: attributePoints });
 		}
@@ -171,6 +171,7 @@ export class gurpsActor extends Actor {
 				+this.data.data.primaryAttributes.fright.points +
 				+this.data.data.primaryAttributes.speed.points +
 				+this.data.data.primaryAttributes.move.points +
+				+this.data.data.primaryAttributes.dodge.points +
 				+points;
 			this.update({ ['data.points.attributes']: attributePoints });
 		}
@@ -187,6 +188,7 @@ export class gurpsActor extends Actor {
 				+this.data.data.primaryAttributes.fright.points +
 				+this.data.data.primaryAttributes.speed.points +
 				+this.data.data.primaryAttributes.move.points +
+				+this.data.data.primaryAttributes.dodge.points +
 				+points;
 			this.update({ ['data.points.attributes']: attributePoints });
 		}
@@ -203,6 +205,7 @@ export class gurpsActor extends Actor {
 				+this.data.data.primaryAttributes.will.points +
 				+this.data.data.primaryAttributes.speed.points +
 				+this.data.data.primaryAttributes.move.points +
+				+this.data.data.primaryAttributes.dodge.points +
 				+points;
 			this.update({ ['data.points.attributes']: attributePoints });
 		}
@@ -219,6 +222,7 @@ export class gurpsActor extends Actor {
 				+this.data.data.primaryAttributes.will.points +
 				+this.data.data.primaryAttributes.fright.points +
 				+this.data.data.primaryAttributes.move.points +
+				+this.data.data.primaryAttributes.dodge.points +
 				+points;
 			this.update({ ['data.points.attributes']: attributePoints });
 		}
@@ -235,10 +239,28 @@ export class gurpsActor extends Actor {
 				+this.data.data.primaryAttributes.will.points +
 				+this.data.data.primaryAttributes.fright.points +
 				+this.data.data.primaryAttributes.speed.points +
+				+this.data.data.primaryAttributes.dodge.points +
 				+points;
 			this.update({ ['data.points.attributes']: attributePoints });
 		}
+		else if (name.includes("dodge")){
+			value = +value + +this.data.data.primaryAttributes.dodge.mod + +Math.floor(points/15) - +2;
+			this.update({ ['data.primaryAttributes.dodge.value']: value });
 
+			//Update point totals
+			attributePoints = +this.data.data.primaryAttributes.strength.points +
+				+this.data.data.primaryAttributes.dexterity.points +
+				+this.data.data.primaryAttributes.intelligence.points +
+				+this.data.data.primaryAttributes.health.points +
+				+this.data.data.primaryAttributes.perception.points +
+				+this.data.data.primaryAttributes.will.points +
+				+this.data.data.primaryAttributes.fright.points +
+				+this.data.data.primaryAttributes.speed.points +
+				+this.data.data.primaryAttributes.move.points +
+				+points;
+			this.update({ ['data.points.attributes']: attributePoints });
+		}
+		console.log("setAtr Points")
 		this.recalcPointsAtr(attributePoints);
 	}
 
@@ -281,7 +303,11 @@ export class gurpsActor extends Actor {
 			value = +value + +mod + +Math.floor(this.data.data.primaryAttributes.move.points/5) - +5;
 			this.update({ ['data.primaryAttributes.move.value']: value });
 		}
-
+		else if (name.includes("dodge")){
+			value = +value + +mod + +Math.floor(this.data.data.primaryAttributes.dodge.points/5) - +5;
+			this.update({ ['data.primaryAttributes.dodge.value']: value });
+		}
+		console.log("setAtr Mod")
 	}
 
 	setTotalPoints(unspent) {

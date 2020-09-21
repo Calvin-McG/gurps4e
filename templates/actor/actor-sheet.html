@@ -27,6 +27,35 @@
 					</div>
 				</div>
 
+				<!-- Here are the point reserves -->
+				<div id="reserves" class="attribute-block">
+					<div class="reserves-header">
+						<label class="title">Cur</label>
+						<label class="title">Max</label>
+						<label class="title">Mod</label>
+						<label class="title">Pts</label>
+					</div>
+					<div class="primary-attribute">
+						<label>{{data.reserves.hp.abbr}}</label>
+						<input type="text" name="data.reserves.hp.value" class="atrVal" value="{{data.reserves.hp.value}}" data-dtype="Number"/>
+						<input type="text" name="data.reserves.hp.max" class="atrVal" value="{{data.reserves.hp.max}}" data-dtype="Number" disabled />
+						<input type="text" name="data.reserves.hp.mod" class="atrMod" value="{{data.reserves.hp.mod}}" data-dtype="Number" />
+						<input type="text" name="data.reserves.hp.points" class="atrPoints" value="{{data.reserves.hp.points}}" data-dtype="Number" />
+
+						<label>{{data.reserves.fp.abbr}}</label>
+						<input type="text" name="data.reserves.fp.value" class="atrVal" value="{{data.reserves.fp.value}}" data-dtype="Number"/>
+						<input type="text" name="data.reserves.fp.max" class="atrVal" value="{{data.reserves.fp.max}}" data-dtype="Number" disabled />
+						<input type="text" name="data.reserves.fp.mod" class="atrMod" value="{{data.reserves.fp.mod}}" data-dtype="Number" />
+						<input type="text" name="data.reserves.fp.points" class="atrPoints" value="{{data.reserves.fp.points}}" data-dtype="Number" />
+
+						<label>{{data.reserves.er.abbr}}</label>
+						<input type="text" name="data.reserves.er.value" class="atrVal" value="{{data.reserves.er.value}}" data-dtype="Number"/>
+						<input type="text" name="data.reserves.er.max" class="atrVal" value="{{data.reserves.er.max}}" data-dtype="Number" disabled />
+						<input type="text" name="data.reserves.er.mod" class="atrMod" value="{{data.reserves.er.mod}}" data-dtype="Number" />
+						<input type="text" name="data.reserves.er.points" class="atrPoints" value="{{data.reserves.er.points}}" data-dtype="Number" />
+					</div>
+				</div>
+
 				<div id="pointTotals">
 					<table>
 						<tr>
@@ -50,48 +79,6 @@
 							<td><input type="text" name="data.points.unspent" class="pointTotal unspentEntry" value="{{data.points.unspent}}" data-dtype="Number"/></td>
 						</tr>
 					</table>
-
-				</div>
-
-				<div id="secondaryAttributes">
-					<div id="hitpoints">
-						<div class="header">
-							<label for="data.reserves.hp.value"
-								class="resource-label">{{data.reserves.hp.label}}</label>
-						</div>
-						<div class="center">
-							<input class="sec-attr" type="text" name="data.reserves.hp.max"
-								value="{{data.reserves.hp.max}}" data-dtype="Number" />
-						</div>
-						<div class="header">
-							<label for="data.reserves.hp.state"
-								class="resource-label">{{data.reserves.hp.state}}</label>
-						</div>
-						<div class="minus-content-plus">
-							<span class="far fa-minus-square minus"><input type="hidden" name="hp" value="-1" /></span>
-							<label for="data.reserves.hp.value" name="data.reserves.hp.value" class="title">{{numberFormat data.reserves.hp.value decimals=0 sign=false}}</label>
-							<span class="far fa-plus-square plus"><input type="hidden" name="hp" value="1" /></span>
-						</div>
-					</div>
-					<div id="fatpoints">
-						<div class="header">
-							<label for="data.reserves.fp.value"
-								class="resource-label">{{data.reserves.fp.label}}</label>
-						</div>
-						<div class="center">
-							<input class="sec-attr" type="text" name="data.reserves.fp.max"
-								value="{{data.reserves.fp.max}}" data-dtype="Number" />
-						</div>
-						<div class="header">
-							<label for="data.reserves.fp.state"
-								class="resource-label">{{data.reserves.fp.state}}</label>
-						</div>
-						<div class="minus-content-plus">
-							<span class="far fa-minus-square minus"><input type="hidden" name="fp" value="-1" /></span>
-							<label for="data.reserves.fp.value" name="data.reserves.fp.value" class="title">{{numberFormat data.reserves.fp.value decimals=0 sign=false}}</label>
-							<span class="far fa-plus-square plus"><input type="hidden" name="fp" value="1" /></span>
-						</div>
-					</div>
 				</div>
 			</div>
 
@@ -123,8 +110,7 @@
 			<div class="tab stats" data-tab="stats" data-group="primary">
 
 				<div id="attributes_defences">
-
-					<!-- Here are the four primary attributes -->
+					<!-- Here are the primary attributes -->
 					<div class="attribute-block">
                         <div class="primary-attribute-header">
                             <label class="title">Val</label>
@@ -140,36 +126,13 @@
 											 data-dtype="Number" />
 								<input type="text" name="data.primaryAttributes.{{id}}.points" class="atrPoints" value="{{attr.points}}"
 											 data-dtype="Number" />
+							{{#unless (or (eq attr.abbr "Speed") (eq attr.abbr "Move") )}}
 							<label for="data.primaryAttributes.{{id}}.value" class="fa fa-dice-six rollable"
 										 data-level="{{attr.value}}" data-label="Makes a &lt;b&gt;{{attr.abbr}}&lt;/b&gt; check."
 										 data-type="skill"></label>
+							{{/unless}}
 						</div>
 						{{/each}}
-					</div>
-
-					<!-- These four slots are for the active defences and a total modifier for Defensive Bonuses -->
-					{{#each data.defences as |defence id|}}
-					<div class="check">
-						<div class="title">
-							<label>{{defence.label}}</label>
-						</div>
-						<div class="roll-content">
-							<label for="data.defences.{{id}}.value" class="fa fa-dice-six rollable" data-level="{{defence.value}}"
-								data-label="Attempts to &lt;b&gt;{{defence.label}}&lt;/b&gt;." data-type="defense"></label>
-							<input type="text" name="data.defences.{{id}}.value" value="{{defence.value}}" data-dtype="Number" />
-						</div>
-					</div>
-					{{/each}}
-					<!-- The Defensive Modifier applies only to active defences and is never reset -->
-					<div class="defensive-modifier check">
-						<div class="title">
-							<label>{{data.dmod.label}}</label>
-						</div>
-						<div class="minus-content-plus">
-							<span class="far fa-minus-square minus"><input type="hidden" name="dmod" value="-1" /></span>
-							<label for="data.dmod.value" name="data.dmod.value" class="counter">{{data.dmod.value}}</label>
-							<span class="far fa-plus-square plus"><input type="hidden" name="dmod" value="1" /></span>
-						</div>
 					</div>
 				</div>
 
