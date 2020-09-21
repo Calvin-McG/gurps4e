@@ -68,9 +68,6 @@ export class gurpsActorSheet extends ActorSheet {
 		// Track changes to unspent points
 		html.find('.unspentEntry').change(this._onUnspentPointsChange.bind(this));
 
-		// Track changes to attributes
-		html.find('.atrPoints').change(this._onAttributePointsChange.bind(this));
-		html.find('.atrMod').change(this._onAttributeModChange.bind(this));
 	}
 
 	/* -------------------------------------------- */
@@ -87,21 +84,6 @@ export class gurpsActorSheet extends ActorSheet {
 		let name = event.target.name;
 		this.actor.setConditions(value, name);
 	}
-
-    _onAttributePointsChange(event) {
-        event.preventDefault();
-		let points = event.target.value;
-		let name = event.target.name;
-		this.actor.setAtrPoints(points, name);
-    }
-
-	_onAttributeModChange(event) {
-		event.preventDefault();
-		let mod = event.target.value;
-		let name = event.target.name;
-		this.actor.setAtrMod(mod, name);
-	}
-
 	_onUnspentPointsChange(event) {
 		let unspent = event.target.value;
 		this.actor.setTotalPoints(unspent);

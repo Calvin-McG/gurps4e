@@ -35,8 +35,7 @@ export class gurpsActor extends Actor {
 		this.recalcPointTotals()
 
 		//Convert spent points into their effective values
-
-
+		this.recalcAtrValues()
 	}
 
 	/**
@@ -67,98 +66,58 @@ export class gurpsActor extends Actor {
 		}
 	}
 
-	setAtrPoints(points, name) {
-		var value = 10;
-		var attributePoints = 0;
+	recalcAtrValues(){
+		//ST
+		var st = +10 + +this.data.data.primaryAttributes.strength.mod + +Math.floor(this.data.data.primaryAttributes.strength.points/10);
+		this.update({ ['data.primaryAttributes.strength.value']: st });
 
-		//Calculate new stat based on point value, including the value of the attribute mod
-	    if (name.includes("strength")){
-			value = +value + +this.data.data.primaryAttributes.strength.mod + +Math.floor(points/10);
-			this.update({ ['data.primaryAttributes.strength.value']: value });
-        }
-		else if (name.includes("dexterity")){
-			value = +value + +this.data.data.primaryAttributes.dexterity.mod + +Math.floor(points/20);
-			this.update({ ['data.primaryAttributes.dexterity.value']: value });
-		}
-		else if (name.includes("intelligence")){
-			value = +value + +this.data.data.primaryAttributes.intelligence.mod + +Math.floor(points/20);
-			this.update({ ['data.primaryAttributes.intelligence.value']: value });
-		}
-		else if (name.includes("health")){
-			value = +value + +this.data.data.primaryAttributes.health.mod + +Math.floor(points/10);
-			this.update({ ['data.primaryAttributes.health.value']: value });
-		}
-		else if (name.includes("perception")){
-			value = +value + +this.data.data.primaryAttributes.perception.mod + +Math.floor(points/5);
-			this.update({ ['data.primaryAttributes.perception.value']: value });
-		}
-		else if (name.includes("will")){
-			value = +value + +this.data.data.primaryAttributes.will.mod + +Math.floor(points/5);
-			this.update({ ['data.primaryAttributes.will.value']: value });
-		}
-		else if (name.includes("fright")){
-			value = +value + +this.data.data.primaryAttributes.fright.mod + +Math.floor(points/2);
-			this.update({ ['data.primaryAttributes.fright.value']: value });
-		}
-		else if (name.includes("speed")){
-			value = Math.floor((+value + +this.data.data.primaryAttributes.speed.mod + +(points/20) - +5) * +4) / +4;
-			this.update({ ['data.primaryAttributes.speed.value']: value });
-		}
-		else if (name.includes("move")){
-			value = +value + +this.data.data.primaryAttributes.move.mod + +Math.floor(points/5) - +5;
-			this.update({ ['data.primaryAttributes.move.value']: value });
-		}
-		else if (name.includes("dodge")){
-			value = +value + +this.data.data.primaryAttributes.dodge.mod + +Math.floor(points/15) - +2;
-			this.update({ ['data.primaryAttributes.dodge.value']: value });
-		}
-		console.log("setAtr Points")
-	}
+		//DX
+		var dx = +10 + +this.data.data.primaryAttributes.dexterity.mod + +Math.floor(this.data.data.primaryAttributes.dexterity.points/20);
+		this.update({ ['data.primaryAttributes.dexterity.value']: dx });
 
-	setAtrMod(mod, name) {
-		var value = 10;
+		//IQ
+		var iq = +10 + +this.data.data.primaryAttributes.intelligence.mod + +Math.floor(this.data.data.primaryAttributes.intelligence.points/20);
+		this.update({ ['data.primaryAttributes.intelligence.value']: iq });
 
-		if (name.includes("strength")){
-			value = +value + +mod + +Math.floor(this.data.data.primaryAttributes.strength.points/10);
-			this.update({ ['data.primaryAttributes.strength.value']: value });
-		}
-		else if (name.includes("dexterity")){
-			value = +value + +mod + +Math.floor(this.data.data.primaryAttributes.dexterity.points/20);
-			this.update({ ['data.primaryAttributes.dexterity.value']: value });
-		}
-		else if (name.includes("intelligence")){
-			value = +value + +mod + +Math.floor(this.data.data.primaryAttributes.intelligence.points/20);
-			this.update({ ['data.primaryAttributes.intelligence.value']: value });
-		}
-		else if (name.includes("health")){
-			value = +value + +mod + +Math.floor(this.data.data.primaryAttributes.health.points/10);
-			this.update({ ['data.primaryAttributes.health.value']: value });
-		}
-		else if (name.includes("perception")){
-			value = +value + +mod + +Math.floor(this.data.data.primaryAttributes.perception.points/5);
-			this.update({ ['data.primaryAttributes.perception.value']: value });
-		}
-		else if (name.includes("will")){
-			value = +value + +mod + +Math.floor(this.data.data.primaryAttributes.will.points/5);
-			this.update({ ['data.primaryAttributes.will.value']: value });
-		}
-		else if (name.includes("fright")){
-			value = +value + +mod + +Math.floor(this.data.data.primaryAttributes.fright.points/2);
-			this.update({ ['data.primaryAttributes.fright.value']: value });
-		}
-		else if (name.includes("speed")){
-			value = Math.floor((+value + +mod + +(this.data.data.primaryAttributes.speed.points/20) - +5) * +4) / +4;
-			this.update({ ['data.primaryAttributes.speed.value']: value });
-		}
-		else if (name.includes("move")){
-			value = +value + +mod + +Math.floor(this.data.data.primaryAttributes.move.points/5) - +5;
-			this.update({ ['data.primaryAttributes.move.value']: value });
-		}
-		else if (name.includes("dodge")){
-			value = +value + +mod + +Math.floor(this.data.data.primaryAttributes.dodge.points/5) - +5;
-			this.update({ ['data.primaryAttributes.dodge.value']: value });
-		}
-		console.log("setAtr Mod")
+		//HT
+		var ht = +10 + +this.data.data.primaryAttributes.health.mod + +Math.floor(this.data.data.primaryAttributes.health.points/10);
+		this.update({ ['data.primaryAttributes.health.value']: ht });
+
+		//Per
+		var per = +iq + +this.data.data.primaryAttributes.perception.mod + +Math.floor(this.data.data.primaryAttributes.perception.points/5);
+		this.update({ ['data.primaryAttributes.perception.value']: per });
+
+		//Will
+		var will = +iq + +this.data.data.primaryAttributes.will.mod + +Math.floor(this.data.data.primaryAttributes.will.points/5);
+		this.update({ ['data.primaryAttributes.will.value']: will });
+
+		//Fright
+		var fr = +will + +this.data.data.primaryAttributes.fright.mod + +Math.floor(this.data.data.primaryAttributes.fright.points/2);
+		this.update({ ['data.primaryAttributes.fright.value']: fr });
+
+		//Speed
+		var speed = Math.floor(((+(+dx + +ht) / +4) + +this.data.data.primaryAttributes.speed.mod + +(this.data.data.primaryAttributes.speed.points/20)) * +4) / +4;;
+		this.update({ ['data.primaryAttributes.speed.value']: speed });
+
+		//Move
+		var move = Math.floor(speed) + +this.data.data.primaryAttributes.move.mod + +Math.floor(this.data.data.primaryAttributes.move.points/5);
+		this.update({ ['data.primaryAttributes.move.value']: move });
+
+		//Dodge
+		var dodge = Math.floor(speed) + +3 + +this.data.data.primaryAttributes.dodge.mod + +Math.floor(this.data.data.primaryAttributes.dodge.points/15);
+		this.update({ ['data.primaryAttributes.dodge.value']: dodge });
+
+		//HP
+		var hp = +st + +this.data.data.reserves.hp.mod + +Math.floor(this.data.data.reserves.hp.points/2);
+		this.update({ ['data.reserves.hp.max']: hp });
+
+		//FP
+		var fp = +ht + +this.data.data.reserves.fp.mod + +Math.floor(this.data.data.reserves.fp.points/3);
+		this.update({ ['data.reserves.fp.max']: fp });
+
+		//ER
+		var er = +0 + +this.data.data.reserves.er.mod + +Math.floor(this.data.data.reserves.er.points/3);
+		this.update({ ['data.reserves.er.max']: er });
 	}
 
 	setTotalPoints(unspent) {
@@ -180,7 +139,10 @@ export class gurpsActor extends Actor {
 			+this.data.data.primaryAttributes.fright.points +
 			+this.data.data.primaryAttributes.speed.points +
 			+this.data.data.primaryAttributes.move.points +
-			+this.data.data.primaryAttributes.dodge.points;
+			+this.data.data.primaryAttributes.dodge.points +
+			+this.data.data.reserves.hp.points +
+			+this.data.data.reserves.fp.points +
+			+this.data.data.reserves.er.points;
 		this.update({ ['data.points.attributes']: attributePoints });
 	}
 
