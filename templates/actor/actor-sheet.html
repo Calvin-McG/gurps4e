@@ -13,29 +13,57 @@
 					<input class="charname" name="name" type="text" value="{{actor.name}}" placeholder="Name" />
 				</div>
 				<div id="racegender">
-					<div id="race">
+					<div>
 						<div class="bold label right">
-							<input type="text" name="data.reserves.race.value"
-								value="{{data.reserves.race.value}}" placeholder="Race" />
+							<input type="text" name="data.bio.race.value"
+								value="{{data.bio.race.value}}" placeholder="Race" />
 						</div>
 					</div>
-					<div id="gender">
-						<div class="bold label right">
-							<input type="text" name="data.reserves.gender.value"
-								value="{{data.reserves.gender.value}}" placeholder="Gender" />
-						</div>
-					</div>
+                    <div>
+                        <div class="bold label right">
+                            <input type="text" name="data.bio.height.value"
+                                   value="{{data.bio.height.value}}" placeholder="Height" />
+                        </div>
+                    </div>
+                    <div>
+                        <div class="bold label right">
+                            <input type="text" name="data.bio.sm.value"
+                                   value="{{data.bio.sm.value}}" placeholder="Size Mod" />
+                        </div>
+                    </div>
+                    <div>
+                        <div class="bold label right">
+                            <input type="text" name="data.bio.gender.value"
+                                   value="{{data.bio.gender.value}}" placeholder="Gender" />
+                        </div>
+                    </div>
+                    <div>
+                        <div class="bold label right">
+                            <input type="text" name="data.bio.weight.value"
+                                   value="{{data.bio.weight.value}}" placeholder="Weight" />
+                        </div>
+                    </div>
+                    <div>
+                        <div class="bold label right">
+                            <input type="text" name="data.bio.tl.value"
+                                   value="{{data.bio.tl.value}}" placeholder="TL"
+                                   style="width: 49%;"/>
+                            <input type="text" name="data.bio.tl.points"
+                                   value="{{data.bio.tl.points}}" placeholder="points"
+                                   style="width: 49%;"/>
+                        </div>
+                    </div>
 				</div>
 
 				<!-- Here are the point reserves -->
-				<div id="reserves" class="attribute-block">
+				<div id="reserves" class="reserves-block">
 					<div class="reserves-header">
 						<label class="title">Cur</label>
 						<label class="title">Max</label>
 						<label class="title">Mod</label>
 						<label class="title">Pts</label>
 					</div>
-					<div class="primary-attribute">
+					<div class="reserves">
 						<label>{{data.reserves.hp.abbr}}</label>
 						<input type="text" name="data.reserves.hp.value" class="atrVal" value="{{data.reserves.hp.value}}" data-dtype="Number"/>
 						<input type="text" name="data.reserves.hp.max" class="atrVal" value="{{data.reserves.hp.max}}" data-dtype="Number" disabled />
@@ -111,15 +139,30 @@
 
 				<div id="attributes_defences">
 					<!-- Here are the primary attributes -->
-					<div class="attribute-block">
-                        <div class="primary-attribute-header">
+					<div id="attribute-block">
+                        <div class="primary-attribute-header" id="stHeader">
+                            <label class="title">Val</label>
+                            <label class="title">Mod</label>
+                            <label class="title">Pts</label>
+                        </div>
+                        <div class="primary-attribute-header" id="dxHeader">
+                            <label class="title">Val</label>
+                            <label class="title">Mod</label>
+                            <label class="title">Pts</label>
+                        </div>
+                        <div class="primary-attribute-header" id="iqHeader">
+                            <label class="title">Val</label>
+                            <label class="title">Mod</label>
+                            <label class="title">Pts</label>
+                        </div>
+                        <div class="primary-attribute-header" id="htHeader">
                             <label class="title">Val</label>
                             <label class="title">Mod</label>
                             <label class="title">Pts</label>
                         </div>
 						{{#each data.primaryAttributes as |attr id|}}
-						<div class="primary-attribute">
-								<label>{{attr.abbr}}</label>
+						<div class="primary-attribute" id="{{attr.id}}">
+								<label style="font-weight: bold">{{attr.abbr}}</label>
 								<input type="text" name="data.primaryAttributes.{{id}}.value" class="atrVal" value="{{attr.value}}"
 									data-dtype="Number" disabled />
 								<input type="text" name="data.primaryAttributes.{{id}}.mod" class="atrMod" value="{{attr.mod}}"

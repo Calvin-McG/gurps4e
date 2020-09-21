@@ -5,13 +5,32 @@
     ],
     "templates": {
       "base": {
-        "race": {
-          "label": "Race",
-          "value": ""
-        },
-        "gender": {
-          "label": "Gender",
-          "value": ""
+        "bio" : {
+          "race": {
+            "label": "Race",
+            "value": ""
+          },
+          "height": {
+            "label": "Height",
+            "value": ""
+          },
+          "weight": {
+            "label": "Weight",
+            "value": ""
+          },
+          "gender": {
+            "label": "Gender",
+            "value": ""
+          },
+          "sm": {
+            "label": "Size Mod",
+            "value": ""
+          },
+          "tl": {
+            "label": "TL",
+            "value": "",
+            "points": 0
+          }
         },
         "posture": {
           "label": "Posture",
@@ -79,62 +98,100 @@
         },
         "primaryAttributes": {
           "strength": {
+            "id": "st",
             "abbr": "ST",
             "value": 10,
             "mod": 0,
             "points": 0
           },
           "dexterity": {
+            "id": "dx",
             "abbr": "DX",
             "value": 10,
             "mod": 0,
             "points": 0
           },
           "intelligence": {
+            "id": "iq",
             "abbr": "IQ",
             "value": 10,
             "mod": 0,
             "points": 0
           },
           "health": {
+            "id": "ht",
             "abbr": "HT",
             "value": 10,
             "mod": 0,
             "points": 0
           },
           "perception": {
+            "id": "per",
             "abbr": "Per",
             "value": 10,
             "mod": 0,
             "points": 0
           },
           "will": {
+            "id": "will",
             "abbr": "Will",
             "value": 10,
             "mod": 0,
             "points": 0
           },
           "fright": {
+            "id": "fr",
             "abbr": "Fright",
             "value": 10,
             "mod": 0,
             "points": 0
           },
           "speed": {
+            "id": "speed",
             "abbr": "Speed",
             "value": 5,
             "mod": 0,
             "points": 0
           },
           "move": {
+            "id": "move",
             "abbr": "Move",
             "value": 5,
             "mod": 0,
             "points": 0
           },
           "dodge": {
+            "id": "dodge",
             "abbr": "Dodge",
             "value": 8,
+            "mod": 0,
+            "points": 0
+          },
+          "lifting": {
+            "id": "lst",
+            "abbr": "Lifting ST",
+            "value": 10,
+            "mod": 0,
+            "points": 0
+          },
+          "striking": {
+            "id": "sst",
+            "abbr": "Striking ST",
+            "value": 10,
+            "mod": 0,
+            "points": 0
+          },
+          "subdue": {
+            "id": "hts",
+            "abbr": "Subdue",
+            "value": 10,
+            "mod": 0,
+            "points": 0
+          },
+          "death": {
+            "id": "htk",
+            "abbr": "Death",
+            "value": 10,
             "mod": 0,
             "points": 0
           }

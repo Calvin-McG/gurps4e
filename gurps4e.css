@@ -59,7 +59,7 @@
 #racegender {
 	grid-area: racegender;
 	display: grid;
-	grid-template-rows: repeat(2, 1fr);
+	grid-template-columns: repeat(3, 1fr);
 	align-items: center;
 }
 
@@ -190,6 +190,22 @@
 	margin: 1px;
 }
 
+#attribute-block {
+	grid-area: attribute-block;
+	display: grid;
+	grid-template-areas: 	"stHeader 	dxHeader 	iqHeader 	htHeader"
+							"st 		dx 			iq 			ht"
+							"lst 		speed 		per			hts"
+							"sst 		move 		will		htk"
+							"z2			dodge 		fr			z1";
+	grid-template-columns: repeat(4,auto);
+	grid-gap: 5px;
+}
+
+.reserves-block {
+
+}
+
 .pointTotal {
 
 }
@@ -214,7 +230,7 @@
 
 .primary-attribute {
 	display: grid;
-	grid-template-columns: auto 2fr 2fr 2fr 2fr;
+	grid-template-columns: auto 2fr 2fr 2fr auto;
 	padding: 2px;
 	border: 1px dotted grey;
 	margin: 1px;
@@ -233,6 +249,14 @@
 	justify-self: center;
 	align-items: center;
 	width: 100%;
+}
+
+.reserves {
+	display: grid;
+	grid-template-columns: auto 2fr 2fr 2fr 2fr;
+	padding: 2px;
+	border: 1px dotted grey;
+	margin: 1px;
 }
 
 .reserves-header {
@@ -442,4 +466,142 @@
 	height:20px;
 	background-image: url('icons/anIconName.png');
 	background-size: cover;
+}
+
+#stHeader {
+	grid-area: stHeader;
+	display: grid;
+	align-self: center;
+	background-color: rgba(255, 0, 0, 0.05);
+}
+
+#st {
+	grid-area: st;
+	display: grid;
+	align-self: center;
+	background-color: rgba(255, 0, 0, 0.05);
+}
+
+#lst {
+	grid-area: lst;
+	display: grid;
+	align-self: center;
+	background-color: rgba(255, 0, 0, 0.05);
+}
+
+#sst {
+	grid-area: sst;
+	display: grid;
+	align-self: center;
+	background-color: rgba(255, 0, 0, 0.05);
+}
+
+#dxHeader{
+	grid-area: dxHeader;
+	display: grid;
+	align-self: center;
+	background-color: rgba(0, 255, 0, 0.05);
+}
+
+#dx {
+	grid-area: dx;
+	display: grid;
+	align-self: center;
+	background-color: rgba(0, 255, 0, 0.05);
+}
+
+#speed {
+	grid-area: speed;
+	display: grid;
+	align-self: center;
+	background-color: rgba(0, 255, 0, 0.05);
+}
+
+#move {
+	grid-area: move;
+	display: grid;
+	align-self: center;
+	background-color: rgba(0, 255, 0, 0.05);
+}
+
+#dodge {
+	grid-area: dodge;
+	display: grid;
+	align-self: center;
+	background-color: rgba(0, 255, 0, 0.05);
+}
+
+#iqHeader {
+	grid-area: iqHeader;
+	display: grid;
+	align-self: center;
+	background-color: rgba(0, 0, 255, 0.05);
+}
+
+#iq {
+	grid-area: iq;
+	display: grid;
+	align-self: center;
+	background-color: rgba(0, 0, 255, 0.05);
+}
+
+#per {
+	grid-area: per;
+	display: grid;
+	align-self: center;
+	background-color: rgba(0, 0, 255, 0.05);
+}
+
+#will {
+	grid-area: will;
+	display: grid;
+	align-self: center;
+	background-color: rgba(0, 0, 255, 0.05);
+}
+
+#fr {
+	grid-area: fr;
+	display: grid;
+	align-self: center;
+	background-color: rgba(0, 0, 255, 0.05);
+}
+
+#htHeader {
+	grid-area: htHeader;
+	display: grid;
+	align-self: center;
+	background-color: rgba(255, 255, 0, 0.05);
+}
+
+#ht {
+	grid-area: ht;
+	display: grid;
+	align-self: center;
+	background-color: rgba(255, 255, 0, 0.05);
+}
+
+#hts {
+	grid-area: hts;
+	display: grid;
+	align-self: center;
+	background-color: rgba(255, 255, 0, 0.05);
+}
+
+#htk {
+	grid-area: htk;
+	display: grid;
+	align-self: center;
+	background-color: rgba(255, 255, 0, 0.05);
+}
+
+#z1 {
+	grid-area: z1;
+	display: grid;
+	align-self: center;
+}
+
+#z2 {
+	grid-area: z2;
+	display: grid;
+	align-self: center;
 }

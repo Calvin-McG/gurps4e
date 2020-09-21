@@ -68,8 +68,10 @@ export class gurpsActor extends Actor {
 	}
 
 	recalcAtrValues(){
+		var smDiscount = Math.min((Math.max(((+10 - +this.data.data.bio.sm.value) / +10), 0.2)) , 1);
+
 		//ST
-		var st = +10 + +this.data.data.primaryAttributes.strength.mod + +Math.floor(this.data.data.primaryAttributes.strength.points/10);
+		var st = +10 + +this.data.data.primaryAttributes.strength.mod + +Math.floor(this.data.data.primaryAttributes.strength.points / +(+10 * +smDiscount));
 		this.update({ ['data.primaryAttributes.strength.value']: st });
 
 		//DX
@@ -108,8 +110,24 @@ export class gurpsActor extends Actor {
 		var dodge = Math.floor(speed) + +3 + +this.data.data.primaryAttributes.dodge.mod + +Math.floor(this.data.data.primaryAttributes.dodge.points/15);
 		this.update({ ['data.primaryAttributes.dodge.value']: dodge });
 
+		//Lifting ST
+		var lst = +st + +this.data.data.primaryAttributes.lifting.mod + +Math.floor(this.data.data.primaryAttributes.lifting.points / +( +3 * +smDiscount));
+		this.update({ ['data.primaryAttributes.lifting.value']: lst });
+
+		//Striking ST
+		var sst = +st + +this.data.data.primaryAttributes.striking.mod + +Math.floor(this.data.data.primaryAttributes.striking.points / +(+5 * +smDiscount));
+		this.update({ ['data.primaryAttributes.striking.value']: sst });
+
+		//HT Subdue
+		var hts = +ht + +this.data.data.primaryAttributes.subdue.mod + +Math.floor(this.data.data.primaryAttributes.subdue.points/2);
+		this.update({ ['data.primaryAttributes.subdue.value']: hts });
+
+		//HT Kill
+		var htk = +ht + +this.data.data.primaryAttributes.death.mod + +Math.floor(this.data.data.primaryAttributes.death.points/2);
+		this.update({ ['data.primaryAttributes.death.value']: htk });
+
 		//HP
-		var hp = +st + +this.data.data.reserves.hp.mod + +Math.floor(this.data.data.reserves.hp.points/2);
+		var hp = +st + +this.data.data.reserves.hp.mod + +Math.floor(this.data.data.reserves.hp.points / +( +2 * +smDiscount));
 		this.update({ ['data.reserves.hp.max']: hp });
 
 		//FP
@@ -149,7 +167,8 @@ export class gurpsActor extends Actor {
 			+this.data.data.primaryAttributes.dodge.points +
 			+this.data.data.reserves.hp.points +
 			+this.data.data.reserves.fp.points +
-			+this.data.data.reserves.er.points;
+			+this.data.data.reserves.er.points +
+			+this.data.data.bio.tl.points;
 		this.update({ ['data.points.attributes']: attributePoints });
 	}
 
