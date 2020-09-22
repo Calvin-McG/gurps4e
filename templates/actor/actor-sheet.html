@@ -193,7 +193,7 @@
 										<div class="item-image"></div>
 										<div class="item-name">Name</div>
 										<div class="item-notes">Notes</div>
-										<div class="item-rolls">Skill - - Damage - - ArmDiv</div>
+										<div class="item-rolls">Skill</div>
 										<div class="item-controls">
 												<!--<a class="item-control item-create" title="Create item" data-type="item"><i class="fas fa-plus"></i> Add</a>-->
 										</div>
@@ -209,25 +209,11 @@
 												<input type="text" value="{{data.notes}}" title="{{data.notes}}" style="text-align:left;" />
 										</div>
 										{{#if (ne data.level undefined)}}
-										{{#if (or (eq type "Melee-Attack") (eq type "Ranged-Attack") ) }}
-										<div class="item-attack">
-												<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
-															 data-label="Attacks with &lt;b&gt;{{name}}&lt;/b&gt;." data-type="skill"></label>
-												{{data.level}} -
-												- <label for="data.damage" class="fa fa-dice-six rollable" data-roll="{{data.damage}}"
-																 data-label="Rolls &lt;b&gt;{{data.damageType}}&lt;/b&gt; damage for &lt;b&gt;{{name}}&lt;/b&gt;."
-																 data-type="damage"></label>
-												{{data.damage}}
-												<label>{{data.damageType}} -</label>
-												<label>- /{{data.armourDiv}}</label>
-										</div>
-										{{else}}
 										<div class="item-skill">
 												<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
 															 data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
 												{{data.level}}
 										</div>
-										{{/if}}
 										{{else}}
 										<div></div>
 										{{/if}}

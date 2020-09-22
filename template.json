@@ -236,6 +236,9 @@
       "category": {
         "category": ""
       },
+      "points": {
+        "points": 0
+      },
       "weapon": {
         "damage": "1d6",
         "damageType": "cut",
@@ -302,7 +305,9 @@
     "Trait": {
       "templates": [
         "base",
-        "category"
+        "category",
+        "level",
+        "points"
       ]
     },
     "Modifier": {
