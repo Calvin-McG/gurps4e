@@ -32,10 +32,13 @@ export class gurpsActor extends Actor {
 
 		//Total up spent and remaining points
 		this.recalcAtrPoints();
+		this.recalcTraitPoints();
 		this.recalcPointTotals();
 
 		//Convert spent points into their effective values
 		this.recalcAtrValues();
+
+		//Recalculate encumberance values, along with effective dodge and move
 		this.recalcEncValues();
 	}
 
@@ -139,10 +142,33 @@ export class gurpsActor extends Actor {
 		this.update({ ['data.reserves.er.max']: er });
 	}
 
+	recalcTraitPoints() {
+		console.log(this.data.data);
+	}
+
 	recalcEncValues(){
-		var st = this.data.data.primaryAttributes.strength.mod;
+		var st = this.data.data.primaryAttributes.strength.value;
+		var bl = ((st * st)/5);
+		var move = this.data.data.primaryAttributes.move.value;
+		var dodge = this.data.data.primaryAttributes.dodge.value;
 
+		this.update({ ['data.encumbrance.none.lbs']: bl });
+		this.update({ ['data.encumbrance.light.lbs']: bl * 2 });
+		this.update({ ['data.encumbrance.medium.lbs']: bl * 3 });
+		this.update({ ['data.encumbrance.heavy.lbs']: bl * 6 });
+		this.update({ ['data.encumbrance.xheavy.lbs']: bl * 10 });
 
+		this.update({ ['data.encumbrance.none.move']: move });
+		this.update({ ['data.encumbrance.light.move']: Math.max((Math.floor(move * 0.8)), 1) });
+		this.update({ ['data.encumbrance.medium.move']: Math.max((Math.floor(move * 0.6)), 1) });
+		this.update({ ['data.encumbrance.heavy.move']: Math.max((Math.floor(move * 0.4)), 1) });
+		this.update({ ['data.encumbrance.xheavy.move']: Math.max((Math.floor(move * 0.2)), 1) });
+
+		this.update({ ['data.encumbrance.none.dodge']: dodge });
+		this.update({ ['data.encumbrance.light.dodge']: Math.max(dodge - 1, 1) });
+		this.update({ ['data.encumbrance.medium.dodge']: Math.max(dodge - 2, 1) });
+		this.update({ ['data.encumbrance.heavy.dodge']: Math.max(dodge - 3, 1) });
+		this.update({ ['data.encumbrance.xheavy.dodge']: Math.max(dodge - 4, 1) });
 	}
 
 	setTotalPoints(unspent) {

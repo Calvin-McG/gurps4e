@@ -194,6 +194,7 @@
 										<div class="item-name">Name</div>
 										<div class="item-notes">Notes</div>
 										<div class="item-rolls">Skill</div>
+										<div class="item-points">Points</div>
 										<div class="item-controls">
 												<!--<a class="item-control item-create" title="Create item" data-type="item"><i class="fas fa-plus"></i> Add</a>-->
 										</div>
@@ -201,26 +202,34 @@
 								{{#each actor.items as |item id|}}
 								{{#if (eq type "Trait") }}
 								<li class="item flexrow" data-item-id="{{item._id}}">
-										<div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24" /></div>
-										<div class="item-name">
-												<input type="text" value="{{item.name}}" title="{{item.name}}" style="text-align:left;" />
-										</div>
+									<div class="item-image">
+										<img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
+									</div>
+
+									<div class="item-name">
+											<input type="text" value="{{item.name}}" title="{{item.name}}" style="text-align:left;" />
+									</div>
+
+									<div class="item-notes">
+											<input type="text" value="{{data.notes}}" title="{{data.notes}}" style="text-align:left;" />
+									</div>
+
+									<div class="item-skill">
+											<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
+														 data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
+											{{data.level}}
+									</div>
+
+									<div class="item-points">
 										<div class="item-notes">
-												<input type="text" value="{{data.notes}}" title="{{data.notes}}" style="text-align:left;" />
+											<input type="text" value="{{data.points}}" title="{{data.points}}" style="text-align:left;" />
 										</div>
-										{{#if (ne data.level undefined)}}
-										<div class="item-skill">
-												<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
-															 data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
-												{{data.level}}
-										</div>
-										{{else}}
-										<div></div>
-										{{/if}}
-										<div class="item-controls">
-												<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-												<a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
-										</div>
+									</div>
+
+									<div class="item-controls">
+											<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+											<a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+									</div>
 								</li>
 								{{/if}}
 								{{/each}}
@@ -340,7 +349,22 @@
 			{{!-- Items Tab --}}
 			<div id="items" class="tab items" data-tab="items" data-group="primary">
 				<div class="encumbranceTable">
-
+					<table>
+						<tr class="bold">
+							<td class="title">Level</td><td class="title">Max Load</td><td class="title">Move</td><td class="title">Dodge</td>
+						</tr>
+						{{#each data.encumbrance as |enc id|}}
+						<tr>
+							<td>{{enc.title}}</td>
+							<td>{{enc.lbs}}</td>
+							<td>{{enc.move}}</td>
+							<td>{{enc.dodge}}
+								<label for="enc.dodge" class="fa fa-dice-six rollable" data-level="{{enc.dodge}}"
+								   data-label="Makes a &lt;b&gt;{{enc.title}}&lt;/b&gt; roll." data-type="skill"></label>
+							</td>
+						</tr>
+						{{/each}}
+					</table>
 				</div>
 				{{!-- List of Items --}}
 				<ol class="items-list">
