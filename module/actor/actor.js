@@ -38,8 +38,9 @@ export class gurpsActor extends Actor {
 		//Convert spent points into their effective values
 		this.recalcAtrValues();
 
-		//Recalculate encumberance values, along with effective dodge and move
+		//Recalculate encumberance values, along with effective dodge and move. Do this last so move and dodge is correct.
 		this.recalcEncValues();
+		console.log(this)
 	}
 
 	/**
@@ -143,7 +144,13 @@ export class gurpsActor extends Actor {
 	}
 
 	recalcTraitPoints() {
-		console.log(this.data.data);
+		console.log(this.items);
+
+		// var itemIterator = this.items.entries();
+        //
+		// while (!itemIterator.done){
+        //     console.log(itemIterator.next().value);
+        // }
 	}
 
 	recalcEncValues(){

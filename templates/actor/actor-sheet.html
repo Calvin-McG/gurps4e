@@ -207,11 +207,11 @@
 									</div>
 
 									<div class="item-name">
-											<input type="text" value="{{item.name}}" title="{{item.name}}" style="text-align:left;" />
+											{{item.name}}
 									</div>
 
 									<div class="item-notes">
-											<input type="text" value="{{data.notes}}" title="{{data.notes}}" style="text-align:left;" />
+											{{data.notes}}
 									</div>
 
 									<div class="item-skill">
@@ -222,7 +222,7 @@
 
 									<div class="item-points">
 										<div class="item-notes">
-											<input type="text" value="{{data.points}}" title="{{data.points}}" style="text-align:left;" />
+											{{data.points}}
 										</div>
 									</div>
 
@@ -293,6 +293,24 @@
 
 			{{!-- Combat Tab --}}
 			<div id="weapons" class="tab items" data-tab="combat" data-group="primary">
+				<div class="encumbranceTable">
+					<table>
+						<tr class="bold">
+							<td class="title">Level</td><td class="title">Max Load</td><td class="title">Move</td><td class="title">Dodge</td>
+						</tr>
+						{{#each data.encumbrance as |enc id|}}
+						<tr>
+							<td>{{enc.title}}</td>
+							<td>{{enc.lbs}}</td>
+							<td>{{enc.move}}</td>
+							<td>{{enc.dodge}}
+								<label for="enc.dodge" class="fa fa-dice-six rollable" data-level="{{enc.dodge}}"
+									   data-label="Makes a &lt;b&gt;{{enc.title}}&lt;/b&gt; roll." data-type="skill"></label>
+							</td>
+						</tr>
+						{{/each}}
+					</table>
+				</div>
 				<ol class="items-list">
 					<li class="item flexrow item-header">
 						<div class="item-image"></div>
