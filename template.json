@@ -298,6 +298,7 @@
       "templates": [
         "base",
         "level",
+        "points",
         "category",
         "onMain"
       ]

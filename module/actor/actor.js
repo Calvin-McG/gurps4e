@@ -28,11 +28,13 @@ export class gurpsActor extends Actor {
 	 */
 	prepareData() {
 		super.prepareData();
-		console.log("Prepare Doota");
+		console.log("prepareData actor");
+        console.log(this);
 
 		//Total up spent and remaining points
 		this.recalcAtrPoints();
 		this.recalcTraitPoints();
+		this.recalcSkillPoints();
 		this.recalcPointTotals();
 
 		//Convert spent points into their effective values
@@ -40,7 +42,6 @@ export class gurpsActor extends Actor {
 
 		//Recalculate encumberance values, along with effective dodge and move. Do this last so move and dodge is correct.
 		this.recalcEncValues();
-		console.log(this)
 	}
 
 	/**
@@ -144,14 +145,26 @@ export class gurpsActor extends Actor {
 	}
 
 	recalcTraitPoints() {
-		console.log(this.items);
-
-		// var itemIterator = this.items.entries();
-        //
-		// while (!itemIterator.done){
-        //     console.log(itemIterator.next().value);
-        // }
+        var traitPoints = +0;
+		//Iterate through the list of traits. Advantages and Disadvantages
+        for (let i = 0; i < this.data.items.length; i++){
+            if (this.data.items[i].type === "Trait"){
+                traitPoints = traitPoints += this.data.items[i].data.points
+            }
+        }
+        this.update({ ['data.points.traits']: traitPoints });
 	}
+
+    recalcSkillPoints() {
+        var skillPoints = +0;
+        //Iterate through the list of skills. Advantages and Disadvantages
+        for (let i = 0; i < this.data.items.length; i++){
+            if (this.data.items[i].type === "Rollable"){
+                skillPoints = skillPoints += this.data.items[i].data.points
+            }
+        }
+        this.update({ ['data.points.skills']: skillPoints });
+    }
 
 	recalcEncValues(){
 		var st = this.data.data.primaryAttributes.strength.value;

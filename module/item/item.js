@@ -24,7 +24,7 @@ export class gurpsItem extends Item {
    */
   prepareData() {
     super.prepareData();
-
+    console.log("Item Data");
     // Get the Item's data
     let itemData = this.data;
     let data = itemData.data;
@@ -89,6 +89,9 @@ export class gurpsItem extends Item {
   }
   _prepareRollableData(itemData, data) {
     // Override common default icon
+    console.log("Prepare Rollable Doota")
+    console.log(itemData)
+    console.log(data)
   }
   _prepareModifierData(itemData, data) {
     // Override common default icon
