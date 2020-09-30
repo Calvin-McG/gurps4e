@@ -236,6 +236,15 @@
       "category": {
         "category": ""
       },
+      "difficulty": {
+        "difficulty": ""
+      },
+      "baseAttr": {
+        "baseAttr": ""
+      },
+      "mod": {
+        "mod": 0
+      },
       "points": {
         "points": 0
       },
@@ -300,6 +309,9 @@
         "level",
         "points",
         "category",
+        "difficulty",
+        "baseAttr",
+        "mod",
         "onMain"
       ]
     },

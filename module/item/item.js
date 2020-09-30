@@ -25,11 +25,12 @@ export class gurpsItem extends Item {
   prepareData() {
     super.prepareData();
     console.log("Item Data");
+    console.log(this);
     // Get the Item's data
     let itemData = this.data;
     let data = itemData.data;
 
-    return;
+    //return;
 
     // all types have one. Might as well update it here
     data.notes = data.notes || "note";
@@ -51,6 +52,7 @@ export class gurpsItem extends Item {
         this._prepareRangedAttackData(itemData, data);
         break;
       case "Rollable":
+        console.log("Rollable")
         this._prepareRollableData(itemData, data);
         break;
       case "Modifier":
@@ -89,9 +91,9 @@ export class gurpsItem extends Item {
   }
   _prepareRollableData(itemData, data) {
     // Override common default icon
-    console.log("Prepare Rollable Doota")
-    console.log(itemData)
-    console.log(data)
+    console.log("Prepare Rollable Doota");
+    console.log(itemData);
+    console.log(data);
   }
   _prepareModifierData(itemData, data) {
     // Override common default icon
