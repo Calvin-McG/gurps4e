@@ -167,37 +167,108 @@ export class gurpsActorSheet extends ActorSheet {
 	* @param {Event} event	 The originating click event
 	* @private
 	*/
+	// _onRoll(event) {
+	// 	event.preventDefault();
+	// 	const element = event.currentTarget;
+	// 	const dataset = element.dataset;
+	//
+	// 	const executeRoll = (roll, renderer) => {
+	// 		roll.roll();
+	// 		const flavor = dataset.label || null;
+	// 		renderer.render(roll, { template: 'systems/gurps4e/lib/gurps-foundry-roll-templates/templates/roll.html' }, { flavor }).then((html) => {
+	// 			ChatMessage.create({ content: html, speaker: ChatMessage.getSpeaker({ actor: this.actor }), type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+	// 		});
+	// 	}
+	//
+	// 	const executeSuccessRoll = modList => {
+	// 		const trait = dataset.trait || null;
+	// 		executeRoll(SuccessRoll.fromData({ level: dataset.level, trait, modList }), new SuccessRollRenderer());
+	// 	};
+	//
+	// 	const prepareModList = mods => mods.map(mod => ({ ...mod, modifier: parseInt(mod.modifier, 10) })).filter(mod => mod.modifier !== 0);
+	//
+	// 	const modList = prepareModList([
+	// 		{ modifier: 0, description: 'global modifier' },
+	// 		(dataset.type === 'defense') ? { modifier: 0, description: 'DB' } : { modifier: 0, description: '' }
+	// 	]);
+	//
+	// 	if (dataset.type === 'skill' || dataset.type === 'defense') {
+	// 		executeSuccessRoll(modList);
+	// 	} else if (dataset.type === 'damage') {
+	// 		const rollMatch = dataset.roll.match(/^([1-9][0-9]*)d6([+-][0-9]+)?$/);
+	// 		executeRoll(DamageRoll.fromData({dice: rollMatch[1], adds: rollMatch[2] || '', modList}), new DamageRollRenderer());
+	// 	} else {
+	// 		console.log("Rollable element triggered with an unsupported data-type (supported types are 'skill', 'damage' and 'defense'");
+	// 	}
+	//
+	// 	this.actor.update({ ["data.gmod.value"]: 0 });
+	// }
+
+	/**
+	 * Handle clickable rolls.
+	 * @param {Event} event	 The originating click event
+	 * @private
+	 */
 	_onRoll(event) {
+		console.log("On a Roll")
 		event.preventDefault();
 		const element = event.currentTarget;
 		const dataset = element.dataset;
-
-		const executeRoll = (roll, renderer) => {
-			roll.roll();
-			const flavor = dataset.label || null;
-			renderer.render(roll, { template: 'systems/gurps4e/lib/gurps-foundry-roll-templates/templates/roll.html' }, { flavor }).then((html) => {
-				ChatMessage.create({ content: html, speaker: ChatMessage.getSpeaker({ actor: this.actor }), type: CONST.CHAT_MESSAGE_TYPES.OTHER });
-			});
-		}
-
-		const executeSuccessRoll = modList => {
-			const trait = dataset.trait || null;
-			executeRoll(SuccessRoll.fromData({ level: dataset.level, trait, modList }), new SuccessRollRenderer());
-		};
-
-		const prepareModList = mods => mods.map(mod => ({ ...mod, modifier: parseInt(mod.modifier, 10) })).filter(mod => mod.modifier !== 0);
-
-		const modList = prepareModList([
-			{ modifier: 0, description: 'global modifier' },
-			(dataset.type === 'defense') ? { modifier: 0, description: 'DB' } : { modifier: 0, description: '' }
-		]);
+		console.log(element);
+		console.log(dataset);
 
 		if (dataset.type === 'skill' || dataset.type === 'defense') {
-			executeSuccessRoll(modList);
-		} else if (dataset.type === 'damage') {
+			let effectiveSkill = dataset.level;
+			let skillRoll = new Roll("3d6");
+			skillRoll.roll();
+			console.log(skillRoll.total);
+			let margin = effectiveSkill - skillRoll.total;
+			console.log(margin);
+			let html = "<div>" + dataset.label + "</div>"
+
+			if (skillRoll.total == 18){//18 is always a crit fail
+				console.log("Autocrit 18");
+				html += "<div>Automatic Crit Fail by " + margin + "</div>"
+			}
+			else if (skillRoll.total == 17){//17 is a crit fail if effective skill is less than 16, autofail otherwise
+				if (effectiveSkill < 16){//Less than 16, autocrit
+					html += "<div>Automatic Crit Fail by " + margin + "</div>"
+				}
+				else {//Autofail
+					html += "<div>Automatic Fail by " + margin + "</div>"
+				}
+			}
+			else if (margin <= -10){//Fail by 10 is a crit fail
+				html += "<div>Crit Fail by " + margin + "</div>"
+			}
+			else if (margin < 0){//Fail is a fail
+				html += "<div>Fail by " + margin + "</div>"
+			}
+			else if (skillRoll.total == 3 || skillRoll.total == 4){//3 and 4 are always a crit success
+				html += "<div>Automatic Critical Success by " + margin + "</div>"
+			}
+			else if (skillRoll.total == 5 && effectiveSkill == 15){//5 is a crit if effective skill is 15
+				html += "<div>Critical Success by " + margin + "</div>"
+			}
+			else if (skillRoll.total == 6 && effectiveSkill == 16){//6 is a crit if effective skill is 16
+				html += "<div>Critical Success by " + margin + "</div>"
+			}
+			else if (margin >= 0){//Regular success
+				html += "<div>Success by " + margin + "</div>"
+			}
+			else {//Wtf?
+				html += "<div>Unknown result by " + margin + "</div>"
+			}
+
+			ChatMessage.create({ content: html, user: game.user._id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+		}
+
+		else if (dataset.type === 'damage') {
 			const rollMatch = dataset.roll.match(/^([1-9][0-9]*)d6([+-][0-9]+)?$/);
 			executeRoll(DamageRoll.fromData({dice: rollMatch[1], adds: rollMatch[2] || '', modList}), new DamageRollRenderer());
-		} else {
+		}
+
+		else {
 			console.log("Rollable element triggered with an unsupported data-type (supported types are 'skill', 'damage' and 'defense'");
 		}
 
