@@ -266,8 +266,7 @@ export class gurpsActorSheet extends ActorSheet {
 		else if (dataset.type === 'damage') {
 			let damageRoll = new Roll(dataset.roll);
 			damageRoll.roll();
-			let html = "<div>" + dataset.label + "</div>";
-			console.log(damageRoll.total);
+			let html = "<div>" + dataset.label + " <i class='fas fa-arrow-right'></i> " + damageRoll.total + "</div>";
 			ChatMessage.create({ content: html, user: game.user._id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
 		}
 
