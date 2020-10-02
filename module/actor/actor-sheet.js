@@ -224,7 +224,7 @@ export class gurpsActorSheet extends ActorSheet {
 			console.log(skillRoll.total);
 			let margin = effectiveSkill - skillRoll.total;
 			console.log(margin);
-			let html = "<div>" + dataset.label + "</div>"
+			let html = "<div>" + dataset.label + "</div>";
 
 			if (skillRoll.total == 18){//18 is always a crit fail
 				console.log("Autocrit 18");
@@ -264,8 +264,11 @@ export class gurpsActorSheet extends ActorSheet {
 		}
 
 		else if (dataset.type === 'damage') {
-			const rollMatch = dataset.roll.match(/^([1-9][0-9]*)d6([+-][0-9]+)?$/);
-			executeRoll(DamageRoll.fromData({dice: rollMatch[1], adds: rollMatch[2] || '', modList}), new DamageRollRenderer());
+			let damageRoll = new Roll(dataset.roll);
+			damageRoll.roll();
+			let html = "<div>" + dataset.label + "</div>";
+			console.log(damageRoll.total);
+			ChatMessage.create({ content: html, user: game.user._id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
 		}
 
 		else {
