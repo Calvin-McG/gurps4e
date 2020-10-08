@@ -24,12 +24,10 @@ export class gurpsItem extends Item {
    */
   prepareData() {
     super.prepareData();
-    console.log("Item Data");
-    console.log(this);
     // Get the Item's data
     let itemData = this.data;
     let data = itemData.data;
-
+    console.log(this.actor.data.data);
     //return;
 
     // all types have one. Might as well update it here
@@ -52,7 +50,6 @@ export class gurpsItem extends Item {
         this._prepareRangedAttackData(itemData, data);
         break;
       case "Rollable":
-        console.log("Rollable")
         this._prepareRollableData(itemData, data);
         break;
       case "Modifier":
@@ -91,9 +88,96 @@ export class gurpsItem extends Item {
   }
   _prepareRollableData(itemData, data) {
     // Override common default icon
-    console.log("Prepare Rollable Doota");
-    console.log(itemData);
     console.log(data);
+    let attr = 0;
+    let skill = 0;
+    let points = data.points;
+
+    if (data.baseAttr == 'ST'){
+      attr = this.actor.data.data.primaryAttributes.strength.value;
+    }
+    else if (data.baseAttr == 'DX') {
+      attr = this.actor.data.data.primaryAttributes.dexterity.value;
+    }
+    else if (data.baseAttr == 'IQ') {
+      attr = this.actor.data.data.primaryAttributes.intelligence.value;
+    }
+    else if (data.baseAttr == 'HT') {
+      attr = this.actor.data.data.primaryAttributes.health.value;
+    }
+    else if (data.baseAttr == 'Per') {
+      attr = this.actor.data.data.primaryAttributes.perception.value;
+    }
+    else if (data.baseAttr == 'Will') {
+      attr = this.actor.data.data.primaryAttributes.will.value;
+    }
+
+    if (data.difficulty != 'W') {//It's not a wildcard
+      if (points > 0){//They have spent points
+
+        //Determine base points to skill level conversion
+        if(points == 1){
+          skill = attr;
+        }
+        else if(points == 2 || points == 3){
+          skill = attr + 1;
+        }
+        else if(points >= 4){
+          skill = attr + 1 + Math.floor(points/4);
+        }
+
+        //Adjust for difficulty
+        if (data.difficulty == 'E') {
+          skill = skill;
+        }
+        else if (data.difficulty == 'A') {
+          skill = skill - 1;
+        }
+        else if (data.difficulty == 'H') {
+          skill = skill - 2;
+        }
+        else if (data.difficulty == 'VH') {
+          skill = skill - 3;
+        }
+      }
+      else {
+        skill = 0;
+      }
+    }
+    else {//It's a wildcard
+      points = Math.floor(points/3);
+      if (points > 0){//They have spent points
+        //Determine base points to skill level conversion
+        if(points == 1){
+          skill = attr;
+        }
+        else if(points == 2 || points == 3){
+          skill = attr + 1;
+        }
+        else if(points >= 4){
+          skill = attr + 1 + Math.floor(points/4);
+        }
+
+        //Adjust for difficulty
+        if (data.difficulty == 'E') {
+          skill = skill;
+        }
+        else if (data.difficulty == 'A') {
+          skill = skill - 1;
+        }
+        else if (data.difficulty == 'H') {
+          skill = skill - 2;
+        }
+        else if (data.difficulty == 'VH') {
+          skill = skill - 3;
+        }
+      }
+      else {
+        skill = 0;
+      }
+    }
+
+    this.update({ ['data.level']: skill + data.mod });
   }
   _prepareModifierData(itemData, data) {
     // Override common default icon
