@@ -89,95 +89,113 @@ export class gurpsItem extends Item {
   _prepareRollableData(itemData, data) {
     // Override common default icon
     console.log(data);
-    let attr = 0;
-    let skill = 0;
+    let base = 0;
+    let level = 0;
     let points = data.points;
 
-    if (data.baseAttr == 'ST'){
-      attr = this.actor.data.data.primaryAttributes.strength.value;
-    }
-    else if (data.baseAttr == 'DX') {
-      attr = this.actor.data.data.primaryAttributes.dexterity.value;
-    }
-    else if (data.baseAttr == 'IQ') {
-      attr = this.actor.data.data.primaryAttributes.intelligence.value;
-    }
-    else if (data.baseAttr == 'HT') {
-      attr = this.actor.data.data.primaryAttributes.health.value;
-    }
-    else if (data.baseAttr == 'Per') {
-      attr = this.actor.data.data.primaryAttributes.perception.value;
-    }
-    else if (data.baseAttr == 'Will') {
-      attr = this.actor.data.data.primaryAttributes.will.value;
-    }
+    if (data.category == 'skill'){//It's a skill
+      if (data.baseAttr == 'ST'){
+        base = this.actor.data.data.primaryAttributes.strength.value;
+      }
+      else if (data.baseAttr == 'DX') {
+        base = this.actor.data.data.primaryAttributes.dexterity.value;
+      }
+      else if (data.baseAttr == 'IQ') {
+        base = this.actor.data.data.primaryAttributes.intelligence.value;
+      }
+      else if (data.baseAttr == 'HT') {
+        base = this.actor.data.data.primaryAttributes.health.value;
+      }
+      else if (data.baseAttr == 'Per') {
+        base = this.actor.data.data.primaryAttributes.perception.value;
+      }
+      else if (data.baseAttr == 'Will') {
+        base = this.actor.data.data.primaryAttributes.will.value;
+      }
 
-    if (data.difficulty != 'W') {//It's not a wildcard
-      if (points > 0){//They have spent points
+      if (data.difficulty != 'W') {//It's not a wildcard
+        if (points > 0){//They have spent points
 
-        //Determine base points to skill level conversion
-        if(points == 1){
-          skill = attr;
-        }
-        else if(points == 2 || points == 3){
-          skill = attr + 1;
-        }
-        else if(points >= 4){
-          skill = attr + 1 + Math.floor(points/4);
-        }
+          //Determine base points to skill level conversion
+          if(points == 1){
+            level = base;
+          }
+          else if(points == 2 || points == 3){
+            level = base + 1;
+          }
+          else if(points >= 4){
+            level = base + 1 + Math.floor(points/4);
+          }
 
-        //Adjust for difficulty
-        if (data.difficulty == 'E') {
-          skill = skill;
+          //Adjust for difficulty
+          if (data.difficulty == 'E') {
+            level = level;
+          }
+          else if (data.difficulty == 'A') {
+            level = level - 1;
+          }
+          else if (data.difficulty == 'H') {
+            level = level - 2;
+          }
+          else if (data.difficulty == 'VH') {
+            level = level - 3;
+          }
         }
-        else if (data.difficulty == 'A') {
-          skill = skill - 1;
-        }
-        else if (data.difficulty == 'H') {
-          skill = skill - 2;
-        }
-        else if (data.difficulty == 'VH') {
-          skill = skill - 3;
+        else {
+          level = 0;
         }
       }
-      else {
-        skill = 0;
+      else {//It's a wildcard
+        points = Math.floor(points/3);
+        if (points > 0){//They have spent points
+          //Determine base points to skill level conversion
+          if(points == 1){
+            level = base;
+          }
+          else if(points == 2 || points == 3){
+            level = base + 1;
+          }
+          else if(points >= 4){
+            level = base + 1 + Math.floor(points/4);
+          }
+
+          //Adjust for difficulty
+          if (data.difficulty == 'E') {
+            level = level;
+          }
+          else if (data.difficulty == 'A') {
+            level = level - 1;
+          }
+          else if (data.difficulty == 'H') {
+            level = level - 2;
+          }
+          else if (data.difficulty == 'VH') {
+            level = level - 3;
+          }
+        }
+        else {
+          level = 0;
+        }
       }
     }
-    else {//It's a wildcard
-      points = Math.floor(points/3);
-      if (points > 0){//They have spent points
-        //Determine base points to skill level conversion
-        if(points == 1){
-          skill = attr;
-        }
-        else if(points == 2 || points == 3){
-          skill = attr + 1;
-        }
-        else if(points >= 4){
-          skill = attr + 1 + Math.floor(points/4);
-        }
+    else {//It's a technique
 
-        //Adjust for difficulty
-        if (data.difficulty == 'E') {
-          skill = skill;
-        }
-        else if (data.difficulty == 'A') {
-          skill = skill - 1;
-        }
-        else if (data.difficulty == 'H') {
-          skill = skill - 2;
-        }
-        else if (data.difficulty == 'VH') {
-          skill = skill - 3;
+      for (let i = 0; i < this.actor.data.items.length; i++){
+        if (this.actor.data.items[i].type === "Rollable"){
+          if (this.actor.data.items[i].data.category === "skill"){
+            if (data.baseSkill === this.actor.data.items[i].name){
+              base = +this.actor.data.items[i].data.level;
+              console.log(base);
+              console.log(data);
+              this.update({ ['data.baseSkillLevel']: base });
+            }
+          }
         }
       }
-      else {
-        skill = 0;
-      }
+
     }
 
-    this.update({ ['data.level']: skill + data.mod });
+    this.update({ ['data.level']: level + data.mod });
   }
   _prepareModifierData(itemData, data) {
     // Override common default icon

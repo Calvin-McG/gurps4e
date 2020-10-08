@@ -16,6 +16,7 @@
                     </select>
                 </div>
 
+                {{#if (or (eq data.category "skill")) }}
                 <div class="flexrow">
                     <label class="resource-label">Difficulty</label>
                     <select name="data.difficulty">
@@ -28,7 +29,19 @@
                         {{/select}}
                     </select>
                 </div>
+                {{else}}
+                <div class="flexrow">
+                    <label class="resource-label">Difficulty</label>
+                    <select name="data.difficulty">
+                        {{#select data.difficulty}}
+                        <option value="A">Average</option>
+                        <option value="H">Hard</option>
+                        {{/select}}
+                    </select>
+                </div>
+                {{/if}}
 
+                {{#if (or (eq data.category "skill")) }}
                 <div class="flexrow">
                     <label class="resource-label">Base Attribute</label>
                     <select name="data.baseAttr">
@@ -42,6 +55,13 @@
                         {{/select}}
                     </select>
                 </div>
+                {{else}}
+                <div class="flexrow">
+                    <label class="resource-label">Base Skill</label>
+                    <input type="text" name="data.baseSkill" value="{{data.baseSkill}}" data-dtype="String"/>
+                    {{data.baseSkillLevel}}
+                </div>
+                {{/if}}
 
                 <div class="flexrow">
                     <label class="resource-label">Modifier</label>

@@ -242,6 +242,12 @@
       "baseAttr": {
         "baseAttr": ""
       },
+      "baseSkill": {
+        "baseSkill": ""
+      },
+      "baseSkillLevel": {
+        "baseSkillLevel": 0
+      },
       "mod": {
         "mod": 0
       },
@@ -311,6 +317,8 @@
         "category",
         "difficulty",
         "baseAttr",
+        "baseSkill",
+        "baseSkillLevel",
         "mod",
         "onMain"
       ]
