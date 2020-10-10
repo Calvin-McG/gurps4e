@@ -56,10 +56,18 @@
                     </select>
                 </div>
                 {{else}}
+                <div class="flexrow baseSkillRow" id="baseSkillRow">
+                    <label id="baseSkillLabel" class="resource-label">Base Skill</label>
+                    <input id="baseSkillText" type="text" name="data.baseSkill" value="{{data.baseSkill}}" data-dtype="String"/>
+                    <label id="baseSkillLevel" style="margin: auto">{{data.baseSkillLevel}}</label>
+                </div>
                 <div class="flexrow">
-                    <label class="resource-label">Base Skill</label>
-                    <input type="text" name="data.baseSkill" value="{{data.baseSkill}}" data-dtype="String"/>
-                    {{data.baseSkillLevel}}
+                    <label class="resource-label">Base Penalty</label>
+                    <input type="text" name="data.minLevel" value="{{data.minLevel}}" data-dtype="Number"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Max Bonus</label>
+                    <input type="text" name="data.maxLevel" value="{{data.maxLevel}}" data-dtype="Number"/>
                 </div>
                 {{/if}}
 

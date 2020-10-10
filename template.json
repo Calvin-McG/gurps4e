@@ -248,6 +248,10 @@
       "baseSkillLevel": {
         "baseSkillLevel": 0
       },
+      "techniqueLimits": {
+        "maxLevel": 0,
+        "minLevel": 0
+      },
       "mod": {
         "mod": 0
       },
@@ -289,9 +293,7 @@
       "templates": [
         "base",
         "level",
-        "weapon",
-        "weighable",
-        "onMain"
+        "weapon"
       ],
       "reach": "1"
     },
@@ -299,8 +301,7 @@
       "templates": [
         "base",
         "level",
-        "weapon",
-        "onMain"
+        "weapon"
       ],
       "accuracy": "1",
       "range": "10/15",
@@ -319,6 +320,7 @@
         "baseAttr",
         "baseSkill",
         "baseSkillLevel",
+        "techniqueLimits",
         "mod",
         "onMain"
       ]
@@ -349,7 +351,6 @@
         "base",
         "level",
         "category",
-        "weighable",
         "onMain"
       ]
     }

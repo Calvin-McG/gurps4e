@@ -27,6 +27,7 @@ export class gurpsActor extends Actor {
 	 * Augment the basic actor data with additional dynamic data.
 	 */
 	prepareData() {
+		console.log(this.data.data);
 		super.prepareData();
 		// console.log("prepareData actor");
         // console.log(this);

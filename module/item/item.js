@@ -159,43 +159,51 @@ export class gurpsItem extends Item {
             level = base + 1 + Math.floor(points/4);
           }
 
-          //Adjust for difficulty
-          if (data.difficulty == 'E') {
-            level = level;
-          }
-          else if (data.difficulty == 'A') {
-            level = level - 1;
-          }
-          else if (data.difficulty == 'H') {
-            level = level - 2;
-          }
-          else if (data.difficulty == 'VH') {
-            level = level - 3;
-          }
+          //Adjust for difficulty (W is just 3xVH)
+          level = level - 3;
         }
         else {
           level = 0;
         }
       }
+      level = level + data.mod
     }
     else {//It's a technique
+      console.log(data);
 
+      //Loop through all the skills on the sheet, find the one they picked and set that as the base
       for (let i = 0; i < this.actor.data.items.length; i++){
         if (this.actor.data.items[i].type === "Rollable"){
           if (this.actor.data.items[i].data.category === "skill"){
             if (data.baseSkill === this.actor.data.items[i].name){
               base = +this.actor.data.items[i].data.level;
-              console.log(base);
-              console.log(data);
               this.update({ ['data.baseSkillLevel']: base });
             }
           }
         }
       }
 
+      //Modify Base Skill with Base Penalty
+      level = base + data.minLevel;
+
+      //Adjust for difficulty
+      if (data.difficulty == 'A') {
+        if (points > 0){//They have spent points
+          level = level + points;
+        }
+      }
+      else if (data.difficulty == 'H') {
+        if (points >= 2){//They have spent enough points to matter
+          level = level + points - 1;//First level costs 2, every other costs 1
+        }
+      }
+      level = Math.min((level + data.mod), (data.maxLevel + base));
+
+      console.log(level);
+
     }
 
-    this.update({ ['data.level']: level + data.mod });
+    this.update({ ['data.level']: level });
   }
   _prepareModifierData(itemData, data) {
     // Override common default icon

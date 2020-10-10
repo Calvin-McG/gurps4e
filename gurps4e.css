@@ -31,6 +31,13 @@
 	grid-gap: 5px;
 }
 
+#baseSkillRow {
+	grid-area: baseSkillRow;
+	display: grid;
+	grid-template: "baseSkillLabel baseSkillText baseSkillLevel";
+	grid-template-columns: 8fr 6fr 2fr;
+}
+
 #portrait {
 	grid-area: portrait;
 	display: grid;
