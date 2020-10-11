@@ -5,29 +5,120 @@
         <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
         <div class="header-fields">
             <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
-            <div class="">
-                <div class="flexrow">
-                    <label class="resource-label">Quantity</label>
+            <div class="equipmentDetails" id="equipmentDetails">
+                <div id="qty" class="equipmentStat">
+                    <label class="resource-label">Qty:</label>
                     <input type="text" name="data.quantity" value="{{data.quantity}}" data-dtype="Number"/>
                 </div>
-                <div class="flexrow">
-                    <label class="resource-label">Weight</label>
-                    <input type="text" name="data.weight" value="{{data.weight}}" data-dtype="Number"/>
+                <div id="tl" class="equipmentStat">
+                    <label class="resource-label">TL:</label>
+                    <input type="text" name="data.tl" value="{{data.tl}}" data-dtype="Number"/>
                 </div>
-                <div class="flexrow">
-                    <label class="resource-label">Cost</label>
-                    <input type="text" name="data.cost" value="{{data.cost}}" data-dtype="String"/>
+                <div id="lc" class="equipmentStat">
+                    <label class="resource-label">LC:</label>
+                    <input type="text" name="data.lc" value="{{data.lc}}" data-dtype="Number"/>
+                </div>
+                <div id="equipped" class="flexrow">
+                    <select name="data.equipStatus" class="equipStatusSelect">
+                        {{#select data.equipStatus}}
+                        <option value="equipped">Equipped</option>
+                        <option value="carried">Carried</option>
+                        <option value="notCarried">Not Carried</option>
+                        {{/select}}
+                    </select>
+                </div>
+                <div id="value" class="equipmentStatLong">
+                    <label class="resource-label">Value:</label>
+                    <input type="text" name="data.cost" value="{{data.cost}}" data-dtype="Number"/>
+                    <label class="resource-label"> / {{data.ttlCost}}$ total</label>
+                </div>
+                <div id="weight" class="equipmentStatLong">
+                    <label class="resource-label">Weight:</label>
+                    <input type="text" name="data.weight" value="{{data.weight}}" data-dtype="Number"/>
+                    <label class="resource-label"> / {{data.ttlWeight}}lbs total</label>
                 </div>
             </div>
         </div>
     </header>
-    
+
+    {{!-- Sheet Tab Navigation --}}
+    <nav id="tabselect" class="sheet-tabs tabs" data-group="primary">
+        <div class="header">
+            <a class="item" data-tab="notes">Notes</a>
+        </div>
+        <div class="header">
+            <a class="item" data-tab="melee">Melee</a>
+        </div>
+        <div class="header">
+            <a class="item" data-tab="ranged">Ranged</a>
+        </div>
+    </nav>
+
     {{!-- Sheet Body --}}
     <section class="sheet-body">
-        <hr>
-        <h3>Notes</h3>
-        <div class="tab">
-            <textarea rows="8" name="data.notes">{{{data.notes}}}</textarea>
+
+        {{!-- Note Tab --}}
+        <div class="tab stats" data-tab="notes" data-group="primary">
+            <hr>
+            <h3>Notes</h3>
+            <div class="tab">
+                <textarea rows="8" name="data.notes">{{{data.notes}}}</textarea>
+            </div>
         </div>
+
+        {{!-- Melee Tab --}}
+        <div class="tab stats" data-tab="melee" data-group="primary">
+            <hr>
+            <h3>Add Row</h3>
+            <div class="tab">
+                <div class="meleeRow">
+                    <label class="resource-label">Name</label>
+                    <label class="resource-label">Level</label>
+                    <label class="resource-label">Skill Name / Mod</label>
+                    <label class="resource-label">Parry / Mod</label>
+                    <label class="resource-label">Block / Mod</label>
+                    <label class="resource-label">Damage</label>
+                    <label class="resource-label">Type</label>
+                    <label class="resource-label">Divisor</label>
+                    <label class="resource-label">Reach</label>
+                    <label class="resource-label">ST</label>
+                </div>
+                {{#each data.melee as |melee id|}}
+                <div class="meleeRow">
+                    {{log melee level="error"}}
+                    {{log id level="error"}}
+                    <input type="text" value="{{name}}" title="{{name}}" style="text-align:left;" />
+                    <label class="resource-label">{{melee.level}}</label>
+                    <div>
+                        <input type="text" value="{{melee.skill}}" title="{{melee.skill}}" style="text-align:left;" />
+                        <input type="text" name="melee.skillMod" value="{{melee.skillMod}}" data-dtype="Number"/>
+                    </div>
+                    <div>
+                        <label class="resource-label">{{melee.parry}}</label>
+                        <input type="text" name="melee.parryMod" value="{{melee.parryMod}}" data-dtype="Number"/>
+                    </div>
+                    <div>
+                        <label class="resource-label">{{melee.block}}</label>
+                        <input type="text" name="melee.blockMod" value="{{melee.blockMod}}" data-dtype="Number"/>
+                    </div>
+                    <input type="text" value="{{melee.damage}}" title="{{melee.damage}}" style="text-align:left;" />
+                    <input type="text" value="{{melee.damageType}}" title="{{melee.damageType}}" style="text-align:left;" />
+                    <input type="text" value="{{melee.armorDivisor}}" title="{{melee.armorDivisor}}" style="text-align:left;" />
+                    <input type="text" value="{{melee.reach}}" title="{{melee.reach}}" style="text-align:left;" />
+                    <input type="text" name="melee.st" value="{{melee.st}}" data-dtype="Number"/>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+
+        {{!-- Ranged Tab --}}
+        <div class="tab stats" data-tab="ranged" data-group="primary">
+            <hr>
+            <h3>Notes</h3>
+            <div class="tab">
+                <textarea rows="8" name="data.ra">{{{data.ra}}}</textarea>
+            </div>
+        </div>
+
     </section>
 </form>

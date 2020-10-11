@@ -218,17 +218,36 @@
     ],
     "templates": {
       "base": {
-        "notes": "note"
+        "notes": ""
       },
       "onMain": {
         "onMain": false
       },
       "countable": {
         "quantity": 1,
-        "cost": ""
+        "cost": 0,
+        "ttlCost": 0
       },
       "weighable": {
-        "weight": 0
+        "weight": 0,
+        "ttlWeight": 0
+      },
+      "tl": {
+        "tl": 0
+      },
+      "lc": {
+        "lc": 4
+      },
+      "equipStatus": {
+        "equipStatus": ""
+      },
+      "melee": {
+        "melee": [
+          { "name": "New Profile" }
+        ]
+      },
+      "ranged": {
+        "ranged": []
       },
       "level": {
         "level": 0
@@ -269,7 +288,12 @@
       "templates": [
         "base",
         "countable",
-        "weighable"
+        "weighable",
+        "tl",
+        "lc",
+        "equipStatus",
+        "melee",
+        "ranged"
       ]
     },
     "Hit-Location": {
@@ -330,7 +354,9 @@
         "base",
         "category",
         "level",
-        "points"
+        "points",
+        "melee",
+        "ranged"
       ]
     },
     "Modifier": {

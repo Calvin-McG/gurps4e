@@ -27,8 +27,9 @@ export class gurpsItem extends Item {
     // Get the Item's data
     let itemData = this.data;
     let data = itemData.data;
-    console.log(this.actor.data.data);
-    //return;
+    if (this.actor){
+      //console.log(this.actor.data.data);
+    }
 
     // all types have one. Might as well update it here
     data.notes = data.notes || "note";
@@ -73,9 +74,31 @@ export class gurpsItem extends Item {
   }
   _prepareEquipmentData(itemData, data) {
     // Override common default icon
-    data.quantity = data.quantity || 1;
-    data.weight = data.weight || 0;
-    data.cost = data.cost || "";
+    //console.log(this.data);
+    console.log(data);
+    //console.log(itemData);
+
+    //Calculated total weight and cost
+    this.update({ ['data.ttlCost']: (data.cost * data.quantity) });
+    this.update({ ['data.ttlWeight']: (data.weight * data.quantity) });
+
+    //Constrain TL to valid values
+    if (data.tl < 0){//Too low
+      this.update({ ['data.tl']: 0 });
+    }
+    else if (data.tl > 12){//Too high
+      this.update({ ['data.tl']: 12 });
+    }
+
+    //Constrain LC to valid values
+    if (data.lc < 0){//Too low
+      this.update({ ['data.lc']: 0 });
+    }
+    else if (data.lc > 4){//Too high
+      this.update({ ['data.lc']: 4 });
+    }
+
+
   }
   _prepareHitLocationData(itemData, data) {
     // Override common default icon
