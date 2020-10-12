@@ -104,26 +104,32 @@ export class gurpsItem extends Item {
       //Do logic stuff for melee profiles
       let meleeKeys = Object.keys(data.melee);
       if (meleeKeys.length){//Check to see if there are any melee profiles
-
         for (let k = 0; k < meleeKeys.length; k++){
-          console.log(data.melee[meleeKeys[k]]);
+          if (data.melee[meleeKeys[k]].name){//Check to see if name is filled in
+            let level = 0;
+            let mod = +data.melee[meleeKeys[k]].skillMod;
+            let parry = 0;
+            let block = 0;
 
-          let level = 0;
-          let mod = +data.melee[meleeKeys[k]].skillMod;
-
-          //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-          console.log(this);
-          for (let i = 0; i < this.actor.data.items.length; i++){
-            if (this.actor.data.items[i].type === "Rollable"){
-              if (this.actor.data.items[i].data.category === "skill"){
-                if (data.skill === this.actor.data.items[i].name){
-                  level = +this.actor.data.items[i].data.level;
+            //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
+            for (let i = 0; i < this.actor.data.items.length; i++){
+              if (this.actor.data.items[i].type === "Rollable"){
+                if (this.actor.data.items[i].data.category === "skill"){
+                  if (data.melee[meleeKeys[k]].skill === this.actor.data.items[i].name){
+                    level = +this.actor.data.items[i].data.level;
+                  }
                 }
               }
             }
-          }
+            level = level + mod;//Update the skill level with the skill modifier
+            this.update({ ['data.melee.' + meleeKeys[k] + '.level' ]: level });//Update skill level
 
-          this.update({ ['data.melee.' + meleeKeys[k] + '.level' ]: (level + mod) });
+            parry = ( level / 2 + 3 ) + data.melee[meleeKeys[k]].parryMod;//Calculate the parry value
+            this.update({ ['data.melee.' + meleeKeys[k] + '.parry' ]: parry });//Update the parry value
+
+            block = ( level / 2 + 3 ) + data.melee[meleeKeys[k]].blockMod;//Calculate the block value
+            this.update({ ['data.melee.' + meleeKeys[k] + '.block' ]: block });//Update the block value
+          }
         }
       }
 
@@ -131,14 +137,29 @@ export class gurpsItem extends Item {
       //Do logic stuff for ranged profiles
       let rangedKeys = Object.keys(data.ranged);
       if (rangedKeys.length){//Check to see if there are any ranged profiles
-        rangedKeys.forEach(function(item) {//Loop through all the ranged profiles
-          console.log(data.ranged[item]);
+        for (let k = 0; k < rangedKeys.length; k++){
+          if (data.ranged[rangedKeys[k]].name){//Check to see if name is filled in
+            let level = 0;
+            let mod = +data.ranged[rangedKeys[k]].skillMod;
 
-
-        })
+            //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
+            for (let i = 0; i < this.actor.data.items.length; i++){
+              if (this.actor.data.items[i].type === "Rollable"){
+                if (this.actor.data.items[i].data.category === "skill"){
+                  if (data.ranged[rangedKeys[k]].skill === this.actor.data.items[i].name){
+                    level = +this.actor.data.items[i].data.level;
+                  }
+                }
+              }
+            }
+            level = level + mod;//Update the skill level with the skill modifier
+            this.update({ ['data.ranged.' + rangedKeys[k] + '.level' ]: level });//Update skill level
+          }
+        }
       }
     }
   }
+
   _prepareHitLocationData(itemData, data) {
     // Override common default icon
   }
