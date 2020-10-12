@@ -98,7 +98,46 @@ export class gurpsItem extends Item {
       this.update({ ['data.lc']: 4 });
     }
 
+    //Check to see if there is an actor yet
+    console.log(this);
+    if (this.actor){
+      //Do logic stuff for melee profiles
+      let meleeKeys = Object.keys(data.melee);
+      if (meleeKeys.length){//Check to see if there are any melee profiles
 
+        for (let k = 0; k < meleeKeys.length; k++){
+          console.log(data.melee[meleeKeys[k]]);
+
+          let level = 0;
+          let mod = +data.melee[meleeKeys[k]].skillMod;
+
+          //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
+          console.log(this);
+          for (let i = 0; i < this.actor.data.items.length; i++){
+            if (this.actor.data.items[i].type === "Rollable"){
+              if (this.actor.data.items[i].data.category === "skill"){
+                if (data.skill === this.actor.data.items[i].name){
+                  level = +this.actor.data.items[i].data.level;
+                }
+              }
+            }
+          }
+
+          this.update({ ['data.melee.' + meleeKeys[k] + '.level' ]: (level + mod) });
+        }
+      }
+
+
+      //Do logic stuff for ranged profiles
+      let rangedKeys = Object.keys(data.ranged);
+      if (rangedKeys.length){//Check to see if there are any ranged profiles
+        rangedKeys.forEach(function(item) {//Loop through all the ranged profiles
+          console.log(data.ranged[item]);
+
+
+        })
+      }
+    }
   }
   _prepareHitLocationData(itemData, data) {
     // Override common default icon

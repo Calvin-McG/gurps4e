@@ -105,7 +105,7 @@ export class gurpsActor extends Actor {
 		this.update({ ['data.primaryAttributes.fright.value']: fr });
 
 		//Speed
-		var speed = Math.floor(((+(+dx + +ht) / +4) + +this.data.data.primaryAttributes.speed.mod + +(this.data.data.primaryAttributes.speed.points/20)) * +4) / +4;;
+		var speed = Math.floor(((+(+dx + +ht) / +4) + +this.data.data.primaryAttributes.speed.mod + +(this.data.data.primaryAttributes.speed.points/20)) * +4) / +4;
 		this.update({ ['data.primaryAttributes.speed.value']: speed });
 
 		//Move
