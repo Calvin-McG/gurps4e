@@ -46,13 +46,51 @@ export class gurpsItemSheet extends ItemSheet {
 
   /* -------------------------------------------- */
 
-  /** @override */
-  activateListeners(html) {
-    super.activateListeners(html);
+    /** @override */
+    activateListeners(html) {
+      super.activateListeners(html);
 
-    // Everything below here is only needed if the sheet is editable
-    if (!this.options.editable) return;
+      // Everything below here is only needed if the sheet is editable
+      if (!this.options.editable) return;
 
-    // Roll handlers, click handlers, etc. would go here.
-  }
+      // Roll handlers, click handlers, etc. would go here.
+      // User clicked addRow
+      html.find('.addRow').click(this._onAddRow.bind(this));
+      html.find('.addRangedRow').click(this._onAddRangedRow.bind(this));
+
+      //User clicked delete thingy on the row
+      html.find('.attack-delete').click(this._onDeleteRow.bind(this));
+      html.find('.ranged-delete').click(this._onDeleteRangedRow.bind(this));
+    }
+
+    _onAddRow(event) {
+        let keys = Object.keys(this.item.data.data.melee);
+        let newKey = 0;
+        if (keys.length){//Array is not empty
+            newKey = (+keys[keys.length-1] + +1);
+        }
+
+        let newRow = { "name": "" };
+        this.item.update({ ["data.melee." + newKey]: newRow });
+    }
+    _onAddRangedRow(event) {
+        let keys = Object.keys(this.item.data.data.ranged);
+        let newKey = 0;
+        if (keys.length){//Array is not empty
+            newKey = (+keys[keys.length-1] + +1);
+        }
+
+        let newRow = { "name": "" };
+        this.item.update({ ["data.ranged." + newKey]: newRow });
+    }
+
+    _onDeleteRow(event) {
+        let id = event.currentTarget.id.substring(6);
+        this.item.update({ ["data.melee.-=" + id] : null});
+    }
+
+    _onDeleteRangedRow(event) {
+        let id = event.currentTarget.id.substring(6);
+        this.item.update({ ["data.ranged.-=" + id] : null});
+    }
 }

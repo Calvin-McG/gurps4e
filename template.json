@@ -242,9 +242,7 @@
         "equipStatus": ""
       },
       "melee": {
-        "melee": [
-          { "name": "New Profile" }
-        ]
+        "melee": []
       },
       "ranged": {
         "ranged": []
