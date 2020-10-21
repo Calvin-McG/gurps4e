@@ -172,6 +172,8 @@ export class gurpsActor extends Actor {
 		var bl = ((st * st)/5);
 		var move = this.data.data.primaryAttributes.move.value;
 		var dodge = this.data.data.primaryAttributes.dodge.value;
+		var carriedWeight = 0;
+		var carriedCost = 0;
 
 		this.update({ ['data.encumbrance.none.lbs']: bl });
 		this.update({ ['data.encumbrance.light.lbs']: bl * 2 });
@@ -190,6 +192,19 @@ export class gurpsActor extends Actor {
 		this.update({ ['data.encumbrance.medium.dodge']: Math.max(dodge - 2, 1) });
 		this.update({ ['data.encumbrance.heavy.dodge']: Math.max(dodge - 3, 1) });
 		this.update({ ['data.encumbrance.xheavy.dodge']: Math.max(dodge - 4, 1) });
+
+		console.log(this.data.items);
+
+		//Running loop to total up weight and value for the sheet
+		for (let l = 0; l < this.data.items.length; l++){
+			if (this.data.items[l].type == "Equipment"){
+				carriedWeight = this.data.items[l].data.ttlWeight;
+				carriedCost = this.data.items[l].data.ttlCost;
+			}
+		}
+		//Assign total weight and cost
+		this.update({ ['data.bio.carriedWeight']: carriedWeight });
+		this.update({ ['data.bio.carriedValue']: carriedCost });
 	}
 
 	setTotalPoints(unspent) {
