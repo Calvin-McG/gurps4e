@@ -210,24 +210,18 @@ export class gurpsActorSheet extends ActorSheet {
 	 * @private
 	 */
 	_onRoll(event) {
-		console.log("On a Roll")
 		event.preventDefault();
 		const element = event.currentTarget;
 		const dataset = element.dataset;
-		console.log(element);
-		console.log(dataset);
 
 		if (dataset.type === 'skill' || dataset.type === 'defense') {
 			let effectiveSkill = dataset.level;
 			let skillRoll = new Roll("3d6");
 			skillRoll.roll();
-			console.log(skillRoll.total);
 			let margin = effectiveSkill - skillRoll.total;
-			console.log(margin);
 			let html = "<div>" + dataset.label + "</div>";
 
 			if (skillRoll.total == 18){//18 is always a crit fail
-				console.log("Autocrit 18");
 				html += "<div>Automatic Crit Fail by " + margin + "</div>"
 			}
 			else if (skillRoll.total == 17){//17 is a crit fail if effective skill is less than 16, autofail otherwise
