@@ -69,44 +69,46 @@
         <div class="tab stats" data-tab="melee" data-group="primary">
             <h3 class="addRow" style="text-align: right;">Add Row</h3>
             <div class="tab">
-                <div class="meleeRow">
-                    <label class="resource-label">ID</label>
-                    <label class="resource-label">Name</label>
-                    <label class="resource-label">Level</label>
-                    <label class="resource-label">Skill Name / Mod</label>
-                    <label class="resource-label">Parry / Mod</label>
-                    <label class="resource-label">Block / Mod</label>
-                    <label class="resource-label">Damage</label>
-                    <label class="resource-label">Type</label>
-                    <label class="resource-label">Divisor</label>
-                    <label class="resource-label">Reach</label>
-                    <label class="resource-label">ST</label>
-                </div>
+                <table>
+                <tr class="meleeRow">
+                    <td class="resource-label">ID</td>
+                    <td class="resource-label">Name</td>
+                    <td class="resource-label">Level</td>
+                    <td class="resource-label">Skill Name / Mod</td>
+                    <td class="resource-label">Parry / Mod</td>
+                    <td class="resource-label">Block / Mod</td>
+                    <td class="resource-label">Damage</td>
+                    <td class="resource-label">Type</td>
+                    <td class="resource-label">Divisor</td>
+                    <td class="resource-label">Reach</td>
+                    <td class="resource-label">ST</td>
+                </tr>
                 {{#each data.melee as |melee id|}}
-                <div class="meleeRow">
-                    <label class="resource-label">{{id}}</label>
-                    <input type="text" name="data.melee.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" />
-                    <label class="resource-label">{{melee.level}}</label>
-                    <div class="equipmentInputInput">
+                <tr class="meleeRow">
+                    <td class="resource-label">{{id}}</td>
+                    <td><input type="text" name="data.melee.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
+                    <td class="resource-label">{{melee.level}}</td>
+                    <td class="equipmentInputInput">
                         <input type="text" name="data.melee.{{id}}.skill" value="{{melee.skill}}" title="{{melee.skill}}" style="text-align:left;" />/
                         <input type="text" name="data.melee.{{id}}.skillMod" value="{{melee.skillMod}}" data-dtype="Number"/>
-                    </div>
-                    <div class="equipmentLabelInput">
+                    </td>
+                    <td class="equipmentLabelInput">
                         <label class="resource-label">{{melee.parry}}</label>/
                         <input type="text" name="data.melee.{{id}}.parryMod" value="{{melee.parryMod}}" data-dtype="Number"/>
-                    </div>
-                    <div class="equipmentLabelInput">
+                    </td>
+                    <td class="equipmentLabelInput">
                         <label class="resource-label">{{melee.block}}</label>/
                         <input type="text" name="data.melee.{{id}}.blockMod" value="{{melee.blockMod}}" data-dtype="Number"/>
-                    </div>
-                    <input type="text" name="data.melee.{{id}}.damage" value="{{melee.damage}}" title="{{melee.damage}}" style="text-align:left;" />
-                    <input type="text" name="data.melee.{{id}}.damageType" value="{{melee.damageType}}" title="{{melee.damageType}}" style="text-align:left;" />
-                    <input type="text" name="data.melee.{{id}}.armorDivisor" value="{{melee.armorDivisor}}" title="{{melee.armorDivisor}}" style="text-align:left;" />
-                    <input type="text" name="data.melee.{{id}}.reach" value="{{melee.reach}}" title="{{melee.reach}}" style="text-align:left;" />
-                    <input type="text" name="data.melee.{{id}}.st" value="{{melee.st}}" data-dtype="Number"/>
-                    <a class="attack-delete" id="meleee{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a>
-                </div>
+                    </td>
+                    <td><input type="text" name="data.melee.{{id}}.damage" value="{{melee.damage}}" title="{{melee.damage}}" style="text-align:left;" /></td>
+                    <td><input type="text" name="data.melee.{{id}}.damageType" value="{{melee.damageType}}" title="{{melee.damageType}}" style="text-align:left;" /></td>
+                    <td><input type="text" name="data.melee.{{id}}.armorDivisor" value="{{melee.armorDivisor}}" title="{{melee.armorDivisor}}" style="text-align:left;" /></td>
+                    <td><input type="text" name="data.melee.{{id}}.reach" value="{{melee.reach}}" title="{{melee.reach}}" style="text-align:left;" /></td>
+                    <td><input type="text" name="data.melee.{{id}}.st" value="{{melee.st}}" data-dtype="Number"/></td>
+                    <td><a class="attack-delete" id="meleee{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
+                </tr>
                 {{/each}}
+                </table>
             </div>
         </div>
 
@@ -114,44 +116,47 @@
         <div class="tab stats" data-tab="ranged" data-group="primary">
             <h3 class="addRangedRow" style="text-align: right;">Add Row</h3>
             <div class="tab">
-                <div class="rangedRow">
-                    <label class="resource-label">ID</label>
-                    <label class="resource-label">Name</label>
-                    <label class="resource-label">Level</label>
-                    <label class="resource-label">Skill Name / Mod</label>
-                    <label class="resource-label">Acc</label>
-                    <label class="resource-label">Damage</label>
-                    <label class="resource-label">Type</label>
-                    <label class="resource-label">Divisor</label>
-                    <label class="resource-label">Range</label>
-                    <label class="resource-label">Rof</label>
-                    <label class="resource-label">Shots</label>
-                    <label class="resource-label">Bulk</label>
-                    <label class="resource-label">Rcl</label>
-                    <label class="resource-label">ST</label>
-                </div>
-                {{#each data.ranged as |ranged id|}}
-                <div class="rangedRow">
-                    <label class="resource-label">{{id}}</label>
-                    <input type="text" name="data.ranged.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" />
-                    <label class="resource-label">{{ranged.level}}</label>
-                    <div class="equipmentInputInput">
-                        <input type="text" name="data.ranged.{{id}}.skill" value="{{ranged.skill}}" title="{{ranged.skill}}" style="text-align:left;" />/
-                        <input type="text" name="data.ranged.{{id}}.skillMod" value="{{ranged.skillMod}}" data-dtype="Number"/>
-                    </div>
-                    <input type="text" name="data.ranged.{{id}}.acc" value="{{ranged.acc}}" data-dtype="Number"/>
-                    <input type="text" name="data.ranged.{{id}}.damage" value="{{ranged.damage}}" title="{{ranged.damage}}" style="text-align:left;" />
-                    <input type="text" name="data.ranged.{{id}}.damageType" value="{{ranged.damageType}}" title="{{ranged.damageType}}" style="text-align:left;" />
-                    <input type="text" name="data.ranged.{{id}}.armorDivisor" value="{{ranged.armorDivisor}}" title="{{ranged.armorDivisor}}" style="text-align:left;" />
-                    <input type="text" name="data.ranged.{{id}}.range" value="{{ranged.range}}" title="{{ranged.range}}" style="text-align:left;" />
-                    <input type="text" name="data.ranged.{{id}}.rof" value="{{ranged.rof}}" title="{{ranged.rof}}" style="text-align:left;" />
-                    <input type="text" name="data.ranged.{{id}}.shots" value="{{ranged.shots}}" title="{{ranged.shots}}" style="text-align:left;" />
-                    <input type="text" name="data.ranged.{{id}}.bulk" value="{{ranged.bulk}}" title="{{ranged.bulk}}" style="text-align:left;" />
-                    <input type="text" name="data.ranged.{{id}}.rcl" value="{{ranged.rcl}}" title="{{ranged.rcl}}" style="text-align:left;" />
-                    <input type="text" name="data.ranged.{{id}}.st" value="{{ranged.st}}" data-dtype="Number"/>
-                    <a class="ranged-delete" id="ranged{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a>
-                </div>
-                {{/each}}
+                <table>
+                    <tr class="rangedRow">
+                        <td class="resource-label">ID</td>
+                        <td class="resource-label">Name</td>
+                        <td class="resource-label">Level</td>
+                        <td class="resource-label">Skill Name / Mod</td>
+                        <td class="resource-label">Acc</td>
+                        <td class="resource-label">Damage</td>
+                        <td class="resource-label">Type</td>
+                        <td class="resource-label">Divisor</td>
+                        <td class="resource-label">Range</td>
+                        <td class="resource-label">Rof</td>
+                        <td class="resource-label">Shots</td>
+                        <td class="resource-label">Bulk</td>
+                        <td class="resource-label">Rcl</td>
+                        <td class="resource-label">ST</td>
+                    </tr>
+                    {{#each data.ranged as |ranged id|}}
+                    <tr class="rangedRow">
+                        <td class="resource-label">{{id}}</td>
+                        <td><input type="text" name="data.ranged.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
+                        <td class="resource-label">{{ranged.level}}</td>
+                        <td class="equipmentInputInput">
+                            <input type="text" name="data.ranged.{{id}}.skill" value="{{ranged.skill}}" title="{{ranged.skill}}" style="text-align:left;" />/
+                            <input type="text" name="data.ranged.{{id}}.skillMod" value="{{ranged.skillMod}}" data-dtype="Number"/>
+                        </td>
+                        <td><input type="text" name="data.ranged.{{id}}.acc" value="{{ranged.acc}}" data-dtype="Number"/></td>
+                        <td><input type="text" name="data.ranged.{{id}}.damage" value="{{ranged.damage}}" title="{{ranged.damage}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="data.ranged.{{id}}.damageType" value="{{ranged.damageType}}" title="{{ranged.damageType}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="data.ranged.{{id}}.armorDivisor" value="{{ranged.armorDivisor}}" title="{{ranged.armorDivisor}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="data.ranged.{{id}}.range" value="{{ranged.range}}" title="{{ranged.range}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="data.ranged.{{id}}.rof" value="{{ranged.rof}}" title="{{ranged.rof}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="data.ranged.{{id}}.shots" value="{{ranged.shots}}" title="{{ranged.shots}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="data.ranged.{{id}}.bulk" value="{{ranged.bulk}}" title="{{ranged.bulk}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="data.ranged.{{id}}.rcl" value="{{ranged.rcl}}" title="{{ranged.rcl}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="data.ranged.{{id}}.st" value="{{ranged.st}}" data-dtype="Number"/></td>
+                        <td><a class="ranged-delete" id="ranged{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
+                    </tr>
+                    {{/each}}
+                </table>
+
             </div>
     </section>
 </form>
