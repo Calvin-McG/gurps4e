@@ -28,7 +28,7 @@ export class gurpsItem extends Item {
     let itemData = this.data;
     let data = itemData.data;
     if (this.actor){
-      //console.log(this.actor.data.data);
+      console.log(this.actor);
     }
 
     // all types have one. Might as well update it here
@@ -99,7 +99,6 @@ export class gurpsItem extends Item {
     }
 
     //Check to see if there is an actor yet
-    console.log(this);
     if (this.actor){
       //Do logic stuff for melee profiles
       let meleeKeys = Object.keys(data.melee);

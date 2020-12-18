@@ -424,8 +424,8 @@
 						<div class="item-title">TL</div>
 						<div class="item-title">LC</div>
 						<div class="item-title">Qty</div>
-						<div class="item-title">lbs</div>
 						<div class="item-title">$</div>
+						<div class="item-title">lbs</div>
 						<div class="item-title">Status</div>
 						<div class="item-controls">
 							<!--<a class="item-control item-create" title="Create item" data-type="item"><i class="fas fa-plus"></i> Add</a>-->
@@ -433,16 +433,17 @@
 					</li>
 					{{#each actor.items as |item id|}}
 					{{#if (eq type "Equipment") }}
+					{{log item}}
 					<li class="item-row item" data-item-id="{{item._id}}">
 						<div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24" /></div>
 						<div class="item-name"><span>{{item.name}}</span></div>
-						<div class="item-notes"><span>{{data.notes}}</span></div>
-						<div><span>{{data.tl}}</span></div>
-						<div><span>{{data.lc}}</span></div>
-						<div><span>{{data.quantity}}</span></div>
-						<div><span>{{data.ttlCost}}</span></div>
-						<div><span>{{data.ttlWeight}}</span></div>
-						<div><span>{{data.equipStatus}}</span></div>
+						<div class="item-notes"><span>{{item.data.notes}}</span></div>
+						<div><span>{{item.data.tl}}</span></div>
+						<div><span>{{item.data.lc}}</span></div>
+						<div><span>{{item.data.quantity}}</span></div>
+						<div><span>{{item.data.ttlCost}}</span></div>
+						<div><span>{{item.data.ttlWeight}}</span></div>
+						<div><span>{{item.data.equipStatus}}</span></div>
 						<div class="item-controls">
 							<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
 							<a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -450,7 +451,8 @@
 					</li>
 					{{/if}}
 					{{/each}}
-
+					{{log data}}
+					{{log actor}}
 					<li class="item-row item">
 						<div class="item-image"></div>
 						<div class="item-name"><span></span></div>
@@ -458,8 +460,8 @@
 						<div><span></span></div>
 						<div><span></span></div>
 						<div><span>Total:</span></div>
-						<div><span>{{data.ttlCost}}</span></div>
-						<div><span>{{data.ttlWeight}}</span></div>
+						<div><span>{{actor.data.bio.carriedValue}}</span></div>
+						<div><span>{{actor.data.bio.carriedWeight}}</span></div>
 						<div><span></span></div>
 						<div class="item-controls"></div>
 					</li>

@@ -195,11 +195,14 @@ export class gurpsActor extends Actor {
 
 		console.log(this.data.items);
 
+		//Clear carried weight/cost before retotalling
+		carriedWeight = 0;
+		carriedCost = 0;
 		//Running loop to total up weight and value for the sheet
 		for (let l = 0; l < this.data.items.length; l++){
 			if (this.data.items[l].type == "Equipment"){
-				carriedWeight = this.data.items[l].data.ttlWeight;
-				carriedCost = this.data.items[l].data.ttlCost;
+				carriedWeight = this.data.items[l].data.ttlWeight + carriedWeight;
+				carriedCost = this.data.items[l].data.ttlCost + carriedCost;
 			}
 		}
 		//Assign total weight and cost
