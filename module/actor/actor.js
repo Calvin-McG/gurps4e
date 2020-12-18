@@ -27,7 +27,6 @@ export class gurpsActor extends Actor {
 	 * Augment the basic actor data with additional dynamic data.
 	 */
 	prepareData() {
-		console.log(this.data.data);
 		super.prepareData();
 		// console.log("prepareData actor");
         // console.log(this);
@@ -192,8 +191,6 @@ export class gurpsActor extends Actor {
 		this.update({ ['data.encumbrance.medium.dodge']: Math.max(dodge - 2, 1) });
 		this.update({ ['data.encumbrance.heavy.dodge']: Math.max(dodge - 3, 1) });
 		this.update({ ['data.encumbrance.xheavy.dodge']: Math.max(dodge - 4, 1) });
-
-		console.log(this.data.items);
 
 		//Clear carried weight/cost before retotalling
 		carriedWeight = 0;

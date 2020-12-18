@@ -27,9 +27,6 @@ export class gurpsItem extends Item {
     // Get the Item's data
     let itemData = this.data;
     let data = itemData.data;
-    if (this.actor){
-      console.log(this.actor);
-    }
 
     // all types have one. Might as well update it here
     data.notes = data.notes || "note";
@@ -73,11 +70,6 @@ export class gurpsItem extends Item {
     data.weight = data.weight || 0;
   }
   _prepareEquipmentData(itemData, data) {
-    // Override common default icon
-    //console.log(this.data);
-    console.log(data);
-    //console.log(itemData);
-
     //Calculated total weight and cost
     this.update({ ['data.ttlCost']: (data.cost * data.quantity) });
     this.update({ ['data.ttlWeight']: (data.weight * data.quantity) });
@@ -170,7 +162,6 @@ export class gurpsItem extends Item {
   }
   _prepareRollableData(itemData, data) {
     // Override common default icon
-    console.log(data);
     let base = 0;
     let level = 0;
     let points = data.points;
@@ -251,7 +242,6 @@ export class gurpsItem extends Item {
       level = level + data.mod
     }
     else {//It's a technique
-      console.log(data);
 
       //Loop through all the skills on the sheet, find the one they picked and set that as the base
       for (let i = 0; i < this.actor.data.items.length; i++){
@@ -280,8 +270,6 @@ export class gurpsItem extends Item {
         }
       }
       level = Math.min((level + data.mod), (data.maxLevel + base));
-
-      console.log(level);
 
     }
 
