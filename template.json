@@ -209,12 +209,7 @@
       "Equipment",
       "Hit-Location",
       "Rollable",
-      "Trait",
-      "Melee-Attack",
-      "Ranged-Attack",
-      "Defence",
-      "Modifier",
-      "Item"
+      "Trait"
     ],
     "templates": {
       "base": {

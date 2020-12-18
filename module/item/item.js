@@ -115,10 +115,21 @@ export class gurpsItem extends Item {
             level = level + mod;//Update the skill level with the skill modifier
             this.update({ ['data.melee.' + meleeKeys[k] + '.level' ]: level });//Update skill level
 
-            parry = ( level / 2 + 3 ) + data.melee[meleeKeys[k]].parryMod;//Calculate the parry value
+            if (Number.isInteger(+data.melee[meleeKeys[k]].parryMod)){//If parry mod is a number, compute normally
+              parry = Math.floor(+( level / 2 + 3 ) + +data.melee[meleeKeys[k]].parryMod);//Calculate the parry value
+            }
+            else {//If it's not a number, display the entry
+              parry = data.melee[meleeKeys[k]].parryMod;
+
+            }
             this.update({ ['data.melee.' + meleeKeys[k] + '.parry' ]: parry });//Update the parry value
 
-            block = ( level / 2 + 3 ) + data.melee[meleeKeys[k]].blockMod;//Calculate the block value
+            if (Number.isInteger(+data.melee[meleeKeys[k]].blockMod)) {//If block mod is a number, compute normally
+              block = Math.floor(+( level / 2 + 3 ) + +data.melee[meleeKeys[k]].blockMod);//Calculate the block value
+            }
+            else {
+              block = data.melee[meleeKeys[k]].blockMod;
+            }
             this.update({ ['data.melee.' + meleeKeys[k] + '.block' ]: block });//Update the block value
           }
         }

@@ -75,8 +75,8 @@
                     <td class="resource-label">Name</td>
                     <td class="resource-label">Level</td>
                     <td class="resource-label">Skill Name / Mod</td>
-                    <td class="resource-label">Parry / Mod</td>
-                    <td class="resource-label">Block / Mod</td>
+                    <td class="resource-label">Parry</td>
+                    <td class="resource-label">Block</td>
                     <td class="resource-label">Damage</td>
                     <td class="resource-label">Type</td>
                     <td class="resource-label">Divisor</td>
@@ -92,13 +92,11 @@
                         <input type="text" name="data.melee.{{id}}.skill" value="{{melee.skill}}" title="{{melee.skill}}" style="text-align:left;" />/
                         <input type="text" name="data.melee.{{id}}.skillMod" value="{{melee.skillMod}}" data-dtype="Number"/>
                     </td>
-                    <td class="equipmentLabelInput">
-                        <label class="resource-label">{{melee.parry}}</label>/
-                        <input type="text" name="data.melee.{{id}}.parryMod" value="{{melee.parryMod}}" data-dtype="Number"/>
+                    <td>
+                        <input type="text" name="data.melee.{{id}}.parryMod" value="{{melee.parryMod}}"/>
                     </td>
-                    <td class="equipmentLabelInput">
-                        <label class="resource-label">{{melee.block}}</label>/
-                        <input type="text" name="data.melee.{{id}}.blockMod" value="{{melee.blockMod}}" data-dtype="Number"/>
+                    <td>
+                        <input type="text" name="data.melee.{{id}}.blockMod" value="{{melee.blockMod}}"/>
                     </td>
                     <td><input type="text" name="data.melee.{{id}}.damage" value="{{melee.damage}}" title="{{melee.damage}}" style="text-align:left;" /></td>
                     <td><input type="text" name="data.melee.{{id}}.damageType" value="{{melee.damageType}}" title="{{melee.damageType}}" style="text-align:left;" /></td>
