@@ -365,13 +365,17 @@
 						</td>
 						<td>
 							{{melee.parry}}
+							{{#if (isInt melee.parry)}}
 							<label for="melee.parry" class="fa fa-dice-six rollable" data-level="{{melee.parry}}"
 								   data-label="Makes a &lt;b&gt;{{item.name}}&lt;/b&gt; Parry roll." data-type="skill"></label>
+							{{/if}}
 						</td>
 						<td>
 							{{melee.block}}
+							{{#if (isInt melee.block)}}
 							<label for="melee.block" class="fa fa-dice-six rollable" data-level="{{melee.block}}"
 								   data-label="&lt;b&gt;{{item.name}}&lt;/b&gt; Block roll." data-type="skill"></label>
+							{{/if}}
 						</td>
 						<td>
 							{{melee.damage}} {{melee.damageType}} ({{melee.armorDivisor}})
@@ -380,6 +384,47 @@
 						</td>
 						<td>{{melee.reach}}</td>
 						<td>{{melee.st}}</td>
+					</tr>
+					{{/each}}
+					{{/each}}
+				</table>
+				<table class="items-list">
+					<tr class="bold">
+						<td>Item</td>
+						<td>Attack</td>
+						<td>Skill</td>
+						<td>Acc</td>
+						<td>Damage</td>
+						<td>Range</td>
+						<td>Rof</td>
+						<td>Shots</td>
+						<td>Bulk</td>
+						<td>Rcl</td>
+						<td>ST</td>
+					</tr>
+					{{#each actor.items as |item id|}}
+					{{#each item.data.ranged as |ranged rid|}}
+					{{log ranged}}
+					<tr>
+						<td>{{item.name}}</td>
+						<td>{{ranged.name}}</td>
+						<td>
+							{{ranged.skill}}: {{ranged.level}}
+							<label for="ranged.skill" class="fa fa-dice-six rollable" data-level="{{ranged.level}}"
+								   data-label="Makes a &lt;b&gt;{{item.name}} {{ranged.name}}&lt;/b&gt; Skill roll." data-type="skill"></label>
+						</td>
+						<td>{{ranged.acc}}</td>
+						<td>
+							{{ranged.damage}} {{ranged.damageType}} ({{ranged.armorDivisor}})
+							<label for="ranged.damage" class="fa fa-dice-six rollable" data-level="{{ranged.damage}}"
+								   data-label="Makes a &lt;b&gt;{{item.name}} {{ranged.name}}&lt;/b&gt; Damage roll." data-type="damage"></label>
+						</td>
+						<td>{{ranged.range}}</td>
+						<td>{{ranged.rof}}</td>
+						<td>{{ranged.shots}}</td>
+						<td>{{ranged.bulk}}</td>
+						<td>{{ranged.rcl}}</td>
+						<td>{{ranged.st}}</td>
 					</tr>
 					{{/each}}
 					{{/each}}
