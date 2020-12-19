@@ -271,4 +271,30 @@ export class gurpsActorSheet extends ActorSheet {
 		this.actor.update({ ["data.gmod.value"]: 0 });
 	}
 
+	dieToIcon(die){
+		let response = "";
+		switch (die) {
+			case 1:
+				response = "<label class=\"fa fa-dice-one\"></label>";
+				break;
+			case 2:
+				response = "<label class=\"fa fa-dice-two\"></label>";
+				break;
+			case 3:
+				response = "<label class=\"fa fa-dice-three\"></label>";
+				break;
+			case 4:
+				response = "<label class=\"fa fa-dice-four\"></label>";
+				break;
+			case 5:
+				response = "<label class=\"fa fa-dice-five\"></label>";
+				break;
+			case 6:
+				response = "<label class=\"fa fa-dice-six\"></label>";
+				break;
+		}
+
+		return response;
+	}
+
 }
