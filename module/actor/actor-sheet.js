@@ -220,23 +220,20 @@ export class gurpsActorSheet extends ActorSheet {
 			let die2 = new Roll("1d6");
 			let die3 = new Roll("1d6");
 
-			console.log(die1, die2, die3)
 			die1.roll();
 			die2.roll();
 			die3.roll();
 			let skillRoll = +die1.total + +die2.total + +die3.total;
-			console.log(skillRoll)
 			let margin = +effectiveSkill - +skillRoll;
-			console.log(margin)
 			let html = "<div>" + dataset.label + "</div>";
 
+			html += "Rolls a " + skillRoll + " vs a " + effectiveSkill;
 
 			//Code block for display of dice
 			html += "<div>";
 			html += this.dieToIcon(die1.total);
 			html += this.dieToIcon(die2.total);
 			html += this.dieToIcon(die3.total);
-			html += " = " + skillRoll
 			html += "</div>"
 
 
@@ -294,22 +291,22 @@ export class gurpsActorSheet extends ActorSheet {
 		let response = "";
 		switch (die) {
 			case 1:
-				response = "<label class=\"fa fa-dice-one\"></label>";
+				response = "<label class=\"fa fa-dice-one fa-4x\"></label>";
 				break;
 			case 2:
-				response = "<label class=\"fa fa-dice-two\"></label>";
+				response = "<label class=\"fa fa-dice-two fa-4x\"></label>";
 				break;
 			case 3:
-				response = "<label class=\"fa fa-dice-three\"></label>";
+				response = "<label class=\"fa fa-dice-three fa-4x\"></label>";
 				break;
 			case 4:
-				response = "<label class=\"fa fa-dice-four\"></label>";
+				response = "<label class=\"fa fa-dice-four fa-4x\"></label>";
 				break;
 			case 5:
-				response = "<label class=\"fa fa-dice-five\"></label>";
+				response = "<label class=\"fa fa-dice-five fa-4x\"></label>";
 				break;
 			case 6:
-				response = "<label class=\"fa fa-dice-six\"></label>";
+				response = "<label class=\"fa fa-dice-six fa-4x\"></label>";
 				break;
 		}
 
