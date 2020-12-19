@@ -356,18 +356,35 @@
 					{{log actor.items}}
 					{{#each actor.items as |item id|}}
 					{{log item}}
-						{{#each item.data.melee as |melee mid|}}
-								<tr>
-									<td>{{item.name}}</td>
-									<td>{{melee.name}}</td>
-									<td>{{melee.skill}}: {{melee.level}}</td>
-									<td>{{melee.parry}}</td>
-									<td>{{melee.block}}</td>
-									<td>{{melee.damage}} {{melee.damageType}} ({{melee.armorDivisor}})</td>
-									<td>{{melee.reach}}</td>
-									<td>{{melee.st}}</td>
-								</tr>
-						{{/each}}
+					{{#each item.data.melee as |melee mid|}}
+					<tr>
+						<td>{{item.name}}</td>
+						<td>{{melee.name}}</td>
+						<td>
+							{{melee.skill}}: {{melee.level}}
+							<label for="melee.skill" class="fa fa-dice-six rollable" data-level="{{melee.level}}"
+								   data-label="Makes a &lt;b&gt;{{item.name}} {{melee.name}}&lt;/b&gt; roll." data-type="skill"></label>
+						</td>
+						<td>
+							{{melee.parry}}
+							<label for="melee.parry" class="fa fa-dice-six rollable" data-level="{{melee.parry}}"
+								   data-label="Makes a &lt;b&gt;{{item.name}} Parry&lt;/b&gt; roll." data-type="skill"></label>
+						</td>
+						<td>
+							{{melee.block}}
+							<label for="melee.block" class="fa fa-dice-six rollable" data-level="{{melee.block}}"
+								   data-label="&lt;b&gt;{{item.name}} Block&lt;/b&gt; roll." data-type="skill"></label>
+						</td>
+						{{log melee.damage}}
+						<td>
+							{{melee.damage}} {{melee.damageType}} ({{melee.armorDivisor}})
+							<label for="melee.damage" class="fa fa-dice-six rollable" data-level="{{melee.damage}}"
+								   data-label="Makes a &lt;b&gt;{{item.name}} {{melee.name}} Damage&lt;/b&gt; roll." data-type="damage"></label>
+						</td>
+						<td>{{melee.reach}}</td>
+						<td>{{melee.st}}</td>
+					</tr>
+					{{/each}}
 					{{/each}}
 				</table>
 			</div>
