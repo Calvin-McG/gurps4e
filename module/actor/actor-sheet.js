@@ -211,11 +211,39 @@ export class gurpsActorSheet extends ActorSheet {
 	 */
 	_onRoll(event) {
 		event.preventDefault();
+
+		let modModal = new Dialog({
+			title: "Test Dialog",
+			content: "<input type='text' id='mod' name='mod' value='0'/>",
+			buttons: {
+				mod: {
+					icon: '<i class="fas fa-check"></i>',
+					label: "Apply Modifier",
+					callback: (html) => {
+						let mod = html.find('#mod').val()
+						this.computeRoll(event, mod)
+					}
+				},
+				noMod: {
+					icon: '<i class="fas fa-times"></i>',
+					label: "No Modifier",
+					callback: () => this.computeRoll(event, 0)
+				}
+			},
+			default: "noMod",
+			render: html => console.log("Register interactivity in the rendered dialog"),
+			close: html => console.log("This always is logged no matter which option is chosen")
+		})
+		modModal.render(true)
+	}
+
+	computeRoll(event, modifier){
+		event.preventDefault();
 		const element = event.currentTarget;
 		const dataset = element.dataset;
 
 		if (dataset.type === 'skill' || dataset.type === 'defense') {
-			let effectiveSkill = dataset.level;
+			let effectiveSkill = +dataset.level + +modifier;
 			let die1 = new Roll("1d6");
 			let die2 = new Roll("1d6");
 			let die3 = new Roll("1d6");
@@ -227,7 +255,12 @@ export class gurpsActorSheet extends ActorSheet {
 			let margin = +effectiveSkill - +skillRoll;
 			let html = "<div>" + dataset.label + "</div>";
 
-			html += "Rolls a " + skillRoll + " vs a " + effectiveSkill;
+			if(modifier >= 0){//modifier is zero or positive
+				html += "Rolls a " + skillRoll + " vs " + dataset.level + " + " + modifier;
+			}
+			else {
+				html += "Rolls a " + skillRoll + " vs " + dataset.level + " - " + modifier;
+			}
 
 			//Code block for display of dice
 			html += "<div>";
@@ -283,8 +316,6 @@ export class gurpsActorSheet extends ActorSheet {
 		else {
 			console.log("Rollable element triggered with an unsupported data-type (supported types are 'skill', 'damage' and 'defense'");
 		}
-
-		this.actor.update({ ["data.gmod.value"]: 0 });
 	}
 
 	dieToIcon(die){
