@@ -707,3 +707,14 @@
 	display: grid;
 	align-self: center;
 }
+
+.equipment-header td {
+	text-align: center;
+	padding: 0 0.5em;
+	font-weight: bold;
+}
+
+.equipment-entry td {
+	text-align: center;
+	padding: 0 0.5em;
+}
