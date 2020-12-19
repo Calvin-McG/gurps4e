@@ -32,29 +32,14 @@ export class gurpsItem extends Item {
     data.notes = data.notes || "note";
 
     switch (itemData.type) {
-      case "Item": // legacy item type
-        this._prepareItemData(itemData, data);
-        break;
       case "Equipment":
         this._prepareEquipmentData(itemData, data);
         break;
       case "Hit-Location":
         this._prepareHitLocationData(itemData, data);
         break;
-      case "Melee-Attack":
-        this._prepareMeleeAttackData(itemData, data);
-        break;
-      case "Ranged-Attack":
-        this._prepareRangedAttackData(itemData, data);
-        break;
       case "Rollable":
         this._prepareRollableData(itemData, data);
-        break;
-      case "Modifier":
-        this._prepareModifierData(itemData, data);
-        break;
-      case "Defence":
-        this._prepareDefenceData(itemData, data);
         break;
       case "Trait":
         this._prepareTraitData(itemData, data);
@@ -64,11 +49,6 @@ export class gurpsItem extends Item {
     }
   }
 
-  _prepareItemData(itemData, data) {
-    // Override common default icon
-    data.quantity = data.quantity || 1;
-    data.weight = data.weight || 0;
-  }
   _prepareEquipmentData(itemData, data) {
     //Calculated total weight and cost
     this.update({ ['data.ttlCost']: (data.cost * data.quantity) });
@@ -163,12 +143,6 @@ export class gurpsItem extends Item {
   }
 
   _prepareHitLocationData(itemData, data) {
-    // Override common default icon
-  }
-  _prepareMeleeAttackData(itemData, data) {
-    // Override common default icon
-}
-  _prepareRangedAttackData(itemData, data) {
     // Override common default icon
   }
   _prepareRollableData(itemData, data) {
@@ -286,21 +260,7 @@ export class gurpsItem extends Item {
 
     this.update({ ['data.level']: level });
   }
-  _prepareModifierData(itemData, data) {
-    // Override common default icon
-  }
-  _prepareDefenceData(itemData, data) {
-    // Override common default icon
-    
-    data.defences = Object.entries(GURPS4E.defences).map(entry => {
-      const [category, label] = entry;
-      return {
-          category,
-          label,
-          checked: category === data.category,
-      }
-  });
-  }
+
   _prepareTraitData(itemData, data) {
     // Override common default icon
   }
