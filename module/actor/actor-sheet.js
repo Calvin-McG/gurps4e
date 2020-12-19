@@ -216,10 +216,29 @@ export class gurpsActorSheet extends ActorSheet {
 
 		if (dataset.type === 'skill' || dataset.type === 'defense') {
 			let effectiveSkill = dataset.level;
-			let skillRoll = new Roll("3d6");
-			skillRoll.roll();
-			let margin = effectiveSkill - skillRoll.total;
+			let die1 = new Roll("1d6");
+			let die2 = new Roll("1d6");
+			let die3 = new Roll("1d6");
+
+			console.log(die1, die2, die3)
+			die1.roll();
+			die2.roll();
+			die3.roll();
+			let skillRoll = +die1.total + +die2.total + +die3.total;
+			console.log(skillRoll)
+			let margin = +effectiveSkill - +skillRoll;
+			console.log(margin)
 			let html = "<div>" + dataset.label + "</div>";
+
+
+			//Code block for display of dice
+			html += "<div>";
+			html += this.dieToIcon(die1.total);
+			html += this.dieToIcon(die2.total);
+			html += this.dieToIcon(die3.total);
+			html += " = " + skillRoll
+			html += "</div>"
+
 
 			if (skillRoll.total == 18){//18 is always a crit fail
 				html += "<div>Automatic Crit Fail by " + margin + "</div>"
