@@ -210,24 +210,67 @@ export class gurpsActorSheet extends ActorSheet {
 	 * @private
 	 */
 	_onRoll(event) {
-		console.log("On a Roll")
+		event.preventDefault();
+
+		let modModal = new Dialog({
+			title: "Test Dialog",
+			content: "<input type='text' id='mod' name='mod' value='0'/>",
+			buttons: {
+				mod: {
+					icon: '<i class="fas fa-check"></i>',
+					label: "Apply Modifier",
+					callback: (html) => {
+						let mod = html.find('#mod').val()
+						this.computeRoll(event, mod)
+					}
+				},
+				noMod: {
+					icon: '<i class="fas fa-times"></i>',
+					label: "No Modifier",
+					callback: () => this.computeRoll(event, 0)
+				}
+			},
+			default: "noMod",
+			render: html => console.log("Register interactivity in the rendered dialog"),
+			close: html => console.log("This always is logged no matter which option is chosen")
+		})
+		modModal.render(true)
+	}
+
+	computeRoll(event, modifier){
 		event.preventDefault();
 		const element = event.currentTarget;
 		const dataset = element.dataset;
-		console.log(element);
-		console.log(dataset);
 
 		if (dataset.type === 'skill' || dataset.type === 'defense') {
-			let effectiveSkill = dataset.level;
-			let skillRoll = new Roll("3d6");
-			skillRoll.roll();
-			console.log(skillRoll.total);
-			let margin = effectiveSkill - skillRoll.total;
-			console.log(margin);
+			let effectiveSkill = +dataset.level + +modifier;
+			let die1 = new Roll("1d6");
+			let die2 = new Roll("1d6");
+			let die3 = new Roll("1d6");
+
+			die1.roll();
+			die2.roll();
+			die3.roll();
+			let skillRoll = +die1.total + +die2.total + +die3.total;
+			let margin = +effectiveSkill - +skillRoll;
 			let html = "<div>" + dataset.label + "</div>";
 
+			if(modifier >= 0){//modifier is zero or positive
+				html += "Rolls a " + skillRoll + " vs " + dataset.level + " + " + modifier;
+			}
+			else {
+				html += "Rolls a " + skillRoll + " vs " + dataset.level + " - " + modifier;
+			}
+
+			//Code block for display of dice
+			html += "<div>";
+			html += this.dieToIcon(die1.total);
+			html += this.dieToIcon(die2.total);
+			html += this.dieToIcon(die3.total);
+			html += "</div>"
+
+
 			if (skillRoll.total == 18){//18 is always a crit fail
-				console.log("Autocrit 18");
 				html += "<div>Automatic Crit Fail by " + margin + "</div>"
 			}
 			else if (skillRoll.total == 17){//17 is a crit fail if effective skill is less than 16, autofail otherwise
@@ -264,7 +307,7 @@ export class gurpsActorSheet extends ActorSheet {
 		}
 
 		else if (dataset.type === 'damage') {
-			let damageRoll = new Roll(dataset.roll);
+			let damageRoll = new Roll(dataset.level);
 			damageRoll.roll();
 			let html = "<div>" + dataset.label + " <i class='fas fa-arrow-right'></i> " + damageRoll.total + "</div>";
 			ChatMessage.create({ content: html, user: game.user._id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
@@ -273,8 +316,32 @@ export class gurpsActorSheet extends ActorSheet {
 		else {
 			console.log("Rollable element triggered with an unsupported data-type (supported types are 'skill', 'damage' and 'defense'");
 		}
+	}
 
-		this.actor.update({ ["data.gmod.value"]: 0 });
+	dieToIcon(die){
+		let response = "";
+		switch (die) {
+			case 1:
+				response = "<label class=\"fa fa-dice-one fa-4x\"></label>";
+				break;
+			case 2:
+				response = "<label class=\"fa fa-dice-two fa-4x\"></label>";
+				break;
+			case 3:
+				response = "<label class=\"fa fa-dice-three fa-4x\"></label>";
+				break;
+			case 4:
+				response = "<label class=\"fa fa-dice-four fa-4x\"></label>";
+				break;
+			case 5:
+				response = "<label class=\"fa fa-dice-five fa-4x\"></label>";
+				break;
+			case 6:
+				response = "<label class=\"fa fa-dice-six fa-4x\"></label>";
+				break;
+		}
+
+		return response;
 	}
 
 }

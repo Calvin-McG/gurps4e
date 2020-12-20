@@ -35,4 +35,8 @@ Hooks.once('init', async function() {
   Handlebars.registerHelper('toLowerCase', function(str) {
     return str.toLowerCase();
   });
+
+  Handlebars.registerHelper('isInt', function (value) {
+    return Number.isInteger(value);
+  });
 });

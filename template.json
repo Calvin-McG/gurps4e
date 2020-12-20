@@ -87,14 +87,8 @@
           }
         },
         "baseDamage": {
-          "swing": {
-            "dice": 1,
-            "adds": 0
-          },
-          "thrust": {
-            "dice": 1,
-            "adds": -2
-          }
+          "swing": "1d6",
+          "thrust": "1d6-2"
         },
         "primaryAttributes": {
           "strength": {
@@ -209,26 +203,38 @@
       "Equipment",
       "Hit-Location",
       "Rollable",
-      "Trait",
-      "Melee-Attack",
-      "Ranged-Attack",
-      "Defence",
-      "Modifier",
-      "Item"
+      "Trait"
     ],
     "templates": {
       "base": {
-        "notes": "note"
+        "notes": ""
       },
       "onMain": {
         "onMain": false
       },
       "countable": {
         "quantity": 1,
-        "cost": ""
+        "cost": 0,
+        "ttlCost": 0
       },
       "weighable": {
-        "weight": 0
+        "weight": 0,
+        "ttlWeight": 0
+      },
+      "tl": {
+        "tl": 0
+      },
+      "lc": {
+        "lc": 4
+      },
+      "equipStatus": {
+        "equipStatus": ""
+      },
+      "melee": {
+        "melee": []
+      },
+      "ranged": {
+        "ranged": []
       },
       "level": {
         "level": 0
@@ -269,7 +275,12 @@
       "templates": [
         "base",
         "countable",
-        "weighable"
+        "weighable",
+        "tl",
+        "lc",
+        "equipStatus",
+        "melee",
+        "ranged"
       ]
     },
     "Hit-Location": {
@@ -330,7 +341,9 @@
         "base",
         "category",
         "level",
-        "points"
+        "points",
+        "melee",
+        "ranged"
       ]
     },
     "Modifier": {

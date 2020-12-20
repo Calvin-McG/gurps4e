@@ -27,9 +27,8 @@ export class gurpsActor extends Actor {
 	 * Augment the basic actor data with additional dynamic data.
 	 */
 	prepareData() {
-		console.log(this.data.data);
 		super.prepareData();
-		// console.log("prepareData actor");
+		console.log("prepareData actor");
         // console.log(this);
 
 		//Total up spent and remaining points
@@ -105,7 +104,7 @@ export class gurpsActor extends Actor {
 		this.update({ ['data.primaryAttributes.fright.value']: fr });
 
 		//Speed
-		var speed = Math.floor(((+(+dx + +ht) / +4) + +this.data.data.primaryAttributes.speed.mod + +(this.data.data.primaryAttributes.speed.points/20)) * +4) / +4;;
+		var speed = Math.floor(((+(+dx + +ht) / +4) + +this.data.data.primaryAttributes.speed.mod + +(this.data.data.primaryAttributes.speed.points/20)) * +4) / +4;
 		this.update({ ['data.primaryAttributes.speed.value']: speed });
 
 		//Move
@@ -169,9 +168,11 @@ export class gurpsActor extends Actor {
 
 	recalcEncValues(){
 		var st = this.data.data.primaryAttributes.strength.value;
-		var bl = ((st * st)/5);
+		var bl = Math.round(((st * st)/5));
 		var move = this.data.data.primaryAttributes.move.value;
 		var dodge = this.data.data.primaryAttributes.dodge.value;
+		var carriedWeight = 0;
+		var carriedCost = 0;
 
 		this.update({ ['data.encumbrance.none.lbs']: bl });
 		this.update({ ['data.encumbrance.light.lbs']: bl * 2 });
@@ -190,6 +191,20 @@ export class gurpsActor extends Actor {
 		this.update({ ['data.encumbrance.medium.dodge']: Math.max(dodge - 2, 1) });
 		this.update({ ['data.encumbrance.heavy.dodge']: Math.max(dodge - 3, 1) });
 		this.update({ ['data.encumbrance.xheavy.dodge']: Math.max(dodge - 4, 1) });
+
+		//Clear carried weight/cost before retotalling
+		carriedWeight = 0;
+		carriedCost = 0;
+		//Running loop to total up weight and value for the sheet
+		for (let l = 0; l < this.data.items.length; l++){
+			if (this.data.items[l].type == "Equipment"){
+				carriedWeight = this.data.items[l].data.ttlWeight + carriedWeight;
+				carriedCost = this.data.items[l].data.ttlCost + carriedCost;
+			}
+		}
+		//Assign total weight and cost
+		this.update({ ['data.bio.carriedWeight']: carriedWeight });
+		this.update({ ['data.bio.carriedValue']: carriedCost });
 	}
 
 	setTotalPoints(unspent) {
