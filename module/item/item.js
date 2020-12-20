@@ -122,6 +122,7 @@ export class gurpsItem extends Item {
             let thr = this.actor.data.data.baseDamage.thrust;
             let sw = this.actor.data.data.baseDamage.swing;
 
+            damage = damage.toLowerCase();
             damage = damage.replace("thr", thr);
             damage = damage.replace("sw", sw)
 
