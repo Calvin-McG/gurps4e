@@ -197,7 +197,7 @@
 										<div class="item-image"></div>
 										<div class="item-name">Name</div>
 										<div class="item-notes">Notes</div>
-										<div class="item-rolls">Skill</div>
+										<div class="item-rolls">Roll</div>
 										<div class="item-points">Points</div>
 										<div class="item-controls">
 												<!--<a class="item-control item-create" title="Create item" data-type="item"><i class="fas fa-plus"></i> Add</a>-->
@@ -216,9 +216,13 @@
 											{{data.notes}}
 									</div>
 									<div class="item-skill">
-											<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
+										{{#if (isInt data.level)}}
+											{{#if data.level}}
+												<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
 														 data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
-											{{data.level}}
+												{{data.level}}
+											{{/if}}
+										{{/if}}
 									</div>
 									<div class="item-points">
 										<div class="item-notes">
