@@ -45,7 +45,7 @@ export class gurpsItem extends Item {
         this._prepareTraitData(itemData, data);
         break;
       default: // not a supported type
-        return ui.notifications.error(game.i18n.localize("GURPS4E.Error.BadItemtype"));
+        return ui.notifications.error("This type of item is not supported in the system!");
     }
   }
 

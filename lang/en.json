@@ -1,23 +1,4 @@
 {
-    "GURPS4E.system.title" : "Generic Universal RolePlaying Sysytem (any) Edition",
-    "GURPS4E.system.description" : "A minimal implementation of GURPS for the Foundry VTT environment.",
-    "GURPS4E.attributes.hp" : "HP",
-    "GURPS4E.attributes.fp" : "FP",
-    "GURPS4E.attributes.dr" : "DR",
-    "GURPS4E.attributes.move" : "Move",
-    "GURPS4E.attributes.bs" : "Basic Speed",
-
-    "SETTINGS.InitRule" : "Initiative Rules",
-    "SETTINGS.InitHint" : "Choose which method is used to determine who acts first in combat.",
-    "SETTINGS.InitDefault" : "RaW B.324, Sort by highest BS, then DX, then RND",
-    "SETTINGS.InitHouse" : "Random within BS, Sort by highest BS + (DX + 2d100) / 1000",
-    "SETTINGS.InitHouse2" : "Shuffle Up and Down, Sort by highest BS + (1d750 / 1000) - .251",
-    "SETTINGS.DisableHouseDamage": "Disable House damage formula use.",
-    "SETTINGS.DisableHouseDamageHint": "Choose to use text boxes to store attack damage formulae instead of using the House damage formula which follows the Damage Table pattern (B.16) of d-1 to d+2.",
-    "SETTINGS.UseHalfFPIncrements": "FP Increment",
-    "SETTINGS.UseHalfFPIncrementsHint": "Changes to FP are made in half point increments.",
-    
-    "GURPS4E.Error.BadItemtype" : "This type of item is not supported in the system!",
 
     "SETTINGS.CapAdvIB" : "Cap Advantage at IB",
     "SETTINGS.CapAdvIBHint" : "Sets the max value of Advantage as the character's Initiative Bonus.",
