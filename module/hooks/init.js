@@ -29,20 +29,7 @@ Hooks.once("init", () => {
   _setGurps4eInitiative(game.settings.get("gurps4e", "initiativeRule"));
 
   function _setGurps4eInitiative(initMethod) {
-    let formula;
-    switch (initMethod) {
-      case "default":
-      formula = "(1d100 - 1) / 1000000 + @primaryAttributes.dexterity.value / 10000 + @secondaryAttributes.bs.value";
-      break;
-
-      case "house":
-      formula = "2d100 / 1000 + @primaryAttributes.dexterity.value / 1000 + @secondaryAttributes.bs.value";
-      break;
-
-      case "house2":
-      formula = "(1d750 / 1000) -.251 + @secondaryAttributes.bs.value";
-      break;
-    }
+    let formula = "@primaryAttributes.speed.value + @primaryAttributes.dexterity.value / 10000 + (1d100 - 1) / 1000000";
 
     let decimals = (initMethod == "default") ? 6 : 3;
     CONFIG.Combat.initiative = {
