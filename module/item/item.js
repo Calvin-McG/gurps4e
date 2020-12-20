@@ -80,7 +80,7 @@ export class gurpsItem extends Item {
       let meleeKeys = Object.keys(data.melee);
       if (meleeKeys.length){//Check to see if there are any melee profiles
         for (let k = 0; k < meleeKeys.length; k++){
-          if (data.melee[meleeKeys[k]].name){//Check to see if name is filled in
+          if (data.melee[meleeKeys[k]].name){//Check to see if name is filled in. Otherwise don't bother.
             let level = 0;
             let mod = +data.melee[meleeKeys[k]].skillMod;
             let parry = 0;
@@ -89,7 +89,7 @@ export class gurpsItem extends Item {
             //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
             for (let i = 0; i < this.actor.data.items.length; i++){
               if (this.actor.data.items[i].type === "Rollable"){
-                if (this.actor.data.items[i].data.category === "skill"){
+                if (this.actor.data.items[i].data.category === "skill" || this.actor.data.items[i].data.category === "technique"){
                   if (data.melee[meleeKeys[k]].skill === this.actor.data.items[i].name){
                     level = +this.actor.data.items[i].data.level;
                   }
@@ -115,6 +115,17 @@ export class gurpsItem extends Item {
               block = data.melee[meleeKeys[k]].blockMod;
             }
             this.update({ ['data.melee.' + meleeKeys[k] + '.block' ]: block });//Update the block value
+
+
+            //Do the logic to parse out thr/sw damage to dice
+            let damage = data.melee[meleeKeys[k]].damageInput;
+            let thr = this.actor.data.data.baseDamage.thrust;
+            let sw = this.actor.data.data.baseDamage.swing;
+
+            damage = damage.replace("thr", thr);
+            damage = damage.replace("sw", sw)
+
+            this.update({ ['data.melee.' + meleeKeys[k] + '.damage' ]: damage });//Update the damage value
           }
         }
       }
@@ -131,7 +142,7 @@ export class gurpsItem extends Item {
             //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
             for (let i = 0; i < this.actor.data.items.length; i++){
               if (this.actor.data.items[i].type === "Rollable"){
-                if (this.actor.data.items[i].data.category === "skill"){
+                if (this.actor.data.items[i].data.category === "skill" || this.actor.data.items[i].data.category === "technique"){
                   if (data.ranged[rangedKeys[k]].skill === this.actor.data.items[i].name){
                     level = +this.actor.data.items[i].data.level;
                   }

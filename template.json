@@ -87,14 +87,8 @@
           }
         },
         "baseDamage": {
-          "swing": {
-            "dice": 1,
-            "adds": 0
-          },
-          "thrust": {
-            "dice": 1,
-            "adds": -2
-          }
+          "swing": "1d6",
+          "thrust": "1d6-2"
         },
         "primaryAttributes": {
           "strength": {

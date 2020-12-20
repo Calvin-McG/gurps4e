@@ -326,11 +326,11 @@
 			<div id="weapons" class="tab items" data-tab="combat" data-group="primary">
 				<div class="encumbranceTable">
 					<table>
-						<tr class="bold">
-							<td class="title">Level</td><td class="title">Max Load</td><td class="title">Move</td><td class="title">Dodge</td>
+						<tr class="enc-header">
+							<td>Level</td><td>Max Load</td><td>Move</td><td>Dodge</td>
 						</tr>
 						{{#each data.encumbrance as |enc id|}}
-						<tr>
+						<tr class="enc-entry">
 							<td>{{enc.title}}</td>
 							<td>{{enc.lbs}}</td>
 							<td>{{enc.move}}</td>
@@ -341,6 +341,16 @@
 						</tr>
 						{{/each}}
 					</table>
+					<div>
+						<div>
+							<span>Swing:</span>
+							<input type="text" name="data.baseDamage.swing" class="baseDamage" value="{{data.baseDamage.swing}}"/>
+						</div>
+						<div>
+							<span>Thrust:</span>
+							<input type="text" name="data.baseDamage.thrust" class="baseDamage" value="{{data.baseDamage.thrust}}"/>
+						</div>
+					</div>
 				</div>
 				<table class="items-list">
 					<tr class="bold">

@@ -28,7 +28,7 @@ export class gurpsActor extends Actor {
 	 */
 	prepareData() {
 		super.prepareData();
-		// console.log("prepareData actor");
+		console.log("prepareData actor");
         // console.log(this);
 
 		//Total up spent and remaining points
@@ -168,7 +168,7 @@ export class gurpsActor extends Actor {
 
 	recalcEncValues(){
 		var st = this.data.data.primaryAttributes.strength.value;
-		var bl = ((st * st)/5);
+		var bl = Math.round(((st * st)/5));
 		var move = this.data.data.primaryAttributes.move.value;
 		var dodge = this.data.data.primaryAttributes.dodge.value;
 		var carriedWeight = 0;

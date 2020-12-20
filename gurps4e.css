@@ -718,3 +718,14 @@
 	text-align: center;
 	padding: 0 0.5em;
 }
+
+.enc-header td {
+	text-align: center;
+	padding: 0 0.5em;
+	font-weight: bold;
+}
+
+.enc-entry td {
+	text-align: center;
+	padding: 0 0.5em;
+}
