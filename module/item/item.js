@@ -70,6 +70,10 @@ export class gurpsItem extends Item {
       this.update({ ['data.lc']: 4 });
     }
 
+    this.prepareAttackData(itemData, data)
+  }
+
+  prepareAttackData(itemData, data) {
     //Check to see if there is an actor yet
     if (this.actor){
       //Do logic stuff for melee profiles
@@ -265,6 +269,6 @@ export class gurpsItem extends Item {
   }
 
   _prepareTraitData(itemData, data) {
-    // Override common default icon
+    this.prepareAttackData(itemData, data)
   }
 }
