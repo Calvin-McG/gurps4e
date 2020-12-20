@@ -63,9 +63,9 @@
           },
           "er": {
             "abbr": "ER",
-            "value": 10,
+            "value": 0,
             "mod": 0,
-            "max": 10,
+            "max": 0,
             "points": 0
           }
         },
