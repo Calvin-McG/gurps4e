@@ -163,48 +163,6 @@ export class gurpsActorSheet extends ActorSheet {
 	}
 
 	/**
-	* Handle clickable rolls.
-	* @param {Event} event	 The originating click event
-	* @private
-	*/
-	// _onRoll(event) {
-	// 	event.preventDefault();
-	// 	const element = event.currentTarget;
-	// 	const dataset = element.dataset;
-	//
-	// 	const executeRoll = (roll, renderer) => {
-	// 		roll.roll();
-	// 		const flavor = dataset.label || null;
-	// 		renderer.render(roll, { template: 'systems/gurps4e/lib/gurps-foundry-roll-templates/templates/roll.html' }, { flavor }).then((html) => {
-	// 			ChatMessage.create({ content: html, speaker: ChatMessage.getSpeaker({ actor: this.actor }), type: CONST.CHAT_MESSAGE_TYPES.OTHER });
-	// 		});
-	// 	}
-	//
-	// 	const executeSuccessRoll = modList => {
-	// 		const trait = dataset.trait || null;
-	// 		executeRoll(SuccessRoll.fromData({ level: dataset.level, trait, modList }), new SuccessRollRenderer());
-	// 	};
-	//
-	// 	const prepareModList = mods => mods.map(mod => ({ ...mod, modifier: parseInt(mod.modifier, 10) })).filter(mod => mod.modifier !== 0);
-	//
-	// 	const modList = prepareModList([
-	// 		{ modifier: 0, description: 'global modifier' },
-	// 		(dataset.type === 'defense') ? { modifier: 0, description: 'DB' } : { modifier: 0, description: '' }
-	// 	]);
-	//
-	// 	if (dataset.type === 'skill' || dataset.type === 'defense') {
-	// 		executeSuccessRoll(modList);
-	// 	} else if (dataset.type === 'damage') {
-	// 		const rollMatch = dataset.roll.match(/^([1-9][0-9]*)d6([+-][0-9]+)?$/);
-	// 		executeRoll(DamageRoll.fromData({dice: rollMatch[1], adds: rollMatch[2] || '', modList}), new DamageRollRenderer());
-	// 	} else {
-	// 		console.log("Rollable element triggered with an unsupported data-type (supported types are 'skill', 'damage' and 'defense'");
-	// 	}
-	//
-	// 	this.actor.update({ ["data.gmod.value"]: 0 });
-	// }
-
-	/**
 	 * Handle clickable rolls.
 	 * @param {Event} event	 The originating click event
 	 * @private
