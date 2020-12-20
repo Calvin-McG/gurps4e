@@ -213,7 +213,7 @@ export class gurpsActorSheet extends ActorSheet {
 		event.preventDefault();
 
 		let modModal = new Dialog({
-			title: "Test Dialog",
+			title: "Modifier Dialog",
 			content: "<input type='text' id='mod' name='mod' value='0'/>",
 			buttons: {
 				mod: {
