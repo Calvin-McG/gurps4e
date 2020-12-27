@@ -71,71 +71,71 @@ export class gurpsActor extends Actor {
 
 		//ST
 		var st = +10 + +this.data.data.primaryAttributes.strength.mod + +Math.floor(this.data.data.primaryAttributes.strength.points / +(+10 * +smDiscount));
-		this.update({ ['data.primaryAttributes.strength.value']: st });
+		this.data.data.primaryAttributes.strength.value = st;
 
 		//DX
 		var dx = +10 + +this.data.data.primaryAttributes.dexterity.mod + +Math.floor(this.data.data.primaryAttributes.dexterity.points/20);
-		this.update({ ['data.primaryAttributes.dexterity.value']: dx });
+		this.data.data.primaryAttributes.dexterity.value = dx;
 
 		//IQ
 		var iq = +10 + +this.data.data.primaryAttributes.intelligence.mod + +Math.floor(this.data.data.primaryAttributes.intelligence.points/20);
-		this.update({ ['data.primaryAttributes.intelligence.value']: iq });
+		this.data.data.primaryAttributes.intelligence.value = iq;
 
 		//HT
 		var ht = +10 + +this.data.data.primaryAttributes.health.mod + +Math.floor(this.data.data.primaryAttributes.health.points/10);
-		this.update({ ['data.primaryAttributes.health.value']: ht });
+		this.data.data.primaryAttributes.health.value = ht;
 
 		//Per
 		var per = +iq + +this.data.data.primaryAttributes.perception.mod + +Math.floor(this.data.data.primaryAttributes.perception.points/5);
-		this.update({ ['data.primaryAttributes.perception.value']: per });
+		this.data.data.primaryAttributes.perception.value = per;
 
 		//Will
 		var will = +iq + +this.data.data.primaryAttributes.will.mod + +Math.floor(this.data.data.primaryAttributes.will.points/5);
-		this.update({ ['data.primaryAttributes.will.value']: will });
+		this.data.data.primaryAttributes.will.value = will;
 
 		//Fright
 		var fr = +will + +this.data.data.primaryAttributes.fright.mod + +Math.floor(this.data.data.primaryAttributes.fright.points/2);
-		this.update({ ['data.primaryAttributes.fright.value']: fr });
+		this.data.data.primaryAttributes.fright.value = fr;
 
 		//Speed
 		var speed = Math.floor(((+(+dx + +ht) / +4) + +this.data.data.primaryAttributes.speed.mod + +(this.data.data.primaryAttributes.speed.points/20)) * +4) / +4;
-		this.update({ ['data.primaryAttributes.speed.value']: speed });
+		this.data.data.primaryAttributes.speed.value = speed;
 
 		//Move
 		var move = Math.floor(speed) + +this.data.data.primaryAttributes.move.mod + +Math.floor(this.data.data.primaryAttributes.move.points/5);
-		this.update({ ['data.primaryAttributes.move.value']: move });
+		this.data.data.primaryAttributes.move.value = move;
 
 		//Dodge
 		var dodge = Math.floor(speed) + +3 + +this.data.data.primaryAttributes.dodge.mod + +Math.floor(this.data.data.primaryAttributes.dodge.points/15);
-		this.update({ ['data.primaryAttributes.dodge.value']: dodge });
+		this.data.data.primaryAttributes.dodge.value = dodge;
 
 		//Lifting ST
 		var lst = +st + +this.data.data.primaryAttributes.lifting.mod + +Math.floor(this.data.data.primaryAttributes.lifting.points / +( +3 * +smDiscount));
-		this.update({ ['data.primaryAttributes.lifting.value']: lst });
+		this.data.data.primaryAttributes.lifting.value = lst;
 
 		//Striking ST
 		var sst = +st + +this.data.data.primaryAttributes.striking.mod + +Math.floor(this.data.data.primaryAttributes.striking.points / +(+5 * +smDiscount));
-		this.update({ ['data.primaryAttributes.striking.value']: sst });
+		this.data.data.primaryAttributes.striking.value = sst;
 
 		//HT Subdue
 		var hts = +ht + +this.data.data.primaryAttributes.subdue.mod + +Math.floor(this.data.data.primaryAttributes.subdue.points/2);
-		this.update({ ['data.primaryAttributes.subdue.value']: hts });
+		this.data.data.primaryAttributes.subdue.value = hts;
 
 		//HT Kill
 		var htk = +ht + +this.data.data.primaryAttributes.death.mod + +Math.floor(this.data.data.primaryAttributes.death.points/2);
-		this.update({ ['data.primaryAttributes.death.value']: htk });
+		this.data.data.primaryAttributes.death.value = htk;
 
 		//HP
 		var hp = +st + +this.data.data.reserves.hp.mod + +Math.floor(this.data.data.reserves.hp.points / +( +2 * +smDiscount));
-		this.update({ ['data.reserves.hp.max']: hp });
+		this.data.data.reserves.hp.max = hp;
 
 		//FP
 		var fp = +ht + +this.data.data.reserves.fp.mod + +Math.floor(this.data.data.reserves.fp.points/3);
-		this.update({ ['data.reserves.fp.max']: fp });
+		this.data.data.reserves.fp.max = fp;
 
 		//ER
 		var er = +0 + +this.data.data.reserves.er.mod + +Math.floor(this.data.data.reserves.er.points/3);
-		this.update({ ['data.reserves.er.max']: er });
+		this.data.data.reserves.er.max = er;
 	}
 
 	recalcTraitPoints() {
@@ -146,7 +146,7 @@ export class gurpsActor extends Actor {
                 traitPoints = traitPoints += this.data.items[i].data.points
             }
         }
-        this.update({ ['data.points.traits']: traitPoints });
+		this.data.data.points.traits = traitPoints;
 	}
 
     recalcSkillPoints() {
@@ -157,34 +157,34 @@ export class gurpsActor extends Actor {
                 skillPoints = skillPoints += this.data.items[i].data.points
             }
         }
-        this.update({ ['data.points.skills']: skillPoints });
+		this.data.data.points.skills = skillPoints;
     }
 
 	recalcEncValues(){
-		var st = this.data.data.primaryAttributes.strength.value;
+		var st = this.data.data.primaryAttributes.lifting.value;
 		var bl = Math.round(((st * st)/5));
 		var move = this.data.data.primaryAttributes.move.value;
 		var dodge = this.data.data.primaryAttributes.dodge.value;
 		var carriedWeight = 0;
 		var carriedCost = 0;
 
-		this.update({ ['data.encumbrance.none.lbs']: bl });
-		this.update({ ['data.encumbrance.light.lbs']: bl * 2 });
-		this.update({ ['data.encumbrance.medium.lbs']: bl * 3 });
-		this.update({ ['data.encumbrance.heavy.lbs']: bl * 6 });
-		this.update({ ['data.encumbrance.xheavy.lbs']: bl * 10 });
+		this.data.data.encumbrance.none.lbs = bl;
+		this.data.data.encumbrance.light.lbs = bl * 2;
+		this.data.data.encumbrance.medium.lbs = bl * 3;
+		this.data.data.encumbrance.heavy.lbs = bl * 6;
+		this.data.data.encumbrance.xheavy.lbs = bl * 10;
 
-		this.update({ ['data.encumbrance.none.move']: move });
-		this.update({ ['data.encumbrance.light.move']: Math.max((Math.floor(move * 0.8)), 1) });
-		this.update({ ['data.encumbrance.medium.move']: Math.max((Math.floor(move * 0.6)), 1) });
-		this.update({ ['data.encumbrance.heavy.move']: Math.max((Math.floor(move * 0.4)), 1) });
-		this.update({ ['data.encumbrance.xheavy.move']: Math.max((Math.floor(move * 0.2)), 1) });
+		this.data.data.encumbrance.none.move = move;
+		this.data.data.encumbrance.light.move = Math.max((Math.floor(move * 0.8)), 1);
+		this.data.data.encumbrance.medium.move = Math.max((Math.floor(move * 0.6)), 1);
+		this.data.data.encumbrance.heavy.move = Math.max((Math.floor(move * 0.4)), 1);
+		this.data.data.encumbrance.xheavy.move = Math.max((Math.floor(move * 0.2)), 1);
 
-		this.update({ ['data.encumbrance.none.dodge']: dodge });
-		this.update({ ['data.encumbrance.light.dodge']: Math.max(dodge - 1, 1) });
-		this.update({ ['data.encumbrance.medium.dodge']: Math.max(dodge - 2, 1) });
-		this.update({ ['data.encumbrance.heavy.dodge']: Math.max(dodge - 3, 1) });
-		this.update({ ['data.encumbrance.xheavy.dodge']: Math.max(dodge - 4, 1) });
+		this.data.data.encumbrance.none.dodge = dodge;
+		this.data.data.encumbrance.light.dodge = Math.max(dodge - 1, 1);
+		this.data.data.encumbrance.medium.dodge = Math.max(dodge - 2, 1);
+		this.data.data.encumbrance.heavy.dodge = Math.max(dodge - 3, 1);
+		this.data.data.encumbrance.xheavy.dodge = Math.max(dodge - 4, 1);
 
 		//Clear carried weight/cost before retotalling
 		carriedWeight = 0;
@@ -197,16 +197,12 @@ export class gurpsActor extends Actor {
 			}
 		}
 		//Assign total weight and cost
-		this.update({ ['data.bio.carriedWeight']: carriedWeight });
-		this.update({ ['data.bio.carriedValue']: carriedCost });
+		this.data.data.bio.carriedWeight = carriedWeight;
+		this.data.data.bio.carriedValue = carriedCost;
 	}
 
 	setTotalPoints(unspent) {
-		var total;
-
-		total = +this.data.data.points.attributes + +this.data.data.points.traits + +this.data.data.points.skills + +unspent;
-
-		this.update({ ['data.points.total']: total });
+		this.data.data.points.total = +this.data.data.points.attributes + +this.data.data.points.traits + +this.data.data.points.skills + +unspent;
 	}
 
 	recalcAtrPoints(){
@@ -225,7 +221,7 @@ export class gurpsActor extends Actor {
 			+this.data.data.reserves.fp.points +
 			+this.data.data.reserves.er.points +
 			+this.data.data.bio.tl.points;
-		this.update({ ['data.points.attributes']: attributePoints });
+		this.data.data.points.attributes = attributePoints;
 	}
 
 	recalcPointTotals() {
@@ -236,7 +232,7 @@ export class gurpsActor extends Actor {
 
 		unspent = +this.data.data.points.total - +spent;
 
-		this.update({ ['data.points.unspent']: unspent });
+		this.data.data.points.unspent = unspent;
 	}
 
 	setConditions(newValue, attrName) {
@@ -292,7 +288,7 @@ export class gurpsActor extends Actor {
 					break;
 				}
 			}
-			this.update({ ['data.reserves.hp.state']: attrState });
+			this.data.data.reserves.hp.state = attrState;
 		} else { // Fatigue points update
 
 			// Assign the variables
@@ -326,7 +322,7 @@ export class gurpsActor extends Actor {
 				}
 			}
 			// update the actor
-			this.update({ ['data.reserves.fp.state']: attrState });
+			this.data.data.reserves.fp.state = attrState;
 		}
 	}
 }
