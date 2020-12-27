@@ -14,12 +14,6 @@ export class gurpsActor extends Actor {
 	 *
 	 */
 	static async create(data, options) {
-
-		// Set the actor flags
-		data.flags = {
-			myFlags: true,
-			useTextBoxForDamage: game.settings.get("gurps4e", "useTextBoxForDamage")
-		}
 		super.create(data, options); // Follow through the the rest of the Actor creation process upstream
 	}
 

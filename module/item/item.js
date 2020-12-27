@@ -152,6 +152,17 @@ export class gurpsItem extends Item {
             }
             level = level + mod;//Update the skill level with the skill modifier
             this.update({ ['data.ranged.' + rangedKeys[k] + '.level' ]: level });//Update skill level
+
+            //Do the logic to parse out thr/sw damage to dice
+            let damage = data.ranged[rangedKeys[k]].damageInput;//Grab the damageInput string from the attack
+            let thr = this.actor.data.data.baseDamage.thrust;//Get thrust damage
+            let sw = this.actor.data.data.baseDamage.swing;//Get swing damage
+
+            damage = damage.toLowerCase();//Fix any case specific issues
+            damage = damage.replace("thr", thr);//Replace thrust
+            damage = damage.replace("sw", sw)//Replace swing
+
+            this.update({ ['data.ranged.' + rangedKeys[k] + '.damage' ]: damage });//Update the damage value
           }
         }
       }
