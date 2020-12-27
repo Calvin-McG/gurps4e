@@ -51,23 +51,30 @@ export class gurpsItem extends Item {
 
   _prepareEquipmentData(itemData, data) {
     //Calculated total weight and cost
-    this.update({ ['data.ttlCost']: (data.cost * data.quantity) });
-    this.update({ ['data.ttlWeight']: (data.weight * data.quantity) });
+    this._data.data.ttlCost = (data.cost * data.quantity);
+    this._data.data.ttlWeight = (data.weight * data.quantity);
+    this.data.data.ttlCost = (data.cost * data.quantity);
+    this.data.data.ttlWeight = (data.weight * data.quantity);
 
     //Constrain TL to valid values
     if (data.tl < 0){//Too low
-      this.update({ ['data.tl']: 0 });
+      this._data.data.tl = 0;
+      this.data.data.tl = 0;
     }
     else if (data.tl > 12){//Too high
-      this.update({ ['data.tl']: 12 });
+      this._data.data.tl = 12;
+      this.data.data.tl = 12;
     }
+
 
     //Constrain LC to valid values
     if (data.lc < 0){//Too low
-      this.update({ ['data.lc']: 0 });
+      this._data.data.lc = 0;
+      this.data.data.lc = 0;
     }
     else if (data.lc > 4){//Too high
-      this.update({ ['data.lc']: 4 });
+      this._data.data.lc = 4;
+      this.data.data.lc = 4;
     }
 
     this.prepareAttackData(itemData, data)
