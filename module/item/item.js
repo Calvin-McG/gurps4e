@@ -269,7 +269,8 @@ export class gurpsItem extends Item {
             if (this.actor.data.items[i].data.category === "skill"){
               if (data.baseSkill === this.actor.data.items[i].name){
                 base = +this.actor.data.items[i].data.level;
-                this.update({ ['data.baseSkillLevel']: base });
+                this._data.data.baseSkillLevel = base;
+                this.data.data.baseSkillLevel = base;
               }
             }
           }
@@ -293,7 +294,8 @@ export class gurpsItem extends Item {
 
       }
 
-      this.update({ ['data.level']: level });
+      this._data.data.level = level;
+      this.data.data.level = level;
     }
   }
 
