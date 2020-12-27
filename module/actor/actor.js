@@ -115,6 +115,414 @@ export class gurpsActor extends Actor {
 		var sst = +st + +this.data.data.primaryAttributes.striking.mod + +Math.floor(this.data.data.primaryAttributes.striking.points / +(+5 * +smDiscount));
 		this.data.data.primaryAttributes.striking.value = sst;
 
+		//Swing and Thrust
+		switch(sst) {
+			case 1:
+				this.data.data.baseDamage.thrust = "1d6-6";
+				this.data.data.baseDamage.swing = "1d6-5";
+				break;
+			case 2:
+				this.data.data.baseDamage.thrust = "1d6-6";
+				this.data.data.baseDamage.swing = "1d6-5";
+				break;
+			case 3:
+				this.data.data.baseDamage.thrust = "1d6-5";
+				this.data.data.baseDamage.swing = "1d6-4";
+				break;
+			case 4:
+				this.data.data.baseDamage.thrust = "1d6-5";
+				this.data.data.baseDamage.swing = "1d6-4";
+				break;
+			case 5:
+				this.data.data.baseDamage.thrust = "1d6-4";
+				this.data.data.baseDamage.swing = "1d6-3";
+				break;
+			case 6:
+				this.data.data.baseDamage.thrust = "1d6-4";
+				this.data.data.baseDamage.swing = "1d6-3";
+				break;
+			case 7:
+				this.data.data.baseDamage.thrust = "1d6-3";
+				this.data.data.baseDamage.swing = "1d6-2";
+				break;
+			case 8:
+				this.data.data.baseDamage.thrust = "1d6-3";
+				this.data.data.baseDamage.swing = "1d6-2";
+				break;
+			case 9:
+				this.data.data.baseDamage.thrust = "1d6-2";
+				this.data.data.baseDamage.swing = "1d6-1";
+				break;
+			case 10:
+				this.data.data.baseDamage.thrust = "1d6-2";
+				this.data.data.baseDamage.swing = "1d6";
+				break;
+			case 11:
+				this.data.data.baseDamage.thrust = "1d6-1";
+				this.data.data.baseDamage.swing = "1d6+1";
+				break;
+			case 12:
+				this.data.data.baseDamage.thrust = "1d6-1";
+				this.data.data.baseDamage.swing = "1d6+2";
+				break;
+			case 13:
+				this.data.data.baseDamage.thrust = "1d6";
+				this.data.data.baseDamage.swing = "2d6-1";
+				break;
+			case 14:
+				this.data.data.baseDamage.thrust = "1d6";
+				this.data.data.baseDamage.swing = "2d6";
+				break;
+			case 15:
+				this.data.data.baseDamage.thrust = "1d6+1";
+				this.data.data.baseDamage.swing = "2d6+1";
+				break;
+			case 16:
+				this.data.data.baseDamage.thrust = "1d6+1";
+				this.data.data.baseDamage.swing = "2d6+2";
+				break;
+			case 17:
+				this.data.data.baseDamage.thrust = "1d6+2";
+				this.data.data.baseDamage.swing = "3d6-1";
+				break;
+			case 18:
+				this.data.data.baseDamage.thrust = "1d6+2";
+				this.data.data.baseDamage.swing = "3d6";
+				break;
+			case 19:
+				this.data.data.baseDamage.thrust = "2d6-1";
+				this.data.data.baseDamage.swing = "3d6+1";
+				break;
+			case 20:
+				this.data.data.baseDamage.thrust = "2d6-1";
+				this.data.data.baseDamage.swing = "3d6+2";
+				break;
+			case 21:
+				this.data.data.baseDamage.thrust = "2d6";
+				this.data.data.baseDamage.swing = "4d6-1";
+				break;
+			case 22:
+				this.data.data.baseDamage.thrust = "2d6";
+				this.data.data.baseDamage.swing = "4d6";
+				break;
+			case 23:
+				this.data.data.baseDamage.thrust = "2d6+1";
+				this.data.data.baseDamage.swing = "4d6+1";
+				break;
+			case 24:
+				this.data.data.baseDamage.thrust = "2d6+1";
+				this.data.data.baseDamage.swing = "4d6+2";
+				break;
+			case 25:
+				this.data.data.baseDamage.thrust = "2d6+2";
+				this.data.data.baseDamage.swing = "5d6-1";
+				break;
+			case 26:
+				this.data.data.baseDamage.thrust = "2d6+2";
+				this.data.data.baseDamage.swing = "5d6";
+				break;
+			case 27:
+				this.data.data.baseDamage.thrust = "3d6-1";
+				this.data.data.baseDamage.swing = "5d6+1";
+				break;
+			case 28:
+				this.data.data.baseDamage.thrust = "3d6-1";
+				this.data.data.baseDamage.swing = "5d6+1";
+				break;
+			case 29:
+				this.data.data.baseDamage.thrust = "3d6";
+				this.data.data.baseDamage.swing = "5d6+2";
+				break;
+			case 30:
+				this.data.data.baseDamage.thrust = "3d6";
+				this.data.data.baseDamage.swing = "5d6+2";
+				break;
+			case 31:
+				this.data.data.baseDamage.thrust = "3d6-+1";
+				this.data.data.baseDamage.swing = "6d6-1";
+				break;
+			case 32:
+				this.data.data.baseDamage.thrust = "3d6+1";
+				this.data.data.baseDamage.swing = "6d6-1";
+				break;
+			case 33:
+				this.data.data.baseDamage.thrust = "3d6+2";
+				this.data.data.baseDamage.swing = "6d6";
+				break;
+			case 34:
+				this.data.data.baseDamage.thrust = "3d6+2";
+				this.data.data.baseDamage.swing = "6d6";
+				break;
+			case 35:
+				this.data.data.baseDamage.thrust = "4d6-1";
+				this.data.data.baseDamage.swing = "6d6+1";
+				break;
+			case 36:
+				this.data.data.baseDamage.thrust = "4d6-1";
+				this.data.data.baseDamage.swing = "6d6+1";
+				break;
+			case 37:
+				this.data.data.baseDamage.thrust = "4d6";
+				this.data.data.baseDamage.swing = "6d6+2";
+				break;
+			case 38:
+				this.data.data.baseDamage.thrust = "4d6";
+				this.data.data.baseDamage.swing = "6d6+2";
+				break;
+			case 39:
+				this.data.data.baseDamage.thrust = "4d6+1";
+				this.data.data.baseDamage.swing = "7d6-1";
+				break;
+			case 40:
+				this.data.data.baseDamage.thrust = "4d6+1";
+				this.data.data.baseDamage.swing = "7d6-1";
+				break;
+			case 41:
+				this.data.data.baseDamage.thrust = "4d6+1";
+				this.data.data.baseDamage.swing = "7d6-1";
+				break;
+			case 42:
+				this.data.data.baseDamage.thrust = "4d6+1";
+				this.data.data.baseDamage.swing = "7d6-1";
+				break;
+			case 43:
+				this.data.data.baseDamage.thrust = "4d6+1";
+				this.data.data.baseDamage.swing = "7d6-1";
+				break;
+			case 44:
+				this.data.data.baseDamage.thrust = "4d6+1";
+				this.data.data.baseDamage.swing = "7d6-1";
+				break;
+			case 45:
+				this.data.data.baseDamage.thrust = "5d6";
+				this.data.data.baseDamage.swing = "7d6+1";
+				break;
+			case 46:
+				this.data.data.baseDamage.thrust = "5d6";
+				this.data.data.baseDamage.swing = "7d6+1";
+				break;
+			case 47:
+				this.data.data.baseDamage.thrust = "5d6";
+				this.data.data.baseDamage.swing = "7d6+1";
+				break;
+			case 48:
+				this.data.data.baseDamage.thrust = "5d6";
+				this.data.data.baseDamage.swing = "7d6+1";
+				break;
+			case 49:
+				this.data.data.baseDamage.thrust = "5d6";
+				this.data.data.baseDamage.swing = "7d6+1";
+				break;
+			case 50:
+				this.data.data.baseDamage.thrust = "5d6+2";
+				this.data.data.baseDamage.swing = "8d6-1";
+				break;
+			case 51:
+				this.data.data.baseDamage.thrust = "5d6+2";
+				this.data.data.baseDamage.swing = "8d6-1";
+				break;
+			case 52:
+				this.data.data.baseDamage.thrust = "5d6+2";
+				this.data.data.baseDamage.swing = "8d6-1";
+				break;
+			case 53:
+				this.data.data.baseDamage.thrust = "5d6+2";
+				this.data.data.baseDamage.swing = "8d6-1";
+				break;
+			case 54:
+				this.data.data.baseDamage.thrust = "5d6+2";
+				this.data.data.baseDamage.swing = "8d6-1";
+				break;
+			case 55:
+				this.data.data.baseDamage.thrust = "6d6";
+				this.data.data.baseDamage.swing = "8d6+1";
+				break;
+			case 56:
+				this.data.data.baseDamage.thrust = "6d6";
+				this.data.data.baseDamage.swing = "8d6+1";
+				break;
+			case 57:
+				this.data.data.baseDamage.thrust = "6d6";
+				this.data.data.baseDamage.swing = "8d6+1";
+				break;
+			case 58:
+				this.data.data.baseDamage.thrust = "6d6";
+				this.data.data.baseDamage.swing = "8d6+1";
+				break;
+			case 59:
+				this.data.data.baseDamage.thrust = "6d6";
+				this.data.data.baseDamage.swing = "8d6+1";
+				break;
+			case 60:
+				this.data.data.baseDamage.thrust = "7d6-1";
+				this.data.data.baseDamage.swing = "9d6";
+				break;
+			case 61:
+				this.data.data.baseDamage.thrust = "7d6-1";
+				this.data.data.baseDamage.swing = "9d6";
+				break;
+			case 62:
+				this.data.data.baseDamage.thrust = "7d6-1";
+				this.data.data.baseDamage.swing = "9d6";
+				break;
+			case 63:
+				this.data.data.baseDamage.thrust = "7d6-1";
+				this.data.data.baseDamage.swing = "9d6";
+				break;
+			case 64:
+				this.data.data.baseDamage.thrust = "7d6-1";
+				this.data.data.baseDamage.swing = "9d6";
+				break;
+			case 65:
+				this.data.data.baseDamage.thrust = "7d6+1";
+				this.data.data.baseDamage.swing = "9d6+2";
+				break;
+			case 66:
+				this.data.data.baseDamage.thrust = "7d6+1";
+				this.data.data.baseDamage.swing = "9d6+2";
+				break;
+			case 67:
+				this.data.data.baseDamage.thrust = "7d6+1";
+				this.data.data.baseDamage.swing = "9d6+2";
+				break;
+			case 68:
+				this.data.data.baseDamage.thrust = "7d6+1";
+				this.data.data.baseDamage.swing = "9d6+2";
+				break;
+			case 69:
+				this.data.data.baseDamage.thrust = "7d6+1";
+				this.data.data.baseDamage.swing = "9d6+2";
+				break;
+			case 70:
+				this.data.data.baseDamage.thrust = "8d6";
+				this.data.data.baseDamage.swing = "10d6";
+				break;
+			case 71:
+				this.data.data.baseDamage.thrust = "8d6";
+				this.data.data.baseDamage.swing = "10d6";
+				break;
+			case 72:
+				this.data.data.baseDamage.thrust = "8d6";
+				this.data.data.baseDamage.swing = "10d6";
+				break;
+			case 73:
+				this.data.data.baseDamage.thrust = "8d6";
+				this.data.data.baseDamage.swing = "10d6";
+				break;
+			case 74:
+				this.data.data.baseDamage.thrust = "8d6";
+				this.data.data.baseDamage.swing = "10d6";
+				break;
+			case 75:
+				this.data.data.baseDamage.thrust = "8d6+2";
+				this.data.data.baseDamage.swing = "10d6+2";
+				break;
+			case 76:
+				this.data.data.baseDamage.thrust = "8d6+2";
+				this.data.data.baseDamage.swing = "10d6+2";
+				break;
+			case 77:
+				this.data.data.baseDamage.thrust = "8d6+2";
+				this.data.data.baseDamage.swing = "10d6+2";
+				break;
+			case 78:
+				this.data.data.baseDamage.thrust = "8d6+2";
+				this.data.data.baseDamage.swing = "10d6+2";
+				break;
+			case 79:
+				this.data.data.baseDamage.thrust = "8d6+2";
+				this.data.data.baseDamage.swing = "10d6+2";
+				break;
+			case 80:
+				this.data.data.baseDamage.thrust = "9d6";
+				this.data.data.baseDamage.swing = "11d6";
+				break;
+			case 81:
+				this.data.data.baseDamage.thrust = "9d6";
+				this.data.data.baseDamage.swing = "11d6";
+				break;
+			case 82:
+				this.data.data.baseDamage.thrust = "9d6";
+				this.data.data.baseDamage.swing = "11d6";
+				break;
+			case 83:
+				this.data.data.baseDamage.thrust = "9d6";
+				this.data.data.baseDamage.swing = "11d6";
+				break;
+			case 84:
+				this.data.data.baseDamage.thrust = "9d6";
+				this.data.data.baseDamage.swing = "11d6";
+				break;
+			case 85:
+				this.data.data.baseDamage.thrust = "9d6+2";
+				this.data.data.baseDamage.swing = "11d6+2";
+				break;
+			case 86:
+				this.data.data.baseDamage.thrust = "9d6+2";
+				this.data.data.baseDamage.swing = "11d6+2";
+				break;
+			case 87:
+				this.data.data.baseDamage.thrust = "9d6+2";
+				this.data.data.baseDamage.swing = "11d6+2";
+				break;
+			case 88:
+				this.data.data.baseDamage.thrust = "9d6+2";
+				this.data.data.baseDamage.swing = "11d6+2";
+				break;
+			case 89:
+				this.data.data.baseDamage.thrust = "9d6+2";
+				this.data.data.baseDamage.swing = "11d6+2";
+				break;
+			case 90:
+				this.data.data.baseDamage.thrust = "10d6";
+				this.data.data.baseDamage.swing = "12d6";
+				break;
+			case 91:
+				this.data.data.baseDamage.thrust = "10d6";
+				this.data.data.baseDamage.swing = "12d6";
+				break;
+			case 92:
+				this.data.data.baseDamage.thrust = "10d6";
+				this.data.data.baseDamage.swing = "12d6";
+				break;
+			case 93:
+				this.data.data.baseDamage.thrust = "10d6";
+				this.data.data.baseDamage.swing = "12d6";
+				break;
+			case 94:
+				this.data.data.baseDamage.thrust = "10d6";
+				this.data.data.baseDamage.swing = "12d6";
+				break;
+			case 95:
+				this.data.data.baseDamage.thrust = "10d6+2";
+				this.data.data.baseDamage.swing = "12d6+2";
+				break;
+			case 96:
+				this.data.data.baseDamage.thrust = "10d6+2";
+				this.data.data.baseDamage.swing = "12d6+2";
+				break;
+			case 97:
+				this.data.data.baseDamage.thrust = "10d6+2";
+				this.data.data.baseDamage.swing = "12d6+2";
+				break;
+			case 98:
+				this.data.data.baseDamage.thrust = "10d6+2";
+				this.data.data.baseDamage.swing = "12d6+2";
+				break;
+			case 99:
+				this.data.data.baseDamage.thrust = "10d6+2";
+				this.data.data.baseDamage.swing = "12d6+2";
+				break;
+			case 100:
+				this.data.data.baseDamage.thrust = "11d6";
+				this.data.data.baseDamage.swing = "13d6";
+				break;
+			default:
+				this.data.data.baseDamage.thrust = "11d6";
+				this.data.data.baseDamage.swing = "13d6";
+				break;
+		}
+
 		//HT Subdue
 		var hts = +ht + +this.data.data.primaryAttributes.subdue.mod + +Math.floor(this.data.data.primaryAttributes.subdue.points/2);
 		this.data.data.primaryAttributes.subdue.value = hts;
