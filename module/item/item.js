@@ -97,7 +97,7 @@ export class gurpsItem extends Item {
               }
             }
             level = level + mod;//Update the skill level with the skill modifier
-            this.update({ ['data.melee.' + meleeKeys[k] + '.level' ]: level });//Update skill level
+            this._data.data.melee[meleeKeys[k]].level = level//Update skill level
 
             if (Number.isInteger(+data.melee[meleeKeys[k]].parryMod)){//If parry mod is a number, compute normally
               parry = Math.floor(+( level / 2 + 3 ) + +data.melee[meleeKeys[k]].parryMod);//Calculate the parry value
@@ -106,7 +106,7 @@ export class gurpsItem extends Item {
               parry = data.melee[meleeKeys[k]].parryMod;
 
             }
-            this.update({ ['data.melee.' + meleeKeys[k] + '.parry' ]: parry });//Update the parry value
+            this._data.data.melee[meleeKeys[k]].parry = parry//Update parry value
 
             if (Number.isInteger(+data.melee[meleeKeys[k]].blockMod)) {//If block mod is a number, compute normally
               block = Math.floor(+( level / 2 + 3 ) + +data.melee[meleeKeys[k]].blockMod);//Calculate the block value
@@ -114,8 +114,7 @@ export class gurpsItem extends Item {
             else {
               block = data.melee[meleeKeys[k]].blockMod;
             }
-            this.update({ ['data.melee.' + meleeKeys[k] + '.block' ]: block });//Update the block value
-
+            this._data.data.melee[meleeKeys[k]].block = block//Update block value
 
             //Do the logic to parse out thr/sw damage to dice
             let damage = data.melee[meleeKeys[k]].damageInput;
@@ -126,7 +125,7 @@ export class gurpsItem extends Item {
             damage = damage.replace("thr", thr);
             damage = damage.replace("sw", sw)
 
-            this.update({ ['data.melee.' + meleeKeys[k] + '.damage' ]: damage });//Update the damage value
+            this._data.data.melee[meleeKeys[k]].damage = damage//Update damage value
           }
         }
       }
