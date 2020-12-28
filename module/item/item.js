@@ -28,9 +28,6 @@ export class gurpsItem extends Item {
     let itemData = this.data;
     let data = itemData.data;
 
-    // all types have one. Might as well update it here
-    data.notes = data.notes || "note";
-
     switch (itemData.type) {
       case "Equipment":
         this._prepareEquipmentData(itemData, data);
@@ -294,8 +291,7 @@ export class gurpsItem extends Item {
 
       }
 
-      this._data.data.level = level;
-      this.data.data.level = level;
+      this.update({ ['data.level']: level });//This field does need to use this.update, otherwise anything that is computed before this won't get correct skill values.
     }
   }
 
