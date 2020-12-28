@@ -75,7 +75,7 @@
                     <td class="resource-label">Name</td>
                     <td class="resource-label">Level</td>
                     <td class="resource-label">Skill Name / Mod</td>
-                    <td class="resource-label">Parry</td>
+                    <td class="resource-label">Parry - Type</td>
                     <td class="resource-label">Block</td>
                     <td class="resource-label">Damage</td>
                     <td class="resource-label">Type</td>
@@ -93,7 +93,8 @@
                         <input type="text" name="data.melee.{{id}}.skillMod" value="{{melee.skillMod}}" data-dtype="Number"/>
                     </td>
                     <td>
-                        <input type="text" name="data.melee.{{id}}.parryMod" value="{{melee.parryMod}}"/>
+                        <input type="text" name="data.melee.{{id}}.parryMod" value="{{melee.parryMod}}" style="width: 50%"/>
+                        <input type="text" name="data.melee.{{id}}.parryType" value="{{melee.parryType}}" style="width: 20%"/>
                     </td>
                     <td>
                         <input type="text" name="data.melee.{{id}}.blockMod" value="{{melee.blockMod}}"/>

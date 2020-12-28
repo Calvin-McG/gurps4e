@@ -374,7 +374,7 @@
 								   data-label="Makes a &lt;b&gt;{{item.name}} {{melee.name}}&lt;/b&gt; Skill roll." data-type="skill"></label>
 						</td>
 						<td>
-							{{melee.parry}}
+							{{melee.parry}}{{melee.parryType}}
 							{{#if (isInt melee.parry)}}
 							<label for="melee.parry" class="fa fa-dice-six rollable" data-level="{{melee.parry}}"
 								   data-label="Makes a &lt;b&gt;{{item.name}}&lt;/b&gt; Parry roll." data-type="skill"></label>
