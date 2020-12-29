@@ -40,6 +40,10 @@
             </div>
         </div>
     </header>
+    <div style="padding-top: 2px;">
+        <label class="resource-label" style="width: 32px;">Short Notes:</label>
+        <input type="text" name="data.shortNotes" value="{{data.shortNotes}}" style="width: calc(100% - 78px);"/>
+    </div>
 
     {{!-- Sheet Tab Navigation --}}
     <nav id="tabselect" class="sheet-tabs tabs" data-group="primary">
@@ -59,7 +63,7 @@
 
         {{!-- Note Tab --}}
         <div class="tab stats" data-tab="notes" data-group="primary">
-            <h3>Notes</h3>
+            <h3 class="bold">Detailed Notes</h3>
             <div class="tab">
                 <textarea rows="8" name="data.notes">{{{data.notes}}}</textarea>
             </div>

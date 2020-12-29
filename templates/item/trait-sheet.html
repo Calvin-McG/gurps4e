@@ -5,7 +5,7 @@
         <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
         <div class="header-fields">
             <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
-            <div class="">
+            <div>
                 <div class="flexrow">
                     <label class="resource-label">Category</label>
                     <select name="data.category">
@@ -22,6 +22,10 @@
                 <div class="flexrow">
                     <label class="resource-label">Points</label>
                     <input type="text" name="data.points" value="{{data.points}}" data-dtype="Number"/>
+                </div>
+                <div class="flexrow">
+                    <label class="resource-label">Notes</label>
+                    <input type="text" name="data.shortNotes" value="{{data.shortNotes}}"/>
                 </div>
             </div>
         </div>
@@ -45,8 +49,8 @@
 
         {{!-- Note Tab --}}
         <div class="tab stats" data-tab="notes" data-group="primary">
-            <h3>Notes</h3>
             <div class="tab">
+                <h3 class="bold">Detailed Notes</h3>
                 <textarea rows="8" name="data.notes">{{{data.notes}}}</textarea>
             </div>
         </div>
