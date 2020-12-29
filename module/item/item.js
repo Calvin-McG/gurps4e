@@ -336,6 +336,10 @@ export class gurpsItem extends Item {
   }
 
   _prepareRollableData(itemData, data) {
+    if (this.data.data.category == ""){//The category will be blank upon initilization. Set it to skill so that the form's dynamic elements display correctly the first time it's opened.
+      this.data.data.category = "skill";
+    }
+
     if(data && this.actor){
       // Override common default icon
       let base = 0;
