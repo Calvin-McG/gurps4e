@@ -90,16 +90,22 @@ export class gurpsItem extends Item {
             let parry = 0;
             let block = 0;
 
-            //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-            for (let i = 0; i < this.actor.data.items.length; i++){
-              if (this.actor.data.items[i].type === "Rollable"){
-                if (this.actor.data.items[i].data.category === "skill" || this.actor.data.items[i].data.category === "technique"){
-                  if (data.melee[meleeKeys[k]].skill === this.actor.data.items[i].name){
-                    level = +this.actor.data.items[i].data.level;
+            if (data.melee[meleeKeys[k]].skill.toLowerCase() == "dx"){
+              level = +this.actor.data.data.primaryAttributes.dexterity.value;
+            }
+            else {
+              //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
+              for (let i = 0; i < this.actor.data.items.length; i++){
+                if (this.actor.data.items[i].type === "Rollable"){
+                  if (this.actor.data.items[i].data.category === "skill" || this.actor.data.items[i].data.category === "technique"){
+                    if (data.melee[meleeKeys[k]].skill === this.actor.data.items[i].name){
+                      level = +this.actor.data.items[i].data.level;
+                    }
                   }
                 }
               }
             }
+
             level = level + mod;//Update the skill level with the skill modifier
             this._data.data.melee[meleeKeys[k]].level = level//Update skill level
 
@@ -143,12 +149,17 @@ export class gurpsItem extends Item {
             let level = 0;
             let mod = +data.ranged[rangedKeys[k]].skillMod;
 
-            //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-            for (let i = 0; i < this.actor.data.items.length; i++){
-              if (this.actor.data.items[i].type === "Rollable"){
-                if (this.actor.data.items[i].data.category === "skill" || this.actor.data.items[i].data.category === "technique"){
-                  if (data.ranged[rangedKeys[k]].skill === this.actor.data.items[i].name){
-                    level = +this.actor.data.items[i].data.level;
+            if (data.ranged[rangedKeys[k]].skill.toLowerCase() == "dx"){
+              level = +this.actor.data.data.primaryAttributes.dexterity.value;
+            }
+            else {
+              //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
+              for (let i = 0; i < this.actor.data.items.length; i++){
+                if (this.actor.data.items[i].type === "Rollable"){
+                  if (this.actor.data.items[i].data.category === "skill" || this.actor.data.items[i].data.category === "technique"){
+                    if (data.ranged[rangedKeys[k]].skill === this.actor.data.items[i].name){
+                      level = +this.actor.data.items[i].data.level;
+                    }
                   }
                 }
               }
