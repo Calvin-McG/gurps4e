@@ -107,7 +107,6 @@ export class gurpsItemSheet extends ItemSheet {
     }
 
     _onDeleteDefaultRow(event) {
-        console.log(event)
         let id = event.currentTarget.id.substring(7);
         this.item.update({ ["data.defaults.-=" + id] : null});
     }

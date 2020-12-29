@@ -336,8 +336,6 @@ export class gurpsItem extends Item {
   }
 
   _prepareRollableData(itemData, data) {
-    console.log(itemData)
-    console.log(data)
     if(data && this.actor){
       // Override common default icon
       let base = 0;
@@ -351,7 +349,6 @@ export class gurpsItem extends Item {
         //Figure out defaults
         let q = 0;
         while (data.defaults[q]) {//While the current entry is not null
-          console.log(data.defaults[q])
 
           //Check attributes first, add any results to the array of attribute defaults
           if (data.defaults[q].skill.toUpperCase() == 'ST') {
