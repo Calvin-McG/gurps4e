@@ -2,9 +2,17 @@
 
     {{!-- Sheet Header --}}
     <header class="sheet-header">
-        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
         <div class="header-fields">
-            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+            <table class="rollable-name">
+                <tr>
+                    <td style="width: 64px">
+                        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" style="margin-right: unset"/>
+                    </td>
+                    <td>
+                        <input name="name" type="text" value="{{item.name}}" placeholder="Name" style="height: 64px; font-size: xx-large; font-weight: 400"/>
+                    </td>
+                </tr>
+            </table>
             <div class="">
                 <div class="flexrow">
                     <label class="resource-label">Category</label>
@@ -55,10 +63,6 @@
                         {{/select}}
                     </select>
                 </div>
-                <div class="flexrow">
-                    <label class="resource-label">Attribute Default Modifier</label>
-                    <input id="attrDefault" type="text" name="data.attrDefault" value="{{data.attrDefault}}" data-dtype="String"/>
-                </div>
                 {{else}}
                 <div class="flexrow baseSkillRow" id="baseSkillRow">
                     <label id="baseSkillLabel" class="resource-label">Base Skill</label>
@@ -104,6 +108,9 @@
         <div class="header">
             <a class="item" data-tab="defaults">Defaults</a>
         </div>
+        <div class="header">
+            <a class="item" data-tab="dabbler">Dabbler</a>
+        </div>
         {{/if}}
     </nav>
 
@@ -124,7 +131,7 @@
             <div class="tab">
                 <table>
                     <tr class="equipment-header">
-                        <td>Skill</td>
+                        <td>Name</td>
                         <td>Modifier</td>
                         <td></td>
                     </tr>
@@ -136,6 +143,25 @@
                     </tr>
                     {{/each}}
                 </table>
+            </div>
+        </div>
+
+        {{!-- Dabbler Tab --}}
+        <div class="tab stats" data-tab="dabbler" data-group="primary">
+            <div class="flexrow">
+                <label class="resource-label">Dabbler Points</label>
+                <select name="data.dabblerPoints">
+                    {{#select data.dabblerPoints}}
+                    <option value="0">0: Default +0</option>
+                    <option value="1">1: Default +1</option>
+                    <option value="2">2: Default +2</option>
+                    <option value="3">4: Default +3</option>
+                    {{/select}}
+                </select>
+            </div>
+            <hr>
+            <div>
+                <label>You may have 0, 1, 2, or 4 dabbler points in a skill. See Power Ups 2 - Perks, page 16 for an explanation of what the hell this is.</label>
             </div>
         </div>
 

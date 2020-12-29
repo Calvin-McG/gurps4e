@@ -23,7 +23,6 @@ export class gurpsActor extends Actor {
 	prepareData() {
 		super.prepareData();
 
-		console.log(this);
 		//Total up spent and remaining points
 		this.recalcAtrPoints();
 		this.recalcTraitPoints();

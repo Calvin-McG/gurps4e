@@ -186,89 +186,223 @@ export class gurpsItem extends Item {
   _prepareHitLocationData(itemData, data) {
     // Override common default icon
   }
-  _prepareRollableData(itemData, data) {
 
-    if(data){
+  getBaseAttrValue(baseAttr) {
+    let base = 0;
+    if (baseAttr == 'ST'){
+      base = this.actor.data.data.primaryAttributes.strength.value;
+    }
+    else if (baseAttr == 'DX') {
+      base = this.actor.data.data.primaryAttributes.dexterity.value;
+    }
+    else if (baseAttr == 'IQ') {
+      base = this.actor.data.data.primaryAttributes.intelligence.value;
+    }
+    else if (baseAttr == 'HT') {
+      base = this.actor.data.data.primaryAttributes.health.value;
+    }
+    else if (baseAttr == 'Per') {
+      base = this.actor.data.data.primaryAttributes.perception.value;
+    }
+    else if (baseAttr == 'Will') {
+      base = this.actor.data.data.primaryAttributes.will.value;
+    }
+    return base;
+  }
+
+  onePointInSkill(baseAttr, difficulty) {
+    let baseAttrValue = this.getBaseAttrValue(baseAttr)
+
+    switch (difficulty){
+      case "E":
+        return baseAttrValue;
+      case "A":
+        return baseAttrValue-1;
+      case "H":
+        return baseAttrValue-2;
+      case "VH":
+        return baseAttrValue-3;
+      case "W":
+        return baseAttrValue-4;
+      default:
+        return -1;
+    }
+  }
+
+  defaultIsWorth(baseAttr, difficulty, dfault){
+    let baseAttrValue = this.getBaseAttrValue(baseAttr);
+    let difference = dfault - baseAttrValue;
+    let worth = 0;
+
+    if (difficulty == "E"){
+      if (difference == 0){
+        worth = 1;
+      }
+      else if (difference == 1){
+        worth = 2;
+      }
+      else if (difference > 1){
+        worth = (difference - 1) * 4;
+      }
+    }
+    else if (difficulty == "A"){
+      if (difference == -1){
+        worth = 1;
+      }
+      else if (difference == 0){
+        worth = 2;
+      }
+      else if (difference > 0){
+        worth = (difference) * 4;
+      }
+    }
+    else if (difficulty == "H"){
+      if (difference == -2){
+        worth = 1;
+      }
+      else if (difference == -1){
+        worth = 2;
+      }
+      else if (difference > -1){
+        worth = (difference + 1) * 4;
+      }
+    }
+    else if (difficulty == "VH"){
+      if (difference == -3){
+        worth = 1;
+      }
+      else if (difference == -2){
+        worth = 2;
+      }
+      else if (difference > -2){
+        worth = (difference + 2) * 4;
+      }
+    }
+    else if (difficulty == "W"){
+      if (difference == -3){
+        worth = 3;
+      }
+      else if (difference == -2){
+        worth = 6;
+      }
+      else if (difference > -2){
+        worth = (difference + 2) * 12;
+      }
+    }
+    return worth;
+  }
+
+  pointsToBonus(pts, difficulty){
+    let points = pts;
+    let bonus = 0;
+
+    //Correct for Wilcard point costs
+    if (difficulty == "W"){
+      points = Math.floor(points/3)//Wildcards cost triple, but otherwise behave as VH skills
+    }
+
+    //Get base skill modifier for points spent
+    if (points == 1){
+      bonus = 0;
+    }
+    else if (points == 2 || points == 3){
+      bonus = 1
+    }
+    else if (points >= 4){
+      bonus = 1 + +Math.floor(points/4);
+    }
+
+    //Correct for difficulty
+    switch (difficulty){
+      case "E":
+        bonus = bonus;
+        break;
+      case "A":
+        bonus = bonus - 1;
+        break;
+      case "H":
+        bonus = bonus - 2;
+        break;
+      case "VH":
+      case "W":
+        bonus = bonus - 3;
+        break;
+      default:
+        bonus = bonus;
+        break;
+    }
+
+    return bonus;
+  }
+
+  _prepareRollableData(itemData, data) {
+    console.log(itemData)
+    console.log(data)
+    if(data && this.actor){
       // Override common default icon
       let base = 0;
       let level = 0;
+      let skillDefaultArray = [];
+      let attrDefaultArray = [];
       let points = data.points;
+      let dabblerBonus = Math.min(data.dabblerPoints, 3)//If they have four points in dabbler, the bonus is only +3
 
-      if (data.category == 'skill'){//It's a skill
-        if (data.baseAttr == 'ST'){
-          base = this.actor.data.data.primaryAttributes.strength.value;
-        }
-        else if (data.baseAttr == 'DX') {
-          base = this.actor.data.data.primaryAttributes.dexterity.value;
-        }
-        else if (data.baseAttr == 'IQ') {
-          base = this.actor.data.data.primaryAttributes.intelligence.value;
-        }
-        else if (data.baseAttr == 'HT') {
-          base = this.actor.data.data.primaryAttributes.health.value;
-        }
-        else if (data.baseAttr == 'Per') {
-          base = this.actor.data.data.primaryAttributes.perception.value;
-        }
-        else if (data.baseAttr == 'Will') {
-          base = this.actor.data.data.primaryAttributes.will.value;
-        }
+      if (data.category == 'skill') {//It's a skill
+        //Figure out defaults
+        let q = 0;
+        while (data.defaults[q]) {//While the current entry is not null
+          console.log(data.defaults[q])
 
-        if (data.difficulty != 'W') {//It's not a wildcard
-          if (points > 0){//They have spent points
-
-            //Determine base points to skill level conversion
-            if(points == 1){
-              level = base;
-            }
-            else if(points == 2 || points == 3){
-              level = base + 1;
-            }
-            else if(points >= 4){
-              level = base + 1 + Math.floor(points/4);
-            }
-
-            //Adjust for difficulty
-            if (data.difficulty == 'E') {
-              level = level;
-            }
-            else if (data.difficulty == 'A') {
-              level = level - 1;
-            }
-            else if (data.difficulty == 'H') {
-              level = level - 2;
-            }
-            else if (data.difficulty == 'VH') {
-              level = level - 3;
-            }
+          //Check attributes first, add any results to the array of attribute defaults
+          if (data.defaults[q].skill.toUpperCase() == 'ST') {
+            attrDefaultArray.push(+this.actor.data.data.primaryAttributes.strength.value + +data.defaults[q].mod);
+          } else if (data.defaults[q].skill.toUpperCase() == 'DX') {
+            attrDefaultArray.push(+this.actor.data.data.primaryAttributes.dexterity.value + +data.defaults[q].mod);
+          } else if (data.defaults[q].skill.toUpperCase() == 'IQ') {
+            attrDefaultArray.push(+this.actor.data.data.primaryAttributes.intelligence.value + +data.defaults[q].mod);
+          } else if (data.defaults[q].skill.toUpperCase() == 'HT') {
+            attrDefaultArray.push(+this.actor.data.data.primaryAttributes.health.value + +data.defaults[q].mod);
+          } else if (data.defaults[q].skill.toUpperCase() == 'PER') {
+            attrDefaultArray.push(+this.actor.data.data.primaryAttributes.perception.value + +data.defaults[q].mod);
+          } else if (data.defaults[q].skill.toUpperCase() == 'WILL') {
+            attrDefaultArray.push(+this.actor.data.data.primaryAttributes.will.value + +data.defaults[q].mod);
           }
+          //Then check other skills, add any results to the array of skill defaults
           else {
-            level = 0;
+            for (let i = 0; i < this.actor.data.items.length; i++) {
+              if (this.actor.data.items[i].type === "Rollable") {
+                if (this.actor.data.items[i].data.category === "skill") {
+                  if (data.defaults[q].skill === this.actor.data.items[i].name) {
+                    skillDefaultArray.push(+this.actor.data.items[i].data.level + +data.defaults[q].mod);
+                  }
+                }
+              }
+            }
           }
+          q++;
         }
-        else {//It's a wildcard
-          points = Math.floor(points/3);
-          if (points > 0){//They have spent points
-            //Determine base points to skill level conversion
-            if(points == 1){
-              level = base;
-            }
-            else if(points == 2 || points == 3){
-              level = base + 1;
-            }
-            else if(points >= 4){
-              level = base + 1 + Math.floor(points/4);
-            }
+        //We now have a lists of all skill and attribute defaults
 
-            //Adjust for difficulty (W is just 3xVH)
-            level = level - 3;
-          }
-          else {
-            level = 0;
-          }
+        if (points <= 0 || (data.difficulty == "W" && points < 3)) {//They haven't spent any points, or have spent too few points to make a difference for a Wildcard skill. Display default, after account for dabbler
+          let bestAttrDefault = Math.max(...attrDefaultArray);
+          bestAttrDefault += +dabblerBonus;
+
+          bestAttrDefault = Math.min(bestAttrDefault, this.onePointInSkill(data.baseAttr, data.difficulty)-1);//Set the value either to the best attribute default plus the dabbler bonus, or one less than what they'd get if they spent actual points.
+          level = Math.max(bestAttrDefault, Math.max(...skillDefaultArray))
         }
-        level = level + data.mod
+        else if(points > 0){//They have spent points, calculate accordingly, including buying up from defaults
+          base = this.getBaseAttrValue(data.baseAttr)//Get the base value of the relevant attribute
+          let bestDefault = Math.max(...skillDefaultArray, ...attrDefaultArray);//Get the best default
+
+          if (bestDefault >= this.onePointInSkill(data.baseAttr, data.difficulty)){//The best default is equal to or better than what you'd get by spending points. Account for Improving Skills from Default (B. 173)
+            points = points + this.defaultIsWorth(data.baseAttr, data.difficulty, bestDefault);//The effective point value is whatever they put in, plus whatever their default is worth.
+          }
+
+          //Compute skill value based on effective points spent on the skill
+          level = base + this.pointsToBonus(points, data.difficulty) + data.mod;
+        }
       }
+
       else {//It's a technique
 
         //Loop through all the skills on the sheet, find the one they picked and set that as the base

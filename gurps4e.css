@@ -157,6 +157,14 @@
 	min-height: 50px;
 }
 
+.rollable-name {
+	border-collapse: unset;
+	background: unset;
+	border-top: unset;
+	border-bottom: unset;
+	margin: unset;
+}
+
 #racegender {
 	grid-area: racegender;
 	display: grid;
