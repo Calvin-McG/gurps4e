@@ -55,6 +55,10 @@
                         {{/select}}
                     </select>
                 </div>
+                <div class="flexrow">
+                    <label class="resource-label">Attribute Default Modifier</label>
+                    <input id="attrDefault" type="text" name="data.attrDefault" value="{{data.attrDefault}}" data-dtype="String"/>
+                </div>
                 {{else}}
                 <div class="flexrow baseSkillRow" id="baseSkillRow">
                     <label id="baseSkillLabel" class="resource-label">Base Skill</label>
@@ -90,13 +94,50 @@
             </div>
         </div>
     </header>
-    
+
+    {{!-- Sheet Tab Navigation --}}
+    <nav id="tabselect" class="sheet-tabs tabs" data-group="primary">
+        <div class="header">
+            <a class="item" data-tab="notes">Notes</a>
+        </div>
+        {{#if (or (eq data.category "skill")) }}
+        <div class="header">
+            <a class="item" data-tab="defaults">Defaults</a>
+        </div>
+        {{/if}}
+    </nav>
+
     {{!-- Sheet Body --}}
     <section class="sheet-body">
-        <hr>
-        <h3>Notes</h3>
-        <div class="tab">
-            <textarea rows="8" name="data.notes">{{{data.notes}}}</textarea>
+
+        {{!-- Note Tab --}}
+        <div class="tab stats" data-tab="notes" data-group="primary">
+            <h3 class="bold">Detailed Notes</h3>
+            <div class="tab">
+                <textarea rows="8" name="data.notes">{{{data.notes}}}</textarea>
+            </div>
         </div>
+
+        {{!-- Defaults Tab --}}
+        <div class="tab stats" data-tab="defaults" data-group="primary">
+            <h3 class="addDefaultRow" style="text-align: right;">Add Default</h3>
+            <div class="tab">
+                <table>
+                    <tr class="equipment-header">
+                        <td>Skill</td>
+                        <td>Modifier</td>
+                        <td></td>
+                    </tr>
+                    {{#each data.defaults as |defaults id|}}
+                    <tr class="equipment-entry">
+                        <td><input type="text" name="data.defaults.{{id}}.skill" value="{{skill}}" title="{{skill}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="data.defaults.{{id}}.mod" value="{{mod}}" title="{{mod}}" style="text-align:left;" /></td>
+                        <td><a class="default-delete" id="default{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
+                    </tr>
+                    {{/each}}
+                </table>
+            </div>
+        </div>
+
     </section>
 </form>

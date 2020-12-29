@@ -236,6 +236,9 @@
       "ranged": {
         "ranged": []
       },
+      "defaults": {
+        "defaults": []
+      },
       "level": {
         "level": 0
       },
@@ -333,6 +336,7 @@
         "baseSkillLevel",
         "techniqueLimits",
         "mod",
+        "defaults",
         "onMain"
       ]
     },

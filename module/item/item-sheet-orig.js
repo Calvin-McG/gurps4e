@@ -57,10 +57,12 @@ export class gurpsItemSheet extends ItemSheet {
       // User clicked addRow
       html.find('.addRow').click(this._onAddRow.bind(this));
       html.find('.addRangedRow').click(this._onAddRangedRow.bind(this));
+      html.find('.addDefaultRow').click(this._onAddDefaultRow.bind(this));
 
       //User clicked delete thingy on the row
       html.find('.attack-delete').click(this._onDeleteRow.bind(this));
       html.find('.ranged-delete').click(this._onDeleteRangedRow.bind(this));
+      html.find('.default-delete').click(this._onDeleteDefaultRow.bind(this));
     }
 
     _onAddRow(event) {
@@ -83,6 +85,16 @@ export class gurpsItemSheet extends ItemSheet {
         let newRow = { "name": "" };
         this.item.update({ ["data.ranged." + newKey]: newRow });
     }
+    _onAddDefaultRow(event) {
+        let keys = Object.keys(this.item.data.data.defaults);
+        let newKey = 0;
+        if (keys.length){//Array is not empty
+            newKey = (+keys[keys.length-1] + +1);
+        }
+
+        let newRow = { "skill": "" };
+        this.item.update({ ["data.defaults." + newKey]: newRow });
+    }
 
     _onDeleteRow(event) {
         let id = event.currentTarget.id.substring(6);
@@ -92,5 +104,11 @@ export class gurpsItemSheet extends ItemSheet {
     _onDeleteRangedRow(event) {
         let id = event.currentTarget.id.substring(6);
         this.item.update({ ["data.ranged.-=" + id] : null});
+    }
+
+    _onDeleteDefaultRow(event) {
+        console.log(event)
+        let id = event.currentTarget.id.substring(7);
+        this.item.update({ ["data.defaults.-=" + id] : null});
     }
 }
