@@ -431,6 +431,12 @@
 	text-align: center;
 }
 
+.damage-dice-adds {
+	font-size: xxx-large;
+	color: #f0f0e0;
+	border-radius: 7px;
+}
+
 .counter {
 	width: 15px;
 	font-size: 150%;
