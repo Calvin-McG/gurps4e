@@ -273,7 +273,6 @@ export class gurpsActorSheet extends ActorSheet {
 
 			if(damageRoll.terms[0].results.length){//Take the results of each roll and turn it into a die icon.
 				for (let k = 0; k < damageRoll.terms[0].results.length; k++){
-					console.log(damageRoll.terms[0].results[k].result);
 					html += this.dieToIcon(damageRoll.terms[0].results[k].result)
 				}
 			}
