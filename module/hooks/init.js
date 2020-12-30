@@ -10,7 +10,6 @@ Hooks.once("init", () => {
     type: Number,
     default: 1
   });
-  console.log("init")
   _setGurps4eInitiative();
 
   function _setGurps4eInitiative() {
