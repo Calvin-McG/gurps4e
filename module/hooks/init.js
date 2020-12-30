@@ -10,13 +10,14 @@ Hooks.once("init", () => {
     type: Number,
     default: 1
   });
+  console.log("init")
+  _setGurps4eInitiative();
 
-  _setGurps4eInitiative(game.settings.get("gurps4e", "initiativeRule"));
+  function _setGurps4eInitiative() {
+    let formula = "@primaryAttributes.speed.value + @primaryAttributes.dexterity.value / 10000 + (1d100 - 1) / 1000000";// First three digits are (speed), then [DX], then {d100-1} (5.00)[10]{38}
+    console.log(formula)
 
-  function _setGurps4eInitiative(initMethod) {
-    let formula = "@primaryAttributes.speed.value + @primaryAttributes.dexterity.value / 10000 + (1d100 - 1) / 1000000";
-
-    let decimals = (initMethod == "default") ? 6 : 3;
+    let decimals = 6;
     CONFIG.Combat.initiative = {
       formula: formula,
       decimals: decimals
