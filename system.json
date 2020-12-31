@@ -17,8 +17,17 @@
     "./module/hooks/renderChatMessage.js",
     "./lib/gurps-foundry-size-speed-range/src/main.js"
   ],
-  "styles": ["./gurps4e.css", "./lib/gurps-foundry-roll-templates/templates/roll.css"],
-  "packs": [],
+  "styles": ["./gurps4e.css"],
+  "packs": [
+    {
+      "name": "gurps-macros",
+      "label": "GURPS Macros",
+      "system": "gurps4e",
+      "module": "gurps4e",
+      "path": "packs/gurps-macros.db",
+      "entity": "Macro"
+    }
+  ],
   "scripts": [
     "./scripts/config-gurps4e.js"
   ],
@@ -31,8 +40,8 @@
   ],
   "gridDistance": 1,
   "gridUnits": "yd",
-  "primaryTokenAttribute": "secondaryAttributes.hp",
-  "secondaryTokenAttribute": "secondaryAttributes.fp",
+  "primaryTokenAttribute": "reserves.hp",
+  "secondaryTokenAttribute": "reserves.fp",
   "url": "",
   "manifest": "",
   "download": "",

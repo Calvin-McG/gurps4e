@@ -37,9 +37,6 @@ Hooks.once("init", () => {
   // Pre-load templates
   loadTemplates([
     "systems/gurps4e/templates/actor/actor-sheet.html",
-    "systems/gurps4e/templates/chat/chat-message.html",
-    "systems/gurps4e/templates/chat/dialog-constant.html",
-    "systems/gurps4e/templates/chat/test-card.html",
   ]);
  
 });

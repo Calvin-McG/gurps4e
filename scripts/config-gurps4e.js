@@ -1,7 +1,5 @@
 const GURPS4E = {}
 
-CONFIG.ChatMessage.template = "systems/gurps4e/templates/chat/chat-message.html"
-
 CONFIG.postures = [
     "systems/gurps4e/icons/postures/standing.png",
     "systems/gurps4e/icons/postures/sitting.png",
