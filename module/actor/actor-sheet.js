@@ -1,5 +1,3 @@
-import { SuccessRoll, SuccessRollRenderer, DamageRoll, DamageRollRenderer } from "../../lib/gurps-foundry-roll-lib/gurps-foundry-roll-lib.js";
-
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
