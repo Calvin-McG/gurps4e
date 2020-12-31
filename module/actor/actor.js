@@ -35,8 +35,8 @@ export class gurpsActor extends Actor {
 		//Recalculate encumberance values, along with effective dodge and move. Do this last so move and dodge is correct.
 		this.recalcEncValues();
 
-		//Set up trait categories
-		this.setupTraitCategories();
+		//Set up categories for each type
+		this.setupCategories();
 	}
 
 	/**
@@ -644,19 +644,39 @@ export class gurpsActor extends Actor {
 		this.data.data.points.unspent = unspent;
 	}
 
-	setupTraitCategories() {
+	setupCategories() {
 		this.data.traitCategories = [];
+		this.data.equipmentCategories = [];
+		this.data.rollableCategories = [];
 
+		this.data.rollableCategories.push("");
+		this.data.equipmentCategories.push("");
 		this.data.traitCategories.push("");
 
 		for (let w = 0; w < this.data.items.length; w++) {
-			console.log(this.data.items[w])
-			if(this.data.items[w].data.subCategory.trim() != ""){//If subcategory is not blank
-				if(!this.data.traitCategories.includes(this.data.items[w].data.subCategory.trim())){//Make sure the trait array doesn't already contain the category.
-					this.data.traitCategories.push(this.data.items[w].data.subCategory.trim())
+			if(this.data.items[w].data.subCategory){
+				if(this.data.items[w].data.subCategory.trim() != ""){//If subcategory is not blank
+					if(this.data.items[w].type == "Trait"){
+						if(!this.data.traitCategories.includes(this.data.items[w].data.subCategory.trim())){//Make sure the trait array doesn't already contain the category.
+							this.data.traitCategories.push(this.data.items[w].data.subCategory.trim())
+						}
+					}
+					else if (this.data.items[w].type == "Rollable"){
+						if (!this.data.rollableCategories.includes(this.data.items[w].data.subCategory.trim())) {//Make sure the rollable array doesn't already contain the category.
+							this.data.rollableCategories.push(this.data.items[w].data.subCategory.trim())
+						}
+					}
+					else if (this.data.items[w].type == "Equipment"){
+						if (!this.data.equipmentCategories.includes(this.data.items[w].data.subCategory.trim())) {//Make sure the item array doesn't already contain the category.
+							this.data.equipmentCategories.push(this.data.items[w].data.subCategory.trim())
+						}
+					}
 				}
 			}
 		}
+		console.log(this.data.traitCategories)
+		console.log(this.data.rollableCategories)
+		console.log(this.data.equipmentCategories)
 	}
 
 	setConditions(newValue, attrName) {

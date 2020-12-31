@@ -74,7 +74,7 @@ export class gurpsActorSheet extends ActorSheet {
 
 	_onAccordionToggle(event) {
 		event.preventDefault();
-		let rows = document.getElementsByClassName("accordion-div-" + event.target.id.substr(20))
+		let rows = document.getElementsByClassName("accordion-div-" + event.target.id.substr(22))
 		for (let y = 0; y < rows.length; y++){
 			if(rows[y].classList.contains("accordion-open")){//It's open, close it
 				rows[y].classList.remove("accordion-open")

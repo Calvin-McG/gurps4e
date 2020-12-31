@@ -46,7 +46,8 @@
 	display: grid;
 	grid-template:
 			"qty tl lc equipped"
-			"value value weight weight";
+			"value value weight weight"
+			"xx sc sc sc";
 	grid-template-columns: 1fr 1fr 1fr 1fr;
 	/*grid-template-rows: 55px 50px;*/
 	grid-gap: 5px;
@@ -109,6 +110,10 @@
 
 #lc {
 	grid-area: lc;
+}
+
+#subCategory {
+	grid-area: sc;
 }
 
 #equipped {
@@ -745,7 +750,7 @@
 }
 
 .trait-category-header {
-	background-color: rgba(0, 0, 0, 0.1);
+	background-color: rgba(0, 0, 0, 0.1) !important;
 	text-align: center;
 	text-decoration: underline;
 	font-size: large;
