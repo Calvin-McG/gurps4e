@@ -674,9 +674,6 @@ export class gurpsActor extends Actor {
 				}
 			}
 		}
-		console.log(this.data.traitCategories)
-		console.log(this.data.rollableCategories)
-		console.log(this.data.equipmentCategories)
 	}
 
 	setConditions(newValue, attrName) {

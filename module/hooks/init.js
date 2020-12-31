@@ -14,8 +14,6 @@ Hooks.once("init", () => {
 
   function _setGurps4eInitiative() {
     let formula = "@primaryAttributes.speed.value + @primaryAttributes.dexterity.value / 10000 + (1d100 - 1) / 1000000";// First three digits are (speed), then [DX], then {d100-1} (5.00)[10]{38}
-    console.log(formula)
-
     let decimals = 6;
     CONFIG.Combat.initiative = {
       formula: formula,
