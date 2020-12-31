@@ -40,8 +40,6 @@ Hooks.once("init", () => {
     "systems/gurps4e/templates/chat/chat-message.html",
     "systems/gurps4e/templates/chat/dialog-constant.html",
     "systems/gurps4e/templates/chat/test-card.html",
-    "systems/gurps4e/templates/chat/chat-command-display-info.html",
-    "systems/gurps4e/templates/item/item-sheet.html"
   ]);
  
 });

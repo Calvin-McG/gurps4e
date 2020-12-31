@@ -649,9 +649,9 @@ export class gurpsActor extends Actor {
 		this.data.equipmentCategories = [];
 		this.data.rollableCategories = [];
 
-		this.data.rollableCategories.push("");
-		this.data.equipmentCategories.push("");
 		this.data.traitCategories.push("");
+		this.data.equipmentCategories.push("");
+		this.data.rollableCategories.push("");
 
 		for (let w = 0; w < this.data.items.length; w++) {
 			if(this.data.items[w].data.subCategory){
