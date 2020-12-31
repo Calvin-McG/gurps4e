@@ -99,7 +99,7 @@ export class gurpsItem extends Item {
                 if (this.actor.data.items[i].type === "Rollable"){
                   if (this.actor.data.items[i].data.category === "skill" || this.actor.data.items[i].data.category === "technique"){
                     if (data.melee[meleeKeys[k]].skill === this.actor.data.items[i].name){
-                      level = +this.actor.data.items[i].data.level;
+                      level = +this.computeSkillLevel(this.actor.data.items[i].data.category, this.actor.data.items[i].data.defaults, this.actor.data.items[i].data.difficulty, this.actor.data.items[i].data.baseAttr, this.actor.data.items[i].data.baseSkill, this.actor.data.items[i].data.minLevel, this.actor.data.items[i].data.maxLevel, this.actor.data.items[i].data.dabblerPoints, this.actor.data.items[i].data.points, this.actor.data.items[i].data.mod);
                     }
                   }
                 }
@@ -158,7 +158,7 @@ export class gurpsItem extends Item {
                 if (this.actor.data.items[i].type === "Rollable"){
                   if (this.actor.data.items[i].data.category === "skill" || this.actor.data.items[i].data.category === "technique"){
                     if (data.ranged[rangedKeys[k]].skill === this.actor.data.items[i].name){
-                      level = +this.actor.data.items[i].data.level;
+                      level = +this.computeSkillLevel(this.actor.data.items[i].data.category, this.actor.data.items[i].data.defaults, this.actor.data.items[i].data.difficulty, this.actor.data.items[i].data.baseAttr, this.actor.data.items[i].data.baseSkill, this.actor.data.items[i].data.minLevel, this.actor.data.items[i].data.maxLevel, this.actor.data.items[i].data.dabblerPoints, this.actor.data.items[i].data.points, this.actor.data.items[i].data.mod);
                     }
                   }
                 }
@@ -335,107 +335,111 @@ export class gurpsItem extends Item {
     return bonus;
   }
 
+  computeSkillLevel(category, defaults, difficulty, baseAttr, baseSkill, minLevel, maxLevel, dabblerPoints, pts, mod){
+    let base = 0;
+    let level = 0;
+    let points = pts;
+    let skillDefaultArray = [];
+    let attrDefaultArray = [];
+    let dabblerBonus = Math.min(dabblerPoints, 3)//If they have four points in dabbler, the bonus is only +3
+
+    if (category == 'skill') {//It's a skill
+      //Figure out defaults
+      let q = 0;
+      while (defaults[q]) {//While the current entry is not null
+
+        //Check attributes first, add any results to the array of attribute defaults
+        if (defaults[q].skill.toUpperCase() == 'ST') {
+          attrDefaultArray.push(+this.actor.data.data.primaryAttributes.strength.value + +defaults[q].mod);
+        } else if (defaults[q].skill.toUpperCase() == 'DX') {
+          attrDefaultArray.push(+this.actor.data.data.primaryAttributes.dexterity.value + +defaults[q].mod);
+        } else if (defaults[q].skill.toUpperCase() == 'IQ') {
+          attrDefaultArray.push(+this.actor.data.data.primaryAttributes.intelligence.value + +defaults[q].mod);
+        } else if (defaults[q].skill.toUpperCase() == 'HT') {
+          attrDefaultArray.push(+this.actor.data.data.primaryAttributes.health.value + +defaults[q].mod);
+        } else if (defaults[q].skill.toUpperCase() == 'PER') {
+          attrDefaultArray.push(+this.actor.data.data.primaryAttributes.perception.value + +defaults[q].mod);
+        } else if (defaults[q].skill.toUpperCase() == 'WILL') {
+          attrDefaultArray.push(+this.actor.data.data.primaryAttributes.will.value + +defaults[q].mod);
+        }
+        //Then check other skills, add any results to the array of skill defaults
+        else {
+          for (let i = 0; i < this.actor.data.items.length; i++) {
+            if (this.actor.data.items[i].type === "Rollable") {
+              if (this.actor.data.items[i].data.category === "skill") {
+                if (defaults[q].skill === this.actor.data.items[i].name) {
+                  skillDefaultArray.push(+this.actor.data.items[i].data.level + +defaults[q].mod);
+                }
+              }
+            }
+          }
+        }
+        q++;
+      }
+      //We now have a lists of all skill and attribute defaults
+
+      if (points <= 0 || (difficulty == "W" && points < 3)) {//They haven't spent any points, or have spent too few points to make a difference for a Wildcard skill. Display default, after account for dabbler
+        let bestAttrDefault = Math.max(...attrDefaultArray);
+        bestAttrDefault += +dabblerBonus;
+
+        bestAttrDefault = Math.min(bestAttrDefault, this.onePointInSkill(baseAttr, difficulty)-1);//Set the value either to the best attribute default plus the dabbler bonus, or one less than what they'd get if they spent actual points.
+        level = Math.max(bestAttrDefault, Math.max(...skillDefaultArray))
+      }
+      else if(points > 0){//They have spent points, calculate accordingly, including buying up from defaults
+        base = this.getBaseAttrValue(baseAttr)//Get the base value of the relevant attribute
+        let bestDefault = Math.max(...skillDefaultArray, ...attrDefaultArray);//Get the best default
+
+        if (bestDefault >= this.onePointInSkill(baseAttr, difficulty)){//The best default is equal to or better than what you'd get by spending points. Account for Improving Skills from Default (B. 173)
+          points = points + this.defaultIsWorth(baseAttr, difficulty, bestDefault);//The effective point value is whatever they put in, plus whatever their default is worth.
+        }
+
+        //Compute skill value based on effective points spent on the skill
+        level = base + this.pointsToBonus(points, difficulty) + mod;
+      }
+    }
+
+    else {//It's a technique
+
+      //Loop through all the skills on the sheet, find the one they picked and set that as the base
+      for (let i = 0; i < this.actor.data.items.length; i++){
+        if (this.actor.data.items[i].type === "Rollable"){
+          if (this.actor.data.items[i].data.category === "skill"){
+            if (baseSkill === this.actor.data.items[i].name){
+              base = +this.actor.data.items[i].data.level;
+              this._data.data.baseSkillLevel = base;
+              this.data.data.baseSkillLevel = base;
+            }
+          }
+        }
+      }
+
+      //Modify Base Skill with Base Penalty
+      level = base + minLevel;
+
+      //Adjust for difficulty
+      if (difficulty == 'A') {
+        if (points > 0){//They have spent points
+          level = level + points;
+        }
+      }
+      else if (difficulty == 'H') {
+        if (points >= 2){//They have spent enough points to matter
+          level = level + points - 1;//First level costs 2, every other costs 1
+        }
+      }
+      level = Math.min((level + mod), (maxLevel + base));
+    }
+    return level;
+  }
+
   _prepareRollableData(itemData, data) {
     if (this.data.data.category == ""){//The category will be blank upon initilization. Set it to skill so that the form's dynamic elements display correctly the first time it's opened.
       this.data.data.category = "skill";
     }
 
     if(data && this.actor){
-      // Override common default icon
-      let base = 0;
-      let level = 0;
-      let skillDefaultArray = [];
-      let attrDefaultArray = [];
-      let points = data.points;
-      let dabblerBonus = Math.min(data.dabblerPoints, 3)//If they have four points in dabbler, the bonus is only +3
+      let level = this.computeSkillLevel(data.category, data.defaults, data.difficulty, data.baseAttr, data.baseSkill, data.minLevel, data.maxLevel, data.dabblerPoints, data.points, data.mod)
 
-      if (data.category == 'skill') {//It's a skill
-        //Figure out defaults
-        let q = 0;
-        while (data.defaults[q]) {//While the current entry is not null
-
-          //Check attributes first, add any results to the array of attribute defaults
-          if (data.defaults[q].skill.toUpperCase() == 'ST') {
-            attrDefaultArray.push(+this.actor.data.data.primaryAttributes.strength.value + +data.defaults[q].mod);
-          } else if (data.defaults[q].skill.toUpperCase() == 'DX') {
-            attrDefaultArray.push(+this.actor.data.data.primaryAttributes.dexterity.value + +data.defaults[q].mod);
-          } else if (data.defaults[q].skill.toUpperCase() == 'IQ') {
-            attrDefaultArray.push(+this.actor.data.data.primaryAttributes.intelligence.value + +data.defaults[q].mod);
-          } else if (data.defaults[q].skill.toUpperCase() == 'HT') {
-            attrDefaultArray.push(+this.actor.data.data.primaryAttributes.health.value + +data.defaults[q].mod);
-          } else if (data.defaults[q].skill.toUpperCase() == 'PER') {
-            attrDefaultArray.push(+this.actor.data.data.primaryAttributes.perception.value + +data.defaults[q].mod);
-          } else if (data.defaults[q].skill.toUpperCase() == 'WILL') {
-            attrDefaultArray.push(+this.actor.data.data.primaryAttributes.will.value + +data.defaults[q].mod);
-          }
-          //Then check other skills, add any results to the array of skill defaults
-          else {
-            for (let i = 0; i < this.actor.data.items.length; i++) {
-              if (this.actor.data.items[i].type === "Rollable") {
-                if (this.actor.data.items[i].data.category === "skill") {
-                  if (data.defaults[q].skill === this.actor.data.items[i].name) {
-                    skillDefaultArray.push(+this.actor.data.items[i].data.level + +data.defaults[q].mod);
-                  }
-                }
-              }
-            }
-          }
-          q++;
-        }
-        //We now have a lists of all skill and attribute defaults
-
-        if (points <= 0 || (data.difficulty == "W" && points < 3)) {//They haven't spent any points, or have spent too few points to make a difference for a Wildcard skill. Display default, after account for dabbler
-          let bestAttrDefault = Math.max(...attrDefaultArray);
-          bestAttrDefault += +dabblerBonus;
-
-          bestAttrDefault = Math.min(bestAttrDefault, this.onePointInSkill(data.baseAttr, data.difficulty)-1);//Set the value either to the best attribute default plus the dabbler bonus, or one less than what they'd get if they spent actual points.
-          level = Math.max(bestAttrDefault, Math.max(...skillDefaultArray))
-        }
-        else if(points > 0){//They have spent points, calculate accordingly, including buying up from defaults
-          base = this.getBaseAttrValue(data.baseAttr)//Get the base value of the relevant attribute
-          let bestDefault = Math.max(...skillDefaultArray, ...attrDefaultArray);//Get the best default
-
-          if (bestDefault >= this.onePointInSkill(data.baseAttr, data.difficulty)){//The best default is equal to or better than what you'd get by spending points. Account for Improving Skills from Default (B. 173)
-            points = points + this.defaultIsWorth(data.baseAttr, data.difficulty, bestDefault);//The effective point value is whatever they put in, plus whatever their default is worth.
-          }
-
-          //Compute skill value based on effective points spent on the skill
-          level = base + this.pointsToBonus(points, data.difficulty) + data.mod;
-        }
-      }
-
-      else {//It's a technique
-
-        //Loop through all the skills on the sheet, find the one they picked and set that as the base
-        for (let i = 0; i < this.actor.data.items.length; i++){
-          if (this.actor.data.items[i].type === "Rollable"){
-            if (this.actor.data.items[i].data.category === "skill"){
-              if (data.baseSkill === this.actor.data.items[i].name){
-                base = +this.actor.data.items[i].data.level;
-                this._data.data.baseSkillLevel = base;
-                this.data.data.baseSkillLevel = base;
-              }
-            }
-          }
-        }
-
-        //Modify Base Skill with Base Penalty
-        level = base + data.minLevel;
-
-        //Adjust for difficulty
-        if (data.difficulty == 'A') {
-          if (points > 0){//They have spent points
-            level = level + points;
-          }
-        }
-        else if (data.difficulty == 'H') {
-          if (points >= 2){//They have spent enough points to matter
-            level = level + points - 1;//First level costs 2, every other costs 1
-          }
-        }
-        level = Math.min((level + data.mod), (data.maxLevel + base));
-
-      }
       this._data.data.level = level;
       this.data.data.level = level;
     }
