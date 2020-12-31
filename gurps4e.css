@@ -743,3 +743,10 @@
 	text-align: center;
 	padding: 0 0.5em;
 }
+
+.trait-category-header {
+	background-color: rgba(0, 0, 0, 0.1);
+	text-align: center;
+	text-decoration: underline;
+	font-size: large;
+}

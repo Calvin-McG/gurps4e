@@ -34,6 +34,9 @@ export class gurpsActor extends Actor {
 
 		//Recalculate encumberance values, along with effective dodge and move. Do this last so move and dodge is correct.
 		this.recalcEncValues();
+
+		//Set up trait categories
+		this.setupTraitCategories();
 	}
 
 	/**
@@ -639,6 +642,21 @@ export class gurpsActor extends Actor {
 		unspent = +this.data.data.points.total - +spent;
 
 		this.data.data.points.unspent = unspent;
+	}
+
+	setupTraitCategories() {
+		this.data.traitCategories = [];
+
+		this.data.traitCategories.push("");
+
+		for (let w = 0; w < this.data.items.length; w++) {
+			console.log(this.data.items[w])
+			if(this.data.items[w].data.subCategory.trim() != ""){//If subcategory is not blank
+				if(!this.data.traitCategories.includes(this.data.items[w].data.subCategory.trim())){//Make sure the trait array doesn't already contain the category.
+					this.data.traitCategories.push(this.data.items[w].data.subCategory.trim())
+				}
+			}
+		}
 	}
 
 	setConditions(newValue, attrName) {

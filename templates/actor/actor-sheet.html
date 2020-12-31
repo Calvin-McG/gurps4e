@@ -193,7 +193,7 @@
 				{{!-- Traits Tab --}}
 				<div id="traits" class="tab items" data-tab="traits" data-group="primary">
 						<table class="items-list">
-								<tr class="item item-header">
+								<tr class="item item-header" style="background-color: rgba(0, 0, 0, 0.2);">
 										<td class="item-image"></td>
 										<td class="item-name">Name</td>
 										<td class="item-notes">Notes</td>
@@ -201,39 +201,50 @@
 										<td class="item-points">Points</td>
 										<td class="item-controls"></td>
 								</tr>
-								{{#each actor.items as |item id|}}
-								{{#if (eq type "Trait") }}
-								<tr class="item" data-item-id="{{item._id}}">
-									<td class="item-image" style="width: 24px; padding: 0 2px">
-										<img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
-									</td>
-									<td class="item-name">
-											{{item.name}}
-									</td>
-									<td class="item-notes">
-											{{data.shortNotes}}
-									</td>
-									<td class="item-skill" style="width: 3em;">
-										{{#if (isInt data.level)}}
-											{{#if data.level}}
-												<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
-														 data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
-												{{data.level}}
+								{{#each actor.traitCategories as |category cat|}}
+									{{#unless (eq category "")}}
+									<tr class="item item-header trait-category-header">
+										<td colspan="6">
+											{{category}}
+										</td>
+									</tr>
+									{{/unless}}
+									{{#each ../actor.items as |item id|}}
+										{{#if (eq type "Trait") }}
+											{{#if (eq item.data.subCategory category)}}
+												<tr class="item" data-item-id="{{item._id}}">
+													<td class="item-image" style="width: 24px; padding: 0 2px">
+														<img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
+													</td>
+													<td class="item-name">
+															{{item.name}}
+													</td>
+													<td class="item-notes">
+															{{data.shortNotes}}
+													</td>
+													<td class="item-skill" style="width: 3em;">
+														{{#if (isInt data.level)}}
+															{{#if data.level}}
+																<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.level}}"
+																		 data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
+																{{data.level}}
+															{{/if}}
+														{{/if}}
+													</td>
+													<td class="item-points" style="width: 4em;">
+														<div class="item-notes">
+															{{data.points}}
+														</div>
+													</td>
+
+													<td class="item-controls" style="width: 30px;">
+															<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+															<a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+													</td>
+												</tr>
 											{{/if}}
 										{{/if}}
-									</td>
-									<td class="item-points" style="width: 4em;">
-										<div class="item-notes">
-											{{data.points}}
-										</div>
-									</td>
-
-									<td class="item-controls" style="width: 30px;">
-											<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-											<a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
-									</td>
-								</tr>
-								{{/if}}
+									{{/each}}
 								{{/each}}
 						</table>
 				</div>

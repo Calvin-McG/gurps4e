@@ -246,6 +246,9 @@
       "category": {
         "category": ""
       },
+      "subCategory": {
+        "subCategory": ""
+      },
       "difficulty": {
         "difficulty": ""
       },
@@ -307,27 +310,6 @@
       "quantity": 1,
       "weight": 0
     },
-    "Melee-Attack": {
-      "templates": [
-        "base",
-        "level",
-        "weapon"
-      ],
-      "reach": "1"
-    },
-    "Ranged-Attack": {
-      "templates": [
-        "base",
-        "level",
-        "weapon"
-      ],
-      "accuracy": "1",
-      "range": "10/15",
-      "rof": 1,
-      "shots": "",
-      "bulk": -4,
-      "recoil": ""
-    },
     "Rollable": {
       "templates": [
         "base",
@@ -349,31 +331,11 @@
       "templates": [
         "base",
         "category",
+        "subCategory",
         "level",
         "points",
         "melee",
         "ranged"
-      ]
-    },
-    "Modifier": {
-      "templates": [
-        "base",
-        "onMain"
-      ],
-      "inEffect": false,
-      "modifier": 0,
-      "attack": false,
-      "defence": false,
-      "success": false,
-      "reaction": false,
-      "damage": false
-    },
-    "Defence": {
-      "templates": [
-        "base",
-        "level",
-        "category",
-        "onMain"
       ]
     }
   }
