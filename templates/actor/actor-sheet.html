@@ -205,14 +205,14 @@
 									{{#unless (eq category "")}}
 									<tr class="item item-header trait-category-header">
 										<td colspan="6">
-											{{category}}
+											<a class="accordion" id="accordion-clickable-{{category}}">{{category}}</a>
 										</td>
 									</tr>
 									{{/unless}}
 									{{#each ../actor.items as |item id|}}
 										{{#if (eq type "Trait") }}
 											{{#if (eq item.data.subCategory category)}}
-												<tr class="item" data-item-id="{{item._id}}">
+												<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item._id}}">
 													<td class="item-image" style="width: 24px; padding: 0 2px">
 														<img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
 													</td>
@@ -258,9 +258,7 @@
 						<td class="item-notes">Notes</td>
 						<td class="item-points">Points</td>
 						<td class="item-rolls">Skill</td>
-						<td class="item-controls">
-							<!--<a class="item-control item-create" title="Create item" data-type="item"><i class="fas fa-plus"></i> Add</a>-->
-						</td>
+						<td class="item-controls"></td>
 					</tr>
 					{{#each actor.items as |item id|}}
 					{{#if (and (eq type "Rollable") (eq data.category "skill")) }}
@@ -297,9 +295,7 @@
 						<td class="item-notes">Notes</td>
 						<td class="item-points">Points</td>
 						<td class="item-rolls">Skill</td>
-						<td class="item-controls">
-							<!--<a class="item-control item-create" title="Create item" data-type="item"><i class="fas fa-plus"></i> Add</a>-->
-						</td>
+						<td class="item-controls"></td>
 					</tr>
 					{{#each actor.items as |item id|}}
 					{{#if (and (eq type "Rollable") (eq data.category "technique")) }}
@@ -461,9 +457,7 @@
 						<td class="item-title">$</td>
 						<td class="item-title" style="padding-right: 0.2em">lbs</td>
 						<td class="item-title">Status</td>
-						<td class="item-controls">
-							<!--<a class="item-control item-create" title="Create item" data-type="item"><i class="fas fa-plus"></i> Add</a>-->
-						</td>
+						<td class="item-controls"></td>
 					</tr>
 					{{#each actor.items as |item id|}}
 					{{#if (eq type "Equipment") }}

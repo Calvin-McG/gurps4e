@@ -58,12 +58,12 @@ export class gurpsActorSheet extends ActorSheet {
 		html.find('.plus').click(this._onPlusMinus.bind(this));
 		html.find('.minus').click(this._onPlusMinus.bind(this));
 
-		// Relative updates for numeric fields (from DnD5e)
-		//inputs.find('input[data-dtype="Number"]').change(this._onChangeInputDelta.bind(this));
-
 		// track and handle changes to HP and FP
 		html.find('.sec-attr').change(this._onSecondaryAttributeChange.bind(this));
 
+		// Accordion handlers
+		//html.find('.accordion').click(this._onAccordionToggle.bind(this));
+		html.find('.accordion').click(this._onAccordionToggle.bind(this));
 
 		// Track changes to unspent points
 		html.find('.unspentEntry').change(this._onUnspentPointsChange.bind(this));
@@ -72,6 +72,20 @@ export class gurpsActorSheet extends ActorSheet {
 
 	/* -------------------------------------------- */
 
+	_onAccordionToggle(event) {
+		event.preventDefault();
+		let rows = document.getElementsByClassName("accordion-div-" + event.target.id.substr(20))
+		for (let y = 0; y < rows.length; y++){
+			if(rows[y].classList.contains("accordion-open")){//It's open, close it
+				rows[y].classList.remove("accordion-open")
+				rows[y].classList.add("accordion-closed")
+			}
+			else {//It's closed, open it
+				rows[y].classList.add("accordion-open")
+				rows[y].classList.remove("accordion-closed")
+			}
+		}
+	}
 
 	/**
 	 * Handle changes to secondary attribute number fields.

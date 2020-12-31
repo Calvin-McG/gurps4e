@@ -750,3 +750,11 @@
 	text-decoration: underline;
 	font-size: large;
 }
+
+.accordion-open {
+
+}
+
+.accordion-closed {
+	display: none;
+}

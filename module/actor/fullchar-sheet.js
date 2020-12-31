@@ -27,16 +27,8 @@ export class gurpsActorSheet extends ActorSheet {
     for (const item of data.items) {
       if (item.data.onMain) {
         switch (item.type) {
-          case "Melee-Attack":
-          case "Ranged-Attack":
-            data.data.attacks.push(item);
-            break;
-          case "Defence":
           case "Rollable":
             data.data.skills.push(item);
-            break;
-          case "Modifier":
-            data.data.modifiers.push(item);
             break;
           default: // not a supported type
             return ui.notifications.error("This type of item is not supported in the system!");
@@ -73,13 +65,6 @@ export class gurpsActorSheet extends ActorSheet {
     // Rollable checks.
     html.find('.rollable').click(this._onRoll.bind(this));
 
-    // Plus - Minus check
-    html.find('.plus').click(this._onPlusMinus.bind(this));
-    html.find('.minus').click(this._onPlusMinus.bind(this));
-
-    // Relative updates for numeric fields (from DnD5e)
-    //inputs.find('input[data-dtype="Number"]').change(this._onChangeInputDelta.bind(this));
-
     // track and handle changes to HP and FP
     html.find('.sec-attr').change(this._onSecondaryAttributeChange.bind(this));
   }
@@ -99,35 +84,6 @@ export class gurpsActorSheet extends ActorSheet {
     this.actor.setConditions(value, name);
   }
 
-  /**
-   * Handle the behaviour of the plus and minus 'buttons' related to a label.
-   * @param {Event} event   The originating click event
-   * @private
-   */
-  _onPlusMinus(event) {
-    event.preventDefault();
-    let field = event.currentTarget.firstElementChild;
-    let fieldName = field.name;
-    let change = parseInt(field.value);
-    var value;
-    var fieldValue;
-
-    if (fieldName == "dmod") {
-      fieldValue = "data.dmod.value";
-      value = change + this.actor.data.data.dmod.value;
-    } else {
-      fieldValue = "data.attacks." + fieldName + ".seed";
-      let damages = this.actor.data.data.attacks;
-
-      for (let [id, damage] of Object.entries(damages)) {
-        if (fieldName == id) {
-          value = ((value = damage.seed + change) == 0) ? 1 : value;
-          break;
-        }
-      }
-    }
-    this.actor.update({ [fieldValue]: value });
-  }
 
   /**
    * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
