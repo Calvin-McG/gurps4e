@@ -436,8 +436,8 @@ export class gurpsItem extends Item {
         level = Math.min((level + data.mod), (data.maxLevel + base));
 
       }
-
-      this.update({ ['data.level']: level });//This field does need to use this.update, otherwise anything that is computed before this won't get correct skill values.
+      this._data.data.level = level;
+      this.data.data.level = level;
     }
   }
 
