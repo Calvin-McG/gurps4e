@@ -36,7 +36,8 @@ let selectionModal = new Dialog({
             callback: (html) => {
                 console.log(html.find('#target').val())
                 console.log(game.actors.get(targetArray[html.find('#target').val()].data.actorId))
-                game.actors.get(targetArray[html.find('#target').val()].data.actorId).data.data.reserves.hp.value = 9
+                game.actors.get(targetArray[html.find('#target').val()].data.actorId).data.data.reserves.hp.value = 9;//Set the value to the new one so we can work with it within the macro
+                game.actors.get(targetArray[html.find('#target').val()].data.actorId).update({ ['data.reserves.hp.value']: 9 });//Use .update so it can be referenced by the rest of Foundry
                 console.log(game.actors.get(targetArray[html.find('#target').val()].data.actorId).data.data.reserves.hp.value)
             }
         },
