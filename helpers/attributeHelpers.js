@@ -624,4 +624,59 @@ export class attributeHelpers {
         return swing;
     }
 
+    static calcStOrHt(attribute, smDiscount){
+        return +10 + +attribute.mod + +Math.floor(attribute.points / +(+10 * +smDiscount));
+    }
+
+    static calcDxOrIq(attribute){
+        return +10 + +attribute.mod + +Math.floor(attribute.points/20);
+    }
+
+    static calcPerOrWill(iq, attribute){
+        return +iq + +attribute.mod + +Math.floor(attribute.points/5);
+    }
+
+    static calcFright(will, fright){
+        return +will + +fright.mod + +Math.floor(fright.points/2)
+    }
+
+    static calcSpeed(dx, ht, speed){
+        return Math.floor(((+(+dx + +ht) / +4) + +speed.mod + +(speed.points/20)) * +4) / +4;
+    }
+
+    static calcMove(speed, move){
+        return Math.floor(speed) + +move.mod + +Math.floor(move.points/5)
+    }
+
+    static calcDodge(speed, dodge){
+        return Math.floor(speed) + +3 + +dodge.mod + +Math.floor(dodge.points/15);
+    }
+
+    static calcLiftingSt(st, lifting, smDiscount){
+        return +st + +lifting.mod + +Math.floor(lifting.points / +( +3 * +smDiscount));
+    }
+
+    static calcStrikingSt(st, striking, smDiscount){
+        return +st + +striking.mod + +Math.floor(striking.points / +(+5 * +smDiscount));
+    }
+
+    static calcHealthSubdue(ht, subdue){
+        return +ht + +subdue.mod + +Math.floor(subdue.points/2);
+    }
+
+    static calcHealthKill(ht, death){
+        return +ht + +death.mod + +Math.floor(death.points/2);
+    }
+
+    static calcHP(st, hp, smDiscount){
+        return +st + +hp.mod + +Math.floor(hp.points / +( +2 * +smDiscount));
+    }
+
+    static calcFP(ht, fp){
+        return +ht + +fp.mod + +Math.floor(fp.points/3);
+    }
+
+    static calcER(er){
+        return +er.mod + +Math.floor(er.points/3);
+    }
 }

@@ -45,76 +45,75 @@ export class gurpsActor extends Actor {
 		var smDiscount = Math.min((Math.max(((+10 - +this.data.data.bio.sm.value) / +10), 0.2)) , 1);
 
 		//ST
-		var st = +10 + +this.data.data.primaryAttributes.strength.mod + +Math.floor(this.data.data.primaryAttributes.strength.points / +(+10 * +smDiscount));
+		let st = attributeHelpers.calcStOrHt(this.data.data.primaryAttributes.strength, smDiscount);
 		this.data.data.primaryAttributes.strength.value = st;
 
 		//DX
-		var dx = +10 + +this.data.data.primaryAttributes.dexterity.mod + +Math.floor(this.data.data.primaryAttributes.dexterity.points/20);
+		let dx = attributeHelpers.calcDxOrIq(this.data.data.primaryAttributes.dexterity);
 		this.data.data.primaryAttributes.dexterity.value = dx;
 
 		//IQ
-		var iq = +10 + +this.data.data.primaryAttributes.intelligence.mod + +Math.floor(this.data.data.primaryAttributes.intelligence.points/20);
+		let iq = attributeHelpers.calcDxOrIq(this.data.data.primaryAttributes.intelligence);
 		this.data.data.primaryAttributes.intelligence.value = iq;
 
 		//HT
-		var ht = +10 + +this.data.data.primaryAttributes.health.mod + +Math.floor(this.data.data.primaryAttributes.health.points/10);
+		let ht = attributeHelpers.calcStOrHt(this.data.data.primaryAttributes.health, 1);
 		this.data.data.primaryAttributes.health.value = ht;
 
 		//Per
-		var per = +iq + +this.data.data.primaryAttributes.perception.mod + +Math.floor(this.data.data.primaryAttributes.perception.points/5);
+		let per = attributeHelpers.calcPerOrWill(iq, this.data.data.primaryAttributes.perception);
 		this.data.data.primaryAttributes.perception.value = per;
 
 		//Will
-		var will = +iq + +this.data.data.primaryAttributes.will.mod + +Math.floor(this.data.data.primaryAttributes.will.points/5);
+		let will = attributeHelpers.calcPerOrWill(iq, this.data.data.primaryAttributes.will);
 		this.data.data.primaryAttributes.will.value = will;
 
 		//Fright
-		var fr = +will + +this.data.data.primaryAttributes.fright.mod + +Math.floor(this.data.data.primaryAttributes.fright.points/2);
+		let fr = attributeHelpers.calcFright(will, this.data.data.primaryAttributes.fright);
 		this.data.data.primaryAttributes.fright.value = fr;
 
 		//Speed
-		var speed = Math.floor(((+(+dx + +ht) / +4) + +this.data.data.primaryAttributes.speed.mod + +(this.data.data.primaryAttributes.speed.points/20)) * +4) / +4;
+		let speed = attributeHelpers.calcSpeed(dx, ht, this.data.data.primaryAttributes.speed);
 		this.data.data.primaryAttributes.speed.value = speed;
 
 		//Move
-		var move = Math.floor(speed) + +this.data.data.primaryAttributes.move.mod + +Math.floor(this.data.data.primaryAttributes.move.points/5);
+		let move = attributeHelpers.calcMove(speed, this.data.data.primaryAttributes.move);
 		this.data.data.primaryAttributes.move.value = move;
 
 		//Dodge
-		var dodge = Math.floor(speed) + +3 + +this.data.data.primaryAttributes.dodge.mod + +Math.floor(this.data.data.primaryAttributes.dodge.points/15);
+		let dodge = attributeHelpers.calcDodge(speed, this.data.data.primaryAttributes.dodge);
 		this.data.data.primaryAttributes.dodge.value = dodge;
 
 		//Lifting ST
-		var lst = +st + +this.data.data.primaryAttributes.lifting.mod + +Math.floor(this.data.data.primaryAttributes.lifting.points / +( +3 * +smDiscount));
+		let lst = attributeHelpers.calcLiftingSt(st, this.data.data.primaryAttributes.lifting, smDiscount)
 		this.data.data.primaryAttributes.lifting.value = lst;
 
 		//Striking ST
-		var sst = +st + +this.data.data.primaryAttributes.striking.mod + +Math.floor(this.data.data.primaryAttributes.striking.points / +(+5 * +smDiscount));
+		let sst = attributeHelpers.calcStrikingSt(st, this.data.data.primaryAttributes.striking, smDiscount);
 		this.data.data.primaryAttributes.striking.value = sst;
 
 		//Swing and Thrust
-
 		this.data.data.baseDamage.thrust = attributeHelpers.strikingStrengthToThrust(sst);
 		this.data.data.baseDamage.swing = attributeHelpers.strikingStrengthToSwing(sst);
 
 		//HT Subdue
-		var hts = +ht + +this.data.data.primaryAttributes.subdue.mod + +Math.floor(this.data.data.primaryAttributes.subdue.points/2);
+		let hts = attributeHelpers.calcHealthSubdue(ht, this.data.data.primaryAttributes.subdue);
 		this.data.data.primaryAttributes.subdue.value = hts;
 
 		//HT Kill
-		var htk = +ht + +this.data.data.primaryAttributes.death.mod + +Math.floor(this.data.data.primaryAttributes.death.points/2);
+		var htk = attributeHelpers.calcHealthKill(ht, this.data.data.primaryAttributes.death);
 		this.data.data.primaryAttributes.death.value = htk;
 
 		//HP
-		var hp = +st + +this.data.data.reserves.hp.mod + +Math.floor(this.data.data.reserves.hp.points / +( +2 * +smDiscount));
+		var hp = attributeHelpers.calcHP(st, this.data.data.reserves.hp, smDiscount);
 		this.data.data.reserves.hp.max = hp;
 
 		//FP
-		var fp = +ht + +this.data.data.reserves.fp.mod + +Math.floor(this.data.data.reserves.fp.points/3);
+		var fp = attributeHelpers.calcFP(ht, this.data.data.reserves.fp);
 		this.data.data.reserves.fp.max = fp;
 
 		//ER
-		var er = +0 + +this.data.data.reserves.er.mod + +Math.floor(this.data.data.reserves.er.points/3);
+		var er = attributeHelpers.calcER(er);
 		this.data.data.reserves.er.max = er;
 	}
 
