@@ -1,3 +1,5 @@
+import { attributeHelpers } from '../../helpers/attributeHelpers.js';
+
 /**
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
@@ -91,7 +93,7 @@ export class gurpsItem extends Item {
             let block = 0;
 
             if (data.melee[meleeKeys[k]].skill.toLowerCase() == "dx"){
-              level = +this.actor.data.data.primaryAttributes.dexterity.value;
+              level = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
             }
             else {
               //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
@@ -126,16 +128,7 @@ export class gurpsItem extends Item {
             }
             this._data.data.melee[meleeKeys[k]].block = block//Update block value
 
-            //Do the logic to parse out thr/sw damage to dice
-            let damage = data.melee[meleeKeys[k]].damageInput;
-            let thr = this.actor.data.data.baseDamage.thrust;
-            let sw = this.actor.data.data.baseDamage.swing;
-
-            damage = damage.toLowerCase();
-            damage = damage.replace("thr", thr);
-            damage = damage.replace("sw", sw)
-
-            this._data.data.melee[meleeKeys[k]].damage = damage//Update damage value
+            this._data.data.melee[meleeKeys[k]].damage = this.damageParseSwThr(data.melee[meleeKeys[k]].damageInput);//Update damage value
           }
         }
       }
@@ -150,7 +143,7 @@ export class gurpsItem extends Item {
             let mod = +data.ranged[rangedKeys[k]].skillMod;
 
             if (data.ranged[rangedKeys[k]].skill.toLowerCase() == "dx"){
-              level = +this.actor.data.data.primaryAttributes.dexterity.value;
+              level = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
             }
             else {
               //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
@@ -167,20 +160,25 @@ export class gurpsItem extends Item {
             level = level + mod;//Update the skill level with the skill modifier
             this._data.data.ranged[rangedKeys[k]].level = level
 
-            //Do the logic to parse out thr/sw damage to dice
-            let damage = data.ranged[rangedKeys[k]].damageInput;//Grab the damageInput string from the attack
-            let thr = this.actor.data.data.baseDamage.thrust;//Get thrust damage
-            let sw = this.actor.data.data.baseDamage.swing;//Get swing damage
-
-            damage = damage.toLowerCase();//Fix any case specific issues
-            damage = damage.replace("thr", thr);//Replace thrust
-            damage = damage.replace("sw", sw)//Replace swing
-
-            this._data.data.ranged[rangedKeys[k]].damage = damage
+            this._data.data.ranged[rangedKeys[k]].damage = this.damageParseSwThr(data.ranged[rangedKeys[k]].damageInput);
           }
         }
       }
     }
+  }
+
+  damageParseSwThr(damage){
+    let smDiscount = attributeHelpers.calcSMDiscount(this.actor.data.data.bio.sm)
+    let st = attributeHelpers.calcStOrHt(this.actor.data.data.primaryAttributes.strength, smDiscount)
+    let sst = attributeHelpers.calcStrikingSt(st, this.actor.data.data.primaryAttributes.striking, smDiscount);
+    let thr = attributeHelpers.strikingStrengthToThrust(sst);//Get thrust damage
+    let sw = attributeHelpers.strikingStrengthToSwing(sst);//Get swing damage
+
+    damage = damage.toLowerCase();//Fix any case specific issues
+    damage = damage.replace("thr", thr);//Replace thrust
+    damage = damage.replace("sw", sw)//Replace swing
+
+    return damage;
   }
 
   _prepareHitLocationData(itemData, data) {
@@ -190,22 +188,23 @@ export class gurpsItem extends Item {
   getBaseAttrValue(baseAttr) {
     let base = 0;
     if (baseAttr == 'ST'){
-      base = this.actor.data.data.primaryAttributes.strength.value;
+      let smDiscount = attributeHelpers.calcSMDiscount(this.actor.data.data.bio.sm)
+      base = attributeHelpers.calcStOrHt(this.actor.data.data.primaryAttributes.strength, smDiscount);
     }
     else if (baseAttr == 'DX') {
-      base = this.actor.data.data.primaryAttributes.dexterity.value;
+      base = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
     }
     else if (baseAttr == 'IQ') {
-      base = this.actor.data.data.primaryAttributes.intelligence.value;
+      base = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.intelligence);
     }
     else if (baseAttr == 'HT') {
-      base = this.actor.data.data.primaryAttributes.health.value;
+      base = attributeHelpers.calcStOrHt(this.actor.data.data.primaryAttributes.health, 1);
     }
     else if (baseAttr == 'Per') {
-      base = this.actor.data.data.primaryAttributes.perception.value;
+      base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.intelligence), this.actor.data.data.primaryAttributes.perception);
     }
     else if (baseAttr == 'Will') {
-      base = this.actor.data.data.primaryAttributes.will.value;
+      base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.intelligence), this.actor.data.data.primaryAttributes.will);
     }
     return base;
   }
@@ -342,25 +341,31 @@ export class gurpsItem extends Item {
     let skillDefaultArray = [];
     let attrDefaultArray = [];
     let dabblerBonus = Math.min(dabblerPoints, 3)//If they have four points in dabbler, the bonus is only +3
+    let smDiscount = attributeHelpers.calcSMDiscount(this.actor.data.data.bio.sm);
+    let st = attributeHelpers.calcStOrHt(this.actor.data.data.primaryAttributes.strength, smDiscount)
+    let dx = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
+    let iq = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.intelligence);
+    let ht = attributeHelpers.calcStOrHt(this.actor.data.data.primaryAttributes.health, 1);
+    let per = attributeHelpers.calcPerOrWill(iq, this.actor.data.data.primaryAttributes.perception);
+    let will = attributeHelpers.calcPerOrWill(iq, this.actor.data.data.primaryAttributes.will);
 
     if (category == 'skill') {//It's a skill
       //Figure out defaults
       let q = 0;
       while (defaults[q]) {//While the current entry is not null
-
         //Check attributes first, add any results to the array of attribute defaults
         if (defaults[q].skill.toUpperCase() == 'ST') {
-          attrDefaultArray.push(+this.actor.data.data.primaryAttributes.strength.value + +defaults[q].mod);
+          attrDefaultArray.push(st + +defaults[q].mod);
         } else if (defaults[q].skill.toUpperCase() == 'DX') {
-          attrDefaultArray.push(+this.actor.data.data.primaryAttributes.dexterity.value + +defaults[q].mod);
+          attrDefaultArray.push(dx + +defaults[q].mod);
         } else if (defaults[q].skill.toUpperCase() == 'IQ') {
-          attrDefaultArray.push(+this.actor.data.data.primaryAttributes.intelligence.value + +defaults[q].mod);
+          attrDefaultArray.push(iq + +defaults[q].mod);
         } else if (defaults[q].skill.toUpperCase() == 'HT') {
-          attrDefaultArray.push(+this.actor.data.data.primaryAttributes.health.value + +defaults[q].mod);
+          attrDefaultArray.push(ht + +defaults[q].mod);
         } else if (defaults[q].skill.toUpperCase() == 'PER') {
-          attrDefaultArray.push(+this.actor.data.data.primaryAttributes.perception.value + +defaults[q].mod);
+          attrDefaultArray.push(per + +defaults[q].mod);
         } else if (defaults[q].skill.toUpperCase() == 'WILL') {
-          attrDefaultArray.push(+this.actor.data.data.primaryAttributes.will.value + +defaults[q].mod);
+          attrDefaultArray.push(will + +defaults[q].mod);
         }
         //Then check other skills, add any results to the array of skill defaults
         else {

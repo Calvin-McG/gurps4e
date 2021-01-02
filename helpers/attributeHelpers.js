@@ -624,6 +624,10 @@ export class attributeHelpers {
         return swing;
     }
 
+    static calcSMDiscount(sm){
+        return Math.min((Math.max(((+10 - +sm.value) / +10), 0.2)) , 1);
+    }
+
     static calcStOrHt(attribute, smDiscount){
         return +10 + +attribute.mod + +Math.floor(attribute.points / +(+10 * +smDiscount));
     }

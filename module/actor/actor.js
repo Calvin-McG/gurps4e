@@ -1,4 +1,4 @@
-import { attributeHelpers } from '../../helpers/attributeHelpers';
+import { attributeHelpers } from '../../helpers/attributeHelpers.js';
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -42,7 +42,7 @@ export class gurpsActor extends Actor {
 	}
 
 	recalcAtrValues(){
-		var smDiscount = Math.min((Math.max(((+10 - +this.data.data.bio.sm.value) / +10), 0.2)) , 1);
+		let smDiscount = attributeHelpers.calcSMDiscount(this.data.data.bio.sm);
 
 		//ST
 		let st = attributeHelpers.calcStOrHt(this.data.data.primaryAttributes.strength, smDiscount);
@@ -113,7 +113,7 @@ export class gurpsActor extends Actor {
 		this.data.data.reserves.fp.max = fp;
 
 		//ER
-		var er = attributeHelpers.calcER(er);
+		var er = attributeHelpers.calcER(this.data.data.reserves.er);
 		this.data.data.reserves.er.max = er;
 	}
 
