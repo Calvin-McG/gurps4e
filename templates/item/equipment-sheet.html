@@ -139,6 +139,8 @@
                         <td class="resource-label">Bulk</td>
                         <td class="resource-label">Rcl</td>
                         <td class="resource-label">ST</td>
+                        <td class="resource-label">Malf</td>
+                        <td class="resource-label"></td>
                     </tr>
                     {{#each data.ranged as |ranged id|}}
                     <tr class="equipment-entry">
@@ -159,6 +161,7 @@
                         <td><input type="text" name="data.ranged.{{id}}.bulk" value="{{ranged.bulk}}" title="{{ranged.bulk}}" style="text-align:left;" /></td>
                         <td><input type="text" name="data.ranged.{{id}}.rcl" value="{{ranged.rcl}}" title="{{ranged.rcl}}" style="text-align:left;" /></td>
                         <td><input type="text" name="data.ranged.{{id}}.st" value="{{ranged.st}}"/></td>
+                        <td><input type="text" name="data.ranged.{{id}}.malf" value="{{ranged.malf}}"/></td>
                         <td><a class="ranged-delete" id="ranged{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
                     </tr>
                     {{/each}}
