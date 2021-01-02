@@ -181,7 +181,8 @@ export class gurpsActor extends Actor {
 	}
 
 	setTotalPoints(unspent) {
-		this.data.data.points.total = +this.data.data.points.attributes + +this.data.data.points.traits + +this.data.data.points.skills + +unspent;
+		let total = +this.data.data.points.attributes + +this.data.data.points.traits + +this.data.data.points.skills + +unspent;
+		this.update({ ['data.points.total']: total });
 	}
 
 	recalcAtrPoints(){
@@ -200,7 +201,7 @@ export class gurpsActor extends Actor {
 			+this.data.data.reserves.fp.points +
 			+this.data.data.reserves.er.points +
 			+this.data.data.bio.tl.points;
-		this.data.data.points.attributes = attributePoints;
+		this.update({ ['data.points.attributes']: attributePoints });
 	}
 
 	recalcPointTotals() {
@@ -211,7 +212,7 @@ export class gurpsActor extends Actor {
 
 		unspent = +this.data.data.points.total - +spent;
 
-		this.data.data.points.unspent = unspent;
+		this.update({ ['data.points.unspent']: unspent });
 	}
 
 	setupCategories() {
