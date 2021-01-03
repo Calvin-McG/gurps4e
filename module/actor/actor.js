@@ -1,4 +1,5 @@
 import { attributeHelpers } from '../../helpers/attributeHelpers.js';
+import { distanceHelpers } from '../../helpers/distanceHelpers.js';
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -337,24 +338,80 @@ export class gurpsActor extends Actor {
 			this.data.data.reserves.fp.state = attrState;
 		}
 	}
-}
 
-// calculate the dice formula from a seed value
-function calculateDice(attribute) {
-	let value = attribute.seed;
+	//==========================
+	//This section is for macro methods
+	//==========================
 
-	let dice = Math.floor(value / 4);
-	let mod = value % 4 - 1;
 
-	if (dice == 0) { // dice may not be zero
-		dice = 1;
-		mod -= 4;
+	test(){
+		console.log("Test Worked")
 	}
-	value = dice + "d6";
-	if (mod < 0) {
-		value += mod;
-	} else if (mod > 0) {
-		value += ("+" + mod);
+
+	//Return a dialog that tells the user to pick a target
+	noTargetsDialog(){
+		let noTargetsDialogContent = "<div>You need to select a target.</div>";
+
+		let noTargetsDialog = new Dialog({
+			title: "Select a target",
+			content: noTargetsDialogContent,
+			buttons: {
+				ok: {
+					icon: '<i class="fas fa-check"></i>',
+					label: "Ok"
+				}
+			},
+			default: "ok"
+		})
+
+		return noTargetsDialog;
 	}
-	attribute.formula = value;
+
+	singleTargetDialog(selfToken, targetToken){
+		//This is the bit where we figure out where every one is, along with distances and range penalties.
+		let selfCoords = selfToken._validPosition
+
+		let targetCoords = targetToken._validPosition;
+
+		console.log(canvas.scene.data.gridUnits)
+
+		let distance = distanceHelpers.convertToYards(canvas.grid.measureDistance(selfToken, targetToken), canvas.scene.data.gridUnits);
+
+		console.log(distance);
+
+
+
+		let singleTargetModal = new Dialog({
+			title: "SHOW ME YOUR MOVES",
+			content: htmlContent,
+			buttons: {
+				mod: {
+					icon: '<i class="fas fa-check"></i>',
+					label: "Select Your Attack",
+					callback: (html) => {
+						console.log(html.find('#target').val())
+						console.log(game.actors.get(targetArray[html.find('#target').val()].data.actorId))
+						game.actors.get(targetArray[html.find('#target').val()].data.actorId).data.data.reserves.hp.value = 9;//Set the value to the new one so we can work with it within the macro
+						game.actors.get(targetArray[html.find('#target').val()].data.actorId).update({ ['data.reserves.hp.value']: 9 });//Use .update so it can be referenced by the rest of Foundry
+						console.log(game.actors.get(targetArray[html.find('#target').val()].data.actorId).data.data.reserves.hp.value)
+						console.log(selfCoords)
+						game.actors.get(targetArray[html.find('#target').val()].data.actorId).test();
+						selfActor.test()
+					}
+				},
+				noMod: {
+					icon: '<i class="fas fa-times"></i>',
+					label: "Cancel",
+					callback: () => {
+
+					}
+				}
+			},
+			default: "noMod",
+			render: html => console.log("Register interactivity in the rendered dialog"),
+			close: html => console.log("This always is logged no matter which option is chosen")
+		})
+
+		return singleTargetModal;
+	}
 }
