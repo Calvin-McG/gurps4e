@@ -369,13 +369,10 @@ export class gurpsActor extends Actor {
 
 	singleTargetDialog(selfToken, targetToken){
 		//This is the bit where we figure out where every one is, along with distances and range penalties.
-		let selfCoords = selfToken._validPosition
-
-		let targetCoords = targetToken._validPosition;
-
 		console.log(canvas.scene.data.gridUnits)
 
 		let distance = distanceHelpers.convertToYards(canvas.grid.measureDistance(selfToken, targetToken), canvas.scene.data.gridUnits);
+		let distancePenalty = distanceHelpers.distancePenalty(distance);
 
 		console.log(distance);
 
