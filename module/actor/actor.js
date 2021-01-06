@@ -1,5 +1,6 @@
 import { attributeHelpers } from '../../helpers/attributeHelpers.js';
 import { distanceHelpers } from '../../helpers/distanceHelpers.js';
+import { rollHelpers } from '../../helpers/rollHelpers.js';
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -188,7 +189,7 @@ export class gurpsActor extends Actor {
 
 	recalcAtrPoints(){
 		//Update point totals
-		var attributePoints = +this.data.data.primaryAttributes.strength.points +
+		let attributePoints = +this.data.data.primaryAttributes.strength.points +
 			+this.data.data.primaryAttributes.dexterity.points +
 			+this.data.data.primaryAttributes.intelligence.points +
 			+this.data.data.primaryAttributes.health.points +
@@ -202,18 +203,20 @@ export class gurpsActor extends Actor {
 			+this.data.data.reserves.fp.points +
 			+this.data.data.reserves.er.points +
 			+this.data.data.bio.tl.points;
-		this.update({ ['data.points.attributes']: attributePoints });
+		//this.update({ ['data.points.attributes']: attributePoints });
+		this.data.data.points.attributes = attributePoints;
 	}
 
 	recalcPointTotals() {
-		var unspent;
-		var spent;
+		let unspent;
+		let spent;
 
 		spent = +this.data.data.points.attributes + +this.data.data.points.traits + +this.data.data.points.skills;
 
 		unspent = +this.data.data.points.total - +spent;
 
-		this.update({ ['data.points.unspent']: unspent });
+		//this.update({ ['data.points.unspent']: unspent });
+		this.data.data.points.unspent = unspent;
 	}
 
 	setupCategories() {
@@ -249,9 +252,9 @@ export class gurpsActor extends Actor {
 	}
 
 	setConditions(newValue, attrName) {
-		var attrValue;
-		var attrMax;
-		var attrState;
+		let attrValue;
+		let attrMax;
+		let attrState;
 
 		if (attrName.includes('.hp')) { // Hit points update
 
@@ -375,28 +378,125 @@ export class gurpsActor extends Actor {
 		let distancePenalty = distanceHelpers.distancePenalty(distance);
 
 		console.log(distance);
+		console.log(distancePenalty);
 
+		let attacks = this.listAttacks(selfToken.actor);
+
+		let htmlContent = "<div>";
+		htmlContent += "<table>";
+
+		htmlContent += "<tr><td colspan='8' class='trait-category-header' style='text-align: center;'>Melee Attacks</td></tr>";
+		htmlContent += "<tr><td></td><td>Weapon</td><td>Attack</td><td>Level</td><td>Damage</td><td>Reach</td><td>Parry</td><td>ST</td></tr>";
+
+		for (let x = 0; x < attacks.melee.length; x++){
+			console.log(attacks.melee[x]);
+			htmlContent += "<tr>";
+			htmlContent += "<td><input type='radio' id='melee" + x + "' name='melee' value='" + x + "'></td>";
+			htmlContent += "<td>" + attacks.melee[x].weapon + "</td>";
+			htmlContent += "<td>" + attacks.melee[x].name + "</td>";
+			htmlContent += "<td>" + attacks.melee[x].level + "</td>";
+
+			if(attacks.melee[x].armorDivisor == 1){//Only show armour divisor if it's something other than 1
+				htmlContent += "<td>" + attacks.melee[x].damage + " " + attacks.melee[x].damageType + "</td>";
+			}
+			else {
+				htmlContent += "<td>" + attacks.melee[x].damage + " " + attacks.melee[x].damageType + " " + "(" + attacks.melee[x].armorDivisor + ")</td>";
+			}
+
+			htmlContent += "<td>" + attacks.melee[x].reach + "</td>";
+			htmlContent += "<td>" + attacks.melee[x].parry + attacks.melee[x].parryType + "</td>";
+			htmlContent += "<td>" + attacks.melee[x].st + "</td>";
+			htmlContent += "</tr>";
+		}
+
+		htmlContent += "</table>";
+
+		htmlContent += "<table>";
+
+		htmlContent += "<tr><td colspan='12' class='trait-category-header' style='text-align: center;'>Ranged Attacks</td></tr>";
+		htmlContent += "<tr><td></td><td>Weapon</td><td>Attack</td><td>Level</td><td>Damage</td><td>Acc</td><td>Range</td><td>RoF</td><td>Shots</td><td>ST</td><td>Bulk</td><td>Rcl</td></tr>";
+
+		for (let q = 0; q < attacks.ranged.length; q++){
+			console.log(attacks.ranged[q]);
+			htmlContent += "<tr>";
+			htmlContent += "<td><input type='radio' id='range" + q + "' name='range' value='" + q + "'></td>";
+			htmlContent += "<td>" + attacks.ranged[q].weapon + "</td>";
+			htmlContent += "<td>" + attacks.ranged[q].name + "</td>";
+			htmlContent += "<td>" + attacks.ranged[q].level + "</td>";
+			if(attacks.ranged[q].armorDivisor == 1){//Only show armour divisor if it's something other than 1
+				htmlContent += "<td>" + attacks.ranged[q].damage + " " + attacks.ranged[q].damageType + "</td>";
+			}
+			else {
+				htmlContent += "<td>" + attacks.ranged[q].damage + " " + attacks.ranged[q].damageType + " " + "(" + attacks.ranged[q].armorDivisor + ")</td>";
+			}
+			htmlContent += "<td>" + attacks.ranged[q].acc + "</td>";
+			htmlContent += "<td>" + attacks.ranged[q].range + "</td>";
+			htmlContent += "<td>" + attacks.ranged[q].rof + "</td>";
+			htmlContent += "<td>" + attacks.ranged[q].shots + "</td>";
+			htmlContent += "<td>" + attacks.ranged[q].st + "</td>";
+			htmlContent += "<td>" + attacks.ranged[q].bulk + "</td>";
+			htmlContent += "<td>" + attacks.ranged[q].rcl + "</td>";
+			htmlContent += "</tr>";
+		}
+
+		htmlContent += "</table>";
+		htmlContent += "</div>";
 
 
 		let singleTargetModal = new Dialog({
 			title: "SHOW ME YOUR MOVES",
 			content: htmlContent,
 			buttons: {
-				mod: {
-					icon: '<i class="fas fa-check"></i>',
-					label: "Select Your Attack",
+				melee: {
+					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bow-arrow" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M110.11 227.59c-6.25-6.25-16.38-6.25-22.63 0l-18.79 18.8a16.005 16.005 0 0 0-2 20.19l53.39 80.09-53.43 53.43-29.26-14.63a13.902 13.902 0 0 0-16.04 2.6L4.07 405.36c-5.42 5.43-5.42 14.22 0 19.64L87 507.93c5.42 5.42 14.22 5.42 19.64 0l17.29-17.29a13.873 13.873 0 0 0 2.6-16.03l-14.63-29.26 53.43-53.43 80.09 53.39c6.35 4.23 14.8 3.39 20.19-2l18.8-18.79c6.25-6.25 6.25-16.38 0-22.63l-174.3-174.3zM493.73.16L400 16 171.89 244.11l96 96L496 112l15.83-93.73c1.51-10.56-7.54-19.61-18.1-18.11z" class=""></path></svg>',
+					label: "Select Melee",
 					callback: (html) => {
-						console.log(html.find('#target').val())
-						console.log(game.actors.get(targetArray[html.find('#target').val()].data.actorId))
-						game.actors.get(targetArray[html.find('#target').val()].data.actorId).data.data.reserves.hp.value = 9;//Set the value to the new one so we can work with it within the macro
-						game.actors.get(targetArray[html.find('#target').val()].data.actorId).update({ ['data.reserves.hp.value']: 9 });//Use .update so it can be referenced by the rest of Foundry
-						console.log(game.actors.get(targetArray[html.find('#target').val()].data.actorId).data.data.reserves.hp.value)
-						console.log(selfCoords)
-						game.actors.get(targetArray[html.find('#target').val()].data.actorId).test();
-						selfActor.test()
+						let elements = document.getElementsByName('melee');
+						let attack;
+
+						for (let e = 0; e < elements.length; e++){
+							if(elements[e].checked){
+								attack = e;
+							}
+						}
+						if (typeof attack !== "undefined") {
+							this.meleeAttackOnTarget(selfToken, attacks.melee[attack], targetToken)
+						}
+						// console.log(game.actors.get(targetArray[html.find('#target').val()].data.actorId))
+						// game.actors.get(targetArray[html.find('#target').val()].data.actorId).data.data.reserves.hp.value = 9;//Set the value to the new one so we can work with it within the macro
+						// game.actors.get(targetArray[html.find('#target').val()].data.actorId).update({ ['data.reserves.hp.value']: 9 });//Use .update so it can be referenced by the rest of Foundry
+						// console.log(game.actors.get(targetArray[html.find('#target').val()].data.actorId).data.data.reserves.hp.value)
+						// console.log(selfCoords)
+						// game.actors.get(targetArray[html.find('#target').val()].data.actorId).test();
+						// selfActor.test()
 					}
 				},
-				noMod: {
+				ranged: {
+					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bow-arrow" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M145.78 287.03l45.26-45.25-90.58-90.58C128.24 136.08 159.49 128 192 128c32.03 0 62.86 7.79 90.33 22.47l46.61-46.61C288.35 78.03 241.3 64 192 64c-49.78 0-97.29 14.27-138.16 40.59l-3.9-3.9c-6.25-6.25-16.38-6.25-22.63 0L4.69 123.31c-6.25 6.25-6.25 16.38 0 22.63l141.09 141.09zm262.36-104.64L361.53 229c14.68 27.47 22.47 58.3 22.47 90.33 0 32.51-8.08 63.77-23.2 91.55l-90.58-90.58-45.26 45.26 141.76 141.76c6.25 6.25 16.38 6.25 22.63 0l22.63-22.63c6.25-6.25 6.25-16.38 0-22.63l-4.57-4.57C433.74 416.63 448 369.11 448 319.33c0-49.29-14.03-96.35-39.86-136.94zM493.22.31L364.63 26.03c-12.29 2.46-16.88 17.62-8.02 26.49l34.47 34.47-250.64 250.63-49.7-16.57a20.578 20.578 0 0 0-21.04 4.96L6.03 389.69c-10.8 10.8-6.46 29.2 8.04 34.04l55.66 18.55 18.55 55.65c4.83 14.5 23.23 18.84 34.04 8.04l63.67-63.67a20.56 20.56 0 0 0 4.97-21.04l-16.57-49.7 250.64-250.64 34.47 34.47c8.86 8.86 24.03 4.27 26.49-8.02l25.72-128.59C513.88 7.8 504.2-1.88 493.22.31z" class=""></path></svg>',
+					label: "Select Ranged",
+					callback: (html) => {
+						let elements = document.getElementsByName('range');
+						let attack;
+
+						for (let e = 0; e < elements.length; e++){
+							if(elements[e].checked){
+								attack = e;
+							}
+						}
+						if (typeof attack !== "undefined") {
+							this.rangedAttackOnTarget(selfToken, attacks.ranged[attack], targetToken)
+						}
+						// console.log(html.find('#target').val())
+						// console.log(game.actors.get(targetArray[html.find('#target').val()].data.actorId))
+						// game.actors.get(targetArray[html.find('#target').val()].data.actorId).data.data.reserves.hp.value = 9;//Set the value to the new one so we can work with it within the macro
+						// game.actors.get(targetArray[html.find('#target').val()].data.actorId).update({ ['data.reserves.hp.value']: 9 });//Use .update so it can be referenced by the rest of Foundry
+						// console.log(game.actors.get(targetArray[html.find('#target').val()].data.actorId).data.data.reserves.hp.value)
+						// console.log(selfCoords)
+						// game.actors.get(targetArray[html.find('#target').val()].data.actorId).test();
+						// selfActor.test()
+					}
+				},
+				cancel: {
 					icon: '<i class="fas fa-times"></i>',
 					label: "Cancel",
 					callback: () => {
@@ -404,11 +504,62 @@ export class gurpsActor extends Actor {
 					}
 				}
 			},
-			default: "noMod",
+			default: "cancel",
 			render: html => console.log("Register interactivity in the rendered dialog"),
 			close: html => console.log("This always is logged no matter which option is chosen")
+		},{
+			resizable: true,
+			width: "500"
 		})
 
+		console.log(singleTargetModal)
+
 		return singleTargetModal;
+	}
+
+	listAttacks(actor){
+		let q = 0;
+		let p = 0;
+		let meleeAttacks = [];
+		let rangedAttacks = [];
+		let melee;
+		let ranged;
+
+		for (let y = 0; y < actor.data.items.length; y++){
+			if (actor.data.items[y].type == "Trait" || actor.data.items[y].type == "Equipment"){
+				while (actor.data.items[y].data.melee[q]) {
+					melee = actor.data.items[y].data.melee[q];
+					melee.weapon = actor.data.items[y].name
+
+					meleeAttacks.push(melee);
+					q++;
+				}
+
+				while (actor.data.items[y].data.ranged[p]) {
+					ranged = actor.data.items[y].data.ranged[p];
+					ranged.weapon = actor.data.items[y].name
+
+					rangedAttacks.push(ranged);
+					p++;
+				}
+			}
+		}
+
+		return { "melee": meleeAttacks, "ranged": rangedAttacks}
+	}
+
+	meleeAttackOnTarget(attacker, attack, target) {
+		console.log(attacker.nameplate._text);
+		console.log(attack);
+		console.log(target.nameplate._text);
+		let label = attacker.nameplate._text + " attacks " + target.nameplate._text + " with a " + attack.weapon + " " + attack.name + "."
+
+		rollHelpers.skillRoll(attack.level, 0, label)
+	}
+
+	rangedAttackOnTarget(attacker, attack, target) {
+		console.log(attack);
+
+
 	}
 }
