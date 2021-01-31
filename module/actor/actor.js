@@ -351,6 +351,21 @@ export class gurpsActor extends Actor {
 		console.log("Test Worked")
 	}
 
+	facingTest(selfToken, targetToken){
+		console.log(selfToken)
+		console.log(targetToken)
+
+		console.log(selfToken._validPosition)
+		console.log(selfToken.data.rotation)
+		console.log(selfToken.data.sightAngle)
+
+		console.log(targetToken._validPosition)
+		console.log(targetToken.data.rotation)
+		console.log(targetToken.data.sightAngle)
+
+		console.log(Math.atan2(targetToken._validPosition.y - selfToken._validPosition.y, targetToken._validPosition.x - selfToken._validPosition.x) * 180 / Math.PI);
+	}
+
 	//Return a dialog that tells the user to pick a target
 	noTargetsDialog(){
 		let noTargetsDialogContent = "<div>You need to select a target.</div>";
@@ -373,6 +388,7 @@ export class gurpsActor extends Actor {
 	singleTargetDialog(selfToken, targetToken){
 		//This is the bit where we figure out where every one is, along with distances and range penalties.
 		console.log(canvas.scene.data.gridUnits)
+		console.log(canvas.grid)
 
 		let distance = distanceHelpers.convertToYards(canvas.grid.measureDistance(selfToken, targetToken), canvas.scene.data.gridUnits);
 		let distancePenalty = distanceHelpers.distancePenalty(distance);
