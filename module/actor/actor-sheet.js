@@ -303,6 +303,8 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
 		}
 
+		this.actor.update({ "data.bodyType.body" : bodyObj });
+
 		console.log(bodyObj)
 	}
 
