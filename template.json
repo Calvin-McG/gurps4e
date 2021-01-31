@@ -36,6 +36,25 @@
           "label": "Posture",
           "value": "Standing"
         },
+        "bodyType": {
+          "name": "humanoid"
+        },
+        "injuryTolerances": {
+          "diffuse": false,
+          "homogenous": false,
+          "noBrain": false,
+          "noVitals": false,
+          "unliving": false,
+          "noBlood": false,
+          "noEyes": false,
+          "noHead": false,
+          "noNeck": false,
+          "unbreakableBones": false,
+          "damageReduction": 1,
+          "supernaturalDurability": false,
+          "highPainThreshold": false,
+          "lowPainThreshold": false
+        },
         "biography": "",
         "points": {
           "total": 150,

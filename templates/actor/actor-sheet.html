@@ -133,6 +133,9 @@
 				<div class="header">
 						<a class="item" data-tab="items">Items</a>
 				</div>
+				<div class="header">
+						<a class="item" data-tab="body-type">Body Type</a>
+				</div>
 		</nav>
 
 		{{!-- Sheet Body --}}
@@ -479,6 +482,34 @@
 					</tr>
 
 				</table>
+			</div>
+
+			{{!-- Body Type Tab --}}
+			<div id="body-type" class="tab body-type" data-tab="body-type" data-group="primary">
+				<div>
+					{{log actor.data.bodyType}}
+					{{log actor.data.injuryTolerances}}
+					<label>Body Type:</label>
+					<select name="data.bodyType.name" class="bodyType">
+						{{#select data.bodyType.name}}
+						<option value="humanoid">Humanoid</option>
+						<option value="wingedHumanoid">Winged Humanoid</option>
+						<option value="quadruped">Quadruped</option>
+						<option value="wingedQuadruped">Winged Quadruped</option>
+						<option value="hexapod">Hexapod</option>
+						<option value="wingedHexapod">Winged Hexapod</option>
+						<option value="centaur">Centaur</option>
+						<option value="avian">Avian</option>
+						<option value="vermiform">Vermiform</option>
+						<option value="lamia">Lamia</option>
+						<option value="wingedLamia">Winged Lamia</option>
+						<option value="octopod">Octopod</option>
+						<option value="cancroid">Cancroid</option>
+						<option value="ichthyoid">Ichthyoid</option>
+						<option value="arachnoid">Arachnoid</option>
+						{{/select}}
+					</select>
+				</div>
 			</div>
 		</section>
 	</div>
