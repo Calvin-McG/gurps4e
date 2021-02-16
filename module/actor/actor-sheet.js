@@ -525,7 +525,8 @@ export class gurpsActorSheet extends ActorSheet {
 			personalDRHardeningFat: 0,
 			personalDRHardeningImp: 0,
 			personalDRHardeningPi: 0,
-			personalDRHardeningTox: 0
+			personalDRHardeningTox: 0,
+			penalty: "-7/-5"
 		};
 		return part;
 	}
@@ -559,7 +560,8 @@ export class gurpsActorSheet extends ActorSheet {
 			personalDRHardeningFat: 0,
 			personalDRHardeningImp: 0,
 			personalDRHardeningPi: 0,
-			personalDRHardeningTox: 0
+			personalDRHardeningTox: 0,
+			penalty: "-7/-5"
 		};
 		return part;
 	}
@@ -577,6 +579,7 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: "Face",
+			penalty: "-5/-7",
 			subLocation: {
 				jaw: {
 					label: "Jaw",
@@ -766,6 +769,7 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: label,
+			penalty: "-2",
 			hp: {
 				max: partHp,
 				state: "Fine",
@@ -800,7 +804,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningFat: 0,
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
-					personalDRHardeningTox: 0
+					personalDRHardeningTox: 0,
+					penalty: "-2"
 				},
 				thigh: {
 					label: "Thigh",
@@ -830,7 +835,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningFat: 0,
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
-					personalDRHardeningTox: 0
+					personalDRHardeningTox: 0,
+					penalty: "-2"
 				},
 				knee: {
 					label: "Knee",
@@ -861,6 +867,7 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
 					personalDRHardeningTox: 0,
+					penalty: "-5",
 					hp: {
 						max: jointHp,
 						state: "Fine",
@@ -895,6 +902,7 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningFat: 0,
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
+					penalty: "-5",
 					personalDRHardeningTox: 0
 				}
 			}
@@ -916,6 +924,7 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: label,
+			penalty: "-2",
 			hp: {
 				max: partHp,
 				state: "Fine",
@@ -950,7 +959,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningFat: 0,
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
-					personalDRHardeningTox: 0
+					personalDRHardeningTox: 0,
+					penalty: "-2"
 				},
 				upperArm: {
 					label: "Upper Arm",
@@ -980,6 +990,7 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningFat: 0,
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
+					penalty: "-2",
 					personalDRHardeningTox: 0
 				},
 				elbow: {
@@ -1011,6 +1022,7 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
 					personalDRHardeningTox: 0,
+					penalty: "-5",
 					hp: {
 						max: jointHp,
 						state: "Fine",
@@ -1019,6 +1031,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				shoulder: {
 					label: "Shoulder",
+					penalty: "-5",
 					personalDRBurn: 0,
 					personalDRCor: 0,
 					personalDRCr: 0,
@@ -1058,6 +1071,7 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: label,
+			penalty: "0",
 			subLocation: {
 				chest: {
 					label: "Chest",
@@ -1087,10 +1101,12 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningFat: 0,
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
+					penalty: "0",
 					personalDRHardeningTox: 0
 				},
 				vitals: {
 					label: "Vitals",
+					penalty: "-3",
 					personalDRBurn: 0,
 					personalDRCor: 0,
 					personalDRCr: 0,
@@ -1121,6 +1137,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				spine: {
 					label: "Spine",
+					penalty: "-8",
 					personalDRBurn: 3,
 					personalDRCor: 3,
 					personalDRCr: 3,
@@ -1168,9 +1185,11 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: label,
+			penalty: "-1",
 			subLocation: {
 				digestiveTract: {
 					label: "Digestive Tract",
+					penalty: "-3",
 					personalDRBurn: 0,
 					personalDRCor: 0,
 					personalDRCr: 0,
@@ -1201,6 +1220,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				vitals: {
 					label: "Vitals",
+					penalty: "-3",
 					personalDRBurn: 0,
 					personalDRCor: 0,
 					personalDRCr: 0,
@@ -1231,6 +1251,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				pelvis: {
 					label: "Pelvis",
+					penalty: "-3",
 					personalDRBurn: 3,
 					personalDRCor: 3,
 					personalDRCr: 3,
@@ -1266,6 +1287,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				groin: {
 					label: "Groin",
+					penalty: "-3",
 					personalDRBurn: 0,
 					personalDRCor: 0,
 					personalDRCr: 0,
@@ -1313,6 +1335,7 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: label,
+			penalty: "-4",
 			hp: {
 				max: partHp,
 				state: "Fine",
@@ -1321,6 +1344,7 @@ export class gurpsActorSheet extends ActorSheet {
 			subLocation: {
 				extremity: {
 					label: type,
+					penalty: "-4",
 					personalDRBurn: 0,
 					personalDRCor: 0,
 					personalDRCr: 0,
@@ -1351,6 +1375,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				joint: {
 					label: jointName,
+					penalty: "-7",
 					personalDRBurn: 0,
 					personalDRCor: 0,
 					personalDRCr: 0,
@@ -1393,9 +1418,11 @@ export class gurpsActorSheet extends ActorSheet {
 	addNeck(){
 		let part = {
 			label: "Neck",
+			penalty: "-5",
 			subLocation: {
 				neck: {
 					label: "Neck",
+					penalty: "-5",
 					personalDRBurn: 0,
 					personalDRCor: 0,
 					personalDRCr: 0,
@@ -1426,6 +1453,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				vein: {
 					label: "Vein",
+					penalty: "-8",
 					personalDRBurn: 0,
 					personalDRCor: 0,
 					personalDRCr: 0,
