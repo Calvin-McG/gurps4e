@@ -510,6 +510,19 @@
 						{{/select}}
 					</select>
 				</div>
+				<table>
+					<tr>
+						<td>Label</td>
+
+					</tr>
+					{{#if actor.data.bodyType.body.skull}}
+						{{log actor.data.bodyType.body.skull}}
+						<tr>
+							<td> {{actor.data.bodyType.body.skull.label}}</td>
+							<td><input type="number" name="data.bodyType.body.skull.personalDRBurn" value="{{data.bodyType.body.skull.personalDRBurn}}" data-dtype="Number" /></td>
+						</tr>
+					{{/if}}
+				</table>
 			</div>
 		</section>
 	</div>

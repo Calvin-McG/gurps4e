@@ -761,3 +761,7 @@
 .accordion-closed {
 	display: none;
 }
+
+.dr-header {
+	text-align: center;
+}

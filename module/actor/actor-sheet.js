@@ -304,7 +304,7 @@ export class gurpsActorSheet extends ActorSheet {
 		}
 
 		this.actor.update({ "data.bodyType.body" : bodyObj });
-
+		console.log("Updating body")
 		console.log(bodyObj)
 	}
 
