@@ -37,7 +37,7 @@
           "value": "Standing"
         },
         "bodyType": {
-          "name": "humanoid"
+          "name": ""
         },
         "injuryTolerances": {
           "diffuse": false,

@@ -76,6 +76,12 @@ export class gurpsActorSheet extends ActorSheet {
 		event.preventDefault();
 		console.log(event.target.value);
 		let bodyType = event.target.value;
+
+		if(bodyType == ""){
+			console.log("No type selected.")
+			return
+		}
+
 		let actorData = this.object.data.data
 		console.log(actorData)
 
@@ -303,9 +309,11 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
 		}
 
-		this.actor.update({ "data.bodyType.body" : bodyObj });
 		console.log("Updating body")
 		console.log(bodyObj)
+		this.actor.update({ "data.bodyType.-=body" : null}).then( actor => // Remove the old body
+			actor.update({ "data.bodyType.body" : bodyObj }) // Add the new body
+		);
 	}
 
 	_onAccordionToggle(event) {
@@ -598,7 +606,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningFat: 0,
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
-					personalDRHardeningTox: 0
+					personalDRHardeningTox: 0,
+					penalty: "-6"
 				},
 				nose: {
 					label: "Nose",
@@ -629,6 +638,7 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
 					personalDRHardeningTox: 0,
+					penalty: "-7",
 					hp: {
 						max: partHp,
 						state: "Fine",
@@ -664,6 +674,7 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
 					personalDRHardeningTox: 0,
+					penalty: "-7",
 					hp: {
 						max: partHp,
 						state: "Fine",
@@ -698,7 +709,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningFat: 0,
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
-					personalDRHardeningTox: 0
+					personalDRHardeningTox: 0,
+					penalty: "-6"
 				},
 				eyes: {//Kromm's ruling on eyes http://forums.sjgames.com/showpost.php?p=733298&postcount=33
 					label: "Eyes",
@@ -729,6 +741,7 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
 					personalDRHardeningTox: 0,
+					penalty: "-9/-10",
 					hp: {
 						max: eyeHp,
 						state: "Fine",

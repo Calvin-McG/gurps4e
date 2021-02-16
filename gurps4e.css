@@ -762,6 +762,32 @@
 	display: none;
 }
 
+.dr-damage-types {
+	text-align: center;
+	border-left: 1px solid #b5b3a4;
+	border-right: 1px solid #b5b3a4;
+}
+
+.dr-header:nth-child(even) {
+	border-left: 1px solid #b5b3a4;
+}
+
 .dr-header {
 	text-align: center;
+}
+
+.dr-row:nth-child(even) {
+	border-left: 1px solid #b5b3a4;
+}
+
+.dr-row.penalty {
+	text-align: center;
+}
+
+.hit-locations.master-location {
+	text-align: center;
+	font-weight: bold;
+	font-size: 16px;
+	line-height: 20px;
+	border-bottom: 2px solid #b5b3a4;
 }

@@ -492,6 +492,7 @@
 					<label>Body Type:</label>
 					<select name="data.bodyType.name" class="bodyType">
 						{{#select data.bodyType.name}}
+						<option value="">Make a Selection</option>
 						<option value="humanoid">Humanoid</option>
 						<option value="wingedHumanoid">Winged Humanoid</option>
 						<option value="quadruped">Quadruped</option>
@@ -511,16 +512,98 @@
 					</select>
 				</div>
 				<table>
-					<tr>
-						<td>Label</td>
-
+					<tr class="hit-locations">
+						<td></td>
+						<td colspan="2" class="dr-damage-types">Burn</td>
+						<td colspan="2" class="dr-damage-types">Cor</td>
+						<td colspan="2" class="dr-damage-types">Cr</td>
+						<td colspan="2" class="dr-damage-types">Cut</td>
+						<td colspan="2" class="dr-damage-types">Fat</td>
+						<td colspan="2" class="dr-damage-types">Imp</td>
+						<td colspan="2" class="dr-damage-types">Pi</td>
+						<td colspan="2" class="dr-damage-types">Tox</td>
+						<td colspan="3" class="dr-damage-types"></td>
+					</tr>
+					<tr class="hit-locations">
+						<td class="dr-header">Label</td>
+						<td class="dr-header">DR</td>
+						<td class="dr-header">Hard</td>
+						<td class="dr-header">DR</td>
+						<td class="dr-header">Hard</td>
+						<td class="dr-header">DR</td>
+						<td class="dr-header">Hard</td>
+						<td class="dr-header">DR</td>
+						<td class="dr-header">Hard</td>
+						<td class="dr-header">DR</td>
+						<td class="dr-header">Hard</td>
+						<td class="dr-header">DR</td>
+						<td class="dr-header">Hard</td>
+						<td class="dr-header">DR</td>
+						<td class="dr-header">Hard</td>
+						<td class="dr-header">DR</td>
+						<td class="dr-header">Hard</td>
+						<td class="dr-header">HP</td>
+						<td class="dr-header">State</td>
+						<td class="dr-header">Penalty</td>
 					</tr>
 					{{#if actor.data.bodyType.body.skull}}
-						{{log actor.data.bodyType.body.skull}}
-						<tr>
-							<td> {{actor.data.bodyType.body.skull.label}}</td>
-							<td><input type="number" name="data.bodyType.body.skull.personalDRBurn" value="{{data.bodyType.body.skull.personalDRBurn}}" data-dtype="Number" /></td>
+						<tr class="hit-locations">
+							<td class="dr-row">{{actor.data.bodyType.body.skull.label}}</td>
+							<td class="dr-row"><input type="number" name="data.bodyType.body.skull.personalDRBurn" value="{{data.bodyType.body.skull.personalDRBurn}}" data-dtype="Number" /></td>
+							<td class="dr-row"><input type="number" name="data.bodyType.body.skull.personalDRHardeningBurn" value="{{data.bodyType.body.skull.personalDRHardeningBurn}}" data-dtype="Number" /></td>
+							<td class="dr-row"><input type="number" name="data.bodyType.body.skull.personalDRCor" value="{{data.bodyType.body.skull.personalDRCor}}" data-dtype="Number" /></td>
+							<td class="dr-row"><input type="number" name="data.bodyType.body.skull.personalDRHardeningCor" value="{{data.bodyType.body.skull.personalDRHardeningCor}}" data-dtype="Number" /></td>
+							<td class="dr-row"><input type="number" name="data.bodyType.body.skull.personalDRCr" value="{{data.bodyType.body.skull.personalDRCr}}" data-dtype="Number" /></td>
+							<td class="dr-row"><input type="number" name="data.bodyType.body.skull.personalDRHardeningCr"  value="{{data.bodyType.body.skull.personalDRHardeningCr}}" data-dtype="Number" /></td>
+							<td class="dr-row"><input type="number" name="data.bodyType.body.skull.personalDRCut" value="{{data.bodyType.body.skull.personalDRCut}}" data-dtype="Number" /></td>
+							<td class="dr-row"><input type="number" name="data.bodyType.body.skull.personalDRHardeningCut" value="{{data.bodyType.body.skull.personalDRHardeningCut}}" data-dtype="Number" /></td>
+							<td class="dr-row"><input type="number" name="data.bodyType.body.skull.personalDRFat" value="{{data.bodyType.body.skull.personalDRFat}}" data-dtype="Number" /></td>
+							<td class="dr-row"><input type="number" name="data.bodyType.body.skull.personalDRHardeningFat" value="{{data.bodyType.body.skull.personalDRHardeningFat}}" data-dtype="Number" /></td>
+							<td class="dr-row"><input type="number" name="data.bodyType.body.skull.personalDRImp" value="{{data.bodyType.body.skull.personalDRImp}}" data-dtype="Number" /></td>
+							<td class="dr-row"><input type="number" name="data.bodyType.body.skull.personalDRHardeningImp" value="{{data.bodyType.body.skull.personalDRHardeningImp}}" data-dtype="Number" /></td>
+							<td class="dr-row"><input type="number" name="data.bodyType.body.skull.personalDRPi" value="{{data.bodyType.body.skull.personalDRPi}}" data-dtype="Number" /></td>
+							<td class="dr-row"><input type="number" name="data.bodyType.body.skull.personalDRHardeningPi"  value="{{data.bodyType.body.skull.personalDRHardeningPi}}" data-dtype="Number" /></td>
+							<td class="dr-row"><input type="number" name="data.bodyType.body.skull.personalDRTox" value="{{data.bodyType.body.skull.personalDRTox}}" data-dtype="Number" /></td>
+							<td class="dr-row"><input type="number" name="data.bodyType.body.skull.personalDRHardeningTox" value="{{data.bodyType.body.skull.personalDRHardeningTox}}" data-dtype="Number" /></td>
+							<td colspan="2" class="dr-row"></td>
+							<td class="dr-row penalty">-7/-5</td>
 						</tr>
+					{{/if}}
+					{{#if actor.data.bodyType.body.face}}
+						{{log actor.data.bodyType.body.face}}
+						<tr class="hit-locations master-location">
+							<td colspan="19">{{actor.data.bodyType.body.face.label}}</td>
+							<td class="dr-row penalty">-5/-7</td>
+						</tr>
+						{{#each actor.data.bodyType.body.face.subLocation as |subLocation id|}}
+							<tr class="hit-locations">
+								<td class="dr-row">{{subLocation.label}}</td>
+								<td class="dr-row"><input type="number" name="data.bodyType.body.face.subLocation.{{id}}.personalDRBurn" value="{{subLocation.personalDRBurn}}" data-dtype="Number" /></td>
+								<td class="dr-row"><input type="number" name="data.bodyType.body.face.subLocation.{{id}}.personalDRHardeningBurn" value="{{subLocation.personalDRHardeningBurn}}" data-dtype="Number" /></td>
+								<td class="dr-row"><input type="number" name="data.bodyType.body.face.subLocation.{{id}}.personalDRCor" value="{{subLocation.personalDRCor}}" data-dtype="Number" /></td>
+								<td class="dr-row"><input type="number" name="data.bodyType.body.face.subLocation.{{id}}.personalDRHardeningCor" value="{{subLocation.personalDRHardeningCor}}" data-dtype="Number" /></td>
+								<td class="dr-row"><input type="number" name="data.bodyType.body.face.subLocation.{{id}}.personalDRCr" value="{{subLocation.personalDRCr}}" data-dtype="Number" /></td>
+								<td class="dr-row"><input type="number" name="data.bodyType.body.face.subLocation.{{id}}.personalDRHardeningCr"  value="{{subLocation.personalDRHardeningCr}}" data-dtype="Number" /></td>
+								<td class="dr-row"><input type="number" name="data.bodyType.body.face.subLocation.{{id}}.personalDRCut" value="{{subLocation.personalDRCut}}" data-dtype="Number" /></td>
+								<td class="dr-row"><input type="number" name="data.bodyType.body.face.subLocation.{{id}}.personalDRHardeningCut" value="{{subLocation.personalDRHardeningCut}}" data-dtype="Number" /></td>
+								<td class="dr-row"><input type="number" name="data.bodyType.body.face.subLocation.{{id}}.personalDRFat" value="{{subLocation.personalDRFat}}" data-dtype="Number" /></td>
+								<td class="dr-row"><input type="number" name="data.bodyType.body.face.subLocation.{{id}}.personalDRHardeningFat" value="{{subLocation.personalDRHardeningFat}}" data-dtype="Number" /></td>
+								<td class="dr-row"><input type="number" name="data.bodyType.body.face.subLocation.{{id}}.personalDRImp" value="{{subLocation.personalDRImp}}" data-dtype="Number" /></td>
+								<td class="dr-row"><input type="number" name="data.bodyType.body.face.subLocation.{{id}}.personalDRHardeningImp" value="{{subLocation.personalDRHardeningImp}}" data-dtype="Number" /></td>
+								<td class="dr-row"><input type="number" name="data.bodyType.body.face.subLocation.{{id}}.personalDRPi" value="{{subLocation.personalDRPi}}" data-dtype="Number" /></td>
+								<td class="dr-row"><input type="number" name="data.bodyType.body.face.subLocation.{{id}}.personalDRHardeningPi"  value="{{subLocation.personalDRHardeningPi}}" data-dtype="Number" /></td>
+								<td class="dr-row"><input type="number" name="data.bodyType.body.face.subLocation.{{id}}.personalDRTox" value="{{subLocation.personalDRTox}}" data-dtype="Number" /></td>
+								<td class="dr-row"><input type="number" name="data.bodyType.body.face.subLocation.{{id}}.personalDRHardeningTox" value="{{subLocation.personalDRHardeningTox}}" data-dtype="Number" /></td>
+								{{#if subLocation.hp}}
+									{{log subLocation.hp}}
+									<td class="dr-row"><input type="number" name="data.bodyType.body.face.subLocation.{{id}}.hp.value" value="{{subLocation.hp.value}}" data-dtype="Number" style="width: 50%;"/>/{{subLocation.hp.max}}</td>
+									<td class="dr-row">{{subLocation.hp.state}}</td>
+								{{else}}
+								<td class="dr-row" colspan="2"></td>
+								{{/if}}
+								<td class="dr-row penalty">{{subLocation.penalty}}</td>
+							</tr>
+						{{/each}}
 					{{/if}}
 				</table>
 			</div>
