@@ -134,6 +134,9 @@
 						<a class="item" data-tab="items">Items</a>
 				</div>
 				<div class="header">
+					<a class="item" data-tab="armour-display">Armour Display</a>
+				</div>
+				<div class="header">
 						<a class="item" data-tab="body-type">Body Type</a>
 				</div>
 		</nav>
@@ -484,11 +487,18 @@
 				</table>
 			</div>
 
+			{{!-- Armour Display Tab --}}
+			<div class="tab stats" data-tab="armour-display" data-group="primary">
+				<div>
+
+				</div>
+			</div>
+
 			{{!-- Body Type Tab --}}
 			<div id="body-type" class="tab body-type" data-tab="body-type" data-group="primary">
+				{{log actor.data.bodyType}}
+				{{log actor.data.injuryTolerances}}
 				<div>
-					{{log actor.data.bodyType}}
-					{{log actor.data.injuryTolerances}}
 					<label>Body Type:</label>
 					<select name="data.bodyType.name" class="bodyType">
 						{{#select data.bodyType.name}}
@@ -510,6 +520,64 @@
 						<option value="arachnoid">Arachnoid</option>
 						{{/select}}
 					</select>
+				</div>
+				<div style="display: flex">
+					<table class="injuryTolerancesTable">
+						<tr>
+							<td colspan="2" style="text-align: center; font-weight: bold; border-bottom: #7a7971 2px solid">Injury Settings</td>
+						</tr>
+						<tr>
+							<td>Damage Reduction:</td>
+							<td><input type="number" id="data.injuryTolerances.damageReduction" name="data.injuryTolerances.damageReduction" value="{{data.injuryTolerances.damageReduction}}" data-dtype="Number" style="width: 25px"/></td>
+						</tr>
+						<tr>
+							<td>Supernatural Durability:</td>
+							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.supernaturalDurability" {{checked data.injuryTolerances.supernaturalDurability}} data-dtype="Boolean"/></td>
+						</tr>
+						<tr>
+							<td>Low Pain Threshold:</td>
+							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.lowPainThreshold" {{checked data.injuryTolerances.lowPainThreshold}} data-dtype="Boolean"/></td>
+						</tr>
+						<tr>
+							<td>High Pain Threshold:</td>
+							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.highPainThreshold" {{checked data.injuryTolerances.highPainThreshold}} data-dtype="Boolean"/></td>
+						</tr>
+					</table>
+					<table class="injuryTolerancesTable">
+						<tr>
+							<td colspan="4" style="text-align: center; font-weight: bold; border-bottom: #7a7971 2px solid">Injury Tolerance</td>
+						</tr>
+						<tr>
+							<td class="injuryTolerancesLabel">Diffuse:</td>
+							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.diffuse" {{checked data.injuryTolerances.diffuse}} data-dtype="Boolean"/></td>
+							<td class="injuryTolerancesLabel">No Brain:</td>
+							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noBrain" {{checked data.injuryTolerances.noBrain}} data-dtype="Boolean"/></td>
+						</tr>
+						<tr>
+							<td class="injuryTolerancesLabel">Homogenous:</td>
+							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.homogenous" {{checked data.injuryTolerances.homogenous}} data-dtype="Boolean"/></td>
+							<td class="injuryTolerancesLabel">No Eyes:</td>
+							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noEyes" {{checked data.injuryTolerances.noEyes}} data-dtype="Boolean"/></td>
+						</tr>
+						<tr>
+							<td class="injuryTolerancesLabel">Unliving:</td>
+							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.unliving" {{checked data.injuryTolerances.unliving}} data-dtype="Boolean"/></td>
+							<td class="injuryTolerancesLabel">No Head:</td>
+							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noHead" {{checked data.injuryTolerances.noHead}} data-dtype="Boolean"/></td>
+						</tr>
+						<tr>
+							<td class="injuryTolerancesLabel">Unbreakable Bones:</td>
+							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.unbreakableBones" {{checked data.injuryTolerances.unbreakableBones}} data-dtype="Boolean"/></td>
+							<td class="injuryTolerancesLabel">No Neck:</td>
+							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noNeck" {{checked data.injuryTolerances.noNeck}} data-dtype="Boolean"/></td>
+						</tr>
+						<tr>
+							<td class="injuryTolerancesLabel">No Blood:</td>
+							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noBlood" {{checked data.injuryTolerances.noBlood}} data-dtype="Boolean"/></td>
+							<td class="injuryTolerancesLabel">No Vitals:</td>
+							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noVitals" {{checked data.injuryTolerances.noVitals}} data-dtype="Boolean"/></td>
+						</tr>
+					</table>
 				</div>
 				<table>
 					<tr class="hit-locations">

@@ -11,7 +11,7 @@ export class gurpsActorSheet extends ActorSheet {
 		return mergeObject(super.defaultOptions, {
 			classes: ["gurps4e", "sheet", "actor"],
 			template: "systems/gurps4e/templates/actor/actor-sheet.html",
-			width: 565,
+			width: 590,
 			height: 615,
 			tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "stats" }]
 		});
