@@ -68,6 +68,10 @@ export class gurpsActorSheet extends ActorSheet {
 		// Track changes to unspent points
 		html.find('.unspentEntry').change(this._onUnspentPointsChange.bind(this));
 
+		// Update status of bodypart based on part HP
+		html.find('.partHP').change(this._onPartHpChange.bind(this));
+
+		// Update body type
 		html.find('.bodyType').change(this._onBodyTypeChange.bind(this))
 	}
 
@@ -79,6 +83,7 @@ export class gurpsActorSheet extends ActorSheet {
 
 		if(bodyType == ""){
 			console.log("No type selected.")
+			this.actor.update({ "data.bodyType.-=body" : null})
 			return
 		}
 
@@ -314,6 +319,26 @@ export class gurpsActorSheet extends ActorSheet {
 		this.actor.update({ "data.bodyType.-=body" : null}).then( actor => // Remove the old body
 			actor.update({ "data.bodyType.body" : bodyObj }) // Add the new body
 		);
+	}
+
+	_onPartHpChange(event) {
+		let hp = event.target.valueAsNumber
+		let state = "Fine";
+
+		if(hp <= (getProperty(this.actor.data,event.target.id).max * -1)){ // If part HP is at or below a full negative multiple
+			state = "Destroyed";
+		}
+		else if(hp <= 0){ // If part HP is at or below a 0
+			state = "Crippled";
+		}
+		else if (hp < getProperty(this.actor.data,event.target.id).max){ // If part HP is below max
+			state = "Injured";
+		}
+		else { // Part is not damaged
+			state = "Fine";
+		}
+
+		this.actor.update({ [event.target.id + ".state"]: state });
 	}
 
 	_onAccordionToggle(event) {

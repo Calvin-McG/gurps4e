@@ -540,12 +540,20 @@
 					</tr>
 					{{#each actor.data.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
 						<tr class="hit-locations master-location">
-							<td colspan="11"><a class="accordion" id="t-accordion-clickable-{{partId}}">{{bodyPart.label}}</a></td>
+							<td colspan="9">{{bodyPart.label}}</td>
+							{{#if bodyPart.hp}}
+								<td class="dr-row">
+									<input type="number" class="partHP" id="data.bodyType.body.{{partId}}.hp" name="data.bodyType.body.{{partId}}.hp.value" value="{{bodyPart.hp.value}}" data-dtype="Number" style="width: 50%;"/>
+									<span style="width: 45%;">/{{bodyPart.hp.max}}</span></td>
+								<td class="dr-row">{{bodyPart.hp.state}}</td>
+							{{else}}
+								<td class="dr-row" colspan="2"></td>
+							{{/if}}
 							<td class="dr-row penalty">{{bodyPart.penalty}}</td>
 						</tr>
 						{{#if bodyPart.subLocation}}<!--Check to see if there are sublocations and display them-->
 							{{#each bodyPart.subLocation as |subLocation locationId|}}<!--Loop through the sublocations-->
-								<tr class="hit-locations accordion-div-{{partId}} accordion-closed">
+								<tr class="hit-locations">
 									<td class="dr-row">{{subLocation.label}}</td>
 									<td class="dr-row">
 										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.personalDRBurn" value="{{subLocation.personalDRBurn}}" data-dtype="Number" />
@@ -581,7 +589,7 @@
 									</td>
 									{{#if subLocation.hp}}
 									<td class="dr-row">
-										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.hp.value" value="{{subLocation.hp.value}}" data-dtype="Number" style="width: 50%;"/>
+										<input type="number" class="partHP" id="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.hp" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.hp.value" value="{{subLocation.hp.value}}" data-dtype="Number" style="width: 50%;"/>
 											<span style="width: 45%;">/{{subLocation.hp.max}}</span></td>
 										<td class="dr-row">{{subLocation.hp.state}}</td>
 									{{else}}
@@ -591,7 +599,7 @@
 								</tr>
 							{{/each}}
 						{{else}}<!--Display details for parts without sublocations (Pretty much only the skull and brian)-->
-							<tr class="hit-locations accordion-div-{{partId}} accordion-closed">
+							<tr class="hit-locations">
 								<td class="dr-row">{{bodyPart.label}}</td>
 								<td class="dr-row">
 									<input type="number" name="data.bodyType.body.{{partId}}.personalDRBurn" value="{{bodyPart.personalDRBurn}}" data-dtype="Number" />

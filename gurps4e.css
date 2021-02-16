@@ -768,7 +768,7 @@
 	border-right: 1px solid #b5b3a4;
 }
 
-.dr-header:nth-child(even) {
+.dr-header {
 	border-left: 1px solid #b5b3a4;
 }
 
@@ -776,7 +776,7 @@
 	text-align: center;
 }
 
-.dr-row:nth-child(even) {
+.dr-row {
 	border-left: 1px solid #b5b3a4;
 }
 
