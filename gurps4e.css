@@ -780,6 +780,10 @@
 	border-left: 1px solid #b5b3a4;
 }
 
+.dr-row input {
+	width: 45%;
+}
+
 .dr-row.penalty {
 	text-align: center;
 }
