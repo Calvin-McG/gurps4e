@@ -812,7 +812,7 @@
 
 .humanoidHitLocations {
 	display: grid;
-	grid-template-columns: repeat(30,15px);
+	grid-template-columns: repeat(18,15px);
 	grid-template-rows: repeat(93,15px);
 	text-align: center;
 }
@@ -822,50 +822,115 @@
 }
 
 .location-skull {
-	grid-column: 11 / 19;
+	grid-column: 6 / 14;
 	grid-row: 1 / 3;
 }
 
 .location-ear-left {
-	grid-column: 9 / 11;
+	grid-column: 4 / 6;
 	grid-row: 3 / 6;
 }
 
 .location-ear-right {
-	grid-column: 19 / 21;
+	grid-column: 14 / 16;
 	grid-row: 3 / 6;
 }
 
 .location-eye-left {
-	grid-column: 12 / 14;
+	grid-column: 7 / 9;
 	grid-row: 3 / 5;
 	z-index: 10;
 }
 
 .location-eye-right {
-	grid-column: 16 / 18;
+	grid-column: 11 / 13;
 	grid-row: 3 / 5;
 	z-index: 10;
 }
 
 .location-cheek-right {
-	grid-column: 16 / 19;
-	grid-row: 5 / 6;
-	border: unset !important;
-}
-
-.location-cheek-left {
 	grid-column: 11 / 14;
 	grid-row: 5 / 6;
 	border: unset !important;
 }
 
+.location-cheek-left {
+	grid-column: 6 / 9;
+	grid-row: 5 / 6;
+	border: unset !important;
+}
+
 .location-nose {
-	grid-column: 14 / 16;
+	grid-column: 9 / 11;
 	grid-row: 3 / 6;
 }
 
 .location-jaw {
-	grid-column: 11 / 19;
+	grid-column: 6 / 14;
 	grid-row: 6 / 8;
+}
+
+.location-neck {
+	grid-column: 8 / 12;
+	grid-row: 8 / 10;
+}
+
+.location-shoulder-left {
+	grid-column: 1 / 5;
+	grid-row: 10 / 13;
+}
+
+.location-shoulder-right {
+	grid-column: 15 / 19;
+	grid-row: 10 / 13;
+}
+
+.location-upper-arm-left {
+	grid-column: 1 / 4;
+	grid-row: 13 / 16;
+}
+
+.location-upper-arm-right {
+	grid-column: 16 / 19;
+	grid-row: 13 / 16;
+}
+
+.location-elbow-left {
+	grid-column: 1 / 4;
+	grid-row: 16 / 18;
+}
+
+.location-elbow-right {
+	grid-column: 16 / 19;
+	grid-row: 16 / 18;
+}
+
+.location-forearm-left {
+	grid-column: 1 / 4;
+	grid-row: 18 / 21;
+}
+
+.location-forearm-right {
+	grid-column: 16 / 19;
+	grid-row: 18 / 21;
+}
+
+.location-wrist-left {
+	grid-column: 1 / 4;
+	grid-row: 21 / 23;
+}
+
+.location-wrist-right {
+	grid-column: 16 / 19;
+	grid-row: 21 / 23;
+}
+
+.location-hand-left {
+	grid-column: 1 / 4;
+	grid-row: 23 / 25;
+}
+
+.location-hand-right {
+	grid-column: 16 / 19;
+	grid-row: 23 / 25;
 }
