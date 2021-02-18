@@ -360,12 +360,12 @@ export class gurpsActor extends Actor {
 
 			for (let i = 0; i < bodyParts.length; i++){
 				if (bodyParts[i] == "skull" || bodyParts[i] == "brain"){//Part has no sub-parts
-					drTypes[bodyParts[i]] = getProperty(this.data.data.bodyType.body, bodyParts[i] + ".personalDR" + damageType);
+					drTypes[bodyParts[i]] = getProperty(this.data.data.bodyType.body, bodyParts[i] + ".personalDR" + damageType) + ((getProperty(this.data.data.bodyType.body, bodyParts[i] + ".flexible")) ? '*' : '');
 				}
 				else {
 					let subParts = Object.keys(getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation"));
 					for (let n = 0; n < subParts.length; n++){
-						drTypes[bodyParts[i] + subParts[n]] = getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n] + ".personalDR" + damageType);
+						drTypes[bodyParts[i] + subParts[n]] = getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n] + ".personalDR" + damageType) + ((getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n] + ".flexible")) ? '*' : '');
 					}
 				}
 			}
