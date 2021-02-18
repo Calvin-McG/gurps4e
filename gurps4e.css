@@ -984,6 +984,12 @@
 	background-color: #FDE9D9;
 }
 
+.location-torso-spine {
+	grid-column: 9 / 11;
+	grid-row: 11 / 18;
+	background-color: #bebebe;
+}
+
 .location-torso-vitals {
 	grid-column: 8 / 12;
 	grid-row: 16 / 18;
