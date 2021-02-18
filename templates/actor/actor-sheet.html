@@ -137,7 +137,7 @@
 					<a class="item" data-tab="armour-display">Armour Display</a>
 				</div>
 				<div class="header">
-						<a class="item" data-tab="body-type">Body Type</a>
+					<a class="item" data-tab="body-type">Body Type</a>
 				</div>
 		</nav>
 
@@ -488,51 +488,86 @@
 			</div>
 
 			{{!-- Armour Display Tab --}}
-			<div class="tab stats" data-tab="armour-display" data-group="primary" style="display: flex">
-				<div class="humanoidHitLocations">
-					<div class="location-skull">## / ##</div>
-					<div class="location-ear-left">## / ##</div>
-					<div class="location-ear-right">## / ##</div>
-					<div class="location-eye-left">## / ##</div>
-					<div class="location-eye-right">## / ##</div>
-					<div class="location-cheek-left">## / ##</div>
-					<div class="location-cheek-right">## / ##</div>
-					<div class="location-cheek-fill"></div>
-					<div class="location-nose">## / ##</div>
-					<div class="location-jaw">## / ##</div>
-					<div class="location-neck">## / ##</div>
-					<div class="location-shoulder-left">## / ##</div>
-					<div class="location-shoulder-right">## / ##</div>
-					<div class="location-upper-arm-left">## / ##</div>
-					<div class="location-upper-arm-right">## / ##</div>
-					<div class="location-elbow-left">## / ##</div>
-					<div class="location-elbow-right">## / ##</div>
-					<div class="location-forearm-left">## / ##</div>
-					<div class="location-forearm-right">## / ##</div>
-					<div class="location-wrist-left">## / ##</div>
-					<div class="location-wrist-right">## / ##</div>
-					<div class="location-hand-left">## / ##</div>
-					<div class="location-hand-right">## / ##</div>
-					<div class="location-torso">## / ##</div>
-					<div class="location-torso-vitals">## / ##</div>
-					<div class="location-abdomen-vitals">## / ##</div>
-					<div class="location-digestive">## / ##</div>
-					<div class="location-pelvis">## / ##</div>
-					<div class="location-groin">## / ##</div>
-					<div class="location-thigh-left">## / ##</div>
-					<div class="location-thigh-right">## / ##</div>
-					<div class="location-knee-left">## / ##</div>
-					<div class="location-knee-right">## / ##</div>
-					<div class="location-shin-left">## / ##</div>
-					<div class="location-shin-right">## / ##</div>
-					<div class="location-ankle-left">## / ##</div>
-					<div class="location-ankle-right">## / ##</div>
-					<div class="location-foot-left">## / ##</div>
-					<div class="location-foot-right">## / ##</div>
-					<div class="location-sole-left">## / ##</div>
-					<div class="location-sole-right">## / ##</div>
+			<div id="armour-display" class="tab armour-display" data-tab="armour-display" data-group="primary">
+				<div style="display: flex">
+					<div class="humanoidHitLocations">
+						<div class="location-skull">{{data.bodyType.damageTypesOne.skull}} / {{data.bodyType.damageTypesTwo.skull}}</div>
+						<div class="location-ear-left">{{data.bodyType.damageTypesOne.faceears}} / {{data.bodyType.damageTypesTwo.faceears}}</div>
+						<div class="location-ear-right">{{data.bodyType.damageTypesOne.faceears}} / {{data.bodyType.damageTypesTwo.faceears}}</div>
+						<div class="location-eye-left">{{data.bodyType.damageTypesOne.faceeyes}} / {{data.bodyType.damageTypesTwo.faceeyes}}</div>
+						<div class="location-eye-right">{{data.bodyType.damageTypesOne.faceeyes}} / {{data.bodyType.damageTypesTwo.faceeyes}}</div>
+						<div class="location-cheek-left">{{data.bodyType.damageTypesOne.facecheek}} / {{data.bodyType.damageTypesTwo.facecheek}}</div>
+						<div class="location-cheek-right">{{data.bodyType.damageTypesOne.facecheek}} / {{data.bodyType.damageTypesTwo.facecheek}}</div>
+						<div class="location-cheek-fill"></div>
+						<div class="location-nose">{{data.bodyType.damageTypesOne.facenose}} / {{data.bodyType.damageTypesTwo.facenose}}</div>
+						<div class="location-jaw">{{data.bodyType.damageTypesOne.facejaw}} / {{data.bodyType.damageTypesTwo.facejaw}}</div>
+						<div class="location-neck">{{data.bodyType.damageTypesOne.neckneck}} / {{data.bodyType.damageTypesTwo.neckneck}}</div>
+						<div class="location-shoulder-left">{{data.bodyType.damageTypesOne.armLeftshoulder}} / {{data.bodyType.damageTypesTwo.armLeftshoulder}}</div>
+						<div class="location-shoulder-right">{{data.bodyType.damageTypesOne.armRightshoulder}} / {{data.bodyType.damageTypesTwo.armRightshoulder}}</div>
+						<div class="location-upper-arm-left">{{data.bodyType.damageTypesOne.armLeftupperArm}} / {{data.bodyType.damageTypesTwo.armLeftupperArm}}</div>
+						<div class="location-upper-arm-right">{{data.bodyType.damageTypesOne.armRightupperArm}} / {{data.bodyType.damageTypesTwo.armRightupperArm}}</div>
+						<div class="location-elbow-left">{{data.bodyType.damageTypesOne.armLeftelbow}} / {{data.bodyType.damageTypesTwo.armLeftelbow}}</div>
+						<div class="location-elbow-right">{{data.bodyType.damageTypesOne.armRightelbow}} / {{data.bodyType.damageTypesTwo.armRightelbow}}</div>
+						<div class="location-forearm-left">{{data.bodyType.damageTypesOne.armLeftforearm}} / {{data.bodyType.damageTypesTwo.armLeftforearm}}</div>
+						<div class="location-forearm-right">{{data.bodyType.damageTypesOne.armRightforearm}} / {{data.bodyType.damageTypesTwo.armRightforearm}}</div>
+						<div class="location-wrist-left">{{data.bodyType.damageTypesOne.handLeftjoint}} / {{data.bodyType.damageTypesTwo.handLeftjoint}}</div>
+						<div class="location-wrist-right">{{data.bodyType.damageTypesOne.handRightjoint}} / {{data.bodyType.damageTypesTwo.handRightjoint}}</div>
+						<div class="location-hand-left">{{data.bodyType.damageTypesOne.handLeftextremity}} / {{data.bodyType.damageTypesTwo.handLeftextremity}}</div>
+						<div class="location-hand-right">{{data.bodyType.damageTypesOne.handRightextremity}} / {{data.bodyType.damageTypesTwo.handRightextremity}}</div>
+						<div class="location-torso">{{data.bodyType.damageTypesOne.chestchest}} / {{data.bodyType.damageTypesTwo.chestchest}}</div>
+						<div class="location-torso-vitals">{{data.bodyType.damageTypesOne.chestvitals}} / {{data.bodyType.damageTypesTwo.chestvitals}}</div>
+						<div class="location-abdomen-vitals">{{data.bodyType.damageTypesOne.abdomenvitals}} / {{data.bodyType.damageTypesTwo.abdomenvitals}}</div>
+						<div class="location-digestive">{{data.bodyType.damageTypesOne.abdomendigestiveTract}} / {{data.bodyType.damageTypesTwo.abdomendigestiveTract}}</div>
+						<div class="location-pelvis">{{data.bodyType.damageTypesOne.abdomenpelvis}} / {{data.bodyType.damageTypesTwo.abdomenpelvis}}</div>
+						<div class="location-groin">{{data.bodyType.damageTypesOne.abdomengroin}} / {{data.bodyType.damageTypesTwo.abdomengroin}}</div>
+						<div class="location-thigh-left">{{data.bodyType.damageTypesOne.legLeftthigh}} / {{data.bodyType.damageTypesTwo.legLeftthigh}}</div>
+						<div class="location-thigh-right">{{data.bodyType.damageTypesOne.legRightthigh}} / {{data.bodyType.damageTypesTwo.legRightthigh}}</div>
+						<div class="location-knee-left">{{data.bodyType.damageTypesOne.legLeftknee}} / {{data.bodyType.damageTypesTwo.legLeftknee}}</div>
+						<div class="location-knee-right">{{data.bodyType.damageTypesOne.legRightknee}} / {{data.bodyType.damageTypesTwo.legRightknee}}</div>
+						<div class="location-shin-left">{{data.bodyType.damageTypesOne.legLeftshin}} / {{data.bodyType.damageTypesTwo.legLeftshin}}</div>
+						<div class="location-shin-right">{{data.bodyType.damageTypesOne.legRightshin}} / {{data.bodyType.damageTypesTwo.legRightshin}}</div>
+						<div class="location-ankle-left">{{data.bodyType.damageTypesOne.footLeftjoint}} / {{data.bodyType.damageTypesTwo.footLeftjoint}}</div>
+						<div class="location-ankle-right">{{data.bodyType.damageTypesOne.footRightjoint}} / {{data.bodyType.damageTypesTwo.footRightjoint}}</div>
+						<div class="location-foot-left">{{data.bodyType.damageTypesOne.footLeftextremity}} / {{data.bodyType.damageTypesTwo.footLeftextremity}}</div>
+						<div class="location-foot-right">{{data.bodyType.damageTypesOne.footRightextremity}} / {{data.bodyType.damageTypesTwo.footRightextremity}}</div>
+						<div class="location-sole-left">{{data.bodyType.damageTypesOne.footLeftextremity}} / {{data.bodyType.damageTypesTwo.footLeftextremity}}</div>
+						<div class="location-sole-right">{{data.bodyType.damageTypesOne.footRightextremity}} / {{data.bodyType.damageTypesTwo.footRightextremity}}</div>
+					</div>
+					<div class="hit-location-options">
+						<div>
+							<label>Damage Type One:</label>
+							<select name="data.bodyType.damageTypeOne">
+								{{#select data.bodyType.damageTypeOne}}
+								<option value="">Make a Selection</option>
+								<option value="Burn">Burn</option>
+								<option value="Cor">Cor</option>
+								<option value="Cr">Cr</option>
+								<option value="Cut">Cut</option>
+								<option value="Fat">Fat</option>
+								<option value="Imp">Imp</option>
+								<option value="Pi">Pi</option>
+								<option value="Tox">Tox</option>
+								{{/select}}
+							</select>
+						</div>
+						<div>
+							<label>Damage Type Two:</label>
+							<select name="data.bodyType.damageTypeTwo">
+								{{#select data.bodyType.damageTypeTwo}}
+								<option value="">Make a Selection</option>
+								<option value="Burn">Burn</option>
+								<option value="Cor">Cor</option>
+								<option value="Cr">Cr</option>
+								<option value="Cut">Cut</option>
+								<option value="Fat">Fat</option>
+								<option value="Imp">Imp</option>
+								<option value="Pi">Pi</option>
+								<option value="Tox">Tox</option>
+								{{/select}}
+							</select>
+						</div>
+					</div>
 				</div>
-				<div class="hit-location-options">Test</div>
 			</div>
 
 			{{!-- Body Type Tab --}}
