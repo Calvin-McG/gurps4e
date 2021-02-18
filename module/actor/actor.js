@@ -349,28 +349,28 @@ export class gurpsActor extends Actor {
 	}
 
 	displayDrTypes(){
-		this.data.data.bodyType.damageTypesOne = this.switchDrTypes(this.data.data.bodyType.damageTypeOne);
-		this.data.data.bodyType.damageTypesTwo = this.switchDrTypes(this.data.data.bodyType.damageTypeTwo);
+		this.data.data.bodyType.drTypesOne = this.switchDrTypes(this.data.data.bodyType.damageTypeOne);
+		this.data.data.bodyType.drTypesTwo = this.switchDrTypes(this.data.data.bodyType.damageTypeTwo);
 	}
 
 	switchDrTypes(damageType){
-		let damageTypes = {};
+		let drTypes = {};
 		if (this.data.data.bodyType.body){
 			let bodyParts = Object.keys(this.data.data.bodyType.body);
 
 			for (let i = 0; i < bodyParts.length; i++){
 				if (bodyParts[i] == "skull" || bodyParts[i] == "brain"){//Part has no sub-parts
-					damageTypes[bodyParts[i]] = getProperty(this.data.data.bodyType.body, bodyParts[i] + ".personalDR" + damageType);
+					drTypes[bodyParts[i]] = getProperty(this.data.data.bodyType.body, bodyParts[i] + ".personalDR" + damageType);
 				}
 				else {
 					let subParts = Object.keys(getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation"));
 					for (let n = 0; n < subParts.length; n++){
-						damageTypes[bodyParts[i] + subParts[n]] = getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n] + ".personalDR" + damageType);
+						drTypes[bodyParts[i] + subParts[n]] = getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n] + ".personalDR" + damageType);
 					}
 				}
 			}
 		}
-		return damageTypes
+		return drTypes
 	}
 
 	partHP(){
