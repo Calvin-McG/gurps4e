@@ -43,7 +43,10 @@ export class gurpsActor extends Actor {
 		this.setupCategories();
 
 		//Update hitlocation display thing to show selected damage types
-		this.displayDrTypes()
+		this.displayDrTypes();
+
+		//Update part specific HP
+		this.partHP();
 	}
 
 	recalcAtrValues(){
@@ -368,6 +371,63 @@ export class gurpsActor extends Actor {
 			}
 		}
 		return damageTypes
+	}
+
+	partHP(){
+		if (this.data.data.bodyType.body){
+			let bodyParts = Object.keys(this.data.data.bodyType.body);
+
+			for (let i = 0; i < bodyParts.length; i++){
+				let currentPart = getProperty(this.data.data.bodyType.body, bodyParts[i]);
+
+				if (currentPart.hp){//Part has hp info
+					let hp = currentPart.hp.value;
+					let state = "Fine";
+
+					if(hp <= (currentPart.hp.max * -1)){ // If part HP is at or below a full negative multiple
+						state = "Destroyed";
+					}
+					else if(hp <= 0){ // If part HP is at or below a 0
+						state = "Crippled";
+					}
+					else if (hp < currentPart.hp.max){ // If part HP is below max
+						state = "Injured";
+					}
+					else { // Part is not damaged
+						state = "Fine";
+					}
+
+					setProperty(this.data.data.bodyType.body, bodyParts[i] + ".hp.state",state);
+				}
+
+				if (getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation")){//Part has sub parts
+					let subParts = Object.keys(getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation"));
+
+					for (let n = 0; n < subParts.length; n++){
+						let currentSubPart = getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n]);
+						if (currentSubPart.hp){//Part has hp info
+							let hp = currentSubPart.hp.value;
+							let state = "Fine";
+
+							if(hp <= (currentSubPart.hp.max * -1)){ // If part HP is at or below a full negative multiple
+								state = "Destroyed";
+							}
+							else if(hp <= 0){ // If part HP is at or below a 0
+								state = "Crippled";
+							}
+							else if (hp < currentSubPart.hp.max){ // If part HP is below max
+								state = "Injured";
+							}
+							else { // Part is not damaged
+								state = "Fine";
+							}
+
+							setProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n] + ".hp.state",state);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	//==========================
