@@ -491,17 +491,166 @@
 			<div id="armour-display" class="tab armour-display" data-tab="armour-display" data-group="primary">
 				<div style="display: flex">
 					<div class="humanoidHitLocations">
-						<div class="tooltip location-skull">{{data.bodyType.drTypesOne.skull}} / {{data.bodyType.drTypesTwo.skull}}<span class="tooltiptext">Test</span></div>
-						<div class="tooltip location-ear-left">{{data.bodyType.drTypesOne.faceears}} / {{data.bodyType.drTypesTwo.faceears}}<span class="tooltiptext"></span></div>
-						<div class="tooltip location-ear-right">{{data.bodyType.drTypesOne.faceears}} / {{data.bodyType.drTypesTwo.faceears}}<span class="tooltiptext"></span></div>
-						<div class="tooltip location-eye-left">{{data.bodyType.drTypesOne.faceeyes}} / {{data.bodyType.drTypesTwo.faceeyes}}<span class="tooltiptext"></span></div>
-						<div class="tooltip location-eye-right">{{data.bodyType.drTypesOne.faceeyes}} / {{data.bodyType.drTypesTwo.faceeyes}}<span class="tooltiptext"></span></div>
-						<div class="tooltip location-cheek-left">{{data.bodyType.drTypesOne.facecheek}} / {{data.bodyType.drTypesTwo.facecheek}}<span class="tooltiptext"></span></div>
-						<div class="tooltip location-cheek-right">{{data.bodyType.drTypesOne.facecheek}} / {{data.bodyType.drTypesTwo.facecheek}}<span class="tooltiptext"></span></div>
-						<div class="location-cheek-fill"></div>
-						<div class="tooltip location-nose">{{data.bodyType.drTypesOne.facenose}} / {{data.bodyType.drTypesTwo.facenose}}<span class="tooltiptext"></span></div>
-						<div class="tooltip location-jaw">{{data.bodyType.drTypesOne.facejaw}} / {{data.bodyType.drTypesTwo.facejaw}}<span class="tooltiptext"></span></div>
-						<div class="tooltip location-neck">{{data.bodyType.drTypesOne.neckneck}} / {{data.bodyType.drTypesTwo.neckneck}}<span class="tooltiptext"></span></div>
+						<div class="tooltip location-skull">
+							{{data.bodyType.drTypesOne.skull}} / {{data.bodyType.drTypesTwo.skull}}
+							<span class="tooltiptext">
+								<span style="text-decoration: underline">Skull -7 (-5 from the back)</span><br>
+								4x injury except tox<br>
+								Any injury causing shock requires stun/knockdown<br>
+								Major wound causes a roll @ -10<br>
+								Bleed every 30 seconds<br>
+							</span>
+						</div>
+						<div class="tooltip location-ear-left">
+							{{data.bodyType.drTypesOne.faceears}} / {{data.bodyType.drTypesTwo.faceears}}
+							<span class="tooltiptext">
+								<div style="border-bottom: 2px white solid">
+									<span style="text-decoration: underline">Face -5 (-7 from the back)</span><br>
+									Cor does 1.5x injury<br>
+									Any injury causing shock requires stun/knockdown<br>
+									Major wound causes a roll @ -5<br>
+								</div>
+								<div>
+									<span style="text-decoration: underline">Ear -7</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.face.subLocation.ears.hp.value}} / {{data.bodyType.body.face.subLocation.ears.hp.max}} HP</span><br>
+									Cutting attacks sever the ear on a major wound, but there is no -5<br>
+								</div>
+							</span>
+						</div>
+						<div class="tooltip location-ear-right">
+							{{data.bodyType.drTypesOne.faceears}} / {{data.bodyType.drTypesTwo.faceears}}
+							<span class="tooltiptext">
+								<div style="border-bottom: 2px white solid">
+									<span style="text-decoration: underline">Face -5 (-7 from the back)</span><br>
+									Cor does 1.5x injury<br>
+									Any injury causing shock requires stun/knockdown<br>
+									Major wound causes a roll @ -5<br>
+								</div>
+								<div>
+									<span style="text-decoration: underline">Ear -7</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.face.subLocation.ears.hp.value}} / {{data.bodyType.body.face.subLocation.ears.hp.max}} HP</span><br>
+									Cutting attacks sever the ear on a major wound, but there is no -5<br>
+								</div>
+							</span>
+						</div>
+						<div class="tooltip location-eye-left">
+							{{data.bodyType.drTypesOne.faceeyes}} / {{data.bodyType.drTypesTwo.faceeyes}}
+							<span class="tooltiptext">
+								<div style="border-bottom: 2px white solid">
+									<span style="text-decoration: underline">Face -5 (-7 from the back)</span><br>
+								</div>
+								<div>
+									<span style="text-decoration: underline">Eye -9 (-10 when armoured)</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.face.subLocation.eyes.hp.value}} / {{data.bodyType.body.face.subLocation.eyes.hp.max}} HP</span><br>
+									Any injury causing shock requires stun/knockdown<br>
+									Major wound causes a roll @ -10<br>
+									(Except for tox)<br>
+								</div>
+							</span>
+						</div>
+						<div class="tooltip location-eye-right">
+							{{data.bodyType.drTypesOne.faceeyes}} / {{data.bodyType.drTypesTwo.faceeyes}}
+							<span class="tooltiptext">
+								<div style="border-bottom: 2px white solid">
+									<span style="text-decoration: underline">Face -5 (-7 from the back)</span><br>
+								</div>
+								<div>
+									<span style="text-decoration: underline">Eye -9 (-10 when armoured)</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.face.subLocation.eyes.hp.value}} / {{data.bodyType.body.face.subLocation.eyes.hp.max}} HP</span><br>
+									Any injury causing shock requires stun/knockdown<br>
+									Major wound causes a roll @ -10<br>
+									(Except for tox)<br>
+								</div>
+							</span>
+						</div>
+						<div class="tooltip location-cheek-left">
+							{{data.bodyType.drTypesOne.facecheek}} / {{data.bodyType.drTypesTwo.facecheek}}
+							<span class="tooltiptext">
+								<div style="border-bottom: 2px white solid">
+									<span style="text-decoration: underline">Face -5 (-7 from the back)</span><br>
+									Cor does 1.5x injury<br>
+									Any injury causing shock requires stun/knockdown<br>
+									Major wound causes a roll @ -5<br>
+								</div>
+								<div>
+									<span style="text-decoration: underline">Cheek -6</span><br>
+								</div>
+							</span>
+						</div>
+						<div class="tooltip location-cheek-right">
+							{{data.bodyType.drTypesOne.facecheek}} / {{data.bodyType.drTypesTwo.facecheek}}
+							<span class="tooltiptext">
+								<div style="border-bottom: 2px white solid">
+									<span style="text-decoration: underline">Face -5 (-7 from the back)</span><br>
+									Cor does 1.5x injury<br>
+									Any injury causing shock requires stun/knockdown<br>
+									Major wound causes a roll @ -5<br>
+								</div>
+								<div>
+									<span style="text-decoration: underline">Cheek -6</span><br>
+								</div>
+							</span>
+						</div>
+						<div class="tooltip location-cheek-fill">
+							<span class="tooltiptext">
+								<div style="border-bottom: 2px white solid">
+									<span style="text-decoration: underline">Face -5 (-7 from the back)</span><br>
+									Cor does 1.5x injury<br>
+									Any injury causing shock requires stun/knockdown<br>
+									Major wound causes a roll @ -5<br>
+								</div>
+								<div>
+									<span style="text-decoration: underline">Cheek -6</span><br>
+								</div>
+							</span>
+						</div>
+						<div class="tooltip location-nose">
+							{{data.bodyType.drTypesOne.facenose}} / {{data.bodyType.drTypesTwo.facenose}}
+							<span class="tooltiptext">
+								<div style="border-bottom: 2px white solid">
+									<span style="text-decoration: underline">Face -5 (-7 from the back)</span><br>
+									Cor does 1.5x injury<br>
+									Any injury causing shock requires stun/knockdown<br>
+									Major wound causes a roll @ -5<br>
+								</div>
+								<div>
+									<span style="text-decoration: underline">Nose -7</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.face.subLocation.nose.hp.value}} / {{data.bodyType.body.face.subLocation.nose.hp.max}} HP</span><br>
+									pi, imp, tbb count as a skull hit<br>
+								</div>
+							</span>
+						</div>
+						<div class="tooltip location-jaw">
+							{{data.bodyType.drTypesOne.facejaw}} / {{data.bodyType.drTypesTwo.facejaw}}
+							<span class="tooltiptext">
+								<div style="border-bottom: 2px white solid">
+									<span style="text-decoration: underline">Face -5 (-7 from the back)</span><br>
+									Cor does 1.5x injury<br>
+								</div>
+								<div>
+									<span style="text-decoration: underline">Jaw -6</span><br>
+									Any injury causing shock requires stun/knockdown @ -1<br>
+									Major wound causes a roll @ -6<br>
+								</div>
+							</span>
+						</div>
+						<div class="tooltip location-neck">
+							{{data.bodyType.drTypesOne.neckneck}} / {{data.bodyType.drTypesTwo.neckneck}}
+							<span class="tooltiptext">
+								<div style="border-bottom: 2px white solid">
+									<span style="text-decoration: underline">Neck -5</span><br>
+									Bleed every 30s @ -2<br>
+									Cr, Cor do 1.5x injury<br>
+									Cut does 2x injury<br>
+								</div>
+								<div>
+									<span style="text-decoration: underline">Neck Vein -8</span><br>
+									Bleed every 30s @ -3<br>
+									Cr, Cor do 2x injury<br>
+									Cut does 2.5x injury and bleeds @ -4<br>
+								</div>
+							</span>
+						</div>
 						<div class="tooltip location-shoulder-left">{{data.bodyType.drTypesOne.armLeftshoulder}} / {{data.bodyType.drTypesTwo.armLeftshoulder}}<span class="tooltiptext"></span></div>
 						<div class="tooltip location-shoulder-right">{{data.bodyType.drTypesOne.armRightshoulder}} / {{data.bodyType.drTypesTwo.armRightshoulder}}<span class="tooltiptext"></span></div>
 						<div class="tooltip location-upper-arm-left">{{data.bodyType.drTypesOne.armLeftupperArm}} / {{data.bodyType.drTypesTwo.armLeftupperArm}}<span class="tooltiptext"></span></div>
