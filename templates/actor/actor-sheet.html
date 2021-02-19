@@ -492,7 +492,7 @@
 				<div style="display: flex">
 					<div class="humanoidHitLocations">
 						<div class="tooltip location-skull">
-							{{data.bodyType.drTypesOne.skull}} / {{data.bodyType.drTypesTwo.skull}}
+							{{data.bodyType.drTypesOne.skull}}{{#if (and data.bodyType.drTypesOne.skull data.bodyType.drTypesTwo.skull)}} / {{/if}}{{data.bodyType.drTypesTwo.skull}}
 							<span class="tooltiptext">
 								<span style="text-decoration: underline">Skull -7 (-5 from the back)</span><br>
 								4x injury except tox<br>
