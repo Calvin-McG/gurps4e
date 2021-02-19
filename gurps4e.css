@@ -850,7 +850,7 @@
 .location-eye-left {
 	grid-column: 7 / 9;
 	grid-row: 3 / 5;
-	z-index: 10;
+	z-index: 1;
 	background-color: #0F243E;
 	color: aliceblue;
 }
@@ -858,7 +858,7 @@
 .location-eye-right {
 	grid-column: 11 / 13;
 	grid-row: 3 / 5;
-	z-index: 10;
+	z-index: 1;
 	background-color: #0F243E;
 	color: aliceblue;
 }
@@ -1127,6 +1127,7 @@
 	position: absolute;
 	top: 100%;
 	left: 50%;
+	z-index: 999;
 	margin-left: -5px;
 	border-width: 5px;
 	border-style: solid;

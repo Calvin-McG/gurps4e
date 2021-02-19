@@ -656,10 +656,17 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Left Arm -2</span><br>
-									<span style="color: #ff4848">{{data.bodyType.body.legLeft.hp.value}} / {{data.bodyType.body.legLeft.hp.max}} HP</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.armLeft.hp.value}} / {{data.bodyType.body.armLeft.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									The following applies only tp cut, imp, pi, and tbb attacks<br>
+									0.5x more injury<br>
+									Cannot cripple the limb<br>
+									No injury limit<br>
+									Bleed every 30s @ -3<br>
+									(Or -4 for cutting)
 								</div>
 							</span>
 						</div>
@@ -668,10 +675,17 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Right Arm -2</span><br>
-									<span style="color: #ff4848">{{data.bodyType.body.legRight.hp.value}} / {{data.bodyType.body.legRight.hp.max}} HP</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.armRight.hp.value}} / {{data.bodyType.body.armRight.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Right Shoulder -5</span><br>
+									The following applies only tp cut, imp, pi, and tbb attacks<br>
+									0.5x more injury<br>
+									Cannot cripple the limb<br>
+									No injury limit<br>
+									Bleed every 30s @ -3<br>
+									(Or -4 for cutting)
 								</div>
 							</span>
 						</div>
@@ -680,9 +694,11 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.armLeft.hp.value}} / {{data.bodyType.body.armLeft.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Left Upper Arm -5</span><br>
 								</div>
 							</span>
 						</div>
@@ -690,10 +706,12 @@
 							{{data.bodyType.drTypesOne.armRightupperArm}}{{#if (and data.bodyType.drTypesOne.armRightupperArm data.bodyType.drTypesTwo.armRightupperArm)}} / {{/if}}{{data.bodyType.drTypesTwo.armRightupperArm}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Right Arm -2</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.armRight.hp.value}} / {{data.bodyType.body.armRight.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Right Upper Arm -5</span><br>
 								</div>
 							</span>
 						</div>
@@ -702,9 +720,11 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.armLeft.hp.value}} / {{data.bodyType.body.armLeft.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Left Elbow -5</span><br>
 								</div>
 							</span>
 						</div>
@@ -712,10 +732,12 @@
 							{{data.bodyType.drTypesOne.armRightelbow}}{{#if (and data.bodyType.drTypesOne.armRightelbow data.bodyType.drTypesTwo.armRightelbow)}} / {{/if}}{{data.bodyType.drTypesTwo.armRightelbow}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Right Arm -2</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.armRight.hp.value}} / {{data.bodyType.body.armRight.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Right Elbow -5</span><br>
 								</div>
 							</span>
 						</div>
@@ -724,9 +746,11 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.armLeft.hp.value}} / {{data.bodyType.body.armLeft.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Left Forearm -4</span><br>
 								</div>
 							</span>
 						</div>
@@ -734,10 +758,12 @@
 							{{data.bodyType.drTypesOne.armRightforearm}}{{#if (and data.bodyType.drTypesOne.armRightforearm data.bodyType.drTypesTwo.armRightforearm)}} / {{/if}}{{data.bodyType.drTypesTwo.armRightforearm}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Right Arm -2</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.armRight.hp.value}} / {{data.bodyType.body.armRight.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Right Forearm -4</span><br>
 								</div>
 							</span>
 						</div>
@@ -745,10 +771,10 @@
 							{{data.bodyType.drTypesOne.handLeftjoint}}{{#if (and data.bodyType.drTypesOne.handLeftjoint data.bodyType.drTypesTwo.handLeftjoint)}} / {{/if}}{{data.bodyType.drTypesTwo.handLeftjoint}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Left Hand -4</span><br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Left Wrist -7</span><br>
 								</div>
 							</span>
 						</div>
@@ -756,10 +782,10 @@
 							{{data.bodyType.drTypesOne.handRightjoint}}{{#if (and data.bodyType.drTypesOne.handRightjoint data.bodyType.drTypesTwo.handRightjoint)}} / {{/if}}{{data.bodyType.drTypesTwo.handRightjoint}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Right Hand -4</span><br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Right Wrist -7</span><br>
 								</div>
 							</span>
 						</div>
@@ -767,10 +793,7 @@
 							{{data.bodyType.drTypesOne.handLeftextremity}}{{#if (and data.bodyType.drTypesOne.handLeftextremity data.bodyType.drTypesTwo.handLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handLeftextremity}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
-								</div>
-								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Left Hand -4</span><br>
 								</div>
 							</span>
 						</div>
@@ -778,10 +801,7 @@
 							{{data.bodyType.drTypesOne.handRightextremity}}{{#if (and data.bodyType.drTypesOne.handRightextremity data.bodyType.drTypesTwo.handRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handRightextremity}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
-								</div>
-								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Right Hand -4</span><br>
 								</div>
 							</span>
 						</div>
@@ -789,10 +809,7 @@
 							{{data.bodyType.drTypesOne.chestchest}}{{#if (and data.bodyType.drTypesOne.chestchest data.bodyType.drTypesTwo.chestchest)}} / {{/if}}{{data.bodyType.drTypesTwo.chestchest}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
-								</div>
-								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Chest -0</span><br>
 								</div>
 							</span>
 						</div>
@@ -800,10 +817,10 @@
 							{{data.bodyType.drTypesOne.chestvitals}}{{#if (and data.bodyType.drTypesOne.chestvitals data.bodyType.drTypesTwo.chestvitals)}} / {{/if}}{{data.bodyType.drTypesTwo.chestvitals}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Chest -0</span><br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Vitals -3</span><br>
 								</div>
 							</span>
 						</div>
@@ -811,10 +828,10 @@
 							{{data.bodyType.drTypesOne.chestspine}}{{#if (and data.bodyType.drTypesOne.chestspine data.bodyType.drTypesTwo.chestspine)}} / {{/if}}{{data.bodyType.drTypesTwo.chestspine}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Chest -0</span><br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Spine -8</span><br>
 								</div>
 							</span>
 						</div>
@@ -822,10 +839,10 @@
 							{{data.bodyType.drTypesOne.abdomenvitals}}{{#if (and data.bodyType.drTypesOne.abdomenvitals data.bodyType.drTypesTwo.abdomenvitals)}} / {{/if}}{{data.bodyType.drTypesTwo.abdomenvitals}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Abdomen -1</span><br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Vitals -3/-4</span><br>
 								</div>
 							</span>
 						</div>
@@ -833,10 +850,10 @@
 							{{data.bodyType.drTypesOne.abdomendigestiveTract}}{{#if (and data.bodyType.drTypesOne.abdomendigestiveTract data.bodyType.drTypesTwo.abdomendigestiveTract)}} / {{/if}}{{data.bodyType.drTypesTwo.abdomendigestiveTract}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Abdomen -1</span><br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Digestive Tract -3</span><br>
 								</div>
 							</span>
 						</div>
@@ -844,10 +861,10 @@
 							{{data.bodyType.drTypesOne.abdomenpelvis}}{{#if (and data.bodyType.drTypesOne.abdomenpelvis data.bodyType.drTypesTwo.abdomenpelvis)}} / {{/if}}{{data.bodyType.drTypesTwo.abdomenpelvis}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Abdomen -1</span><br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Pelvis -3</span><br>
 								</div>
 							</span>
 						</div>
@@ -855,10 +872,10 @@
 							{{data.bodyType.drTypesOne.abdomengroin}}{{#if (and data.bodyType.drTypesOne.abdomengroin data.bodyType.drTypesTwo.abdomengroin)}} / {{/if}}{{data.bodyType.drTypesTwo.abdomengroin}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Abdomen -1</span><br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Groin -3</span><br>
 								</div>
 							</span>
 						</div>
@@ -866,10 +883,10 @@
 							{{data.bodyType.drTypesOne.legLeftthigh}}{{#if (and data.bodyType.drTypesOne.legLeftthigh data.bodyType.drTypesTwo.legLeftthigh)}} / {{/if}}{{data.bodyType.drTypesTwo.legLeftthigh}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Left Leg -2</span><br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Left Thigh -5</span><br>
 								</div>
 							</span>
 						</div>
@@ -877,10 +894,10 @@
 							{{data.bodyType.drTypesOne.legRightthigh}}{{#if (and data.bodyType.drTypesOne.legRightthigh data.bodyType.drTypesTwo.legRightthigh)}} / {{/if}}{{data.bodyType.drTypesTwo.legRightthigh}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Right Leg -2</span><br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Right Thigh -5</span><br>
 								</div>
 							</span>
 						</div>
@@ -888,10 +905,10 @@
 							{{data.bodyType.drTypesOne.legLeftknee}}{{#if (and data.bodyType.drTypesOne.legLeftknee data.bodyType.drTypesTwo.legLeftknee)}} / {{/if}}{{data.bodyType.drTypesTwo.legLeftknee}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Left Leg -2</span><br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Left Knee -5</span><br>
 								</div>
 							</span>
 						</div>
@@ -899,10 +916,10 @@
 							{{data.bodyType.drTypesOne.legRightknee}}{{#if (and data.bodyType.drTypesOne.legRightknee data.bodyType.drTypesTwo.legRightknee)}} / {{/if}}{{data.bodyType.drTypesTwo.legRightknee}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Right Leg -2</span><br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Right Knee -5</span><br>
 								</div>
 							</span>
 						</div>
@@ -910,10 +927,10 @@
 							{{data.bodyType.drTypesOne.legLeftshin}}{{#if (and data.bodyType.drTypesOne.legLeftshin data.bodyType.drTypesTwo.legLeftshin)}} / {{/if}}{{data.bodyType.drTypesTwo.legLeftshin}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Left Leg -2</span><br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Left Shin -4</span><br>
 								</div>
 							</span>
 						</div>
@@ -921,10 +938,10 @@
 							{{data.bodyType.drTypesOne.legRightshin}}{{#if (and data.bodyType.drTypesOne.legRightshin data.bodyType.drTypesTwo.legRightshin)}} / {{/if}}{{data.bodyType.drTypesTwo.legRightshin}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Right Leg -2</span><br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Right Shin -4</span><br>
 								</div>
 							</span>
 						</div>
@@ -932,10 +949,10 @@
 							{{data.bodyType.drTypesOne.footLeftjoint}}{{#if (and data.bodyType.drTypesOne.footLeftjoint data.bodyType.drTypesTwo.footLeftjoint)}} / {{/if}}{{data.bodyType.drTypesTwo.footLeftjoint}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Left Foot -4</span><br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Left Ankle -7</span><br>
 								</div>
 							</span>
 						</div>
@@ -943,10 +960,10 @@
 							{{data.bodyType.drTypesOne.footRightjoint}}{{#if (and data.bodyType.drTypesOne.footRightjoint data.bodyType.drTypesTwo.footRightjoint)}} / {{/if}}{{data.bodyType.drTypesTwo.footRightjoint}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Right Foot -4</span><br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Right Ankle -7</span><br>
 								</div>
 							</span>
 						</div>
@@ -954,10 +971,7 @@
 							{{data.bodyType.drTypesOne.footLeftextremity}}{{#if (and data.bodyType.drTypesOne.footLeftextremity data.bodyType.drTypesTwo.footLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.footLeftextremity}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
-								</div>
-								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Left Foot -4</span><br>
 								</div>
 							</span>
 						</div>
@@ -965,10 +979,7 @@
 							{{data.bodyType.drTypesOne.footRightextremity}}{{#if (and data.bodyType.drTypesOne.footRightextremity data.bodyType.drTypesTwo.footRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.footRightextremity}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
-								</div>
-								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Right Foot -4</span><br>
 								</div>
 							</span>
 						</div>
@@ -976,10 +987,10 @@
 							{{data.bodyType.drTypesOne.footLeftextremity}}{{#if (and data.bodyType.drTypesOne.footLeftextremity data.bodyType.drTypesTwo.footLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.footLeftextremity}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Left Foot -4</span><br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Left Sole</span><br>
 								</div>
 							</span>
 						</div>
@@ -987,10 +998,10 @@
 							{{data.bodyType.drTypesOne.footRightextremity}}{{#if (and data.bodyType.drTypesOne.footRightextremity data.bodyType.drTypesTwo.footRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.footRightextremity}}
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Arm -2</span><br>
+									<span style="text-decoration: underline">Right Foot -4</span><br>
 								</div>
 								<div>
-									<span style="text-decoration: underline">Left Shoulder -5</span><br>
+									<span style="text-decoration: underline">Right Sole</span><br>
 								</div>
 							</span>
 						</div>
