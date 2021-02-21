@@ -825,34 +825,36 @@
 								</div>
 							</span>
 						</div>
-						<div class="tooltip location-palm-left">
-							{{data.bodyType.drTypesOne.handLeftextremity}}{{#if (and data.bodyType.drTypesOne.handLeftextremity data.bodyType.drTypesTwo.handLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handLeftextremity}}
-							<span class="tooltiptext">
-								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Hand -4</span><br>
-									<span style="color: #ff4848">{{data.bodyType.body.handLeft.hp.value}} / {{data.bodyType.body.handLeft.hp.max}} HP</span><br>
-									pi/imp attacks cap at 1x<br>
-								</div>
-								<div>
-									<span style="text-decoration: underline">Left Palm -8</span><br>
-									Penalty is -6 if unarmed<br>
-								</div>
-							</span>
-						</div>
-						<div class="tooltip location-palm-right">
-							{{data.bodyType.drTypesOne.handRightextremity}}{{#if (and data.bodyType.drTypesOne.handRightextremity data.bodyType.drTypesTwo.handRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handRightextremity}}
-							<span class="tooltiptext">
-								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Right Hand -4</span><br>
-									<span style="color: #ff4848">{{data.bodyType.body.handRight.hp.value}} / {{data.bodyType.body.handRight.hp.max}} HP</span><br>
-									pi/imp attacks cap at 1x<br>
-								</div>
-								<div>
-									<span style="text-decoration: underline">Right Palm -8</span><br>
-									Penalty is -6 if unarmed<br>
-								</div>
-							</span>
-						</div>
+						{{#if data.bodyType.chinks.sole}}
+							<div class="tooltip location-palm-left">
+								{{data.bodyType.drTypesOne.handLeftextremity}}{{#if (and data.bodyType.drTypesOne.handLeftextremity data.bodyType.drTypesTwo.handLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handLeftextremity}}
+								<span class="tooltiptext">
+									<div style="border-bottom: 2px white solid">
+										<span style="text-decoration: underline">Left Hand -4</span><br>
+										<span style="color: #ff4848">{{data.bodyType.body.handLeft.hp.value}} / {{data.bodyType.body.handLeft.hp.max}} HP</span><br>
+										pi/imp attacks cap at 1x<br>
+									</div>
+									<div>
+										<span style="text-decoration: underline">Left Palm -8</span><br>
+										Penalty is -6 if unarmed<br>
+									</div>
+								</span>
+							</div>
+							<div class="tooltip location-palm-right">
+								{{data.bodyType.drTypesOne.handRightextremity}}{{#if (and data.bodyType.drTypesOne.handRightextremity data.bodyType.drTypesTwo.handRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handRightextremity}}
+								<span class="tooltiptext">
+									<div style="border-bottom: 2px white solid">
+										<span style="text-decoration: underline">Right Hand -4</span><br>
+										<span style="color: #ff4848">{{data.bodyType.body.handRight.hp.value}} / {{data.bodyType.body.handRight.hp.max}} HP</span><br>
+										pi/imp attacks cap at 1x<br>
+									</div>
+									<div>
+										<span style="text-decoration: underline">Right Palm -8</span><br>
+										Penalty is -6 if unarmed<br>
+									</div>
+								</span>
+							</div>
+						{{/if}}
 						<div class="tooltip location-torso">
 							{{data.bodyType.drTypesOne.chestchest}}{{#if (and data.bodyType.drTypesOne.chestchest data.bodyType.drTypesTwo.chestchest)}} / {{/if}}{{data.bodyType.drTypesTwo.chestchest}}
 							<span class="tooltiptext">
@@ -1136,47 +1138,49 @@
 								</div>
 							</span>
 						</div>
-						<div class="tooltip location-sole-left">
-							{{data.bodyType.drTypesOne.footLeftextremity}}{{#if (and data.bodyType.drTypesOne.footLeftextremity data.bodyType.drTypesTwo.footLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.footLeftextremity}}
-							<span class="tooltiptext">
-								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Left Foot -4</span><br>
-									<span style="color: #ff4848">{{data.bodyType.body.footLeft.hp.value}} / {{data.bodyType.body.footLeft.hp.max}} HP</span><br>
-									pi/imp attacks cap at 1x<br>
-								</div>
-								<div>
-									<span style="text-decoration: underline">Left Sole</span><br>
-								</div>
-							</span>
-						</div>
-						<div class="tooltip location-sole-right">
-							{{data.bodyType.drTypesOne.footRightextremity}}{{#if (and data.bodyType.drTypesOne.footRightextremity data.bodyType.drTypesTwo.footRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.footRightextremity}}
-							<span class="tooltiptext">
-								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Right Foot -4</span><br>
-									<span style="color: #ff4848">{{data.bodyType.body.footRight.hp.value}} / {{data.bodyType.body.footRight.hp.max}} HP</span><br>
-									pi/imp attacks cap at 1x<br>
-								</div>
-								<div>
-									<span style="text-decoration: underline">Right Sole</span><br>
-								</div>
-							</span>
-						</div>
+						{{#if data.bodyType.chinks.sole}}
+							<div class="tooltip location-sole-left">
+								{{data.bodyType.drTypesOne.footLeftextremity}}{{#if (and data.bodyType.drTypesOne.footLeftextremity data.bodyType.drTypesTwo.footLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.footLeftextremity}}
+								<span class="tooltiptext">
+									<div style="border-bottom: 2px white solid">
+										<span style="text-decoration: underline">Left Foot -4</span><br>
+										<span style="color: #ff4848">{{data.bodyType.body.footLeft.hp.value}} / {{data.bodyType.body.footLeft.hp.max}} HP</span><br>
+										pi/imp attacks cap at 1x<br>
+									</div>
+									<div>
+										<span style="text-decoration: underline">Left Sole</span><br>
+									</div>
+								</span>
+							</div>
+							<div class="tooltip location-sole-right">
+								{{data.bodyType.drTypesOne.footRightextremity}}{{#if (and data.bodyType.drTypesOne.footRightextremity data.bodyType.drTypesTwo.footRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.footRightextremity}}
+								<span class="tooltiptext">
+									<div style="border-bottom: 2px white solid">
+										<span style="text-decoration: underline">Right Foot -4</span><br>
+										<span style="color: #ff4848">{{data.bodyType.body.footRight.hp.value}} / {{data.bodyType.body.footRight.hp.max}} HP</span><br>
+										pi/imp attacks cap at 1x<br>
+									</div>
+									<div>
+										<span style="text-decoration: underline">Right Sole</span><br>
+									</div>
+								</span>
+							</div>
+						{{/if}}
 					</div>
 					<div class="hit-location-options">
 						<div>
 							<label>Damage Type One:</label>
 							<select name="data.bodyType.damageTypeOne">
 								{{#select data.bodyType.damageTypeOne}}
-								<option value="">Make a Selection</option>
-								<option value="Burn">Burn</option>
-								<option value="Cor">Cor</option>
-								<option value="Cr">Cr</option>
-								<option value="Cut">Cut</option>
-								<option value="Fat">Fat</option>
-								<option value="Imp">Imp</option>
-								<option value="Pi">Pi</option>
-								<option value="Tox">Tox</option>
+									<option value="">Make a Selection</option>
+									<option value="Burn">Burn</option>
+									<option value="Cor">Cor</option>
+									<option value="Cr">Cr</option>
+									<option value="Cut">Cut</option>
+									<option value="Fat">Fat</option>
+									<option value="Imp">Imp</option>
+									<option value="Pi">Pi</option>
+									<option value="Tox">Tox</option>
 								{{/select}}
 							</select>
 						</div>
@@ -1184,17 +1188,82 @@
 							<label>Damage Type Two:</label>
 							<select name="data.bodyType.damageTypeTwo">
 								{{#select data.bodyType.damageTypeTwo}}
-								<option value="">Make a Selection</option>
-								<option value="Burn">Burn</option>
-								<option value="Cor">Cor</option>
-								<option value="Cr">Cr</option>
-								<option value="Cut">Cut</option>
-								<option value="Fat">Fat</option>
-								<option value="Imp">Imp</option>
-								<option value="Pi">Pi</option>
-								<option value="Tox">Tox</option>
+									<option value="">Make a Selection</option>
+									<option value="Burn">Burn</option>
+									<option value="Cor">Cor</option>
+									<option value="Cr">Cr</option>
+									<option value="Cut">Cut</option>
+									<option value="Fat">Fat</option>
+									<option value="Imp">Imp</option>
+									<option value="Pi">Pi</option>
+									<option value="Tox">Tox</option>
 								{{/select}}
 							</select>
+						</div>
+						<div>
+							<table>
+								<tr>
+									<th colspan="3">
+										Harsh Realism - Armor Gaps
+									</th>
+								</tr>
+								<tr>
+									<td>Neck</td>
+									<td>## / ##</td>
+									<td>
+										<input type="checkbox" name="data.bodyType.chinks.neck" {{checked data.bodyType.chinks.neck}} data-dtype="Boolean"/>
+									</td>
+								</tr>
+								<tr>
+									<td>Armpit</td>
+									<td>## / ##</td>
+									<td>
+										<input type="checkbox" name="data.bodyType.chinks.armpit" {{checked data.bodyType.chinks.armpit}} data-dtype="Boolean"/>
+									</td>
+								</tr>
+								<tr>
+									<td>Inside Elbow</td>
+									<td>## / ##</td>
+									<td>
+										<input type="checkbox" name="data.bodyType.chinks.elbow" {{checked data.bodyType.chinks.elbow}} data-dtype="Boolean"/>
+									</td>
+								</tr>
+								<tr>
+									<td>Palm</td>
+									<td>## / ##</td>
+									<td>
+										<input type="checkbox" name="data.bodyType.chinks.palm" {{checked data.bodyType.chinks.palm}} data-dtype="Boolean"/>
+									</td>
+								</tr>
+								<tr>
+									<td>Codpiece</td>
+									<td>## / ##</td>
+									<td>
+										<input type="checkbox" name="data.bodyType.chinks.codpiece" {{checked data.bodyType.chinks.codpiece}} data-dtype="Boolean"/>
+									</td>
+								</tr>
+								<tr>
+									<td>Inside Thigh</td>
+									<td>## / ##</td>
+									<td>
+										<input type="checkbox" name="data.bodyType.chinks.thigh" {{checked data.bodyType.chinks.thigh}} data-dtype="Boolean"/>
+									</td>
+								</tr>
+								<tr>
+									<td>Back of Knee</td>
+									<td>## / ##</td>
+									<td>
+										<input type="checkbox" name="data.bodyType.chinks.knee" {{checked data.bodyType.chinks.knee}} data-dtype="Boolean"/>
+									</td>
+								</tr>
+								<tr>
+									<td>Sole</td>
+									<td>## / ##</td>
+									<td>
+										<input type="checkbox" name="data.bodyType.chinks.sole" {{checked data.bodyType.chinks.sole}} data-dtype="Boolean"/>
+									</td>
+								</tr>
+							</table>
 						</div>
 					</div>
 				</div>

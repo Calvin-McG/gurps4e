@@ -3,15 +3,15 @@ Add labels to tooltips
 Add other body types
 
 Add harsh armour gaps as targetable locations, added with checkboxes.
-    - On update, check box. If checked, then make sure location hasn't been added and added. If it's added already, do nothing. If uncheck but the part is present, remove. If unchecked and not present, do nothing.
-    - Palm
-    - Sole
-    - Armpit
-    - Back of Knee
-    - Codpiece
-    - Inside Elbow
-    - Inside Thigh
-    - Neck
+    - On update, check box. If checked, then make sure location hasn't been added and add it. If it's added already, do nothing. If uncheck but the part is present, remove. If unchecked and not present, do nothing.
+    - Palm - Quick display - Location added
+    - Sole - Quick display - Location added
+    - Armpit - Quick display - Location added
+    - Back of Knee - Quick display - Location added
+    - Codpiece - Quick display - Location added
+    - Inside Elbow - Quick display - Location added
+    - Inside Thigh - Quick display - Location added
+    - Neck - Quick display - Location added
 
 
 Campaign toggles for...
