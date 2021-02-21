@@ -978,6 +978,18 @@
 	background-color: #B1A0C7;
 }
 
+.location-palm-left {
+	grid-column: 1 / 4;
+	grid-row: 23 / 24;
+	background-color: #60497A;
+}
+
+.location-palm-right {
+	grid-column: 16 / 19;
+	grid-row: 23 / 24;
+	background-color: #60497A;
+}
+
 .location-torso {
 	grid-column: 4 / 16;
 	grid-row: 10 / 18;

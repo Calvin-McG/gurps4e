@@ -825,6 +825,34 @@
 								</div>
 							</span>
 						</div>
+						<div class="tooltip location-palm-left">
+							{{data.bodyType.drTypesOne.handLeftextremity}}{{#if (and data.bodyType.drTypesOne.handLeftextremity data.bodyType.drTypesTwo.handLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handLeftextremity}}
+							<span class="tooltiptext">
+								<div style="border-bottom: 2px white solid">
+									<span style="text-decoration: underline">Left Hand -4</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.handLeft.hp.value}} / {{data.bodyType.body.handLeft.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
+								</div>
+								<div>
+									<span style="text-decoration: underline">Left Palm -8</span><br>
+									Penalty is -6 if unarmed<br>
+								</div>
+							</span>
+						</div>
+						<div class="tooltip location-palm-right">
+							{{data.bodyType.drTypesOne.handRightextremity}}{{#if (and data.bodyType.drTypesOne.handRightextremity data.bodyType.drTypesTwo.handRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handRightextremity}}
+							<span class="tooltiptext">
+								<div style="border-bottom: 2px white solid">
+									<span style="text-decoration: underline">Right Hand -4</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.handRight.hp.value}} / {{data.bodyType.body.handRight.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
+								</div>
+								<div>
+									<span style="text-decoration: underline">Right Palm -8</span><br>
+									Penalty is -6 if unarmed<br>
+								</div>
+							</span>
+						</div>
 						<div class="tooltip location-torso">
 							{{data.bodyType.drTypesOne.chestchest}}{{#if (and data.bodyType.drTypesOne.chestchest data.bodyType.drTypesTwo.chestchest)}} / {{/if}}{{data.bodyType.drTypesTwo.chestchest}}
 							<span class="tooltiptext">
