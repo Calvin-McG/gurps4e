@@ -219,7 +219,7 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Foot", "Foot", "Ankle");
 			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Foot", "Foot", "Ankle");
 			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
-			bodyObj.tail = this.addArm(actorData.reserves.hp.max, "Tail");
+			bodyObj.tail = this.addTail(actorData.reserves.hp.max, "Tail");
 			bodyObj.wingLeft = this.addArm(actorData.reserves.hp.max, "Left Wing");
 			bodyObj.wingRight = this.addArm(actorData.reserves.hp.max, "Right Wing");
 		}
@@ -282,7 +282,7 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.chest = this.addChest(actorData.reserves.hp.max,"Chest");
 			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
 			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
-			bodyObj.tail = this.addArm(actorData.reserves.hp.max, "Tail");
+			bodyObj.tail = this.addTail(actorData.reserves.hp.max, "Tail");
 			bodyObj.fin1 = this.addExtremity(actorData.reserves.hp.max,"Dorsal Fin", "Fin", "Joint");
 			bodyObj.fin2 = this.addExtremity(actorData.reserves.hp.max,"Left Fin", "Fin", "Joint");
 			bodyObj.fin3 = this.addExtremity(actorData.reserves.hp.max,"Right Fin", "Fin", "Joint");
@@ -870,6 +870,92 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
 					penalty: "-5",
+					personalDRHardeningTox: 0,
+					flexible: false
+				}
+			}
+		}
+
+		return part;
+	}
+
+	addTail(hp){
+		let partHp = Math.ceil(hp/2);
+		if (partHp <= hp/2){//Make sure that part hp is greater than one half HP
+			partHp += 1;
+		}
+
+		let part = {
+			label: "Tail",
+			penalty: "-2",
+			hp: {
+				max: partHp,
+				state: "Fine",
+				value: partHp
+			},
+			flexible: false,
+			subLocation: {
+				forearm: {
+					label: "Tail",
+					personalDRBurn: 0,
+					personalDRCor: 0,
+					personalDRCr: 0,
+					personalDRCut: 0,
+					personalDRFat: 0,
+					personalDRImp: 0,
+					personalDRPi: 0,
+					personalDRTox: 0,
+					personalWoundMultBurn: 1,
+					personalWoundMultCor: 1,
+					personalWoundMultCr: 1,
+					personalWoundMultCut: 1.5,
+					personalWoundMultFat: 1,
+					personalWoundMultImp: 1,
+					personalWoundMultPim: 0.5,
+					personalWoundMultPi: 1,
+					personalWoundMultPip: 1,
+					personalWoundMultPipp: 1,
+					personalWoundMultTox: 1,
+					personalDRHardeningBurn: 0,
+					personalDRHardeningCor: 0,
+					personalDRHardeningCr: 0,
+					personalDRHardeningCut: 0,
+					personalDRHardeningFat: 0,
+					personalDRHardeningImp: 0,
+					personalDRHardeningPi: 0,
+					personalDRHardeningTox: 0,
+					penalty: "-3",
+					flexible: false
+				},
+				shoulder: {
+					label: "Shoulder",
+					penalty: "-5",
+					personalDRBurn: 0,
+					personalDRCor: 0,
+					personalDRCr: 0,
+					personalDRCut: 0,
+					personalDRFat: 0,
+					personalDRImp: 0,
+					personalDRPi: 0,
+					personalDRTox: 0,
+					personalWoundMultBurn: 1,
+					personalWoundMultCor: 1,
+					personalWoundMultCr: 1,
+					personalWoundMultCut: 2,
+					personalWoundMultFat: 1,
+					personalWoundMultImp: 2.5,
+					personalWoundMultPim: 1,
+					personalWoundMultPi: 1.5,
+					personalWoundMultPip: 2,
+					personalWoundMultPipp: 2.5,
+					personalWoundMultTox: 1,
+					personalDRHardeningBurn: 0,
+					personalDRHardeningCor: 0,
+					personalDRHardeningCr: 0,
+					personalDRHardeningCut: 0,
+					personalDRHardeningFat: 0,
+					personalDRHardeningImp: 0,
+					personalDRHardeningPi: 0,
 					personalDRHardeningTox: 0,
 					flexible: false
 				}
