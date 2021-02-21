@@ -1,6 +1,10 @@
 Add HP to tooltips where relevant
 Add labels to tooltips
+
 Add other body types
+    - Myrmidon (Ant)
+    - Cephalartus (Octopus)
+    - Centaur
 
 Add harsh armour gaps as targetable locations, added with checkboxes.
     - On update, check box. If checked, then make sure location hasn't been added and add it. If it's added already, do nothing. If uncheck but the part is present, remove. If unchecked and not present, do nothing.
