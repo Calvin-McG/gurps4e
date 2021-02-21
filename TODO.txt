@@ -8,11 +8,8 @@ Add harsh armour gaps as targetable locations, added with checkboxes.
     - Sole - Quick display - Location added
     - Armpit - Quick display - Location added
     - Back of Knee - Quick display - Location added
-    - Codpiece - Quick display - Location added
     - Inside Elbow - Quick display - Location added
     - Inside Thigh - Quick display - Location added
-    - Neck - Quick display - Location added
-
 
 Campaign toggles for...
     - Rigid armour can take blunt trauma
