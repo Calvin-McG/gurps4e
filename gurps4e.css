@@ -817,7 +817,7 @@
 .humanoidHitLocations {
 	flex: 1;
 	display: grid;
-	grid-template-columns: repeat(18,15px);
+	grid-template-columns: repeat(28,15px);
 	grid-template-rows: repeat(38,15px);
 	text-align: center;
 }
@@ -828,27 +828,27 @@
 }
 
 .location-skull {
-	grid-column: 6 / 14;
+	grid-column: 11 / 19;
 	grid-row: 1 / 3;
 	background-color: #D9D9D9;
 }
 
 .location-ear-left {
-	grid-column: 4 / 6;
+	grid-column: 9 / 11;
 	grid-row: 3 / 6;
 	background-color: #16365C;
 	color: aliceblue;
 }
 
 .location-ear-right {
-	grid-column: 14 / 16;
+	grid-column: 19 / 21;
 	grid-row: 3 / 6;
 	background-color: #16365C;
 	color: aliceblue;
 }
 
 .location-eye-left {
-	grid-column: 7 / 9;
+	grid-column: 12 / 14;
 	grid-row: 3 / 5;
 	z-index: 1;
 	background-color: #0F243E;
@@ -856,7 +856,7 @@
 }
 
 .location-eye-right {
-	grid-column: 11 / 13;
+	grid-column: 16 / 18;
 	grid-row: 3 / 5;
 	z-index: 1;
 	background-color: #0F243E;
@@ -864,173 +864,173 @@
 }
 
 .location-cheek-fill {
-	grid-column: 6 / 14;
+	grid-column: 11 / 19;
 	grid-row: 3 / 5;
 	border: unset !important;
 	background-color: #8DB4E2;
 }
 
 .location-cheek-right {
-	grid-column: 11 / 14;
+	grid-column: 16 / 19;
 	grid-row: 5 / 6;
 	border: unset !important;
 	background-color: #8DB4E2;
 }
 
 .location-cheek-left {
-	grid-column: 6 / 9;
+	grid-column: 11 / 14;
 	grid-row: 5 / 6;
 	border: unset !important;
 	background-color: #8DB4E2;
 }
 
 .location-nose {
-	grid-column: 9 / 11;
+	grid-column: 14 / 16;
 	grid-row: 3 / 6;
 	background-color: #C5D9F1;
 }
 
 .location-jaw {
-	grid-column: 6 / 14;
+	grid-column: 11 / 19;
 	grid-row: 6 / 8;
 	background-color: #538DD5;
 }
 
 .location-neck {
-	grid-column: 8 / 12;
+	grid-column: 13 / 17;
 	grid-row: 8 / 10;
 	background-color: #31869B;
 }
 
 .location-shoulder-left {
-	grid-column: 1 / 5;
+	grid-column: 6 / 10;
 	grid-row: 10 / 13;
 	z-index: 1;
 	background-color: #76933C;
 }
 
 .location-shoulder-right {
-	grid-column: 15 / 19;
+	grid-column: 20 / 24;
 	grid-row: 10 / 13;
 	z-index: 1;
 	background-color: #76933C;
 }
 
 .location-upper-arm-left {
-	grid-column: 1 / 4;
+	grid-column: 6 / 9;
 	grid-row: 13 / 16;
 	background-color: #C4D79B;
 }
 
 .location-upper-arm-right {
-	grid-column: 16 / 19;
+	grid-column: 21 / 24;
 	grid-row: 13 / 16;
 	background-color: #C4D79B;
 }
 
 .location-elbow-left {
-	grid-column: 1 / 4;
+	grid-column: 6 / 9;
 	grid-row: 16 / 18;
 	background-color: #4F6228;
 	color: blanchedalmond;
 }
 
 .location-elbow-right {
-	grid-column: 16 / 19;
+	grid-column: 21 / 24;
 	grid-row: 16 / 18;
 	background-color: #4F6228;
 	color: blanchedalmond;
 }
 
 .location-forearm-left {
-	grid-column: 1 / 4;
+	grid-column: 6 / 9;
 	grid-row: 18 / 21;
 	background-color: #EBF1DE;
 }
 
 .location-forearm-right {
-	grid-column: 16 / 19;
+	grid-column: 21 / 24;
 	grid-row: 18 / 21;
 	background-color: #EBF1DE;
 }
 
 .location-wrist-left {
-	grid-column: 1 / 4;
+	grid-column: 6 / 9;
 	grid-row: 21 / 22;
 	background-color: #E4DFEC;
 }
 
 .location-wrist-right {
-	grid-column: 16 / 19;
+	grid-column: 21 / 24;
 	grid-row: 21 / 22;
 	background-color: #E4DFEC;
 }
 
 .location-hand-left {
-	grid-column: 1 / 4;
+	grid-column: 6 / 9;
 	grid-row: 22 / 23;
 	background-color: #B1A0C7;
 }
 
 .location-hand-right {
-	grid-column: 16 / 19;
+	grid-column: 21 / 24;
 	grid-row: 22 / 23;
 	background-color: #B1A0C7;
 }
 
 .location-palm-left {
-	grid-column: 1 / 4;
+	grid-column: 6 / 9;
 	grid-row: 23 / 24;
 	background-color: #60497A;
 }
 
 .location-palm-right {
-	grid-column: 16 / 19;
+	grid-column: 21 / 24;
 	grid-row: 23 / 24;
 	background-color: #60497A;
 }
 
 .location-torso {
-	grid-column: 4 / 16;
+	grid-column: 9 / 21;
 	grid-row: 10 / 18;
 	background-color: #FDE9D9;
 }
 
 .location-torso-spine {
-	grid-column: 9 / 11;
+	grid-column: 14 / 16;
 	grid-row: 11 / 18;
 	background-color: #bebebe;
 }
 
 .location-torso-vitals {
-	grid-column: 8 / 12;
+	grid-column: 13 / 17;
 	grid-row: 16 / 18;
 	z-index: 1;
 	background-color: #FF0000;
 }
 
 .location-abdomen-vitals {
-	grid-column: 8 / 12;
+	grid-column: 13 / 17;
 	grid-row: 18 / 20;
 	z-index: 1;
 	background-color: #FF0000;
 }
 
 .location-digestive {
-	grid-column: 4 / 16;
+	grid-column: 9 / 21;
 	grid-row: 18 / 22;
 	background-color: #C4BD97;
 	text-align: left;
 }
 
 .location-pelvis {
-	grid-column: 4 / 16;
+	grid-column: 9 / 21;
 	grid-row: 22 / 26;
 	background-color: #948A54;
 }
 
 .location-groin {
-	grid-column: 8 / 12;
+	grid-column: 13 / 17;
 	grid-row: 24 / 26;
 	z-index: 1;
 	background-color: #494529;
@@ -1038,88 +1038,88 @@
 }
 
 .location-thigh-left {
-	grid-column: 4 / 8;
+	grid-column: 9 / 13;
 	grid-row: 26 / 30;
 	background-color: #DA9694;
 }
 
 .location-thigh-right {
-	grid-column: 12 / 16;
+	grid-column: 17 / 21;
 	grid-row: 26 / 30;
 	background-color: #DA9694;
 }
 
 .location-thigh-artery-left {
-	grid-column: 5 / 7;
+	grid-column: 10 / 12;
 	grid-row: 27 / 30;
 	z-index: 1;
 	background-color: #bb5b58;
 }
 
 .location-thigh-artery-right {
-	grid-column: 13 / 15;
+	grid-column: 18 / 20;
 	grid-row: 27 / 30;
 	z-index: 1;
 	background-color: #bb5b58;
 }
 
 .location-knee-left {
-	grid-column: 4 / 8;
+	grid-column: 9 / 13;
 	grid-row: 30 / 32;
 	background-color: #963634;
 }
 
 .location-knee-right {
-	grid-column: 12 / 16;
+	grid-column: 17 / 21;
 	grid-row: 30 / 32;
 	background-color: #963634;
 }
 
 .location-shin-left {
-	grid-column: 4 / 8;
+	grid-column: 9 / 13;
 	grid-row: 32 / 36;
 	background-color: #F2DCDB;
 }
 
 .location-shin-right {
-	grid-column: 12 / 16;
+	grid-column: 17 / 21;
 	grid-row: 32 / 36;
 	background-color: #F2DCDB;
 }
 
 .location-ankle-left {
-	grid-column: 4 / 8;
+	grid-column: 9 / 13;
 	grid-row: 36 / 37;
 	background-color: #E4DFEC;
 }
 
 .location-ankle-right {
-	grid-column: 12 / 16;
+	grid-column: 17 / 21;
 	grid-row: 36 / 37;
 	background-color: #E4DFEC;
 }
 
 .location-foot-left {
-	grid-column: 4 / 8;
+	grid-column: 9 / 13;
 	grid-row: 37 / 38;
 	background-color: #B1A0C7;
 }
 
 .location-foot-right {
-	grid-column: 12 / 16;
+	grid-column: 17 / 21;
 	grid-row: 37 / 38;
 	background-color: #B1A0C7;
 }
 
 .location-sole-left {
-	grid-column: 4 / 8;
+	grid-column: 9 / 13;
 	grid-row: 38 / 39;
 	background-color: #60497A;
 	color: aliceblue;
 }
 
 .location-sole-right {
-	grid-column: 12 / 16;
+	grid-column: 17 / 21;
 	grid-row: 38 / 39;
 	background-color: #60497A;
 	color: aliceblue;
