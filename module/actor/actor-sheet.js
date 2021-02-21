@@ -104,7 +104,8 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Leg");
 			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Arm");
 			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Arm");
-			bodyObj.chest = this.addChest(actorData.reserves.hp.max,"Chest");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
 			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
 			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hand", "Hand", "Wrist");
 			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Hand", "Hand", "Wrist");
@@ -117,7 +118,8 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Leg");
 			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Arm");
 			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Arm");
-			bodyObj.chest = this.addChest(actorData.reserves.hp.max,"Chest");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
 			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
 			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hand", "Hand", "Wrist");
 			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Hand", "Hand", "Wrist");
@@ -132,7 +134,8 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.hindlegRight = this.addLeg(actorData.reserves.hp.max, "Right Hind Leg");
 			bodyObj.forelegLeft = this.addLeg(actorData.reserves.hp.max, "Left Foreleg");
 			bodyObj.forelegRight = this.addLeg(actorData.reserves.hp.max, "Right Foreleg");
-			bodyObj.chest = this.addChest(actorData.reserves.hp.max,"Chest");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
 			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
 			bodyObj.foreFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Fore Foot", "Foot", "Ankle");
 			bodyObj.foreFootRight = this.addExtremity(actorData.reserves.hp.max,"Right Fore Foot", "Foot", "Ankle");
@@ -145,7 +148,8 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.hindlegRight = this.addLeg(actorData.reserves.hp.max, "Right Hind Leg");
 			bodyObj.forelegLeft = this.addLeg(actorData.reserves.hp.max, "Left Foreleg");
 			bodyObj.forelegRight = this.addLeg(actorData.reserves.hp.max, "Right Foreleg");
-			bodyObj.chest = this.addChest(actorData.reserves.hp.max,"Chest");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
 			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
 			bodyObj.foreFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Fore Foot", "Foot", "Ankle");
 			bodyObj.foreFootRight = this.addExtremity(actorData.reserves.hp.max,"Right Fore Foot", "Foot", "Ankle");
@@ -162,7 +166,8 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.forelegRight = this.addArm(actorData.reserves.hp.max, "Right Upper Thorax Arm");
 			bodyObj.midlegLeft = this.addArm(actorData.reserves.hp.max, "Left Lower Thorax Arm");
 			bodyObj.midlegRight = this.addArm(actorData.reserves.hp.max, "Right Lower Thorax Arm");
-			bodyObj.chest = this.addChest(actorData.reserves.hp.max,"Upper Thorax");
+			bodyObj.upperchest = this.addChest(actorData.reserves.hp.max,"Upper Thorax");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Mid Thorax");
 			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Lower Thorax");
 			bodyObj.forelegExtremityLeft = this.addExtremity(actorData.reserves.hp.max,"Left Upper Thorax Hand", "Hand", "Wrist");
 			bodyObj.forelegExtremityRight = this.addExtremity(actorData.reserves.hp.max,"Right Upper Thorax Hand", "Hand", "Wrist");
@@ -179,7 +184,8 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.forelegRight = this.addArm(actorData.reserves.hp.max, "Right Upper Thorax Arm");
 			bodyObj.midlegLeft = this.addArm(actorData.reserves.hp.max, "Left Lower Thorax Arm");
 			bodyObj.midlegRight = this.addArm(actorData.reserves.hp.max, "Right Lower Thorax Arm");
-			bodyObj.chest = this.addChest(actorData.reserves.hp.max,"Upper Thorax");
+			bodyObj.upperchest = this.addChest(actorData.reserves.hp.max,"Upper Thorax");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Mid Thorax");
 			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Lower Thorax");
 			bodyObj.forelegExtremityLeft = this.addExtremity(actorData.reserves.hp.max,"Left Upper Thorax Hand", "Hand", "Wrist");
 			bodyObj.forelegExtremityRight = this.addExtremity(actorData.reserves.hp.max,"Right Upper Thorax Hand", "Hand", "Wrist");
@@ -198,7 +204,8 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.forelegRight = this.addLeg(actorData.reserves.hp.max, "Right Foreleg");
 			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Arm");
 			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Arm");
-			bodyObj.chest = this.addChest(actorData.reserves.hp.max,"Humanoid Chest");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Humanoid Upper Chest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Humanoid Lower Chest");
 			bodyObj.chestAnimal = this.addChest(actorData.reserves.hp.max,"Animal Chest");
 			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Humanoid Abdomen");
 			bodyObj.foreFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Fore Foot", "Foot", "Ankle");
@@ -212,7 +219,8 @@ export class gurpsActorSheet extends ActorSheet {
 		else if (bodyType == "avian"){
 			bodyObj.legLeft = this.addLeg(actorData.reserves.hp.max, "Left Leg");
 			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Leg");
-			bodyObj.chest = this.addChest(actorData.reserves.hp.max,"Chest");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
 			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
 			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hand", "Hand", "Wrist");
 			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Hand", "Hand", "Wrist");
@@ -224,14 +232,16 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.wingRight = this.addArm(actorData.reserves.hp.max, "Right Wing");
 		}
 		else if (bodyType == "vermiform"){
-			bodyObj.chest = this.addChest(actorData.reserves.hp.max,"Chest");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
 			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
 			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
 		}
 		else if (bodyType == "lamia"){
 			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Arm");
 			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Arm");
-			bodyObj.chest = this.addChest(actorData.reserves.hp.max,"Chest");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
 			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
 			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hand", "Hand", "Wrist");
 			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Hand", "Hand", "Wrist");
@@ -240,7 +250,8 @@ export class gurpsActorSheet extends ActorSheet {
 		else if (bodyType == "wingedLamia"){
 			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Arm");
 			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Arm");
-			bodyObj.chest = this.addChest(actorData.reserves.hp.max,"Chest");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
 			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
 			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hand", "Hand", "Wrist");
 			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Hand", "Hand", "Wrist");
@@ -249,7 +260,8 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.wingRight = this.addArm(actorData.reserves.hp.max, "Right Wing");
 		}
 		else if (bodyType == "octopod"){
-			bodyObj.chest = this.addChest(actorData.reserves.hp.max,"Chest");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
 			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
 			bodyObj.tentacleLeft1 = this.addArm(actorData.reserves.hp.max, "Left Tentacle 1");
 			bodyObj.tentacleLeft2 = this.addArm(actorData.reserves.hp.max, "Left Tentacle 2");
@@ -268,7 +280,8 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.forelegRight = this.addLeg(actorData.reserves.hp.max, "Right Foreleg");
 			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Arm");
 			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Arm");
-			bodyObj.chest = this.addChest(actorData.reserves.hp.max,"Chest");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
 			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
 			bodyObj.foreFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Fore Foot", "Foot", "Ankle");
 			bodyObj.foreFootRight = this.addExtremity(actorData.reserves.hp.max,"Right Fore Foot", "Foot", "Ankle");
@@ -279,7 +292,8 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
 		}
 		else if (bodyType == "ichthyoid"){
-			bodyObj.chest = this.addChest(actorData.reserves.hp.max,"Chest");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
 			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
 			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
 			bodyObj.tail = this.addTail(actorData.reserves.hp.max, "Tail");
@@ -296,7 +310,8 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.foremidlegRight = this.addLeg(actorData.reserves.hp.max, "Right Mid Foreleg");
 			bodyObj.forelegLeft = this.addLeg(actorData.reserves.hp.max, "Left Foreleg");
 			bodyObj.forelegRight = this.addLeg(actorData.reserves.hp.max, "Right Foreleg");
-			bodyObj.chest = this.addChest(actorData.reserves.hp.max,"Chest");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
 			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
 			bodyObj.foreFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Fore Foot", "Foot", "Ankle");
 			bodyObj.foreFootRight = this.addExtremity(actorData.reserves.hp.max,"Right Fore Foot", "Foot", "Ankle");
@@ -1134,7 +1149,7 @@ export class gurpsActorSheet extends ActorSheet {
 			flexible: false,
 			subLocation: {
 				chest: {
-					label: "Chest",
+					label: "Upper Chest",
 					personalDRBurn: 0,
 					personalDRCor: 0,
 					personalDRCr: 0,

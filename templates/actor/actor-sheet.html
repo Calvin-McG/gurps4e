@@ -490,7 +490,8 @@
 			{{!-- Armour Display Tab --}}
 			<div id="armour-display" class="tab armour-display" data-tab="armour-display" data-group="primary">
 				<div style="display: flex">
-					<div class="humanoidHitLocations">
+					{{#if (or (eq actor.data.bodyType.name "humanoid") (eq actor.data.bodyType.name "wingedHumanoid") (eq actor.data.bodyType.name "hexapod") (eq actor.data.bodyType.name "wingedHexapod") (eq actor.data.bodyType.name "centaur") (eq actor.data.bodyType.name "avian"))}}
+						<div class="humanoidHitLocations">
 						<div class="tooltip location-skull">
 							{{data.bodyType.drTypesOne.skull}}{{#if (and data.bodyType.drTypesOne.skull data.bodyType.drTypesTwo.skull)}} / {{/if}}{{data.bodyType.drTypesTwo.skull}}
 							<span class="tooltiptext">
@@ -856,23 +857,29 @@
 								</span>
 							</div>
 						{{/if}}
-						<div class="tooltip location-torso">
-							{{data.bodyType.drTypesOne.chestchest}}{{#if (and data.bodyType.drTypesOne.chestchest data.bodyType.drTypesTwo.chestchest)}} / {{/if}}{{data.bodyType.drTypesTwo.chestchest}}
-							<span class="tooltiptext">
+							<div class="tooltip location-torso">
+								{{data.bodyType.drTypesOne.upperChestchest}}{{#if (and data.bodyType.drTypesOne.upperChestchest data.bodyType.drTypesTwo.upperChestchest)}} / {{/if}}{{data.bodyType.drTypesTwo.upperChestchest}}<br>
+								{{data.bodyType.drTypesOne.lowerChestchest}}{{#if (and data.bodyType.drTypesOne.lowerChestchest data.bodyType.drTypesTwo.lowerChestchest)}} / {{/if}}{{data.bodyType.drTypesTwo.lowerChestchest}}
+								<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Chest -0</span><br>
 									Injury capped at 2xHP<br>
 									(1xHP if using bleeding)<br>
+									Chest is split into upper/lower<br>
+									-1 to target either specifically
 								</div>
 							</span>
-						</div>
-						<div class="tooltip location-torso-vitals">
-							{{data.bodyType.drTypesOne.chestvitals}}{{#if (and data.bodyType.drTypesOne.chestvitals data.bodyType.drTypesTwo.chestvitals)}} / {{/if}}{{data.bodyType.drTypesTwo.chestvitals}}
-							<span class="tooltiptext">
+							</div>
+							<div class="tooltip location-torso-vitals">
+								{{data.bodyType.drTypesOne.upperChestvitals}}{{#if (and data.bodyType.drTypesOne.upperChestvitals data.bodyType.drTypesTwo.upperChestvitals)}} / {{/if}}{{data.bodyType.drTypesTwo.upperChestvitals}}<br>
+								{{data.bodyType.drTypesOne.lowerChestvitals}}{{#if (and data.bodyType.drTypesOne.lowerChestvitals data.bodyType.drTypesTwo.lowerChestvitals)}} / {{/if}}{{data.bodyType.drTypesTwo.lowerChestvitals}}
+								<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Chest -0</span><br>
 									Injury capped at 2xHP<br>
 									(1xHP if using bleeding)<br>
+									Chest is split into upper/lower<br>
+									-1 to target either specifically
 								</div>
 								<div>
 									<span style="text-decoration: underline">Vitals -3</span><br>
@@ -884,25 +891,28 @@
 									Bleed every 30s @ -4<br>
 								</div>
 							</span>
-						</div>
-						<div class="tooltip location-torso-spine">
-							{{data.bodyType.drTypesOne.chestspine}}{{#if (and data.bodyType.drTypesOne.chestspine data.bodyType.drTypesTwo.chestspine)}} / {{/if}}{{data.bodyType.drTypesTwo.chestspine}}
-							<span class="tooltiptext">
+							</div>
+							<div class="tooltip location-torso-spine">
+								{{data.bodyType.drTypesOne.upperChestspine}}{{#if (and data.bodyType.drTypesOne.upperChestspine data.bodyType.drTypesTwo.upperChestspine)}} / {{/if}}{{data.bodyType.drTypesTwo.upperChestspine}}<br>
+								{{data.bodyType.drTypesOne.lowerChestspine}}{{#if (and data.bodyType.drTypesOne.lowerChestspine data.bodyType.drTypesTwo.lowerChestspine)}} / {{/if}}{{data.bodyType.drTypesTwo.lowerChestspine}}
+								<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Chest -0</span><br>
 									Injury capped at 2xHP<br>
 									(1xHP if using bleeding)<br>
+									Chest is split into upper/lower<br>
+									-1 to target either specifically
 								</div>
 								<div>
 									<span style="text-decoration: underline">Spine -8</span><br>
-									<span style="color: #ff4848">{{data.bodyType.body.chest.subLocation.spine.hp.value}} / {{data.bodyType.body.chest.subLocation.spine.hp.max}} HP</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.upperChest.subLocation.spine.hp.value}} / {{data.bodyType.body.upperChest.subLocation.spine.hp.max}} HP</span><br>
 									The following applies even with HPT<br>
 									Shock forces a knockdown roll<br>
 									Major wound knockdown is @ -5<br>
 									Crippling the spine causes Bad Back (Severe) and Lame (Paraplegic) until healed
 								</div>
 							</span>
-						</div>
+							</div>
 						<div class="tooltip location-abdomen-vitals">
 							{{data.bodyType.drTypesOne.abdomenvitals}}{{#if (and data.bodyType.drTypesOne.abdomenvitals data.bodyType.drTypesTwo.abdomenvitals)}} / {{/if}}{{data.bodyType.drTypesTwo.abdomenvitals}}
 							<span class="tooltiptext">
@@ -1169,6 +1179,7 @@
 							</div>
 						{{/if}}
 					</div>
+					{{/if}}
 					<div class="hit-location-options">
 						<div>
 							<label>Damage Type One:</label>
