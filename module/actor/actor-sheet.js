@@ -54,10 +54,6 @@ export class gurpsActorSheet extends ActorSheet {
 		// Rollable checks.
 		html.find('.rollable').click(this._onRoll.bind(this));
 
-		// Plus - Minus check
-		html.find('.plus').click(this._onPlusMinus.bind(this));
-		html.find('.minus').click(this._onPlusMinus.bind(this));
-
 		// track and handle changes to HP and FP
 		html.find('.sec-attr').change(this._onSecondaryAttributeChange.bind(this));
 
@@ -349,51 +345,6 @@ export class gurpsActorSheet extends ActorSheet {
 		this.actor.setTotalPoints(unspent);
 	}
 
-	/**
-	 * Handle the behaviour of the plus and minus 'buttons' related to a label.
-	 * @param {Event} event	 The originating click event
-	 * @private
-	 */
-	_onPlusMinus(event) {
-		event.preventDefault();
-		let field = event.currentTarget.firstElementChild;
-		let fieldName = field.name;
-		let change = parseInt(field.value);
-		var value;
-		var fieldValue;
-
-		switch (fieldName) {
-			case "gmod":
-				fieldValue = "data.gmod.value";
-				value = change + this.actor.data.data.gmod.value;
-				break;
-			case "dmod":
-				fieldValue = "data.dmod.value";
-				value = change + this.actor.data.data.dmod.value;
-				break;
-			case "fp":
-				fieldValue = "data.reserves.fp.value";
-				value = change + this.actor.data.data.reserves.fp.value;
-				this.actor.setConditions(value, fieldValue);
-				break;
-			case "hp":
-				fieldValue = "data.reserves.hp.value";
-				value = change + this.actor.data.data.reserves.hp.value;
-				this.actor.setConditions(value, fieldValue);
-				break;
-			default:
-				fieldValue = "data.attacks." + fieldName + ".seed";
-				let damages = this.actor.data.data.attacks;
-
-				for (let [id, damage] of Object.entries(damages)) {
-					if (fieldName == id) {
-						value = ((value = damage.seed + change) == 0) ? 1 : value;
-						break;
-					}
-				}
-		}
-		this.actor.update({ [fieldValue]: value });
-	}
 
 	/**
 	 * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
