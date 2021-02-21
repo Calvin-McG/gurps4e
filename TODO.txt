@@ -4,6 +4,15 @@ Add other body types
 
 Add harsh armour gaps as targetable locations, added with checkboxes.
     - On update, check box. If checked, then make sure location hasn't been added and added. If it's added already, do nothing. If uncheck but the part is present, remove. If unchecked and not present, do nothing.
+    - Palm
+    - Sole
+    - Armpit
+    - Back of Knee
+    - Codpiece
+    - Inside Elbow
+    - Inside Thigh
+    - Neck
+
 
 Campaign toggles for...
     - Rigid armour can take blunt trauma

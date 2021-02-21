@@ -725,6 +725,9 @@
 								</div>
 								<div>
 									<span style="text-decoration: underline">Left Elbow -5</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.armLeft.subLocation.elbow.hp.value}} / {{data.bodyType.body.armLeft.subLocation.elbow.hp.max}} HP</span><br>
+									Applies only to cr, cut, pi, tbb<br>
+									Crippled joints recover at -2<br>
 								</div>
 							</span>
 						</div>
@@ -738,6 +741,9 @@
 								</div>
 								<div>
 									<span style="text-decoration: underline">Right Elbow -5</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.armRight.subLocation.elbow.hp.value}} / {{data.bodyType.body.armRight.subLocation.elbow.hp.max}} HP</span><br>
+									Applies only to cr, cut, pi, tbb<br>
+									Crippled joints recover at -2<br>
 								</div>
 							</span>
 						</div>
@@ -772,9 +778,14 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Left Hand -4</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.handLeft.hp.value}} / {{data.bodyType.body.handLeft.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Left Wrist -7</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.handLeft.subLocation.joint.hp.value}} / {{data.bodyType.body.handLeft.subLocation.joint.hp.max}} HP</span><br>
+									Applies only to cr, cut, pi, tbb<br>
+									Crippled joints recover at -2<br>
 								</div>
 							</span>
 						</div>
@@ -783,9 +794,14 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Right Hand -4</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.handRight.hp.value}} / {{data.bodyType.body.handRight.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Right Wrist -7</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.handRight.subLocation.joint.hp.value}} / {{data.bodyType.body.handRight.subLocation.joint.hp.max}} HP</span><br>
+									Applies only to cr, cut, pi, tbb<br>
+									Crippled joints recover at -2<br>
 								</div>
 							</span>
 						</div>
@@ -794,6 +810,8 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Left Hand -4</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.handLeft.hp.value}} / {{data.bodyType.body.handLeft.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 							</span>
 						</div>
@@ -802,6 +820,8 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Right Hand -4</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.handRight.hp.value}} / {{data.bodyType.body.handRight.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 							</span>
 						</div>
@@ -810,6 +830,8 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Chest -0</span><br>
+									Injury capped at 2xHP<br>
+									(1xHP if using bleeding)<br>
 								</div>
 							</span>
 						</div>
@@ -818,9 +840,17 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Chest -0</span><br>
+									Injury capped at 2xHP<br>
+									(1xHP if using bleeding)<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Vitals -3</span><br>
+									Imp and pi do 3x inj<br>
+									tbb does 2x inj<br>
+									Shock forces a knockdown roll<br>
+									Major wound knockdown is @ -5<br>
+									Cr can still trigger knockdown<br>
+									Bleed every 30s @ -4<br>
 								</div>
 							</span>
 						</div>
@@ -829,9 +859,16 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Chest -0</span><br>
+									Injury capped at 2xHP<br>
+									(1xHP if using bleeding)<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Spine -8</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.chest.subLocation.spine.hp.value}} / {{data.bodyType.body.chest.subLocation.spine.hp.max}} HP</span><br>
+									The following applies even with HPT<br>
+									Shock forces a knockdown roll<br>
+									Major wound knockdown is @ -5<br>
+									Crippling the spine causes Bad Back (Severe) and Lame (Paraplegic) until healed
 								</div>
 							</span>
 						</div>
@@ -840,9 +877,17 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Abdomen -1</span><br>
+									Injury capped at 2xHP<br>
+									(1xHP if using bleeding)<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Vitals -3/-4</span><br>
+									Imp and pi do 3x inj<br>
+									tbb does 2x inj<br>
+									Shock forces a knockdown roll<br>
+									Major wound knockdown is @ -5<br>
+									Cr can still trigger knockdown<br>
+									Bleed every 30s @ -4<br>
 								</div>
 							</span>
 						</div>
@@ -851,9 +896,12 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Abdomen -1</span><br>
+									Injury capped at 2xHP<br>
+									(1xHP if using bleeding)<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Digestive Tract -3</span><br>
+									On a major wound roll HT-3 to avoid special infection<br>
 								</div>
 							</span>
 						</div>
@@ -862,9 +910,12 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Abdomen -1</span><br>
+									Injury capped at 2xHP<br>
+									(1xHP if using bleeding)<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Pelvis -3</span><br>
+									On a major wound: Lame (Missing Legs) until healed<br>
 								</div>
 							</span>
 						</div>
@@ -873,9 +924,13 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Abdomen -1</span><br>
+									Injury capped at 2xHP<br>
+									(1xHP if using bleeding)<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Groin -3</span><br>
+									Crushing does double shock damage<br>
+									Major wound knockdown is @ -5<br>
 								</div>
 							</span>
 						</div>
@@ -884,6 +939,8 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Left Leg -2</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.legLeft.hp.value}} / {{data.bodyType.body.legLeft.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Left Thigh -5</span><br>
@@ -895,9 +952,49 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Right Leg -2</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.legRight.hp.value}} / {{data.bodyType.body.legRight.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Right Thigh -5</span><br>
+								</div>
+							</span>
+						</div>
+						<div class="tooltip location-thigh-artery-left">
+							{{data.bodyType.drTypesOne.legLeftartery}}{{#if (and data.bodyType.drTypesOne.legLeftartery data.bodyType.drTypesTwo.legLeftartery)}} / {{/if}}{{data.bodyType.drTypesTwo.legLeftartery}}
+							<span class="tooltiptext">
+								<div style="border-bottom: 2px white solid">
+									<span style="text-decoration: underline">Left Leg -2</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.legLeft.hp.value}} / {{data.bodyType.body.legLeft.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
+								</div>
+								<div>
+									<span style="text-decoration: underline">Left Thigh Artery -5</span><br>
+									The following applies only tp cut, imp, pi, and tbb attacks<br>
+									0.5x more injury<br>
+									Cannot cripple the limb<br>
+									No injury limit<br>
+									Bleed every 30s @ -3<br>
+									(Or -4 for cutting)
+								</div>
+							</span>
+						</div>
+						<div class="tooltip location-thigh-artery-right">
+							{{data.bodyType.drTypesOne.legRightartery}}{{#if (and data.bodyType.drTypesOne.legRightartery data.bodyType.drTypesTwo.legRightartery)}} / {{/if}}{{data.bodyType.drTypesTwo.legRightartery}}
+							<span class="tooltiptext">
+								<div style="border-bottom: 2px white solid">
+									<span style="text-decoration: underline">Right Leg -2</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.legRight.hp.value}} / {{data.bodyType.body.legRight.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
+								</div>
+								<div>
+									<span style="text-decoration: underline">Right Thigh Artery -5</span><br>
+									The following applies only tp cut, imp, pi, and tbb attacks<br>
+									0.5x more injury<br>
+									Cannot cripple the limb<br>
+									No injury limit<br>
+									Bleed every 30s @ -3<br>
+									(Or -4 for cutting)
 								</div>
 							</span>
 						</div>
@@ -906,9 +1003,14 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Left Leg -2</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.legLeft.hp.value}} / {{data.bodyType.body.legLeft.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Left Knee -5</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.legLeft.subLocation.knee.hp.value}} / {{data.bodyType.body.legLeft.subLocation.knee.hp.max}} HP</span><br>
+									Applies only to cr, cut, pi, tbb<br>
+									Crippled joints recover at -2<br>
 								</div>
 							</span>
 						</div>
@@ -917,9 +1019,14 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Right Leg -2</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.legRight.hp.value}} / {{data.bodyType.body.legRight.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Right Knee -5</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.legRight.subLocation.knee.hp.value}} / {{data.bodyType.body.legRight.subLocation.knee.hp.max}} HP</span><br>
+									Applies only to cr, cut, pi, tbb<br>
+									Crippled joints recover at -2<br>
 								</div>
 							</span>
 						</div>
@@ -928,6 +1035,8 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Left Leg -2</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.legLeft.hp.value}} / {{data.bodyType.body.legLeft.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Left Shin -4</span><br>
@@ -939,6 +1048,8 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Right Leg -2</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.legRight.hp.value}} / {{data.bodyType.body.legRight.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Right Shin -4</span><br>
@@ -950,9 +1061,14 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Left Foot -4</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.footLeft.hp.value}} / {{data.bodyType.body.footLeft.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Left Ankle -7</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.footLeft.subLocation.joint.hp.value}} / {{data.bodyType.body.footLeft.subLocation.joint.hp.max}} HP</span><br>
+									Applies only to cr, cut, pi, tbb<br>
+									Crippled joints recover at -2<br>
 								</div>
 							</span>
 						</div>
@@ -961,9 +1077,14 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Right Foot -4</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.footRight.hp.value}} / {{data.bodyType.body.footRight.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Right Ankle -7</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.footRight.subLocation.joint.hp.value}} / {{data.bodyType.body.footRight.subLocation.joint.hp.max}} HP</span><br>
+									Applies only to cr, cut, pi, tbb<br>
+									Crippled joints recover at -2<br>
 								</div>
 							</span>
 						</div>
@@ -972,6 +1093,8 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Left Foot -4</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.footLeft.hp.value}} / {{data.bodyType.body.footLeft.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 							</span>
 						</div>
@@ -980,6 +1103,8 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Right Foot -4</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.footRight.hp.value}} / {{data.bodyType.body.footRight.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 							</span>
 						</div>
@@ -988,6 +1113,8 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Left Foot -4</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.footLeft.hp.value}} / {{data.bodyType.body.footLeft.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Left Sole</span><br>
@@ -999,6 +1126,8 @@
 							<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Right Foot -4</span><br>
+									<span style="color: #ff4848">{{data.bodyType.body.footRight.hp.value}} / {{data.bodyType.body.footRight.hp.max}} HP</span><br>
+									pi/imp attacks cap at 1x<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Right Sole</span><br>
