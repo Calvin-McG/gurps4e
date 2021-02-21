@@ -3,13 +3,6 @@
  */
 Hooks.once("init", () => {
 
-  game.settings.register("gurps4e", "systemMigrationVersion", {
-    name: "System Migration Version",
-    scope: "world",
-    config: false,
-    type: Number,
-    default: 1
-  });
   _setGurps4eInitiative();
 
   function _setGurps4eInitiative() {
@@ -24,8 +17,8 @@ Hooks.once("init", () => {
 
   // Register Hiding Test Data
   game.settings.register("gurps4e", "hideTestData", {
-    name: "SETTINGS.HideTestData",
-    hint: "SETTINGS.HideTestDataHint",
+    name: "Hide Test Data",
+    hint: "GM test chat cards don't show sensitive NPC data to players.",
     scope: "world",
     config: true,
     default: true,
