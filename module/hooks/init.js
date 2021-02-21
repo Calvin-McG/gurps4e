@@ -14,14 +14,33 @@ Hooks.once("init", () => {
     }
   }
 
-
-  // Register Hiding Test Data
+  // Register Hiding Test Data option
   game.settings.register("gurps4e", "hideTestData", {
     name: "Hide Test Data",
     hint: "GM test chat cards don't show sensitive NPC data to players.",
     scope: "world",
     config: true,
     default: true,
+    type: Boolean
+  });
+
+  // Register Armour as Dice option
+  game.settings.register("gurps4e", "armourAsDice", {
+    name: "Armour As Dice",
+    hint: "Pyramid 3/34. DR converts to dice at 1d per 3.5. These dice are subtracted from the the attack, then the remainder is rolled. Makes guns behave better in HT and UT.",
+    scope: "world",
+    config: false,
+    default: false,
+    type: Boolean
+  });
+
+  // Register Armour as Dice option
+  game.settings.register("gurps4e", "bleeding", {
+    name: "Use Bleeding Rules",
+    hint: "",
+    scope: "world",
+    config: true,
+    default: false,
     type: Boolean
   });
 
