@@ -31,13 +31,6 @@
   "scripts": [
     "./scripts/config-gurps4e.js"
   ],
-  "languages": [
-    {
-      "lang": "en",
-      "name": "English",
-      "path": "lang/en.json"
-    }
-  ],
   "gridDistance": 1,
   "gridUnits": "yd",
   "primaryTokenAttribute": "reserves.hp",
