@@ -44,6 +44,25 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  // Register Rigid armour can take blunt trauma option
+  game.settings.register("gurps4e", "rigidBluntTrauma", {
+    name: "Allows rigid armour to take blunt trauma",
+    hint: "",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
+  // Register Edge Protection option
+  game.settings.register("gurps4e", "edgeProtection", {
+    name: "Cutting attacks must double the target DR or do crushing damage instead",
+    hint: "",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
   // Pre-load templates
   loadTemplates([
     "systems/gurps4e/templates/actor/actor-sheet.html",

@@ -1,6 +1,8 @@
 Add HP to tooltips where relevant
 Add labels to tooltips
 
+Layered Armour
+
 Add other body types
     - Myrmidon (Ant)
     - Cephalartus (Octopus)
@@ -18,3 +20,5 @@ Add harsh armour gaps as targetable locations, added with checkboxes.
 Campaign toggles for...
     - Rigid armour can take blunt trauma
     - Edge protection
+    - Armour as Dice
+    - Bleeding
