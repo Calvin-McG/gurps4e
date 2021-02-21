@@ -76,7 +76,9 @@ export class gurpsActorSheet extends ActorSheet {
 
 		if(bodyType == ""){
 			console.log("No type selected.")
-			this.actor.update({ "data.bodyType.-=body" : null})
+			this.actor.update({ "data.bodyType.-=body" : null}).then( actor => {// Remove the old body
+				console.log(actor);
+			});
 			return
 		}
 
@@ -309,9 +311,10 @@ export class gurpsActorSheet extends ActorSheet {
 
 		console.log("Updating body")
 		console.log(bodyObj)
-		this.actor.update({ "data.bodyType.-=body" : null}).then( actor => // Remove the old body
+		this.actor.update({ "data.bodyType.-=body" : null}).then( actor => {// Remove the old body
+			console.log(actor);
 			actor.update({ "data.bodyType.body" : bodyObj }) // Add the new body
-		);
+		});
 	}
 
 	_onAccordionToggle(event) {
@@ -479,7 +482,8 @@ export class gurpsActorSheet extends ActorSheet {
 			personalDRHardeningImp: 0,
 			personalDRHardeningPi: 0,
 			personalDRHardeningTox: 0,
-			penalty: "-7/-5"
+			penalty: "-7/-5",
+			flexible: false
 		};
 		return part;
 	}
@@ -514,7 +518,8 @@ export class gurpsActorSheet extends ActorSheet {
 			personalDRHardeningImp: 0,
 			personalDRHardeningPi: 0,
 			personalDRHardeningTox: 0,
-			penalty: "-7/-5"
+			penalty: "-7/-5",
+			flexible: false
 		};
 		return part;
 	}
@@ -563,7 +568,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
 					personalDRHardeningTox: 0,
-					penalty: "-6"
+					penalty: "-6",
+					flexible: false
 				},
 				nose: {
 					label: "Nose",
@@ -599,7 +605,8 @@ export class gurpsActorSheet extends ActorSheet {
 						max: partHp,
 						state: "Fine",
 						value: partHp
-					}
+					},
+					flexible: false
 				},
 				ears: {
 					label: "Ears",
@@ -635,7 +642,8 @@ export class gurpsActorSheet extends ActorSheet {
 						max: partHp,
 						state: "Fine",
 						value: partHp
-					}
+					},
+					flexible: false
 				},
 				cheek: {
 					label: "Cheek",
@@ -666,7 +674,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
 					personalDRHardeningTox: 0,
-					penalty: "-6"
+					penalty: "-6",
+					flexible: false
 				},
 				eyes: {//Kromm's ruling on eyes http://forums.sjgames.com/showpost.php?p=733298&postcount=33
 					label: "Eyes",
@@ -702,7 +711,8 @@ export class gurpsActorSheet extends ActorSheet {
 						max: eyeHp,
 						state: "Fine",
 						value: eyeHp
-					}
+					},
+					flexible: false
 				}
 			}
 		}
@@ -728,6 +738,7 @@ export class gurpsActorSheet extends ActorSheet {
 				state: "Fine",
 				value: partHp
 			},
+			flexible: false,
 			subLocation: {
 				shin: {
 					label: "Shin",
@@ -758,7 +769,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
 					personalDRHardeningTox: 0,
-					penalty: "-2"
+					penalty: "-2",
+					flexible: false
 				},
 				thigh: {
 					label: "Thigh",
@@ -789,7 +801,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
 					personalDRHardeningTox: 0,
-					penalty: "-2"
+					penalty: "-2",
+					flexible: false
 				},
 				knee: {
 					label: "Knee",
@@ -826,6 +839,7 @@ export class gurpsActorSheet extends ActorSheet {
 						state: "Fine",
 						value: jointHp
 					},
+					flexible: false
 				},
 				artery: {
 					label: "Thigh Artery",
@@ -856,7 +870,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
 					penalty: "-5",
-					personalDRHardeningTox: 0
+					personalDRHardeningTox: 0,
+					flexible: false
 				}
 			}
 		}
@@ -883,6 +898,7 @@ export class gurpsActorSheet extends ActorSheet {
 				state: "Fine",
 				value: partHp
 			},
+			flexible: false,
 			subLocation: {
 				forearm: {
 					label: "Forearm",
@@ -913,7 +929,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
 					personalDRHardeningTox: 0,
-					penalty: "-2"
+					penalty: "-2",
+					flexible: false
 				},
 				upperArm: {
 					label: "Upper Arm",
@@ -944,7 +961,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
 					penalty: "-2",
-					personalDRHardeningTox: 0
+					personalDRHardeningTox: 0,
+					flexible: false
 				},
 				elbow: {
 					label: "Elbow",
@@ -981,6 +999,7 @@ export class gurpsActorSheet extends ActorSheet {
 						state: "Fine",
 						value: jointHp
 					},
+					flexible: false
 				},
 				shoulder: {
 					label: "Shoulder",
@@ -1011,7 +1030,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningFat: 0,
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
-					personalDRHardeningTox: 0
+					personalDRHardeningTox: 0,
+					flexible: false
 				}
 			}
 		}
@@ -1025,6 +1045,7 @@ export class gurpsActorSheet extends ActorSheet {
 		let part = {
 			label: label,
 			penalty: "0",
+			flexible: false,
 			subLocation: {
 				chest: {
 					label: "Chest",
@@ -1055,7 +1076,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
 					penalty: "0",
-					personalDRHardeningTox: 0
+					personalDRHardeningTox: 0,
+					flexible: false
 				},
 				vitals: {
 					label: "Vitals",
@@ -1086,7 +1108,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningFat: 0,
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
-					personalDRHardeningTox: 0
+					personalDRHardeningTox: 0,
+					flexible: false
 				},
 				spine: {
 					label: "Spine",
@@ -1123,6 +1146,7 @@ export class gurpsActorSheet extends ActorSheet {
 						state: "Fine",
 						value: spineHp
 					},
+					flexible: false
 				}
 			}
 		}
@@ -1139,6 +1163,7 @@ export class gurpsActorSheet extends ActorSheet {
 		let part = {
 			label: label,
 			penalty: "-1",
+			flexible: false,
 			subLocation: {
 				digestiveTract: {
 					label: "Digestive Tract",
@@ -1169,7 +1194,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningFat: 0,
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
-					personalDRHardeningTox: 0
+					personalDRHardeningTox: 0,
+					flexible: false
 				},
 				vitals: {
 					label: "Vitals",
@@ -1200,7 +1226,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningFat: 0,
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
-					personalDRHardeningTox: 0
+					personalDRHardeningTox: 0,
+					flexible: false
 				},
 				pelvis: {
 					label: "Pelvis",
@@ -1237,6 +1264,7 @@ export class gurpsActorSheet extends ActorSheet {
 						state: "Fine",
 						value: pelvisHp
 					},
+					flexible: false
 				},
 				groin: {
 					label: "Groin",
@@ -1267,7 +1295,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningFat: 0,
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
-					personalDRHardeningTox: 0
+					personalDRHardeningTox: 0,
+					flexible: false
 				}
 			}
 		}
@@ -1294,6 +1323,7 @@ export class gurpsActorSheet extends ActorSheet {
 				state: "Fine",
 				value: partHp
 			},
+			flexible: false,
 			subLocation: {
 				extremity: {
 					label: type,
@@ -1324,7 +1354,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningFat: 0,
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
-					personalDRHardeningTox: 0
+					personalDRHardeningTox: 0,
+					flexible: false
 				},
 				joint: {
 					label: jointName,
@@ -1361,6 +1392,7 @@ export class gurpsActorSheet extends ActorSheet {
 						state: "Fine",
 						value: jointHp
 					},
+					flexible: false
 				}
 			}
 		}
@@ -1372,6 +1404,7 @@ export class gurpsActorSheet extends ActorSheet {
 		let part = {
 			label: "Neck",
 			penalty: "-5",
+			flexible: false,
 			subLocation: {
 				neck: {
 					label: "Neck",
@@ -1402,7 +1435,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningFat: 0,
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
-					personalDRHardeningTox: 0
+					personalDRHardeningTox: 0,
+					flexible: false
 				},
 				vein: {
 					label: "Vein",
@@ -1433,7 +1467,8 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningFat: 0,
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
-					personalDRHardeningTox: 0
+					personalDRHardeningTox: 0,
+					flexible: false
 				}
 			}
 		}
