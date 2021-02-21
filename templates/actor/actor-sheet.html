@@ -642,6 +642,7 @@
 									Bleed every 30s @ -2<br>
 									Cr, Cor do 1.5x injury<br>
 									Cut does 2x injury<br>
+									Armour gap targeted at -8<br>
 								</div>
 								<div>
 									<span style="text-decoration: underline">Neck Vein -8</span><br>
@@ -961,6 +962,7 @@
 									<span style="text-decoration: underline">Groin -3</span><br>
 									Crushing does double shock damage<br>
 									Major wound knockdown is @ -5<br>
+									Armour gap targeted at -8
 								</div>
 							</span>
 						</div>
@@ -1208,14 +1210,19 @@
 									</th>
 								</tr>
 								<tr>
-									<td>Neck</td>
-									<td>## / ##</td>
-									<td>
-										<input type="checkbox" name="data.bodyType.chinks.neck" {{checked data.bodyType.chinks.neck}} data-dtype="Boolean"/>
+									<td class="tooltip">
+										Armpit
+										<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Left Foot -4</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.footLeft.hp.value}} / {{data.bodyType.body.footLeft.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Left Sole</span><br>
+											</div>
+										</span>
 									</td>
-								</tr>
-								<tr>
-									<td>Armpit</td>
 									<td>## / ##</td>
 									<td>
 										<input type="checkbox" name="data.bodyType.chinks.armpit" {{checked data.bodyType.chinks.armpit}} data-dtype="Boolean"/>
@@ -1233,13 +1240,6 @@
 									<td>## / ##</td>
 									<td>
 										<input type="checkbox" name="data.bodyType.chinks.palm" {{checked data.bodyType.chinks.palm}} data-dtype="Boolean"/>
-									</td>
-								</tr>
-								<tr>
-									<td>Codpiece</td>
-									<td>## / ##</td>
-									<td>
-										<input type="checkbox" name="data.bodyType.chinks.codpiece" {{checked data.bodyType.chinks.codpiece}} data-dtype="Boolean"/>
 									</td>
 								</tr>
 								<tr>
