@@ -260,8 +260,8 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.wingRight = this.addArm(actorData.reserves.hp.max, "Right Wing");
 		}
 		else if (bodyType == "octopod"){
-			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
-			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
+			bodyObj.upperChest = this.addInvertebrateChest(actorData.reserves.hp.max,"Upper Chest");
+			bodyObj.lowerChest = this.addInvertebrateChest(actorData.reserves.hp.max,"Lower Chest");
 			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
 			bodyObj.tentacleLeft1 = this.addArm(actorData.reserves.hp.max, "Left Tentacle 1");
 			bodyObj.tentacleLeft2 = this.addArm(actorData.reserves.hp.max, "Left Tentacle 2");
@@ -1149,7 +1149,7 @@ export class gurpsActorSheet extends ActorSheet {
 			flexible: false,
 			subLocation: {
 				chest: {
-					label: "Upper Chest",
+					label: label,
 					personalDRBurn: 0,
 					personalDRCor: 0,
 					personalDRCr: 0,
@@ -1247,6 +1247,82 @@ export class gurpsActorSheet extends ActorSheet {
 						state: "Fine",
 						value: spineHp
 					},
+					flexible: false
+				}
+			}
+		}
+
+		return part;
+	}
+
+	addInvertebrateChest(hp, label){
+		let part = {
+			label: label,
+			penalty: "0",
+			flexible: false,
+			subLocation: {
+				chest: {
+					label: label,
+					personalDRBurn: 0,
+					personalDRCor: 0,
+					personalDRCr: 0,
+					personalDRCut: 0,
+					personalDRFat: 0,
+					personalDRImp: 0,
+					personalDRPi: 0,
+					personalDRTox: 0,
+					personalWoundMultBurn: 1,
+					personalWoundMultCor: 1,
+					personalWoundMultCr: 1,
+					personalWoundMultCut: 1.5,
+					personalWoundMultFat: 1,
+					personalWoundMultImp: 1,
+					personalWoundMultPim: 0.5,
+					personalWoundMultPi: 1,
+					personalWoundMultPip: 1,
+					personalWoundMultPipp: 1,
+					personalWoundMultTox: 1,
+					personalDRHardeningBurn: 0,
+					personalDRHardeningCor: 0,
+					personalDRHardeningCr: 0,
+					personalDRHardeningCut: 0,
+					personalDRHardeningFat: 0,
+					personalDRHardeningImp: 0,
+					personalDRHardeningPi: 0,
+					penalty: "0",
+					personalDRHardeningTox: 0,
+					flexible: false
+				},
+				vitals: {
+					label: "Vitals",
+					penalty: "-3",
+					personalDRBurn: 0,
+					personalDRCor: 0,
+					personalDRCr: 0,
+					personalDRCut: 0,
+					personalDRFat: 0,
+					personalDRImp: 0,
+					personalDRPi: 0,
+					personalDRTox: 0,
+					personalWoundMultBurn: 1,
+					personalWoundMultCor: 1,
+					personalWoundMultCr: 1,
+					personalWoundMultCut: 1.5,
+					personalWoundMultFat: 1,
+					personalWoundMultImp: 3,
+					personalWoundMultPim: 3,
+					personalWoundMultPi: 3,
+					personalWoundMultPip: 3,
+					personalWoundMultPipp: 3,
+					personalWoundMultTox: 1,
+					personalDRHardeningBurn: 0,
+					personalDRHardeningCor: 0,
+					personalDRHardeningCr: 0,
+					personalDRHardeningCut: 0,
+					personalDRHardeningFat: 0,
+					personalDRHardeningImp: 0,
+					personalDRHardeningPi: 0,
+					personalDRHardeningTox: 0,
 					flexible: false
 				}
 			}

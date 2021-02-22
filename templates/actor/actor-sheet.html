@@ -490,8 +490,8 @@
 			{{!-- Armour Display Tab --}}
 			<div id="armour-display" class="tab armour-display" data-tab="armour-display" data-group="primary">
 				<div style="display: flex">
-					{{#if (or (eq actor.data.bodyType.name "humanoid") (eq actor.data.bodyType.name "wingedHumanoid") (eq actor.data.bodyType.name "hexapod") (eq actor.data.bodyType.name "wingedHexapod") (eq actor.data.bodyType.name "centaur") (eq actor.data.bodyType.name "avian"))}}
-						<div class="humanoidHitLocations">
+					{{#if (or (eq actor.data.bodyType.name "octopod") (eq actor.data.bodyType.name "humanoid") (eq actor.data.bodyType.name "wingedHumanoid") (eq actor.data.bodyType.name "hexapod") (eq actor.data.bodyType.name "wingedHexapod") (eq actor.data.bodyType.name "centaur") (eq actor.data.bodyType.name "avian"))}}
+						<div class="hitLocations">
 							<div class="tooltip location-skull">
 								{{data.bodyType.drTypesOne.skull}}{{#if (and data.bodyType.drTypesOne.skull data.bodyType.drTypesTwo.skull)}} / {{/if}}{{data.bodyType.drTypesTwo.skull}}
 								<span class="tooltiptext">
@@ -777,183 +777,366 @@
 									</span>
 								</div>
 							{{/if}}
-							<div class="tooltip location-shoulder-left">
-								{{data.bodyType.drTypesOne.armLeftshoulder}}{{#if (and data.bodyType.drTypesOne.armLeftshoulder data.bodyType.drTypesTwo.armLeftshoulder)}} / {{/if}}{{data.bodyType.drTypesTwo.armLeftshoulder}}
+							{{#if (or (eq actor.data.bodyType.name "octopod"))}}
+							<div class="tooltip location-tentacle1-shoulder-left">
+								{{data.bodyType.drTypesOne.tentacleLeft1shoulder}}{{#if (and data.bodyType.drTypesOne.tentacleLeft1shoulder data.bodyType.drTypesTwo.tentacleLeft1shoulder)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleLeft1shoulder}}
 								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Left Arm -2</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.armLeft.hp.value}} / {{data.bodyType.body.armLeft.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Left Shoulder -5</span><br>
-										The following applies only tp cut, imp, pi, and tbb attacks<br>
-										0.5x more injury<br>
-										Cannot cripple the limb<br>
-										No injury limit<br>
-										Bleed every 30s @ -3<br>
-										(Or -4 for cutting)
-									</div>
-								</span>
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Left Tentacle 1 -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.tentacleLeft1.hp.value}} / {{data.bodyType.body.tentacleLeft1.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Shoulder -5</span><br>
+											The follotentacle1 applies only tp cut, imp, pi, and tbb attacks<br>
+											0.5x more injury<br>
+											Cannot cripple the limb<br>
+											No injury limit<br>
+											Bleed every 30s @ -3<br>
+											(Or -4 for cutting)
+										</div>
+									</span>
 							</div>
-							<div class="tooltip location-shoulder-right">
-								{{data.bodyType.drTypesOne.armRightshoulder}}{{#if (and data.bodyType.drTypesOne.armRightshoulder data.bodyType.drTypesTwo.armRightshoulder)}} / {{/if}}{{data.bodyType.drTypesTwo.armRightshoulder}}
+							<div class="tooltip location-tentacle1-shoulder-right">
+								{{data.bodyType.drTypesOne.tentacleRight1shoulder}}{{#if (and data.bodyType.drTypesOne.tentacleRight1shoulder data.bodyType.drTypesTwo.tentacleRight1shoulder)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleRight1shoulder}}
 								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Right Arm -2</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.armRight.hp.value}} / {{data.bodyType.body.armRight.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Right Shoulder -5</span><br>
-										The following applies only tp cut, imp, pi, and tbb attacks<br>
-										0.5x more injury<br>
-										Cannot cripple the limb<br>
-										No injury limit<br>
-										Bleed every 30s @ -3<br>
-										(Or -4 for cutting)
-									</div>
-								</span>
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Tentacle 1 -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.tentacleRight1.hp.value}} / {{data.bodyType.body.tentacleRight1.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Shoulder -5</span><br>
+											The follotentacle1 applies only tp cut, imp, pi, and tbb attacks<br>
+											0.5x more injury<br>
+											Cannot cripple the limb<br>
+											No injury limit<br>
+											Bleed every 30s @ -3<br>
+											(Or -4 for cutting)
+										</div>
+									</span>
 							</div>
-							<div class="tooltip location-upper-arm-left">
-								{{data.bodyType.drTypesOne.armLeftupperArm}}{{#if (and data.bodyType.drTypesOne.armLeftupperArm data.bodyType.drTypesTwo.armLeftupperArm)}} / {{/if}}{{data.bodyType.drTypesTwo.armLeftupperArm}}
+							<div class="tooltip location-upper-tentacle1-left">
+								{{data.bodyType.drTypesOne.tentacleLeft1upperArm}}{{#if (and data.bodyType.drTypesOne.tentacleLeft1upperArm data.bodyType.drTypesTwo.tentacleLeft1upperArm)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleLeft1upperArm}}
 								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Left Arm -2</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.armLeft.hp.value}} / {{data.bodyType.body.armLeft.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Left Upper Arm -5</span><br>
-									</div>
-								</span>
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Left Tentacle 1 -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.tentacleLeft1.hp.value}} / {{data.bodyType.body.tentacleLeft1.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Upper Tentacle -5</span><br>
+										</div>
+									</span>
 							</div>
-							<div class="tooltip location-upper-arm-right">
-								{{data.bodyType.drTypesOne.armRightupperArm}}{{#if (and data.bodyType.drTypesOne.armRightupperArm data.bodyType.drTypesTwo.armRightupperArm)}} / {{/if}}{{data.bodyType.drTypesTwo.armRightupperArm}}
+							<div class="tooltip location-upper-tentacle1-right">
+								{{data.bodyType.drTypesOne.tentacleRight1upperArm}}{{#if (and data.bodyType.drTypesOne.tentacleRight1upperArm data.bodyType.drTypesTwo.tentacleRight1upperArm)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleRight1upperArm}}
 								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Right Arm -2</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.armRight.hp.value}} / {{data.bodyType.body.armRight.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Right Upper Arm -5</span><br>
-									</div>
-								</span>
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Tentacle 1 -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.tentacleRight1.hp.value}} / {{data.bodyType.body.tentacleRight1.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Upper Tentacle -5</span><br>
+										</div>
+									</span>
 							</div>
-							<div class="tooltip location-elbow-left">
-								{{data.bodyType.drTypesOne.armLeftelbow}}{{#if (and data.bodyType.drTypesOne.armLeftelbow data.bodyType.drTypesTwo.armLeftelbow)}} / {{/if}}{{data.bodyType.drTypesTwo.armLeftelbow}}
+							<div class="tooltip location-tentacle1-mid-left">
+								{{data.bodyType.drTypesOne.tentacleLeft1elbow}}{{#if (and data.bodyType.drTypesOne.tentacleLeft1elbow data.bodyType.drTypesTwo.tentacleLeft1elbow)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleLeft1elbow}}
 								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Left Arm -2</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.armLeft.hp.value}} / {{data.bodyType.body.armLeft.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Left Elbow -5</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.armLeft.subLocation.elbow.hp.value}} / {{data.bodyType.body.armLeft.subLocation.elbow.hp.max}} HP</span><br>
-										Applies only to cr, cut, pi, tbb<br>
-										Crippled joints recover at -2<br>
-									</div>
-								</span>
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Left Tentacle 1 -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.tentacleLeft1.hp.value}} / {{data.bodyType.body.tentacleLeft1.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Mid Tentacle -5</span><br>
+										</div>
+									</span>
 							</div>
-							<div class="tooltip location-elbow-right">
-								{{data.bodyType.drTypesOne.armRightelbow}}{{#if (and data.bodyType.drTypesOne.armRightelbow data.bodyType.drTypesTwo.armRightelbow)}} / {{/if}}{{data.bodyType.drTypesTwo.armRightelbow}}
+							<div class="tooltip location-tentacle1-mid-right">
+								{{data.bodyType.drTypesOne.tentacleRight1elbow}}{{#if (and data.bodyType.drTypesOne.tentacleRight1elbow data.bodyType.drTypesTwo.tentacleRight1elbow)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleRight1elbow}}
 								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Right Arm -2</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.armRight.hp.value}} / {{data.bodyType.body.armRight.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Right Elbow -5</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.armRight.subLocation.elbow.hp.value}} / {{data.bodyType.body.armRight.subLocation.elbow.hp.max}} HP</span><br>
-										Applies only to cr, cut, pi, tbb<br>
-										Crippled joints recover at -2<br>
-									</div>
-								</span>
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Tentacle 1 -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.tentacleRight1.hp.value}} / {{data.bodyType.body.tentacleRight1.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Mid Tentacle -5</span><br>
+										</div>
+									</span>
 							</div>
-							<div class="tooltip location-forearm-left">
-								{{data.bodyType.drTypesOne.armLeftforearm}}{{#if (and data.bodyType.drTypesOne.armLeftforearm data.bodyType.drTypesTwo.armLeftforearm)}} / {{/if}}{{data.bodyType.drTypesTwo.armLeftforearm}}
+							<div class="tooltip location-foretentacle1-left">
+								{{data.bodyType.drTypesOne.tentacleLeft1forearm}}{{#if (and data.bodyType.drTypesOne.tentacleLeft1forearm data.bodyType.drTypesTwo.tentacleLeft1forearm)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleLeft1forearm}}
 								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Left Arm -2</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.armLeft.hp.value}} / {{data.bodyType.body.armLeft.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Left Forearm -4</span><br>
-									</div>
-								</span>
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Left Tentacle 1 -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.tentacleLeft1.hp.value}} / {{data.bodyType.body.tentacleLeft1.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Foretentacle -4</span><br>
+										</div>
+									</span>
 							</div>
-							<div class="tooltip location-forearm-right">
-								{{data.bodyType.drTypesOne.armRightforearm}}{{#if (and data.bodyType.drTypesOne.armRightforearm data.bodyType.drTypesTwo.armRightforearm)}} / {{/if}}{{data.bodyType.drTypesTwo.armRightforearm}}
+							<div class="tooltip location-foretentacle1-right">
+								{{data.bodyType.drTypesOne.tentacleRight1forearm}}{{#if (and data.bodyType.drTypesOne.tentacleRight1forearm data.bodyType.drTypesTwo.tentacleRight1forearm)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleRight1forearm}}
 								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Right Arm -2</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.armRight.hp.value}} / {{data.bodyType.body.armRight.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Right Forearm -4</span><br>
-									</div>
-								</span>
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Tentacle 1 -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.tentacleRight1.hp.value}} / {{data.bodyType.body.tentacleRight1.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Foretentacle -4</span><br>
+										</div>
+									</span>
 							</div>
-							<div class="tooltip location-wrist-left">
-								{{data.bodyType.drTypesOne.handLeftjoint}}{{#if (and data.bodyType.drTypesOne.handLeftjoint data.bodyType.drTypesTwo.handLeftjoint)}} / {{/if}}{{data.bodyType.drTypesTwo.handLeftjoint}}
-								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Left Hand -4</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.handLeft.hp.value}} / {{data.bodyType.body.handLeft.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Left Wrist -7</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.handLeft.subLocation.joint.hp.value}} / {{data.bodyType.body.handLeft.subLocation.joint.hp.max}} HP</span><br>
-										Applies only to cr, cut, pi, tbb<br>
-										Crippled joints recover at -2<br>
-									</div>
-								</span>
-							</div>
-							<div class="tooltip location-wrist-right">
-								{{data.bodyType.drTypesOne.handRightjoint}}{{#if (and data.bodyType.drTypesOne.handRightjoint data.bodyType.drTypesTwo.handRightjoint)}} / {{/if}}{{data.bodyType.drTypesTwo.handRightjoint}}
-								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Right Hand -4</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.handRight.hp.value}} / {{data.bodyType.body.handRight.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Right Wrist -7</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.handRight.subLocation.joint.hp.value}} / {{data.bodyType.body.handRight.subLocation.joint.hp.max}} HP</span><br>
-										Applies only to cr, cut, pi, tbb<br>
-										Crippled joints recover at -2<br>
-									</div>
-								</span>
-							</div>
-							<div class="tooltip location-hand-left">
-								{{data.bodyType.drTypesOne.handLeftextremity}}{{#if (and data.bodyType.drTypesOne.handLeftextremity data.bodyType.drTypesTwo.handLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handLeftextremity}}
-								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Left Hand -4</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.handLeft.hp.value}} / {{data.bodyType.body.handLeft.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-								</span>
-							</div>
-							<div class="tooltip location-hand-right">
-								{{data.bodyType.drTypesOne.handRightextremity}}{{#if (and data.bodyType.drTypesOne.handRightextremity data.bodyType.drTypesTwo.handRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handRightextremity}}
-								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Right Hand -4</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.handRight.hp.value}} / {{data.bodyType.body.handRight.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-								</span>
-							</div>
-							{{#if data.bodyType.chinks.palm}}
-								<div class="tooltip location-palm-left">
-									{{data.bodyType.drTypesOne.handLeftextremity}}{{#if (and data.bodyType.drTypesOne.handLeftextremity data.bodyType.drTypesTwo.handLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handLeftextremity}}
+							{{/if}}
+							{{#if (or (eq actor.data.bodyType.name "octopod"))}}
+								<div class="tooltip location-tentacle2-shoulder-left">
+									{{data.bodyType.drTypesOne.tentacleLeft2shoulder}}{{#if (and data.bodyType.drTypesOne.tentacleLeft2shoulder data.bodyType.drTypesTwo.tentacleLeft2shoulder)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleLeft2shoulder}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Left Tentacle 2 -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.tentacleLeft2.hp.value}} / {{data.bodyType.body.tentacleLeft2.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Shoulder -5</span><br>
+												The following applies only tp cut, imp, pi, and tbb attacks<br>
+												0.5x more injury<br>
+												Cannot cripple the limb<br>
+												No injury limit<br>
+												Bleed every 30s @ -3<br>
+												(Or -4 for cutting)
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-tentacle2-shoulder-right">
+									{{data.bodyType.drTypesOne.tentacleRight2shoulder}}{{#if (and data.bodyType.drTypesOne.tentacleRight2shoulder data.bodyType.drTypesTwo.tentacleRight2shoulder)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleRight2shoulder}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Right Tentacle 2 -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.tentacleRight2.hp.value}} / {{data.bodyType.body.tentacleRight2.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Shoulder -5</span><br>
+												The following applies only tp cut, imp, pi, and tbb attacks<br>
+												0.5x more injury<br>
+												Cannot cripple the limb<br>
+												No injury limit<br>
+												Bleed every 30s @ -3<br>
+												(Or -4 for cutting)
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-tentacle2-upper-arm-left">
+									{{data.bodyType.drTypesOne.tentacleLeft2upperArm}}{{#if (and data.bodyType.drTypesOne.tentacleLeft2upperArm data.bodyType.drTypesTwo.tentacleLeft2upperArm)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleLeft2upperArm}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Left Tentacle 2 -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.tentacleLeft2.hp.value}} / {{data.bodyType.body.tentacleLeft2.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Upper Tentacle 2 -5</span><br>
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-tentacle2-upper-arm-right">
+									{{data.bodyType.drTypesOne.tentacleRight2upperArm}}{{#if (and data.bodyType.drTypesOne.tentacleRight2upperArm data.bodyType.drTypesTwo.tentacleRight2upperArm)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleRight2upperArm}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Right Tentacle 2 -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.tentacleRight2.hp.value}} / {{data.bodyType.body.tentacleRight2.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Upper Tentacle 2 -5</span><br>
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-tentacle2-elbow-left">
+									{{data.bodyType.drTypesOne.tentacleLeft2elbow}}{{#if (and data.bodyType.drTypesOne.tentacleLeft2elbow data.bodyType.drTypesTwo.tentacleLeft2elbow)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleLeft2elbow}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Left Tentacle 2 -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.tentacleLeft2.hp.value}} / {{data.bodyType.body.tentacleLeft2.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Mid Tentacle -5</span><br>
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-tentacle2-elbow-right">
+									{{data.bodyType.drTypesOne.tentacleRight2elbow}}{{#if (and data.bodyType.drTypesOne.tentacleRight2elbow data.bodyType.drTypesTwo.tentacleRight2elbow)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleRight2elbow}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Right Tentacle 2 -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.tentacleRight2.hp.value}} / {{data.bodyType.body.tentacleRight2.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Mid Tentacle -5</span><br>
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-tentacle2-forearm-left">
+									{{data.bodyType.drTypesOne.tentacleLeft2forearm}}{{#if (and data.bodyType.drTypesOne.tentacleLeft2forearm data.bodyType.drTypesTwo.tentacleLeft2forearm)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleLeft2forearm}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Left Tentacle 2 -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.tentacleLeft2.hp.value}} / {{data.bodyType.body.tentacleLeft2.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Foretentacle -4</span><br>
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-tentacle2-forearm-right">
+									{{data.bodyType.drTypesOne.tentacleRight2forearm}}{{#if (and data.bodyType.drTypesOne.tentacleRight2forearm data.bodyType.drTypesTwo.tentacleRight2forearm)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleRight2forearm}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Righ Tentacle 2 -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.tentacleRight2.hp.value}} / {{data.bodyType.body.tentacleRight2.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Foretentacle -4</span><br>
+											</div>
+										</span>
+								</div>
+							{{else}}
+								<div class="tooltip location-shoulder-left">
+									{{data.bodyType.drTypesOne.armLeftshoulder}}{{#if (and data.bodyType.drTypesOne.armLeftshoulder data.bodyType.drTypesTwo.armLeftshoulder)}} / {{/if}}{{data.bodyType.drTypesTwo.armLeftshoulder}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Left Arm -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.armLeft.hp.value}} / {{data.bodyType.body.armLeft.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Left Shoulder -5</span><br>
+											The following applies only tp cut, imp, pi, and tbb attacks<br>
+											0.5x more injury<br>
+											Cannot cripple the limb<br>
+											No injury limit<br>
+											Bleed every 30s @ -3<br>
+											(Or -4 for cutting)
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-shoulder-right">
+									{{data.bodyType.drTypesOne.armRightshoulder}}{{#if (and data.bodyType.drTypesOne.armRightshoulder data.bodyType.drTypesTwo.armRightshoulder)}} / {{/if}}{{data.bodyType.drTypesTwo.armRightshoulder}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Arm -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.armRight.hp.value}} / {{data.bodyType.body.armRight.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Right Shoulder -5</span><br>
+											The following applies only tp cut, imp, pi, and tbb attacks<br>
+											0.5x more injury<br>
+											Cannot cripple the limb<br>
+											No injury limit<br>
+											Bleed every 30s @ -3<br>
+											(Or -4 for cutting)
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-upper-arm-left">
+									{{data.bodyType.drTypesOne.armLeftupperArm}}{{#if (and data.bodyType.drTypesOne.armLeftupperArm data.bodyType.drTypesTwo.armLeftupperArm)}} / {{/if}}{{data.bodyType.drTypesTwo.armLeftupperArm}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Left Arm -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.armLeft.hp.value}} / {{data.bodyType.body.armLeft.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Left Upper Arm -5</span><br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-upper-arm-right">
+									{{data.bodyType.drTypesOne.armRightupperArm}}{{#if (and data.bodyType.drTypesOne.armRightupperArm data.bodyType.drTypesTwo.armRightupperArm)}} / {{/if}}{{data.bodyType.drTypesTwo.armRightupperArm}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Arm -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.armRight.hp.value}} / {{data.bodyType.body.armRight.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Right Upper Arm -5</span><br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-elbow-left">
+									{{data.bodyType.drTypesOne.armLeftelbow}}{{#if (and data.bodyType.drTypesOne.armLeftelbow data.bodyType.drTypesTwo.armLeftelbow)}} / {{/if}}{{data.bodyType.drTypesTwo.armLeftelbow}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Left Arm -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.armLeft.hp.value}} / {{data.bodyType.body.armLeft.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Left Elbow -5</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.armLeft.subLocation.elbow.hp.value}} / {{data.bodyType.body.armLeft.subLocation.elbow.hp.max}} HP</span><br>
+											Applies only to cr, cut, pi, tbb<br>
+											Crippled joints recover at -2<br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-elbow-right">
+									{{data.bodyType.drTypesOne.armRightelbow}}{{#if (and data.bodyType.drTypesOne.armRightelbow data.bodyType.drTypesTwo.armRightelbow)}} / {{/if}}{{data.bodyType.drTypesTwo.armRightelbow}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Arm -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.armRight.hp.value}} / {{data.bodyType.body.armRight.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Right Elbow -5</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.armRight.subLocation.elbow.hp.value}} / {{data.bodyType.body.armRight.subLocation.elbow.hp.max}} HP</span><br>
+											Applies only to cr, cut, pi, tbb<br>
+											Crippled joints recover at -2<br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-forearm-left">
+									{{data.bodyType.drTypesOne.armLeftforearm}}{{#if (and data.bodyType.drTypesOne.armLeftforearm data.bodyType.drTypesTwo.armLeftforearm)}} / {{/if}}{{data.bodyType.drTypesTwo.armLeftforearm}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Left Arm -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.armLeft.hp.value}} / {{data.bodyType.body.armLeft.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Left Forearm -4</span><br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-forearm-right">
+									{{data.bodyType.drTypesOne.armRightforearm}}{{#if (and data.bodyType.drTypesOne.armRightforearm data.bodyType.drTypesTwo.armRightforearm)}} / {{/if}}{{data.bodyType.drTypesTwo.armRightforearm}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Arm -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.armRight.hp.value}} / {{data.bodyType.body.armRight.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Right Forearm -4</span><br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-wrist-left">
+									{{data.bodyType.drTypesOne.handLeftjoint}}{{#if (and data.bodyType.drTypesOne.handLeftjoint data.bodyType.drTypesTwo.handLeftjoint)}} / {{/if}}{{data.bodyType.drTypesTwo.handLeftjoint}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Hand -4</span><br>
@@ -961,13 +1144,15 @@
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
-											<span style="text-decoration: underline">Left Palm -8</span><br>
-											Penalty is -6 if unarmed<br>
+											<span style="text-decoration: underline">Left Wrist -7</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.handLeft.subLocation.joint.hp.value}} / {{data.bodyType.body.handLeft.subLocation.joint.hp.max}} HP</span><br>
+											Applies only to cr, cut, pi, tbb<br>
+											Crippled joints recover at -2<br>
 										</div>
 									</span>
 								</div>
-								<div class="tooltip location-palm-right">
-									{{data.bodyType.drTypesOne.handRightextremity}}{{#if (and data.bodyType.drTypesOne.handRightextremity data.bodyType.drTypesTwo.handRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handRightextremity}}
+								<div class="tooltip location-wrist-right">
+									{{data.bodyType.drTypesOne.handRightjoint}}{{#if (and data.bodyType.drTypesOne.handRightjoint data.bodyType.drTypesTwo.handRightjoint)}} / {{/if}}{{data.bodyType.drTypesTwo.handRightjoint}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Hand -4</span><br>
@@ -975,8 +1160,179 @@
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
-											<span style="text-decoration: underline">Right Palm -8</span><br>
-											Penalty is -6 if unarmed<br>
+											<span style="text-decoration: underline">Right Wrist -7</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.handRight.subLocation.joint.hp.value}} / {{data.bodyType.body.handRight.subLocation.joint.hp.max}} HP</span><br>
+											Applies only to cr, cut, pi, tbb<br>
+											Crippled joints recover at -2<br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-hand-left">
+									{{data.bodyType.drTypesOne.handLeftextremity}}{{#if (and data.bodyType.drTypesOne.handLeftextremity data.bodyType.drTypesTwo.handLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handLeftextremity}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Left Hand -4</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.handLeft.hp.value}} / {{data.bodyType.body.handLeft.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-hand-right">
+									{{data.bodyType.drTypesOne.handRightextremity}}{{#if (and data.bodyType.drTypesOne.handRightextremity data.bodyType.drTypesTwo.handRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handRightextremity}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Hand -4</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.handRight.hp.value}} / {{data.bodyType.body.handRight.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+									</span>
+								</div>
+								{{#if data.bodyType.chinks.palm}}
+									<div class="tooltip location-palm-left">
+										{{data.bodyType.drTypesOne.handLeftextremity}}{{#if (and data.bodyType.drTypesOne.handLeftextremity data.bodyType.drTypesTwo.handLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handLeftextremity}}
+										<span class="tooltiptext">
+												<div style="border-bottom: 2px white solid">
+													<span style="text-decoration: underline">Left Hand -4</span><br>
+													<span style="color: #ff4848">{{data.bodyType.body.handLeft.hp.value}} / {{data.bodyType.body.handLeft.hp.max}} HP</span><br>
+													pi/imp attacks cap at 1x<br>
+												</div>
+												<div>
+													<span style="text-decoration: underline">Left Palm -8</span><br>
+													Penalty is -6 if unarmed<br>
+												</div>
+											</span>
+									</div>
+									<div class="tooltip location-palm-right">
+										{{data.bodyType.drTypesOne.handRightextremity}}{{#if (and data.bodyType.drTypesOne.handRightextremity data.bodyType.drTypesTwo.handRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handRightextremity}}
+										<span class="tooltiptext">
+												<div style="border-bottom: 2px white solid">
+													<span style="text-decoration: underline">Right Hand -4</span><br>
+													<span style="color: #ff4848">{{data.bodyType.body.handRight.hp.value}} / {{data.bodyType.body.handRight.hp.max}} HP</span><br>
+													pi/imp attacks cap at 1x<br>
+												</div>
+												<div>
+													<span style="text-decoration: underline">Right Palm -8</span><br>
+													Penalty is -6 if unarmed<br>
+												</div>
+											</span>
+									</div>
+								{{/if}}
+							{{/if}}
+
+							{{#if (eq actor.data.bodyType.name "octopod")}}
+								<div class="tooltip location-tentacle3-shoulder-left">
+									{{data.bodyType.drTypesOne.tentacleLeft3shoulder}}{{#if (and data.bodyType.drTypesOne.tentacleLeft3shoulder data.bodyType.drTypesTwo.tentacleLeft3shoulder)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleLeft3shoulder}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Left Tentacle 3 -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.tentacleLeft3.hp.value}} / {{data.bodyType.body.tentacleLeft3.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Shoulder -5</span><br>
+											The following applies only tp cut, imp, pi, and tbb attacks<br>
+											0.5x more injury<br>
+											Cannot cripple the limb<br>
+											No injury limit<br>
+											Bleed every 30s @ -3<br>
+											(Or -4 for cutting)
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-tentacle3-shoulder-right">
+									{{data.bodyType.drTypesOne.tentacleRight3shoulder}}{{#if (and data.bodyType.drTypesOne.tentacleRight3shoulder data.bodyType.drTypesTwo.tentacleRight3shoulder)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleRight3shoulder}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Tentacle 3 -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.tentacleRight3.hp.value}} / {{data.bodyType.body.tentacleRight3.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Shoulder -5</span><br>
+											The following applies only tp cut, imp, pi, and tbb attacks<br>
+											0.5x more injury<br>
+											Cannot cripple the limb<br>
+											No injury limit<br>
+											Bleed every 30s @ -3<br>
+											(Or -4 for cutting)
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-tentacle3-upper-arm-left">
+									{{data.bodyType.drTypesOne.tentacleLeft3upperArm}}{{#if (and data.bodyType.drTypesOne.tentacleLeft3upperArm data.bodyType.drTypesTwo.tentacleLeft3upperArm)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleLeft3upperArm}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Left Tentacle 3 -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.tentacleLeft3.hp.value}} / {{data.bodyType.body.tentacleLeft3.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Upper Tentacle -5</span><br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-tentacle3-upper-arm-right">
+									{{data.bodyType.drTypesOne.tentacleRight3upperArm}}{{#if (and data.bodyType.drTypesOne.tentacleRight3upperArm data.bodyType.drTypesTwo.tentacleRight3upperArm)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleRight3upperArm}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Tentacle 3 -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.tentacleRight3.hp.value}} / {{data.bodyType.body.tentacleRight3.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Upper Tentacle -5</span><br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-tentacle3-elbow-left">
+									{{data.bodyType.drTypesOne.tentacleLeft3elbow}}{{#if (and data.bodyType.drTypesOne.tentacleLeft3elbow data.bodyType.drTypesTwo.tentacleLeft3elbow)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleLeft3elbow}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Left Tentacle 3 -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.tentacleLeft3.hp.value}} / {{data.bodyType.body.tentacleLeft3.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Mid Tentacle -5</span><br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-tentacle3-elbow-right">
+									{{data.bodyType.drTypesOne.tentacleRight3elbow}}{{#if (and data.bodyType.drTypesOne.tentacleRight3elbow data.bodyType.drTypesTwo.tentacleRight3elbow)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleRight3elbow}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Tentacle 3 -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.tentacleRight3.hp.value}} / {{data.bodyType.body.tentacleRight3.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Mid Tentacle -5</span><br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-tentacle3-forearm-left">
+									{{data.bodyType.drTypesOne.tentacleLeft3forearm}}{{#if (and data.bodyType.drTypesOne.tentacleLeft3forearm data.bodyType.drTypesTwo.tentacleLeft3forearm)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleLeft3forearm}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Left Tentacle 3 -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.tentacleLeft3.hp.value}} / {{data.bodyType.body.tentacleLeft3.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Foretentacle -4</span><br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-tentacle3-forearm-right">
+									{{data.bodyType.drTypesOne.tentacleRight3forearm}}{{#if (and data.bodyType.drTypesOne.tentacleRight3forearm data.bodyType.drTypesTwo.tentacleRight3forearm)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleRight3forearm}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Tentacle 3 -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.tentacleRight3.hp.value}} / {{data.bodyType.body.tentacleRight3.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Foretentacle -4</span><br>
 										</div>
 									</span>
 								</div>
@@ -1224,27 +1580,29 @@
 								</div>
 							</span>
 							</div>
-							<div class="tooltip location-torso-spine">
-								{{data.bodyType.drTypesOne.upperChestspine}}{{#if (and data.bodyType.drTypesOne.upperChestspine data.bodyType.drTypesTwo.upperChestspine)}} / {{/if}}{{data.bodyType.drTypesTwo.upperChestspine}}<br>
-								{{data.bodyType.drTypesOne.lowerChestspine}}{{#if (and data.bodyType.drTypesOne.lowerChestspine data.bodyType.drTypesTwo.lowerChestspine)}} / {{/if}}{{data.bodyType.drTypesTwo.lowerChestspine}}
-								<span class="tooltiptext">
-								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Chest -0</span><br>
-									Injury capped at 2xHP<br>
-									(1xHP if using bleeding)<br>
-									Chest is split into upper/lower<br>
-									-1 to target either specifically
+							{{#unless (eq actor.data.bodyType.name "octopod")}}
+								<div class="tooltip location-torso-spine">
+									{{data.bodyType.drTypesOne.upperChestspine}}{{#if (and data.bodyType.drTypesOne.upperChestspine data.bodyType.drTypesTwo.upperChestspine)}} / {{/if}}{{data.bodyType.drTypesTwo.upperChestspine}}<br>
+									{{data.bodyType.drTypesOne.lowerChestspine}}{{#if (and data.bodyType.drTypesOne.lowerChestspine data.bodyType.drTypesTwo.lowerChestspine)}} / {{/if}}{{data.bodyType.drTypesTwo.lowerChestspine}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Chest -0</span><br>
+											Injury capped at 2xHP<br>
+											(1xHP if using bleeding)<br>
+											Chest is split into upper/lower<br>
+											-1 to target either specifically
+										</div>
+										<div>
+											<span style="text-decoration: underline">Spine -8</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.upperChest.subLocation.spine.hp.value}} / {{data.bodyType.body.upperChest.subLocation.spine.hp.max}} HP</span><br>
+											The following applies even with HPT<br>
+											Shock forces a knockdown roll<br>
+											Major wound knockdown is @ -5<br>
+											Crippling the spine causes Bad Back (Severe) and Lame (Paraplegic) until healed
+										</div>
+									</span>
 								</div>
-								<div>
-									<span style="text-decoration: underline">Spine -8</span><br>
-									<span style="color: #ff4848">{{data.bodyType.body.upperChest.subLocation.spine.hp.value}} / {{data.bodyType.body.upperChest.subLocation.spine.hp.max}} HP</span><br>
-									The following applies even with HPT<br>
-									Shock forces a knockdown roll<br>
-									Major wound knockdown is @ -5<br>
-									Crippling the spine causes Bad Back (Severe) and Lame (Paraplegic) until healed
-								</div>
-							</span>
-							</div>
+							{{/unless}}
 							<div class="tooltip location-abdomen-vitals">
 								{{data.bodyType.drTypesOne.abdomenvitals}}{{#if (and data.bodyType.drTypesOne.abdomenvitals data.bodyType.drTypesTwo.abdomenvitals)}} / {{/if}}{{data.bodyType.drTypesTwo.abdomenvitals}}
 								<span class="tooltiptext">
@@ -1278,6 +1636,7 @@
 									</div>
 								</span>
 							</div>
+
 							<div class="tooltip location-pelvis">
 								{{data.bodyType.drTypesOne.abdomenpelvis}}{{#if (and data.bodyType.drTypesOne.abdomenpelvis data.bodyType.drTypesTwo.abdomenpelvis)}} / {{/if}}{{data.bodyType.drTypesTwo.abdomenpelvis}}
 								<span class="tooltiptext">
@@ -1286,10 +1645,12 @@
 										Injury capped at 2xHP<br>
 										(1xHP if using bleeding)<br>
 									</div>
-									<div>
-										<span style="text-decoration: underline">Pelvis -3</span><br>
-										On a major wound: Lame (Missing Legs) until healed<br>
-									</div>
+									{{#unless (eq actor.data.bodyType.name "octopod")}}
+										<div>
+											<span style="text-decoration: underline">Pelvis -3</span><br>
+											On a major wound: Lame (Missing Legs) until healed<br>
+										</div>
+									{{/unless}}
 								</span>
 							</div>
 							<div class="tooltip location-groin">
@@ -1308,183 +1669,237 @@
 									</div>
 								</span>
 							</div>
-							<div class="tooltip location-thigh-left">
-								{{data.bodyType.drTypesOne.legLeftthigh}}{{#if (and data.bodyType.drTypesOne.legLeftthigh data.bodyType.drTypesTwo.legLeftthigh)}} / {{/if}}{{data.bodyType.drTypesTwo.legLeftthigh}}
+
+							{{#if (eq actor.data.bodyType.name "octopod")}}
+								<div class="tooltip location-tentacle4-thigh-left">
+									{{data.bodyType.drTypesOne.tentacleLeft4shoulder}}{{#if (and data.bodyType.drTypesOne.tentacleLeft4shoulder data.bodyType.drTypesTwo.tentacleLeft4shoulder)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleLeft4shoulder}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Left Tentacle 4 -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.tentacleLeft4.hp.value}} / {{data.bodyType.body.tentacleLeft4.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Shoulder -5</span><br>
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-tentacle4-thigh-right">
+									{{data.bodyType.drTypesOne.tentacleRight4shoulder}}{{#if (and data.bodyType.drTypesOne.tentacleRight4shoulder data.bodyType.drTypesTwo.tentacleRight4shoulder)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleRight4shoulder}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Right Tentacle 4 -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.tentacleRight4.hp.value}} / {{data.bodyType.body.tentacleRight4.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Shoulder -5</span><br>
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-tentacle4-knee-left">
+									{{data.bodyType.drTypesOne.tentacleLeft4upperArm}}{{#if (and data.bodyType.drTypesOne.tentacleLeft4upperArm data.bodyType.drTypesTwo.tentacleLeft4upperArm)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleLeft4upperArm}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Left Tentacle 4 -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.tentacleLeft4.hp.value}} / {{data.bodyType.body.tentacleLeft4.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Upper Tentacle -5</span><br>
+											</div>
+										</span>
+								</div>
+							<div class="tooltip location-tentacle4-knee-right">
+								{{data.bodyType.drTypesOne.tentacleRight4upperArm}}{{#if (and data.bodyType.drTypesOne.tentacleRight4upperArm data.bodyType.drTypesTwo.tentacleRight4upperArm)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleRight4upperArm}}
 								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Left Leg -2</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.legLeft.hp.value}} / {{data.bodyType.body.legLeft.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Left Thigh -5</span><br>
-									</div>
-								</span>
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Right Tentacle 4 -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.tentacleRight4.hp.value}} / {{data.bodyType.body.tentacleRight4.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Upper Tentacle -5</span><br>
+											</div>
+										</span>
 							</div>
-							<div class="tooltip location-thigh-right">
-								{{data.bodyType.drTypesOne.legRightthigh}}{{#if (and data.bodyType.drTypesOne.legRightthigh data.bodyType.drTypesTwo.legRightthigh)}} / {{/if}}{{data.bodyType.drTypesTwo.legRightthigh}}
+							<div class="tooltip location-tentacle4-shin-left">
+								{{data.bodyType.drTypesOne.tentacleLeft4elbow}}{{#if (and data.bodyType.drTypesOne.tentacleLeft4elbow data.bodyType.drTypesTwo.tentacleLeft4elbow)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleLeft4elbow}}
 								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Right Leg -2</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.legRight.hp.value}} / {{data.bodyType.body.legRight.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Right Thigh -5</span><br>
-									</div>
-								</span>
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Left Tentacle 4 -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.tentacleLeft4.hp.value}} / {{data.bodyType.body.tentacleLeft4.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Mid Tentacle -4</span><br>
+											</div>
+										</span>
 							</div>
-							<div class="tooltip location-thigh-artery-left">
-								{{data.bodyType.drTypesOne.legLeftartery}}{{#if (and data.bodyType.drTypesOne.legLeftartery data.bodyType.drTypesTwo.legLeftartery)}} / {{/if}}{{data.bodyType.drTypesTwo.legLeftartery}}
+							<div class="tooltip location-tentacle4-shin-right">
+								{{data.bodyType.drTypesOne.tentacleRight4elbow}}{{#if (and data.bodyType.drTypesOne.tentacleRight4elbow data.bodyType.drTypesTwo.tentacleRight4elbow)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleRight4elbow}}
 								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Left Leg -2</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.legLeft.hp.value}} / {{data.bodyType.body.legLeft.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Left Thigh Artery -5</span><br>
-										The following applies only tp cut, imp, pi, and tbb attacks<br>
-										0.5x more injury<br>
-										Cannot cripple the limb<br>
-										No injury limit<br>
-										Bleed every 30s @ -3<br>
-										(Or -4 for cutting)
-									</div>
-								</span>
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Right Tentacle 4 -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.tentacleRight4.hp.value}} / {{data.bodyType.body.tentacleRight4.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Mid Tentacle -4</span><br>
+											</div>
+										</span>
 							</div>
-							<div class="tooltip location-thigh-artery-right">
-								{{data.bodyType.drTypesOne.legRightartery}}{{#if (and data.bodyType.drTypesOne.legRightartery data.bodyType.drTypesTwo.legRightartery)}} / {{/if}}{{data.bodyType.drTypesTwo.legRightartery}}
+							<div class="tooltip location-tentacle4-tip-left">
+								{{data.bodyType.drTypesOne.tentacleLeft4elbow}}{{#if (and data.bodyType.drTypesOne.tentacleLeft4elbow data.bodyType.drTypesTwo.tentacleLeft4elbow)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleLeft4elbow}}
 								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Right Leg -2</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.legRight.hp.value}} / {{data.bodyType.body.legRight.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Right Thigh Artery -5</span><br>
-										The following applies only tp cut, imp, pi, and tbb attacks<br>
-										0.5x more injury<br>
-										Cannot cripple the limb<br>
-										No injury limit<br>
-										Bleed every 30s @ -3<br>
-										(Or -4 for cutting)
-									</div>
-								</span>
+												<div style="border-bottom: 2px white solid">
+													<span style="text-decoration: underline">Left Tentacle 4 -2</span><br>
+													<span style="color: #ff4848">{{data.bodyType.body.tentacleLeft4.hp.value}} / {{data.bodyType.body.tentacleLeft4.hp.max}} HP</span><br>
+													pi/imp attacks cap at 1x<br>
+												</div>
+												<div>
+													<span style="text-decoration: underline">Foretentacle -4</span><br>
+												</div>
+											</span>
 							</div>
-							<div class="tooltip location-knee-left">
-								{{data.bodyType.drTypesOne.legLeftknee}}{{#if (and data.bodyType.drTypesOne.legLeftknee data.bodyType.drTypesTwo.legLeftknee)}} / {{/if}}{{data.bodyType.drTypesTwo.legLeftknee}}
+							<div class="tooltip location-tentacle4-tip-right">
+								{{data.bodyType.drTypesOne.tentacleRight4elbow}}{{#if (and data.bodyType.drTypesOne.tentacleRight4elbow data.bodyType.drTypesTwo.tentacleRight4elbow)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleRight4elbow}}
 								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Left Leg -2</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.legLeft.hp.value}} / {{data.bodyType.body.legLeft.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Left Knee -5</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.legLeft.subLocation.knee.hp.value}} / {{data.bodyType.body.legLeft.subLocation.knee.hp.max}} HP</span><br>
-										Applies only to cr, cut, pi, tbb<br>
-										Crippled joints recover at -2<br>
-									</div>
-								</span>
+												<div style="border-bottom: 2px white solid">
+													<span style="text-decoration: underline">Right Tentacle 4 -2</span><br>
+													<span style="color: #ff4848">{{data.bodyType.body.tentacleRight4.hp.value}} / {{data.bodyType.body.tentacleRight4.hp.max}} HP</span><br>
+													pi/imp attacks cap at 1x<br>
+												</div>
+												<div>
+													<span style="text-decoration: underline">Foretentacle -4</span><br>
+												</div>
+											</span>
 							</div>
-							<div class="tooltip location-knee-right">
-								{{data.bodyType.drTypesOne.legRightknee}}{{#if (and data.bodyType.drTypesOne.legRightknee data.bodyType.drTypesTwo.legRightknee)}} / {{/if}}{{data.bodyType.drTypesTwo.legRightknee}}
-								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Right Leg -2</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.legRight.hp.value}} / {{data.bodyType.body.legRight.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Right Knee -5</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.legRight.subLocation.knee.hp.value}} / {{data.bodyType.body.legRight.subLocation.knee.hp.max}} HP</span><br>
-										Applies only to cr, cut, pi, tbb<br>
-										Crippled joints recover at -2<br>
-									</div>
-								</span>
-							</div>
-							<div class="tooltip location-shin-left">
-								{{data.bodyType.drTypesOne.legLeftshin}}{{#if (and data.bodyType.drTypesOne.legLeftshin data.bodyType.drTypesTwo.legLeftshin)}} / {{/if}}{{data.bodyType.drTypesTwo.legLeftshin}}
-								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Left Leg -2</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.legLeft.hp.value}} / {{data.bodyType.body.legLeft.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Left Shin -4</span><br>
-									</div>
-								</span>
-							</div>
-							<div class="tooltip location-shin-right">
-								{{data.bodyType.drTypesOne.legRightshin}}{{#if (and data.bodyType.drTypesOne.legRightshin data.bodyType.drTypesTwo.legRightshin)}} / {{/if}}{{data.bodyType.drTypesTwo.legRightshin}}
-								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Right Leg -2</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.legRight.hp.value}} / {{data.bodyType.body.legRight.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Right Shin -4</span><br>
-									</div>
-								</span>
-							</div>
-							<div class="tooltip location-ankle-left">
-								{{data.bodyType.drTypesOne.footLeftjoint}}{{#if (and data.bodyType.drTypesOne.footLeftjoint data.bodyType.drTypesTwo.footLeftjoint)}} / {{/if}}{{data.bodyType.drTypesTwo.footLeftjoint}}
-								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Left Foot -4</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.footLeft.hp.value}} / {{data.bodyType.body.footLeft.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Left Ankle -7</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.footLeft.subLocation.joint.hp.value}} / {{data.bodyType.body.footLeft.subLocation.joint.hp.max}} HP</span><br>
-										Applies only to cr, cut, pi, tbb<br>
-										Crippled joints recover at -2<br>
-									</div>
-								</span>
-							</div>
-							<div class="tooltip location-ankle-right">
-								{{data.bodyType.drTypesOne.footRightjoint}}{{#if (and data.bodyType.drTypesOne.footRightjoint data.bodyType.drTypesTwo.footRightjoint)}} / {{/if}}{{data.bodyType.drTypesTwo.footRightjoint}}
-								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Right Foot -4</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.footRight.hp.value}} / {{data.bodyType.body.footRight.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Right Ankle -7</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.footRight.subLocation.joint.hp.value}} / {{data.bodyType.body.footRight.subLocation.joint.hp.max}} HP</span><br>
-										Applies only to cr, cut, pi, tbb<br>
-										Crippled joints recover at -2<br>
-									</div>
-								</span>
-							</div>
-							<div class="tooltip location-foot-left">
-								{{data.bodyType.drTypesOne.footLeftextremity}}{{#if (and data.bodyType.drTypesOne.footLeftextremity data.bodyType.drTypesTwo.footLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.footLeftextremity}}
-								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Left Foot -4</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.footLeft.hp.value}} / {{data.bodyType.body.footLeft.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-								</span>
-							</div>
-							<div class="tooltip location-foot-right">
-								{{data.bodyType.drTypesOne.footRightextremity}}{{#if (and data.bodyType.drTypesOne.footRightextremity data.bodyType.drTypesTwo.footRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.footRightextremity}}
-								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Right Foot -4</span><br>
-										<span style="color: #ff4848">{{data.bodyType.body.footRight.hp.value}} / {{data.bodyType.body.footRight.hp.max}} HP</span><br>
-										pi/imp attacks cap at 1x<br>
-									</div>
-								</span>
-							</div>
-							{{#if data.bodyType.chinks.sole}}
-								<div class="tooltip location-sole-left">
-									{{data.bodyType.drTypesOne.footLeftextremity}}{{#if (and data.bodyType.drTypesOne.footLeftextremity data.bodyType.drTypesTwo.footLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.footLeftextremity}}
+							{{else}}
+								<div class="tooltip location-thigh-left">
+									{{data.bodyType.drTypesOne.legLeftthigh}}{{#if (and data.bodyType.drTypesOne.legLeftthigh data.bodyType.drTypesTwo.legLeftthigh)}} / {{/if}}{{data.bodyType.drTypesTwo.legLeftthigh}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Left Leg -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.legLeft.hp.value}} / {{data.bodyType.body.legLeft.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Left Thigh -5</span><br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-thigh-right">
+									{{data.bodyType.drTypesOne.legRightthigh}}{{#if (and data.bodyType.drTypesOne.legRightthigh data.bodyType.drTypesTwo.legRightthigh)}} / {{/if}}{{data.bodyType.drTypesTwo.legRightthigh}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Leg -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.legRight.hp.value}} / {{data.bodyType.body.legRight.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Right Thigh -5</span><br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-thigh-artery-left">
+									{{data.bodyType.drTypesOne.legLeftartery}}{{#if (and data.bodyType.drTypesOne.legLeftartery data.bodyType.drTypesTwo.legLeftartery)}} / {{/if}}{{data.bodyType.drTypesTwo.legLeftartery}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Left Leg -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.legLeft.hp.value}} / {{data.bodyType.body.legLeft.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Left Thigh Artery -5</span><br>
+											The following applies only tp cut, imp, pi, and tbb attacks<br>
+											0.5x more injury<br>
+											Cannot cripple the limb<br>
+											No injury limit<br>
+											Bleed every 30s @ -3<br>
+											(Or -4 for cutting)
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-thigh-artery-right">
+									{{data.bodyType.drTypesOne.legRightartery}}{{#if (and data.bodyType.drTypesOne.legRightartery data.bodyType.drTypesTwo.legRightartery)}} / {{/if}}{{data.bodyType.drTypesTwo.legRightartery}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Leg -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.legRight.hp.value}} / {{data.bodyType.body.legRight.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Right Thigh Artery -5</span><br>
+											The following applies only tp cut, imp, pi, and tbb attacks<br>
+											0.5x more injury<br>
+											Cannot cripple the limb<br>
+											No injury limit<br>
+											Bleed every 30s @ -3<br>
+											(Or -4 for cutting)
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-knee-left">
+									{{data.bodyType.drTypesOne.legLeftknee}}{{#if (and data.bodyType.drTypesOne.legLeftknee data.bodyType.drTypesTwo.legLeftknee)}} / {{/if}}{{data.bodyType.drTypesTwo.legLeftknee}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Left Leg -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.legLeft.hp.value}} / {{data.bodyType.body.legLeft.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Left Knee -5</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.legLeft.subLocation.knee.hp.value}} / {{data.bodyType.body.legLeft.subLocation.knee.hp.max}} HP</span><br>
+											Applies only to cr, cut, pi, tbb<br>
+											Crippled joints recover at -2<br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-knee-right">
+									{{data.bodyType.drTypesOne.legRightknee}}{{#if (and data.bodyType.drTypesOne.legRightknee data.bodyType.drTypesTwo.legRightknee)}} / {{/if}}{{data.bodyType.drTypesTwo.legRightknee}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Leg -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.legRight.hp.value}} / {{data.bodyType.body.legRight.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Right Knee -5</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.legRight.subLocation.knee.hp.value}} / {{data.bodyType.body.legRight.subLocation.knee.hp.max}} HP</span><br>
+											Applies only to cr, cut, pi, tbb<br>
+											Crippled joints recover at -2<br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-shin-left">
+									{{data.bodyType.drTypesOne.legLeftshin}}{{#if (and data.bodyType.drTypesOne.legLeftshin data.bodyType.drTypesTwo.legLeftshin)}} / {{/if}}{{data.bodyType.drTypesTwo.legLeftshin}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Left Leg -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.legLeft.hp.value}} / {{data.bodyType.body.legLeft.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Left Shin -4</span><br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-shin-right">
+									{{data.bodyType.drTypesOne.legRightshin}}{{#if (and data.bodyType.drTypesOne.legRightshin data.bodyType.drTypesTwo.legRightshin)}} / {{/if}}{{data.bodyType.drTypesTwo.legRightshin}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Leg -2</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.legRight.hp.value}} / {{data.bodyType.body.legRight.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Right Shin -4</span><br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-ankle-left">
+									{{data.bodyType.drTypesOne.footLeftjoint}}{{#if (and data.bodyType.drTypesOne.footLeftjoint data.bodyType.drTypesTwo.footLeftjoint)}} / {{/if}}{{data.bodyType.drTypesTwo.footLeftjoint}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Foot -4</span><br>
@@ -1492,12 +1907,15 @@
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
-											<span style="text-decoration: underline">Left Sole</span><br>
+											<span style="text-decoration: underline">Left Ankle -7</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.footLeft.subLocation.joint.hp.value}} / {{data.bodyType.body.footLeft.subLocation.joint.hp.max}} HP</span><br>
+											Applies only to cr, cut, pi, tbb<br>
+											Crippled joints recover at -2<br>
 										</div>
 									</span>
 								</div>
-								<div class="tooltip location-sole-right">
-									{{data.bodyType.drTypesOne.footRightextremity}}{{#if (and data.bodyType.drTypesOne.footRightextremity data.bodyType.drTypesTwo.footRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.footRightextremity}}
+								<div class="tooltip location-ankle-right">
+									{{data.bodyType.drTypesOne.footRightjoint}}{{#if (and data.bodyType.drTypesOne.footRightjoint data.bodyType.drTypesTwo.footRightjoint)}} / {{/if}}{{data.bodyType.drTypesTwo.footRightjoint}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Foot -4</span><br>
@@ -1505,10 +1923,61 @@
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
-											<span style="text-decoration: underline">Right Sole</span><br>
+											<span style="text-decoration: underline">Right Ankle -7</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.footRight.subLocation.joint.hp.value}} / {{data.bodyType.body.footRight.subLocation.joint.hp.max}} HP</span><br>
+											Applies only to cr, cut, pi, tbb<br>
+											Crippled joints recover at -2<br>
 										</div>
 									</span>
 								</div>
+								<div class="tooltip location-foot-left">
+									{{data.bodyType.drTypesOne.footLeftextremity}}{{#if (and data.bodyType.drTypesOne.footLeftextremity data.bodyType.drTypesTwo.footLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.footLeftextremity}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Left Foot -4</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.footLeft.hp.value}} / {{data.bodyType.body.footLeft.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-foot-right">
+									{{data.bodyType.drTypesOne.footRightextremity}}{{#if (and data.bodyType.drTypesOne.footRightextremity data.bodyType.drTypesTwo.footRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.footRightextremity}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Foot -4</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.footRight.hp.value}} / {{data.bodyType.body.footRight.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+									</span>
+								</div>
+								{{#if data.bodyType.chinks.sole}}
+									<div class="tooltip location-sole-left">
+										{{data.bodyType.drTypesOne.footLeftextremity}}{{#if (and data.bodyType.drTypesOne.footLeftextremity data.bodyType.drTypesTwo.footLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.footLeftextremity}}
+										<span class="tooltiptext">
+												<div style="border-bottom: 2px white solid">
+													<span style="text-decoration: underline">Left Foot -4</span><br>
+													<span style="color: #ff4848">{{data.bodyType.body.footLeft.hp.value}} / {{data.bodyType.body.footLeft.hp.max}} HP</span><br>
+													pi/imp attacks cap at 1x<br>
+												</div>
+												<div>
+													<span style="text-decoration: underline">Left Sole</span><br>
+												</div>
+											</span>
+									</div>
+									<div class="tooltip location-sole-right">
+										{{data.bodyType.drTypesOne.footRightextremity}}{{#if (and data.bodyType.drTypesOne.footRightextremity data.bodyType.drTypesTwo.footRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.footRightextremity}}
+										<span class="tooltiptext">
+												<div style="border-bottom: 2px white solid">
+													<span style="text-decoration: underline">Right Foot -4</span><br>
+													<span style="color: #ff4848">{{data.bodyType.body.footRight.hp.value}} / {{data.bodyType.body.footRight.hp.max}} HP</span><br>
+													pi/imp attacks cap at 1x<br>
+												</div>
+												<div>
+													<span style="text-decoration: underline">Right Sole</span><br>
+												</div>
+											</span>
+									</div>
+								{{/if}}
 							{{/if}}
 						</div>
 					{{/if}}

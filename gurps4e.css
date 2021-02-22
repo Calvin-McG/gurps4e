@@ -814,7 +814,7 @@
 	flex: 1;
 }
 
-.humanoidHitLocations {
+.hitLocations {
 	flex: 1;
 	display: grid;
 	grid-template-columns: repeat(28,15px);
@@ -822,7 +822,7 @@
 	text-align: center;
 }
 
-.humanoidHitLocations div {
+.hitLocations div {
 	border: #7a7971 solid 1px;
 	font-weight: bold;
 }
@@ -1259,6 +1259,202 @@
 	grid-row: 38 / 39;
 	background-color: #60497A;
 	color: aliceblue;
+}
+
+.location-tentacle1-shoulder-left {
+	grid-column: 6 / 10;
+	grid-row: 8 / 10;
+	background-color: #f0ffee;
+}
+
+.location-tentacle1-shoulder-right {
+	grid-column: 20 / 24;
+	grid-row: 8 / 10;
+	background-color: #f0ffee;
+}
+
+.location-upper-tentacle1-left {
+	grid-column: 5 / 9;
+	grid-row: 6 / 8;
+	background-color: #f0ffee;
+}
+
+.location-upper-tentacle1-right {
+	grid-column: 21 / 25;
+	grid-row: 6 / 8;
+	background-color: #f0ffee;
+}
+
+.location-tentacle1-mid-left {
+	grid-column: 4 / 8;
+	grid-row: 4 / 6;
+	background-color: #f0ffee;
+}
+
+.location-tentacle1-mid-right {
+	grid-column: 22 / 26;
+	grid-row: 4 / 6;
+	background-color: #f0ffee;
+}
+
+.location-foretentacle1-left {
+	grid-column: 3 / 7;
+	grid-row: 2 / 4;
+	background-color: #f0ffee;
+}
+
+.location-foretentacle1-right {
+	grid-column: 23 / 27;
+	grid-row: 2 / 4;
+	background-color: #f0ffee;
+}
+
+.location-tentacle2-shoulder-left {
+	grid-column: 6 / 10;
+	grid-row: 10 / 13;
+	z-index: 1;
+	background-color: #eef9ff;
+}
+
+.location-tentacle2-shoulder-right {
+	grid-column: 20 / 24;
+	grid-row: 10 / 13;
+	z-index: 1;
+	background-color: #eef9ff;
+}
+
+.location-tentacle2-upper-arm-left {
+	grid-column: 5 / 8;
+	grid-row: 13 / 16;
+	background-color: #eef9ff;
+}
+
+.location-tentacle2-upper-arm-right {
+	grid-column: 22 / 25;
+	grid-row: 13 / 16;
+	background-color: #eef9ff;
+}
+
+.location-tentacle2-elbow-left {
+	grid-column: 4 / 7;
+	grid-row: 16 / 18;
+	background-color: #eef9ff;
+}
+
+.location-tentacle2-elbow-right {
+	grid-column: 23 / 26;
+	grid-row: 16 / 18;
+	background-color: #eef9ff;
+}
+
+.location-tentacle2-forearm-left {
+	grid-column: 3 / 6;
+	grid-row: 18 / 21;
+	background-color: #eef9ff;
+}
+
+.location-tentacle2-forearm-right {
+	grid-column: 24 / 27;
+	grid-row: 18 / 21;
+	background-color: #eef9ff;
+}
+
+.location-tentacle3-shoulder-left {
+	grid-column: 6 / 10;
+	grid-row: 21 / 24;
+	z-index: 1;
+	background-color: #dee0f1;
+}
+
+.location-tentacle3-shoulder-right {
+	grid-column: 20 / 24;
+	grid-row: 21 / 24;
+	z-index: 1;
+	background-color: #dee0f1;
+}
+
+.location-tentacle3-upper-arm-left {
+	grid-column: 5 / 8;
+	grid-row: 24 / 27;
+	background-color: #dee0f1;
+}
+
+.location-tentacle3-upper-arm-right {
+	grid-column: 22 / 25;
+	grid-row: 24 / 27;
+	background-color: #dee0f1;
+}
+
+.location-tentacle3-elbow-left {
+	grid-column: 4 / 7;
+	grid-row: 27 / 29;
+	background-color: #dee0f1;
+}
+
+.location-tentacle3-elbow-right {
+	grid-column: 23 / 26;
+	grid-row: 27 / 29;
+	background-color: #dee0f1;
+}
+
+.location-tentacle3-forearm-left {
+	grid-column: 3 / 6;
+	grid-row: 29 / 32;
+	background-color: #dee0f1;
+}
+
+.location-tentacle3-forearm-right {
+	grid-column: 24 / 27;
+	grid-row: 29 / 32;
+	background-color: #dee0f1;
+}
+
+.location-tentacle4-thigh-left {
+	grid-column: 9 / 13;
+	grid-row: 26 / 29;
+	background-color: #e8def1;
+}
+
+.location-tentacle4-thigh-right {
+	grid-column: 17 / 21;
+	grid-row: 26 / 29;
+	background-color: #e8def1;
+}
+
+.location-tentacle4-knee-left {
+	grid-column: 8 / 12;
+	grid-row: 29 / 32;
+	background-color: #e8def1;
+}
+
+.location-tentacle4-knee-right {
+	grid-column: 18 / 22;
+	grid-row: 29 / 32;
+	background-color: #e8def1;
+}
+
+.location-tentacle4-shin-left {
+	grid-column: 7 / 11;
+	grid-row: 32 / 35;
+	background-color: #e8def1;
+}
+
+.location-tentacle4-shin-right {
+	grid-column: 19 / 23;
+	grid-row: 32 / 35;
+	background-color: #e8def1;
+}
+
+.location-tentacle4-tip-left {
+	grid-column: 6 / 10;
+	grid-row: 35 / 38;
+	background-color: #e8def1;
+}
+
+.location-tentacle4-tip-right {
+	grid-column: 20 / 24;
+	grid-row: 35 / 38;
+	background-color: #e8def1;
 }
 
 .tooltip {
