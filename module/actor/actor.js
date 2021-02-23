@@ -47,9 +47,6 @@ export class gurpsActor extends Actor {
 
 		//Update part specific HP
 		this.partHP();
-
-		//Harsh Realism - Armour Gaps
-		this.armourGaps();
 	}
 
 	recalcAtrValues(){
@@ -676,12 +673,5 @@ export class gurpsActor extends Actor {
 
 	rangedAttackOnTarget(attacker, attack, target) {
 		console.log(attack);
-	}
-
-	armourGaps() { //LT 101
-		console.log(this.data.data.bodyType.chinks)
-		console.log(this)
-
-
 	}
 }
