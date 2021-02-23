@@ -1669,7 +1669,37 @@
 									</div>
 								</span>
 							</div>
-
+							{{#if (eq actor.data.bodyType.name "avian")}}
+								<div class="tooltip location-tail-shoulder">
+									{{data.bodyType.drTypesOne.tailshoulder}}{{#if (and data.bodyType.drTypesOne.tailshoulder data.bodyType.drTypesTwo.tailshoulder)}} / {{/if}}{{data.bodyType.drTypesTwo.tailshoulder}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Tail -2</span><br>
+											Injury capped at 2xHP<br>
+											(1xHP if using bleeding)<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Shoulder -5</span><br>
+											Crushing does double shock damage<br>
+											Major wound knockdown is @ -5<br>
+											Armour gap targeted at -8
+										</div>
+									</span>
+								</div>
+								<div class="tooltip location-tail-forearm">
+									{{data.bodyType.drTypesOne.tailforearm}}{{#if (and data.bodyType.drTypesOne.tailforearm data.bodyType.drTypesTwo.tailforearm)}} / {{/if}}{{data.bodyType.drTypesTwo.tailforearm}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Tail -2</span><br>
+											Injury capped at 2xHP<br>
+											(1xHP if using bleeding)<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Limb -3</span><br>
+										</div>
+									</span>
+								</div>
+							{{/if}}
 							{{#if (eq actor.data.bodyType.name "octopod")}}
 								<div class="tooltip location-tentacle4-thigh-left">
 									{{data.bodyType.drTypesOne.tentacleLeft4shoulder}}{{#if (and data.bodyType.drTypesOne.tentacleLeft4shoulder data.bodyType.drTypesTwo.tentacleLeft4shoulder)}} / {{/if}}{{data.bodyType.drTypesTwo.tentacleLeft4shoulder}}
@@ -1681,6 +1711,12 @@
 											</div>
 											<div>
 												<span style="text-decoration: underline">Shoulder -5</span><br>
+												The following applies only tp cut, imp, pi, and tbb attacks<br>
+												0.5x more injury<br>
+												Cannot cripple the limb<br>
+												No injury limit<br>
+												Bleed every 30s @ -3<br>
+												(Or -4 for cutting)
 											</div>
 										</span>
 								</div>
@@ -1694,6 +1730,12 @@
 											</div>
 											<div>
 												<span style="text-decoration: underline">Shoulder -5</span><br>
+												The following applies only tp cut, imp, pi, and tbb attacks<br>
+												0.5x more injury<br>
+												Cannot cripple the limb<br>
+												No injury limit<br>
+												Bleed every 30s @ -3<br>
+												(Or -4 for cutting)
 											</div>
 										</span>
 								</div>

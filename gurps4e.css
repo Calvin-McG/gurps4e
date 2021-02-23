@@ -1457,6 +1457,18 @@
 	background-color: #e8def1;
 }
 
+.location-tail-shoulder {
+	grid-column: 14 / 16;
+	grid-row: 26 / 28;
+	background-color: #eefeff;
+}
+
+.location-tail-forearm {
+	grid-column: 14 / 16;
+	grid-row: 28 / 32;
+	background-color: #eefeff;
+}
+
 .tooltip {
 	position: relative;
 }
