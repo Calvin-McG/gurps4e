@@ -11,8 +11,8 @@ export class gurpsActorSheet extends ActorSheet {
 		return mergeObject(super.defaultOptions, {
 			classes: ["gurps4e", "sheet", "actor"],
 			template: "systems/gurps4e/templates/actor/actor-sheet.html",
-			width: 590,
-			height: 615,
+			width: 780,
+			height: 780,
 			tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "stats" }]
 		});
 	}
@@ -207,7 +207,8 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Humanoid Upper Chest");
 			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Humanoid Lower Chest");
 			bodyObj.chestAnimal = this.addChest(actorData.reserves.hp.max,"Animal Chest");
-			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Humanoid Abdomen");
+			bodyObj.abdomen = this.addCentaurAbdomen(actorData.reserves.hp.max,"Humanoid Abdomen");
+			bodyObj.animalAbdomen = this.addAbdomen(actorData.reserves.hp.max,"Animal Abdomen");
 			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Fore Foot", "Foot", "Ankle");
 			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Fore Foot", "Foot", "Ankle");
 			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hand", "Hand", "Wrist");
@@ -1323,6 +1324,124 @@ export class gurpsActorSheet extends ActorSheet {
 					personalDRHardeningImp: 0,
 					personalDRHardeningPi: 0,
 					personalDRHardeningTox: 0,
+					flexible: false
+				}
+			}
+		}
+
+		return part;
+	}
+
+	addCentaurAbdomen(hp, label){ // This is the abdomen for the humanoid chest
+		let pelvisHp = Math.ceil(hp/2);
+		if (pelvisHp <= hp/2){ // Make sure that part hp is greater than one half HP
+			pelvisHp += 1;
+		}
+
+		let part = {
+			label: label,
+			penalty: "-1",
+			flexible: false,
+			subLocation: {
+				digestiveTract: {
+					label: "Digestive Tract",
+					penalty: "-3",
+					personalDRBurn: 0,
+					personalDRCor: 0,
+					personalDRCr: 0,
+					personalDRCut: 0,
+					personalDRFat: 0,
+					personalDRImp: 0,
+					personalDRPi: 0,
+					personalDRTox: 0,
+					personalWoundMultBurn: 1,
+					personalWoundMultCor: 1,
+					personalWoundMultCr: 1,
+					personalWoundMultCut: 1.5,
+					personalWoundMultFat: 1,
+					personalWoundMultImp: 1,
+					personalWoundMultPim: 0.5,
+					personalWoundMultPi: 1,
+					personalWoundMultPip: 1,
+					personalWoundMultPipp: 1,
+					personalWoundMultTox: 1,
+					personalDRHardeningBurn: 0,
+					personalDRHardeningCor: 0,
+					personalDRHardeningCr: 0,
+					personalDRHardeningCut: 0,
+					personalDRHardeningFat: 0,
+					personalDRHardeningImp: 0,
+					personalDRHardeningPi: 0,
+					personalDRHardeningTox: 0,
+					flexible: false
+				},
+				vitals: {
+					label: "Vitals",
+					penalty: "-3",
+					personalDRBurn: 0,
+					personalDRCor: 0,
+					personalDRCr: 0,
+					personalDRCut: 0,
+					personalDRFat: 0,
+					personalDRImp: 0,
+					personalDRPi: 0,
+					personalDRTox: 0,
+					personalWoundMultBurn: 1,
+					personalWoundMultCor: 1,
+					personalWoundMultCr: 1,
+					personalWoundMultCut: 1.5,
+					personalWoundMultFat: 1,
+					personalWoundMultImp: 3,
+					personalWoundMultPim: 3,
+					personalWoundMultPi: 3,
+					personalWoundMultPip: 3,
+					personalWoundMultPipp: 3,
+					personalWoundMultTox: 1,
+					personalDRHardeningBurn: 0,
+					personalDRHardeningCor: 0,
+					personalDRHardeningCr: 0,
+					personalDRHardeningCut: 0,
+					personalDRHardeningFat: 0,
+					personalDRHardeningImp: 0,
+					personalDRHardeningPi: 0,
+					personalDRHardeningTox: 0,
+					flexible: false
+				},
+				pelvis: {
+					label: "Pelvis",
+					penalty: "-3",
+					personalDRBurn: 0,
+					personalDRCor: 0,
+					personalDRCr: 0,
+					personalDRCut: 0,
+					personalDRFat: 0,
+					personalDRImp: 0,
+					personalDRPi: 0,
+					personalDRTox: 0,
+					personalWoundMultBurn: 1,
+					personalWoundMultCor: 1,
+					personalWoundMultCr: 1,
+					personalWoundMultCut: 1.5,
+					personalWoundMultFat: 1,
+					personalWoundMultImp: 1,
+					personalWoundMultPim: 0.5,
+					personalWoundMultPi: 1,
+					personalWoundMultPip: 1,
+					personalWoundMultPipp: 1,
+					personalWoundMultTox: 1,
+					personalDRHardeningBurn: 0,
+					personalDRHardeningCor: 0,
+					personalDRHardeningCr: 0,
+					personalDRHardeningCut: 0,
+					personalDRHardeningFat: 0,
+					personalDRHardeningImp: 0,
+					personalDRHardeningPi: 0,
+					personalDRHardeningTox: 0,
+					hp: {
+						max: pelvisHp,
+						state: "Fine",
+						value: pelvisHp
+					},
 					flexible: false
 				}
 			}

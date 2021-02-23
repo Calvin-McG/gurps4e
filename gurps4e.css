@@ -817,7 +817,7 @@
 .hitLocations {
 	flex: 1;
 	display: grid;
-	grid-template-columns: repeat(28,15px);
+	grid-template-columns: repeat(35,15px);
 	grid-template-rows: repeat(38,15px);
 	text-align: center;
 }
@@ -973,6 +973,7 @@
 .location-upper-arm-right {
 	grid-column: 22 / 25;
 	grid-row: 13 / 16;
+	z-index: 1;
 	background-color: #C4D79B;
 }
 
@@ -986,6 +987,7 @@
 .location-elbow-right {
 	grid-column: 23 / 26;
 	grid-row: 16 / 18;
+	z-index: 1;
 	background-color: #4F6228;
 	color: blanchedalmond;
 }
@@ -999,6 +1001,7 @@
 .location-forearm-right {
 	grid-column: 24 / 27;
 	grid-row: 18 / 21;
+	z-index: 1;
 	background-color: #EBF1DE;
 }
 
@@ -1011,6 +1014,7 @@
 .location-wrist-right {
 	grid-column: 25 / 28;
 	grid-row: 21 / 22;
+	z-index: 1;
 	background-color: #E4DFEC;
 }
 
@@ -1023,6 +1027,7 @@
 .location-hand-right {
 	grid-column: 25 / 28;
 	grid-row: 22 / 23;
+	z-index: 1;
 	background-color: #B1A0C7;
 }
 
@@ -1035,6 +1040,7 @@
 .location-palm-right {
 	grid-column: 25 / 28;
 	grid-row: 23 / 24;
+	z-index: 1;
 	background-color: #60497A;
 }
 
@@ -1468,6 +1474,144 @@
 	grid-row: 28 / 32;
 	background-color: #eefeff;
 }
+
+.location-animal-chest {
+	grid-column: 21 / 30;
+	grid-row: 20 / 26;
+	text-align: left;
+	background-color: #bfad9f;
+}
+
+.location-animal-chest-vitals {
+	grid-column: 28 / 30;
+	grid-row: 21 / 24;
+	z-index: 1;
+	background-color: #ff0000;
+}
+
+.location-animal-chest-spine {
+	grid-column: 21 / 30;
+	grid-row: 18 / 20;
+	text-align: left;
+	background-color: #bebebe;
+}
+
+.location-animal-abdomen-vitals {
+	grid-column: 30 / 32;
+	grid-row: 21 / 24;
+	z-index: 1;
+	background-color: #ff0000;
+}
+
+.location-animal-abdomen-digestive {
+	grid-column: 30 / 33;
+	grid-row: 18 / 26;
+	background-color: #C4BD97;
+}
+
+.location-animal-abdomen-pelvis {
+	grid-column: 33 / 36;
+	grid-row: 18 / 26;
+	background-color: #948A54;
+}
+
+.location-animal-abdomen-groin {
+	grid-column: 34 / 36;
+	grid-row: 23 / 26;
+	z-index: 1;
+	background-color: #494529;
+	color: blanchedalmond;
+}
+
+
+.location-hind-thigh-left {
+	grid-column: 27 / 31;
+	grid-row: 26 / 30;
+	background-color: #DA9694;
+}
+
+.location-hind-thigh-right {
+	grid-column: 32 / 36;
+	grid-row: 26 / 30;
+	background-color: #DA9694;
+}
+
+.location-hind-thigh-artery-left {
+	grid-column: 28 / 30;
+	grid-row: 27 / 30;
+	z-index: 1;
+	background-color: #bb5b58;
+}
+
+.location-hind-thigh-artery-right {
+	grid-column: 33 / 35;
+	grid-row: 27 / 30;
+	z-index: 1;
+	background-color: #bb5b58;
+}
+
+.location-hind-knee-left {
+	grid-column: 27 / 31;
+	grid-row: 30 / 32;
+	background-color: #963634;
+}
+
+.location-hind-knee-right {
+	grid-column: 32 / 36;
+	grid-row: 30 / 32;
+	background-color: #963634;
+}
+
+.location-hind-shin-left {
+	grid-column: 27 / 31;
+	grid-row: 32 / 36;
+	background-color: #F2DCDB;
+}
+
+.location-hind-shin-right {
+	grid-column: 32 / 36;
+	grid-row: 32 / 36;
+	background-color: #F2DCDB;
+}
+
+.location-hind-ankle-left {
+	grid-column: 27 / 31;
+	grid-row: 36 / 37;
+	background-color: #E4DFEC;
+}
+
+.location-hind-ankle-right {
+	grid-column: 32 / 36;
+	grid-row: 36 / 37;
+	background-color: #E4DFEC;
+}
+
+.location-hind-foot-left {
+	grid-column: 27 / 31;
+	grid-row: 37 / 38;
+	background-color: #B1A0C7;
+}
+
+.location-hind-foot-right {
+	grid-column: 32 / 36;
+	grid-row: 37 / 38;
+	background-color: #B1A0C7;
+}
+
+.location-hind-sole-left {
+	grid-column: 27 / 31;
+	grid-row: 38 / 39;
+	background-color: #60497A;
+	color: aliceblue;
+}
+
+.location-hind-sole-right {
+	grid-column: 32 / 36;
+	grid-row: 38 / 39;
+	background-color: #60497A;
+	color: aliceblue;
+}
+
 
 .tooltip {
 	position: relative;

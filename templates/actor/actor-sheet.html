@@ -1562,23 +1562,23 @@
 								{{data.bodyType.drTypesOne.upperChestvitals}}{{#if (and data.bodyType.drTypesOne.upperChestvitals data.bodyType.drTypesTwo.upperChestvitals)}} / {{/if}}{{data.bodyType.drTypesTwo.upperChestvitals}}<br>
 								{{data.bodyType.drTypesOne.lowerChestvitals}}{{#if (and data.bodyType.drTypesOne.lowerChestvitals data.bodyType.drTypesTwo.lowerChestvitals)}} / {{/if}}{{data.bodyType.drTypesTwo.lowerChestvitals}}
 								<span class="tooltiptext">
-								<div style="border-bottom: 2px white solid">
-									<span style="text-decoration: underline">Chest -0</span><br>
-									Injury capped at 2xHP<br>
-									(1xHP if using bleeding)<br>
-									Chest is split into upper/lower<br>
-									-1 to target either specifically
-								</div>
-								<div>
-									<span style="text-decoration: underline">Vitals -3</span><br>
-									Imp and pi do 3x inj<br>
-									tbb does 2x inj<br>
-									Shock forces a knockdown roll<br>
-									Major wound knockdown is @ -5<br>
-									Cr can still trigger knockdown<br>
-									Bleed every 30s @ -4<br>
-								</div>
-							</span>
+									<div style="border-bottom: 2px white solid">
+										<span style="text-decoration: underline">Chest -0</span><br>
+										Injury capped at 2xHP<br>
+										(1xHP if using bleeding)<br>
+										Chest is split into upper/lower<br>
+										-1 to target either specifically
+									</div>
+									<div>
+										<span style="text-decoration: underline">Vitals -3</span><br>
+										Imp and pi do 3x inj<br>
+										tbb does 2x inj<br>
+										Shock forces a knockdown roll<br>
+										Major wound knockdown is @ -5<br>
+										Cr can still trigger knockdown<br>
+										Bleed every 30s @ -4<br>
+									</div>
+								</span>
 							</div>
 							{{#unless (eq actor.data.bodyType.name "octopod")}}
 								<div class="tooltip location-torso-spine">
@@ -1653,22 +1653,350 @@
 									{{/unless}}
 								</span>
 							</div>
-							<div class="tooltip location-groin">
-								{{data.bodyType.drTypesOne.abdomengroin}}{{#if (and data.bodyType.drTypesOne.abdomengroin data.bodyType.drTypesTwo.abdomengroin)}} / {{/if}}{{data.bodyType.drTypesTwo.abdomengroin}}
+							{{#if (eq actor.data.bodyType.name "centaur")}}
+								<div class="tooltip location-animal-chest">
+									{{data.bodyType.drTypesOne.chestAnimalchest}}{{#if (and data.bodyType.drTypesOne.chestAnimalchest data.bodyType.drTypesTwo.chestAnimalchest)}} / {{/if}}{{data.bodyType.drTypesTwo.chestAnimalchest}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Animal Chest -0</span><br>
+											Injury capped at 2xHP<br>
+											(1xHP if using bleeding)<br>
+										</div>
+									</span>
+								</div>
+
+								<div class="tooltip location-animal-chest-vitals">
+									{{data.bodyType.drTypesOne.chestAnimalvitals}}{{#if (and data.bodyType.drTypesOne.chestAnimalvitals data.bodyType.drTypesTwo.chestAnimalvitals)}} / {{/if}}{{data.bodyType.drTypesTwo.chestAnimalvitals}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Animal Chest -0</span><br>
+											Injury capped at 2xHP<br>
+											(1xHP if using bleeding)<br>
+											Chest is split into upper/lower<br>
+											-1 to target either specifically
+										</div>
+										<div>
+											<span style="text-decoration: underline">Vitals -3</span><br>
+											Imp and pi do 3x inj<br>
+											tbb does 2x inj<br>
+											Shock forces a knockdown roll<br>
+											Major wound knockdown is @ -5<br>
+											Cr can still trigger knockdown<br>
+											Bleed every 30s @ -4<br>
+										</div>
+									</span>
+								</div>
+
+								<div class="tooltip location-animal-chest-spine">
+									{{data.bodyType.drTypesOne.chestAnimalspine}}{{#if (and data.bodyType.drTypesOne.chestAnimalspine data.bodyType.drTypesTwo.chestAnimalspine)}} / {{/if}}{{data.bodyType.drTypesTwo.chestAnimalspine}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Animal Chest -0</span><br>
+												Injury capped at 2xHP<br>
+												(1xHP if using bleeding)<br>
+												Chest is split into upper/lower<br>
+												-1 to target either specifically
+											</div>
+											<div>
+												<span style="text-decoration: underline">Spine -8</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.upperChest.subLocation.spine.hp.value}} / {{data.bodyType.body.upperChest.subLocation.spine.hp.max}} HP</span><br>
+												The following applies even with HPT<br>
+												Shock forces a knockdown roll<br>
+												Major wound knockdown is @ -5<br>
+												Crippling the spine causes Bad Back (Severe) and Lame (Paraplegic) until healed
+											</div>
+										</span>
+								</div>
+
+								<div class="tooltip location-animal-abdomen-vitals">
+									{{data.bodyType.drTypesOne.animalAbdomenvitals}}{{#if (and data.bodyType.drTypesOne.animalAbdomenvitals data.bodyType.drTypesTwo.animalAbdomenvitals)}} / {{/if}}{{data.bodyType.drTypesTwo.animalAbdomenvitals}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Animal Abdomen -1</span><br>
+											Injury capped at 2xHP<br>
+											(1xHP if using bleeding)<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Vitals -3/-4</span><br>
+											Imp and pi do 3x inj<br>
+											tbb does 2x inj<br>
+											Shock forces a knockdown roll<br>
+											Major wound knockdown is @ -5<br>
+											Cr can still trigger knockdown<br>
+											Bleed every 30s @ -4<br>
+										</div>
+									</span>
+								</div>
+
+								<div class="tooltip location-animal-abdomen-digestive">
+									{{data.bodyType.drTypesOne.animalAbdomendigestiveTract}}{{#if (and data.bodyType.drTypesOne.animalAbdomendigestiveTract data.bodyType.drTypesTwo.animalAbdomendigestiveTract)}} / {{/if}}{{data.bodyType.drTypesTwo.animalAbdomendigestiveTract}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Animal Abdomen -1</span><br>
+											Injury capped at 2xHP<br>
+											(1xHP if using bleeding)<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Digestive Tract -3</span><br>
+											On a major wound roll HT-3 to avoid special infection<br>
+										</div>
+									</span>
+								</div>
+
+								<div class="tooltip location-animal-abdomen-pelvis">
+									{{data.bodyType.drTypesOne.animalAbdomenpelvis}}{{#if (and data.bodyType.drTypesOne.animalAbdomenpelvis data.bodyType.drTypesTwo.animalAbdomenpelvis)}} / {{/if}}{{data.bodyType.drTypesTwo.animalAbdomenpelvis}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Animal Abdomen -1</span><br>
+											Injury capped at 2xHP<br>
+											(1xHP if using bleeding)<br>
+										</div>
+										{{#unless (eq actor.data.bodyType.name "octopod")}}
+											<div>
+												<span style="text-decoration: underline">Pelvis -3</span><br>
+												On a major wound: Lame (Missing Legs) until healed<br>
+											</div>
+										{{/unless}}
+									</span>
+								</div>
+
+								<div class="tooltip location-animal-abdomen-groin">
+									{{data.bodyType.drTypesOne.animalAbdomenvitals}}{{#if (and data.bodyType.drTypesOne.animalAbdomenvitals data.bodyType.drTypesTwo.animalAbdomenvitals)}} / {{/if}}{{data.bodyType.drTypesTwo.animalAbdomenvitals}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Animal Abdomen -1</span><br>
+												Injury capped at 2xHP<br>
+												(1xHP if using bleeding)<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Groin -3</span><br>
+												Crushing does double shock damage<br>
+												Major wound knockdown is @ -5<br>
+												Armour gap targeted at -8
+											</div>
+										</span>
+								</div>
+
+								<div class="tooltip location-hind-thigh-left">
+									{{data.bodyType.drTypesOne.hindlegLeftthigh}}{{#if (and data.bodyType.drTypesOne.hindlegLeftthigh data.bodyType.drTypesTwo.hindlegLeftthigh)}} / {{/if}}{{data.bodyType.drTypesTwo.hindlegLeftthigh}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Left Hind Leg -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.hindlegLeft.hp.value}} / {{data.bodyType.body.hindlegLeft.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Left Thigh -5</span><br>
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-hind-thigh-right">
+									{{data.bodyType.drTypesOne.hindlegRightthigh}}{{#if (and data.bodyType.drTypesOne.hindlegRightthigh data.bodyType.drTypesTwo.hindlegRightthigh)}} / {{/if}}{{data.bodyType.drTypesTwo.hindlegRightthigh}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Right Hind Leg -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.hindlegRight.hp.value}} / {{data.bodyType.body.hindlegRight.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Right Thigh -5</span><br>
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-hind-thigh-artery-left">
+									{{data.bodyType.drTypesOne.hindlegLeftartery}}{{#if (and data.bodyType.drTypesOne.hindlegLeftartery data.bodyType.drTypesTwo.hindlegLeftartery)}} / {{/if}}{{data.bodyType.drTypesTwo.hindlegLeftartery}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Left Hind Leg -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.hindlegLeft.hp.value}} / {{data.bodyType.body.hindlegLeft.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Left Thigh Artery -5</span><br>
+												The following applies only tp cut, imp, pi, and tbb attacks<br>
+												0.5x more injury<br>
+												Cannot cripple the limb<br>
+												No injury limit<br>
+												Bleed every 30s @ -3<br>
+												(Or -4 for cutting)
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-hind-thigh-artery-right">
+									{{data.bodyType.drTypesOne.hindlegRightartery}}{{#if (and data.bodyType.drTypesOne.hindlegRightartery data.bodyType.drTypesTwo.hindlegRightartery)}} / {{/if}}{{data.bodyType.drTypesTwo.hindlegRightartery}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Right Hind Leg -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.hindlegRight.hp.value}} / {{data.bodyType.body.hindlegRight.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Right Thigh Artery -5</span><br>
+												The following applies only tp cut, imp, pi, and tbb attacks<br>
+												0.5x more injury<br>
+												Cannot cripple the limb<br>
+												No injury limit<br>
+												Bleed every 30s @ -3<br>
+												(Or -4 for cutting)
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-hind-knee-left">
+									{{data.bodyType.drTypesOne.hindlegLeftknee}}{{#if (and data.bodyType.drTypesOne.hindlegLeftknee data.bodyType.drTypesTwo.hindlegLeftknee)}} / {{/if}}{{data.bodyType.drTypesTwo.hindlegLeftknee}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Left Hind Leg -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.hindlegLeft.hp.value}} / {{data.bodyType.body.hindlegLeft.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Left Knee -5</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.hindlegLeft.subLocation.knee.hp.value}} / {{data.bodyType.body.hindlegLeft.subLocation.knee.hp.max}} HP</span><br>
+												Applies only to cr, cut, pi, tbb<br>
+												Crippled joints recover at -2<br>
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-hind-knee-right">
+									{{data.bodyType.drTypesOne.hindlegRightknee}}{{#if (and data.bodyType.drTypesOne.hindlegRightknee data.bodyType.drTypesTwo.hindlegRightknee)}} / {{/if}}{{data.bodyType.drTypesTwo.hindlegRightknee}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Right Hind Leg -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.hindlegRight.hp.value}} / {{data.bodyType.body.hindlegRight.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Right Knee -5</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.hindlegRight.subLocation.knee.hp.value}} / {{data.bodyType.body.hindlegRight.subLocation.knee.hp.max}} HP</span><br>
+												Applies only to cr, cut, pi, tbb<br>
+												Crippled joints recover at -2<br>
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-hind-shin-left">
+									{{data.bodyType.drTypesOne.hindlegLeftshin}}{{#if (and data.bodyType.drTypesOne.hindlegLeftshin data.bodyType.drTypesTwo.hindlegLeftshin)}} / {{/if}}{{data.bodyType.drTypesTwo.hindlegLeftshin}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Left Hind Leg -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.hindlegLeft.hp.value}} / {{data.bodyType.body.hindlegLeft.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Left Shin -4</span><br>
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-hind-shin-right">
+									{{data.bodyType.drTypesOne.hindlegRightshin}}{{#if (and data.bodyType.drTypesOne.hindlegRightshin data.bodyType.drTypesTwo.hindlegRightshin)}} / {{/if}}{{data.bodyType.drTypesTwo.hindlegRightshin}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Right Hind Leg -2</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.hindlegRight.hp.value}} / {{data.bodyType.body.hindlegRight.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Right Shin -4</span><br>
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-hind-ankle-left">
+									{{data.bodyType.drTypesOne.hindFootLeftjoint}}{{#if (and data.bodyType.drTypesOne.hindFootLeftjoint data.bodyType.drTypesTwo.hindFootLeftjoint)}} / {{/if}}{{data.bodyType.drTypesTwo.hindFootLeftjoint}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Left Hind Foot -4</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.hindFootLeft.hp.value}} / {{data.bodyType.body.hindFootLeft.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Left Ankle -7</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.hindFootLeft.subLocation.joint.hp.value}} / {{data.bodyType.body.hindFootLeft.subLocation.joint.hp.max}} HP</span><br>
+												Applies only to cr, cut, pi, tbb<br>
+												Crippled joints recover at -2<br>
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-hind-ankle-right">
+									{{data.bodyType.drTypesOne.hindFootRightjoint}}{{#if (and data.bodyType.drTypesOne.hindFootRightjoint data.bodyType.drTypesTwo.hindFootRightjoint)}} / {{/if}}{{data.bodyType.drTypesTwo.hindFootRightjoint}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Right Hind Foot -4</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.hindFootRight.hp.value}} / {{data.bodyType.body.hindFootRight.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Right Ankle -7</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.hindFootRight.subLocation.joint.hp.value}} / {{data.bodyType.body.hindFootRight.subLocation.joint.hp.max}} HP</span><br>
+												Applies only to cr, cut, pi, tbb<br>
+												Crippled joints recover at -2<br>
+											</div>
+										</span>
+								</div>
+							<div class="tooltip location-hind-foot-left">
+								{{data.bodyType.drTypesOne.hindFootLeftextremity}}{{#if (and data.bodyType.drTypesOne.hindFootLeftextremity data.bodyType.drTypesTwo.hindFootLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.hindFootLeftextremity}}
 								<span class="tooltiptext">
-									<div style="border-bottom: 2px white solid">
-										<span style="text-decoration: underline">Abdomen -1</span><br>
-										Injury capped at 2xHP<br>
-										(1xHP if using bleeding)<br>
-									</div>
-									<div>
-										<span style="text-decoration: underline">Groin -3</span><br>
-										Crushing does double shock damage<br>
-										Major wound knockdown is @ -5<br>
-										Armour gap targeted at -8
-									</div>
-								</span>
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Left Hind Foot -4</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.hindFootLeft.hp.value}} / {{data.bodyType.body.hindFootLeft.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+										</span>
 							</div>
+							<div class="tooltip location-hind-foot-right">
+								{{data.bodyType.drTypesOne.hindFootRightextremity}}{{#if (and data.bodyType.drTypesOne.hindFootRightextremity data.bodyType.drTypesTwo.hindFootRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.hindFootRightextremity}}
+								<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Right Hind Foot -4</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.hindFootRight.hp.value}} / {{data.bodyType.body.hindFootRight.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+										</span>
+							</div>
+							{{#if data.bodyType.chinks.sole}}
+							<div class="tooltip location-hind-sole-left">
+								{{data.bodyType.drTypesOne.hindFootLeftextremity}}{{#if (and data.bodyType.drTypesOne.hindFootLeftextremity data.bodyType.drTypesTwo.hindFootLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.hindFootLeftextremity}}
+								<span class="tooltiptext">
+													<div style="border-bottom: 2px white solid">
+														<span style="text-decoration: underline">Left Hind Foot -4</span><br>
+														<span style="color: #ff4848">{{data.bodyType.body.hindFootLeft.hp.value}} / {{data.bodyType.body.hindFootLeft.hp.max}} HP</span><br>
+														pi/imp attacks cap at 1x<br>
+													</div>
+													<div>
+														<span style="text-decoration: underline">Left Sole</span><br>
+													</div>
+												</span>
+							</div>
+							<div class="tooltip location-hind-sole-right">
+								{{data.bodyType.drTypesOne.hindFootRightextremity}}{{#if (and data.bodyType.drTypesOne.hindFootRightextremity data.bodyType.drTypesTwo.hindFootRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.hindFootRightextremity}}
+								<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Right Hind Foot -4</span><br>
+											<span style="color: #ff4848">{{data.bodyType.body.hindFootRight.hp.value}} / {{data.bodyType.body.hindFootRight.hp.max}} HP</span><br>
+											pi/imp attacks cap at 1x<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Right Sole</span><br>
+										</div>
+									</span>
+							</div>
+							{{/if}}
+							{{else}}
+								<div class="tooltip location-groin">
+									{{data.bodyType.drTypesOne.abdomengroin}}{{#if (and data.bodyType.drTypesOne.abdomengroin data.bodyType.drTypesTwo.abdomengroin)}} / {{/if}}{{data.bodyType.drTypesTwo.abdomengroin}}
+									<span class="tooltiptext">
+										<div style="border-bottom: 2px white solid">
+											<span style="text-decoration: underline">Abdomen -1</span><br>
+											Injury capped at 2xHP<br>
+											(1xHP if using bleeding)<br>
+										</div>
+										<div>
+											<span style="text-decoration: underline">Groin -3</span><br>
+											Crushing does double shock damage<br>
+											Major wound knockdown is @ -5<br>
+											Armour gap targeted at -8
+										</div>
+									</span>
+								</div>
+							{{/if}}
 							{{#if (eq actor.data.bodyType.name "avian")}}
 								<div class="tooltip location-tail-shoulder">
 									{{data.bodyType.drTypesOne.tailshoulder}}{{#if (and data.bodyType.drTypesOne.tailshoulder data.bodyType.drTypesTwo.tailshoulder)}} / {{/if}}{{data.bodyType.drTypesTwo.tailshoulder}}
