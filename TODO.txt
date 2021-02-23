@@ -1,12 +1,4 @@
-Add HP to tooltips where relevant
-Add labels to tooltips
-
 Layered Armour
-
-Add other body types
-    - Myrmidon (Ant)
-    - Cephalartus (Octopus)
-    - Centaur
 
 Add harsh armour gaps as targetable locations, added with checkboxes.
     - Make armour gaps always present and enterable, display based on checkboxes
