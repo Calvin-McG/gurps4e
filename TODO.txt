@@ -9,7 +9,7 @@ Add other body types
     - Centaur
 
 Add harsh armour gaps as targetable locations, added with checkboxes.
-    - On update, check box. If checked, then make sure location hasn't been added and add it. If it's added already, do nothing. If uncheck but the part is present, remove. If unchecked and not present, do nothing.
+    - Make armour gaps always present and enterable, display based on checkboxes
     - Palm - Quick display - Location added
     - Sole - Quick display - Location added
     - Armpit - Quick display - Location added
