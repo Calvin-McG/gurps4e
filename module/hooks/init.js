@@ -29,7 +29,7 @@ Hooks.once("init", () => {
     name: "Armour As Dice",
     hint: "Pyramid 3/34. DR converts to dice at 1d per 3.5. These dice are subtracted from the the attack, then the remainder is rolled. Makes guns behave better in HT and UT.",
     scope: "world",
-    config: false,
+    config: true,
     default: false,
     type: Boolean
   });
@@ -46,8 +46,8 @@ Hooks.once("init", () => {
 
   // Register Rigid armour can take blunt trauma option
   game.settings.register("gurps4e", "rigidBluntTrauma", {
-    name: "Allows rigid armour to take blunt trauma",
-    hint: "",
+    name: "Extended Blunt Trauma",
+    hint: "Allows rigid armour to take blunt trauma",
     scope: "world",
     config: true,
     default: false,
@@ -56,8 +56,8 @@ Hooks.once("init", () => {
 
   // Register Edge Protection option
   game.settings.register("gurps4e", "edgeProtection", {
-    name: "Cutting attacks must double the target DR or do crushing damage instead",
-    hint: "",
+    name: "Edge Protection",
+    hint: "Cutting attacks must double the target DR or do crushing damage instead",
     scope: "world",
     config: true,
     default: false,

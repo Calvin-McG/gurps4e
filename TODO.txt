@@ -10,7 +10,7 @@ Add harsh armour gaps as targetable locations, added with checkboxes.
     - Inside Thigh - Quick display - Location added
 
 Campaign toggles for...
-    - Rigid armour can take blunt trauma
-    - Edge protection
-    - Armour as Dice
-    - Bleeding
+    - Rigid armour can take blunt trauma - Added Checkbox
+    - Edge protection - Added Checkbox
+    - Armour as Dice - Added Checkbox
+    - Bleeding - Added Checkbox
