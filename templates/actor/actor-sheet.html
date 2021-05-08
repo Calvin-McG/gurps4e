@@ -2395,52 +2395,95 @@
 									<td class="tooltip">
 										Armpit
 										<span class="tooltiptext">
-											<div style="border-bottom: 2px white solid">
-												<span style="text-decoration: underline">Left Foot -4</span><br>
-												<span style="color: #ff4848">{{data.bodyType.body.footLeft.hp.value}} / {{data.bodyType.body.footLeft.hp.max}} HP</span><br>
-												pi/imp attacks cap at 1x<br>
-											</div>
 											<div>
-												<span style="text-decoration: underline">Left Sole</span><br>
+												<span style="text-decoration: underline">Armpit -8</span><br>
+												Armour gap over vitals. On a crit, cripple the arm instead of rolling on the table.<br>
 											</div>
 										</span>
 									</td>
-									<td>## / ##</td>
+									<td>{{data.bodyType.drTypesOne.armLeftarmpit}}{{#if (and data.bodyType.drTypesOne.armLeftarmpit data.bodyType.drTypesTwo.armLeftarmpit)}} / {{/if}}{{data.bodyType.drTypesTwo.armLeftarmpit}} -
+										{{data.bodyType.drTypesOne.armRightarmpit}}{{#if (and data.bodyType.drTypesOne.armRightarmpit data.bodyType.drTypesTwo.armRightarmpit)}} / {{/if}}{{data.bodyType.drTypesTwo.armRightarmpit}}</td>
 									<td>
 										<input type="checkbox" name="data.bodyType.chinks.armpit" {{checked data.bodyType.chinks.armpit}} data-dtype="Boolean"/>
 									</td>
 								</tr>
 								<tr>
-									<td>Inside Elbow</td>
-									<td>## / ##</td>
+									<td class="tooltip">
+										Inside Elbow
+										<span class="tooltiptext">
+											<div>
+												<span style="text-decoration: underline">Inside Elbow -8</span><br>
+												Armour gap over joint.<br>
+											</div>
+										</span>
+									</td>
+									<td>{{data.bodyType.drTypesOne.armLeftelbow}}{{#if (and data.bodyType.drTypesOne.armLeftelbow data.bodyType.drTypesTwo.armLeftelbow)}} / {{/if}}{{data.bodyType.drTypesTwo.armLeftelbow}} -
+										{{data.bodyType.drTypesOne.armRightelbow}}{{#if (and data.bodyType.drTypesOne.armRightelbow data.bodyType.drTypesTwo.armRightelbow)}} / {{/if}}{{data.bodyType.drTypesTwo.armRightelbow}}</td>
 									<td>
 										<input type="checkbox" name="data.bodyType.chinks.elbow" {{checked data.bodyType.chinks.elbow}} data-dtype="Boolean"/>
 									</td>
 								</tr>
 								<tr>
-									<td>Palm</td>
-									<td>## / ##</td>
+									<td class="tooltip">
+										Palm
+										<span class="tooltiptext">
+											<div>
+												<span style="text-decoration: underline">Palm -8 (-6 if unarmed)</span><br>
+												Armour gap over hand.<br>
+											</div>
+										</span>
+									</td>
+									<td>{{data.bodyType.drTypesOne.handLeftextremityInterior}}{{#if (and data.bodyType.drTypesOne.handLeftextremityInterior data.bodyType.drTypesTwo.handLeftextremityInterior)}} / {{/if}}{{data.bodyType.drTypesTwo.handLeftextremityInterior}} -
+										{{data.bodyType.drTypesOne.handRightextremityInterior}}{{#if (and data.bodyType.drTypesOne.handRightextremityInterior data.bodyType.drTypesTwo.handRightextremityInterior)}} / {{/if}}{{data.bodyType.drTypesTwo.handRightextremityInterior}}</td>
 									<td>
 										<input type="checkbox" name="data.bodyType.chinks.palm" {{checked data.bodyType.chinks.palm}} data-dtype="Boolean"/>
 									</td>
 								</tr>
 								<tr>
-									<td>Inside Thigh</td>
-									<td>## / ##</td>
+									<td class="tooltip">
+										Inside Thigh
+										<span class="tooltiptext">
+											<div>
+												<span style="text-decoration: underline">Inside Thigh -8 (-3 from the back)</span><br>
+												Armour gap over thigh.<br>
+											</div>
+										</span>
+									</td>
+									<td>{{data.bodyType.drTypesOne.legLeftinsideThigh}}{{#if (and data.bodyType.drTypesOne.legLeftinsideThigh data.bodyType.drTypesTwo.legLeftinsideThigh)}} / {{/if}}{{data.bodyType.drTypesTwo.legLeftinsideThigh}} -
+										{{data.bodyType.drTypesOne.legRightinsideThigh}}{{#if (and data.bodyType.drTypesOne.legRightinsideThigh data.bodyType.drTypesTwo.legRightinsideThigh)}} / {{/if}}{{data.bodyType.drTypesTwo.legRightinsideThigh}}</td>
 									<td>
 										<input type="checkbox" name="data.bodyType.chinks.thigh" {{checked data.bodyType.chinks.thigh}} data-dtype="Boolean"/>
 									</td>
 								</tr>
 								<tr>
-									<td>Back of Knee</td>
-									<td>## / ##</td>
+									<td class="tooltip">
+										Back of Knee
+										<span class="tooltiptext">
+											<div>
+												<span style="text-decoration: underline">Back of Knee -8</span><br>
+												Armour gap over joint.<br>
+											</div>
+										</span>
+									</td>
+									<td>{{data.bodyType.drTypesOne.legLeftbackOfKnee}}{{#if (and data.bodyType.drTypesOne.legLeftbackOfKnee data.bodyType.drTypesTwo.legLeftbackOfKnee)}} / {{/if}}{{data.bodyType.drTypesTwo.legLeftbackOfKnee}} -
+										{{data.bodyType.drTypesOne.legRightbackOfKnee}}{{#if (and data.bodyType.drTypesOne.legRightbackOfKnee data.bodyType.drTypesTwo.legRightbackOfKnee)}} / {{/if}}{{data.bodyType.drTypesTwo.legRightbackOfKnee}}</td>
 									<td>
 										<input type="checkbox" name="data.bodyType.chinks.knee" {{checked data.bodyType.chinks.knee}} data-dtype="Boolean"/>
 									</td>
 								</tr>
 								<tr>
-									<td>Sole</td>
-									<td>## / ##</td>
+									<td class="tooltip">
+										Sole
+										<span class="tooltiptext">
+											<div>
+												<span style="text-decoration: underline">Sole</span><br>
+												Armour gap over foot.<br>
+												Your foot is on the ground most of the time. But this DR also applies to terrian hazards and traps.<br>
+											</div>
+										</span>
+									</td>
+									<td>{{data.bodyType.drTypesOne.footLeftextremityInterior}}{{#if (and data.bodyType.drTypesOne.footLeftextremityInterior data.bodyType.drTypesTwo.footLeftextremityInterior)}} / {{/if}}{{data.bodyType.drTypesTwo.footLeftextremityInterior}} -
+										{{data.bodyType.drTypesOne.footRightextremityInterior}}{{#if (and data.bodyType.drTypesOne.footRightextremityInterior data.bodyType.drTypesTwo.footRightextremityInterior)}} / {{/if}}{{data.bodyType.drTypesTwo.footRightextremityInterior}}</td>
 									<td>
 										<input type="checkbox" name="data.bodyType.chinks.sole" {{checked data.bodyType.chinks.sole}} data-dtype="Boolean"/>
 									</td>
