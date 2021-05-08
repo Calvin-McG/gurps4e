@@ -63,6 +63,16 @@ Hooks.once("init", () => {
     default: false,
     type: Boolean
   });
+
+  // Register Edge Protection option
+  game.settings.register("gurps4e", "harshThighGap", {
+    name: "Thigh gap over artery",
+    hint: "The 'Inside Thigh' gap lets cut, imp, pi, and tbb hit the artery instead of the thigh.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
   // Pre-load templates
   loadTemplates([
     "systems/gurps4e/templates/actor/actor-sheet.html",
