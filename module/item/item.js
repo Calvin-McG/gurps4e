@@ -34,9 +34,6 @@ export class gurpsItem extends Item {
       case "Equipment":
         this._prepareEquipmentData(itemData, data);
         break;
-      case "Hit-Location":
-        this._prepareHitLocationData(itemData, data);
-        break;
       case "Rollable":
         this._prepareRollableData(itemData, data);
         break;
@@ -179,10 +176,6 @@ export class gurpsItem extends Item {
     damage = damage.replace("sw", sw)//Replace swing
 
     return damage;
-  }
-
-  _prepareHitLocationData(itemData, data) {
-    // Override common default icon
   }
 
   getBaseAttrValue(baseAttr) {
