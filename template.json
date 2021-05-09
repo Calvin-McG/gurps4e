@@ -311,17 +311,10 @@
         "equipStatus",
         "melee",
         "ranged"
-      ]
-    },
-    "Hit-Location": {
-      "templates": [
-        "base"
       ],
-      "damageResistance": 0,
-      "toCripple": "",
-      "crippled": false,
-      "toHitRoll": "13/18, 2/6",
-      "toHitPenalty": 0
+      "armour": {
+        "bodyType": ""
+      }
     },
     "Item": {
       "templates": [
