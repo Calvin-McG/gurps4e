@@ -71,19 +71,15 @@ export class gurpsActorSheet extends ActorSheet {
 	/* -------------------------------------------- */
 	_onBodyTypeChange(event) {
 		event.preventDefault();
-		console.log(event.target.value);
 		let bodyType = event.target.value;
 
 		if(bodyType == ""){
-			console.log("No type selected.")
 			this.actor.update({ "data.bodyType.-=body" : null}).then( actor => {// Remove the old body
-				console.log(actor);
 			});
 			return
 		}
 
 		let actorData = this.object.data.data
-		console.log(actorData)
 
 		let bodyObj = {};
 
@@ -325,10 +321,7 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
 		}
 
-		console.log("Updating body")
-		console.log(bodyObj)
 		this.actor.update({ "data.bodyType.-=body" : null}).then( actor => {// Remove the old body
-			console.log(actor);
 			actor.update({ "data.bodyType.body" : bodyObj }) // Add the new body
 		});
 	}

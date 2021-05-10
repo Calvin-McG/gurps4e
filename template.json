@@ -313,7 +313,8 @@
         "ranged"
       ],
       "armour": {
-        "bodyType": ""
+        "bodyType": "",
+        "layer": 0
       }
     },
     "Item": {

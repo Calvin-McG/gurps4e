@@ -121,14 +121,11 @@ export class gurpsItemSheet extends ItemSheet {
 
         if(bodyType == ""){
             console.log("No type selected.")
-            this.actor.update({ "data.bodyType.-=body" : null}).then( actor => {// Remove the old body
-                console.log(actor);
+            this.item.update({ "data.armour.bodyType.-=body" : null}).then( item => {// Remove the old body
+                console.log(item);
             });
             return
         }
-
-        let actorData = this.object.data.data
-        console.log(actorData)
 
         let bodyObj = {};
 
@@ -381,13 +378,13 @@ export class gurpsItemSheet extends ItemSheet {
     addSkull() {
         let part = {
             label: "Skull",
-            drBurn: 2,
-            drCor: 2,
-            drCr: 2,
-            drCut: 2,
-            drFat: 2,
-            drImp: 2,
-            drPi: 2,
+            drBurn: 0,
+            drCor: 0,
+            drCr: 0,
+            drCut: 0,
+            drFat: 0,
+            drImp: 0,
+            drPi: 0,
             drTox: 0,
             drHardeningBurn: 0,
             drHardeningCor: 0,
@@ -895,14 +892,14 @@ export class gurpsItemSheet extends ItemSheet {
                 },
                 spine: {
                     label: "Spine",
-                    drBurn: 3,
-                    drCor: 3,
-                    drCr: 3,
-                    drCut: 3,
-                    drFat: 3,
-                    drImp: 3,
-                    drPi: 3,
-                    drTox: 3,
+                    drBurn: 0,
+                    drCor: 0,
+                    drCr: 0,
+                    drCut: 0,
+                    drFat: 0,
+                    drImp: 0,
+                    drPi: 0,
+                    drTox: 0,
                     drHardeningBurn: 0,
                     drHardeningCor: 0,
                     drHardeningCr: 0,
