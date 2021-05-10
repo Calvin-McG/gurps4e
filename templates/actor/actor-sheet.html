@@ -1187,36 +1187,34 @@
 										</div>
 									</span>
 								</div>
-								{{#if data.bodyType.chinks.palm}}
-									<div class="tooltip location-palm-left">
-										{{data.bodyType.drTypesOne.handLeftextremity}}{{#if (and data.bodyType.drTypesOne.handLeftextremity data.bodyType.drTypesTwo.handLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handLeftextremity}}
-										<span class="tooltiptext">
-												<div style="border-bottom: 2px white solid">
-													<span style="text-decoration: underline">Left Hand -4</span><br>
-													<span style="color: #ff4848">{{data.bodyType.body.handLeft.hp.value}} / {{data.bodyType.body.handLeft.hp.max}} HP</span><br>
-													pi/imp attacks cap at 1x<br>
-												</div>
-												<div>
-													<span style="text-decoration: underline">Left Palm -8</span><br>
-													Penalty is -6 if unarmed<br>
-												</div>
-											</span>
-									</div>
-									<div class="tooltip location-palm-right">
-										{{data.bodyType.drTypesOne.handRightextremity}}{{#if (and data.bodyType.drTypesOne.handRightextremity data.bodyType.drTypesTwo.handRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handRightextremity}}
-										<span class="tooltiptext">
-												<div style="border-bottom: 2px white solid">
-													<span style="text-decoration: underline">Right Hand -4</span><br>
-													<span style="color: #ff4848">{{data.bodyType.body.handRight.hp.value}} / {{data.bodyType.body.handRight.hp.max}} HP</span><br>
-													pi/imp attacks cap at 1x<br>
-												</div>
-												<div>
-													<span style="text-decoration: underline">Right Palm -8</span><br>
-													Penalty is -6 if unarmed<br>
-												</div>
-											</span>
-									</div>
-								{{/if}}
+								<div class="tooltip location-palm-left">
+									{{data.bodyType.drTypesOne.handLeftextremity}}{{#if (and data.bodyType.drTypesOne.handLeftextremity data.bodyType.drTypesTwo.handLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handLeftextremity}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Left Hand -4</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.handLeft.hp.value}} / {{data.bodyType.body.handLeft.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Left Palm -8</span><br>
+												Penalty is -6 if unarmed<br>
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-palm-right">
+									{{data.bodyType.drTypesOne.handRightextremity}}{{#if (and data.bodyType.drTypesOne.handRightextremity data.bodyType.drTypesTwo.handRightextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.handRightextremity}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Right Hand -4</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.handRight.hp.value}} / {{data.bodyType.body.handRight.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Right Palm -8</span><br>
+												Penalty is -6 if unarmed<br>
+											</div>
+										</span>
+								</div>
 							{{/if}}
 
 							{{#if (eq actor.data.bodyType.name "octopod")}}
@@ -1513,7 +1511,6 @@
 									</div>
 								</span>
 								</div>
-								{{#if data.bodyType.chinks.palm}}
 								<div class="tooltip location-lower-palm-left">
 									{{data.bodyType.drTypesOne.lowerHandLeftextremity}}{{#if (and data.bodyType.drTypesOne.lowerHandLeftextremity data.bodyType.drTypesTwo.lowerHandLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.lowerHandLeftextremity}}
 									<span class="tooltiptext">
@@ -1542,7 +1539,6 @@
 										</div>
 									</span>
 								</div>
-								{{/if}}
 							{{/if}}
 
 							<div class="tooltip location-torso">
@@ -1951,7 +1947,6 @@
 											</div>
 										</span>
 							</div>
-							{{#if data.bodyType.chinks.sole}}
 							<div class="tooltip location-hind-sole-left">
 								{{data.bodyType.drTypesOne.hindFootLeftextremity}}{{#if (and data.bodyType.drTypesOne.hindFootLeftextremity data.bodyType.drTypesTwo.hindFootLeftextremity)}} / {{/if}}{{data.bodyType.drTypesTwo.hindFootLeftextremity}}
 								<span class="tooltiptext">
@@ -1978,7 +1973,6 @@
 										</div>
 									</span>
 							</div>
-							{{/if}}
 							{{else}}
 								<div class="tooltip location-groin">
 									{{data.bodyType.drTypesOne.abdomengroin}}{{#if (and data.bodyType.drTypesOne.abdomengroin data.bodyType.drTypesTwo.abdomengroin)}} / {{/if}}{{data.bodyType.drTypesTwo.abdomengroin}}
@@ -2387,7 +2381,7 @@
 						<div>
 							<table>
 								<tr>
-									<th colspan="3">
+									<th colspan="2">
 										Harsh Realism - Armour Gaps
 									</th>
 								</tr>
@@ -2403,9 +2397,6 @@
 									</td>
 									<td>{{data.bodyType.drTypesOne.armLeftarmpit}}{{#if (and data.bodyType.drTypesOne.armLeftarmpit data.bodyType.drTypesTwo.armLeftarmpit)}} / {{/if}}{{data.bodyType.drTypesTwo.armLeftarmpit}} -
 										{{data.bodyType.drTypesOne.armRightarmpit}}{{#if (and data.bodyType.drTypesOne.armRightarmpit data.bodyType.drTypesTwo.armRightarmpit)}} / {{/if}}{{data.bodyType.drTypesTwo.armRightarmpit}}</td>
-									<td>
-										<input type="checkbox" name="data.bodyType.chinks.armpit" {{checked data.bodyType.chinks.armpit}} data-dtype="Boolean"/>
-									</td>
 								</tr>
 								<tr>
 									<td class="tooltip">
@@ -2419,9 +2410,6 @@
 									</td>
 									<td>{{data.bodyType.drTypesOne.armLeftelbow}}{{#if (and data.bodyType.drTypesOne.armLeftelbow data.bodyType.drTypesTwo.armLeftelbow)}} / {{/if}}{{data.bodyType.drTypesTwo.armLeftelbow}} -
 										{{data.bodyType.drTypesOne.armRightelbow}}{{#if (and data.bodyType.drTypesOne.armRightelbow data.bodyType.drTypesTwo.armRightelbow)}} / {{/if}}{{data.bodyType.drTypesTwo.armRightelbow}}</td>
-									<td>
-										<input type="checkbox" name="data.bodyType.chinks.elbow" {{checked data.bodyType.chinks.elbow}} data-dtype="Boolean"/>
-									</td>
 								</tr>
 								<tr>
 									<td class="tooltip">
@@ -2435,9 +2423,6 @@
 									</td>
 									<td>{{data.bodyType.drTypesOne.handLeftextremityInterior}}{{#if (and data.bodyType.drTypesOne.handLeftextremityInterior data.bodyType.drTypesTwo.handLeftextremityInterior)}} / {{/if}}{{data.bodyType.drTypesTwo.handLeftextremityInterior}} -
 										{{data.bodyType.drTypesOne.handRightextremityInterior}}{{#if (and data.bodyType.drTypesOne.handRightextremityInterior data.bodyType.drTypesTwo.handRightextremityInterior)}} / {{/if}}{{data.bodyType.drTypesTwo.handRightextremityInterior}}</td>
-									<td>
-										<input type="checkbox" name="data.bodyType.chinks.palm" {{checked data.bodyType.chinks.palm}} data-dtype="Boolean"/>
-									</td>
 								</tr>
 								<tr>
 									<td class="tooltip">
@@ -2451,9 +2436,6 @@
 									</td>
 									<td>{{data.bodyType.drTypesOne.legLeftinsideThigh}}{{#if (and data.bodyType.drTypesOne.legLeftinsideThigh data.bodyType.drTypesTwo.legLeftinsideThigh)}} / {{/if}}{{data.bodyType.drTypesTwo.legLeftinsideThigh}} -
 										{{data.bodyType.drTypesOne.legRightinsideThigh}}{{#if (and data.bodyType.drTypesOne.legRightinsideThigh data.bodyType.drTypesTwo.legRightinsideThigh)}} / {{/if}}{{data.bodyType.drTypesTwo.legRightinsideThigh}}</td>
-									<td>
-										<input type="checkbox" name="data.bodyType.chinks.thigh" {{checked data.bodyType.chinks.thigh}} data-dtype="Boolean"/>
-									</td>
 								</tr>
 								<tr>
 									<td class="tooltip">
@@ -2467,9 +2449,6 @@
 									</td>
 									<td>{{data.bodyType.drTypesOne.legLeftbackOfKnee}}{{#if (and data.bodyType.drTypesOne.legLeftbackOfKnee data.bodyType.drTypesTwo.legLeftbackOfKnee)}} / {{/if}}{{data.bodyType.drTypesTwo.legLeftbackOfKnee}} -
 										{{data.bodyType.drTypesOne.legRightbackOfKnee}}{{#if (and data.bodyType.drTypesOne.legRightbackOfKnee data.bodyType.drTypesTwo.legRightbackOfKnee)}} / {{/if}}{{data.bodyType.drTypesTwo.legRightbackOfKnee}}</td>
-									<td>
-										<input type="checkbox" name="data.bodyType.chinks.knee" {{checked data.bodyType.chinks.knee}} data-dtype="Boolean"/>
-									</td>
 								</tr>
 								<tr>
 									<td class="tooltip">
@@ -2484,9 +2463,6 @@
 									</td>
 									<td>{{data.bodyType.drTypesOne.footLeftextremityInterior}}{{#if (and data.bodyType.drTypesOne.footLeftextremityInterior data.bodyType.drTypesTwo.footLeftextremityInterior)}} / {{/if}}{{data.bodyType.drTypesTwo.footLeftextremityInterior}} -
 										{{data.bodyType.drTypesOne.footRightextremityInterior}}{{#if (and data.bodyType.drTypesOne.footRightextremityInterior data.bodyType.drTypesTwo.footRightextremityInterior)}} / {{/if}}{{data.bodyType.drTypesTwo.footRightextremityInterior}}</td>
-									<td>
-										<input type="checkbox" name="data.bodyType.chinks.sole" {{checked data.bodyType.chinks.sole}} data-dtype="Boolean"/>
-									</td>
 								</tr>
 							</table>
 						</div>
