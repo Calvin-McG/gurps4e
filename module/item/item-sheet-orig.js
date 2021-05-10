@@ -116,13 +116,10 @@ export class gurpsItemSheet extends ItemSheet {
 
     _onBodyTypeChange(event) {
         event.preventDefault();
-        console.log(event.target.value);
         let bodyType = event.target.value;
 
         if(bodyType == ""){
-            console.log("No type selected.")
             this.item.update({ "data.armour.bodyType.-=body" : null}).then( item => {// Remove the old body
-                console.log(item);
             });
             return
         }
@@ -367,10 +364,7 @@ export class gurpsItemSheet extends ItemSheet {
             bodyObj.neck = this.addNeck();
         }
 
-        console.log("Updating body on item")
-        console.log(bodyObj)
         this.item.update({ "data.armour.bodyType.-=body" : null}).then( item => {// Remove the old body
-            console.log(item);
             this.item.update({ "data.armour.bodyType.body" : bodyObj }) // Add the new body
         });
     }
