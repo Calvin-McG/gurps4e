@@ -26,7 +26,7 @@ Hooks.once("init", () => {
 
   // Register Armour as Dice option
   game.settings.register("gurps4e", "armourAsDice", {
-    name: "Armour As Dice",
+    name: "Armour As Dice - WIP",
     hint: "Pyramid 3/34. DR converts to dice at 1d per 3.5. These dice are subtracted from the the attack, then the remainder is rolled. Makes guns behave better in HT and UT.",
     scope: "world",
     config: true,
@@ -36,7 +36,7 @@ Hooks.once("init", () => {
 
   // Register Armour as Dice option
   game.settings.register("gurps4e", "bleeding", {
-    name: "Use Bleeding Rules",
+    name: "Use Bleeding Rules - WIP",
     hint: "",
     scope: "world",
     config: true,
@@ -46,7 +46,7 @@ Hooks.once("init", () => {
 
   // Register Rigid armour can take blunt trauma option
   game.settings.register("gurps4e", "rigidBluntTrauma", {
-    name: "Extended Blunt Trauma",
+    name: "Extended Blunt Trauma - WIP",
     hint: "Allows rigid armour to take blunt trauma",
     scope: "world",
     config: true,
@@ -56,7 +56,7 @@ Hooks.once("init", () => {
 
   // Register Edge Protection option
   game.settings.register("gurps4e", "edgeProtection", {
-    name: "Edge Protection",
+    name: "Edge Protection - WIP",
     hint: "Cutting attacks must double the target DR or do crushing damage instead",
     scope: "world",
     config: true,
@@ -66,7 +66,7 @@ Hooks.once("init", () => {
 
   // Register Edge Protection option
   game.settings.register("gurps4e", "harshThighGap", {
-    name: "Thigh gap over artery",
+    name: "Thigh gap over artery - WIP",
     hint: "The 'Inside Thigh' gap lets cut, imp, pi, and tbb hit the artery instead of the thigh.",
     scope: "world",
     config: true,
