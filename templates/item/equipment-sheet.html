@@ -198,6 +198,9 @@
                         {{/select}}
                     </select>
                 </span>
+                {{#if (eq data.armour.bodyType.name "") }}
+                    <br>Please only set body type if this equipment applies DR. Otherwise the formula that adds up armour will check this for DR values. With enough items on your sheet it will eventually degrade performance.
+                {{else}}
                 <span class="tooltip">
                     <label>Layer:</label>
                     <input type="number" style="width: unset;" name="data.armour.layer" value="{{data.armour.layer}}" data-dtype="Number" />
@@ -211,32 +214,35 @@
                         </div>
 					</span>
                 </span>
+                {{/if}}
                 <table>
-                    <tr class="hit-locations">
-                        <td></td>
-                        <td></td>
-                        <td class="dr-damage-types">Burn</td>
-                        <td class="dr-damage-types">Cor</td>
-                        <td class="dr-damage-types">Cr</td>
-                        <td class="dr-damage-types">Cut</td>
-                        <td class="dr-damage-types">Fat</td>
-                        <td class="dr-damage-types">Imp</td>
-                        <td class="dr-damage-types">Pi</td>
-                        <td class="dr-damage-types">Tox</td>
-                        <td colspan="3" class="dr-damage-types"></td>
-                    </tr>
-                    <tr class="hit-locations">
-                        <td class="dr-header"></td>
-                        <td class="dr-header">Flex</td>
-                        <td class="dr-header">DR/Hard</td>
-                        <td class="dr-header">DR/Hard</td>
-                        <td class="dr-header">DR/Hard</td>
-                        <td class="dr-header">DR/Hard</td>
-                        <td class="dr-header">DR/Hard</td>
-                        <td class="dr-header">DR/Hard</td>
-                        <td class="dr-header">DR/Hard</td>
-                        <td class="dr-header">DR/Hard</td>
-                    </tr>
+                    {{#unless (eq data.armour.bodyType.name "") }}
+                        <tr class="hit-locations">
+                            <td></td>
+                            <td></td>
+                            <td class="dr-damage-types">Burn</td>
+                            <td class="dr-damage-types">Cor</td>
+                            <td class="dr-damage-types">Cr</td>
+                            <td class="dr-damage-types">Cut</td>
+                            <td class="dr-damage-types">Fat</td>
+                            <td class="dr-damage-types">Imp</td>
+                            <td class="dr-damage-types">Pi</td>
+                            <td class="dr-damage-types">Tox</td>
+                            <td colspan="3" class="dr-damage-types"></td>
+                        </tr>
+                        <tr class="hit-locations">
+                            <td class="dr-header"></td>
+                            <td class="dr-header">Flex</td>
+                            <td class="dr-header">DR/Hard</td>
+                            <td class="dr-header">DR/Hard</td>
+                            <td class="dr-header">DR/Hard</td>
+                            <td class="dr-header">DR/Hard</td>
+                            <td class="dr-header">DR/Hard</td>
+                            <td class="dr-header">DR/Hard</td>
+                            <td class="dr-header">DR/Hard</td>
+                            <td class="dr-header">DR/Hard</td>
+                        </tr>
+                    {{/unless}}
                     {{#each data.armour.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
                     <tr class="hit-locations master-location">
                         <td colspan="10">{{bodyPart.label}}</td>
