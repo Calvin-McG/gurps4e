@@ -780,12 +780,48 @@
 	border-left: 1px solid #b5b3a4;
 }
 
-.dr-row input {
-	width: 45%;
-}
-
 .dr-row.penalty {
 	text-align: center;
+}
+
+.dr-entry-table td:nth-child(2):not([colspan]) {
+	background: rgba(255, 140, 230, 0.15);
+}
+
+.dr-entry-table td:nth-child(3):not([colspan]) {
+	background: rgba(193, 193, 193, 0.15);
+}
+
+.dr-entry-table td:nth-child(4):not([colspan]) {
+	background: rgba(255, 190, 140, 0.15);
+}
+
+.dr-entry-table td:nth-child(5):not([colspan]) {
+	background: rgba(238, 255, 140, 0.15);
+}
+
+.dr-entry-table td:nth-child(6):not([colspan]) {
+	background: rgba(138, 98, 61, 0.15);
+}
+
+.dr-entry-table td:nth-child(7):not([colspan]) {
+	background: rgba(255, 140, 140, 0.15);
+}
+
+.dr-entry-table td:nth-child(8):not([colspan]) {
+	background: rgba(165, 255, 140, 0.15);
+}
+
+.dr-entry-table td:nth-child(9):not([colspan]) {
+	background: rgba(140, 142, 255, 0.15);
+}
+
+.dr-entry-table td:nth-child(10):not([colspan]) {
+	background: rgba(140, 255, 245, 0.15);
+}
+
+.dr-entry-table td:nth-child(11):not([colspan]) {
+	background: rgba(247, 140, 255, 0.15);
 }
 
 .hit-locations.master-location {

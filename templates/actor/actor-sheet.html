@@ -2554,10 +2554,11 @@
 						</tr>
 					</table>
 				</div>
-				<table>
+				<table class="dr-entry-table">
 					<tr class="hit-locations">
-						<td></td>
-						<td></td>
+						<td class="dr-header"></td>
+						<td class="dr-header">Flex</td>
+						<td class="dr-header">Hardness</td>
 						<td class="dr-damage-types">Burn</td>
 						<td class="dr-damage-types">Cor</td>
 						<td class="dr-damage-types">Cr</td>
@@ -2566,35 +2567,22 @@
 						<td class="dr-damage-types">Imp</td>
 						<td class="dr-damage-types">Pi</td>
 						<td class="dr-damage-types">Tox</td>
-						<td colspan="3" class="dr-damage-types"></td>
-					</tr>
-					<tr class="hit-locations">
-						<td class="dr-header"></td>
-						<td class="dr-header">Flex</td>
-						<td class="dr-header">DR/Hard</td>
-						<td class="dr-header">DR/Hard</td>
-						<td class="dr-header">DR/Hard</td>
-						<td class="dr-header">DR/Hard</td>
-						<td class="dr-header">DR/Hard</td>
-						<td class="dr-header">DR/Hard</td>
-						<td class="dr-header">DR/Hard</td>
-						<td class="dr-header">DR/Hard</td>
 						<td class="dr-header">HP</td>
 						<td class="dr-header">State</td>
 						<td class="dr-header">Penalty</td>
 					</tr>
 					{{#each actor.data.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
 						<tr class="hit-locations master-location">
-							<td colspan="10">{{bodyPart.label}}</td>
+							<th colspan="11">{{bodyPart.label}}</th>
 							{{#if bodyPart.hp}}
-								<td class="dr-row">
+								<th class="dr-row">
 									<input type="number" class="partHP" id="data.bodyType.body.{{partId}}.hp" name="data.bodyType.body.{{partId}}.hp.value" value="{{bodyPart.hp.value}}" data-dtype="Number" style="width: 50%;"/>
-									<span style="width: 45%;">/{{bodyPart.hp.max}}</span></td>
-								<td class="dr-row">{{bodyPart.hp.state}}</td>
+									<span style="width: 45%;">/{{bodyPart.hp.max}}</span></th>
+								<th class="dr-row">{{bodyPart.hp.state}}</th>
 							{{else}}
-								<td class="dr-row" colspan="2"></td>
+								<th class="dr-row" colspan="2"></th>
 							{{/if}}
-							<td class="dr-row penalty">{{bodyPart.penalty}}</td>
+							<th class="dr-row penalty">{{bodyPart.penalty}}</th>
 						</tr>
 						{{#if bodyPart.subLocation}}<!--Check to see if there are sublocations and display them-->
 							{{#each bodyPart.subLocation as |subLocation locationId|}}<!--Loop through the sublocations-->
@@ -2604,36 +2592,31 @@
 										<input type="checkbox" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.flexible" {{checked subLocation.flexible}} data-dtype="Boolean" style="width: 100%;"/>
 									</td>
 									<td class="dr-row">
+										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.personalDRHardening" value="{{subLocation.personalDRHardening}}" data-dtype="Number" />
+									</td>
+									<td class="dr-row">
 										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.personalDRBurn" value="{{subLocation.personalDRBurn}}" data-dtype="Number" />
-										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.personalDRHardeningBurn" value="{{subLocation.personalDRHardeningBurn}}" data-dtype="Number" />
 									</td>
 									<td class="dr-row">
 										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.personalDRCor" value="{{subLocation.personalDRCor}}" data-dtype="Number" />
-										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.personalDRHardeningCor" value="{{subLocation.personalDRHardeningCor}}" data-dtype="Number" />
 									</td>
 									<td class="dr-row">
 										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.personalDRCr" value="{{subLocation.personalDRCr}}" data-dtype="Number" />
-										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.personalDRHardeningCr"  value="{{subLocation.personalDRHardeningCr}}" data-dtype="Number" />
 									</td>
 									<td class="dr-row">
 										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.personalDRCut" value="{{subLocation.personalDRCut}}" data-dtype="Number" />
-										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.personalDRHardeningCut" value="{{subLocation.personalDRHardeningCut}}" data-dtype="Number" />
 									</td>
 									<td class="dr-row">
 										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.personalDRFat" value="{{subLocation.personalDRFat}}" data-dtype="Number" />
-										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.personalDRHardeningFat" value="{{subLocation.personalDRHardeningFat}}" data-dtype="Number" />
 									</td>
 									<td class="dr-row">
 										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.personalDRImp" value="{{subLocation.personalDRImp}}" data-dtype="Number" />
-										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.personalDRHardeningImp" value="{{subLocation.personalDRHardeningImp}}" data-dtype="Number" />
 									</td>
 									<td class="dr-row">
 										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.personalDRPi" value="{{subLocation.personalDRPi}}" data-dtype="Number" />
-										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.personalDRHardeningPi"  value="{{subLocation.personalDRHardeningPi}}" data-dtype="Number" />
 									</td>
 									<td class="dr-row">
 										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.personalDRTox" value="{{subLocation.personalDRTox}}" data-dtype="Number" />
-										<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.personalDRHardeningTox" value="{{subLocation.personalDRHardeningTox}}" data-dtype="Number" />
 									</td>
 									{{#if subLocation.hp}}
 									<td class="dr-row">
@@ -2653,36 +2636,31 @@
 									<input type="checkbox" name="data.bodyType.body.{{partId}}.flexible" {{checked bodyPart.flexible}} data-dtype="Boolean" style="width: 100%;"/>
 								</td>
 								<td class="dr-row">
+									<input type="number" name="data.bodyType.body.{{partId}}.personalDRHardening" value="{{bodyPart.personalDRHardening}}" data-dtype="Number" />
+								</td>
+								<td class="dr-row">
 									<input type="number" name="data.bodyType.body.{{partId}}.personalDRBurn" value="{{bodyPart.personalDRBurn}}" data-dtype="Number" />
-									<input type="number" name="data.bodyType.body.{{partId}}.personalDRHardeningBurn" value="{{bodyPart.personalDRHardeningBurn}}" data-dtype="Number" />
 								</td>
 								<td class="dr-row">
 									<input type="number" name="data.bodyType.body.{{partId}}.personalDRCor" value="{{bodyPart.personalDRCor}}" data-dtype="Number" />
-									<input type="number" name="data.bodyType.body.{{partId}}.personalDRHardeningCor" value="{{bodyPart.personalDRHardeningCor}}" data-dtype="Number" />
 								</td>
 								<td class="dr-row">
 									<input type="number" name="data.bodyType.body.{{partId}}.personalDRCr" value="{{bodyPart.personalDRCr}}" data-dtype="Number" />
-									<input type="number" name="data.bodyType.body.{{partId}}.personalDRHardeningCr"  value="{{bodyPart.personalDRHardeningCr}}" data-dtype="Number" />
 								</td>
 								<td class="dr-row">
 									<input type="number" name="data.bodyType.body.{{partId}}.personalDRCut" value="{{bodyPart.personalDRCut}}" data-dtype="Number" />
-									<input type="number" name="data.bodyType.body.{{partId}}.personalDRHardeningCut" value="{{bodyPart.personalDRHardeningCut}}" data-dtype="Number" />
 								</td>
 								<td class="dr-row">
 									<input type="number" name="data.bodyType.body.{{partId}}.personalDRFat" value="{{bodyPart.personalDRFat}}" data-dtype="Number" />
-									<input type="number" name="data.bodyType.body.{{partId}}.personalDRHardeningFat" value="{{bodyPart.personalDRHardeningFat}}" data-dtype="Number" />
 								</td>
 								<td class="dr-row">
 									<input type="number" name="data.bodyType.body.{{partId}}.personalDRImp" value="{{bodyPart.personalDRImp}}" data-dtype="Number" />
-									<input type="number" name="data.bodyType.body.{{partId}}.personalDRHardeningImp" value="{{bodyPart.personalDRHardeningImp}}" data-dtype="Number" />
 								</td>
 								<td class="dr-row">
 									<input type="number" name="data.bodyType.body.{{partId}}.personalDRPi" value="{{bodyPart.personalDRPi}}" data-dtype="Number" />
-									<input type="number" name="data.bodyType.body.{{partId}}.personalDRHardeningPi"  value="{{bodyPart.personalDRHardeningPi}}" data-dtype="Number" />
 								</td>
 								<td class="dr-row">
 									<input type="number" name="data.bodyType.body.{{partId}}.personalDRTox" value="{{bodyPart.personalDRTox}}" data-dtype="Number" />
-									<input type="number" name="data.bodyType.body.{{partId}}.personalDRHardeningTox" value="{{bodyPart.personalDRHardeningTox}}" data-dtype="Number" />
 								</td>
 								<td colspan="2" class="dr-row"></td>
 								<td class="dr-row penalty">{{bodyPart.penalty}}</td>

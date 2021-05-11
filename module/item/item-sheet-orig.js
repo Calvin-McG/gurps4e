@@ -380,14 +380,7 @@ export class gurpsItemSheet extends ItemSheet {
             drImp: 0,
             drPi: 0,
             drTox: 0,
-            drHardeningBurn: 0,
-            drHardeningCor: 0,
-            drHardeningCr: 0,
-            drHardeningCut: 0,
-            drHardeningFat: 0,
-            drHardeningImp: 0,
-            drHardeningPi: 0,
-            drHardeningTox: 0,
+            drHardening: 1,
             flexible: false
         };
         return part;
@@ -404,14 +397,7 @@ export class gurpsItemSheet extends ItemSheet {
             drImp: 0,
             drPi: 0,
             drTox: 0,
-            drHardeningBurn: 0,
-            drHardeningCor: 0,
-            drHardeningCr: 0,
-            drHardeningCut: 0,
-            drHardeningFat: 0,
-            drHardeningImp: 0,
-            drHardeningPi: 0,
-            drHardeningTox: 0,
+            drHardening: 1,
             flexible: false
         };
         return part;
@@ -431,14 +417,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 nose: {
@@ -451,14 +430,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 ears: {
@@ -471,14 +443,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 cheek: {
@@ -491,14 +456,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 eyes: {//Kromm's ruling on eyes http://forums.sjgames.com/showpost.php?p=733298&postcount=33
@@ -511,14 +469,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 }
             }
@@ -541,14 +492,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 thigh: {
@@ -561,14 +505,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 insideThigh: {
@@ -581,14 +518,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 knee: {
@@ -601,14 +531,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 backOfKnee: {
@@ -621,14 +544,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 artery: {
@@ -641,14 +557,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 }
             }
@@ -672,14 +581,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 shoulder: {
@@ -692,14 +594,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 }
             }
@@ -723,14 +618,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 upperArm: {
@@ -743,14 +631,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 elbow: {
@@ -763,14 +644,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 insideElbow: {
@@ -783,14 +657,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 shoulder: {
@@ -803,14 +670,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 armpit: {
@@ -823,14 +683,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 }
             }
@@ -854,14 +707,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 vitals: {
@@ -874,14 +720,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 spine: {
@@ -894,14 +733,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 }
             }
@@ -925,14 +757,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 vitals: {
@@ -945,14 +770,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 }
             }
@@ -976,14 +794,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 vitals: {
@@ -996,14 +807,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 pelvis: {
@@ -1016,14 +820,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 }
             }
@@ -1047,14 +844,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 vitals: {
@@ -1067,14 +857,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 pelvis: {
@@ -1087,14 +870,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 groin: {
@@ -1107,14 +883,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 }
             }
@@ -1138,14 +907,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 extremityInterior: {
@@ -1158,14 +920,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 joint: {
@@ -1178,14 +933,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 }
             }
@@ -1209,14 +957,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 },
                 vein: {
@@ -1229,14 +970,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drImp: 0,
                     drPi: 0,
                     drTox: 0,
-                    drHardeningBurn: 0,
-                    drHardeningCor: 0,
-                    drHardeningCr: 0,
-                    drHardeningCut: 0,
-                    drHardeningFat: 0,
-                    drHardeningImp: 0,
-                    drHardeningPi: 0,
-                    drHardeningTox: 0,
+                    drHardening: 1,
                     flexible: false
                 }
             }
