@@ -1,4 +1,6 @@
 Layered Armour
+    - Octopods don't load DR correctly.
+    - Octopod abdomen DR is a single number?
 
 Add harsh armour gaps as targetable locations, added with checkboxes.
     - Make armour gaps always present and enterable, display based on checkboxes
