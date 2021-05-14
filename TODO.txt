@@ -1,17 +1,29 @@
 Layered Armour
-    - Macro
+    - Ensure only equipped armour gets totalled
+    - Make entering armour suck less (Remove default 0?)
+    - Make giant fuck-off macro for to-hit
+    - Make giant fuck-off macro for active defences
+    - Make giant fuck-off macro for damage
 
-Add harsh armour gaps as targetable locations, added with checkboxes.
-    - Make armour gaps always present and enterable, display based on checkboxes
-    - Palm - Quick display - Location added
-    - Sole - Quick display - Location added
-    - Armpit - Quick display - Location added
-    - Back of Knee - Quick display - Location added
-    - Inside Elbow - Quick display - Location added
-    - Inside Thigh - Quick display - Location added
+Specific perception
+    - Base 5 senses
+    - Allow for extra senses (Magery, Detect, Scanning Sense, Enhanced Senses stuff, etc)
+
+Add harsh armour gaps as targetable locations
+    - Palm - Remove from armour gap table - Fix display colour - make always appear
+    - Sole - Remove from armour gap table - Make soles appear always
 
 Campaign toggles for...
-    - Rigid armour can take blunt trauma - Added Checkbox
-    - Edge protection - Added Checkbox
-    - Armour as Dice - Added Checkbox
-    - Bleeding - Added Checkbox
+    - Rigid armour can take blunt trauma (Unofficial)
+    - Edge protection (Optional)
+    - Armour as Dice (Optional)
+    - Bleeding (Optional)
+    - Thigh Gap over Artery (Optional)
+
+Add area of effect for attacks
+
+Setting Adv/Disadv/perk/quirk on a trait seems to reset back to advantage
+Separate Adv/Disadv so they display separately in the point subtotals
+
+Change weight to specify pounds and require number so we can do gravity stuff later
+Combat Reflexes flag for dodge, parry, block
