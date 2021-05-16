@@ -322,7 +322,7 @@
 							<td>{{enc.lbs}}</td>
 							<td>{{enc.move}}</td>
 							<td>{{enc.dodge}}
-								<label for="enc.dodge" class="fa fa-dice-six rollable" data-level="{{enc.dodge}}"
+								<label class="fa fa-dice-six rollable" data-level="{{enc.dodge}}"
 									   data-label="Makes a &lt;b&gt;Dodge&lt;/b&gt; roll." data-type="skill"></label>
 							</td>
 						</tr>
@@ -331,9 +331,17 @@
 					<div>
 						<div>
 							<span class="bold">Swing:</span> {{data.baseDamage.swing}}
+							<label class="fa fa-dice-six rollable" data-level="{{data.baseDamage.swing}}"
+								   data-label="Makes a &lt;b&gt;Swing&lt;/b&gt; Damage roll." data-type="damage"></label>
 						</div>
 						<div>
 							<span class="bold">Thrust:</span> {{data.baseDamage.thrust}}
+							<label class="fa fa-dice-six rollable" data-level="{{data.baseDamage.thrust}}"
+								   data-label="Makes a &lt;b&gt;Thrust&lt;/b&gt; Damage roll." data-type="damage"></label>
+						</div>
+						<div>
+							<span class="bold">Combat Reflexes:</span>
+							<input type="checkbox" name="data.flag.combatReflexes" {{checked data.flag.combatReflexes}} data-dtype="Boolean"/>
 						</div>
 					</div>
 				</div>
@@ -355,26 +363,26 @@
 						<td>{{melee.name}}</td>
 						<td>
 							{{melee.skill}}: {{melee.level}}
-							<label for="melee.skill" class="fa fa-dice-six rollable" data-level="{{melee.level}}"
+							<label class="fa fa-dice-six rollable" data-level="{{melee.level}}"
 								   data-label="Makes a &lt;b&gt;{{item.name}} {{melee.name}}&lt;/b&gt; Skill roll." data-type="skill"></label>
 						</td>
 						<td>
 							{{melee.parry}}{{melee.parryType}}
 							{{#if (isInt melee.parry)}}
-							<label for="melee.parry" class="fa fa-dice-six rollable" data-level="{{melee.parry}}"
+							<label class="fa fa-dice-six rollable" data-level="{{melee.parry}}"
 								   data-label="Makes a &lt;b&gt;{{item.name}}&lt;/b&gt; Parry roll." data-type="skill"></label>
 							{{/if}}
 						</td>
 						<td>
 							{{melee.block}}
 							{{#if (isInt melee.block)}}
-							<label for="melee.block" class="fa fa-dice-six rollable" data-level="{{melee.block}}"
+							<label class="fa fa-dice-six rollable" data-level="{{melee.block}}"
 								   data-label="&lt;b&gt;{{item.name}}&lt;/b&gt; Block roll." data-type="skill"></label>
 							{{/if}}
 						</td>
 						<td>
 							{{melee.damage}} {{melee.damageType}} ({{melee.armorDivisor}})
-							<label for="melee.damage" class="fa fa-dice-six rollable" data-level="{{melee.damage}}"
+							<label class="fa fa-dice-six rollable" data-level="{{melee.damage}}"
 								   data-label="Makes a &lt;b&gt;{{item.name}} {{melee.name}}&lt;/b&gt; Damage roll." data-type="damage"></label>
 						</td>
 						<td>{{melee.reach}}</td>

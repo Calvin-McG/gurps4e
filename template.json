@@ -56,6 +56,9 @@
           "highPainThreshold": false,
           "lowPainThreshold": false
         },
+        "flag": {
+          "combatReflexes": false
+        },
         "biography": "",
         "points": {
           "total": 150,
