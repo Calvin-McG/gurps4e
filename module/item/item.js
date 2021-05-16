@@ -110,15 +110,26 @@ export class gurpsItem extends Item {
 
             if (Number.isInteger(+data.melee[meleeKeys[k]].parryMod)){//If parry mod is a number, compute normally
               parry = Math.floor(+( level / 2 + 3 ) + +data.melee[meleeKeys[k]].parryMod);//Calculate the parry value
+              if (this.actor.data.data.enhanced.parry){
+                parry += this.actor.data.data.enhanced.parry;
+              }
+              if (this.actor.data.data.flag.combatReflexes){
+                parry += 1;
+              }
             }
             else {//If it's not a number, display the entry
               parry = data.melee[meleeKeys[k]].parryMod;
-
             }
             this._data.data.melee[meleeKeys[k]].parry = parry//Update parry value
 
             if (Number.isInteger(+data.melee[meleeKeys[k]].blockMod)) {//If block mod is a number, compute normally
               block = Math.floor(+( level / 2 + 3 ) + +data.melee[meleeKeys[k]].blockMod);//Calculate the block value
+              if (this.actor.data.data.enhanced.block){
+                block += this.actor.data.data.enhanced.block;
+              }
+              if (this.actor.data.data.flag.combatReflexes){
+                block += 1;
+              }
             }
             else {
               block = data.melee[meleeKeys[k]].blockMod;

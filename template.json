@@ -59,6 +59,11 @@
         "flag": {
           "combatReflexes": false
         },
+        "enhanced": {
+          "parry": 0,
+          "block": 0,
+          "dodge": 0
+        },
         "biography": "",
         "points": {
           "total": 150,

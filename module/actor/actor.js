@@ -156,8 +156,17 @@ export class gurpsActor extends Actor {
 		var bl = Math.round(((st * st)/5));
 		var move = this.data.data.primaryAttributes.move.value;
 		var dodge = this.data.data.primaryAttributes.dodge.value;
+		let dodgeMod = 0;
 		var carriedWeight = 0;
 		var carriedCost = 0;
+
+		if (this.data.data.enhanced.dodge){
+			dodgeMod = this.data.data.enhanced.dodge;
+		}
+
+		if (this.data.data.flag.combatReflexes){
+			dodgeMod = dodgeMod + 1;
+		}
 
 		this.data.data.encumbrance.none.lbs = bl;
 		this.data.data.encumbrance.light.lbs = bl * 2;
@@ -171,11 +180,11 @@ export class gurpsActor extends Actor {
 		this.data.data.encumbrance.heavy.move = Math.max((Math.floor(move * 0.4)), 1);
 		this.data.data.encumbrance.xheavy.move = Math.max((Math.floor(move * 0.2)), 1);
 
-		this.data.data.encumbrance.none.dodge = dodge;
-		this.data.data.encumbrance.light.dodge = Math.max(dodge - 1, 1);
-		this.data.data.encumbrance.medium.dodge = Math.max(dodge - 2, 1);
-		this.data.data.encumbrance.heavy.dodge = Math.max(dodge - 3, 1);
-		this.data.data.encumbrance.xheavy.dodge = Math.max(dodge - 4, 1);
+		this.data.data.encumbrance.none.dodge = dodge + dodgeMod;
+		this.data.data.encumbrance.light.dodge = Math.max(dodge + dodgeMod - 1, 1);
+		this.data.data.encumbrance.medium.dodge = Math.max(dodge + dodgeMod - 2, 1);
+		this.data.data.encumbrance.heavy.dodge = Math.max(dodge + dodgeMod - 3, 1);
+		this.data.data.encumbrance.xheavy.dodge = Math.max(dodge + dodgeMod - 4, 1);
 
 		//Clear carried weight/cost before retotalling
 		carriedWeight = 0;

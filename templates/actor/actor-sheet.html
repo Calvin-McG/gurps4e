@@ -329,20 +329,63 @@
 						{{/each}}
 					</table>
 					<div>
-						<div>
-							<span class="bold">Swing:</span> {{data.baseDamage.swing}}
-							<label class="fa fa-dice-six rollable" data-level="{{data.baseDamage.swing}}"
-								   data-label="Makes a &lt;b&gt;Swing&lt;/b&gt; Damage roll." data-type="damage"></label>
-						</div>
-						<div>
-							<span class="bold">Thrust:</span> {{data.baseDamage.thrust}}
-							<label class="fa fa-dice-six rollable" data-level="{{data.baseDamage.thrust}}"
-								   data-label="Makes a &lt;b&gt;Thrust&lt;/b&gt; Damage roll." data-type="damage"></label>
-						</div>
-						<div>
-							<span class="bold">Combat Reflexes:</span>
-							<input type="checkbox" name="data.flag.combatReflexes" {{checked data.flag.combatReflexes}} data-dtype="Boolean"/>
-						</div>
+						<table>
+							<tr>
+								<td>
+									<span class="bold">Swing:</span>
+								</td>
+								<td>
+									{{data.baseDamage.swing}}
+									<label class="fa fa-dice-six rollable" data-level="{{data.baseDamage.swing}}"
+									   data-label="Makes a &lt;b&gt;Swing&lt;/b&gt; Damage roll." data-type="damage"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span class="bold">Thrust:</span>
+								</td>
+								<td>
+									{{data.baseDamage.thrust}}
+									<label class="fa fa-dice-six rollable" data-level="{{data.baseDamage.thrust}}"
+									   data-label="Makes a &lt;b&gt;Thrust&lt;/b&gt; Damage roll." data-type="damage"></label>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span class="bold">Combat Reflexes:</span>
+								</td>
+								<td>
+									<input type="checkbox" name="data.flag.combatReflexes" {{checked data.flag.combatReflexes}} data-dtype="Boolean"/>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span class="bold">Enhanced Parry</span>
+								</td>
+								<td>
+									<input type="number" name="data.enhanced.parry" class="atrPoints" value="{{data.enhanced.parry}}"
+									   data-dtype="Number" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span class="bold">Enhanced Block</span>
+								</td>
+								<td>
+									<input type="number" name="data.enhanced.block" class="atrPoints" value="{{data.enhanced.block}}"
+									   data-dtype="Number" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span class="bold">Enhanced Dodge</span>
+								</td>
+								<td>
+									<input type="number" name="data.enhanced.dodge" class="atrPoints" value="{{data.enhanced.dodge}}"
+									   data-dtype="Number" />
+								</td>
+							</tr>
+						</table>
 					</div>
 				</div>
 				<table class="items-list">
