@@ -16,6 +16,7 @@
           },
           "weight": {
             "label": "Weight",
+            "unit": "lbs",
             "value": ""
           },
           "gender": {

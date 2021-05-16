@@ -30,7 +30,7 @@
 							<span>SM:</span>
                             <input type="text" name="data.bio.sm.value"
                                    value="{{data.bio.sm.value}}" placeholder="Size Mod"
-								   style="width: 80%;"/>
+								   style="width: 80%;" data-dtype="Number"/>
                         </div>
                     </div>
                     <div>
@@ -40,9 +40,11 @@
                         </div>
                     </div>
                     <div>
-                        <div class="bold label right">
-                            <input type="text" name="data.bio.weight.value"
-                                   value="{{data.bio.weight.value}}" placeholder="Weight" />
+                        <div class="bold label right" style="text-align: left">
+							<span>Weight:</span>
+                            <input type="text" name="data.bio.weight.value" style="width: 35%"
+                                   value="{{data.bio.weight.value}}" placeholder="Weight" data-dtype="Number"/>
+							<span>lbs</span>
                         </div>
                     </div>
                     <div>
@@ -50,11 +52,11 @@
 							<span>TL:</span>
                             <input type="text" name="data.bio.tl.value"
                                    value="{{data.bio.tl.value}}" placeholder="TL"
-                                   style="width: 40%;"/>
+                                   style="width: 40%;" data-dtype="Number"/>
 							<span>Pts:</span>
                             <input type="text" name="data.bio.tl.points"
                                    value="{{data.bio.tl.points}}" placeholder="points"
-                                   style="width: 40%;"/>
+                                   style="width: 40%;" data-dtype="Number"/>
                         </div>
                     </div>
 				</div>
