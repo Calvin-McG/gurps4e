@@ -2325,34 +2325,32 @@
 										</div>
 									</span>
 								</div>
-								{{#if data.bodyType.chinks.sole}}
-									<div class="tooltip location-sole-left">
-										{{data.bodyType.drTypesOne.footLeftextremity}} / {{data.bodyType.drTypesTwo.footLeftextremity}}
-										<span class="tooltiptext">
-												<div style="border-bottom: 2px white solid">
-													<span style="text-decoration: underline">Left Foot -4</span><br>
-													<span style="color: #ff4848">{{data.bodyType.body.footLeft.hp.value}} / {{data.bodyType.body.footLeft.hp.max}} HP</span><br>
-													pi/imp attacks cap at 1x<br>
-												</div>
-												<div>
-													<span style="text-decoration: underline">Left Sole</span><br>
-												</div>
-											</span>
-									</div>
-									<div class="tooltip location-sole-right">
-										{{data.bodyType.drTypesOne.footRightextremity}} / {{data.bodyType.drTypesTwo.footRightextremity}}
-										<span class="tooltiptext">
-												<div style="border-bottom: 2px white solid">
-													<span style="text-decoration: underline">Right Foot -4</span><br>
-													<span style="color: #ff4848">{{data.bodyType.body.footRight.hp.value}} / {{data.bodyType.body.footRight.hp.max}} HP</span><br>
-													pi/imp attacks cap at 1x<br>
-												</div>
-												<div>
-													<span style="text-decoration: underline">Right Sole</span><br>
-												</div>
-											</span>
-									</div>
-								{{/if}}
+								<div class="tooltip location-sole-left">
+									{{data.bodyType.drTypesOne.footLeftextremity}} / {{data.bodyType.drTypesTwo.footLeftextremity}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Left Foot -4</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.footLeft.hp.value}} / {{data.bodyType.body.footLeft.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Left Sole</span><br>
+											</div>
+										</span>
+								</div>
+								<div class="tooltip location-sole-right">
+									{{data.bodyType.drTypesOne.footRightextremity}} / {{data.bodyType.drTypesTwo.footRightextremity}}
+									<span class="tooltiptext">
+											<div style="border-bottom: 2px white solid">
+												<span style="text-decoration: underline">Right Foot -4</span><br>
+												<span style="color: #ff4848">{{data.bodyType.body.footRight.hp.value}} / {{data.bodyType.body.footRight.hp.max}} HP</span><br>
+												pi/imp attacks cap at 1x<br>
+											</div>
+											<div>
+												<span style="text-decoration: underline">Right Sole</span><br>
+											</div>
+										</span>
+								</div>
 							{{/if}}
 						</div>
 					{{/if}}
@@ -2424,19 +2422,6 @@
 								</tr>
 								<tr>
 									<td class="tooltip">
-										Palm
-										<span class="tooltiptext">
-											<div>
-												<span style="text-decoration: underline">Palm -8 (-6 if unarmed)</span><br>
-												Armour gap over hand.<br>
-											</div>
-										</span>
-									</td>
-									<td>{{data.bodyType.drTypesOne.handLeftextremityInterior}} / {{data.bodyType.drTypesTwo.handLeftextremityInterior}} -
-										{{data.bodyType.drTypesOne.handRightextremityInterior}} / {{data.bodyType.drTypesTwo.handRightextremityInterior}}</td>
-								</tr>
-								<tr>
-									<td class="tooltip">
 										Inside Thigh
 										<span class="tooltiptext">
 											<div>
@@ -2460,20 +2445,6 @@
 									</td>
 									<td>{{data.bodyType.drTypesOne.legLeftbackOfKnee}} / {{data.bodyType.drTypesTwo.legLeftbackOfKnee}} -
 										{{data.bodyType.drTypesOne.legRightbackOfKnee}} / {{data.bodyType.drTypesTwo.legRightbackOfKnee}}</td>
-								</tr>
-								<tr>
-									<td class="tooltip">
-										Sole
-										<span class="tooltiptext">
-											<div>
-												<span style="text-decoration: underline">Sole</span><br>
-												Armour gap over foot.<br>
-												Your foot is on the ground most of the time. But this DR also applies to terrian hazards and traps.<br>
-											</div>
-										</span>
-									</td>
-									<td>{{data.bodyType.drTypesOne.footLeftextremityInterior}} / {{data.bodyType.drTypesTwo.footLeftextremityInterior}} -
-										{{data.bodyType.drTypesOne.footRightextremityInterior}} / {{data.bodyType.drTypesTwo.footRightextremityInterior}}</td>
 								</tr>
 							</table>
 						</div>

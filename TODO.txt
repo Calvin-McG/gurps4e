@@ -1,6 +1,8 @@
 Layered Armour
     - Ensure only equipped armour gets totalled
     - Make entering armour suck less (Remove default 0?)
+    - Add the armour tab to traits
+    - Slam thingy
     - Make giant fuck-off macro for to-hit
     - Make giant fuck-off macro for active defences
     - Make giant fuck-off macro for damage
@@ -9,10 +11,6 @@ Specific perception
     - Base 5 senses
     - Allow for extra senses (Magery, Detect, Scanning Sense, Enhanced Senses stuff, etc)
 
-Add harsh armour gaps as targetable locations
-    - Palm - Remove from armour gap table - Fix display colour - make always appear
-    - Sole - Remove from armour gap table - Make soles appear always
-
 Campaign toggles for...
     - Rigid armour can take blunt trauma (Unofficial)
     - Edge protection (Optional)
@@ -20,10 +18,18 @@ Campaign toggles for...
     - Bleeding (Optional)
     - Thigh Gap over Artery (Optional)
 
-Add area of effect for attacks
+Misc
+    - Add area of effect for attacks
+    - Setting Adv/Disadv/perk/quirk on a trait seems to reset back to advantage
+    - Separate Adv/Disadv so they display separately in the point subtotals
+    - Change weight to specify pounds and require number so we can do gravity stuff later
+    - Combat Reflexes flag for dodge, parry, block
+    - Setting a specific damage for an attack errors out (6 does not work, but 0d6+6 does)
+    - Add attribute as a word to skill default algorithm (Per and Perception should both work)
 
-Setting Adv/Disadv/perk/quirk on a trait seems to reset back to advantage
-Separate Adv/Disadv so they display separately in the point subtotals
-
-Change weight to specify pounds and require number so we can do gravity stuff later
-Combat Reflexes flag for dodge, parry, block
+===Jake's Requests===
+A blank inventory character sheet at some point for chests and inventories would be really helpful though
+Actually, nvm I think the Journal Dialogue with linked items might work better anyways
+Out of something I would like is some way to request a skill or attribute roll from a macro which I think should be figured out when the fuck-off attack macro gets done.
+Basically something where I can say "Roll [Lockpicking] with X Character Sheet" and so on.
+Even being able to set up "GM Roll all players perception" would be great.
