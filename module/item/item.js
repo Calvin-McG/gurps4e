@@ -180,23 +180,23 @@ export class gurpsItem extends Item {
 
   getBaseAttrValue(baseAttr) {
     let base = 0;
-    if (baseAttr == 'ST'){
+    if (baseAttr.toUpperCase() == 'ST' || baseAttr.toUpperCase() == 'STRENGTH'){
       let smDiscount = attributeHelpers.calcSMDiscount(this.actor.data.data.bio.sm)
       base = attributeHelpers.calcStOrHt(this.actor.data.data.primaryAttributes.strength, smDiscount);
     }
-    else if (baseAttr == 'DX') {
+    else if (baseAttr.toUpperCase() == 'DX' || baseAttr.toUpperCase() == 'DEXTERITY') {
       base = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
     }
-    else if (baseAttr == 'IQ') {
+    else if (baseAttr.toUpperCase() == 'IQ' || baseAttr.toUpperCase() == 'INTELLIGENCE') {
       base = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.intelligence);
     }
-    else if (baseAttr == 'HT') {
+    else if (baseAttr.toUpperCase() == 'HT' || baseAttr.toUpperCase() == 'HEALTH') {
       base = attributeHelpers.calcStOrHt(this.actor.data.data.primaryAttributes.health, 1);
     }
-    else if (baseAttr == 'Per') {
+    else if (baseAttr.toUpperCase() == 'PER' || baseAttr.toUpperCase() == 'PERCEPTION') {
       base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.intelligence), this.actor.data.data.primaryAttributes.perception);
     }
-    else if (baseAttr == 'Will') {
+    else if (baseAttr.toUpperCase() == 'WILL') {
       base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.intelligence), this.actor.data.data.primaryAttributes.will);
     }
     return base;
@@ -347,15 +347,15 @@ export class gurpsItem extends Item {
       let q = 0;
       while (defaults[q]) {//While the current entry is not null
         //Check attributes first, add any results to the array of attribute defaults
-        if (defaults[q].skill.toUpperCase() == 'ST') {
+        if (defaults[q].skill.toUpperCase() == 'ST' || defaults[q].skill.toUpperCase() == 'STRENGTH') {
           attrDefaultArray.push(st + +defaults[q].mod);
-        } else if (defaults[q].skill.toUpperCase() == 'DX') {
+        } else if (defaults[q].skill.toUpperCase() == 'DX' || defaults[q].skill.toUpperCase() == 'DEXTERITY') {
           attrDefaultArray.push(dx + +defaults[q].mod);
-        } else if (defaults[q].skill.toUpperCase() == 'IQ') {
+        } else if (defaults[q].skill.toUpperCase() == 'IQ' || defaults[q].skill.toUpperCase() == 'INTELLIGENCE') {
           attrDefaultArray.push(iq + +defaults[q].mod);
-        } else if (defaults[q].skill.toUpperCase() == 'HT') {
+        } else if (defaults[q].skill.toUpperCase() == 'HT' || defaults[q].skill.toUpperCase() == 'HEALTH') {
           attrDefaultArray.push(ht + +defaults[q].mod);
-        } else if (defaults[q].skill.toUpperCase() == 'PER') {
+        } else if (defaults[q].skill.toUpperCase() == 'PER' || defaults[q].skill.toUpperCase() == 'PERCEPTION') {
           attrDefaultArray.push(per + +defaults[q].mod);
         } else if (defaults[q].skill.toUpperCase() == 'WILL') {
           attrDefaultArray.push(will + +defaults[q].mod);
