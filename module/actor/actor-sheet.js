@@ -423,9 +423,6 @@ export class gurpsActorSheet extends ActorSheet {
 		const element = event.currentTarget;
 		const dataset = element.dataset;
 
-		console.log(element)
-		console.log(dataset)
-
 		if (dataset.type === 'skill' || dataset.type === 'defense') {
 			rollHelpers.skillRoll(dataset.level, modifier, dataset.label);
 		}
@@ -437,7 +434,6 @@ export class gurpsActorSheet extends ActorSheet {
 			let adds = 0;
 
 			html += "<div>";
-			console.log(damageRoll)
 			if(damageRoll.terms[0].results){
 				if(damageRoll.terms[0].results.length){//Take the results of each roll and turn it into a die icon.
 					for (let k = 0; k < damageRoll.terms[0].results.length; k++){
