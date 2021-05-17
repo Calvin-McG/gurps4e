@@ -150,7 +150,6 @@
 			<div class="tab stats" data-tab="stats" data-group="primary">
 
 				<div id="attributes_defences">
-					<!-- Here are the primary attributes -->
 					<div id="attribute-block">
                         <div class="primary-attribute-header" id="stHeader">
                             <label class="title">Val</label>
@@ -173,25 +172,54 @@
                             <label class="title">Pts</label>
                         </div>
 						{{#each data.primaryAttributes as |attr id|}}
-						<div class="primary-attribute" id="{{attr.id}}">
-								<label style="font-weight: bold">{{attr.abbr}}</label>
-								<input type="text" name="data.primaryAttributes.{{id}}.value" class="atrVal" value="{{attr.value}}"
-									data-dtype="Number" disabled />
-								<input type="text" name="data.primaryAttributes.{{id}}.mod" class="atrMod" value="{{attr.mod}}"
-											 data-dtype="Number" />
-								<input type="text" name="data.primaryAttributes.{{id}}.points" class="atrPoints" value="{{attr.points}}"
-											 data-dtype="Number" />
-							{{#unless (or (eq attr.abbr "Speed") (eq attr.abbr "Move") )}}
-							<label for="data.primaryAttributes.{{id}}.value" class="fa fa-dice-six rollable"
-										 data-level="{{attr.value}}" data-label="Makes a &lt;b&gt;{{attr.abbr}}&lt;/b&gt; check."
-										 data-type="skill"></label>
+							<div class="primary-attribute" id="{{attr.id}}">
+									<label style="font-weight: bold">{{attr.abbr}}</label>
+									<input type="text" name="data.primaryAttributes.{{id}}.value" class="atrVal" value="{{attr.value}}"
+										data-dtype="Number" disabled />
+									<input type="text" name="data.primaryAttributes.{{id}}.mod" class="atrMod" value="{{attr.mod}}"
+												 data-dtype="Number" />
+									<input type="text" name="data.primaryAttributes.{{id}}.points" class="atrPoints" value="{{attr.points}}"
+												 data-dtype="Number" />
+								{{#unless (or (eq attr.abbr "Speed") (eq attr.abbr "Move") )}}
+								<label for="data.primaryAttributes.{{id}}.value" class="fa fa-dice-six rollable"
+											 data-level="{{attr.value}}" data-label="Makes a &lt;b&gt;{{attr.abbr}}&lt;/b&gt; check."
+											 data-type="skill"></label>
+								{{/unless}}
+							</div>
+						{{/each}}
+						<div id="senses">
+							<div style="text-align: center;">
+								<label for="showSenses" style="font-weight: bold; font-size: x-large; display: block;">
+									{{#if (eq data.flag.showSenses true) }}
+										<i class="fas fa-angle-up"></i>
+									{{else}}
+										<i class="fas fa-angle-down"></i>
+									{{/if}}
+								</label>
+								<input style="display: none" id="showSenses" type="checkbox" name="data.flag.showSenses" {{checked data.flag.showSenses}} data-dtype="Boolean"/>
+							</div>
+							{{#unless (eq data.flag.showSenses true) }}
+								{{#each data.senses as |sense id|}}
+									<div class="attribute-senses" id="{{sense.id}}">
+										{{#if (or (eq sense.id "extra1") (eq sense.id "extra2")) }}
+											<input type="text" name="data.senses.{{id}}.abbr" class="senseVal" value="{{sense.abbr}}"/>
+										{{else}}
+											<label style="font-weight: bold" class="senseVal">{{sense.abbr}}</label>
+										{{/if}}
+										<input type="text" name="data.senses.{{id}}.value" class="atrVal" value="{{sense.value}}"
+											   data-dtype="Number" disabled />
+										<input type="text" name="data.senses.{{id}}.mod" class="senseMod" value="{{sense.mod}}"
+											   data-dtype="Number" />
+										<label for="data.senses.{{id}}.value" class="fa fa-dice-six rollable"
+											   data-level="{{sense.value}}" data-label="Makes a &lt;b&gt;{{sense.abbr}}&lt;/b&gt; check."
+											   data-type="skill"></label>
+									</div>
+								{{/each}}
 							{{/unless}}
 						</div>
-						{{/each}}
 					</div>
 				</div>
 
-				{{!-- Biography Tab --}}
 				<div id="biography">
 					<p>Notes</p>
 					<textarea rows="13" name="data.biography">{{{data.biography}}}</textarea>

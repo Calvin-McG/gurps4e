@@ -57,7 +57,8 @@
           "lowPainThreshold": false
         },
         "flag": {
-          "combatReflexes": false
+          "combatReflexes": false,
+          "showSenses": false
         },
         "enhanced": {
           "parry": 0,
@@ -117,6 +118,44 @@
         "baseDamage": {
           "swing": "1d6",
           "thrust": "1d6-2"
+        },
+        "senses": {
+          "vis": {
+            "id": "vis",
+            "abbr": "Vision",
+            "value": 10,
+            "mod": 0
+          },
+          "hear": {
+            "id": "hear",
+            "abbr": "Hearing",
+            "value": 10,
+            "mod": 0
+          },
+          "smell": {
+            "id": "smell",
+            "abbr": "Smell & Taste",
+            "value": 10,
+            "mod": 0
+          },
+          "touch": {
+            "id": "touch",
+            "abbr": "Touch",
+            "value": 10,
+            "mod": 0
+          },
+          "extra1": {
+            "id": "extra1",
+            "abbr": "",
+            "value": 10,
+            "mod": 0
+          },
+          "extra2": {
+            "id": "extra2",
+            "abbr": "",
+            "value": 10,
+            "mod": 0
+          }
         },
         "primaryAttributes": {
           "strength": {

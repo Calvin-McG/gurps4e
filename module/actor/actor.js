@@ -37,6 +37,9 @@ export class gurpsActor extends Actor {
 		//Convert spent points into their effective values
 		this.recalcAtrValues();
 
+		// Sort out the player's senses.
+		this.recalcSenses();
+
 		//Recalculate encumberance values, along with effective dodge and move. Do this last so move and dodge is correct.
 		this.recalcEncValues();
 
@@ -127,6 +130,19 @@ export class gurpsActor extends Actor {
 		//ER
 		var er = attributeHelpers.calcER(this.data.data.reserves.er);
 		this.data.data.reserves.er.max = er;
+	}
+
+	recalcSenses() {
+		let per = this.data.data.primaryAttributes.perception.value;
+
+		console.log(this.data.data.senses);
+
+		this.data.data.senses.vis.value    = per + this.data.data.senses.vis.mod;
+		this.data.data.senses.hear.value   = per + this.data.data.senses.hear.mod;
+		this.data.data.senses.smell.value  = per + this.data.data.senses.smell.mod;
+		this.data.data.senses.touch.value  = per + this.data.data.senses.touch.mod;
+		this.data.data.senses.extra1.value = per + this.data.data.senses.extra1.mod;
+		this.data.data.senses.extra2.value = per + this.data.data.senses.extra2.mod;
 	}
 
 	recalcTraitPoints() {

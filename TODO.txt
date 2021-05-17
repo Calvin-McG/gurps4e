@@ -7,10 +7,6 @@ Layered Armour
     - Make giant fuck-off macro for active defences
     - Make giant fuck-off macro for damage
 
-Specific perception
-    - Base 5 senses
-    - Allow for extra senses (Magery, Detect, Scanning Sense, Enhanced Senses stuff, etc)
-
 Campaign toggles for...
     - Rigid armour can take blunt trauma (Unofficial)
     - Edge protection (Optional)
@@ -23,7 +19,6 @@ Misc
     - Setting Adv/Disadv/perk/quirk on a trait seems to reset back to advantage
     - Separate Adv/Disadv so they display separately in the point subtotals
     - Change weight to specify pounds and require number so we can do gravity stuff later
-    - Combat Reflexes flag for dodge, parry, block
     - Setting a specific damage for an attack errors out (6 does not work, but 0d6+6 does)
 
 ===Jake's Requests===
