@@ -423,6 +423,9 @@ export class gurpsActorSheet extends ActorSheet {
 		const element = event.currentTarget;
 		const dataset = element.dataset;
 
+		console.log(element)
+		console.log(dataset)
+
 		if (dataset.type === 'skill' || dataset.type === 'defense') {
 			rollHelpers.skillRoll(dataset.level, modifier, dataset.label);
 		}
@@ -431,16 +434,21 @@ export class gurpsActorSheet extends ActorSheet {
 			let damageRoll = new Roll(dataset.level);
 			damageRoll.roll();
 			let html = "<div>" + dataset.label + "</div>";
+			let adds = 0;
 
 			html += "<div>";
-
-			if(damageRoll.terms[0].results.length){//Take the results of each roll and turn it into a die icon.
-				for (let k = 0; k < damageRoll.terms[0].results.length; k++){
-					html += rollHelpers.dieToIcon(damageRoll.terms[0].results[k].result)
+			console.log(damageRoll)
+			if(damageRoll.terms[0].results){
+				if(damageRoll.terms[0].results.length){//Take the results of each roll and turn it into a die icon.
+					for (let k = 0; k < damageRoll.terms[0].results.length; k++){
+						html += rollHelpers.dieToIcon(damageRoll.terms[0].results[k].result)
+					}
 				}
+				adds = (+damageRoll._total - +damageRoll.results[0]);
 			}
-
-			let adds = (+damageRoll._total - +damageRoll.results[0]);
+			else {
+				adds = +damageRoll._total;
+			}
 
 			if (adds >= 0){//Adds are positive
 				html += "<label class='damage-dice-adds'>+</label><label class='damage-dice-adds'>" + adds + "</label>"
