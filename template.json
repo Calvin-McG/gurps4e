@@ -399,7 +399,11 @@
         "points",
         "melee",
         "ranged"
-      ]
+      ],
+      "armour": {
+        "bodyType": "",
+        "layer": 0
+      }
     }
   }
 }

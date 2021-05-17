@@ -376,66 +376,77 @@ export class gurpsActor extends Actor {
 	}
 
 	storeArmour(){
-		// Create a function for filtering out armour
-		function filterArmour(item){
-			if (item.type == "Equipment"){ // Check to see if it is a piece of equipment
-				if (item.data.armour != null){ // Check to see if data has the armour child object - This should really only be an issue when updating from a version that did not include this data structure.
-					if (generalHelpers.has(item.data.armour, "name")){ // Check to see if the name child exists - Again, hopefully only relevant on version update.
-						if (item.data.armour.bodyType.name.length > 0){ // Check to see if a body type has been set
-							return true;
+		if (this.data.data.bodyType.name.length > 0){
+			// Create a function for filtering out armour
+			function filterArmour(item){
+				if (item.type == "Equipment" || item.type == "Trait"){ // Check to see if it is a piece of equipment
+					if (item.data.armour != null){ // Check to see if data has the armour child object - This should really only be an issue when updating from a version that did not include this data structure.
+						if (generalHelpers.has(item.data.armour, "name")){ // Check to see if the name child exists - Again, hopefully only relevant on version update.
+							if (item.data.armour.bodyType.name.length > 0){ // Check to see if a body type has been set
+								return true;
+							}
 						}
 					}
 				}
+				return false;
 			}
-			return false;
-		}
 
-		// Create function for sorting armour by layer
-		function sortArmourByLayer(a,b){
-			if (a.data.armour.layer < b.data.armour.layer){
-				return -1
+			// Create function for sorting armour by layer
+			function sortArmourByLayer(a,b){
+				if (a.data.armour.layer < b.data.armour.layer){
+					return -1
+				}
+				if (a.data.armour.layer > b.data.armour.layer){
+					return 1
+				}
+				return 0
 			}
-			if (a.data.armour.layer > b.data.armour.layer){
-				return 1
-			}
-			return 0
-		}
 
-		// TODO - Create a set of arrays.
-		// One array listing armour flexibility in the order it is layered.
-		// One array listing the armour's hardness in the order it is layered. TODO - Consolidate all the damage type specific hardening into a single cell
-		// One array for each damage type listing the armour's hardness in the order it is layered. (Like for switchDrTypes) - TODO - Make switchDrTypes just load from the results of this method.
+			// TODO - Create a set of arrays.
+			// One array listing armour flexibility in the order it is layered.
+			// One array listing the armour's hardness in the order it is layered. TODO - Consolidate all the damage type specific hardening into a single cell
+			// One array for each damage type listing the armour's hardness in the order it is layered. (Like for switchDrTypes) - TODO - Make switchDrTypes just load from the results of this method.
 
-		let armour = [{
-			flexible: {},
-			hardness: {},
-			burn: {},
-			cor: {},
-			cr: {},
-			cut: {},
-			fat: {},
-			imp: {},
-			pi: {},
-			tox: {},
-		}];
+			let armour = [{
+				flexible: {},
+				hardness: {},
+				burn: {},
+				cor: {},
+				cr: {},
+				cut: {},
+				fat: {},
+				imp: {},
+				pi: {},
+				tox: {},
+			}];
 
-		armour[0] = this.getArmour(this.data.data.bodyType.body); // Get the armour inherent in the body
-		this.data.data.bodyType.drTypesOne = getProperty(armour[0], this.data.data.bodyType.damageTypeOne.toLowerCase());
-		this.data.data.bodyType.drTypesTwo = getProperty(armour[0], this.data.data.bodyType.damageTypeTwo.toLowerCase());
+			armour[0] = this.getArmour(this.data.data.bodyType.body); // Get the armour inherent in the body
+			this.data.data.bodyType.drTypesOne = getProperty(armour[0], this.data.data.bodyType.damageTypeOne.toLowerCase());
+			this.data.data.bodyType.drTypesTwo = getProperty(armour[0], this.data.data.bodyType.damageTypeTwo.toLowerCase());
 
-		let items = this.data.items.filter(filterArmour); // Get the character's items and filter out anything that isn't armour
-		items = items.sort(sortArmourByLayer); // Take the above list and sort by layer. Index 0 is lowest, index infinity is highest.
+			let items = this.data.items.filter(filterArmour); // Get the character's items and filter out anything that isn't armour
+			items = items.sort(sortArmourByLayer); // Take the above list and sort by layer. Index 0 is lowest, index infinity is highest.
 
-		for (let l = 0; l < items.length; l++){ // Loop through the characters items and apply any relevant DR.
-			armour[l+1] = this.getArmour(items[l].data.armour.bodyType.body);
+			for (let l = 0; l < items.length; l++){ // Loop through the characters items and apply any relevant DR.
+				armour[l+1] = this.getArmour(items[l].data.armour.bodyType.body);
+				let damageTypeOneObject;
+				let damageTypeTwoObject;
 
-			let damageTypeOneObject = getProperty(armour[l+1], this.data.data.bodyType.damageTypeOne.toLowerCase());
-			let damageTypeTwoObject = getProperty(armour[l+1], this.data.data.bodyType.damageTypeTwo.toLowerCase());
-			let bodyParts = Object.keys(damageTypeOneObject);
+				if (this.data.data.bodyType.damageTypeOne.length > 0){
+					damageTypeOneObject = getProperty(armour[l+1], this.data.data.bodyType.damageTypeOne.toLowerCase());
+					if (this.data.data.bodyType.damageTypeTwo.length > 0){
+						damageTypeTwoObject = getProperty(armour[l+1], this.data.data.bodyType.damageTypeTwo.toLowerCase());
+					}
 
-			for (let q = 0; q < bodyParts.length; q++){
-				this.data.data.bodyType.drTypesOne[bodyParts[q]] += damageTypeOneObject[bodyParts[q]]
-				this.data.data.bodyType.drTypesTwo[bodyParts[q]] += damageTypeTwoObject[bodyParts[q]]
+					let bodyParts = Object.keys(damageTypeOneObject);
+
+					for (let q = 0; q < bodyParts.length; q++){
+						this.data.data.bodyType.drTypesOne[bodyParts[q]] += damageTypeOneObject[bodyParts[q]]
+						if (this.data.data.bodyType.damageTypeTwo.length > 0){
+							this.data.data.bodyType.drTypesTwo[bodyParts[q]] += damageTypeTwoObject[bodyParts[q]]
+						}
+					}
+				}
 			}
 		}
 	}
