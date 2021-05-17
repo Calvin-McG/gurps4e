@@ -16,7 +16,6 @@ Campaign toggles for...
 
 Misc
     - Add area of effect for attacks
-    - Setting Adv/Disadv/perk/quirk on a trait seems to reset back to advantage
     - Separate Adv/Disadv so they display separately in the point subtotals
     - Change weight to specify pounds and require number so we can do gravity stuff later
     - Setting a specific damage for an attack errors out (6 does not work, but 0d6+6 does)

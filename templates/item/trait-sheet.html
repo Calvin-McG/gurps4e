@@ -9,10 +9,12 @@
                 <div class="flexrow">
                     <label class="resource-label">Category</label>
                     <select name="data.category">
-                        <option value="advantage">Advantage</option>
-                        <option value="disadv">Disadvantage</option>
-                        <option value="perk">Perk</option>
-                        <option value="quirk">Quirk</option>
+                        {{#select data.category}}
+                            <option value="advantage">Advantage</option>
+                            <option value="disadv">Disadvantage</option>
+                            <option value="perk">Perk</option>
+                            <option value="quirk">Quirk</option>
+                        {{/select}}
                     </select>
                 </div>
                 <div class="flexrow">
