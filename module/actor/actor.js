@@ -144,14 +144,27 @@ export class gurpsActor extends Actor {
 	}
 
 	recalcTraitPoints() {
-        var traitPoints = +0;
-		//Iterate through the list of traits. Advantages and Disadvantages
+        let traitPoints = +0;
+        let advantagePoints = +0;
+		let disadvantagePoints = +0;
+		let quirkPoints = +0;
+		let perkPoints = +0;
+
+		// Iterate through the list of traits. Advantages and Disadvantages
         for (let i = 0; i < this.data.items.length; i++){
             if (this.data.items[i].type === "Trait"){
-                traitPoints = traitPoints += this.data.items[i].data.points
+                traitPoints = traitPoints += this.data.items[i].data.points;
+				advantagePoints = this.data.items[i].data.category.toLowerCase() == "advantage" ? advantagePoints += this.data.items[i].data.points : advantagePoints;
+                disadvantagePoints = this.data.items[i].data.category.toLowerCase() == "disadvantage" ? disadvantagePoints += this.data.items[i].data.points : disadvantagePoints;
+				quirkPoints = this.data.items[i].data.category.toLowerCase() == "quirk" ? quirkPoints += this.data.items[i].data.points : quirkPoints;
+				perkPoints = this.data.items[i].data.category.toLowerCase() == "perk" ? perkPoints += this.data.items[i].data.points : perkPoints;
             }
         }
 		this.data.data.points.traits = traitPoints;
+		this.data.data.points.advantages = advantagePoints;
+		this.data.data.points.disadvantages = disadvantagePoints;
+		this.data.data.points.quirks = quirkPoints;
+		this.data.data.points.perks = perkPoints;
 	}
 
     recalcSkillPoints() {

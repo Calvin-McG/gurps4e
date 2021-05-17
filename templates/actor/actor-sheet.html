@@ -101,7 +101,15 @@
 							<td class="pointTotal">{{numberFormat data.points.attributes decimals=0}}</td>
 						</tr>
 						<tr>
-							<td class="">Traits:</td>
+							<td class="tooltip">
+								Traits:
+								<span class="tooltiptext" style="margin-left: -130px; bottom: 100%;">
+									Advantages: {{numberFormat data.points.advantages decimals=0}}<br>
+									Disadvantages: {{numberFormat data.points.disadvantages decimals=0}}<br>
+									Perks: {{numberFormat data.points.perks decimals=0}}<br>
+									Quirks: {{numberFormat data.points.quirks decimals=0}}
+								</span>
+							</td>
 							<td class="pointTotal">{{numberFormat data.points.traits decimals=0}}</td>
 						</tr>
 						<tr>

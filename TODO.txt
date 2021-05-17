@@ -14,7 +14,6 @@ Campaign toggles for...
 
 Misc
     - Add area of effect for attacks
-    - Separate Adv/Disadv so they display separately in the point subtotals
 
 ===Jake's Requests===
 A blank inventory character sheet at some point for chests and inventories would be really helpful though
