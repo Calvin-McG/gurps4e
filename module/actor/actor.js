@@ -135,8 +135,6 @@ export class gurpsActor extends Actor {
 	recalcSenses() {
 		let per = this.data.data.primaryAttributes.perception.value;
 
-		console.log(this.data.data.senses);
-
 		this.data.data.senses.vis.value    = per + this.data.data.senses.vis.mod;
 		this.data.data.senses.hear.value   = per + this.data.data.senses.hear.mod;
 		this.data.data.senses.smell.value  = per + this.data.data.senses.smell.mod;
