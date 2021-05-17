@@ -1,7 +1,5 @@
 Layered Armour
-    - Ensure only equipped armour gets totalled
-    - Make entering armour suck less (Remove default 0?)
-    - Add the armour tab to traits
+    - Make entering armour faster
     - Slam thingy
     - Make giant fuck-off macro for to-hit
     - Make giant fuck-off macro for active defences

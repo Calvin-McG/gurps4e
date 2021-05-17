@@ -379,7 +379,7 @@ export class gurpsActor extends Actor {
 		if (this.data.data.bodyType.name.length > 0){
 			// Create a function for filtering out armour
 			function filterArmour(item){
-				if (item.type == "Equipment" || item.type == "Trait"){ // Check to see if it is a piece of equipment
+				if ((item.type == "Equipment" && item.data.equipStatus == "equipped") || item.type == "Trait"){ // Check to see if it is a piece of equipment
 					if (item.data.armour != null){ // Check to see if data has the armour child object - This should really only be an issue when updating from a version that did not include this data structure.
 						if (generalHelpers.has(item.data.armour, "name")){ // Check to see if the name child exists - Again, hopefully only relevant on version update.
 							if (item.data.armour.bodyType.name.length > 0){ // Check to see if a body type has been set
