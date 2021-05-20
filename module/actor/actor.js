@@ -675,7 +675,8 @@ export class gurpsActor extends Actor {
 		console.log(leftFrontBound + " - " + rightFrontBound)
 		console.log(leftSideBound + " - " + rightSideBound)
 
-		if (relativeAngle >= leftFrontBound && relativeAngle <= rightFrontBound){ // Determine which arc the attacker is standing in
+		// Determine which arc the attacker is standing in
+		if (relativeAngle >= leftFrontBound && relativeAngle <= rightFrontBound){
 			console.log("It's in the front hexes")
 		}
 		else if (relativeAngle >= leftSideBound && relativeAngle <= rightSideBound){
@@ -683,6 +684,16 @@ export class gurpsActor extends Actor {
 		}
 		else {
 			console.log("It's in the rear hexes")
+		}
+
+		let literalRear = game.settings.get("gurps4e", "literalRear");
+
+		// Determine if the attacker is standing in front of or behind the target (In space, not relative to vision cones)
+		if (((relativeAngle >= -90 && relativeAngle <= 90) && literalRear) || ((relativeAngle >= -120 && relativeAngle <= 120) && !literalRear)){
+			console.log("It's infront of the target")
+		}
+		else {
+			console.log("It's behind the target")
 		}
 	}
 

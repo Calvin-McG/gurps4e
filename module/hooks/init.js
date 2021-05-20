@@ -73,6 +73,16 @@ Hooks.once("init", () => {
     default: false,
     type: Boolean
   });
+
+  // Register option for what counts as 'rear' when it comes to hit locations where that matters
+  game.settings.register("gurps4e", "literalRear", {
+    name: "Literal rear hit locations",
+    hint: "Certain hit location penalties vary depending on whether you're standing in front of or behind someone. When set to true, in front is the front 180 and behind is the rear 180. When set to false front is the front 240 and rear is the back 120",
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
   // Pre-load templates
   loadTemplates([
     "systems/gurps4e/templates/actor/actor-sheet.html",
