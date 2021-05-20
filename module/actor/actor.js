@@ -54,6 +54,8 @@ export class gurpsActor extends Actor {
 
 		//Update part specific HP
 		this.partHP();
+
+		console.log(this);
 	}
 
 	recalcAtrValues(){
