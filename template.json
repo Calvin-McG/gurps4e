@@ -65,6 +65,10 @@
           "block": 0,
           "dodge": 0
         },
+        "vision": {
+          "front": 180,
+          "side": 240
+        },
         "biography": "",
         "points": {
           "total": 150,

@@ -364,65 +364,96 @@
 						</tr>
 						{{/each}}
 					</table>
-					<div>
-						<table>
-							<tr>
-								<td>
-									<span class="bold">Swing:</span>
-								</td>
-								<td>
-									{{data.baseDamage.swing}}
-									<label class="fa fa-dice-six rollable" data-level="{{data.baseDamage.swing}}"
-									   data-label="Makes a &lt;b&gt;Swing&lt;/b&gt; Damage roll." data-type="damage"></label>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span class="bold">Thrust:</span>
-								</td>
-								<td>
-									{{data.baseDamage.thrust}}
-									<label class="fa fa-dice-six rollable" data-level="{{data.baseDamage.thrust}}"
-									   data-label="Makes a &lt;b&gt;Thrust&lt;/b&gt; Damage roll." data-type="damage"></label>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span class="bold">Combat Reflexes:</span>
-								</td>
-								<td>
-									<input type="checkbox" name="data.flag.combatReflexes" {{checked data.flag.combatReflexes}} data-dtype="Boolean"/>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span class="bold">Enhanced Parry</span>
-								</td>
-								<td>
-									<input type="number" name="data.enhanced.parry" class="atrPoints" value="{{data.enhanced.parry}}"
+					<table class="combat-table">
+						<tr>
+							<td>
+								<span class="bold">Swing:</span>
+							</td>
+							<td>
+								{{data.baseDamage.swing}}
+								<label class="fa fa-dice-six rollable" data-level="{{data.baseDamage.swing}}"
+								   data-label="Makes a &lt;b&gt;Swing&lt;/b&gt; Damage roll." data-type="damage"></label>
+							</td>
+							<td>
+								<span class="bold">Vision - Front</span>
+							</td>
+							<td>
+								<div class="tooltip">
+									<input type="number" name="data.vision.front" class="atrPoints" value="{{data.vision.front}}"
+										   data-dtype="Number" />
+									<span class="tooltiptext">
+											<span style="text-decoration: underline">DO NOT FUCK WITH</span><br>
+												The following are examples<br>
+												Tunnel Vision - 60<br>
+												No Peripheral - 120<br>
+												Standard - 180<br>
+												Peripheral Vision - 240<br>
+												360 Vision - 360<br>
+										</span>
+								</div>
+							</td>
+							<td>
+								<span class="bold">Enhanced Parry</span>
+							</td>
+							<td>
+								<input type="number" name="data.enhanced.parry" class="atrPoints" value="{{data.enhanced.parry}}"
 									   data-dtype="Number" />
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span class="bold">Enhanced Block</span>
-								</td>
-								<td>
-									<input type="number" name="data.enhanced.block" class="atrPoints" value="{{data.enhanced.block}}"
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="bold">Thrust:</span>
+							</td>
+							<td>
+								{{data.baseDamage.thrust}}
+								<label class="fa fa-dice-six rollable" data-level="{{data.baseDamage.thrust}}"
+								   data-label="Makes a &lt;b&gt;Thrust&lt;/b&gt; Damage roll." data-type="damage"></label>
+							</td>
+							<td>
+								<span class="bold">Vision - Side</span>
+							</td>
+							<td>
+								<div class="tooltip">
+									<input type="number" name="data.vision.side" class="atrPoints" value="{{data.vision.side}}"
+										   data-dtype="Number" />
+									<span class="tooltiptext">
+											<span style="text-decoration: underline">DO NOT FUCK WITH</span><br>
+												The following are examples<br>
+												Tunnel Vision - 60<br>
+												No Peripheral - 120<br>
+												Standard - 300<br>
+												Peripheral Vision - 360<br>
+												360 Vision - 360<br>
+										</span>
+								</div>
+							</td>
+							<td>
+								<span class="bold">Enhanced Block</span>
+							</td>
+							<td>
+								<input type="number" name="data.enhanced.block" class="atrPoints" value="{{data.enhanced.block}}"
 									   data-dtype="Number" />
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span class="bold">Enhanced Dodge</span>
-								</td>
-								<td>
-									<input type="number" name="data.enhanced.dodge" class="atrPoints" value="{{data.enhanced.dodge}}"
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="bold">Combat Reflexes:</span>
+							</td>
+							<td>
+								<input type="checkbox" name="data.flag.combatReflexes" {{checked data.flag.combatReflexes}} data-dtype="Boolean"/>
+							</td>
+							<td colspan="2">
+
+							</td>
+							<td>
+								<span class="bold">Enhanced Dodge</span>
+							</td>
+							<td>
+								<input type="number" name="data.enhanced.dodge" class="atrPoints" value="{{data.enhanced.dodge}}"
 									   data-dtype="Number" />
-								</td>
-							</tr>
-						</table>
-					</div>
+							</td>
+						</tr>
+					</table>
 				</div>
 				<table class="items-list">
 					<tr class="bold">

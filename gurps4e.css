@@ -296,10 +296,18 @@
 
 .encumbranceTable {
 	display: grid;
-	grid-template-columns: 2fr 2fr 2fr 2fr;
+	grid-template-columns: 2fr 6fr;
 	padding: 2px;
 	border: 1px dotted grey;
 	margin: 1px;
+}
+
+.combat-table {
+	margin-left: 5px;
+}
+
+.combat-table td {
+	padding: 2px;
 }
 
 #attribute-block {

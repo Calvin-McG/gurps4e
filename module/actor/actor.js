@@ -644,9 +644,47 @@ export class gurpsActor extends Actor {
 
 		console.log(targetToken._validPosition)
 		console.log(targetToken.data.rotation)
-		console.log(targetToken.data.sightAngle)
 
-		console.log(Math.atan2(targetToken._validPosition.y - selfToken._validPosition.y, targetToken._validPosition.x - selfToken._validPosition.x) * 180 / Math.PI);
+		let relativePosition = (Math.atan2(-(targetToken._validPosition.x - selfToken._validPosition.x), (targetToken._validPosition.y - selfToken._validPosition.y)) * 180 / Math.PI); // Takes the atan of the two sets of points after they have been rotated clockwise 90 degrees. This puts the 0 point towards the direction of facing with 180/-180 directly behind
+		console.log(relativePosition);
+
+		let targetFacing;
+		if (targetToken.data.rotation > 180){
+			targetFacing = targetToken.data.rotation - 360;
+		}
+		else {
+			targetFacing = targetToken.data.rotation
+		}
+
+		let relativeAngle = relativePosition - targetFacing;
+
+		if (relativeAngle < -180){
+			relativeAngle += 360;
+		}
+		else if (relativeAngle > 180){
+			relativeAngle -= 360;
+		}
+		relativeAngle = Math.round(relativeAngle); // Round the angle so we don't get cases like 120.172 degrees.
+
+		console.log(relativeAngle)
+
+		let leftFrontBound = (0 - (selfToken.actor.data.data.vision.front / 2));
+		let rightFrontBound = (0 + (selfToken.actor.data.data.vision.front / 2));
+		let leftSideBound = (0 - (selfToken.actor.data.data.vision.side / 2));
+		let rightSideBound = (0 + (selfToken.actor.data.data.vision.side / 2));
+
+		console.log(leftFrontBound + " - " + rightFrontBound)
+		console.log(leftSideBound + " - " + rightSideBound)
+
+		if (relativeAngle >= leftFrontBound && relativeAngle <= rightFrontBound){
+			console.log("It's in the front hexes")
+		}
+		else if (relativeAngle >= leftSideBound && relativeAngle <= rightSideBound){
+			console.log("It's in the side hexes")
+		}
+		else {
+			console.log("It's in the rear hexes")
+		}
 	}
 
 	//Return a dialog that tells the user to pick a target
