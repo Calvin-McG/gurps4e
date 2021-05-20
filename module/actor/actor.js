@@ -640,7 +640,6 @@ export class gurpsActor extends Actor {
 
 		console.log(selfToken._validPosition)
 		console.log(selfToken.data.rotation)
-		console.log(selfToken.data.sightAngle)
 
 		console.log(targetToken._validPosition)
 		console.log(targetToken.data.rotation)
@@ -649,26 +648,26 @@ export class gurpsActor extends Actor {
 		console.log(relativePosition);
 
 		let targetFacing;
-		if (targetToken.data.rotation > 180){
+		if (targetToken.data.rotation > 180){ // Correct for facing angles of greater than 180 degrees. Valid range for this macro is -180 to 0 to 180. Not 0 to 360
 			targetFacing = targetToken.data.rotation - 360;
 		}
 		else {
 			targetFacing = targetToken.data.rotation
 		}
 
-		let relativeAngle = relativePosition - targetFacing;
+		let relativeAngle = relativePosition - targetFacing; // Get the relative angle between the two tokens, corrected for the target's facing
 
-		if (relativeAngle < -180){
+		if (relativeAngle < -180){ // Correct for angles less than -180
 			relativeAngle += 360;
 		}
-		else if (relativeAngle > 180){
+		else if (relativeAngle > 180){ // Correct for angles more than 180
 			relativeAngle -= 360;
 		}
 		relativeAngle = Math.round(relativeAngle); // Round the angle so we don't get cases like 120.172 degrees.
 
 		console.log(relativeAngle)
 
-		let leftFrontBound = (0 - (selfToken.actor.data.data.vision.front / 2));
+		let leftFrontBound = (0 - (selfToken.actor.data.data.vision.front / 2)); // Get all the bounds for front and side arcs
 		let rightFrontBound = (0 + (selfToken.actor.data.data.vision.front / 2));
 		let leftSideBound = (0 - (selfToken.actor.data.data.vision.side / 2));
 		let rightSideBound = (0 + (selfToken.actor.data.data.vision.side / 2));
@@ -676,7 +675,7 @@ export class gurpsActor extends Actor {
 		console.log(leftFrontBound + " - " + rightFrontBound)
 		console.log(leftSideBound + " - " + rightSideBound)
 
-		if (relativeAngle >= leftFrontBound && relativeAngle <= rightFrontBound){
+		if (relativeAngle >= leftFrontBound && relativeAngle <= rightFrontBound){ // Determine which arc the attacker is standing in
 			console.log("It's in the front hexes")
 		}
 		else if (relativeAngle >= leftSideBound && relativeAngle <= rightSideBound){
