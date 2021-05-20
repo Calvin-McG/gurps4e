@@ -533,41 +533,6 @@ export class gurpsActor extends Actor {
 		return armour
 	}
 
-	// displayDrTypes(){
-	// 	this.data.data.bodyType.drTypesOne = this.switchDrTypes(this.data.data.bodyType.damageTypeOne);
-	// 	this.data.data.bodyType.drTypesTwo = this.switchDrTypes(this.data.data.bodyType.damageTypeTwo);
-	// }
-	//
-	// switchDrTypes(damageType){
-	// 	let drTypes = {};
-	// 	if (this.data.data.bodyType.body){
-	// 		let bodyParts = Object.keys(this.data.data.bodyType.body);
-	//
-	// 		for (let i = 0; i < bodyParts.length; i++){
-	// 			if (bodyParts[i] == "skull" || bodyParts[i] == "brain"){//Part has no sub-parts
-	// 				if (getProperty(this.data.data.bodyType.body, bodyParts[i] + ".dr" + damageType)) {
-	// 					drTypes[bodyParts[i]] = getProperty(this.data.data.bodyType.body, bodyParts[i] + ".dr" + damageType) + ((getProperty(this.data.data.bodyType.body, bodyParts[i] + ".flexible")) ? '*' : '');
-	// 				}
-	// 				else {
-	// 					drTypes[bodyParts[i]] = ""
-	// 				}
-	// 			}
-	// 			else {
-	// 				let subParts = Object.keys(getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation"));
-	// 				for (let n = 0; n < subParts.length; n++){
-	// 					if (getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n] + ".dr" + damageType)){
-	// 						drTypes[bodyParts[i] + subParts[n]] = getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n] + ".dr" + damageType) + ((getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n] + ".flexible")) ? '*' : '');
-	// 					}
-	// 					else {
-	// 						drTypes[bodyParts[i] + subParts[n]] = "";
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// 	return drTypes
-	// }
-
 	partHP(){
 		if (this.data.data.bodyType.body){
 			let bodyParts = Object.keys(this.data.data.bodyType.body);
@@ -718,14 +683,9 @@ export class gurpsActor extends Actor {
 
 	singleTargetDialog(selfToken, targetToken){
 		//This is the bit where we figure out where every one is, along with distances and range penalties.
-		console.log(canvas.scene.data.gridUnits)
-		console.log(canvas.grid)
 
 		let distance = distanceHelpers.convertToYards(canvas.grid.measureDistance(selfToken, targetToken), canvas.scene.data.gridUnits);
 		let distancePenalty = distanceHelpers.distancePenalty(distance);
-
-		console.log(distance);
-		console.log(distancePenalty);
 
 		let attacks = this.listAttacks(selfToken.actor);
 
@@ -736,7 +696,6 @@ export class gurpsActor extends Actor {
 		htmlContent += "<tr><td></td><td>Weapon</td><td>Attack</td><td>Level</td><td>Damage</td><td>Reach</td><td>Parry</td><td>ST</td></tr>";
 
 		for (let x = 0; x < attacks.melee.length; x++){
-			console.log(attacks.melee[x]);
 			htmlContent += "<tr>";
 			htmlContent += "<td><input type='radio' id='melee" + x + "' name='melee' value='" + x + "'></td>";
 			htmlContent += "<td>" + attacks.melee[x].weapon + "</td>";
@@ -764,7 +723,6 @@ export class gurpsActor extends Actor {
 		htmlContent += "<tr><td></td><td>Weapon</td><td>Attack</td><td>Level</td><td>Damage</td><td>Acc</td><td>Range</td><td>RoF</td><td>Shots</td><td>ST</td><td>Bulk</td><td>Rcl</td></tr>";
 
 		for (let q = 0; q < attacks.ranged.length; q++){
-			console.log(attacks.ranged[q]);
 			htmlContent += "<tr>";
 			htmlContent += "<td><input type='radio' id='range" + q + "' name='range' value='" + q + "'></td>";
 			htmlContent += "<td>" + attacks.ranged[q].weapon + "</td>";
@@ -858,8 +816,6 @@ export class gurpsActor extends Actor {
 			resizable: true,
 			width: "500"
 		})
-
-		console.log(singleTargetModal)
 
 		return singleTargetModal;
 	}
