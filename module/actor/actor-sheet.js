@@ -321,6 +321,21 @@ export class gurpsActorSheet extends ActorSheet {
 			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
 		}
 
+		let bodyParts = Object.keys(bodyObj);
+		let totalWeight = 0;
+
+		for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
+			let part = getProperty(bodyObj, bodyParts[i])
+			if (typeof part.weight != "undefined"){
+				totalWeight += part.weight;
+			}
+			else {
+				console.error(this.actor.data.name + " needs to refresh their body type");
+			}
+		}
+
+		this.actor.update({ "data.bodyType.totalWeight" : totalWeight});
+
 		this.actor.update({ "data.bodyType.-=body" : null}).then( actor => {// Remove the old body
 			actor.update({ "data.bodyType.body" : bodyObj }) // Add the new body
 		});
@@ -488,7 +503,9 @@ export class gurpsActorSheet extends ActorSheet {
 			personalWoundMultPipp: 4,
 			personalWoundMultTox: 1,
 			drHardening: 1,
-			penalty: "-7/-5",
+			penaltyFront: -7,
+			penaltyBack: -5,
+			weight: 0.01851851852,
 			flexible: false
 		};
 		return part;
@@ -517,7 +534,9 @@ export class gurpsActorSheet extends ActorSheet {
 			personalWoundMultPipp: 4,
 			personalWoundMultTox: 1,
 			drHardening: 1,
-			penalty: "-7/-5",
+			penaltyFront: -7,
+			penaltyBack: -5,
+			weight: 0.01851851852,
 			flexible: false
 		};
 		return part;
@@ -536,7 +555,10 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: "Face",
-			penalty: "-5/-7",
+			penaltyFront: -5,
+			penaltyBack: -7,
+			weight: 0.02777777778,
+			totalSubWeight: 1,
 			subLocation: {
 				jaw: {
 					label: "Jaw",
@@ -560,7 +582,9 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 2,
 					personalWoundMultTox: 1,
 					drHardening: 1,
-					penalty: "-6",
+					penaltyFront: -6,
+					penaltyBack: -6,
+					weight: 1/6,
 					flexible: false
 				},
 				nose: {
@@ -585,7 +609,9 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 4,
 					personalWoundMultTox: 1,
 					drHardening: 1,
-					penalty: "-7",
+					penaltyFront: -7,
+					penaltyBack: -7,
+					weight: 1/6,
 					hp: {
 						max: partHp,
 						state: "Fine",
@@ -615,7 +641,9 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 2,
 					personalWoundMultTox: 1,
 					drHardening: 1,
-					penalty: "-7",
+					penaltyFront: -7,
+					penaltyBack: -7,
+					weight: 1/6,
 					hp: {
 						max: partHp,
 						state: "Fine",
@@ -645,7 +673,9 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 2,
 					personalWoundMultTox: 1,
 					drHardening: 1,
-					penalty: "-6",
+					penaltyFront: -6,
+					penaltyBack: -6,
+					weight: 2/6,
 					flexible: false
 				},
 				eyes: {//Kromm's ruling on eyes http://forums.sjgames.com/showpost.php?p=733298&postcount=33
@@ -670,7 +700,9 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 4,
 					personalWoundMultTox: 1,
 					drHardening: 1,
-					penalty: "-9/-10",
+					penaltyFront: -9,
+					penaltyBack: -9,
+					weight: 1/6,
 					hp: {
 						max: eyeHp,
 						state: "Fine",
@@ -696,7 +728,10 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: label,
-			penalty: "-2",
+			penaltyFront: -2,
+			penaltyBack: -2,
+			weight: 0.1412037037,
+			totalSubWeight: 1,
 			hp: {
 				max: partHp,
 				state: "Fine",
@@ -726,7 +761,9 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
-					penalty: "-2",
+					penaltyFront: -4,
+					penaltyBack: -4,
+					weight: 3/6,
 					flexible: false
 				},
 				thigh: {
@@ -751,7 +788,9 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
-					penalty: "-2",
+					penaltyFront: -5,
+					penaltyBack: -5,
+					weight: 1/6,
 					flexible: false
 				},
 				insideThigh: {
@@ -776,7 +815,9 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
-					penalty: "-8/-3",
+					penaltyFront: -8,
+					penaltyBack: -3,
+					weight: 0,
 					flexible: false
 				},
 				knee: {
@@ -801,7 +842,9 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
-					penalty: "-5",
+					penaltyFront: -5,
+					penaltyBack: -5,
+					weight: 1/6,
 					hp: {
 						max: jointHp,
 						state: "Fine",
@@ -831,7 +874,9 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
-					penalty: "-8",
+					penaltyFront: -8,
+					penaltyBack: -8,
+					weight: 0,
 					flexible: false
 				},
 				artery: {
@@ -856,7 +901,9 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 2.5,
 					personalWoundMultTox: 1,
 					drHardening: 1,
-					penalty: "-5",
+					penaltyFront: -5,
+					penaltyBack: -5,
+					weight: 1/6,
 					flexible: false
 				}
 			}
@@ -873,7 +920,10 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: "Tail",
-			penalty: "-2",
+			penaltyFront: -2,
+			penaltyBack: -2,
+			weight: 0.106481481,
+			totalSubWeight: 1,
 			hp: {
 				max: partHp,
 				state: "Fine",
@@ -903,12 +953,15 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
-					penalty: "-3",
+					penaltyFront: -3,
+					penaltyBack: -3,
+					weight: 5/6,
 					flexible: false
 				},
 				shoulder: {
 					label: "Shoulder",
-					penalty: "-5",
+					penaltyFront: -5,
+					penaltyBack: -5,
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -929,6 +982,7 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 2.5,
 					personalWoundMultTox: 1,
 					drHardening: 1,
+					weight: 1/6,
 					flexible: false
 				}
 			}
@@ -950,7 +1004,10 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: label,
-			penalty: "-2",
+			penaltyFront: -2,
+			penaltyBack: -2,
+			weight: 0.106481481,
+			totalSubWeight: 1,
 			hp: {
 				max: partHp,
 				state: "Fine",
@@ -980,7 +1037,9 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
-					penalty: "-2",
+					penaltyFront: -4,
+					penaltyBack: -4,
+					weight: 3/6,
 					flexible: false
 				},
 				upperArm: {
@@ -1005,7 +1064,9 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
-					penalty: "-2",
+					penaltyFront: -5,
+					penaltyBack: -5,
+					weight: 1/6,
 					flexible: false
 				},
 				elbow: {
@@ -1030,7 +1091,9 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
-					penalty: "-5",
+					penaltyFront: -5,
+					penaltyBack: -5,
+					weight: 1/6,
 					hp: {
 						max: jointHp,
 						state: "Fine",
@@ -1060,12 +1123,16 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
-					penalty: "-8",
+					penaltyFront: -8,
+					penaltyBack: -8,
+					weight: 0,
 					flexible: false
 				},
 				shoulder: {
 					label: "Shoulder",
-					penalty: "-5",
+					penaltyFront: -5,
+					penaltyBack: -5,
+					weight: 1/6,
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1090,7 +1157,9 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				armpit: {
 					label: "Armpit",
-					penalty: "-8",
+					penaltyFront: -8,
+					penaltyBack: -8,
+					weight: 0,
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1124,7 +1193,10 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: label,
-			penalty: "0",
+			penaltyFront: -1,
+			penaltyBack: -1,
+			weight: 0.12037037,
+			totalSubWeight: 1,
 			flexible: false,
 			subLocation: {
 				chest: {
@@ -1149,12 +1221,15 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
-					penalty: "0",
+					penaltyFront: -1,
+					penaltyBack: -1,
+					weight: 5/6,
 					flexible: false
 				},
 				vitals: {
 					label: "Vitals",
-					penalty: "-3",
+					penaltyFront: -3,
+					penaltyBack: -3,
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1175,11 +1250,13 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 3,
 					personalWoundMultTox: 1,
 					drHardening: 1,
+					weight: 1/6,
 					flexible: false
 				},
 				spine: {
 					label: "Spine",
-					penalty: "-8",
+					penaltyFront: -8,
+					penaltyBack: -8,
 					drBurn: 3,
 					drCor: 3,
 					drCr: 3,
@@ -1200,6 +1277,7 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
+					weight: 0,
 					hp: {
 						max: spineHp,
 						state: "Fine",
@@ -1216,7 +1294,10 @@ export class gurpsActorSheet extends ActorSheet {
 	addInvertebrateChest(hp, label){
 		let part = {
 			label: label,
-			penalty: "0",
+			penaltyFront: -1,
+			penaltyBack: -1,
+			weight: 0.12037037,
+			totalSubWeight: 1,
 			flexible: false,
 			subLocation: {
 				chest: {
@@ -1241,12 +1322,15 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
-					penalty: "0",
+					penaltyFront: -1,
+					penaltyBack: -1,
+					weight: 5/6,
 					flexible: false
 				},
 				vitals: {
 					label: "Vitals",
-					penalty: "-3",
+					penaltyFront: -3,
+					penaltyBack: -3,
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1267,6 +1351,7 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 3,
 					personalWoundMultTox: 1,
 					drHardening: 1,
+					weight: 1/6,
 					flexible: false
 				}
 			}
@@ -1283,12 +1368,16 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: label,
-			penalty: "-1",
+			penaltyFront: -1,
+			penaltyBack: -1,
+			weight: 0.125,
+			totalSubWeight: 5/6,
 			flexible: false,
 			subLocation: {
 				digestiveTract: {
 					label: "Digestive Tract",
-					penalty: "-3",
+					penaltyFront: -3,
+					penaltyBack: -3,
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1309,11 +1398,13 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
+					weight: 3/6,
 					flexible: false
 				},
 				vitals: {
 					label: "Vitals",
-					penalty: "-3",
+					penaltyFront: -3,
+					penaltyBack: -3,
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1334,11 +1425,13 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 3,
 					personalWoundMultTox: 1,
 					drHardening: 1,
+					weight: 1/6,
 					flexible: false
 				},
 				pelvis: {
 					label: "Pelvis",
-					penalty: "-3",
+					penaltyFront: -3,
+					penaltyBack: -3,
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1359,6 +1452,7 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
+					weight: 1/6,
 					hp: {
 						max: pelvisHp,
 						state: "Fine",
@@ -1380,12 +1474,16 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: label,
-			penalty: "-1",
+			penaltyFront: -1,
+			penaltyBack: -1,
+			weight: 0.125,
+			totalSubWeight: 1,
 			flexible: false,
 			subLocation: {
 				digestiveTract: {
 					label: "Digestive Tract",
-					penalty: "-3",
+					penaltyFront: -3,
+					penaltyBack: -3,
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1406,11 +1504,13 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
+					weight: 3/6,
 					flexible: false
 				},
 				vitals: {
 					label: "Vitals",
-					penalty: "-3",
+					penaltyFront: -3,
+					penaltyBack: -3,
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1431,11 +1531,13 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 3,
 					personalWoundMultTox: 1,
 					drHardening: 1,
+					weight: 1/6,
 					flexible: false
 				},
 				pelvis: {
 					label: "Pelvis",
-					penalty: "-3",
+					penaltyFront: -3,
+					penaltyBack: -3,
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1461,11 +1563,13 @@ export class gurpsActorSheet extends ActorSheet {
 						state: "Fine",
 						value: pelvisHp
 					},
+					weight: 1/6,
 					flexible: false
 				},
 				groin: {
 					label: "Groin",
-					penalty: "-3",
+					penaltyFront: -3,
+					penaltyBack: -3,
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1486,6 +1590,7 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
+					weight: 1/6,
 					flexible: false
 				}
 			}
@@ -1496,18 +1601,33 @@ export class gurpsActorSheet extends ActorSheet {
 
 	addExtremity(hp, label, type, jointName, insideName){
 		let partHp = Math.ceil(hp/3);
-		if (partHp <= hp/3){//Make sure that part hp is greater than one third HP
+		let weight;
+		if (partHp <= hp/3){ // Make sure that part hp is greater than one third HP
 			partHp += 1;
 		}
 
 		let jointHp = Math.ceil(hp/4);
-		if (jointHp <= hp/4){//Make sure that part hp is greater than one quarter HP
+		if (jointHp <= hp/4){ // Make sure that part hp is greater than one quarter HP
 			jointHp += 1;
+		}
+
+		// Hands and feet have different hit percentages
+		if (label.toLowerCase().includes("hand")){
+			weight = 0.023148148;
+		}
+		else if (label.toLowerCase().includes("foot")){
+			weight = 0.013888889;
+		}
+		else {
+			weight = 0.018518519; // The average of foot and hand weights
 		}
 
 		let part = {
 			label: label,
-			penalty: "-4",
+			penaltyFront: -4,
+			penaltyBack: -4,
+			weight: weight,
+			totalSubWeight: 1,
 			hp: {
 				max: partHp,
 				state: "Fine",
@@ -1517,7 +1637,8 @@ export class gurpsActorSheet extends ActorSheet {
 			subLocation: {
 				extremity: {
 					label: type,
-					penalty: "-4",
+					penaltyFront: -4,
+					penaltyBack: -4,
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1538,11 +1659,13 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
+					weight: 5/6,
 					flexible: false
 				},
 				extremityInterior: {
 					label: insideName,
-					penalty: "-8/-6",
+					penaltyFront: -8,
+					penaltyBack: -8,
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1563,11 +1686,13 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 1,
 					personalWoundMultTox: 1,
 					drHardening: 1,
+					weight: 0,
 					flexible: false
 				},
 				joint: {
 					label: jointName,
-					penalty: "-7",
+					penaltyFront: -7,
+					penaltyBack: -7,
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1593,6 +1718,7 @@ export class gurpsActorSheet extends ActorSheet {
 						state: "Fine",
 						value: jointHp
 					},
+					weight: 1/6,
 					flexible: false
 				}
 			}
@@ -1604,12 +1730,16 @@ export class gurpsActorSheet extends ActorSheet {
 	addNeck(){
 		let part = {
 			label: "Neck",
-			penalty: "-5",
+			penaltyFront: -5,
+			penaltyBack: -5,
+			weight: 0.018518519,
+			totalSubWeight: 1,
 			flexible: false,
 			subLocation: {
 				neck: {
 					label: "Neck",
-					penalty: "-5",
+					penaltyFront: -5,
+					penaltyBack: -5,
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1630,11 +1760,13 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 2,
 					personalWoundMultTox: 1,
 					drHardening: 1,
+					weight: 5/6,
 					flexible: false
 				},
 				vein: {
 					label: "Vein",
-					penalty: "-8",
+					penaltyFront: -8,
+					penaltyBack: -8,
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1655,6 +1787,7 @@ export class gurpsActorSheet extends ActorSheet {
 					personalWoundMultPipp: 2.5,
 					personalWoundMultTox: 1,
 					drHardening: 1,
+					weight: 1/6,
 					flexible: false
 				}
 			}

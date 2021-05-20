@@ -2,6 +2,7 @@ Layered Armour
     - Make entering armour faster
     - Slam thingy
     - Make giant fuck-off macro for to-hit
+        - Add section explaining distance and distance penalty
     - Make giant fuck-off macro for active defences
     - Make giant fuck-off macro for damage
 

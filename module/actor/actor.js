@@ -809,9 +809,9 @@ export class gurpsActor extends Actor {
 			content: htmlContent,
 			buttons: {
 				melee: {
-					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bow-arrow" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M110.11 227.59c-6.25-6.25-16.38-6.25-22.63 0l-18.79 18.8a16.005 16.005 0 0 0-2 20.19l53.39 80.09-53.43 53.43-29.26-14.63a13.902 13.902 0 0 0-16.04 2.6L4.07 405.36c-5.42 5.43-5.42 14.22 0 19.64L87 507.93c5.42 5.42 14.22 5.42 19.64 0l17.29-17.29a13.873 13.873 0 0 0 2.6-16.03l-14.63-29.26 53.43-53.43 80.09 53.39c6.35 4.23 14.8 3.39 20.19-2l18.8-18.79c6.25-6.25 6.25-16.38 0-22.63l-174.3-174.3zM493.73.16L400 16 171.89 244.11l96 96L496 112l15.83-93.73c1.51-10.56-7.54-19.61-18.1-18.11z" class=""></path></svg>',
+					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M110.11 227.59c-6.25-6.25-16.38-6.25-22.63 0l-18.79 18.8a16.005 16.005 0 0 0-2 20.19l53.39 80.09-53.43 53.43-29.26-14.63a13.902 13.902 0 0 0-16.04 2.6L4.07 405.36c-5.42 5.43-5.42 14.22 0 19.64L87 507.93c5.42 5.42 14.22 5.42 19.64 0l17.29-17.29a13.873 13.873 0 0 0 2.6-16.03l-14.63-29.26 53.43-53.43 80.09 53.39c6.35 4.23 14.8 3.39 20.19-2l18.8-18.79c6.25-6.25 6.25-16.38 0-22.63l-174.3-174.3zM493.73.16L400 16 171.89 244.11l96 96L496 112l15.83-93.73c1.51-10.56-7.54-19.61-18.1-18.11z" class=""></path></svg>',
 					label: "Select Melee",
-					callback: (html) => {
+					callback: () => {
 						let elements = document.getElementsByName('melee');
 						let attack;
 
@@ -821,7 +821,7 @@ export class gurpsActor extends Actor {
 							}
 						}
 						if (typeof attack !== "undefined") {
-							this.meleeAttackOnTarget(selfToken, attacks.melee[attack], targetToken)
+							this.attackOnTarget(selfToken, attacks.melee[attack], targetToken)
 						}
 						// console.log(game.actors.get(targetArray[html.find('#target').val()].data.actorId))
 						// game.actors.get(targetArray[html.find('#target').val()].data.actorId).data.data.reserves.hp.value = 9;//Set the value to the new one so we can work with it within the macro
@@ -833,9 +833,9 @@ export class gurpsActor extends Actor {
 					}
 				},
 				ranged: {
-					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bow-arrow" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M145.78 287.03l45.26-45.25-90.58-90.58C128.24 136.08 159.49 128 192 128c32.03 0 62.86 7.79 90.33 22.47l46.61-46.61C288.35 78.03 241.3 64 192 64c-49.78 0-97.29 14.27-138.16 40.59l-3.9-3.9c-6.25-6.25-16.38-6.25-22.63 0L4.69 123.31c-6.25 6.25-6.25 16.38 0 22.63l141.09 141.09zm262.36-104.64L361.53 229c14.68 27.47 22.47 58.3 22.47 90.33 0 32.51-8.08 63.77-23.2 91.55l-90.58-90.58-45.26 45.26 141.76 141.76c6.25 6.25 16.38 6.25 22.63 0l22.63-22.63c6.25-6.25 6.25-16.38 0-22.63l-4.57-4.57C433.74 416.63 448 369.11 448 319.33c0-49.29-14.03-96.35-39.86-136.94zM493.22.31L364.63 26.03c-12.29 2.46-16.88 17.62-8.02 26.49l34.47 34.47-250.64 250.63-49.7-16.57a20.578 20.578 0 0 0-21.04 4.96L6.03 389.69c-10.8 10.8-6.46 29.2 8.04 34.04l55.66 18.55 18.55 55.65c4.83 14.5 23.23 18.84 34.04 8.04l63.67-63.67a20.56 20.56 0 0 0 4.97-21.04l-16.57-49.7 250.64-250.64 34.47 34.47c8.86 8.86 24.03 4.27 26.49-8.02l25.72-128.59C513.88 7.8 504.2-1.88 493.22.31z" class=""></path></svg>',
+					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M145.78 287.03l45.26-45.25-90.58-90.58C128.24 136.08 159.49 128 192 128c32.03 0 62.86 7.79 90.33 22.47l46.61-46.61C288.35 78.03 241.3 64 192 64c-49.78 0-97.29 14.27-138.16 40.59l-3.9-3.9c-6.25-6.25-16.38-6.25-22.63 0L4.69 123.31c-6.25 6.25-6.25 16.38 0 22.63l141.09 141.09zm262.36-104.64L361.53 229c14.68 27.47 22.47 58.3 22.47 90.33 0 32.51-8.08 63.77-23.2 91.55l-90.58-90.58-45.26 45.26 141.76 141.76c6.25 6.25 16.38 6.25 22.63 0l22.63-22.63c6.25-6.25 6.25-16.38 0-22.63l-4.57-4.57C433.74 416.63 448 369.11 448 319.33c0-49.29-14.03-96.35-39.86-136.94zM493.22.31L364.63 26.03c-12.29 2.46-16.88 17.62-8.02 26.49l34.47 34.47-250.64 250.63-49.7-16.57a20.578 20.578 0 0 0-21.04 4.96L6.03 389.69c-10.8 10.8-6.46 29.2 8.04 34.04l55.66 18.55 18.55 55.65c4.83 14.5 23.23 18.84 34.04 8.04l63.67-63.67a20.56 20.56 0 0 0 4.97-21.04l-16.57-49.7 250.64-250.64 34.47 34.47c8.86 8.86 24.03 4.27 26.49-8.02l25.72-128.59C513.88 7.8 504.2-1.88 493.22.31z" class=""></path></svg>',
 					label: "Select Ranged",
-					callback: (html) => {
+					callback: () => {
 						let elements = document.getElementsByName('range');
 						let attack;
 
@@ -845,7 +845,7 @@ export class gurpsActor extends Actor {
 							}
 						}
 						if (typeof attack !== "undefined") {
-							this.rangedAttackOnTarget(selfToken, attacks.ranged[attack], targetToken)
+							this.attackOnTarget(selfToken, attacks.ranged[attack], targetToken)
 						}
 						// console.log(html.find('#target').val())
 						// console.log(game.actors.get(targetArray[html.find('#target').val()].data.actorId))
@@ -907,16 +907,310 @@ export class gurpsActor extends Actor {
 		return { "melee": meleeAttacks, "ranged": rangedAttacks}
 	}
 
-	meleeAttackOnTarget(attacker, attack, target) {
-		console.log(attacker.nameplate._text);
-		console.log(attack);
-		console.log(target.nameplate._text);
-		let label = attacker.nameplate._text + " attacks " + target.nameplate._text + " with a " + attack.weapon + " " + attack.name + "."
+	attackOnTarget(attacker, attack, target) {
+		let bodyParts = Object.keys(target.actor.data.data.bodyType.body); // Collect all the bodypart names
+		let relativePosition = this.getFacing(attacker, target); // Method returns [facing,position]
 
-		rollHelpers.skillRoll(attack.level, 0, label)
+		let locationSelector = ""
+		locationSelector += "<select name='hitLocation' id='hitLocation'>"
+		for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
+			let part = getProperty(target.actor.data.data.bodyType.body, bodyParts[i])
+			let penalty;
+			if (relativePosition[1] > 0){ // If the attacker is in front of the target
+				penalty = part.penaltyFront;
+			}
+			else {
+				penalty = part.penaltyBack;
+			}
+			locationSelector += "<option value='" + bodyParts[i] + "'>" + part.label + ": " + penalty + "</option>"
+		}
+
+		locationSelector += "</select>"
+
+		if (typeof attack.rof !== "undefined") { // Check to see if RoF exists. This is a shorthand for whether the attack is ranged or melee
+			locationSelector += "<div><span style='width: 45%'>RoF:</span><input style='width: 45%' type='number' id='rof' name='rof' value='" + attack.rof + "'/></div>";
+		}
+
+		// Open dialog to choose hit location, random swing, or random torso
+		let hitLocationModal = new Dialog({
+			title: "Select Location",
+			content: locationSelector,
+			buttons: {
+				randLocation: {
+					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M504.971 359.029c9.373 9.373 9.373 24.569 0 33.941l-80 79.984c-15.01 15.01-40.971 4.49-40.971-16.971V416h-58.785a12.004 12.004 0 0 1-8.773-3.812l-70.556-75.596 53.333-57.143L352 336h32v-39.981c0-21.438 25.943-31.998 40.971-16.971l80 79.981zM12 176h84l52.781 56.551 53.333-57.143-70.556-75.596A11.999 11.999 0 0 0 122.785 96H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12zm372 0v39.984c0 21.46 25.961 31.98 40.971 16.971l80-79.984c9.373-9.373 9.373-24.569 0-33.941l-80-79.981C409.943 24.021 384 34.582 384 56.019V96h-58.785a12.004 12.004 0 0 0-8.773 3.812L96 336H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h110.785c3.326 0 6.503-1.381 8.773-3.812L352 176h32z"></path></svg>',
+					label: "Random Hit Location",
+					callback: () => {
+						// The user has not chosen to target a specific location. Find the result randomly.
+						let rofInput = document.getElementsByName('rof');
+						if(rofInput[0]){
+							this.selectedRandom(target, attacker, attack, relativePosition, rofInput[0].value)
+						}
+						else {
+							this.selectedRandom(target, attacker, attack, relativePosition, 1)
+						}
+					}
+				},
+				randTorso: {
+					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M248 8C111.03 8 0 119.03 0 256s111.03 248 248 248 248-111.03 248-248S384.97 8 248 8zm0 432c-101.69 0-184-82.29-184-184 0-101.69 82.29-184 184-184 101.69 0 184 82.29 184 184 0 101.69-82.29 184-184 184zm0-312c-70.69 0-128 57.31-128 128s57.31 128 128 128 128-57.31 128-128-57.31-128-128-128zm0 192c-35.29 0-64-28.71-64-64s28.71-64 64-64 64 28.71 64 64-28.71 64-64 64z"></path></svg>',
+					label: "Select Torso",
+					callback: () => {
+						// The user has selected the torso without specifying upper/lower. Find the result randomly.
+						let rofInput = document.getElementsByName('rof');
+						if(rofInput[0]){
+							this.selectedTorso(target, attacker, attack, relativePosition, rofInput[0].value)
+						}
+						else {
+							this.selectedTorso(target, attacker, attack, relativePosition,  1)
+						}
+					}
+				},
+				hitLocation: {
+					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M248 8C111.03 8 0 119.03 0 256s111.03 248 248 248 248-111.03 248-248S384.97 8 248 8zm0 432c-101.69 0-184-82.29-184-184 0-101.69 82.29-184 184-184 101.69 0 184 82.29 184 184 0 101.69-82.29 184-184 184zm0-312c-70.69 0-128 57.31-128 128s57.31 128 128 128 128-57.31 128-128-57.31-128-128-128zm0 192c-35.29 0-64-28.71-64-64s28.71-64 64-64 64 28.71 64 64-28.71 64-64 64z"></path></svg>',
+					label: "Select Hit Location",
+					callback: () => {
+						// The user has selected a hit location without specifying sub location. Choose the sub location randomly.
+						let elements = document.getElementsByName('hitLocation');
+						if(elements[0].value){
+							let rofInput = document.getElementsByName('rof');
+							if(rofInput[0]){
+								this.selectedHitLocation(target, attacker, attack, elements[0].value, relativePosition, rofInput[0].value)
+							}
+							else {
+								this.selectedHitLocation(target, attacker, attack, elements[0].value, relativePosition, 1)
+							}
+
+						}
+					}
+				},
+				hitSubLocation: {
+					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M248 8C111.03 8 0 119.03 0 256s111.03 248 248 248 248-111.03 248-248S384.97 8 248 8zm0 432c-101.69 0-184-82.29-184-184 0-101.69 82.29-184 184-184 101.69 0 184 82.29 184 184 0 101.69-82.29 184-184 184zm0-312c-70.69 0-128 57.31-128 128s57.31 128 128 128 128-57.31 128-128-57.31-128-128-128zm0 192c-35.29 0-64-28.71-64-64s28.71-64 64-64 64 28.71 64 64-28.71 64-64 64z"></path></svg>',
+					label: "Select Complex Hit Location",
+					callback: () => {
+						// The user has selected a hit location and specified they wish to target a sub location. Open another dialog to find what specific location.
+						let elements = document.getElementsByName('hitLocation');
+						if(elements[0].value){
+							let rofInput = document.getElementsByName('rof');
+							if(rofInput[0]){
+								this.selectedComplexHitLocation(target, attacker, attack, elements[0].value, relativePosition, rofInput[0].value)
+							}
+							else {
+								this.selectedComplexHitLocation(target, attacker, attack, elements[0].value, relativePosition, 1)
+							}
+
+						}
+					}
+				},
+				cancel: {
+					icon: '<i class="fas fa-times"></i>',
+					label: "Cancel",
+					callback: () => {
+
+					}
+				}
+			},
+			default: "randTorso",
+			render: html => console.log("Register interactivity in the rendered dialog"),
+			close: html => console.log("This always is logged no matter which option is chosen")
+		},{
+			resizable: true,
+			width: "500"
+		})
+
+		hitLocationModal.render(true);
+
+		// let label = attacker.nameplate._text + " attacks " + target.nameplate._text + " with a " + attack.weapon + " " + attack.name + "."
+		//
+		// rollHelpers.skillRoll(attack.level, 0, label)
 	}
 
-	rangedAttackOnTarget(attacker, attack, target) {
+	selectedRandom(target, attacker, attack, relativePosition, rof) { // Select random hit location
+		let generalLocation = this.randomHitLocation(target) // Select a random location
+		let location;
+		if (generalLocation.subLocation){ // Check to see if there are sub locations
+			let specificLocation = this.randomComplexHitLocation(generalLocation); // Get the sub location
+			location = specificLocation;
+		}
+		else {
+			location = generalLocation;
+		}
+
+		this.reportHitResult(target, attacker, attack, relativePosition, rof, location, 0) // There is no hit location penalty since they're going with a random location
+	}
+
+	selectedTorso(target, attacker, attack, relativePosition, rof) { // Select random location on torso (Chest/Abdomen)
+		let generalLocation = this.randomTorsoLocation(target); // Generate a random location from the list of torso locations
+		let location;
+		if (generalLocation.subLocation){ // Check to see if there are sub locations
+			let specificLocation = this.randomComplexHitLocation(generalLocation); // Get the sub location
+			location = specificLocation;
+		}
+		else {
+			location = generalLocation;
+		}
+
+		this.reportHitResult(target, attacker, attack, relativePosition, rof, location, 0) // There is no hit location penalty since they're going for the torso
+	}
+
+	selectedHitLocation(target, attacker, attack, locationHit, relativePosition, rof) { // Select specific hit location and then generate a random complex hit location
+		let generalLocation = getProperty(target.actor.data.data.bodyType.body, locationHit); // Get specific hit location
+		let location;
+		if (generalLocation.subLocation){ // Check to see if there are sub locations
+			let specificLocation = this.randomComplexHitLocation(generalLocation); // Get the sub location
+			location = specificLocation;
+		}
+		else {
+			location = generalLocation;
+		}
+
+		let penalty;
+		if (relativePosition[1] > 0){ // If the attacker is in front of the target
+			penalty = generalLocation.penaltyFront; // The penalty comes from the general location since that's what they selected
+		}
+		else {
+			penalty = generalLocation.penaltyBack;
+		}
+
+		this.reportHitResult(target, attacker, attack, relativePosition, rof, location, penalty)
+	}
+
+	selectedComplexHitLocation(target, attacker, attack, locationHit, relativePosition, rof) { // Select specific hit location and then the complex hit location
+		// Open a new dialog to specify sub location
+		let location = getProperty(target.actor.data.data.bodyType.body, locationHit)
+
+		if (location.subLocation){ // Make sure there are even complex hit locations to choose
+			console.log("sublocation exists")
+			let bodyParts = Object.keys(getProperty(target.actor.data.data.bodyType.body, locationHit + ".subLocation")); // Collect all the bodypart names
+
+			let complexLocationSelector = ""
+			complexLocationSelector += "<select name='complexHitLocation' id='complexHitLocation'>"
+			for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
+				let part = getProperty(target.actor.data.data.bodyType.body, locationHit + ".subLocation." + bodyParts[i])
+
+				let penalty;
+				if (relativePosition[1] > 0){ // If the attacker is in front of the target
+					penalty = part.penaltyFront;
+				}
+				else {
+					penalty = part.penaltyBack;
+				}
+
+				complexLocationSelector += "<option value='" + locationHit + ".subLocation." + bodyParts[i] + "'>" + part.label + ": " + penalty + "</option>"
+			}
+
+			complexLocationSelector += "</select>"
+
+			// Open dialog to choose specific complex hit location
+			let complexHitLocationModal = new Dialog({
+				title: "Select Specific Location",
+				content: complexLocationSelector,
+				buttons: {
+					hitLocation: {
+						icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M248 8C111.03 8 0 119.03 0 256s111.03 248 248 248 248-111.03 248-248S384.97 8 248 8zm0 432c-101.69 0-184-82.29-184-184 0-101.69 82.29-184 184-184 101.69 0 184 82.29 184 184 0 101.69-82.29 184-184 184zm0-312c-70.69 0-128 57.31-128 128s57.31 128 128 128 128-57.31 128-128-57.31-128-128-128zm0 192c-35.29 0-64-28.71-64-64s28.71-64 64-64 64 28.71 64 64-28.71 64-64 64z"></path></svg>',
+						label: "Select Complex Hit Location",
+						callback: () => {
+							// The user has selected a hit location without specifying sub location. Choose the sub location randomly.
+							let elements = document.getElementsByName('complexHitLocation');
+							if(elements[0].value){
+								let location = getProperty(target.actor.data.data.bodyType.body, elements[0].value)
+								let penalty;
+								if (relativePosition[1] > 0){ // If the attacker is in front of the target
+									penalty = location.penaltyFront;
+								}
+								else {
+									penalty = location.penaltyBack;
+								}
+								this.reportHitResult(target, attacker, attack, relativePosition, rof, location, penalty)
+							}
+						}
+					},
+					cancel: {
+						icon: '<i class="fas fa-times"></i>',
+						label: "Cancel",
+						callback: () => {
+
+						}
+					}
+				},
+				default: "randTorso",
+				render: html => console.log("Register interactivity in the rendered dialog"),
+				close: html => console.log("This always is logged no matter which option is chosen")
+			},{
+				resizable: true,
+				width: "500"
+			})
+
+			complexHitLocationModal.render(true);
+		}
+		else { // If there are no sub locations proceed as normal
+			let penalty;
+			if (relativePosition[1] > 0){ // If the attacker is in front of the target
+				penalty = location.penaltyFront;
+			}
+			else {
+				penalty = location.penaltyBack;
+			}
+			this.reportHitResult(target, attacker, attack, relativePosition, rof, location, penalty)
+		}
+	}
+
+	randomHitLocation(target){
+		let targetBody = target.actor.data.data.bodyType;
+		let bodyParts = Object.keys(targetBody.body);
+		let roll = Math.random() * (targetBody.totalWeight - 0) + 0; // Roll a number between 0 and the target's total weight.
+		let part;
+
+		let i = -1;
+		do {
+			i += 1; // Itterate the index
+			part = getProperty(targetBody.body, bodyParts[i]); // Get the part for the current index
+			roll -= part.weight; // Subtract it's weight from the rolled weight
+		} while (roll > 0) // If the roll drops below zero, stop looping
+
+		let location = part; // Whatever the last part we accessed is the 'rolled' part.
+
+		return location;
+	}
+
+	randomTorsoLocation(target){
+		let targetBody = target.actor.data.data.bodyType;
+		let bodyParts = Object.keys(targetBody.body);
+		let torsoParts = [];
+
+		for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
+			if (bodyParts[i].toLowerCase().includes("chest") || bodyParts[i].toLowerCase().includes("abdomen")){ // If it's part of the torso, add it to the array to be searched
+				torsoParts.push(bodyParts[i])
+			}
+		}
+
+		let torsoPartsIndex = Math.floor(Math.random() * (torsoParts.length)); // Generate a random number between 0 and the max index
+
+		return getProperty(targetBody.body, torsoParts[torsoPartsIndex]);
+	}
+
+	randomComplexHitLocation(generalLocation){
+		let subLocations = Object.keys(generalLocation.subLocation);
+		let roll = Math.random() * (generalLocation.totalSubWeight - 0) + 0; // Roll a number between 0 and the target's total weight.
+		let part;
+
+		let i = -1;
+		do {
+			i += 1; // Itterate the index
+			part = getProperty(generalLocation.subLocation, subLocations[i]); // Get the part for the current index
+			roll -= part.weight; // Subtract it's weight from the rolled weight
+		} while (roll > 0) // If the roll drops below zero, stop looping
+
+		let subLocation = part; // Whatever the last part we accessed is the 'rolled' part.
+
+		return subLocation;
+	}
+
+	reportHitResult(target, attacker, attack, relativePosition, rof, location, penalty) {
+		console.log(target);
+		console.log(attacker);
 		console.log(attack);
+		console.log(relativePosition);
+		console.log(rof);
+		console.log(location);
+		console.log(penalty);
 	}
 }
