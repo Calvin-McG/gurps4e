@@ -85,240 +85,229 @@ export class gurpsActorSheet extends ActorSheet {
 
 		//Spoders and squids have a brain instead of a skull. Everyone else has a skull
 		if (bodyType == "arachnoid" || bodyType == "octopod"){
-			bodyObj.brain = this.addBrain(actorData.reserves.hp.max);
+			bodyObj.brain = this.addBrain(actorData.reserves.hp.max, "brain");
 		}
 		else {
-			bodyObj.skull = this.addSkull(actorData.reserves.hp.max);
+			bodyObj.skull = this.addSkull(actorData.reserves.hp.max, "skull");
 		}
 
 		//Body parts that apply to all body types
-		bodyObj.face = this.addFace(actorData.reserves.hp.max);
+		bodyObj.face = this.addFace(actorData.reserves.hp.max, "face");
+		bodyObj.neck = this.addNeck(actorData.reserves.hp.max, "neck");
 
 		//The following body parts are specific to said body types
 		if (bodyType == "humanoid"){
-			bodyObj.legLeft = this.addLeg(actorData.reserves.hp.max, "Left Leg");
-			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Leg");
-			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Arm");
-			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Arm");
-			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
-			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
-			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
-			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hand", "Hand", "Wrist", "Palm");
-			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Hand", "Hand", "Wrist", "Palm");
-			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Foot", "Foot", "Ankle", "Sole");
-			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Foot", "Foot", "Ankle", "Sole");
-			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
+			bodyObj.legLeft 	= this.addLeg(actorData.reserves.hp.max, 		"Left Leg"		,"legLeft");
+			bodyObj.legRight 	= this.addLeg(actorData.reserves.hp.max, 		"Right Leg"	,"legRight");
+			bodyObj.armLeft 	= this.addArm(actorData.reserves.hp.max, 		"Left Arm"		,"armLeft");
+			bodyObj.armRight 	= this.addArm(actorData.reserves.hp.max, 		"Right Arm"	,"armRight");
+			bodyObj.upperChest 	= this.addChest(actorData.reserves.hp.max,		"Upper Chest"	,"upperChest");
+			bodyObj.lowerChest 	= this.addChest(actorData.reserves.hp.max,		"Lower Chest"	,"lowerChest");
+			bodyObj.abdomen 	= this.addAbdomen(actorData.reserves.hp.max,	"Abdomen"		,"abdomen");
+			bodyObj.handLeft 	= this.addExtremity(actorData.reserves.hp.max,	"Left Hand"	,"handLeft", "Hand", "Wrist", "Palm");
+			bodyObj.handRight 	= this.addExtremity(actorData.reserves.hp.max,	"Right Hand"	,"handRight", "Hand", "Wrist", "Palm");
+			bodyObj.footLeft 	= this.addExtremity(actorData.reserves.hp.max,	"Left Foot"	,"footLeft", "Foot", "Ankle", "Sole");
+			bodyObj.footRight 	= this.addExtremity(actorData.reserves.hp.max,	"Right Foot"	,"footRight", "Foot", "Ankle", "Sole");
+
 		}
 		if (bodyType == "wingedHumanoid"){
-			bodyObj.legLeft = this.addLeg(actorData.reserves.hp.max, "Left Leg");
-			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Leg");
-			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Arm");
-			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Arm");
-			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
-			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
-			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
-			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hand", "Hand", "Wrist", "Palm");
-			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Hand", "Hand", "Wrist", "Palm");
-			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Foot", "Foot", "Ankle", "Sole");
-			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Foot", "Foot", "Ankle", "Sole");
-			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
-			bodyObj.wingLeft = this.addArm(actorData.reserves.hp.max, "Left Wing");
-			bodyObj.wingRight = this.addArm(actorData.reserves.hp.max, "Right Wing");
+			bodyObj.legLeft 	= this.addLeg(actorData.reserves.hp.max, 		"Left Leg"		,"legLeft");
+			bodyObj.legRight 	= this.addLeg(actorData.reserves.hp.max, 		"Right Leg"	,"legRight");
+			bodyObj.armLeft 	= this.addArm(actorData.reserves.hp.max, 		"Left Arm"		,"armLeft");
+			bodyObj.armRight 	= this.addArm(actorData.reserves.hp.max, 		"Right Arm"	,"armRight");
+			bodyObj.upperChest 	= this.addChest(actorData.reserves.hp.max,		"Upper Chest"	,"upperChest");
+			bodyObj.lowerChest 	= this.addChest(actorData.reserves.hp.max,		"Lower Chest"	,"lowerChest");
+			bodyObj.abdomen 	= this.addAbdomen(actorData.reserves.hp.max,	"Abdomen"		,"abdomen");
+			bodyObj.handLeft 	= this.addExtremity(actorData.reserves.hp.max,	"Left Hand"	,"handLeft", "Hand", "Wrist", "Palm");
+			bodyObj.handRight 	= this.addExtremity(actorData.reserves.hp.max,	"Right Hand"	,"handRight", "Hand", "Wrist", "Palm");
+			bodyObj.footLeft 	= this.addExtremity(actorData.reserves.hp.max,	"Left Foot"	,"footLeft", "Foot", "Ankle", "Sole");
+			bodyObj.footRight 	= this.addExtremity(actorData.reserves.hp.max,	"Right Foot"	,"footRight", "Foot", "Ankle", "Sole");
+			bodyObj.wingLeft = this.addArm(actorData.reserves.hp.max, "Left Wing", "wingLeft");
+			bodyObj.wingRight = this.addArm(actorData.reserves.hp.max, "Right Wing", "wingRight");
 		}
 		else if (bodyType == "quadruped"){
-			bodyObj.hindlegLeft = this.addLeg(actorData.reserves.hp.max, "Left Hind Leg");
-			bodyObj.hindlegRight = this.addLeg(actorData.reserves.hp.max, "Right Hind Leg");
-			bodyObj.legLeft = this.addLeg(actorData.reserves.hp.max, "Left Foreleg");
-			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Foreleg");
-			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
-			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
-			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
-			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Fore Foot", "Foot", "Ankle", "Sole");
-			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Fore Foot", "Foot", "Ankle", "Sole");
-			bodyObj.hindFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hind Foot", "Foot", "Ankle", "Sole");
-			bodyObj.hindFootRight = this.addExtremity(actorData.reserves.hp.max,"Right Hind Foot", "Foot", "Ankle", "Sole");
-			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
+			bodyObj.hindlegLeft = this.addLeg(actorData.reserves.hp.max, "Left Hind Leg", "hindlegLeft");
+			bodyObj.hindlegRight = this.addLeg(actorData.reserves.hp.max, "Right Hind Leg", "hindlegRight");
+			bodyObj.legLeft = this.addLeg(actorData.reserves.hp.max, "Left Foreleg", "legLeft");
+			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Foreleg", "legRight");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest", "upperChest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest", "lowerChest");
+			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen", "abdomen");
+			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
+			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
+			bodyObj.hindFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
+			bodyObj.hindFootRight = this.addExtremity(actorData.reserves.hp.max,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
 		}
 		else if (bodyType == "wingedQuadruped"){
-			bodyObj.hindlegLeft = this.addLeg(actorData.reserves.hp.max, "Left Hind Leg");
-			bodyObj.hindlegRight = this.addLeg(actorData.reserves.hp.max, "Right Hind Leg");
-			bodyObj.legLeft = this.addLeg(actorData.reserves.hp.max, "Left Foreleg");
-			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Foreleg");
-			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
-			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
-			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
-			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Fore Foot", "Foot", "Ankle", "Sole");
-			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Fore Foot", "Foot", "Ankle", "Sole");
-			bodyObj.hindFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hind Foot", "Foot", "Ankle", "Sole");
-			bodyObj.hindFootRight = this.addExtremity(actorData.reserves.hp.max,"Right Hind Foot", "Foot", "Ankle", "Sole");
-			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
-			bodyObj.wingLeft = this.addArm(actorData.reserves.hp.max, "Left Wing");
-			bodyObj.wingRight = this.addArm(actorData.reserves.hp.max, "Right Wing");
+			bodyObj.hindlegLeft = this.addLeg(actorData.reserves.hp.max, "Left Hind Leg", "hindlegLeft");
+			bodyObj.hindlegRight = this.addLeg(actorData.reserves.hp.max, "Right Hind Leg", "hindlegRight");
+			bodyObj.legLeft = this.addLeg(actorData.reserves.hp.max, "Left Foreleg", "legLeft");
+			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Foreleg", "legRight");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest", "upperChest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest", "lowerChest");
+			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen", "abdomen");
+			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
+			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
+			bodyObj.hindFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
+			bodyObj.hindFootRight = this.addExtremity(actorData.reserves.hp.max,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
+			bodyObj.wingLeft = this.addArm(actorData.reserves.hp.max, "Left Wing", "wingLeft");
+			bodyObj.wingRight = this.addArm(actorData.reserves.hp.max, "Right Wing", "wingRight");
 		}
 		else if (bodyType == "hexapod"){
-			bodyObj.legLeft = this.addLeg(actorData.reserves.hp.max, "Left Leg");
-			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Leg");
-			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Upper Thorax Arm");
-			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Upper Thorax Arm");
-			bodyObj.lowerArmLeft = this.addArm(actorData.reserves.hp.max, "Left Lower Thorax Arm");
-			bodyObj.lowerArmRight = this.addArm(actorData.reserves.hp.max, "Right Lower Thorax Arm");
-			bodyObj.upperchest = this.addChest(actorData.reserves.hp.max,"Upper Thorax");
-			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Mid Thorax");
-			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Lower Thorax");
-			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Upper Thorax Hand", "Hand", "Wrist", "Palm");
-			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Upper Thorax Hand", "Hand", "Wrist", "Palm");
-			bodyObj.lowerHandLeft = this.addExtremity(actorData.reserves.hp.max,"Left Lower Thorax Hand", "Hand", "Wrist", "Palm");
-			bodyObj.lowerHandRight = this.addExtremity(actorData.reserves.hp.max,"Right Lower Thorax Hand", "Hand", "Wrist", "Palm");
-			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Foot", "Foot", "Ankle", "Sole");
-			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Foot", "Foot", "Ankle", "Sole");
-			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
+			bodyObj.legLeft 	= this.addLeg(actorData.reserves.hp.max, 		"Left Leg"		,"legLeft");
+			bodyObj.legRight 	= this.addLeg(actorData.reserves.hp.max, 		"Right Leg"	,"legRight");
+			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Upper Thorax Arm", "armLeft");
+			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Upper Thorax Arm", "armRight");
+			bodyObj.lowerArmLeft = this.addArm(actorData.reserves.hp.max, "Left Lower Thorax Arm", "lowerArmLeft");
+			bodyObj.lowerArmRight = this.addArm(actorData.reserves.hp.max, "Right Lower Thorax Arm", "lowerArmRight");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Thorax", "upperChest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Mid Thorax", "lowerChest");
+			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Lower Thorax", "abdomen");
+			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Upper Thorax Hand", "handLeft", "Hand", "Wrist", "Palm");
+			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Upper Thorax Hand", "handRight", "Hand", "Wrist", "Palm");
+			bodyObj.lowerHandLeft = this.addExtremity(actorData.reserves.hp.max,"Left Lower Thorax Hand", "lowerHandLeft", "Hand", "Wrist", "Palm");
+			bodyObj.lowerHandRight = this.addExtremity(actorData.reserves.hp.max,"Right Lower Thorax Hand", "lowerHandRight", "Hand", "Wrist", "Palm");
+			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Foot", "footLeft", "Foot", "Ankle", "Sole");
+			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Foot", "footRight", "Foot", "Ankle", "Sole");
 		}
 		else if (bodyType == "wingedHexapod"){
-			bodyObj.legLeft = this.addLeg(actorData.reserves.hp.max, "Left Leg");
-			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Leg");
-			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Upper Thorax Arm");
-			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Upper Thorax Arm");
-			bodyObj.lowerArmLeft = this.addArm(actorData.reserves.hp.max, "Left Lower Thorax Arm");
-			bodyObj.lowerArmRight = this.addArm(actorData.reserves.hp.max, "Right Lower Thorax Arm");
-			bodyObj.upperchest = this.addChest(actorData.reserves.hp.max,"Upper Thorax");
-			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Mid Thorax");
-			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Lower Thorax");
-			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Upper Thorax Hand", "Hand", "Wrist", "Palm");
-			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Upper Thorax Hand", "Hand", "Wrist", "Palm");
-			bodyObj.lowerHandLeft = this.addExtremity(actorData.reserves.hp.max,"Left Lower Thorax Hand", "Hand", "Wrist", "Palm");
-			bodyObj.lowerHandRight = this.addExtremity(actorData.reserves.hp.max,"Right Lower Thorax Hand", "Hand", "Wrist", "Palm");
-			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Foot", "Foot", "Ankle", "Sole");
-			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Foot", "Foot", "Ankle", "Sole");
-			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
-			bodyObj.wingLeft = this.addArm(actorData.reserves.hp.max, "Left Wing");
-			bodyObj.wingRight = this.addArm(actorData.reserves.hp.max, "Right Wing");
+			bodyObj.legLeft 	= this.addLeg(actorData.reserves.hp.max, 		"Left Leg"		,"legLeft");
+			bodyObj.legRight 	= this.addLeg(actorData.reserves.hp.max, 		"Right Leg"	,"legRight");
+			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Upper Thorax Arm", "armLeft");
+			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Upper Thorax Arm", "armRight");
+			bodyObj.lowerArmLeft = this.addArm(actorData.reserves.hp.max, "Left Lower Thorax Arm", "lowerArmLeft");
+			bodyObj.lowerArmRight = this.addArm(actorData.reserves.hp.max, "Right Lower Thorax Arm", "lowerArmRight");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Thorax", "upperChest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Mid Thorax", "lowerChest");
+			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Lower Thorax", "abdomen");
+			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Upper Thorax Hand", "handLeft", "Hand", "Wrist", "Palm");
+			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Upper Thorax Hand", "handRight", "Hand", "Wrist", "Palm");
+			bodyObj.lowerHandLeft = this.addExtremity(actorData.reserves.hp.max,"Left Lower Thorax Hand", "lowerHandLeft", "Hand", "Wrist", "Palm");
+			bodyObj.lowerHandRight = this.addExtremity(actorData.reserves.hp.max,"Right Lower Thorax Hand", "lowerHandRight", "Hand", "Wrist", "Palm");
+			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Foot", "footLeft", "Foot", "Ankle", "Sole");
+			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Foot", "footRight", "Foot", "Ankle", "Sole");
+			bodyObj.wingLeft = this.addArm(actorData.reserves.hp.max, "Left Wing", "wingLeft");
+			bodyObj.wingRight = this.addArm(actorData.reserves.hp.max, "Right Wing", "wingRight");
 		}
 		else if (bodyType == "centaur"){
-			bodyObj.hindlegLeft = this.addLeg(actorData.reserves.hp.max, "Left Hind Leg");
-			bodyObj.hindlegRight = this.addLeg(actorData.reserves.hp.max, "Right Hind Leg");
-			bodyObj.legLeft = this.addLeg(actorData.reserves.hp.max, "Left Foreleg");
-			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Foreleg");
-			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Arm");
-			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Arm");
-			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Humanoid Upper Chest");
-			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Humanoid Lower Chest");
-			bodyObj.chestAnimal = this.addChest(actorData.reserves.hp.max,"Animal Chest");
-			bodyObj.abdomen = this.addCentaurAbdomen(actorData.reserves.hp.max,"Humanoid Abdomen");
-			bodyObj.animalAbdomen = this.addAbdomen(actorData.reserves.hp.max,"Animal Abdomen");
-			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Fore Foot", "Foot", "Ankle", "Sole");
-			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Fore Foot", "Foot", "Ankle", "Sole");
-			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hand", "Hand", "Wrist", "Palm");
-			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Hand", "Hand", "Wrist", "Palm");
-			bodyObj.hindFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hind Foot", "Foot", "Ankle", "Sole");
-			bodyObj.hindFootRight = this.addExtremity(actorData.reserves.hp.max,"Right Hind Foot", "Foot", "Ankle", "Sole");
-			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
+			bodyObj.hindlegLeft = this.addLeg(actorData.reserves.hp.max, "Left Hind Leg", "hindlegLeft");
+			bodyObj.hindlegRight = this.addLeg(actorData.reserves.hp.max, "Right Hind Leg", "hindlegRight");
+			bodyObj.legLeft = this.addLeg(actorData.reserves.hp.max, "Left Foreleg", "legLeft");
+			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Foreleg", "legRight");
+			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Arm", "armLeft");
+			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Arm", "armRight");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Humanoid Upper Chest", "upperChest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Humanoid Lower Chest", "lowerChest");
+			bodyObj.chestAnimal = this.addChest(actorData.reserves.hp.max,"Animal Chest", "chestAnimal");
+			bodyObj.abdomen = this.addCentaurAbdomen(actorData.reserves.hp.max,"Humanoid Abdomen", "abdomen");
+			bodyObj.animalAbdomen = this.addAbdomen(actorData.reserves.hp.max,"Animal Abdomen", "animalAbdomen");
+			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
+			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
+			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hand", "handLeft", "Hand", "Wrist", "Palm");
+			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Hand", "handRight", "Hand", "Wrist", "Palm");
+			bodyObj.hindFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
+			bodyObj.hindFootRight = this.addExtremity(actorData.reserves.hp.max,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
 		}
 		else if (bodyType == "avian"){
-			bodyObj.legLeft = this.addLeg(actorData.reserves.hp.max, "Left Leg");
-			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Leg");
-			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
-			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
-			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
-			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hand", "Hand", "Wrist", "Palm");
-			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Hand", "Hand", "Wrist", "Palm");
-			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Foot", "Foot", "Ankle", "Sole");
-			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Foot", "Foot", "Ankle", "Sole");
-			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
-			bodyObj.tail = this.addTail(actorData.reserves.hp.max, "Tail");
-			bodyObj.wingLeft = this.addArm(actorData.reserves.hp.max, "Left Wing");
-			bodyObj.wingRight = this.addArm(actorData.reserves.hp.max, "Right Wing");
+			bodyObj.legLeft = this.addLeg(actorData.reserves.hp.max, "Left Leg", "legLeft");
+			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Leg", "legRight");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest", "upperChest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest","lowerChest");
+			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen","abdomen");
+			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hand", "handLeft", "Hand", "Wrist", "Palm");
+			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Hand", "handRight", "Hand", "Wrist", "Palm");
+			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Foot", "footLeft", "Foot", "Ankle", "Sole");
+			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Foot", "footRight", "Foot", "Ankle", "Sole");
+			bodyObj.tail = this.addTail(actorData.reserves.hp.max, "tail");
+			bodyObj.wingLeft = this.addArm(actorData.reserves.hp.max, "Left Wing", "wingLeft");
+			bodyObj.wingRight = this.addArm(actorData.reserves.hp.max, "Right Wing", "wingRight");
 		}
 		else if (bodyType == "vermiform"){
-			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
-			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
-			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
-			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max, "upperChest","Upper Chest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max, "lowerChest","Lower Chest");
+			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max, "abdomen","Abdomen");
 		}
 		else if (bodyType == "lamia"){
-			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Arm");
-			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Arm");
-			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
-			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
-			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
-			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hand", "Hand", "Wrist", "Palm");
-			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Hand", "Hand", "Wrist", "Palm");
-			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
+			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Arm", "armLeft");
+			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Arm", "armRight");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest", "upperChest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest", "lowerChest");
+			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen", "abdomen");
+			bodyObj.tail = this.addTail(actorData.reserves.hp.max, "tail");
+			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hand", "handLeft", "Hand", "Wrist", "Palm");
+			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Hand", "handRight", "Hand", "Wrist", "Palm");
 		}
 		else if (bodyType == "wingedLamia"){
-			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Arm");
-			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Arm");
-			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
-			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
-			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
-			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hand", "Hand", "Wrist", "Palm");
-			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Hand", "Hand", "Wrist", "Palm");
-			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
-			bodyObj.wingLeft = this.addArm(actorData.reserves.hp.max, "Left Wing");
-			bodyObj.wingRight = this.addArm(actorData.reserves.hp.max, "Right Wing");
+			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Arm", "armLeft");
+			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Arm", "armRight");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest", "upperChest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest", "lowerChest");
+			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen", "abdomen");
+			bodyObj.tail = this.addTail(actorData.reserves.hp.max, "tail");
+			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hand", "handLeft", "Hand", "Wrist", "Palm");
+			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Hand", "handRight", "Hand", "Wrist", "Palm");
+			bodyObj.wingLeft = this.addArm(actorData.reserves.hp.max, "Left Wing", "wingLeft");
+			bodyObj.wingRight = this.addArm(actorData.reserves.hp.max, "Right Wing", "wingRight");
 		}
 		else if (bodyType == "octopod"){
-			bodyObj.upperChest = this.addInvertebrateChest(actorData.reserves.hp.max,"Upper Chest");
-			bodyObj.lowerChest = this.addInvertebrateChest(actorData.reserves.hp.max,"Lower Chest");
-			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
-			bodyObj.tentacleLeft1 = this.addArm(actorData.reserves.hp.max, "Left Tentacle 1");
-			bodyObj.tentacleLeft2 = this.addArm(actorData.reserves.hp.max, "Left Tentacle 2");
-			bodyObj.tentacleLeft3 = this.addArm(actorData.reserves.hp.max, "Left Tentacle 3");
-			bodyObj.tentacleLeft4 = this.addArm(actorData.reserves.hp.max, "Left Tentacle 4");
-			bodyObj.tentacleRight1 = this.addArm(actorData.reserves.hp.max, "Right Tentacle 1");
-			bodyObj.tentacleRight2 = this.addArm(actorData.reserves.hp.max, "Right Tentacle 2");
-			bodyObj.tentacleRight3 = this.addArm(actorData.reserves.hp.max, "Right Tentacle 3");
-			bodyObj.tentacleRight4 = this.addArm(actorData.reserves.hp.max, "Right Tentacle 4");
-			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
+			bodyObj.upperChest = this.addInvertebrateChest(actorData.reserves.hp.max,"Upper Chest", "upperChest");
+			bodyObj.lowerChest = this.addInvertebrateChest(actorData.reserves.hp.max,"Lower Chest", "lowerChest");
+			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen", "abdomen");
+			bodyObj.tentacleLeft1 = this.addArm(actorData.reserves.hp.max, "Left Tentacle 1", "tentacleLeft1");
+			bodyObj.tentacleLeft2 = this.addArm(actorData.reserves.hp.max, "Left Tentacle 2", "tentacleLeft2");
+			bodyObj.tentacleLeft3 = this.addArm(actorData.reserves.hp.max, "Left Tentacle 3", "tentacleLeft3");
+			bodyObj.tentacleLeft4 = this.addArm(actorData.reserves.hp.max, "Left Tentacle 4", "tentacleLeft4");
+			bodyObj.tentacleRight1 = this.addArm(actorData.reserves.hp.max, "Right Tentacle 1", "tentacleRight1");
+			bodyObj.tentacleRight2 = this.addArm(actorData.reserves.hp.max, "Right Tentacle 2", "tentacleRight2");
+			bodyObj.tentacleRight3 = this.addArm(actorData.reserves.hp.max, "Right Tentacle 3", "tentacleRight3");
+			bodyObj.tentacleRight4 = this.addArm(actorData.reserves.hp.max, "Right Tentacle 4", "tentacleRight4");
 		}
 		else if (bodyType == "cancroid"){
-			bodyObj.hindlegLeft = this.addLeg(actorData.reserves.hp.max, "Left Hind Leg");
-			bodyObj.hindlegRight = this.addLeg(actorData.reserves.hp.max, "Right Hind Leg");
-			bodyObj.legLeft = this.addLeg(actorData.reserves.hp.max, "Left Foreleg");
-			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Foreleg");
-			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Arm");
-			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Arm");
-			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
-			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
-			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
-			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Fore Foot", "Foot", "Ankle", "Sole");
-			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Fore Foot", "Foot", "Ankle", "Sole");
-			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Claw", "Hand", "Wrist", "Palm");
-			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Claw", "Hand", "Wrist", "Palm");
-			bodyObj.hindFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hind Foot", "Foot", "Ankle", "Sole");
-			bodyObj.hindFootRight = this.addExtremity(actorData.reserves.hp.max,"Right Hind Foot", "Foot", "Ankle", "Sole");
-			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
+			bodyObj.hindlegLeft = this.addLeg(actorData.reserves.hp.max, "Left Hind Leg", "hindlegLeft");
+			bodyObj.hindlegRight = this.addLeg(actorData.reserves.hp.max, "Right Hind Leg", "hindlegRight");
+			bodyObj.legLeft = this.addLeg(actorData.reserves.hp.max, "Left Foreleg", "legLeft");
+			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Foreleg", "legRight");
+			bodyObj.armLeft = this.addArm(actorData.reserves.hp.max, "Left Arm", "armLeft");
+			bodyObj.armRight = this.addArm(actorData.reserves.hp.max, "Right Arm", "armRight");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest", "upperChest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest", "lowerChest");
+			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen", "abdomen");
+			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
+			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
+			bodyObj.handLeft = this.addExtremity(actorData.reserves.hp.max,"Left Claw", "handLeft", "Hand", "Wrist", "Palm");
+			bodyObj.handRight = this.addExtremity(actorData.reserves.hp.max,"Right Claw", "handRight", "Hand", "Wrist", "Palm");
+			bodyObj.hindFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
+			bodyObj.hindFootRight = this.addExtremity(actorData.reserves.hp.max,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
 		}
 		else if (bodyType == "ichthyoid"){
-			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
-			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
-			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
-			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
-			bodyObj.tail = this.addTail(actorData.reserves.hp.max, "Tail");
-			bodyObj.fin1 = this.addExtremity(actorData.reserves.hp.max,"Dorsal Fin", "Fin", "Joint");
-			bodyObj.fin2 = this.addExtremity(actorData.reserves.hp.max,"Left Fin", "Fin", "Joint");
-			bodyObj.fin3 = this.addExtremity(actorData.reserves.hp.max,"Right Fin", "Fin", "Joint");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest", "upperChest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest", "lowerChest");
+			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen", "abdomen");
+			bodyObj.tail = this.addTail(actorData.reserves.hp.max, "tail");
+			bodyObj.fin1 = this.addExtremity(actorData.reserves.hp.max,"Dorsal Fin", "fin1", "Fin", "Joint");
+			bodyObj.fin2 = this.addExtremity(actorData.reserves.hp.max,"Left Fin", "fin2", "Fin", "Joint");
+			bodyObj.fin3 = this.addExtremity(actorData.reserves.hp.max,"Right Fin", "fin3", "Fin", "Joint");
 		}
 		else if (bodyType == "arachnoid"){
-			bodyObj.hindlegLeft = this.addLeg(actorData.reserves.hp.max, "Left Hind Leg");
-			bodyObj.hindlegRight = this.addLeg(actorData.reserves.hp.max, "Right Hind Leg");
-			bodyObj.hindmidlegLeft = this.addLeg(actorData.reserves.hp.max, "Left Mid Hind Leg");
-			bodyObj.hindmidlegRight = this.addLeg(actorData.reserves.hp.max, "Right Mid Hind Leg");
-			bodyObj.foremidlegLeft = this.addLeg(actorData.reserves.hp.max, "Left Mid Foreleg");
-			bodyObj.foremidlegRight = this.addLeg(actorData.reserves.hp.max, "Right Mid Foreleg");
-			bodyObj.legLeft = this.addLeg(actorData.reserves.hp.max, "Left Foreleg");
-			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Foreleg");
-			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest");
-			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest");
-			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen");
-			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Fore Foot", "Foot", "Ankle", "Sole");
-			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Fore Foot", "Foot", "Ankle", "Sole");
-			bodyObj.foremidFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Mid Fore Foot", "Foot", "Ankle", "Sole");
-			bodyObj.foremidFootRight = this.addExtremity(actorData.reserves.hp.max,"Right Mid Fore Foot", "Foot", "Ankle", "Sole");
-			bodyObj.hindmidFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Mid Hind Foot", "Foot", "Ankle", "Sole");
-			bodyObj.hindmidFootRight = this.addExtremity(actorData.reserves.hp.max,"Right Mid Hind Foot", "Foot", "Ankle", "Sole");
-			bodyObj.hindFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hind Foot", "Foot", "Ankle", "Sole");
-			bodyObj.hindFootRight = this.addExtremity(actorData.reserves.hp.max,"Right Hind Foot", "Foot", "Ankle", "Sole");
-			bodyObj.neck = this.addNeck(actorData.reserves.hp.max);
+			bodyObj.hindlegLeft = this.addLeg(actorData.reserves.hp.max, "Left Hind Leg", "hindlegLeft");
+			bodyObj.hindlegRight = this.addLeg(actorData.reserves.hp.max, "Right Hind Leg", "hindlegRight");
+			bodyObj.hindmidlegLeft = this.addLeg(actorData.reserves.hp.max, "Left Mid Hind Leg", "hindmidlegLeft");
+			bodyObj.hindmidlegRight = this.addLeg(actorData.reserves.hp.max, "Right Mid Hind Leg", "hindmidlegRight");
+			bodyObj.foremidlegLeft = this.addLeg(actorData.reserves.hp.max, "Left Mid Foreleg", "foremidlegLeft");
+			bodyObj.foremidlegRight = this.addLeg(actorData.reserves.hp.max, "Right Mid Foreleg", "foremidlegRight");
+			bodyObj.legLeft = this.addLeg(actorData.reserves.hp.max, "Left Foreleg", "legLeft");
+			bodyObj.legRight = this.addLeg(actorData.reserves.hp.max, "Right Foreleg", "legRight");
+			bodyObj.upperChest = this.addChest(actorData.reserves.hp.max,"Upper Chest", "upperChest");
+			bodyObj.lowerChest = this.addChest(actorData.reserves.hp.max,"Lower Chest", "lowerChest");
+			bodyObj.abdomen = this.addAbdomen(actorData.reserves.hp.max,"Abdomen", "abdomen");
+			bodyObj.footLeft = this.addExtremity(actorData.reserves.hp.max,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
+			bodyObj.footRight = this.addExtremity(actorData.reserves.hp.max,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
+			bodyObj.foremidFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Mid Fore Foot", "foremidFootLeft", "Foot", "Ankle", "Sole");
+			bodyObj.foremidFootRight = this.addExtremity(actorData.reserves.hp.max,"Right Mid Fore Foot", "foremidFootRight", "Foot", "Ankle", "Sole");
+			bodyObj.hindmidFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Mid Hind Foot", "hindmidFootLeft", "Foot", "Ankle", "Sole");
+			bodyObj.hindmidFootRight = this.addExtremity(actorData.reserves.hp.max,"Right Mid Hind Foot", "hindmidFootRight", "Foot", "Ankle", "Sole");
+			bodyObj.hindFootLeft = this.addExtremity(actorData.reserves.hp.max,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
+			bodyObj.hindFootRight = this.addExtremity(actorData.reserves.hp.max,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
 		}
 
 		let bodyParts = Object.keys(bodyObj);
@@ -480,9 +469,10 @@ export class gurpsActorSheet extends ActorSheet {
 		}
 	}
 
-	addSkull() {
+	addSkull(id) {
 		let part = {
 			label: "Skull",
+			id: id,
 			drBurn: 2,
 			drCor: 2,
 			drCr: 2,
@@ -511,9 +501,10 @@ export class gurpsActorSheet extends ActorSheet {
 		return part;
 	}
 
-	addBrain() {
+	addBrain(id) {
 		let part = {
 			label: "Brain",
+			id: id,
 			drBurn: "",
 			drCor: "",
 			drCr: "",
@@ -542,7 +533,7 @@ export class gurpsActorSheet extends ActorSheet {
 		return part;
 	}
 
-	addFace(hp) {
+	addFace(hp, id) {
 		let partHp = Math.ceil(hp/4);
 		if (partHp <= hp/4){//Make sure that part hp is greater than one quarter HP
 			partHp += 1;
@@ -555,6 +546,7 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: "Face",
+			id: id,
 			penaltyFront: -5,
 			penaltyBack: -7,
 			weight: 0.02777777778,
@@ -562,6 +554,7 @@ export class gurpsActorSheet extends ActorSheet {
 			subLocation: {
 				jaw: {
 					label: "Jaw",
+					id: id + ".subLocation.jaw",
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -589,6 +582,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				nose: {
 					label: "Nose",
+					id: id + ".subLocation.nose",
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -621,6 +615,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				ears: {
 					label: "Ears",
+					id: id + ".subLocation.ears",
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -653,6 +648,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				cheek: {
 					label: "Cheek",
+					id: id + ".subLocation.cheek",
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -680,6 +676,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				eyes: {//Kromm's ruling on eyes http://forums.sjgames.com/showpost.php?p=733298&postcount=33
 					label: "Eyes",
+					id: id + ".subLocation.eyes",
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -715,7 +712,7 @@ export class gurpsActorSheet extends ActorSheet {
 		return part;
 	}
 
-	addLeg(hp, label){
+	addLeg(hp, label, id){
 		let partHp = Math.ceil(hp/2);
 		if (partHp <= hp/2){//Make sure that part hp is greater than one half HP
 			partHp += 1;
@@ -728,6 +725,7 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: label,
+			id: id,
 			penaltyFront: -2,
 			penaltyBack: -2,
 			weight: 0.1412037037,
@@ -741,6 +739,7 @@ export class gurpsActorSheet extends ActorSheet {
 			subLocation: {
 				shin: {
 					label: "Shin",
+					id: id + ".subLocation.shin",
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -768,6 +767,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				thigh: {
 					label: "Thigh",
+					id: id + ".subLocation.thigh",
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -795,6 +795,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				insideThigh: {
 					label: "Inside Thigh",
+					id: id + ".subLocation.insideThigh",
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -822,6 +823,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				knee: {
 					label: "Knee",
+					id: id + ".subLocation.knee",
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -854,6 +856,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				backOfKnee: {
 					label: "Back of Knee",
+					id: id + ".subLocation.backOfKnee",
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -881,6 +884,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				artery: {
 					label: "Thigh Artery",
+					id: id + ".subLocation.artery",
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -912,7 +916,7 @@ export class gurpsActorSheet extends ActorSheet {
 		return part;
 	}
 
-	addTail(hp){
+	addTail(hp, id){
 		let partHp = Math.ceil(hp/2);
 		if (partHp <= hp/2){//Make sure that part hp is greater than one half HP
 			partHp += 1;
@@ -920,6 +924,7 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: "Tail",
+			id: id,
 			penaltyFront: -2,
 			penaltyBack: -2,
 			weight: 0.106481481,
@@ -933,6 +938,7 @@ export class gurpsActorSheet extends ActorSheet {
 			subLocation: {
 				forearm: {
 					label: "Tail",
+					id: id + ".subLocation.forearm",
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -960,6 +966,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				shoulder: {
 					label: "Shoulder",
+					id: id + ".subLocation.shoulder",
 					penaltyFront: -5,
 					penaltyBack: -5,
 					drBurn: "",
@@ -991,7 +998,7 @@ export class gurpsActorSheet extends ActorSheet {
 		return part;
 	}
 
-	addArm(hp, label){
+	addArm(hp, label, id){
 		let partHp = Math.ceil(hp/2);
 		if (partHp <= hp/2){//Make sure that part hp is greater than one half HP
 			partHp += 1;
@@ -1004,6 +1011,7 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: label,
+			id: id,
 			penaltyFront: -2,
 			penaltyBack: -2,
 			weight: 0.106481481,
@@ -1017,6 +1025,7 @@ export class gurpsActorSheet extends ActorSheet {
 			subLocation: {
 				forearm: {
 					label: "Forearm",
+					id: id + ".subLocation.forearm",
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1044,6 +1053,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				upperArm: {
 					label: "Upper Arm",
+					id: id + ".subLocation.upperArm",
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1071,6 +1081,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				elbow: {
 					label: "Elbow",
+					id: id + ".subLocation.elbow",
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1103,6 +1114,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				insideElbow: {
 					label: "Inside Elbow",
+					id: id + ".subLocation.insideElbow",
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1130,6 +1142,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				shoulder: {
 					label: "Shoulder",
+					id: id + ".subLocation.shoulder",
 					penaltyFront: -5,
 					penaltyBack: -5,
 					weight: 1/6,
@@ -1157,6 +1170,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				armpit: {
 					label: "Armpit",
+					id: id + ".subLocation.armpit",
 					penaltyFront: -8,
 					penaltyBack: -8,
 					weight: 0,
@@ -1188,11 +1202,12 @@ export class gurpsActorSheet extends ActorSheet {
 		return part;
 	}
 
-	addChest(hp, label){
+	addChest(hp, label, id){
 		let spineHp = hp + 1;
 
 		let part = {
 			label: label,
+			id: id,
 			penaltyFront: -1,
 			penaltyBack: -1,
 			weight: 0.12037037,
@@ -1201,6 +1216,7 @@ export class gurpsActorSheet extends ActorSheet {
 			subLocation: {
 				chest: {
 					label: label,
+					id: id + ".subLocation.chest",
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1228,6 +1244,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				vitals: {
 					label: "Vitals",
+					id: id + ".subLocation.vitals",
 					penaltyFront: -3,
 					penaltyBack: -3,
 					drBurn: "",
@@ -1255,6 +1272,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				spine: {
 					label: "Spine",
+					id: id + ".subLocation.spine",
 					penaltyFront: -8,
 					penaltyBack: -8,
 					drBurn: 3,
@@ -1291,9 +1309,10 @@ export class gurpsActorSheet extends ActorSheet {
 		return part;
 	}
 
-	addInvertebrateChest(hp, label){
+	addInvertebrateChest(hp, label, id){
 		let part = {
 			label: label,
+			id: id,
 			penaltyFront: -1,
 			penaltyBack: -1,
 			weight: 0.12037037,
@@ -1302,6 +1321,7 @@ export class gurpsActorSheet extends ActorSheet {
 			subLocation: {
 				chest: {
 					label: label,
+					id: id + ".subLocation.chest",
 					drBurn: "",
 					drCor: "",
 					drCr: "",
@@ -1329,6 +1349,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				vitals: {
 					label: "Vitals",
+					id: id + ".subLocation.vitals",
 					penaltyFront: -3,
 					penaltyBack: -3,
 					drBurn: "",
@@ -1360,7 +1381,7 @@ export class gurpsActorSheet extends ActorSheet {
 		return part;
 	}
 
-	addCentaurAbdomen(hp, label){ // This is the abdomen for the humanoid chest
+	addCentaurAbdomen(hp, label, id){ // This is the abdomen for the humanoid chest
 		let pelvisHp = Math.ceil(hp/2);
 		if (pelvisHp <= hp/2){ // Make sure that part hp is greater than one half HP
 			pelvisHp += 1;
@@ -1368,6 +1389,7 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: label,
+			id: id,
 			penaltyFront: -1,
 			penaltyBack: -1,
 			weight: 0.125,
@@ -1376,6 +1398,7 @@ export class gurpsActorSheet extends ActorSheet {
 			subLocation: {
 				digestiveTract: {
 					label: "Digestive Tract",
+					id: id + ".subLocation.digestiveTract",
 					penaltyFront: -3,
 					penaltyBack: -3,
 					drBurn: "",
@@ -1403,6 +1426,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				vitals: {
 					label: "Vitals",
+					id: id + ".subLocation.vitals",
 					penaltyFront: -3,
 					penaltyBack: -3,
 					drBurn: "",
@@ -1430,6 +1454,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				pelvis: {
 					label: "Pelvis",
+					id: id + ".subLocation.pelvis",
 					penaltyFront: -3,
 					penaltyBack: -3,
 					drBurn: "",
@@ -1466,7 +1491,7 @@ export class gurpsActorSheet extends ActorSheet {
 		return part;
 	}
 
-	addAbdomen(hp, label){
+	addAbdomen(hp, label, id){
 		let pelvisHp = Math.ceil(hp/2);
 		if (pelvisHp <= hp/2){//Make sure that part hp is greater than one half HP
 			pelvisHp += 1;
@@ -1474,6 +1499,7 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: label,
+			id: id,
 			penaltyFront: -1,
 			penaltyBack: -1,
 			weight: 0.125,
@@ -1482,6 +1508,7 @@ export class gurpsActorSheet extends ActorSheet {
 			subLocation: {
 				digestiveTract: {
 					label: "Digestive Tract",
+					id: id + ".subLocation.digestiveTract",
 					penaltyFront: -3,
 					penaltyBack: -3,
 					drBurn: "",
@@ -1509,6 +1536,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				vitals: {
 					label: "Vitals",
+					id: id + ".subLocation.vitals",
 					penaltyFront: -3,
 					penaltyBack: -3,
 					drBurn: "",
@@ -1536,6 +1564,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				pelvis: {
 					label: "Pelvis",
+					id: id + ".subLocation.pelvis",
 					penaltyFront: -3,
 					penaltyBack: -3,
 					drBurn: "",
@@ -1568,6 +1597,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				groin: {
 					label: "Groin",
+					id: id + ".subLocation.groin",
 					penaltyFront: -3,
 					penaltyBack: -3,
 					drBurn: "",
@@ -1599,7 +1629,7 @@ export class gurpsActorSheet extends ActorSheet {
 		return part;
 	}
 
-	addExtremity(hp, label, type, jointName, insideName){
+	addExtremity(hp, label, id, type, jointName, insideName){
 		let partHp = Math.ceil(hp/3);
 		let weight;
 		if (partHp <= hp/3){ // Make sure that part hp is greater than one third HP
@@ -1624,6 +1654,7 @@ export class gurpsActorSheet extends ActorSheet {
 
 		let part = {
 			label: label,
+			id: id,
 			penaltyFront: -4,
 			penaltyBack: -4,
 			weight: weight,
@@ -1637,6 +1668,7 @@ export class gurpsActorSheet extends ActorSheet {
 			subLocation: {
 				extremity: {
 					label: type,
+					id: id + ".subLocation.extremity",
 					penaltyFront: -4,
 					penaltyBack: -4,
 					drBurn: "",
@@ -1664,6 +1696,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				extremityInterior: {
 					label: insideName,
+					id: id + ".subLocation.extremityInterior",
 					penaltyFront: -8,
 					penaltyBack: -8,
 					drBurn: "",
@@ -1691,6 +1724,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				joint: {
 					label: jointName,
+					id: id + ".subLocation.joint",
 					penaltyFront: -7,
 					penaltyBack: -7,
 					drBurn: "",
@@ -1727,9 +1761,10 @@ export class gurpsActorSheet extends ActorSheet {
 		return part;
 	}
 
-	addNeck(){
+	addNeck(id){
 		let part = {
 			label: "Neck",
+			id: id,
 			penaltyFront: -5,
 			penaltyBack: -5,
 			weight: 0.018518519,
@@ -1738,6 +1773,7 @@ export class gurpsActorSheet extends ActorSheet {
 			subLocation: {
 				neck: {
 					label: "Neck",
+					id: id + ".subLocation.neck",
 					penaltyFront: -5,
 					penaltyBack: -5,
 					drBurn: "",
@@ -1765,6 +1801,7 @@ export class gurpsActorSheet extends ActorSheet {
 				},
 				vein: {
 					label: "Vein",
+					id: id + ".subLocation.vein",
 					penaltyFront: -8,
 					penaltyBack: -8,
 					drBurn: "",
