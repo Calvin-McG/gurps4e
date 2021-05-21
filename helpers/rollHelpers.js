@@ -1,6 +1,6 @@
 export class rollHelpers {
 
-    static skillRoll(level, modifier, label){
+    static skillRoll(level, modifier, label, chat){
         let effectiveSkill = +level + +modifier;
         let die1 = new Roll("1d6");
         let die2 = new Roll("1d6");
@@ -60,11 +60,15 @@ export class rollHelpers {
             html += "<div>Unknown result by " + margin + "</div>"
         }
 
-        ChatMessage.create({ content: html, user: game.user._id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
-    }
-
-    static skillRollModDialog(level, modifier, label){
-        this.skillRoll(level, modifier, label);
+        if (chat){
+            ChatMessage.create({ content: html, user: game.user._id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+        }
+        else {
+            return {
+                content: html,
+                type: CONST.CHAT_MESSAGE_TYPES.OTHER
+            }
+        }
     }
 
     static dieToIcon(die){

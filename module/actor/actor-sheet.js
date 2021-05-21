@@ -428,7 +428,7 @@ export class gurpsActorSheet extends ActorSheet {
 		const dataset = element.dataset;
 
 		if (dataset.type === 'skill' || dataset.type === 'defense') {
-			rollHelpers.skillRoll(dataset.level, modifier, dataset.label);
+			rollHelpers.skillRoll(dataset.level, modifier, dataset.label, true);
 		}
 
 		else if (dataset.type === 'damage') {
