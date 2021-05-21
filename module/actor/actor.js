@@ -780,11 +780,6 @@ export class gurpsActor extends Actor {
 	}
 
 	singleTargetDialog(selfToken, targetToken){
-		//This is the bit where we figure out where every one is, along with distances and range penalties.
-
-		let distance = distanceHelpers.convertToYards(canvas.grid.measureDistance(selfToken, targetToken), canvas.scene.data.gridUnits);
-		let distancePenalty = distanceHelpers.distancePenalty(distance);
-
 		let attacks = this.listAttacks(selfToken.actor);
 
 		let htmlContent = "<div>";
@@ -953,8 +948,8 @@ export class gurpsActor extends Actor {
 		let bodyParts = Object.keys(target.actor.data.data.bodyType.body); // Collect all the bodypart names
 		let relativePosition = this.getFacing(attacker, target); // Method returns [facing,position]
 
-		let locationSelector = ""
-		locationSelector += "<select name='hitLocation' id='hitLocation'>"
+		let locationSelector = "<table>"
+		locationSelector += "<tr><td>Location</td><td><select name='hitLocation' id='hitLocation'>"
 		for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
 			let part = getProperty(target.actor.data.data.bodyType.body, bodyParts[i])
 			let penalty;
@@ -967,10 +962,30 @@ export class gurpsActor extends Actor {
 			locationSelector += "<option value='" + bodyParts[i] + "'>" + part.label + ": " + penalty + "</option>"
 		}
 
-		locationSelector += "</select>"
+		locationSelector += "</select></td></tr>"
 
-		if (typeof attack.rof !== "undefined") { // Check to see if RoF exists. This is a shorthand for whether the attack is ranged or melee
-			locationSelector += "<div><span style='width: 45%'>RoF:</span><input style='width: 45%' type='number' id='rof' name='rof' value='" + attack.rof + "'/></div>";
+		let shots;
+		let pellets;
+		let split;
+		if (attack.type === "ranged") { // Check to see if RoF exists. This is a shorthand for whether the attack is ranged or melee
+			if (attack.rof.toString().toLowerCase().includes("x")){
+				split = attack.rof.toString().toLowerCase().split("x")
+				shots = split[0];
+				pellets = split[1];
+			}
+			else if (attack.rof.toString().toLowerCase().includes("*")){
+				split = attack.rof.toString().toLowerCase().split("*")
+				shots = split[0];
+				pellets = split[1];
+			}
+			else {
+				shots = attack.rof.trim()
+				pellets = 1;
+			}
+
+			locationSelector += "<tr><td>Shots:</td><td><input style='width: 45%' type='number' id='rof' name='rof' value='" + shots + "'/></td></tr>" +
+				"<tr><td>Pellets</td><td>" + pellets + "</td></tr>" +
+				"</table>";
 		}
 
 		// Open dialog to choose hit location, random swing, or random torso
@@ -985,7 +1000,7 @@ export class gurpsActor extends Actor {
 						// The user has not chosen to target a specific location. Find the result randomly.
 						let rofInput = document.getElementsByName('rof');
 						if(rofInput[0]){
-							this.selectedRandom(target, attacker, attack, relativePosition, rofInput[0].value)
+							this.selectedRandom(target, attacker, attack, relativePosition, (rofInput[0].value * pellets))
 						}
 						else {
 							this.selectedRandom(target, attacker, attack, relativePosition, 1)
@@ -999,7 +1014,7 @@ export class gurpsActor extends Actor {
 						// The user has selected the torso without specifying upper/lower. Find the result randomly.
 						let rofInput = document.getElementsByName('rof');
 						if(rofInput[0]){
-							this.selectedTorso(target, attacker, attack, relativePosition, rofInput[0].value)
+							this.selectedTorso(target, attacker, attack, relativePosition, (rofInput[0].value * pellets))
 						}
 						else {
 							this.selectedTorso(target, attacker, attack, relativePosition,  1)
@@ -1015,7 +1030,7 @@ export class gurpsActor extends Actor {
 						if(elements[0].value){
 							let rofInput = document.getElementsByName('rof');
 							if(rofInput[0]){
-								this.selectedHitLocation(target, attacker, attack, elements[0].value, relativePosition, rofInput[0].value)
+								this.selectedHitLocation(target, attacker, attack, elements[0].value, relativePosition, (rofInput[0].value * pellets))
 							}
 							else {
 								this.selectedHitLocation(target, attacker, attack, elements[0].value, relativePosition, 1)
@@ -1033,7 +1048,7 @@ export class gurpsActor extends Actor {
 						if(elements[0].value){
 							let rofInput = document.getElementsByName('rof');
 							if(rofInput[0]){
-								this.selectedComplexHitLocation(target, attacker, attack, elements[0].value, relativePosition, rofInput[0].value)
+								this.selectedComplexHitLocation(target, attacker, attack, elements[0].value, relativePosition, (rofInput[0].value * pellets))
 							}
 							else {
 								this.selectedComplexHitLocation(target, attacker, attack, elements[0].value, relativePosition, 1)
@@ -1255,19 +1270,25 @@ export class gurpsActor extends Actor {
 		console.log(locationPenalty);
 		console.log(getProperty(target.actor.data.data.bodyType.body, location.id)); // Went to all the trouble of adding this. Might not even need it.
 
-		let distancePenalty = 0; // TODO call the helper for this
+		let distanceRaw = Math.round(canvas.grid.measureDistance(attacker, target));
+		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.data.gridUnits);
+		let distancePenalty = distanceHelpers.distancePenalty(distanceYards);
 
-		let rofBonus = 0; // TODO Helper for this
+		let rofBonus = generalHelpers.rofToBonus(rof); // TODO Helper for this
+		let totalModifier;
 
 		let modModalContent =  "<div>Hit Location: " + locationPenalty + "</div>"
 
-
 		if (attack.type === "ranged"){
-			modModalContent += "<div>Distance: " + distancePenalty + "</div>" +
-								"<div>RoF Bonus: " + rofBonus + "</div>" +
-								"<div>Total penalty: " + (distancePenalty + locationPenalty) + "</div>";
-		}
+			totalModifier = (distancePenalty + locationPenalty + rofBonus)
+			modModalContent += "<div>Distance (" + distanceRaw + " " + canvas.scene.data.gridUnits + "): " + distancePenalty + "</div>" +
+								"<div>RoF Bonus: " + rofBonus + "</div>";
 
+		}
+		else {
+			totalModifier = locationPenalty;
+		}
+		modModalContent += "<div>Total Modifier: " + totalModifier + "</div>";
 		modModalContent += "<div>Additional Modifier: <input type='number' id='mod' name='mod' value='0' style='width: 50%'/></div>"
 
 		let modModal = new Dialog({
