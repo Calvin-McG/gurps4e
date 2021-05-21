@@ -15,6 +15,7 @@ Campaign toggles for...
 
 Misc
     - Add area of effect for attacks
+    - Make armour display suck less (Pull from location dr instead of array object bullshit
 
 ===Jake's Requests===
 A blank inventory character sheet at some point for chests and inventories would be really helpful though

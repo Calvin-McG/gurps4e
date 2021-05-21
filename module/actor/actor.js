@@ -435,7 +435,7 @@ export class gurpsActor extends Actor {
 				tox: {},
 			}];
 
-			armour[0] = this.getArmour(this.data.data.bodyType.body, 0); // Get the armour inherent in the body
+			armour[0] = this.getArmour(this.data.data.bodyType.body, this.data.data.bodyType.body, 0); // Get the armour inherent in the body
 			this.data.data.bodyType.drTypesOne = getProperty(armour[0], this.data.data.bodyType.damageTypeOne.toLowerCase());
 			this.data.data.bodyType.drTypesTwo = getProperty(armour[0], this.data.data.bodyType.damageTypeTwo.toLowerCase());
 
@@ -443,7 +443,7 @@ export class gurpsActor extends Actor {
 			items = items.sort(sortArmourByLayer); // Take the above list and sort by layer. Index 0 is lowest, index infinity is highest.
 
 			for (let l = 0; l < items.length; l++){ // Loop through the characters items and apply any relevant DR.
-				armour[l+1] = this.getArmour(items[l].data.armour.bodyType.body, l+1);
+				armour[l+1] = this.getArmour(items[l].data.armour.bodyType.body, this.data.data.bodyType.body, l+1);
 				let damageTypeOneObject;
 				let damageTypeTwoObject;
 
@@ -467,11 +467,10 @@ export class gurpsActor extends Actor {
 					}
 				}
 			}
-			console.log(armour)
 		}
 	}
 
-	getArmour(object, index){
+	getArmour(object, body, index){
 		let armour = { // Init the personalArmour object
 			flexible: {},
 			hardness: {},
@@ -499,16 +498,35 @@ export class gurpsActor extends Actor {
 					armour.pi[bodyParts[i]]   = getProperty(object, bodyParts[i] + ".drPi")   ? +getProperty(object, bodyParts[i] + ".drPi")  : 0;
 					armour.tox[bodyParts[i]]  = getProperty(object, bodyParts[i] + ".drTox")  ? +getProperty(object, bodyParts[i] + ".drTox") : 0;
 
+					// For each DR type, add it to the underlying bodypart
+					let dr = {
+						burn: 	getProperty(object, bodyParts[i] + ".drBurn") ? +getProperty(object, bodyParts[i] + ".drBurn") : 0,
+						cor: 	getProperty(object, bodyParts[i] + ".drCor")  ? +getProperty(object, bodyParts[i] + ".drCor") : 0,
+						cr: 	getProperty(object, bodyParts[i] + ".drCr")   ? +getProperty(object, bodyParts[i] + ".drCr")  : 0,
+						cut: 	getProperty(object, bodyParts[i] + ".drCut")  ? +getProperty(object, bodyParts[i] + ".drCut") : 0,
+						fat: 	getProperty(object, bodyParts[i] + ".drFat")  ? +getProperty(object, bodyParts[i] + ".drFat") : 0,
+						imp: 	getProperty(object, bodyParts[i] + ".drImp")  ? +getProperty(object, bodyParts[i] + ".drImp") : 0,
+						pi: 	getProperty(object, bodyParts[i] + ".drPi")   ? +getProperty(object, bodyParts[i] + ".drPi")  : 0,
+						tox: 	getProperty(object, bodyParts[i] + ".drTox")  ? +getProperty(object, bodyParts[i] + ".drTox") : 0,
+						hardness: 1,
+						flexible: false
+					}
+
 					if (getProperty(object, bodyParts[i] + ".flexible")){ // Check to see if flexible exists and is true
 						armour.flexible[bodyParts[i]] = true;
+						dr.flexible = true;
 					}
 					else {
 						armour.flexible[bodyParts[i]] = false;
+						dr.flexible = false;
 					}
 
 					if (getProperty(object, bodyParts[i] + ".drHardening")){ // Check to see if the hardening value exists
 						armour.hardness[bodyParts[i]] = getProperty(object, bodyParts[i] + ".drHardening"); // Set hardening
+						dr.hardness = +getProperty(object, bodyParts[i] + ".drHardening");
 					}
+
+					setProperty(body, bodyParts[i] + ".dr." + index, dr);
 				}
 				else {
 					let subParts = Object.keys(getProperty(object, bodyParts[i] + ".subLocation")); // Collect all the subpart names
@@ -523,16 +541,35 @@ export class gurpsActor extends Actor {
 						armour.pi[bodyParts[i] + subParts[n]]   = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   : 0;
 						armour.tox[bodyParts[i] + subParts[n]]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  : 0;
 
+						// For each DR type, add it to the underlying bodypart
+						let dr = {
+							burn: 	getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") : 0,
+							cor: 	getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  : 0,
+							cr: 	getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   : 0,
+							cut: 	getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  : 0,
+							fat: 	getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  : 0,
+							imp: 	getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  : 0,
+							pi: 	getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   : 0,
+							tox: 	getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  : 0,
+							hardness: 1,
+							flexible: false
+						}
+
 						if (getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".flexible")){ // Check to see if flexible exists and is true
 							armour.flexible[bodyParts[i] + subParts[n]] = true;
+							dr.flexible = true;
 						}
 						else {
 							armour.flexible[bodyParts[i] + subParts[n]] = false;
+							dr.flexible = false;
 						}
 
 						if (getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drHardening")){ // Check to see if the hardening value exists
 							armour.hardness[bodyParts[i] + subParts[n]] = +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drHardening"); // Set hardening
+							dr.hardness = +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drHardening");
 						}
+
+						setProperty(body, bodyParts[i] + ".subLocation." + subParts[n] + ".dr." + index, dr);
 					}
 				}
 			}
