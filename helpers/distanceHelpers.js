@@ -105,7 +105,7 @@ export class distanceHelpers {
     }
 
     static distancePenalty(distance){
-        return Math.floor(2 - (6 * Math.log10(distance)));
+        return Math.min(Math.floor(2 - (6 * Math.log10(distance))),0);
     }
 
     static sizeToDistance(sm){
