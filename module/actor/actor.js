@@ -435,7 +435,7 @@ export class gurpsActor extends Actor {
 				tox: {},
 			}];
 
-			armour[0] = this.getArmour(this.data.data.bodyType.body); // Get the armour inherent in the body
+			armour[0] = this.getArmour(this.data.data.bodyType.body, 0); // Get the armour inherent in the body
 			this.data.data.bodyType.drTypesOne = getProperty(armour[0], this.data.data.bodyType.damageTypeOne.toLowerCase());
 			this.data.data.bodyType.drTypesTwo = getProperty(armour[0], this.data.data.bodyType.damageTypeTwo.toLowerCase());
 
@@ -443,30 +443,35 @@ export class gurpsActor extends Actor {
 			items = items.sort(sortArmourByLayer); // Take the above list and sort by layer. Index 0 is lowest, index infinity is highest.
 
 			for (let l = 0; l < items.length; l++){ // Loop through the characters items and apply any relevant DR.
-				armour[l+1] = this.getArmour(items[l].data.armour.bodyType.body);
+				armour[l+1] = this.getArmour(items[l].data.armour.bodyType.body, l+1);
 				let damageTypeOneObject;
 				let damageTypeTwoObject;
 
-				if (this.data.data.bodyType.damageTypeOne.length > 0){
-					damageTypeOneObject = getProperty(armour[l+1], this.data.data.bodyType.damageTypeOne.toLowerCase());
-					if (this.data.data.bodyType.damageTypeTwo.length > 0){
-						damageTypeTwoObject = getProperty(armour[l+1], this.data.data.bodyType.damageTypeTwo.toLowerCase());
-					}
+				if (this.data.data.bodyType.damageTypeOne.length > 0){ // If they've selected a type for display
+					damageTypeOneObject = getProperty(armour[l+1], this.data.data.bodyType.damageTypeOne.toLowerCase()); // Set the DR
+				}
+				if (this.data.data.bodyType.damageTypeTwo.length > 0){ // If they've selected a second type for display
+					damageTypeTwoObject = getProperty(armour[l+1], this.data.data.bodyType.damageTypeTwo.toLowerCase()); // Set the DR
+				}
 
+				if (this.data.data.bodyType.damageTypeOne.length > 0) {
 					let bodyParts = Object.keys(damageTypeOneObject);
 
-					for (let q = 0; q < bodyParts.length; q++){
-						this.data.data.bodyType.drTypesOne[bodyParts[q]] += damageTypeOneObject[bodyParts[q]]
-						if (this.data.data.bodyType.damageTypeTwo.length > 0){
+					for (let q = 0; q < bodyParts.length; q++) {
+						if (this.data.data.bodyType.damageTypeOne.length > 0) { // If they've selected a type for display
+							this.data.data.bodyType.drTypesOne[bodyParts[q]] += damageTypeOneObject[bodyParts[q]]
+						}
+						if (this.data.data.bodyType.damageTypeTwo.length > 0) { // If they've selected a second type for display
 							this.data.data.bodyType.drTypesTwo[bodyParts[q]] += damageTypeTwoObject[bodyParts[q]]
 						}
 					}
 				}
 			}
+			console.log(armour)
 		}
 	}
 
-	getArmour(object){
+	getArmour(object, index){
 		let armour = { // Init the personalArmour object
 			flexible: {},
 			hardness: {},
@@ -1212,5 +1217,6 @@ export class gurpsActor extends Actor {
 		console.log(rof);
 		console.log(location);
 		console.log(penalty);
+		console.log(getProperty(target.actor.data.data.bodyType.body, location.id));
 	}
 }
