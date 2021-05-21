@@ -1120,7 +1120,6 @@ export class gurpsActor extends Actor {
 		let location = getProperty(target.actor.data.data.bodyType.body, locationHit)
 
 		if (location.subLocation){ // Make sure there are even complex hit locations to choose
-			console.log("sublocation exists")
 			let bodyParts = Object.keys(getProperty(target.actor.data.data.bodyType.body, locationHit + ".subLocation")); // Collect all the bodypart names
 
 			let complexLocationSelector = ""
@@ -1254,6 +1253,8 @@ export class gurpsActor extends Actor {
 		console.log(rof);
 		console.log(location);
 		console.log(penalty);
-		console.log(getProperty(target.actor.data.data.bodyType.body, location.id));
+		console.log(getProperty(target.actor.data.data.bodyType.body, location.id)); // TODO - Went to all the trouble of adding this. Might not even need it.
+
+
 	}
 }

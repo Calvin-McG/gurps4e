@@ -85,10 +85,10 @@ export class gurpsActorSheet extends ActorSheet {
 
 		//Spoders and squids have a brain instead of a skull. Everyone else has a skull
 		if (bodyType == "arachnoid" || bodyType == "octopod"){
-			bodyObj.brain = this.addBrain(actorData.reserves.hp.max, "brain");
+			bodyObj.brain = this.addBrain("brain");
 		}
 		else {
-			bodyObj.skull = this.addSkull(actorData.reserves.hp.max, "skull");
+			bodyObj.skull = this.addSkull("skull");
 		}
 
 		//Body parts that apply to all body types
