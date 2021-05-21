@@ -135,7 +135,7 @@ export class gurpsItem extends Item {
               block = data.melee[meleeKeys[k]].blockMod;
             }
             this._data.data.melee[meleeKeys[k]].block = block//Update block value
-
+            this._data.data.melee[meleeKeys[k]].type = "melee" // Update attack type
             this._data.data.melee[meleeKeys[k]].damage = this.damageParseSwThr(data.melee[meleeKeys[k]].damageInput);//Update damage value
           }
         }
@@ -167,7 +167,7 @@ export class gurpsItem extends Item {
             }
             level = level + mod;//Update the skill level with the skill modifier
             this._data.data.ranged[rangedKeys[k]].level = level
-
+            this._data.data.ranged[rangedKeys[k]].type = "ranged" // Update attack type
             this._data.data.ranged[rangedKeys[k]].damage = this.damageParseSwThr(data.ranged[rangedKeys[k]].damageInput);
           }
         }
