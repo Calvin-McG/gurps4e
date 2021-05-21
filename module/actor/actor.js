@@ -1000,7 +1000,8 @@ export class gurpsActor extends Actor {
 						// The user has not chosen to target a specific location. Find the result randomly.
 						let rofInput = document.getElementsByName('rof');
 						if(rofInput[0]){
-							this.selectedRandom(target, attacker, attack, relativePosition, (rofInput[0].value * pellets))
+							let selectedShots = Math.min(rofInput[0].value, shots)
+							this.selectedRandom(target, attacker, attack, relativePosition, (selectedShots * pellets))
 						}
 						else {
 							this.selectedRandom(target, attacker, attack, relativePosition, 1)
@@ -1014,7 +1015,8 @@ export class gurpsActor extends Actor {
 						// The user has selected the torso without specifying upper/lower. Find the result randomly.
 						let rofInput = document.getElementsByName('rof');
 						if(rofInput[0]){
-							this.selectedTorso(target, attacker, attack, relativePosition, (rofInput[0].value * pellets))
+							let selectedShots = Math.min(rofInput[0].value, shots)
+							this.selectedTorso(target, attacker, attack, relativePosition, (selectedShots * pellets))
 						}
 						else {
 							this.selectedTorso(target, attacker, attack, relativePosition,  1)
@@ -1030,7 +1032,8 @@ export class gurpsActor extends Actor {
 						if(elements[0].value){
 							let rofInput = document.getElementsByName('rof');
 							if(rofInput[0]){
-								this.selectedHitLocation(target, attacker, attack, elements[0].value, relativePosition, (rofInput[0].value * pellets))
+								let selectedShots = Math.min(rofInput[0].value, shots)
+								this.selectedHitLocation(target, attacker, attack, elements[0].value, relativePosition, (selectedShots * pellets))
 							}
 							else {
 								this.selectedHitLocation(target, attacker, attack, elements[0].value, relativePosition, 1)
@@ -1048,7 +1051,8 @@ export class gurpsActor extends Actor {
 						if(elements[0].value){
 							let rofInput = document.getElementsByName('rof');
 							if(rofInput[0]){
-								this.selectedComplexHitLocation(target, attacker, attack, elements[0].value, relativePosition, (rofInput[0].value * pellets))
+								let selectedShots = Math.min(rofInput[0].value, shots)
+								this.selectedComplexHitLocation(target, attacker, attack, elements[0].value, relativePosition, (selectedShots * pellets))
 							}
 							else {
 								this.selectedComplexHitLocation(target, attacker, attack, elements[0].value, relativePosition, 1)
@@ -1306,7 +1310,16 @@ export class gurpsActor extends Actor {
 				noMod: {
 					icon: '<i class="fas fa-times"></i>',
 					label: "No Modifier",
-					callback: () => this.computeRoll(event, 0)
+					callback: () => {
+						this.computeRoll(event, 0)
+					}
+				},
+				cancel: {
+					icon: '<i class="fas fa-times"></i>',
+					label: "Cancel",
+					callback: () => {
+
+					}
 				}
 			},
 			default: "noMod",
