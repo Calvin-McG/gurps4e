@@ -1245,16 +1245,53 @@ export class gurpsActor extends Actor {
 		return subLocation;
 	}
 
-	reportHitResult(target, attacker, attack, relativePosition, rof, location, penalty) {
+	reportHitResult(target, attacker, attack, relativePosition, rof, location, locationPenalty) {
 		console.log(target);
 		console.log(attacker);
 		console.log(attack);
 		console.log(relativePosition);
 		console.log(rof);
 		console.log(location);
-		console.log(penalty);
-		console.log(getProperty(target.actor.data.data.bodyType.body, location.id)); // TODO - Went to all the trouble of adding this. Might not even need it.
+		console.log(locationPenalty);
+		console.log(getProperty(target.actor.data.data.bodyType.body, location.id)); // Went to all the trouble of adding this. Might not even need it.
+
+		let distancePenalty = 0; // TODO call the helper for this
+
+		let rofBonus = 0; // TODO Helper for this
+
+		let modModalContent =  "<div>Hit Location: " + locationPenalty + "</div>"
 
 
+		if (attack.type === "ranged"){
+			modModalContent += "<div>Distance: " + distancePenalty + "</div>" +
+								"<div>RoF Bonus: " + rofBonus + "</div>" +
+								"<div>Total penalty: " + (distancePenalty + locationPenalty) + "</div>";
+		}
+
+		modModalContent += "<div>Additional Modifier: <input type='number' id='mod' name='mod' value='0' style='width: 50%'/></div>"
+
+		let modModal = new Dialog({
+			title: "Modifier Dialog",
+			content: modModalContent,
+			buttons: {
+				mod: {
+					icon: '<i class="fas fa-check"></i>',
+					label: "Apply Modifier",
+					callback: (html) => {
+						let mod = html.find('#mod').val()
+						this.computeRoll(event, mod)
+					}
+				},
+				noMod: {
+					icon: '<i class="fas fa-times"></i>',
+					label: "No Modifier",
+					callback: () => this.computeRoll(event, 0)
+				}
+			},
+			default: "noMod",
+			render: html => console.log("Register interactivity in the rendered dialog"),
+			close: html => console.log("This always is logged no matter which option is chosen")
+		})
+		modModal.render(true)
 	}
 }
