@@ -417,11 +417,6 @@ export class gurpsActor extends Actor {
 				return 0
 			}
 
-			// TODO - Create a set of arrays.
-			// One array listing armour flexibility in the order it is layered.
-			// One array listing the armour's hardness in the order it is layered. TODO - Consolidate all the damage type specific hardening into a single cell
-			// One array for each damage type listing the armour's hardness in the order it is layered. (Like for switchDrTypes) - TODO - Make switchDrTypes just load from the results of this method.
-
 			let armour = [{
 				flexible: {},
 				hardness: {},
@@ -470,7 +465,7 @@ export class gurpsActor extends Actor {
 		}
 	}
 
-	getArmour(object, body, index){ // TODO - This method should return the dr object, not the armour object. As DR objects are returned they should be added to a running total of armour that is finally added to the actor once the loop has run all the way through.
+	getArmour(object, body, index){
 		let armour = { // Init the personalArmour object
 			flexible: {},
 			hardness: {},
