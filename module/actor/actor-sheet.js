@@ -614,7 +614,7 @@ export class gurpsActorSheet extends ActorSheet {
 					flexible: false
 				},
 				ears: {
-					label: "Ears",
+					label: "Ear",
 					id: id + ".subLocation.ears",
 					drBurn: "",
 					drCor: "",
@@ -674,7 +674,7 @@ export class gurpsActorSheet extends ActorSheet {
 					weight: 2/6,
 					flexible: false
 				},
-				eyes: {//Kromm's ruling on eyes http://forums.sjgames.com/showpost.php?p=733298&postcount=33
+				eyes: { // Kromm's ruling on eyes http://forums.sjgames.com/showpost.php?p=733298&postcount=33
 					label: "Eyes",
 					id: id + ".subLocation.eyes",
 					drBurn: "",
