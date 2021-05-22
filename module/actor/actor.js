@@ -959,27 +959,30 @@ export class gurpsActor extends Actor {
 
 		locationSelector += "</select></td></tr>"
 
-		let shots;
-		let pellets;
 		let split;
+		let rof = {
+			shots: 1,
+			pellets: 1,
+			rof: 1
+		}
 		if (attack.type === "ranged") { // Check to see if RoF exists. This is a shorthand for whether the attack is ranged or melee
 			if (attack.rof.toString().toLowerCase().includes("x")){
 				split = attack.rof.toString().toLowerCase().split("x")
-				shots = split[0];
-				pellets = split[1];
+				rof.shots = split[0];
+				rof.pellets = split[1];
 			}
 			else if (attack.rof.toString().toLowerCase().includes("*")){
 				split = attack.rof.toString().toLowerCase().split("*")
-				shots = split[0];
-				pellets = split[1];
+				rof.shots = split[0];
+				rof.pellets = split[1];
 			}
 			else {
-				shots = attack.rof.trim()
-				pellets = 1;
+				rof.shots = attack.rof.trim()
+				rof.pellets = 1;
 			}
 
-			locationSelector += "<tr><td>Shots:</td><td><input style='width: 45%' type='number' id='rof' name='rof' value='" + shots + "'/></td></tr>" +
-				"<tr><td>Pellets</td><td>" + pellets + "</td></tr>" +
+			locationSelector += "<tr><td>Shots:</td><td><input style='width: 45%' type='number' id='rof' name='rof' value='" + rof.shots + "'/></td></tr>" +
+				"<tr><td>Pellets per shot</td><td>" + rof.pellets + "</td></tr>" +
 				"</table>";
 		}
 
@@ -995,11 +998,12 @@ export class gurpsActor extends Actor {
 						// The user has not chosen to target a specific location. Find the result randomly.
 						let rofInput = document.getElementsByName('rof');
 						if(rofInput[0]){
-							let selectedShots = Math.min(rofInput[0].value, shots)
-							this.selectedRandom(target, attacker, attack, relativePosition, (selectedShots * pellets))
+							rof.shots = Math.min(rofInput[0].value, rof.shots)
+							rof.rof = rof.shots * rof.pellets;
+							this.selectedRandom(target, attacker, attack, relativePosition, rof)
 						}
 						else {
-							this.selectedRandom(target, attacker, attack, relativePosition, 1)
+							this.selectedRandom(target, attacker, attack, relativePosition, rof)
 						}
 					}
 				},
@@ -1010,11 +1014,12 @@ export class gurpsActor extends Actor {
 						// The user has selected the torso without specifying upper/lower. Find the result randomly.
 						let rofInput = document.getElementsByName('rof');
 						if(rofInput[0]){
-							let selectedShots = Math.min(rofInput[0].value, shots)
-							this.selectedTorso(target, attacker, attack, relativePosition, (selectedShots * pellets))
+							rof.shots = Math.min(rofInput[0].value, rof.shots)
+							rof.rof = rof.shots * rof.pellets;
+							this.selectedTorso(target, attacker, attack, relativePosition, rof)
 						}
 						else {
-							this.selectedTorso(target, attacker, attack, relativePosition,  1)
+							this.selectedTorso(target, attacker, attack, relativePosition,  rof)
 						}
 					}
 				},
@@ -1027,11 +1032,12 @@ export class gurpsActor extends Actor {
 						if(elements[0].value){
 							let rofInput = document.getElementsByName('rof');
 							if(rofInput[0]){
-								let selectedShots = Math.min(rofInput[0].value, shots)
-								this.selectedHitLocation(target, attacker, attack, elements[0].value, relativePosition, (selectedShots * pellets))
+								rof.shots = Math.min(rofInput[0].value, rof.shots)
+								rof.rof = rof.shots * rof.pellets;
+								this.selectedHitLocation(target, attacker, attack, elements[0].value, relativePosition, rof)
 							}
 							else {
-								this.selectedHitLocation(target, attacker, attack, elements[0].value, relativePosition, 1)
+								this.selectedHitLocation(target, attacker, attack, elements[0].value, relativePosition, rof)
 							}
 
 						}
@@ -1046,11 +1052,12 @@ export class gurpsActor extends Actor {
 						if(elements[0].value){
 							let rofInput = document.getElementsByName('rof');
 							if(rofInput[0]){
-								let selectedShots = Math.min(rofInput[0].value, shots)
-								this.selectedComplexHitLocation(target, attacker, attack, elements[0].value, relativePosition, (selectedShots * pellets))
+								rof.shots = Math.min(rofInput[0].value, rof.shots)
+								rof.rof = rof.shots * rof.pellets;
+								this.selectedComplexHitLocation(target, attacker, attack, elements[0].value, relativePosition, rof)
 							}
 							else {
-								this.selectedComplexHitLocation(target, attacker, attack, elements[0].value, relativePosition, 1)
+								this.selectedComplexHitLocation(target, attacker, attack, elements[0].value, relativePosition, rof)
 							}
 
 						}
@@ -1080,53 +1087,60 @@ export class gurpsActor extends Actor {
 	}
 
 	selectedRandom(target, attacker, attack, relativePosition, rof) { // Select random hit location
-		let generalLocation = this.randomHitLocation(target) // Select a random location
-		let location;
-		if (generalLocation.subLocation){ // Check to see if there are sub locations
-			let specificLocation = this.randomComplexHitLocation(generalLocation); // Get the sub location
-			location = specificLocation;
-		}
-		else {
-			location = generalLocation;
+		let locations = [];
+		for (let i = 0; i < rof.rof; i++){ // Find a different hit location for each shot
+			let generalLocation = this.randomHitLocation(target) // Select a random location
+			if (generalLocation.subLocation){ // Check to see if there are sub locations
+				let specificLocation = this.randomComplexHitLocation(generalLocation); // Get the sub location
+				locations[i] = specificLocation;
+			}
+			else {
+				locations[i] = generalLocation;
+			}
 		}
 
-		this.attackModifiers(target, attacker, attack, relativePosition, rof, location, 0) // There is no hit location penalty since they're going with a random location
+		this.attackModifiers(target, attacker, attack, relativePosition, rof, locations, 0) // There is no hit location penalty since they're going with a random location
 	}
 
 	selectedTorso(target, attacker, attack, relativePosition, rof) { // Select random location on torso (Chest/Abdomen)
-		let generalLocation = this.randomTorsoLocation(target); // Generate a random location from the list of torso locations
-		let location;
-		if (generalLocation.subLocation){ // Check to see if there are sub locations
-			let specificLocation = this.randomComplexHitLocation(generalLocation); // Get the sub location
-			location = specificLocation;
-		}
-		else {
-			location = generalLocation;
+		let locations = [];
+		for (let i = 0; i < rof.rof; i++){ // Find a different hit location for each shot
+			let generalLocation = this.randomTorsoLocation(target); // Generate a random location from the list of torso locations
+			if (generalLocation.subLocation){ // Check to see if there are sub locations
+				let specificLocation = this.randomComplexHitLocation(generalLocation); // Get the sub location
+				locations[i] = specificLocation;
+			}
+			else {
+				locations[i] = generalLocation;
+			}
 		}
 
-		this.attackModifiers(target, attacker, attack, relativePosition, rof, location, 0) // There is no hit location penalty since they're going for the torso
+		this.attackModifiers(target, attacker, attack, relativePosition, rof, locations, 0) // There is no hit location penalty since they're going for the torso
 	}
 
 	selectedHitLocation(target, attacker, attack, locationHit, relativePosition, rof) { // Select specific hit location and then generate a random complex hit location
-		let generalLocation = getProperty(target.actor.data.data.bodyType.body, locationHit); // Get specific hit location
-		let location;
-		if (generalLocation.subLocation){ // Check to see if there are sub locations
-			let specificLocation = this.randomComplexHitLocation(generalLocation); // Get the sub location
-			location = specificLocation;
-		}
-		else {
-			location = generalLocation;
+		let locations = [];
+		for (let i = 0; i < rof.rof; i++) { // Find a different hit location for each shot
+			let generalLocation = getProperty(target.actor.data.data.bodyType.body, locationHit); // Get specific hit location
+
+			if (generalLocation.subLocation){ // Check to see if there are sub locations
+				let specificLocation = this.randomComplexHitLocation(generalLocation); // Get the sub location
+				locations[i] = specificLocation;
+			}
+			else {
+				locations[i] = generalLocation;
+			}
+
+			let penalty;
+			if (relativePosition[1] > 0){ // If the attacker is in front of the target
+				penalty = generalLocation.penaltyFront; // The penalty comes from the general location since that's what they selected
+			}
+			else {
+				penalty = generalLocation.penaltyBack;
+			}
 		}
 
-		let penalty;
-		if (relativePosition[1] > 0){ // If the attacker is in front of the target
-			penalty = generalLocation.penaltyFront; // The penalty comes from the general location since that's what they selected
-		}
-		else {
-			penalty = generalLocation.penaltyBack;
-		}
-
-		this.attackModifiers(target, attacker, attack, relativePosition, rof, location, penalty)
+		this.attackModifiers(target, attacker, attack, relativePosition, rof, locations, penalty)
 	}
 
 	selectedComplexHitLocation(target, attacker, attack, locationHit, relativePosition, rof) { // Select specific hit location and then the complex hit location
@@ -1167,6 +1181,10 @@ export class gurpsActor extends Actor {
 							let elements = document.getElementsByName('complexHitLocation');
 							if(elements[0].value){
 								let location = getProperty(target.actor.data.data.bodyType.body, elements[0].value)
+								let locations = [];
+								for (let i = 0; i < rof.rof; i++) {
+									locations[i] = location;
+								}
 								let penalty;
 								if (relativePosition[1] > 0){ // If the attacker is in front of the target
 									penalty = location.penaltyFront;
@@ -1174,7 +1192,7 @@ export class gurpsActor extends Actor {
 								else {
 									penalty = location.penaltyBack;
 								}
-								this.attackModifiers(target, attacker, attack, relativePosition, rof, location, penalty)
+								this.attackModifiers(target, attacker, attack, relativePosition, rof, locations, penalty)
 							}
 						}
 					},
@@ -1204,7 +1222,11 @@ export class gurpsActor extends Actor {
 			else {
 				penalty = location.penaltyBack;
 			}
-			this.attackModifiers(target, attacker, attack, relativePosition, rof, location, penalty)
+			let locations = [];
+			for (let i = 0; i < rof.rof; i++) {
+				locations[i] = location;
+			}
+			this.attackModifiers(target, attacker, attack, relativePosition, rof, locations, penalty)
 		}
 	}
 
@@ -1264,7 +1286,7 @@ export class gurpsActor extends Actor {
 		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.data.gridUnits);
 		let distancePenalty = distanceHelpers.distancePenalty(distanceYards);
 
-		let rofBonus = generalHelpers.rofToBonus(rof); // TODO Helper for this
+		let rofBonus = generalHelpers.rofToBonus(rof.rof); // TODO Helper for this
 		let totalModifier;
 
 		let modModalContent =  "<table>" +
@@ -1297,7 +1319,7 @@ export class gurpsActor extends Actor {
 					label: "Apply Modifier",
 					callback: (html) => {
 						let mod = html.find('#mod').val()
-						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (totalModifier + mod))
+						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (+totalModifier + +mod))
 					}
 				},
 				noMod: {
@@ -1322,17 +1344,36 @@ export class gurpsActor extends Actor {
 		modModal.render(true)
 	}
 
-	reportHitResult(target, attacker, attack, relativePosition, rof, location, totalModifiers) {
+	reportHitResult(target, attacker, attack, relativePosition, rof, locations, totalModifiers) {
 		console.log(target);
 		console.log(attacker);
 		console.log(attack);
 		console.log(relativePosition);
 		console.log(rof);
-		console.log(location);
+		console.log(locations);
 		console.log(totalModifiers);
 		console.log(getProperty(target.actor.data.data.bodyType.body, location.id)); // Went to all the trouble of adding this. Might not even need it.
 
+		let label = attacker.nameplate._text + " attacks " + target.nameplate._text + " with a " + attack.weapon + " " + attack.name;
 
-		rollHelpers.skillRoll(attack.level, totalModifiers, false)
+
+		if (attack.type == "ranged"){
+			if (rof.shots == rof.rof){ // It is not a multiple projectile weapon
+				label += " and fires " + rof.shots + " times.";
+			}
+			else { // It is a multiple projectile weapon
+				label += " and fires " + rof.shots + " times for " + rof.rof + " shots.";
+			}
+		}
+		else {
+			label += ".";
+		}
+
+		let rollInfo = rollHelpers.skillRoll(attack.level, totalModifiers, label, false)
+		let messageContent = rollInfo.content;
+
+
+		// Everything is assembled, send the message
+		ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type });
 	}
 }
