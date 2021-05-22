@@ -1286,7 +1286,7 @@ export class gurpsActor extends Actor {
 		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.data.gridUnits);
 		let distancePenalty = distanceHelpers.distancePenalty(distanceYards);
 
-		let rofBonus = generalHelpers.rofToBonus(rof.rof); // TODO Helper for this
+		let rofBonus = generalHelpers.rofToBonus(rof.rof);
 		let totalModifier;
 
 		let modModalContent =  "<table>" +
