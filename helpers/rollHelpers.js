@@ -17,7 +17,7 @@ export class rollHelpers {
             html += "Rolls a " + skillRoll + " vs " + level + " + " + modifier;
         }
         else {
-            html += "Rolls a " + skillRoll + " vs " + level + " - " + modifier;
+            html += "Rolls a " + skillRoll + " vs " + level + " - " + Math.abs(modifier); // Run Math.abs to allow repositioning the negative symbol.
         }
 
         //Code block for display of dice
@@ -25,6 +25,12 @@ export class rollHelpers {
         html += this.dieToIcon(die1.total);
         html += this.dieToIcon(die2.total);
         html += this.dieToIcon(die3.total);
+        if (modifier >= 0){ // Modifier is positive
+            html += "<label class='damage-dice-adds'>+</label><label class='damage-dice-adds'>" + modifier + "</label>"
+        }
+        else { // Modifier is negative
+            html += "<label class='damage-dice-adds'>-</label><label class='damage-dice-adds'>" + Math.abs(modifier) + "</label>"
+        }
         html += "</div>"
 
         if (skillRoll.total == 18){//18 is always a crit fail
