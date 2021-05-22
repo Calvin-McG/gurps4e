@@ -98,4 +98,126 @@ export class rollHelpers {
 
         return response;
     }
+
+    static levelToOdds(level){ // Provide odds for success, crit fail, crit success
+        let success;
+        let critSuccess;
+        let critFail;
+        if (level <= -5){
+            success = 1.85;
+            critSuccess = 1.85;
+            critFail = 98.15;
+        }
+        else if (level === -4){
+            success = 1.85;
+            critSuccess = 1.85;
+            critFail = 95.37;
+        }
+        else if (level === -3){
+            success = 1.85;
+            critSuccess = 1.85;
+            critFail = 90.74;
+        }
+        else if (level === -2){
+            success = 1.85;
+            critSuccess = 1.85;
+            critFail = 83.8;
+        }
+        else if (level === -1){
+            success = 1.85;
+            critSuccess = 1.85;
+            critFail = 74.07;
+        }
+        else if (level === 0){
+            success = 1.85;
+            critSuccess = 1.85;
+            critFail = 62.50;
+        }
+        else if (level === 1){
+            success = 1.85;
+            critSuccess = 1.85;
+            critFail = 50;
+        }
+        else if (level === 2){
+            success = 1.85;
+            critSuccess = 1.85;
+            critFail = 37.50;
+        }
+        else if (level === 3){
+            success = 1.85;
+            critSuccess = 1.85;
+            critFail = 25.93;
+        }
+        else if (level === 4){
+            success = 1.85;
+            critSuccess = 1.85;
+            critFail = 16.20;
+        }
+        else if (level === 5){
+            success = 4.63;
+            critSuccess = 1.85;
+            critFail = 9.26;
+        }
+        else if (level === 6){
+            success = 9.26;
+            critSuccess = 1.85;
+            critFail = 4.63;
+        }
+        else if (level === 7){
+            success = 16.2;
+            critSuccess = 1.85;
+            critFail = 1.85;
+        }
+        else if (level === 8){
+            success = 25.93;
+            critSuccess = 1.85;
+            critFail = 1.85;
+        }
+        else if (level === 9){
+            success = 37.5;
+            critSuccess = 1.85;
+            critFail = 1.85;
+        }
+        else if (level === 10){
+            success = 50;
+            critSuccess = 1.85;
+            critFail = 1.85;
+        }
+        else if (level === 11){
+            success = 62.5;
+            critSuccess = 1.85;
+            critFail = 1.85;
+        }
+        else if (level === 12){
+            success = 74.07;
+            critSuccess = 1.85;
+            critFail = 1.85;
+        }
+        else if (level === 13){
+            success = 83.8;
+            critSuccess = 1.85;
+            critFail = 1.85;
+        }
+        else if (level === 14){
+            success = 90.74;
+            critSuccess = 1.85;
+            critFail = 1.85;
+        }
+        else if (level === 15){
+            success = 95.37;
+            critSuccess = 4.63;
+            critFail = 1.85;
+        }
+        else if (level >= 16){
+            success = 98.15;
+            critSuccess = 9.26;
+            critFail = 0.46;
+        }
+
+        return {
+            success: success,
+            critSuccess: critSuccess,
+            critFail: critFail
+        };
+    }
 }
