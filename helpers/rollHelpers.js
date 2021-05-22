@@ -34,36 +34,36 @@ export class rollHelpers {
         html += "</div>"
 
         if (skillRoll.total == 18){//18 is always a crit fail
-            html += "<div>Automatic Crit Fail by " + margin + "</div>"
+            html += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Automatic Crit Fail by " + margin + "</div>"
         }
         else if (skillRoll.total == 17){//17 is a crit fail if effective skill is less than 16, autofail otherwise
             if (effectiveSkill < 16){//Less than 16, autocrit
-                html += "<div>Automatic Crit Fail by " + margin + "</div>"
+                html += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Automatic Crit Fail by " + margin + "</div>"
             }
             else {//Autofail
-                html += "<div>Automatic Fail by " + margin + "</div>"
+                html += "<div style='font-weight: bold; color: rgb(199, 137, 83);'>Automatic Fail by " + margin + "</div>"
             }
         }
         else if (margin <= -10){//Fail by 10 is a crit fail
-            html += "<div>Crit Fail by " + margin + "</div>"
+            html += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Crit Fail by " + margin + "</div>"
         }
         else if (margin < 0){//Fail is a fail
-            html += "<div>Fail by " + margin + "</div>"
+            html += "<div style='font-weight: bold; color: rgb(199, 137, 83);'>Fail by " + margin + "</div>"
         }
         else if (skillRoll.total == 3 || skillRoll.total == 4){//3 and 4 are always a crit success
-            html += "<div>Automatic Critical Success by " + margin + "</div>"
+            html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Automatic Critical Success by " + margin + "</div>"
         }
         else if (skillRoll.total == 5 && effectiveSkill == 15){//5 is a crit if effective skill is 15
-            html += "<div>Critical Success by " + margin + "</div>"
+            html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Critical Success by " + margin + "</div>"
         }
         else if (skillRoll.total == 6 && effectiveSkill == 16){//6 is a crit if effective skill is 16
-            html += "<div>Critical Success by " + margin + "</div>"
+            html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Critical Success by " + margin + "</div>"
         }
         else if (margin >= 0){//Regular success
-            html += "<div>Success by " + margin + "</div>"
+            html += "<div style='font-weight: bold; color: rgb(141, 142, 222)'>Success by " + margin + "</div>"
         }
         else {//Wtf?
-            html += "<div>Unknown result by " + margin + "</div>"
+            html += "<div style='font-weight: bold;'>Unknown result by " + margin + "</div>"
         }
 
         if (chat){
