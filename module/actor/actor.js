@@ -470,7 +470,7 @@ export class gurpsActor extends Actor {
 		}
 	}
 
-	getArmour(object, body, index){
+	getArmour(object, body, index){ // TODO - This method should return the dr object, not the armour object. As DR objects are returned they should be added to a running total of armour that is finally added to the actor once the loop has run all the way through.
 		let armour = { // Init the personalArmour object
 			flexible: {},
 			hardness: {},
@@ -1095,7 +1095,7 @@ export class gurpsActor extends Actor {
 			location = generalLocation;
 		}
 
-		this.reportHitResult(target, attacker, attack, relativePosition, rof, location, 0) // There is no hit location penalty since they're going with a random location
+		this.attackModifiers(target, attacker, attack, relativePosition, rof, location, 0) // There is no hit location penalty since they're going with a random location
 	}
 
 	selectedTorso(target, attacker, attack, relativePosition, rof) { // Select random location on torso (Chest/Abdomen)
@@ -1109,7 +1109,7 @@ export class gurpsActor extends Actor {
 			location = generalLocation;
 		}
 
-		this.reportHitResult(target, attacker, attack, relativePosition, rof, location, 0) // There is no hit location penalty since they're going for the torso
+		this.attackModifiers(target, attacker, attack, relativePosition, rof, location, 0) // There is no hit location penalty since they're going for the torso
 	}
 
 	selectedHitLocation(target, attacker, attack, locationHit, relativePosition, rof) { // Select specific hit location and then generate a random complex hit location
@@ -1131,7 +1131,7 @@ export class gurpsActor extends Actor {
 			penalty = generalLocation.penaltyBack;
 		}
 
-		this.reportHitResult(target, attacker, attack, relativePosition, rof, location, penalty)
+		this.attackModifiers(target, attacker, attack, relativePosition, rof, location, penalty)
 	}
 
 	selectedComplexHitLocation(target, attacker, attack, locationHit, relativePosition, rof) { // Select specific hit location and then the complex hit location
@@ -1179,7 +1179,7 @@ export class gurpsActor extends Actor {
 								else {
 									penalty = location.penaltyBack;
 								}
-								this.reportHitResult(target, attacker, attack, relativePosition, rof, location, penalty)
+								this.attackModifiers(target, attacker, attack, relativePosition, rof, location, penalty)
 							}
 						}
 					},
@@ -1209,7 +1209,7 @@ export class gurpsActor extends Actor {
 			else {
 				penalty = location.penaltyBack;
 			}
-			this.reportHitResult(target, attacker, attack, relativePosition, rof, location, penalty)
+			this.attackModifiers(target, attacker, attack, relativePosition, rof, location, penalty)
 		}
 	}
 
@@ -1264,16 +1264,7 @@ export class gurpsActor extends Actor {
 		return subLocation;
 	}
 
-	reportHitResult(target, attacker, attack, relativePosition, rof, location, locationPenalty) {
-		console.log(target);
-		console.log(attacker);
-		console.log(attack);
-		console.log(relativePosition);
-		console.log(rof);
-		console.log(location);
-		console.log(locationPenalty);
-		console.log(getProperty(target.actor.data.data.bodyType.body, location.id)); // Went to all the trouble of adding this. Might not even need it.
-
+	attackModifiers(target, attacker, attack, relativePosition, rof, location, locationPenalty) {
 		let distanceRaw = Math.round(canvas.grid.measureDistance(attacker, target));
 		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.data.gridUnits);
 		let distancePenalty = distanceHelpers.distancePenalty(distanceYards);
@@ -1281,19 +1272,26 @@ export class gurpsActor extends Actor {
 		let rofBonus = generalHelpers.rofToBonus(rof); // TODO Helper for this
 		let totalModifier;
 
-		let modModalContent =  "<div>Hit Location: " + locationPenalty + "</div>"
+		let modModalContent =  "<table>" +
+			"<tr><td>Hit Location</td><td>" + locationPenalty + "</td></tr>"
 
 		if (attack.type === "ranged"){
 			totalModifier = (distancePenalty + locationPenalty + rofBonus)
-			modModalContent += "<div>Distance (" + distanceRaw + " " + canvas.scene.data.gridUnits + "): " + distancePenalty + "</div>" +
-								"<div>RoF Bonus: " + rofBonus + "</div>";
+			modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.data.gridUnits + ")</td><td>" + distancePenalty + "</td></tr>" +
+								"<tr><td>RoF Bonus:</td><td>" + rofBonus + "</td></tr>";
 
 		}
 		else {
 			totalModifier = locationPenalty;
 		}
-		modModalContent += "<div>Total Modifier: " + totalModifier + "</div>";
-		modModalContent += "<div>Additional Modifier: <input type='number' id='mod' name='mod' value='0' style='width: 50%'/></div>"
+
+		let odds = rollHelpers.levelToOdds((+attack.level + +totalModifier))
+
+		modModalContent += "<tr><td>Total Modifier</td><td>" + totalModifier + "</td></tr>" +
+			"<tr><td>Effective Skill</td><td>" + (+attack.level + +totalModifier) + "</td></tr>" +
+			"<tr><td>Odds</td><td><span style='font-weight: bold; color: red'>" + odds.critFail + "%</span>/<span style='font-weight: bold; color: blue'>" + odds.success + "%</span>/<span style='font-weight: bold; color: green'>" + odds.critSuccess + "%</span></td></tr>" +
+			"<tr><td>Additional Modifier</td><td><input type='number' id='mod' name='mod' value='0' style='width: 50%'/></td></tr>" +
+			"</table>"
 
 		let modModal = new Dialog({
 			title: "Modifier Dialog",
@@ -1304,14 +1302,14 @@ export class gurpsActor extends Actor {
 					label: "Apply Modifier",
 					callback: (html) => {
 						let mod = html.find('#mod').val()
-						this.computeRoll(event, mod)
+						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (totalModifier + mod))
 					}
 				},
 				noMod: {
 					icon: '<i class="fas fa-times"></i>',
 					label: "No Modifier",
 					callback: () => {
-						this.computeRoll(event, 0)
+						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, totalModifier)
 					}
 				},
 				cancel: {
@@ -1327,5 +1325,19 @@ export class gurpsActor extends Actor {
 			close: html => console.log("This always is logged no matter which option is chosen")
 		})
 		modModal.render(true)
+	}
+
+	reportHitResult(target, attacker, attack, relativePosition, rof, location, totalModifiers) {
+		console.log(target);
+		console.log(attacker);
+		console.log(attack);
+		console.log(relativePosition);
+		console.log(rof);
+		console.log(location);
+		console.log(totalModifiers);
+		console.log(getProperty(target.actor.data.data.bodyType.body, location.id)); // Went to all the trouble of adding this. Might not even need it.
+
+
+		rollHelpers.skillRoll(attack.level, totalModifiers, false)
 	}
 }
