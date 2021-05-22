@@ -1289,7 +1289,7 @@ export class gurpsActor extends Actor {
 
 		modModalContent += "<tr><td>Total Modifier</td><td>" + totalModifier + "</td></tr>" +
 			"<tr><td>Effective Skill</td><td>" + (+attack.level + +totalModifier) + "</td></tr>" +
-			"<tr><td>Odds</td><td><span style='font-weight: bold; color: red'>" + odds.critFail + "%</span>/<span style='font-weight: bold; color: blue'>" + odds.success + "%</span>/<span style='font-weight: bold; color: green'>" + odds.critSuccess + "%</span></td></tr>" +
+			"<tr><td>Odds</td><td><span style='font-weight: bold; color: rgb(208, 127, 127)'>" + odds.critFail + "%</span>/<span style='font-weight: bold; color: rgb(141, 142, 222)'>" + odds.success + "%</span>/<span style='font-weight: bold; color: rgb(106, 162, 106)'>" + odds.critSuccess + "%</span></td></tr>" +
 			"<tr><td>Additional Modifier</td><td><input type='number' id='mod' name='mod' value='0' style='width: 50%'/></td></tr>" +
 			"</table>"
 
