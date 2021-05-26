@@ -2,6 +2,8 @@
  * Searches each message and adds drag and drop functionality and hides certain things from players
  */
 
+// import {rollHelpers} from "../../helpers/rollHelpers";
+
 Hooks.on("renderChatMessage", async (app, html, msg) => {
 
   // Hide chat card edit buttons from non-gms
@@ -24,7 +26,7 @@ Hooks.on("renderChatMessage", async (app, html, msg) => {
 
   html.find('.test').click(_test.bind(this));
 
-  html.find('.attemptActiveDefences').click(attemptActiveDefences.bind(this));
+  html.find('.attemptActiveDefences').click(_test.bind(this));
 })
 
 function _test(event) {
@@ -49,6 +51,8 @@ function _test(event) {
   console.log(flags);
 
   console.log(game.actors.get(flags.target))
+
+  console.log(game.actors.get(flags.target).numToWords(1))
 
   console.log(game.actors.get(flags.attacker))
 }
@@ -226,6 +230,29 @@ function rollActiveDefence(mod, selection, name, options, flags, locationIDs, ty
   console.log(flags)
   console.log(locationIDs)
   console.log(type)
+
+  let target = game.actors.get(flags.target);
+
+  console.log(target);
+
+  let totalModifier;
+  let additionalMessageContent = "";
+  let label = "";
+
+  if (mod === "" || mod === undefined){
+    totalModifier = 0;
+  }
+  else {
+    totalModifier = mod;
+  }
+
+  //let rollInfo = rollHelpers.skillRoll(selection, totalModifier, label, false);
+
+  //console.log(rollHelpers)
+
+  //let messageContent = rollInfo.content + additionalMessageContent;
+
+  //ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
 }
 
 function filterChecked(item){
