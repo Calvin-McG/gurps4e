@@ -1370,7 +1370,7 @@ export class gurpsActor extends Actor {
 		}
 		else {
 			let hits = Math.min( ((Math.floor(rollInfo.margin / Math.abs(attack.rcl))) + 1) , rof.rof ); // Get the number of hits based on how many times rcl fits into margin, plus one. Then cap with the number of shots actually fired
-			messageContent += attacker.nameplate._text + " hits " + target.nameplate._text + " " + this.numToWords(hits) + "</br>"; // Display the number of hits
+			messageContent += attacker.nameplate._text + " hits " + target.nameplate._text + " " + this.numToWords(hits) + "</br></br>"; // Display the number of hits
 
 			let locations = locationArray.slice(0, hits); // Shorten the list of locations to the number of hits.
 
@@ -1389,7 +1389,7 @@ export class gurpsActor extends Actor {
 				else {
 					locationLabel = firstLabel + " - " + secondLabel;
 				}
-				messageContent += locationLabel + "<input type='checkbox' checked class='checkbox' id='" + locations[m].id + "' value='" + locations[m].id + "' name='" + locations[m].id + "' /></br>";
+				messageContent += "<div style='display: grid; grid-template-columns: 0.1fr auto;'><input type='checkbox' checked class='checkbox' id='" + locations[m].id + "' value='" + locations[m].id + "' name='" + locations[m].id + "' /><span style='line-height: 26px;'>" + locationLabel + "</span></div>";
 			}
 
 			messageContent += "</br><input type='button' class='attemptActiveDefences' value='Attempt Active Defences'/>"
