@@ -1344,7 +1344,7 @@ export class gurpsActor extends Actor {
 		modModal.render(true)
 	}
 
-	reportHitResult(target, attacker, attack, relativePosition, rof, locations, totalModifiers) {
+	reportHitResult(target, attacker, attack, relativePosition, rof, locationArray, totalModifiers) {
 		let label = attacker.nameplate._text + " attacks " + target.nameplate._text + " with a " + attack.weapon + " " + attack.name;
 
 
@@ -1369,6 +1369,11 @@ export class gurpsActor extends Actor {
 			messageContent += attacker.nameplate._text + " misses " + target.nameplate._text + "</br>";
 		}
 		else {
+			let hits = Math.min( ((Math.floor(rollInfo.margin / Math.abs(attack.rcl))) + 1) , rof.rof ); // Get the number of hits based on how many times rcl fits into margin, plus one. Then cap with the number of shots actually fired
+			messageContent += attacker.nameplate._text + " hits " + target.nameplate._text + " " + this.numToWords(hits) + "</br>"; // Display the number of hits
+
+			let locations = locationArray.slice(0, hits); // Shorten the list of locations to the number of hits.
+
 			messageContent += target.nameplate._text + " is struck in the...</br>";
 			for (let m = 0; m < locations.length; m++){
 				let firstLocation = getProperty(target.actor.data.data.bodyType.body, (locations[m].id).split(".")[0]);
@@ -1408,5 +1413,21 @@ export class gurpsActor extends Actor {
 
 		// Everything is assembled, send the message
 		ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type, flags: flags});
+	}
+
+	numToWords(hits){ // Returns a number as a string with no leading or trailing whitespace
+		let words;
+		switch (hits) {
+			case 1:
+				words = "once";
+				break;
+			case 2:
+				words = "twice";
+				break;
+			default: // not a supported type
+				words = hits + " times";
+				break;
+		}
+		return words;
 	}
 }
