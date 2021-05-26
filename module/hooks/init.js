@@ -74,6 +74,16 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  // How to get the user who owns the actor: game.users.get((Object.keys(game.actors.getName("character name goes here").data.permission)[1])).data.name
+  // game.settings.register("gurps4e", "bretMode", {
+  //   name: "Bret Mode",
+  //   hint: "Bret Mode",
+  //   scope: "world",
+  //   config: true,
+  //   default: true,
+  //   type: Boolean
+  // });
+
   // Register option for what counts as 'rear' when it comes to hit locations where that matters
   game.settings.register("gurps4e", "literalRear", {
     name: "Literal rear hit locations",
