@@ -16,9 +16,15 @@ Misc
     - Add area of effect for attacks
     - Make armour display suck less (Pull from location dr instead of array object bullshit
 
+Macro
+    - ST Multiplier for range (With skill bonuses to ST)
+    - +4 and +7 from adds
+
 ===Jake's Requests===
 A blank inventory character sheet at some point for chests and inventories would be really helpful though
 Actually, nvm I think the Journal Dialogue with linked items might work better anyways
 Out of something I would like is some way to request a skill or attribute roll from a macro which I think should be figured out when the fuck-off attack macro gets done.
 Basically something where I can say "Roll [Lockpicking] with X Character Sheet" and so on.
 Even being able to set up "GM Roll all players perception" would be great.
+
+Request for traits, perhaps putting in something for levels in an advantage similar to how GCS does it?
