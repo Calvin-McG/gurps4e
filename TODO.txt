@@ -19,6 +19,7 @@ Misc
 Macro
     - ST Multiplier for range (With skill bonuses to ST)
     - +4 and +7 from adds
+    - Make it remember your last selection for active defences
 
 ===Jake's Requests===
 A blank inventory character sheet at some point for chests and inventories would be really helpful though
