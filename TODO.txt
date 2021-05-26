@@ -20,6 +20,8 @@ Macro
     - ST Multiplier for range (With skill bonuses to ST)
     - +4 and +7 from adds
     - Make it remember your last selection for active defences
+    - Add All Out Defence (Double) and (Increased) and figure out how to make double work. (And if double can be a pair of parries/dodges/blocks)
+        - Default selects to empty, and add a button to choose the two selections made?
 
 ===Jake's Requests===
 A blank inventory character sheet at some point for chests and inventories would be really helpful though
