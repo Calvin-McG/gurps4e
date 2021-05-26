@@ -49,9 +49,6 @@ export class gurpsActor extends Actor {
 		// Store the character's armour values for convenient use later.
 		this.storeArmour()
 
-		//Update hitlocation display thing to show selected damage types
-		// this.displayDrTypes();
-
 		//Update part specific HP
 		this.partHP();
 
