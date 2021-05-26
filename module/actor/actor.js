@@ -1369,7 +1369,13 @@ export class gurpsActor extends Actor {
 			messageContent += attacker.nameplate._text + " misses " + target.nameplate._text + "</br>";
 		}
 		else {
-			let hits = Math.min( ((Math.floor(rollInfo.margin / Math.abs(attack.rcl))) + 1) , rof.rof ); // Get the number of hits based on how many times rcl fits into margin, plus one. Then cap with the number of shots actually fired
+			let hits;
+			if (attack.type == "ranged") {
+				hits = Math.min( ((Math.floor(rollInfo.margin / Math.abs(attack.rcl))) + 1) , rof.rof ); // Get the number of hits based on how many times rcl fits into margin, plus one. Then cap with the number of shots actually fired
+			}
+			else {
+				hits = 1
+			}
 			messageContent += attacker.nameplate._text + " hits " + target.nameplate._text + " " + this.numToWords(hits) + "</br></br>"; // Display the number of hits
 
 			let locations = locationArray.slice(0, hits); // Shorten the list of locations to the number of hits.
