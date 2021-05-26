@@ -943,8 +943,8 @@ export class gurpsActor extends Actor {
 		let bodyParts = Object.keys(target.actor.data.data.bodyType.body); // Collect all the bodypart names
 		let relativePosition = this.getFacing(attacker, target); // Method returns [facing,position]
 
-		let locationSelector = "<table>"
-		locationSelector += "<tr><td>Location</td><td><select name='hitLocation' id='hitLocation'>"
+		let locationSelector = "<table>" +
+			"<tr><td>Location</td><td><select name='hitLocation' id='hitLocation'>"
 		for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
 			let part = getProperty(target.actor.data.data.bodyType.body, bodyParts[i])
 			let penalty;
@@ -1120,6 +1120,7 @@ export class gurpsActor extends Actor {
 
 	selectedHitLocation(target, attacker, attack, locationHit, relativePosition, rof) { // Select specific hit location and then generate a random complex hit location
 		let locations = [];
+		let penalty;
 		for (let i = 0; i < rof.rof; i++) { // Find a different hit location for each shot
 			let generalLocation = getProperty(target.actor.data.data.bodyType.body, locationHit); // Get specific hit location
 
@@ -1131,7 +1132,6 @@ export class gurpsActor extends Actor {
 				locations[i] = generalLocation;
 			}
 
-			let penalty;
 			if (relativePosition[1] > 0){ // If the attacker is in front of the target
 				penalty = generalLocation.penaltyFront; // The penalty comes from the general location since that's what they selected
 			}
@@ -1345,15 +1345,6 @@ export class gurpsActor extends Actor {
 	}
 
 	reportHitResult(target, attacker, attack, relativePosition, rof, locations, totalModifiers) {
-		console.log(target);
-		console.log(attacker);
-		console.log(attack);
-		console.log(relativePosition);
-		console.log(rof);
-		console.log(locations);
-		console.log(totalModifiers);
-		console.log(getProperty(target.actor.data.data.bodyType.body, location.id)); // Went to all the trouble of adding this. Might not even need it.
-
 		let label = attacker.nameplate._text + " attacks " + target.nameplate._text + " with a " + attack.weapon + " " + attack.name;
 
 
@@ -1372,8 +1363,50 @@ export class gurpsActor extends Actor {
 		let rollInfo = rollHelpers.skillRoll(attack.level, totalModifiers, label, false)
 		let messageContent = rollInfo.content;
 
+		let flags = {}
+
+		if (rollInfo.success == false) {
+			messageContent += attacker.nameplate._text + " misses " + target.nameplate._text + "</br>";
+		}
+		else {
+			messageContent += target.nameplate._text + " is struck in the...</br>";
+			for (let m = 0; m < locations.length; m++){
+				let firstLocation = getProperty(target.actor.data.data.bodyType.body, (locations[m].id).split(".")[0]);
+				let firstLabel = firstLocation ? firstLocation.label : "";
+				let secondLabel = locations[m].label
+				let locationLabel;
+				if (firstLabel === secondLabel){
+					locationLabel = firstLabel;
+				}
+				else if (firstLabel === ''){
+					locationLabel = secondLabel;
+				}
+				else {
+					locationLabel = firstLabel + " - " + secondLabel;
+				}
+				messageContent += locationLabel + "<input type='checkbox' checked class='checkbox' id='" + locations[m].id + "' value='" + locations[m].id + "' name='" + locations[m].id + "' /></br>";
+			}
+
+			messageContent += "</br><input type='button' class='attemptActiveDefences' value='Attempt Active Defences'/>"
+
+			let locationIDs = [];
+
+			for (let l = 0; l < locations.length; l++){
+				locationIDs[l] = locations[l].id;
+			}
+
+			flags = {
+				target: target.actor.data._id,
+				attacker: attacker.actor.data._id,
+				attack: attack,
+				relativePosition: relativePosition,
+				rof: rof,
+				locationIDs: locationIDs,
+				totalModifiers: totalModifiers
+			}
+		}
 
 		// Everything is assembled, send the message
-		ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type });
+		ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type, flags: flags});
 	}
 }
