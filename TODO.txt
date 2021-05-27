@@ -20,6 +20,10 @@ Macro
     - ST Multiplier for range (With skill bonuses to ST)
     - +4 and +7 from adds
     - Make it remember your last selection for active defences
+    - Stunning and knockdown (including hit location stuff)
+    - Knockback effects
+    - Death and unconsciousness checks.
+    - Shock penalties
     - AoA (Strong, etc)
     - Add All Out Defence (Double) and (Increased) and figure out how to make double work. (And if double can be a pair of parries/dodges/blocks)
         - Default selects to empty, and add a button to choose the two selections made?
