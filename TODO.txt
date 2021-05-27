@@ -17,6 +17,7 @@ Misc
 
 Combat Macro
     - Attack specific macros
+    - Injury tolerances, Damage Resistance
     - ST Multiplier for range (With skill bonuses to ST)
     - +4 and +7 from adds
     - Make it remember your last selection for active defences
