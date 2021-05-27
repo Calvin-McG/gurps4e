@@ -1855,7 +1855,7 @@ export class gurpsActor extends Actor {
 
 		let armourDivisor;
 
-		if (attack.armorDivisor === 0){
+		if (attack.armorDivisor == 0 || attack.armorDivisor == ""){
 			armourDivisor = 1;
 		}
 		else {
