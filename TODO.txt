@@ -1,12 +1,8 @@
 Layered Armour
     - Make entering armour faster
     - Slam thingy
-    - Make giant fuck-off macro for to-hit
-    - Make giant fuck-off macro for active defences
-    - Make giant fuck-off macro for damage
 
 Campaign toggles for...
-    - Rigid armour can take blunt trauma (Unofficial)
     - Edge protection (Optional)
     - Armour as Dice (Optional)
     - Bleeding (Optional)
@@ -16,7 +12,8 @@ Misc
     - Add area of effect for attacks
     - Make armour display suck less (Pull from location dr instead of array object bullshit
 
-Macro
+Comnbat Macro
+    - Attack specific macros
     - ST Multiplier for range (With skill bonuses to ST)
     - +4 and +7 from adds
     - Make it remember your last selection for active defences
