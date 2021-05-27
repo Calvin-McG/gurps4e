@@ -2010,12 +2010,12 @@ export class gurpsActor extends Actor {
 						console.log(parentLocation.hp.value)
 						woundCap = parentLocation.hp.value; // Damage is capped to however much HP is left in the limb
 						console.log("woundCap: " + woundCap)
-						parentLocation.hp.value -= (actualDamage * getProperty(location, damageType.woundModId) );
+						parentLocation.hp.value -= Math.floor(actualDamage * getProperty(location, damageType.woundModId) );
 						parentLocation.hp.value = Math.max(parentLocation.hp.value, -parentLocation.hp.max) // Value should be the higher of it's actual value and full negative HP.
 						game.actors.get(flags.target).update({ ['data.bodyType.body.' + subLocation + ".hp.value"]: parentLocation.hp.value });
 					}
 					if (location.hp){ // Apply damage to the child location if it tracks HP
-						location.hp.value -= (actualDamage * getProperty(location, damageType.woundModId) );
+						location.hp.value -= Math.floor(actualDamage * getProperty(location, damageType.woundModId) );
 						location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
 						game.actors.get(flags.target).update({ ['data.bodyType.body.' + location.id + ".hp.value"]: location.hp.value });
 					}
@@ -2027,7 +2027,7 @@ export class gurpsActor extends Actor {
 						console.log(location.hp.value)
 						woundCap = location.hp.value; // Damage is capped to however much HP is left in the limb
 						console.log("woundCap: " + woundCap)
-						location.hp.value -= (actualDamage * getProperty(location, damageType.woundModId) );
+						location.hp.value -= Math.floor(actualDamage * getProperty(location, damageType.woundModId) );
 						location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
 					}
 				}
