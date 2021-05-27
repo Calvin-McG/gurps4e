@@ -317,7 +317,7 @@
 							"st 		dx 			iq 			ht"
 							"lst 		speed 		per			hts"
 							"sst 		move 		will		htk"
-							"z2			dodge 		fr			z1"
+							"kb			dodge 		fr			z1"
 							"z2			z3			senses		z1";
 	grid-template-columns: repeat(4,auto);
 	grid-gap: 5px;
@@ -467,6 +467,10 @@ attribute-senses {
 
 .damage-dice-adds {
 	font-size: xxx-large;
+}
+
+.damage-dice-small-adds {
+	font-size: xx-large;
 }
 
 .counter {
@@ -631,6 +635,13 @@ attribute-senses {
 
 #sst {
 	grid-area: sst;
+	display: grid;
+	align-self: center;
+	background-color: rgba(255, 0, 0, 0.05);
+}
+
+#kb {
+	grid-area: kb;
 	display: grid;
 	align-self: center;
 	background-color: rgba(255, 0, 0, 0.05);
