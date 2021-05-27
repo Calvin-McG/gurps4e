@@ -143,6 +143,49 @@ export class gurpsActor extends Actor {
 	recalcSenses() {
 		let per = this.data.data.primaryAttributes.perception.value;
 
+		if (typeof this.data.data.senses == 'undefined'){ // If senses do not yet exist, create a basic object for them
+			let senses = {
+				vis: {
+					id: "vis",
+					abbr: "Vision",
+					value: 10,
+					mod: 0
+				},
+				hear: {
+					id: "hear",
+					abbr: "Hearing",
+					value: 10,
+					mod: 0
+				},
+				smell: {
+					id: "smell",
+					abbr: "Smell & Taste",
+					value: 10,
+					mod: 0
+				},
+				touch: {
+					id: "touch",
+					abbr: "Touch",
+					value: 10,
+					mod: 0
+				},
+				extra1: {
+					id: "extra1",
+					abbr: "",
+					value: 10,
+					mod: 0
+				},
+				extra2: {
+					id: "extra2",
+					abbr: "",
+					value: 10,
+					mod: 0
+				}
+			}
+
+			this.data.data.senses = senses;
+		}
+
 		this.data.data.senses.vis.value    = per + this.data.data.senses.vis.mod;
 		this.data.data.senses.hear.value   = per + this.data.data.senses.hear.mod;
 		this.data.data.senses.smell.value  = per + this.data.data.senses.smell.mod;
