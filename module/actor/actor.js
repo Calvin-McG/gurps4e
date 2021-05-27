@@ -2048,13 +2048,13 @@ export class gurpsActor extends Actor {
 
 				// Multiply final damage by the locational wound modifier and add it to the running total
 				if (damageType.type == "fat"){
-					totalFatInj += (actualDamage * location.personalWoundMultFat);
+					totalFatInj += Math.floor(actualDamage * location.personalWoundMultFat);
 				}
 				else {
-					totalInjury += (actualDamage * getProperty(location, damageType.woundModId) );
+					totalInjury += Math.floor(actualDamage * getProperty(location, damageType.woundModId) );
 				}
 
-				html += "<div>The location takes " + (actualDamage * getProperty(location, damageType.woundModId) ) + " injury</div>";
+				html += "<div>The location takes " + Math.floor(actualDamage * getProperty(location, damageType.woundModId) ) + " injury</div>";
 			}
 			else if (actualDamage <= 0) { // No damage has penetrated DR
 				console.log("no damage has penetrated")
