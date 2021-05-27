@@ -1987,6 +1987,7 @@ export class gurpsActor extends Actor {
 			console.log(actualDamage);
 
 			if (actualDamage > 0) { // Damage has penetrated DR.
+				actualDamage = Math.floor(actualDamage);
 				html += "<label>" + actualDamage + " damage gets through</label>";
 
 				// If the attack is capable of knockback, do knockback
