@@ -138,6 +138,23 @@ export class gurpsActor extends Actor {
 				this.data.data.enhanced.block = 240;
 			}
 		}
+
+		// Check for flags
+		if (typeof this.data.data.flag == 'undefined') {
+			let flag = {
+				combatReflexes: false,
+				showSenses: false
+			}
+			this.data.data.flag = flag;
+		}
+		else {
+			if (typeof this.data.data.flag.combatReflexes == 'undefined' || this.data.data.flag.combatReflexes === "") {
+				this.data.data.flag.combatReflexes = false;
+			}
+			if (typeof this.data.data.flag.showSenses == 'undefined' || this.data.data.flag.showSenses === "") {
+				this.data.data.flag.showSenses = false;
+			}
+		}
 	}
 
 	recalcAtrValues(){
