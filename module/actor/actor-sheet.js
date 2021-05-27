@@ -93,7 +93,7 @@ export class gurpsActorSheet extends ActorSheet {
 
 		//Body parts that apply to all body types
 		bodyObj.face = this.addFace(actorData.reserves.hp.max, "face");
-		bodyObj.neck = this.addNeck(actorData.reserves.hp.max, "neck");
+		bodyObj.neck = this.addNeck("neck");
 
 		//The following body parts are specific to said body types
 		if (bodyType == "humanoid"){
@@ -719,7 +719,7 @@ export class gurpsActorSheet extends ActorSheet {
 		}
 
 		let jointHp = Math.ceil(hp/3);
-		if (jointHp <= hp/2){//Make sure that part hp is greater than one third HP
+		if (jointHp <= hp/3){//Make sure that part hp is greater than one third HP
 			jointHp += 1;
 		}
 
@@ -1005,7 +1005,7 @@ export class gurpsActorSheet extends ActorSheet {
 		}
 
 		let jointHp = Math.ceil(hp/3);
-		if (jointHp <= hp/2){//Make sure that part hp is greater than one third HP
+		if (jointHp <= hp/3){//Make sure that part hp is greater than one third HP
 			jointHp += 1;
 		}
 
