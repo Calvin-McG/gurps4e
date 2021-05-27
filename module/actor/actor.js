@@ -1901,17 +1901,20 @@ export class gurpsActor extends Actor {
 
 				let woundCap;
 				if (location.id.toLowerCase().includes("sublocation")){ // This is a sub location, check the parent for an HP value
-					let parentLocation = getProperty(target.data.data.bodyType.body, location.id.split(".")[0]);
+					let subLocation = location.id.split(".")[0]
+					let parentLocation = getProperty(target.data.data.bodyType.body, subLocation);
 					if (parentLocation.hp){ // Apply damage to the parent location if it tracks HP
 						console.log(parentLocation.hp.value)
 						woundCap = parentLocation.hp.value; // Damage is capped to however much HP is left in the limb
 						console.log("woundCap: " + woundCap)
 						parentLocation.hp.value -= (actualDamage * getProperty(location, damageType.woundModId) );
 						parentLocation.hp.value = Math.max(parentLocation.hp.value, -parentLocation.hp.max) // Value should be the higher of it's actual value and full negative HP.
+						game.actors.get(flags.target).update({ ['data.bodyType.body.' + subLocation + ".hp.value"]: parentLocation.hp.value });
 					}
 					if (location.hp){ // Apply damage to the child location if it tracks HP
 						location.hp.value -= (actualDamage * getProperty(location, damageType.woundModId) );
 						location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
+						game.actors.get(flags.target).update({ ['data.bodyType.body.' + location.id + ".hp.value"]: location.hp.value });
 					}
 
 					console.log(parentLocation)
@@ -1959,7 +1962,51 @@ export class gurpsActor extends Actor {
 					html += "<label>The armour stops all damage but the attack does " + bluntTrauma + " blunt trauma.</label>";
 
 
+					let woundCap;
+					if (location.id.toLowerCase().includes("sublocation")){ // This is a sub location, check the parent for an HP value
+						let subLocation = location.id.split(".")[0]
+						let parentLocation = getProperty(target.data.data.bodyType.body, subLocation);
+						if (parentLocation.hp){ // Apply damage to the parent location if it tracks HP
+							console.log(parentLocation.hp.value)
+							woundCap = parentLocation.hp.value; // Damage is capped to however much HP is left in the limb
+							console.log("woundCap: " + woundCap)
+							parentLocation.hp.value -= bluntInjury;
+							parentLocation.hp.value = Math.max(parentLocation.hp.value, -parentLocation.hp.max) // Value should be the higher of it's actual value and full negative HP.
+							game.actors.get(flags.target).update({ ['data.bodyType.body.' + subLocation + ".hp.value"]: parentLocation.hp.value });
+						}
+						if (location.hp){ // Apply damage to the child location if it tracks HP
+							location.hp.value -= bluntInjury;
+							location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
+							game.actors.get(flags.target).update({ ['data.bodyType.body.' + location.id + ".hp.value"]: location.hp.value });
+						}
 
+						console.log(parentLocation)
+					}
+					else {
+						if (location.hp){ // Apply damage to the location if it tracks HP
+							console.log(location.hp.value)
+							woundCap = location.hp.value; // Damage is capped to however much HP is left in the limb
+							console.log("woundCap: " + woundCap)
+							location.hp.value -= bluntInjury;
+							location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
+						}
+					}
+
+					if (typeof woundCap !== "undefined" && !( location.id.toLowerCase().includes("nose") || // Apply the wound cap, but only for locations that actually have one
+						location.id.toLowerCase().includes("eye") ||
+						location.id.toLowerCase().includes("spine") ||
+						location.id.toLowerCase().includes("pelvis") ) ){
+
+						if (woundCap < 0){
+							woundCap = 0;
+						}
+
+						bluntInjury = Math.min(woundCap, bluntInjury);
+						console.log(woundCap)
+						console.log(bluntInjury)
+					}
+
+					totalInjury += bluntInjury;
 
 
 					html += "<div>The location takes " + bluntInjury + " injury</div>";
@@ -1984,8 +2031,14 @@ export class gurpsActor extends Actor {
 
 		// TODO - Apply the actual damage as an actor update
 
-		console.log(totalInjury)
-		console.log(totalFatInj)
+		if (totalInjury > 0){
+			let newHP = target.data.data.reserves.hp.value - totalInjury;
+			game.actors.get(flags.target).update({ ['data.reserves.hp.value']: newHP });
+		}
+		if (totalFatInj > 0){
+			let newFP = target.data.data.reserves.hp.value - totalFatInj;
+			game.actors.get(flags.target).update({ ['data.reserves.fp.value']: newFP });
+		}
 
 		ChatMessage.create({ content: html, user: game.user._id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
 	}
