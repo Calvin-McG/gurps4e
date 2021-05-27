@@ -106,6 +106,15 @@ export class gurpsActor extends Actor {
 		let sst = attributeHelpers.calcStrikingSt(st, this.data.data.primaryAttributes.striking, smDiscount);
 		this.data.data.primaryAttributes.striking.value = sst;
 
+		//Knockback
+		let kb = {
+			id: "kb",
+			abbr: "Knockback",
+			value: st + ((typeof this.data.data.primaryAttributes.knockback === 'undefined') ? 0 : this.data.data.primaryAttributes.knockback.mod) - 2,
+			mod: (typeof this.data.data.primaryAttributes.knockback === 'undefined') ? 0 : this.data.data.primaryAttributes.knockback.mod
+		}
+		this.data.data.primaryAttributes.knockback = kb;
+
 		//Swing and Thrust
 		this.data.data.baseDamage.thrust = attributeHelpers.strikingStrengthToThrust(sst);
 		this.data.data.baseDamage.swing = attributeHelpers.strikingStrengthToSwing(sst);
