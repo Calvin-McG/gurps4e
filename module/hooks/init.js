@@ -64,7 +64,7 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  // Register Edge Protection option
+  // Register Harsh Thigh Gap option
   game.settings.register("gurps4e", "harshThighGap", {
     name: "Thigh gap over artery - WIP",
     hint: "The 'Inside Thigh' gap lets cut, imp, pi, and tbb hit the artery instead of the thigh.",

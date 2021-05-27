@@ -1606,13 +1606,6 @@ export class gurpsActor extends Actor {
 	}
 
 	rollActiveDefence(mod, selection, name, options, flags, locationIDs, type) {
-		console.log(mod)
-		console.log(selection)
-		console.log(name)
-		console.log(options)
-		console.log(flags)
-		console.log(locationIDs)
-		console.log(type)
 
 		let target = game.actors.get(flags.target);
 
