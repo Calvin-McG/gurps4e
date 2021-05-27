@@ -132,6 +132,34 @@ export class rollHelpers {
         return response;
     }
 
+    static dieToSmallIcon(die){
+        let response = "";
+        switch (die) {
+            case 1:
+                response = "<label class='fa fa-dice-one   fa-2x'></label>";
+                break;
+            case 2:
+                response = "<label class='fa fa-dice-two   fa-2x'></label>";
+                break;
+            case 3:
+                response = "<label class='fa fa-dice-three fa-2x'></label>";
+                break;
+            case 4:
+                response = "<label class='fa fa-dice-four  fa-2x'></label>";
+                break;
+            case 5:
+                response = "<label class='fa fa-dice-five  fa-2x'></label>";
+                break;
+            case 6:
+                response = "<label class='fa fa-dice-six   fa-2x'></label>";
+                break;
+            default:
+                break;
+        }
+
+        return response;
+    }
+
     static levelToOdds(level){ // Provide odds for success, crit fail, crit success
         let success;
         let critSuccess;
