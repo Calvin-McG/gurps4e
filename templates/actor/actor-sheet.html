@@ -186,8 +186,10 @@
 										data-dtype="Number" disabled />
 									<input type="text" name="data.primaryAttributes.{{id}}.mod" class="atrMod" value="{{attr.mod}}"
 												 data-dtype="Number" />
+								{{#if attr.points includeZero=true}}
 									<input type="text" name="data.primaryAttributes.{{id}}.points" class="atrPoints" value="{{attr.points}}"
 												 data-dtype="Number" />
+								{{/if}}
 								{{#unless (or (eq attr.abbr "Speed") (eq attr.abbr "Move") )}}
 								<label for="data.primaryAttributes.{{id}}.value" class="fa fa-dice-six rollable"
 											 data-level="{{attr.value}}" data-label="Makes a &lt;b&gt;{{attr.abbr}}&lt;/b&gt; check."

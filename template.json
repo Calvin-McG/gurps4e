@@ -257,6 +257,12 @@
             "mod": 0,
             "points": 0
           },
+          "knockback": {
+            "id": "kb",
+            "abbr": "Knockback",
+            "value": 10,
+            "mod": 0
+          },
           "death": {
             "id": "htk",
             "abbr": "Death",
