@@ -162,10 +162,10 @@ export class gurpsActor extends Actor {
         for (let i = 0; i < this.data.items.length; i++){
             if (this.data.items[i].type === "Trait"){
                 traitPoints = traitPoints += this.data.items[i].data.points;
-				advantagePoints = this.data.items[i].data.category.toLowerCase() == "advantage" ? advantagePoints += this.data.items[i].data.points : advantagePoints;
-                disadvantagePoints = this.data.items[i].data.category.toLowerCase() == "disadvantage" ? disadvantagePoints += this.data.items[i].data.points : disadvantagePoints;
-				quirkPoints = this.data.items[i].data.category.toLowerCase() == "quirk" ? quirkPoints += this.data.items[i].data.points : quirkPoints;
-				perkPoints = this.data.items[i].data.category.toLowerCase() == "perk" ? perkPoints += this.data.items[i].data.points : perkPoints;
+				advantagePoints = this.data.items[i].data.category.toLowerCase() === "advantage" ? advantagePoints += this.data.items[i].data.points : advantagePoints;
+                disadvantagePoints = this.data.items[i].data.category.toLowerCase() === "disadvantage" ? disadvantagePoints += this.data.items[i].data.points : disadvantagePoints;
+				quirkPoints = this.data.items[i].data.category.toLowerCase() === "quirk" ? quirkPoints += this.data.items[i].data.points : quirkPoints;
+				perkPoints = this.data.items[i].data.category.toLowerCase() === "perk" ? perkPoints += this.data.items[i].data.points : perkPoints;
             }
         }
 		this.data.data.points.traits = traitPoints;
@@ -1343,7 +1343,7 @@ export class gurpsActor extends Actor {
 					}
 				}
 			},
-			default: "noMod",
+			default: "mod",
 			render: html => console.log("Register interactivity in the rendered dialog"),
 			close: html => console.log("This always is logged no matter which option is chosen")
 		})
@@ -1618,8 +1618,7 @@ export class gurpsActor extends Actor {
 
 		let target = game.actors.get(flags.target);
 
-		console.log(target);
-
+		// TODO - Get modifiers for posture, encumbrance
 		let totalModifier;
 		let additionalMessageContent = "";
 		let label = "";
@@ -1631,12 +1630,462 @@ export class gurpsActor extends Actor {
 			totalModifier = mod;
 		}
 
+		label += target.data.name + " attempts a ";
+
+		if (options.feverishDefence) {
+			// TODO - Subtract 1 FP from the actor
+			label += "feverish ";
+			totalModifier += 2;
+		}
+		if (options.crossParry && type === "parry") {
+			label += "cross ";
+			totalModifier += 2;
+		}
+
+		label += type + " ";
+
+		// Block for retreat options
+		if (options.drop && type === "dodge") {
+			// TODO - Add thing that sets the unit prone
+			label += "and drop ";
+			totalModifier += 3;
+		}
+		else if (options.retreat) {
+			label += "and retreat ";
+			if (type === "parry" && flags.attack.parryType.toUpperCase() !== "F"){ // If it's a parry and is fencing
+				totalModifier += 3; // Grant the fencing bonus
+			}
+			else {
+				totalModifier += 1; // Otherwise grant the default.
+			}
+		}
+		else if (options.sideslip) {
+			label += "and side slip ";
+			if (type === "parry" && flags.attack.parryType.toUpperCase() !== "F"){ // If it's a parry and is fencing
+				totalModifier += 2; // Grant the fencing bonus
+			}
+			else {
+				totalModifier += 0; // Otherwise grant the default.
+			}
+		}
+		else if (options.slip) {
+			label += "and slip ";
+			if (type === "parry" && flags.attack.parryType.toUpperCase() !== "F"){ // If it's a parry and is fencing
+				totalModifier += 1; // Grant the fencing bonus
+			}
+			else {
+				totalModifier += -1; // Otherwise grant the default.
+			}
+		}
+
+		if (type.toLowerCase() !== "dodge"){
+			label += " with their " + name;
+		}
+
 		let rollInfo = rollHelpers.skillRoll(selection, totalModifier, label, false);
 
-		console.log(rollHelpers)
+		let attacksStopped;
 
-		let messageContent = rollInfo.content + additionalMessageContent;
+		if (rollInfo.margin >= 0) {
+			attacksStopped = Math.min(rollInfo.margin + 1, locationIDs.length);
+		}
+		else {
+			attacksStopped = 0;
+		}
 
-		ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
+		console.log(locationIDs.length)
+
+		let locationsHit;
+		let attacksThrough;
+
+		if (attacksStopped >= locationIDs.length){ // Stopped as many or more attacks as there actually are
+			additionalMessageContent += target.data.name + " stopped all of the attacks.";
+			let messageContent = rollInfo.content + additionalMessageContent;
+
+			// Send the message, no further rolls necessary.
+			ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
+		}
+		else if (attacksStopped <= 0){ // Stopped zero or fewer attacks
+			additionalMessageContent += target.data.name + " does not stop any attacks.</br></br>";
+			additionalMessageContent += locationIDs.length + " attack" + (locationIDs.length > 1 ? "s " : " ") + "get" + (locationIDs.length === 1 ? "s" : "") + " through.";
+			let messageContent = rollInfo.content + additionalMessageContent;
+
+			// Send the message then prepare for damage rolls
+			ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
+
+			locationsHit = locationIDs; // All attacks get through
+			this.applyDamage(flags, locationsHit);
+		}
+		else if (attacksStopped === 1){ // Stopped one attack, but not all
+			attacksThrough = locationIDs.length - 1;
+			additionalMessageContent += target.data.name + " stopped one attack.</br></br>";
+			additionalMessageContent += attacksThrough + " attack" + (attacksThrough > 1 ? "s " : " ") + "get" + (attacksThrough === 1 ? "s" : "") + " through.";
+			let messageContent = rollInfo.content + additionalMessageContent;
+
+			// Send the message then prepare for damage rolls
+			ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
+
+			locationsHit = locationIDs.slice(0, locationIDs.length - 1); // Remove the last hit in the array
+			this.applyDamage(flags, locationsHit);
+		}
+		else if (attacksStopped > 1){ // Stopped more than one attack, but not all
+			attacksThrough = locationIDs.length - attacksStopped;
+			additionalMessageContent += target.data.name + " stopped " + attacksStopped + " attacks.</br></br>";
+			additionalMessageContent += attacksThrough + " attack" + (attacksThrough > 1 ? "s " : " ") + "get" + (attacksThrough === 1 ? "s" : "") + " through.";
+			let messageContent = rollInfo.content + additionalMessageContent;
+
+			// Send the message then prepare for damage rolls
+			ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
+
+			locationsHit = locationIDs.slice(0, locationIDs.length - attacksStopped); // Remove the last hits in the array
+			this.applyDamage(flags, locationsHit);
+		}
+	}
+
+	applyDamage(flags, locationsHit) {
+		let target = game.actors.get(flags.target);
+		let attacker = game.actors.get(flags.attacker);
+		let attack = flags.attack;
+		let targetST = target.data.data.primaryAttributes.knockback.value;
+		let totalKnockback = 0;
+		let totalInjury = 0;
+		let totalFatInj = 0;
+
+		let armourDivisor;
+
+		if (attack.armorDivisor === 0){
+			armourDivisor = 1;
+		}
+		else {
+			armourDivisor = attack.armorDivisor;
+		}
+
+		let damageType = this.extractDamageType(attack);
+
+		console.log(flags)
+		console.log(attack)
+		console.log(target);
+
+		let html = "<div>Damage for " + attacker.data.name + "'s " + attack.weapon + " " + attack.name + " against " + target.data.name + "</div>";
+		for (let i = 0; i < locationsHit.length; i++){
+			let bluntTrauma = 0;
+			let location = getProperty(target.data.data.bodyType.body, locationsHit[i])
+
+			// If the attack is not explosive, roll damage for the attack
+			let damageRoll = new Roll(attack.damage);
+			damageRoll.roll();
+
+			let adds = 0;
+
+			// Build the location label
+			let firstLocation = getProperty(target.data.data.bodyType.body, locationsHit[i].split(".")[0]);
+			let secondLocation = getProperty(target.data.data.bodyType.body, locationsHit[i]);
+			let firstLabel = firstLocation ? firstLocation.label : "";
+			let secondLabel = secondLocation? secondLocation.label: "";
+			let locationLabel;
+			if (firstLabel === secondLabel){
+				locationLabel = firstLabel;
+			}
+			else if (firstLabel === ''){
+				locationLabel = secondLabel;
+			}
+			else {
+				locationLabel = firstLabel + " - " + secondLabel;
+			}
+
+			// Display dice and damage total for this location.
+			html += "<hr>";
+			html += "<div>" + locationLabel + "</div>";
+			html += "<div>";
+			if(damageRoll.terms[0].results){
+				if(damageRoll.terms[0].results.length){//Take the results of each roll and turn it into a die icon.
+					for (let k = 0; k < damageRoll.terms[0].results.length; k++){
+						if (damageType.explosive){ // Explosives do max damage on contact
+							html += "<label class='fa fa-dice-six fa-2x' style='color: #d24502'></label>"
+						}
+						else {
+							html += rollHelpers.dieToSmallIcon(damageRoll.terms[0].results[k].result)
+						}
+					}
+				}
+				adds = (+damageRoll._total - +damageRoll.results[0]);
+			}
+			else {
+				adds = +damageRoll._total;
+			}
+
+			if (adds > 0){//Adds are positive
+				html += "<label class='damage-dice-small-adds'>+</label><label class='damage-dice-small-adds'>" + adds + "</label>"
+			}
+			else if (adds < 0) {//Adds are negative
+				html += "<label class='damage-dice-small-adds'>-</label><label class='damage-dice-small-adds'>" + Math.abs(adds) + "</label>"
+			}
+
+			let totalDamage;
+
+			if (damageType.explosive) {
+				totalDamage = (6 * (damageRoll.terms[0].results.length)) + adds;
+			}
+			else {
+				totalDamage = damageRoll.total
+			}
+
+			if (totalDamage <= 0) { // If damage is 0 or less, account for minimum damage for each type
+				if (damageType.type === "cr") { // Minimum crushing damage is 0
+					totalDamage = 0;
+				}
+				else{ // Minimum damage for any other type is 1
+					totalDamage = 1;
+				}
+			}
+
+			html += "<label class='damage-dice-small-adds'> = " + totalDamage + "</label>";
+
+			if (armourDivisor != 1){
+				html += "<label class='damage-dice-small-adds'> (" + armourDivisor + ")</label>";
+			}
+
+			html += "</div>";
+
+			// Store actualDamage so we can reference totalDamage later for knockback, etc.
+			let actualDamage = totalDamage;
+
+			let drLayers = Object.keys(location.dr)
+
+			// Loop through the armour and take DR away from the damage dealt
+			for (let d = 0; d < drLayers.length; d++){
+				let dr = getProperty(location.dr[d], damageType.type)
+				let effectiveDR = Math.floor(dr / armourDivisor); // Get the effective DR after armour divisor
+
+				let drStops = Math.min(actualDamage, effectiveDR); // Get the actual amount of damage stopped by the armour
+
+				// Subtract the dr from the running damage total.
+				actualDamage -= dr;
+
+				// Check for blunt trauma
+				if (damageType.bluntTraumaCapable && (location.dr.flexible || game.settings.get("gurps4e", "rigidBluntTrauma"))){ // The attack needs to be capable of blunt trauma and either the armour needs to be flexible or the setting to allow blunt trauma to rigid armour needs to be on.
+					bluntTrauma += (drStops / damageType.bluntReq);
+				}
+				else if (!(location.dr.flexible || game.settings.get("gurps4e", "rigidBluntTrauma"))){ // The armour is not flexible, and the setting for rigid blunt trauma is off.
+					bluntTrauma = 0; // The accumulating blunt trauma has hit a rigid layer and is reduced to zero.
+				}
+			}
+
+			// Add a check for targets with no DR being hit with an attack that has an armour multiplier
+			if (actualDamage == totalDamage && armourDivisor < 1){
+				console.log(actualDamage)
+				console.log(1/armourDivisor)
+				actualDamage -= (1/armourDivisor);
+
+				if (bluntTrauma == 0){ // Kinda hacky, but works for now. TODO - Make less suck
+					bluntTrauma = totalDamage / damageType.bluntReq;
+				}
+			}
+
+			console.log(actualDamage);
+
+			if (actualDamage > 0) { // Damage has penetrated DR.
+				html += "<label>" + actualDamage + " damage gets through</label>";
+
+				// If the attack is capable of knockback, do knockback
+				if (damageType.type === "cr") { // Only cr attacks do knockback while penetrating DR
+					let knockback = totalDamage / targetST
+					if (damageType.doubleKnockback){
+						knockback = knockback * 2;
+					}
+					totalKnockback += knockback;
+				}
+
+				// TODO - Apply damage to location and actor
+				console.log(location)
+
+				let woundCap;
+				if (location.id.toLowerCase().includes("sublocation")){ // This is a sub location, check the parent for an HP value
+					let parentLocation = getProperty(target.data.data.bodyType.body, location.id.split(".")[0]);
+					if (parentLocation.hp){ // Apply damage to the parent location if it tracks HP
+						console.log(parentLocation.hp.value)
+						woundCap = parentLocation.hp.value; // Damage is capped to however much HP is left in the limb
+						console.log("woundCap: " + woundCap)
+						parentLocation.hp.value -= (actualDamage * getProperty(location, damageType.woundModId) );
+						parentLocation.hp.value = Math.max(parentLocation.hp.value, -parentLocation.hp.max) // Value should be the higher of it's actual value and full negative HP.
+					}
+					if (location.hp){ // Apply damage to the child location if it tracks HP
+						location.hp.value -= (actualDamage * getProperty(location, damageType.woundModId) );
+						location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
+					}
+
+					console.log(parentLocation)
+				}
+				else {
+					if (location.hp){ // Apply damage to the location if it tracks HP
+						console.log(location.hp.value)
+						woundCap = location.hp.value; // Damage is capped to however much HP is left in the limb
+						console.log("woundCap: " + woundCap)
+						location.hp.value -= (actualDamage * getProperty(location, damageType.woundModId) );
+						location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
+					}
+				}
+
+				if (typeof woundCap !== "undefined" && !( location.id.toLowerCase().includes("nose") || // Apply the wound cap, but only for locations that actually have one
+					location.id.toLowerCase().includes("eye") ||
+					location.id.toLowerCase().includes("spine") ||
+					location.id.toLowerCase().includes("pelvis") ) ){
+
+					if (woundCap < 0){
+						woundCap = 0;
+					}
+
+					actualDamage = Math.min(woundCap, actualDamage);
+					console.log(woundCap)
+					console.log(actualDamage)
+				}
+
+				// Multiply final damage by the locational wound modifier and add it to the running total
+				if (damageType.type == "fat"){
+					totalFatInj += (actualDamage * location.personalWoundMultFat);
+				}
+				else {
+					totalInjury += (actualDamage * getProperty(location, damageType.woundModId) );
+				}
+
+				html += "<div>The location takes " + (actualDamage * getProperty(location, damageType.woundModId) ) + " injury</div>";
+			}
+			else if (actualDamage <= 0) { // No damage has penetrated DR
+				console.log("no damage has penetrated")
+				console.log(bluntTrauma)
+				bluntTrauma = Math.floor(bluntTrauma); // Round down blunt trama in preparation for actually applying the damage.
+				if (bluntTrauma > 0) {
+					let bluntInjury = bluntTrauma;
+					html += "<label>The armour stops all damage but the attack does " + bluntTrauma + " blunt trauma.</label>";
+
+
+
+
+
+					html += "<div>The location takes " + bluntInjury + " injury</div>";
+					console.log(location)
+				}
+
+				// If the attack is capable of knockback, do knockback
+				if (damageType.type === "cut" || damageType.type === "cr") { // Cutting can also do knockback if it fails to penetrate
+					let knockback = totalDamage / targetST
+					if (damageType.doubleKnockback){
+						knockback = knockback * 2;
+					}
+					totalKnockback += knockback;
+				}
+			}
+		}
+
+		if (totalKnockback > 0) { // Display total knockback
+			totalKnockback = Math.floor(totalKnockback);
+			html += "<hr><div>" + target.data.name + " is knocked back " + totalKnockback + " yards and must roll at -" + (totalKnockback - 1) + " to avoid falling down.</div>";
+		}
+
+		// TODO - Apply the actual damage as an actor update
+
+		console.log(totalInjury)
+		console.log(totalFatInj)
+
+		ChatMessage.create({ content: html, user: game.user._id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+	}
+
+	extractDamageType(attack) {
+		let damageType = {
+			type: "",
+			explosive: false,
+			doubleKnockback: false,
+			noWounding: false,
+			doubleBluntTrauma: false,
+			bluntTraumaCapable: false,
+			bluntReq: 20,
+			woundModId: "",
+		}
+
+		// Find the damage type. Start by doing pi in an order that will not cause it to find pi when really it's pi++
+		if (attack.damageType.toLowerCase().includes("pi-")) {
+			damageType.type = "pi-"
+			damageType.bluntTraumaCapable = true;
+			damageType.bluntReq = 10;
+			damageType.woundModId = "personalWoundMultPim";
+		}
+		else if (attack.damageType.toLowerCase().includes("pi++")) {
+			damageType.type = "pi++"
+			damageType.bluntTraumaCapable = true;
+			damageType.bluntReq = 10;
+			damageType.woundModId = "personalWoundMultPipp";
+		}
+		else if (attack.damageType.toLowerCase().includes("pi+")) {
+			damageType.type = "pi+"
+			damageType.bluntTraumaCapable = true;
+			damageType.bluntReq = 10;
+			damageType.woundModId = "personalWoundMultPip";
+		}
+		else if (attack.damageType.toLowerCase().includes("pi")) {
+			damageType.type = "pi"
+			damageType.bluntTraumaCapable = true;
+			damageType.bluntReq = 10;
+			damageType.woundModId = "personalWoundMultPi";
+		}
+		else if (attack.damageType.toLowerCase().includes("imp")) {
+			damageType.type = "imp"
+			damageType.bluntTraumaCapable = true;
+			damageType.bluntReq = 10;
+			damageType.woundModId = "personalWoundMultImp";
+		}
+		else if (attack.damageType.toLowerCase().includes("burn")) {
+			damageType.type = "burn"
+			damageType.woundModId = "personalWoundMultBurn";
+		}
+		else if (attack.damageType.toLowerCase().includes("cor")) {
+			damageType.type = "cor"
+			damageType.woundModId = "personalWoundMultCor";
+		}
+		else if (attack.damageType.toLowerCase().includes("cr")) {
+			damageType.type = "cr"
+			damageType.bluntTraumaCapable = true;
+			damageType.bluntReq = 5;
+			damageType.woundModId = "personalWoundMultCr";
+		}
+		else if (attack.damageType.toLowerCase().includes("cut")) {
+			damageType.type = "cut"
+			damageType.bluntTraumaCapable = true;
+			damageType.bluntReq = 10;
+			damageType.woundModId = "personalWoundMultCut";
+		}
+		else if (attack.damageType.toLowerCase().includes("fat")) {
+			damageType.type = "fat"
+			damageType.woundModId = "personalWoundMultFat";
+		}
+		else if (attack.damageType.toLowerCase().includes("tox")) {
+			damageType.type = "tox"
+			damageType.woundModId = "personalWoundMultTox";
+		}
+		else { // Default to crushing
+			damageType.type = "cr"
+			damageType.bluntTraumaCapable = true;
+			damageType.woundModId = "personalWoundMultCr";
+		}
+
+		// Special flags
+		if (attack.damageType.toLowerCase().includes("ex")) {
+			damageType.explosive = true;
+		}
+		if (attack.damageType.toLowerCase().includes("dbk")) {
+			damageType.doubleKnockback = true;
+		}
+		if (attack.damageType.toLowerCase().includes("dbt")) {
+			damageType.doubleBluntTrauma = true;
+			damageType.bluntTraumaCapable = true;
+		}
+		if (attack.damageType.toLowerCase().includes("nw")) {
+			damageType.noWounding = true;
+		}
+
+		if (damageType.doubleBluntTrauma){
+			damageType.bluntReq = damageType.bluntReq / 2;
+		}
+
+		return damageType;
 	}
 }

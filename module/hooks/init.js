@@ -46,7 +46,7 @@ Hooks.once("init", () => {
 
   // Register Rigid armour can take blunt trauma option
   game.settings.register("gurps4e", "rigidBluntTrauma", {
-    name: "Extended Blunt Trauma - WIP",
+    name: "Extended Blunt Trauma",
     hint: "Allows rigid armour to take blunt trauma",
     scope: "world",
     config: true,
