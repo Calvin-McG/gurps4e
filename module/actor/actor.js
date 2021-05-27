@@ -2138,11 +2138,11 @@ export class gurpsActor extends Actor {
 		// TODO - Apply the actual damage as an actor update
 
 		if (totalInjury > 0){
-			let newHP = target.data.data.reserves.hp.value - totalInjury;
+			let newHP = target.data.data.reserves.hp.value - Math.floor(totalInjury);
 			game.actors.get(flags.target).update({ ['data.reserves.hp.value']: newHP });
 		}
 		if (totalFatInj > 0){
-			let newFP = target.data.data.reserves.hp.value - totalFatInj;
+			let newFP = target.data.data.reserves.hp.value - Math.floor(totalFatInj);
 			game.actors.get(flags.target).update({ ['data.reserves.fp.value']: newFP });
 		}
 
