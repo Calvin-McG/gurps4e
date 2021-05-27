@@ -2114,6 +2114,9 @@ export class gurpsActor extends Actor {
 					html += "<div>The location takes " + bluntInjury + " injury</div>";
 					console.log(location)
 				}
+				else {
+					html += "<label>The armour stops all damage and the attack does no blunt trauma.</label>";
+				}
 
 				// If the attack is capable of knockback, do knockback
 				if (damageType.type === "cut" || damageType.type === "cr") { // Cutting can also do knockback if it fails to penetrate
