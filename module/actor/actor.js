@@ -100,6 +100,7 @@ export class gurpsActor extends Actor {
 			this.data.data.senses = senses;
 		}
 
+		// Check for enhanced defences
 		if (typeof this.data.data.enhanced == 'undefined'){ // If enhanced defences do not yet exist, create a basic object for them
 			let enhanced = {
 				parry: 0,
@@ -108,6 +109,34 @@ export class gurpsActor extends Actor {
 			}
 
 			this.data.data.enhanced = enhanced;
+		}
+		else { // Check each individual value and set it to 0 if it's blank or undefined.
+			if (typeof this.data.data.enhanced.parry == 'undefined' || this.data.data.enhanced.parry === "") {
+				this.data.data.enhanced.parry = 0;
+			}
+			if (typeof this.data.data.enhanced.block == 'undefined' || this.data.data.enhanced.block === "") {
+				this.data.data.enhanced.block = 0;
+			}
+			if (typeof this.data.data.enhanced.dodge == 'undefined' || this.data.data.enhanced.dodge === "") {
+				this.data.data.enhanced.dodge = 0;
+			}
+		}
+
+		// Check for vision cones
+		if (typeof this.data.data.vision == 'undefined') {
+			let vision = {
+				front: 180,
+				side: 240
+			}
+			this.data.data.vision = vision;
+		}
+		else {
+			if (typeof this.data.data.vision.front == 'undefined' || this.data.data.vision.front === "") {
+				this.data.data.enhanced.parry = 180;
+			}
+			if (typeof this.data.data.vision.side == 'undefined' || this.data.data.vision.side === "") {
+				this.data.data.enhanced.block = 240;
+			}
 		}
 	}
 
