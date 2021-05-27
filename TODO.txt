@@ -1,3 +1,6 @@
+// TODO - Things to fix for foundry.png
+    - Undefined stuff
+
 Layered Armour
     - Make entering armour faster
     - Slam thingy
@@ -12,7 +15,7 @@ Misc
     - Add area of effect for attacks
     - Make armour display suck less (Pull from location dr instead of array object bullshit
 
-Comnbat Macro
+Combat Macro
     - Attack specific macros
     - ST Multiplier for range (With skill bonuses to ST)
     - +4 and +7 from adds
