@@ -334,8 +334,8 @@ export class gurpsActor extends Actor {
 			}
 		}
 		//Assign total weight and cost
-		this.data.data.bio.carriedWeight = carriedWeight;
-		this.data.data.bio.carriedValue = carriedCost;
+		this.data.data.bio.carriedWeight = Math.round(carriedWeight);
+		this.data.data.bio.carriedValue = Math.round(carriedCost);
 	}
 
 	setTotalPoints(unspent) {
