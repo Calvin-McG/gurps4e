@@ -3,28 +3,28 @@
     - Senses get all fucky
     - Custom base attribute
     - Spell shit, ie: scaleable damage from chargeable missiles
-    - Typeless damage (crushing)
+    - Typeless damage (crushing except not crushing)
     - AD (Ignore armour)
     - Destructive Parry
     - Armour HP
     - Surge damage
-    - Enforce Range
-    - Double check skill based defaults
-    - Size mod for to-hit penalty with game parma for absolute or relative penalties (Ranged and melee separat. Jake does melee rleative, ranged absolute)
-    - Shield does not appear in attack macro (Cap is 4 attack profiles for some reason?)
+    - Apply half and max range for ranged attacks
+    - Double check skill based defaults (Metallurgy is at -5?)
+    - Size mod for to-hit penalty with game parm for absolute or relative penalties (Ranged and melee separate. Jake does melee rleative, ranged absolute)
+    - Shield does not appear in attack macro (Cap is 4 attack profiles for some reason? And old attacks sometimes disappear? None of Raven's attacks would show up at all)
     - Reset damage button
-    - HP damage applied to token (And if linked it goes to actor?)
-    - Fix weight display
-    - Input sanitization for rof missing, among other things
+    - HP damage applied to token (And if linked it goes to actor?) IDK, all the squidwards were being treated as the same dude. Make that not happen
+    - Fix weight display. (Standard JS rounding error
+    - Input sanitization for rof missing, among other things (Players be dumb)
     - Spells as quick contest, Regular spell range, etc.
-    - Knockback display
-    - For some reason
+    - Knockback display is fucky if it's less than 0
     - Low HP should impact dodge (Unless HPT?)
-    - Rof bonus comes up NaN for some reason?
-    - Incidential damage
+    - Rof bonus comes up NaN for some reason? But only sometimes? WTF?
+    - Incidential damage (Rolling 9s vs people behind/front of main target)
+    - Uncategorized at the bottom of the list
 
 Layered Armour
-    - Make entering armour faster
+    - Make entering armour faster and suck less
     - Slam thingy
 
 Campaign toggles for...
