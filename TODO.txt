@@ -37,6 +37,7 @@ Misc
     - Add area of effect for attacks
     - Make armour display suck less (Pull from location dr instead of array object bullshit
     - Leveled traits
+    - Journal - Item linky thing like CoC on char sheets
 
 Combat Macro
     - Attack specific macros
@@ -52,6 +53,13 @@ Combat Macro
     - AoA (Strong, etc)
     - Add All Out Defence (Double) and (Increased) and figure out how to make double work. (And if double can be a pair of parries/dodges/blocks)
         - Default selects to empty, and add a button to choose the two selections made?
+
+Naval
+    - Naval character sheet
+
+Design
+    - Gun design system
+    - Laser design system
 
 ===Jake's Requests===
 A blank inventory character sheet at some point for chests and inventories would be really helpful though
