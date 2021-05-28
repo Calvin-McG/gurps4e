@@ -2132,8 +2132,8 @@ export class gurpsActor extends Actor {
 			}
 		}
 
+		totalKnockback = Math.floor(totalKnockback);
 		if (totalKnockback > 0) { // Display total knockback
-			totalKnockback = Math.floor(totalKnockback);
 			html += "<hr><div>" + target.data.name + " is knocked back " + totalKnockback + " yards and must roll at -" + (totalKnockback - 1) + " to avoid falling down.</div>";
 		}
 

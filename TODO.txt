@@ -16,7 +16,6 @@
     - HP damage applied to token (And if linked it goes to actor?) IDK, all the squidwards were being treated as the same dude. Make that not happen
     - Input sanitization for rof missing, among other things (Players be dumb)
     - Spells as quick contest, Regular spell range, etc.
-    - Knockback display is fucky if it's less than 0
     - Low HP should impact dodge (Unless HPT?)
     - Rof bonus comes up NaN for some reason? But only sometimes? WTF?
     - Incidential damage (Rolling 9s vs people behind/front of main target)
