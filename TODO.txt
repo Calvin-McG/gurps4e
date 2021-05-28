@@ -1,5 +1,24 @@
-// TODO - Things to fix for foundry.png
-    - Undefined stuff
+// TODO from session 5/27/2021
+    - Senses get all fucky
+    - Custom base attribute
+    - Spell shit, ie: scaleable damage from chargeable missiles
+    - Typeless damage (crushing)
+    - AD (Ignore armour)
+    - Destructive Parry
+    - Armour HP
+    - Surge damage
+    - Enforce Range
+    - Double check skill based defaults
+    - Size mod for to-hit penalty with game parma for absolute or relative penalties (Ranged and melee separat. Jake does melee rleative, ranged absolute)
+    - Shield does not appear in attack macro (Cap is 4 attack profiles for some reason?)
+    - Reset damage button
+    - HP damage applied to token (And if linked it goes to actor?)
+    - Fix weight display
+    - Input sanitization for rof missing, among other things
+    - Spells as quick contest, Regular spell range, etc.
+    - Knockback display
+    - For some reason
+    - Low HP should impact dodge (Unless HPT?)
 
 Layered Armour
     - Make entering armour faster
@@ -14,6 +33,7 @@ Campaign toggles for...
 Misc
     - Add area of effect for attacks
     - Make armour display suck less (Pull from location dr instead of array object bullshit
+    - Leveled traits
 
 Combat Macro
     - Attack specific macros
@@ -36,5 +56,3 @@ Actually, nvm I think the Journal Dialogue with linked items might work better a
 Out of something I would like is some way to request a skill or attribute roll from a macro which I think should be figured out when the fuck-off attack macro gets done.
 Basically something where I can say "Roll [Lockpicking] with X Character Sheet" and so on.
 Even being able to set up "GM Roll all players perception" would be great.
-
-Request for traits, perhaps putting in something for levels in an advantage similar to how GCS does it?
