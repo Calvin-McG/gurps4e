@@ -1,4 +1,5 @@
 // TODO from session 5/27/2021
+    - Brette Mode
     - Senses get all fucky
     - Custom base attribute
     - Spell shit, ie: scaleable damage from chargeable missiles
@@ -19,6 +20,8 @@
     - Knockback display
     - For some reason
     - Low HP should impact dodge (Unless HPT?)
+    - Rof bonus comes up NaN for some reason?
+    - Incidential damage
 
 Layered Armour
     - Make entering armour faster

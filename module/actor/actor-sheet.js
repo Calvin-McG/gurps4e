@@ -415,7 +415,7 @@ export class gurpsActorSheet extends ActorSheet {
 					callback: () => this.computeRoll(event, 0)
 				}
 			},
-			default: "noMod",
+			default: "mod",
 			render: html => console.log("Register interactivity in the rendered dialog"),
 			close: html => console.log("This always is logged no matter which option is chosen")
 		})
