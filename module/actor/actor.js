@@ -499,75 +499,81 @@ export class gurpsActor extends Actor {
 	}
 
 	storeArmour(){
-		if (this.data.data.bodyType.name.length > 0){
-			// Create a function for filtering out armour
-			function filterArmour(item){
-				if ((item.type == "Equipment" && item.data.equipStatus == "equipped") || item.type == "Trait"){ // Check to see if it is a piece of equipment
-					if (item.data.armour){ // Check to see if data has the armour child object - This should really only be an issue when updating from a version that did not include this data structure.
-						if (item.data.armour.bodyType){ // Check to see if the item has armour
-							if (item.data.armour.bodyType.name){
-								if (item.data.armour.bodyType.name.length > 0){ // Check to see if a body type has been set
-									return true;
+		if (this.data) {
+			if (this.data.data) {
+				if (this.data.data.bodyType) {
+					if (this.data.data.bodyType.name.length > 0){
+						// Create a function for filtering out armour
+						function filterArmour(item){
+							if ((item.type == "Equipment" && item.data.equipStatus == "equipped") || item.type == "Trait"){ // Check to see if it is a piece of equipment
+								if (item.data.armour){ // Check to see if data has the armour child object - This should really only be an issue when updating from a version that did not include this data structure.
+									if (item.data.armour.bodyType){ // Check to see if the item has armour
+										if (item.data.armour.bodyType.name){
+											if (item.data.armour.bodyType.name.length > 0){ // Check to see if a body type has been set
+												return true;
+											}
+										}
+									}
 								}
 							}
+							return false;
 						}
-					}
-				}
-				return false;
-			}
 
-			// Create function for sorting armour by layer
-			function sortArmourByLayer(a,b){
-				if (a.data.armour.layer < b.data.armour.layer){
-					return -1
-				}
-				if (a.data.armour.layer > b.data.armour.layer){
-					return 1
-				}
-				return 0
-			}
-
-			let armour = [{
-				flexible: {},
-				hardness: {},
-				burn: {},
-				cor: {},
-				cr: {},
-				cut: {},
-				fat: {},
-				imp: {},
-				pi: {},
-				tox: {},
-			}];
-
-			armour[0] = this.getArmour(this.data.data.bodyType.body, this.data.data.bodyType.body, 0); // Get the armour inherent in the body
-			this.data.data.bodyType.drTypesOne = getProperty(armour[0], this.data.data.bodyType.damageTypeOne.toLowerCase());
-			this.data.data.bodyType.drTypesTwo = getProperty(armour[0], this.data.data.bodyType.damageTypeTwo.toLowerCase());
-
-			let items = this.data.items.filter(filterArmour); // Get the character's items and filter out anything that isn't armour
-			items = items.sort(sortArmourByLayer); // Take the above list and sort by layer. Index 0 is lowest, index infinity is highest.
-
-			for (let l = 0; l < items.length; l++){ // Loop through the characters items and apply any relevant DR.
-				armour[l+1] = this.getArmour(items[l].data.armour.bodyType.body, this.data.data.bodyType.body, l+1);
-				let damageTypeOneObject;
-				let damageTypeTwoObject;
-
-				if (this.data.data.bodyType.damageTypeOne.length > 0){ // If they've selected a type for display
-					damageTypeOneObject = getProperty(armour[l+1], this.data.data.bodyType.damageTypeOne.toLowerCase()); // Set the DR
-				}
-				if (this.data.data.bodyType.damageTypeTwo.length > 0){ // If they've selected a second type for display
-					damageTypeTwoObject = getProperty(armour[l+1], this.data.data.bodyType.damageTypeTwo.toLowerCase()); // Set the DR
-				}
-
-				if (this.data.data.bodyType.damageTypeOne.length > 0) {
-					let bodyParts = Object.keys(damageTypeOneObject);
-
-					for (let q = 0; q < bodyParts.length; q++) {
-						if (this.data.data.bodyType.damageTypeOne.length > 0) { // If they've selected a type for display
-							this.data.data.bodyType.drTypesOne[bodyParts[q]] += damageTypeOneObject[bodyParts[q]]
+						// Create function for sorting armour by layer
+						function sortArmourByLayer(a,b){
+							if (a.data.armour.layer < b.data.armour.layer){
+								return -1
+							}
+							if (a.data.armour.layer > b.data.armour.layer){
+								return 1
+							}
+							return 0
 						}
-						if (this.data.data.bodyType.damageTypeTwo.length > 0) { // If they've selected a second type for display
-							this.data.data.bodyType.drTypesTwo[bodyParts[q]] += damageTypeTwoObject[bodyParts[q]]
+
+						let armour = [{
+							flexible: {},
+							hardness: {},
+							burn: {},
+							cor: {},
+							cr: {},
+							cut: {},
+							fat: {},
+							imp: {},
+							pi: {},
+							tox: {},
+						}];
+
+						armour[0] = this.getArmour(this.data.data.bodyType.body, this.data.data.bodyType.body, 0); // Get the armour inherent in the body
+						this.data.data.bodyType.drTypesOne = getProperty(armour[0], this.data.data.bodyType.damageTypeOne.toLowerCase());
+						this.data.data.bodyType.drTypesTwo = getProperty(armour[0], this.data.data.bodyType.damageTypeTwo.toLowerCase());
+
+						let items = this.data.items.filter(filterArmour); // Get the character's items and filter out anything that isn't armour
+						items = items.sort(sortArmourByLayer); // Take the above list and sort by layer. Index 0 is lowest, index infinity is highest.
+
+						for (let l = 0; l < items.length; l++){ // Loop through the characters items and apply any relevant DR.
+							armour[l+1] = this.getArmour(items[l].data.armour.bodyType.body, this.data.data.bodyType.body, l+1);
+							let damageTypeOneObject;
+							let damageTypeTwoObject;
+
+							if (this.data.data.bodyType.damageTypeOne.length > 0){ // If they've selected a type for display
+								damageTypeOneObject = getProperty(armour[l+1], this.data.data.bodyType.damageTypeOne.toLowerCase()); // Set the DR
+							}
+							if (this.data.data.bodyType.damageTypeTwo.length > 0){ // If they've selected a second type for display
+								damageTypeTwoObject = getProperty(armour[l+1], this.data.data.bodyType.damageTypeTwo.toLowerCase()); // Set the DR
+							}
+
+							if (this.data.data.bodyType.damageTypeOne.length > 0) {
+								let bodyParts = Object.keys(damageTypeOneObject);
+
+								for (let q = 0; q < bodyParts.length; q++) {
+									if (this.data.data.bodyType.damageTypeOne.length > 0) { // If they've selected a type for display
+										this.data.data.bodyType.drTypesOne[bodyParts[q]] += damageTypeOneObject[bodyParts[q]]
+									}
+									if (this.data.data.bodyType.damageTypeTwo.length > 0) { // If they've selected a second type for display
+										this.data.data.bodyType.drTypesTwo[bodyParts[q]] += damageTypeTwoObject[bodyParts[q]]
+									}
+								}
+							}
 						}
 					}
 				}
@@ -683,55 +689,61 @@ export class gurpsActor extends Actor {
 	}
 
 	partHP(){
-		if (this.data.data.bodyType.body){
-			let bodyParts = Object.keys(this.data.data.bodyType.body);
+		if (this.data) {
+			if (this.data.data) {
+				if (this.data.data.bodyType) {
+					if (this.data.data.bodyType.body){
+						let bodyParts = Object.keys(this.data.data.bodyType.body);
 
-			for (let i = 0; i < bodyParts.length; i++){
-				let currentPart = getProperty(this.data.data.bodyType.body, bodyParts[i]);
+						for (let i = 0; i < bodyParts.length; i++){
+							let currentPart = getProperty(this.data.data.bodyType.body, bodyParts[i]);
 
-				if (currentPart.hp){//Part has hp info
-					let hp = currentPart.hp.value;
-					let state = "Fine";
+							if (currentPart.hp){//Part has hp info
+								let hp = currentPart.hp.value;
+								let state = "Fine";
 
-					if(hp <= (currentPart.hp.max * -1)){ // If part HP is at or below a full negative multiple
-						state = "Destroyed";
-					}
-					else if(hp <= 0){ // If part HP is at or below a 0
-						state = "Crippled";
-					}
-					else if (hp < currentPart.hp.max){ // If part HP is below max
-						state = "Injured";
-					}
-					else { // Part is not damaged
-						state = "Fine";
-					}
+								if(hp <= (currentPart.hp.max * -1)){ // If part HP is at or below a full negative multiple
+									state = "Destroyed";
+								}
+								else if(hp <= 0){ // If part HP is at or below a 0
+									state = "Crippled";
+								}
+								else if (hp < currentPart.hp.max){ // If part HP is below max
+									state = "Injured";
+								}
+								else { // Part is not damaged
+									state = "Fine";
+								}
 
-					setProperty(this.data.data.bodyType.body, bodyParts[i] + ".hp.state",state);
-				}
-
-				if (getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation")){//Part has sub parts
-					let subParts = Object.keys(getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation"));
-
-					for (let n = 0; n < subParts.length; n++){
-						let currentSubPart = getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n]);
-						if (currentSubPart.hp){//Part has hp info
-							let hp = currentSubPart.hp.value;
-							let state = "Fine";
-
-							if(hp <= (currentSubPart.hp.max * -1)){ // If part HP is at or below a full negative multiple
-								state = "Destroyed";
-							}
-							else if(hp <= 0){ // If part HP is at or below a 0
-								state = "Crippled";
-							}
-							else if (hp < currentSubPart.hp.max){ // If part HP is below max
-								state = "Injured";
-							}
-							else { // Part is not damaged
-								state = "Fine";
+								setProperty(this.data.data.bodyType.body, bodyParts[i] + ".hp.state",state);
 							}
 
-							setProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n] + ".hp.state",state);
+							if (getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation")){//Part has sub parts
+								let subParts = Object.keys(getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation"));
+
+								for (let n = 0; n < subParts.length; n++){
+									let currentSubPart = getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n]);
+									if (currentSubPart.hp){//Part has hp info
+										let hp = currentSubPart.hp.value;
+										let state = "Fine";
+
+										if(hp <= (currentSubPart.hp.max * -1)){ // If part HP is at or below a full negative multiple
+											state = "Destroyed";
+										}
+										else if(hp <= 0){ // If part HP is at or below a 0
+											state = "Crippled";
+										}
+										else if (hp < currentSubPart.hp.max){ // If part HP is below max
+											state = "Injured";
+										}
+										else { // Part is not damaged
+											state = "Fine";
+										}
+
+										setProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n] + ".hp.state",state);
+									}
+								}
+							}
 						}
 					}
 				}
@@ -1398,6 +1410,7 @@ export class gurpsActor extends Actor {
 
 		let rofBonus = generalHelpers.rofToBonus(rof.rof);
 		let totalModifier;
+		let sizeModModifier;
 
 		let modModalContent =  "<table>" +
 			"<tr><td>Hit Location</td><td>" + locationPenalty + "</td></tr>"
@@ -1411,6 +1424,8 @@ export class gurpsActor extends Actor {
 		else {
 			totalModifier = locationPenalty;
 		}
+
+		modModalContent += "<tr><td>SM Modifier:</td><td>" + sizeModModifier + "</td></tr>";
 
 		let odds = rollHelpers.levelToOdds((+attack.level + +totalModifier))
 

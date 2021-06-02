@@ -2,7 +2,7 @@
     - Brette Mode
     - Senses get all fucky
     - Custom base attribute
-    - Spell shit, ie: scaleable damage from chargeable missiles
+    - Spell shit, ie: scalable damage from chargeable missiles
     - Typeless damage (crushing except not crushing)
     - AD (Ignore armour)
     - Destructive Parry
@@ -18,7 +18,7 @@
     - Spells as quick contest, Regular spell range, etc.
     - Low HP should impact dodge (Unless HPT?)
     - Rof bonus comes up NaN for some reason? But only sometimes? WTF?
-    - Incidential damage (Rolling 9s vs people behind/front of main target)
+    - Incidental damage (Rolling 9s vs people behind/front of main target)
     - Uncategorized at the bottom of the list
 
 Layered Armour
