@@ -100,6 +100,55 @@ export class gurpsActor extends Actor {
 			this.data.data.senses = senses;
 		}
 
+		if (this.data.data.senses.vis) {
+			this.data.data.senses.vis = {
+				id: "vis",
+				abbr: "Vision",
+				value: this.data.data.senses.vis.value,
+				mod: this.data.data.senses.vis.mod
+			}
+		}
+		if (this.data.data.senses.hear) {
+			this.data.data.senses.hear = {
+				id: "hear",
+				abbr: "Hearing",
+				value: this.data.data.senses.hear.value,
+				mod: this.data.data.senses.hear.mod
+			}
+		}
+		if (this.data.data.senses.smell) {
+			this.data.data.senses.smell = {
+				id: "smell",
+				abbr: "Smell & Taste",
+				value: this.data.data.senses.smell.value,
+				mod: this.data.data.senses.smell.mod
+			}
+		}
+		if (this.data.data.senses.touch) {
+			this.data.data.senses.touch = {
+				id: "touch",
+				abbr: "Touch",
+				value: this.data.data.senses.touch.value,
+				mod: this.data.data.senses.touch.mod
+			}
+		}
+		if (this.data.data.senses.extra1) {
+			this.data.data.senses.extra1 = {
+				id: "extra1",
+				abbr: this.data.data.senses.extra1.abbr ? this.data.data.senses.extra1.abbr : "",
+				value: this.data.data.senses.extra1.value ? this.data.data.senses.extra1.value : 0,
+				mod: this.data.data.senses.extra1.mod ? this.data.data.senses.extra1.mod : 0
+			}
+		}
+		if (this.data.data.senses.extra2) {
+			this.data.data.senses.extra2 = {
+				id: "extra2",
+				abbr: this.data.data.senses.extra2.abbr ? this.data.data.senses.extra2.abbr : "",
+				value: this.data.data.senses.extra2.value ? this.data.data.senses.extra2.value : 0,
+				mod: this.data.data.senses.extra2.mod ? this.data.data.senses.extra2.mod : 0
+			}
+		}
+
 		// Check for enhanced defences
 		if (typeof this.data.data.enhanced == 'undefined'){ // If enhanced defences do not yet exist, create a basic object for them
 			let enhanced = {

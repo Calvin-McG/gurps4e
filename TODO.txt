@@ -1,6 +1,5 @@
 // TODO from session 5/27/2021
     - Brette Mode
-    - Senses get all fucky
     - Custom base attribute
     - Spell shit, ie: scalable damage from chargeable missiles
     - Typeless damage (crushing except not crushing)

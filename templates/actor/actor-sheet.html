@@ -211,10 +211,12 @@
 							{{#unless (eq data.flag.showSenses true) }}
 								{{#each data.senses as |sense id|}}
 									<div class="attribute-senses" id="{{sense.id}}">
-										{{#if (or (eq sense.id "extra1") (eq sense.id "extra2")) }}
-											<input type="text" name="data.senses.{{id}}.abbr" class="senseVal" value="{{sense.abbr}}" style="text-align: left;"/>
-										{{else}}
-											<label style="font-weight: bold" class="senseVal">{{sense.abbr}}</label>
+										{{#if sense.id}}
+											{{#if (or (eq sense.id "extra1") (eq sense.id "extra2")) }}
+												<input type="text" name="data.senses.{{id}}.abbr" class="senseVal" value="{{sense.abbr}}" style="text-align: left;"/>
+											{{else}}
+												<label style="font-weight: bold" class="senseVal">{{sense.abbr}}</label>
+											{{/if}}
 										{{/if}}
 										<input type="text" name="data.senses.{{id}}.value" class="atrVal" value="{{sense.value}}"
 											   data-dtype="Number" disabled />
