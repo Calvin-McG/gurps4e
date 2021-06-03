@@ -50,6 +50,7 @@ Combat Macro
     - AoA (Strong, etc)
     - Add All Out Defence (Double) and (Increased) and figure out how to make double work. (And if double can be a pair of parries/dodges/blocks)
         - Default selects to empty, and add a button to choose the two selections made?
+    - Acrobatic/Aerobatic defences
 
 Naval
     - Naval character sheet
