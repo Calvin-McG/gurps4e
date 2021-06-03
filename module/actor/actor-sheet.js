@@ -54,9 +54,6 @@ export class gurpsActorSheet extends ActorSheet {
 		// Rollable checks.
 		html.find('.rollable').click(this._onRoll.bind(this));
 
-		// track and handle changes to HP and FP
-		html.find('.sec-attr').change(this._onSecondaryAttributeChange.bind(this));
-
 		// Accordion handlers
 		//html.find('.accordion').click(this._onAccordionToggle.bind(this));
 		html.find('.accordion').click(this._onAccordionToggle.bind(this));
@@ -345,17 +342,6 @@ export class gurpsActorSheet extends ActorSheet {
 		}
 	}
 
-	/**
-	 * Handle changes to secondary attribute number fields.
-	 * @param {Event} event	 The originating change event
-	 * @private
-	 */
-	_onSecondaryAttributeChange(event) {
-		event.preventDefault();
-		let value = event.target.value;
-		let name = event.target.name;
-		this.actor.setConditions(value, name);
-	}
 	_onUnspentPointsChange(event) {
 		let unspent = event.target.value;
 		this.actor.setTotalPoints(unspent);

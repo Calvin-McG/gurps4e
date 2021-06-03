@@ -42,18 +42,21 @@ export class gurpsActor extends Actor {
 		// Sort out the player's senses.
 		this.recalcSenses();
 
-		//Recalculate encumberance values, along with effective dodge and move. Do this last so move and dodge is correct.
-		this.recalcEncValues();
-
 		//Set up categories for each type
 		this.setupCategories();
 
 		// Store the character's armour values for convenient use later.
 		this.storeArmour()
 
+		// Set status, etc, for reserves
+		this.bodyReserves()
+
 		//Update part specific HP
 		this.partHP();
 
+		//Recalculate encumberance values, along with effective dodge and move. Do this last so move and dodge is correct.
+		this.recalcEncValues();
+		console.log(this)
 	}
 
 	checkUndefined(){
@@ -339,12 +342,22 @@ export class gurpsActor extends Actor {
 
 	recalcEncValues(){
 		var st = this.data.data.primaryAttributes.lifting.value;
+
+		let dodgeMultiplier = 1;
+
+		// Basic 328 - With less than 1/3rd FP remaining your ST is halved, but not for the purposes of HP or damage
+		if (this.data.data.reserves.fp.state.toLowerCase() != "fresh") {
+			st = st / 2
+			dodgeMultiplier = 0.5;
+		}
+
 		var bl = Math.round(((st * st)/5));
 		var move = this.data.data.primaryAttributes.move.value;
 		var dodge = this.data.data.primaryAttributes.dodge.value;
 		let dodgeMod = 0;
 		var carriedWeight = 0;
 		var carriedCost = 0;
+		let finalDodge = 0;
 
 		if (this.data.data.enhanced.dodge){
 			dodgeMod = this.data.data.enhanced.dodge;
@@ -382,9 +395,40 @@ export class gurpsActor extends Actor {
 				carriedCost = this.data.items[l].data.ttlCost + carriedCost;
 			}
 		}
+
+		carriedWeight = Math.round(carriedWeight);
+		carriedCost = Math.round(carriedCost);
+
 		//Assign total weight and cost
-		this.data.data.bio.carriedWeight = Math.round(carriedWeight);
-		this.data.data.bio.carriedValue = Math.round(carriedCost);
+		this.data.data.bio.carriedWeight = carriedWeight;
+		this.data.data.bio.carriedValue = carriedCost
+
+		if (carriedWeight <= this.data.data.encumbrance.none.lbs) {
+			finalDodge = this.data.data.encumbrance.none.dodge;
+		}
+		else if (carriedWeight <= this.data.data.encumbrance.light.lbs){
+			finalDodge = this.data.data.encumbrance.light.dodge;
+		}
+		else if (carriedWeight <= this.data.data.encumbrance.medium.lbs){
+			finalDodge = this.data.data.encumbrance.medium.dodge;
+		}
+		else if (carriedWeight <= this.data.data.encumbrance.heavy.lbs){
+			finalDodge = this.data.data.encumbrance.heavy.dodge;
+		}
+		else if (carriedWeight <= this.data.data.encumbrance.xheavy.lbs){
+			finalDodge = this.data.data.encumbrance.xheavy.dodge;
+		}
+		else {
+			finalDodge = 0;
+		}
+
+		if (this.data.data.reserves.hp.state != "Healthy"){
+			dodgeMultiplier = dodgeMultiplier / 2;
+		}
+
+		finalDodge = Math.ceil(finalDodge * dodgeMultiplier);
+
+		this.data.data.primaryAttributes.dodge.value = finalDodge;
 	}
 
 	setTotalPoints(unspent) {
@@ -453,97 +497,6 @@ export class gurpsActor extends Actor {
 					}
 				}
 			}
-		}
-	}
-
-	setConditions(newValue, attrName) {
-		let attrValue;
-		let attrMax;
-		let attrState;
-
-		if (attrName.includes('.hp')) { // Hit points update
-
-			// Assign the variables
-			if (attrName.includes('.max')) {
-				attrMax = newValue;
-				attrValue = this.data.data.reserves.hp.value;
-			} else {
-				attrValue = newValue;
-				attrMax = this.data.data.reserves.hp.max;
-			}
-			let ratio = attrValue / attrMax;
-			// set the limits
-			switch (Math.trunc(ratio)) {
-				case 0: {
-					if (ratio <= 0) { // collapse
-						attrState = 'Collapse';
-						break;
-					} else if (attrValue < (attrMax / 3)) { // reeling
-						attrState = 'Reeling';
-						break;
-					}
-					// healthy, no break
-				}
-				case 1: { // healthy
-					attrState = 'Healthy';
-					break;
-				}
-				case -1: { // death check at -1
-					attrState = 'Death 1';
-					break;
-				}
-				case -2: { // death check at -2
-					attrState = 'Death 2';
-					break;
-				}
-				case -3: { // death check at -3
-					attrState = 'Death 3';
-					break;
-				}
-				case -4: { // death check at -4
-					attrState = 'Death 4';
-					break;
-				}
-				default: { // dead
-					attrState = 'Dead';
-					break;
-				}
-			}
-			this.data.data.reserves.hp.state = attrState;
-		} else { // Fatigue points update
-
-			// Assign the variables
-			if (attrName.includes('.max')) {
-				attrMax = newValue;
-				attrValue = this.data.data.reserves.fp.value;
-			} else {
-				attrValue = newValue;
-				attrMax = this.data.data.reserves.fp.max;
-			}
-			let ratio = attrValue / attrMax;
-			// set the limits
-			switch (Math.trunc(ratio)) {
-				case 0: {
-					if (ratio <= 0) { // collapse
-						attrState = 'Collapse';
-						break;
-					} else if (attrValue < (attrMax / 3)) { // tired
-						attrState = 'Tired';
-						break;
-					}
-					// fresh, no break
-				}
-				case 1: { // fresh
-					attrState = 'Fresh';
-					break;
-				}
-				default: { // unconscious
-					attrState = 'Unconscious';
-					break;
-				}
-			}
-			// update the actor
-			this.data.data.reserves.fp.state = attrState;
 		}
 	}
 
@@ -737,7 +690,91 @@ export class gurpsActor extends Actor {
 		return armour
 	}
 
-	partHP(){
+	bodyReserves() {
+		if (this.data) {
+			if (this.data.data) {
+				if (this.data.data.reserves) { // Make sure reserves exist
+
+					// Handle the calculations for HP
+					let hpMax = this.data.data.reserves.hp.max;
+					let hpValue = this.data.data.reserves.hp.value;
+					let hpState;
+
+					let hpRatio = hpValue / hpMax;
+					// set the limits
+					switch (Math.trunc(hpRatio)) {
+						case 0: {
+							if (hpRatio <= 0) { // collapse
+								hpState = 'Collapse';
+								break;
+							} else if (hpValue < (hpMax / 3)) { // reeling
+								hpState = 'Reeling';
+								break;
+							}
+							// healthy, no break
+						}
+						case 1: { // healthy
+							hpState = 'Healthy';
+							break;
+						}
+						case -1: { // death check at -1
+							hpState = 'Death 1';
+							break;
+						}
+						case -2: { // death check at -2
+							hpState = 'Death 2';
+							break;
+						}
+						case -3: { // death check at -3
+							hpState = 'Death 3';
+							break;
+						}
+						case -4: { // death check at -4
+							hpState = 'Death 4';
+							break;
+						}
+						default: { // dead
+							hpState = 'Dead';
+							break;
+						}
+					}
+					this.data.data.reserves.hp.state = hpState;
+
+					// Handle the calculations for FP
+					let fpMax = this.data.data.reserves.fp.max;
+					let fpValue = this.data.data.reserves.fp.value;
+					let fpState;
+
+					let fpRatio = fpValue / fpMax;
+					// set the limits
+					switch (Math.trunc(fpRatio)) {
+						case 0: {
+							if (fpRatio <= 0) { // collapse
+								fpState = 'Collapse';
+								break;
+							} else if (fpValue < (fpMax / 3)) { // tired
+								fpState = 'Tired';
+								break;
+							}
+							// fresh, no break
+						}
+						case 1: { // fresh
+							fpState = 'Fresh';
+							break;
+						}
+						default: { // unconscious
+							fpState = 'Unconscious';
+							break;
+						}
+					}
+					// update the actor
+					this.data.data.reserves.fp.state = fpState;
+				}
+			}
+		}
+	}
+
+	partHP() {
 		if (this.data) {
 			if (this.data.data) {
 				if (this.data.data.bodyType) {
