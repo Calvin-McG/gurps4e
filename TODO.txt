@@ -49,6 +49,10 @@ Combat Macro
     - Add All Out Defence (Double) and (Increased) and figure out how to make double work. (And if double can be a pair of parries/dodges/blocks)
         - Default selects to empty, and add a button to choose the two selections made?
     - Acrobatic/Aerobatic defences
+    - Damage Reduction
+    - Supernatural Durability
+    - Low/High pain threshold
+    - Injury Tolerances
 
 Naval
     - Naval character sheet

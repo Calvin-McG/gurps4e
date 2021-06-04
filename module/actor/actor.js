@@ -1475,6 +1475,7 @@ export class gurpsActor extends Actor {
 	}
 
 	getSM(actor) {
+		console.log(actor)
 		let sm = 0;
 		if (actor) { // Make sure all the data is present
 			if (actor.token){
@@ -1487,6 +1488,17 @@ export class gurpsActor extends Actor {
 										sm = actor.token.data.data.bio.sm.value;
 									}
 								}
+							}
+						}
+					}
+				}
+			}
+			else if (actor.data) {
+				if (actor.data.data) {
+					if (actor.data.data.bio) {
+						if (actor.data.data.bio.sm) {
+							if (actor.data.data.bio.sm.value) {
+								sm = actor.data.data.bio.sm.value;
 							}
 						}
 					}
@@ -1512,12 +1524,13 @@ export class gurpsActor extends Actor {
 			"<tr><td>Hit Location</td><td>" + locationPenalty + "</td></tr>"
 
 		if (attack.type === "ranged") {
+			console.log("ranged")
 			// Sort out the effective SM modifier based on the game's settings and the attacker/target SM
 			if (game.settings.get("gurps4e", "rangedRelativeSM")) { // Game is using relative SM rules for ranged attacks
-				sizeModModifier = this.getSM(attacker) - this.getSM(target);
+				sizeModModifier = this.getSM(target.actor) - this.getSM(attacker.actor);
 			}
 			else {
-				sizeModModifier = this.getSM(target);
+				sizeModModifier = this.getSM(target.actor);
 			}
 
 			totalModifier = (distancePenalty + locationPenalty + rofBonus + sizeModModifier); // Total up the modifiers
@@ -1525,12 +1538,13 @@ export class gurpsActor extends Actor {
 								"<tr><td>RoF Bonus:</td><td>" + rofBonus + "</td></tr>";
 		}
 		else {
+			console.log("melee")
 			// Sort out the effective SM modifier based on the game's settings and the attacker/target SM
 			if (game.settings.get("gurps4e", "meleeRelativeSM")) { // Game is using relative SM rules for melee attacks
-				sizeModModifier = this.getSM(attacker) - this.getSM(target);
+				sizeModModifier = this.getSM(target.actor) - this.getSM(attacker.actor);
 			}
 			else {
-				sizeModModifier = this.getSM(target);
+				sizeModModifier = this.getSM(target.actor);
 			}
 
 			totalModifier = locationPenalty + sizeModModifier; // Total up the modifiers
@@ -1978,6 +1992,7 @@ export class gurpsActor extends Actor {
 		let totalKnockback = 0;
 		let totalInjury = 0;
 		let totalFatInj = 0;
+		let damageReduction = 1;
 
 		let armourDivisor;
 
