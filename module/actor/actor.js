@@ -1998,11 +1998,14 @@ export class gurpsActor extends Actor {
 
 		let armourDivisor;
 
-		if (attack.armorDivisor == 0 || attack.armorDivisor == ""){
-			armourDivisor = 1;
+		if (typeof attack.armorDivisor == "undefined" || attack.armorDivisor == ""){ // Armour divisor is undefined or blank
+			armourDivisor = 1; // Set it to the default of 1
+		}
+		else if (attack.armorDivisor.toString().toLowerCase().includes("ignore") || attack.armorDivisor.toString().toLowerCase().includes("cosmic")){
+			armourDivisor = "Ignores Armour"; // Set to a negative number, which we'll later use to ignore armour entirely.
 		}
 		else {
-			armourDivisor = attack.armorDivisor;
+			armourDivisor = attack.armorDivisor; // Set it to whatever they entered.
 		}
 
 		let damageType = this.extractDamageType(attack);
@@ -2100,12 +2103,18 @@ export class gurpsActor extends Actor {
 			// Loop through the armour and take DR away from the damage dealt
 			for (let d = 0; d < drLayers.length; d++){
 				let dr = getProperty(location.dr[d], damageType.type)
-				let effectiveDR = Math.floor(dr / armourDivisor); // Get the effective DR after armour divisor
+				let effectiveDR = 0
+				if (armourDivisor == "Ignores Armour") { // If the armour divisor is set to ignore armour then effective DR is zero.
+					effectiveDR = 0
+				}
+				else {
+					effectiveDR = Math.floor(dr / armourDivisor); // Get the effective DR after armour divisor
+				}
 
 				let drStops = Math.min(actualDamage, effectiveDR); // Get the actual amount of damage stopped by the armour
 
 				// Subtract the dr from the running damage total.
-				actualDamage -= dr;
+				actualDamage -= effectiveDR;
 
 				// Check for blunt trauma
 				if (damageType.bluntTraumaCapable && (location.dr.flexible || game.settings.get("gurps4e", "rigidBluntTrauma"))){ // The attack needs to be capable of blunt trauma and either the armour needs to be flexible or the setting to allow blunt trauma to rigid armour needs to be on.
@@ -2117,13 +2126,13 @@ export class gurpsActor extends Actor {
 			}
 
 			// Add a check for targets with no DR being hit with an attack that has an armour multiplier
-			if (actualDamage == totalDamage && armourDivisor < 1){
-				console.log(actualDamage)
-				console.log(1/armourDivisor)
-				actualDamage -= (1/armourDivisor);
+			if (armourDivisor != "Ignores Armour") {
+				if (actualDamage == totalDamage && armourDivisor < 1){
+					actualDamage -= (1/armourDivisor);
 
-				if (bluntTrauma == 0){ // Kinda hacky, but works for now. TODO - Make less suck
-					bluntTrauma = totalDamage / damageType.bluntReq;
+					if (bluntTrauma == 0){ // Kinda hacky, but works for now. TODO - Make less suck
+						bluntTrauma = totalDamage / damageType.bluntReq;
+					}
 				}
 			}
 
