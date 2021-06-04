@@ -1489,26 +1489,63 @@ export class gurpsActor extends Actor {
 		return subLocation;
 	}
 
+	getSM(actor) {
+		let sm = 0;
+		if (actor) { // Make sure all the data is present
+			if (actor.token){
+				if (actor.token.data){
+					if (actor.token.data.data){
+						if (actor.token.data.data.bio){
+							if (actor.token.data.data.bio.sm){
+								if (actor.token.data.data.bio.sm.value){
+									if (typeof actor.token.data.data.bio.sm.value == "number") { // SM Exists and is a number
+										sm = actor.token.data.data.bio.sm.value;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return sm; // Return 0 if the above does not retrieve a value
+	}
+
 	attackModifiers(target, attacker, attack, relativePosition, rof, location, locationPenalty) {
 		let distanceRaw = Math.round(canvas.grid.measureDistance(attacker, target));
 		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.data.gridUnits);
 		let distancePenalty = distanceHelpers.distancePenalty(distanceYards);
 
-		let rofBonus = generalHelpers.rofToBonus(rof.rof);
+		let rofBonus = generalHelpers.rofToBonus(rof.rof); // TODO - Something is making this return undefined in some cases.
 		let totalModifier;
-		let sizeModModifier;
+		let sizeModModifier = 0;
 
 		let modModalContent =  "<table>" +
 			"<tr><td>Hit Location</td><td>" + locationPenalty + "</td></tr>"
 
-		if (attack.type === "ranged"){
-			totalModifier = (distancePenalty + locationPenalty + rofBonus)
-			modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.data.gridUnits + ")</td><td>" + distancePenalty + "</td></tr>" +
-								"<tr><td>RoF Bonus:</td><td>" + rofBonus + "</td></tr>";
+		if (attack.type === "ranged") {
+			// Sort out the effective SM modifier based on the game's settings and the attacker/target SM
+			if (game.settings.get("gurps4e", "rangedRelativeSM")) { // Game is using relative SM rules for ranged attacks
+				sizeModModifier = this.getSM(attacker) - this.getSM(target);
+			}
+			else {
+				sizeModModifier = this.getSM(target);
+			}
 
+			totalModifier = (distancePenalty + locationPenalty + rofBonus + sizeModModifier); // Total up the modifiers
+			modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.data.gridUnits + ")</td><td>" + distancePenalty + "</td></tr>" + // Display the ranged specific modifiers
+								"<tr><td>RoF Bonus:</td><td>" + rofBonus + "</td></tr>";
 		}
 		else {
-			totalModifier = locationPenalty;
+			// Sort out the effective SM modifier based on the game's settings and the attacker/target SM
+			if (game.settings.get("gurps4e", "meleeRelativeSM")) { // Game is using relative SM rules for melee attacks
+				sizeModModifier = this.getSM(attacker) - this.getSM(target);
+			}
+			else {
+				sizeModModifier = this.getSM(target);
+			}
+
+			totalModifier = locationPenalty + sizeModModifier; // Total up the modifiers
 		}
 
 		modModalContent += "<tr><td>SM Modifier:</td><td>" + sizeModModifier + "</td></tr>";

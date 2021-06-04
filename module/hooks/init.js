@@ -54,6 +54,26 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  // Register relative SM option for melee attacks
+  game.settings.register("gurps4e", "meleeRelativeSM", {
+    name: "Melee attacks follow relative SM",
+    hint: "While this is true the difference between the attacker and target's SM applies as a modifier on the attack. While this is false the modifier is simply the target's SM.",
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
+  // Register relative SM option for ranged attacks
+  game.settings.register("gurps4e", "rangedRelativeSM", {
+    name: "Ranged attacks follow relative SM",
+    hint: "While this is true the difference between the attacker and target's SM applies as a modifier on the attack. While this is false the modifier is simply the target's SM.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
   // Register Edge Protection option
   game.settings.register("gurps4e", "edgeProtection", {
     name: "Edge Protection - WIP",
