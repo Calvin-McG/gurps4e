@@ -16,7 +16,7 @@
     - Input sanitization for rof missing, among other things (Players be dumb)
     - Spells as quick contest, Regular spell range, etc.
     - Low HP should impact dodge (Unless HPT?)
-    - Rof bonus comes up NaN for some reason? But only sometimes? WTF?
+    - Rof bonus comes up NaN for some reason? But only sometimes? WTF? (Put in a patch so it will at least zero out. Underlying issue remains)
     - Incidental damage (Rolling 9s vs people behind/front of main target)
     - Uncategorized at the bottom of the list
 

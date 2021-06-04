@@ -9,7 +9,7 @@ export class generalHelpers {
     }
 
     static rofToBonus(rof){
-        let bonus;
+        let bonus = 0;
         if      (rof >= 2 && rof <= 4)  { bonus = 0}
         else if (rof >= 5 && rof <= 8)  { bonus = 1}
         else if (rof >= 9 && rof <= 12)  { bonus = 2}
