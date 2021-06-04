@@ -1063,13 +1063,6 @@ export class gurpsActor extends Actor {
 						if (typeof attack !== "undefined") {
 							this.attackOnTarget(selfToken, attacks.melee[attack], targetToken)
 						}
-						// console.log(game.actors.get(targetArray[html.find('#target').val()].data.actorId))
-						// game.actors.get(targetArray[html.find('#target').val()].data.actorId).data.data.reserves.hp.value = 9;//Set the value to the new one so we can work with it within the macro
-						// game.actors.get(targetArray[html.find('#target').val()].data.actorId).update({ ['data.reserves.hp.value']: 9 });//Use .update so it can be referenced by the rest of Foundry
-						// console.log(game.actors.get(targetArray[html.find('#target').val()].data.actorId).data.data.reserves.hp.value)
-						// console.log(selfCoords)
-						// game.actors.get(targetArray[html.find('#target').val()].data.actorId).test();
-						// selfActor.test()
 					}
 				},
 				ranged: {
@@ -1087,14 +1080,6 @@ export class gurpsActor extends Actor {
 						if (typeof attack !== "undefined") {
 							this.attackOnTarget(selfToken, attacks.ranged[attack], targetToken)
 						}
-						// console.log(html.find('#target').val())
-						// console.log(game.actors.get(targetArray[html.find('#target').val()].data.actorId))
-						// game.actors.get(targetArray[html.find('#target').val()].data.actorId).data.data.reserves.hp.value = 9;//Set the value to the new one so we can work with it within the macro
-						// game.actors.get(targetArray[html.find('#target').val()].data.actorId).update({ ['data.reserves.hp.value']: 9 });//Use .update so it can be referenced by the rest of Foundry
-						// console.log(game.actors.get(targetArray[html.find('#target').val()].data.actorId).data.data.reserves.hp.value)
-						// console.log(selfCoords)
-						// game.actors.get(targetArray[html.find('#target').val()].data.actorId).test();
-						// selfActor.test()
 					}
 				},
 				cancel: {
@@ -1938,8 +1923,6 @@ export class gurpsActor extends Actor {
 			attacksStopped = 0;
 		}
 
-		console.log(locationIDs.length)
-
 		let locationsHit;
 		let attacksThrough;
 
@@ -2009,10 +1992,6 @@ export class gurpsActor extends Actor {
 		}
 
 		let damageType = this.extractDamageType(attack);
-
-		console.log(flags)
-		console.log(attack)
-		console.log(target);
 
 		let html = "<div>Damage for " + attacker.data.name + "'s " + attack.weapon + " " + attack.name + " against " + target.data.name + "</div>";
 		for (let i = 0; i < locationsHit.length; i++){
@@ -2136,8 +2115,6 @@ export class gurpsActor extends Actor {
 				}
 			}
 
-			console.log(actualDamage);
-
 			if (actualDamage > 0) { // Damage has penetrated DR.
 				actualDamage = Math.floor(actualDamage);
 				html += "<label>" + actualDamage + " damage gets through</label>";
@@ -2152,16 +2129,13 @@ export class gurpsActor extends Actor {
 				}
 
 				// TODO - Apply damage to location and actor
-				console.log(location)
 
 				let woundCap;
 				if (location.id.toLowerCase().includes("sublocation")){ // This is a sub location, check the parent for an HP value
 					let subLocation = location.id.split(".")[0]
 					let parentLocation = getProperty(target.data.data.bodyType.body, subLocation);
 					if (parentLocation.hp){ // Apply damage to the parent location if it tracks HP
-						console.log(parentLocation.hp.value)
 						woundCap = parentLocation.hp.value; // Damage is capped to however much HP is left in the limb
-						console.log("woundCap: " + woundCap)
 						parentLocation.hp.value -= Math.floor(actualDamage * getProperty(location, damageType.woundModId) );
 						parentLocation.hp.value = Math.max(parentLocation.hp.value, -parentLocation.hp.max) // Value should be the higher of it's actual value and full negative HP.
 						game.actors.get(flags.target).update({ ['data.bodyType.body.' + subLocation + ".hp.value"]: parentLocation.hp.value });
@@ -2171,14 +2145,10 @@ export class gurpsActor extends Actor {
 						location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
 						game.actors.get(flags.target).update({ ['data.bodyType.body.' + location.id + ".hp.value"]: location.hp.value });
 					}
-
-					console.log(parentLocation)
 				}
 				else {
 					if (location.hp){ // Apply damage to the location if it tracks HP
-						console.log(location.hp.value)
 						woundCap = location.hp.value; // Damage is capped to however much HP is left in the limb
-						console.log("woundCap: " + woundCap)
 						location.hp.value -= Math.floor(actualDamage * getProperty(location, damageType.woundModId) );
 						location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
 					}
@@ -2194,8 +2164,6 @@ export class gurpsActor extends Actor {
 					}
 
 					actualDamage = Math.min(woundCap, actualDamage);
-					console.log(woundCap)
-					console.log(actualDamage)
 				}
 
 				// Multiply final damage by the locational wound modifier and add it to the running total
@@ -2209,8 +2177,6 @@ export class gurpsActor extends Actor {
 				html += "<div>The location takes " + Math.floor(actualDamage * getProperty(location, damageType.woundModId) ) + " injury</div>";
 			}
 			else if (actualDamage <= 0) { // No damage has penetrated DR
-				console.log("no damage has penetrated")
-				console.log(bluntTrauma)
 				bluntTrauma = Math.floor(bluntTrauma); // Round down blunt trama in preparation for actually applying the damage.
 				if (bluntTrauma > 0) {
 					let bluntInjury = bluntTrauma;
@@ -2222,9 +2188,7 @@ export class gurpsActor extends Actor {
 						let subLocation = location.id.split(".")[0]
 						let parentLocation = getProperty(target.data.data.bodyType.body, subLocation);
 						if (parentLocation.hp){ // Apply damage to the parent location if it tracks HP
-							console.log(parentLocation.hp.value)
 							woundCap = parentLocation.hp.value; // Damage is capped to however much HP is left in the limb
-							console.log("woundCap: " + woundCap)
 							parentLocation.hp.value -= bluntInjury;
 							parentLocation.hp.value = Math.max(parentLocation.hp.value, -parentLocation.hp.max) // Value should be the higher of it's actual value and full negative HP.
 							game.actors.get(flags.target).update({ ['data.bodyType.body.' + subLocation + ".hp.value"]: parentLocation.hp.value });
@@ -2234,14 +2198,10 @@ export class gurpsActor extends Actor {
 							location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
 							game.actors.get(flags.target).update({ ['data.bodyType.body.' + location.id + ".hp.value"]: location.hp.value });
 						}
-
-						console.log(parentLocation)
 					}
 					else {
 						if (location.hp){ // Apply damage to the location if it tracks HP
-							console.log(location.hp.value)
 							woundCap = location.hp.value; // Damage is capped to however much HP is left in the limb
-							console.log("woundCap: " + woundCap)
 							location.hp.value -= bluntInjury;
 							location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
 						}
@@ -2257,15 +2217,12 @@ export class gurpsActor extends Actor {
 						}
 
 						bluntInjury = Math.min(woundCap, bluntInjury);
-						console.log(woundCap)
-						console.log(bluntInjury)
 					}
 
 					totalInjury += bluntInjury;
 
 
 					html += "<div>The location takes " + bluntInjury + " injury</div>";
-					console.log(location)
 				}
 				else {
 					html += "<label>The armour stops all damage and the attack does no blunt trauma.</label>";
