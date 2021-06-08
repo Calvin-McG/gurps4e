@@ -1162,16 +1162,16 @@ export class gurpsActor extends Actor {
 		if (attack.type === "ranged") { // For ranged attacks, handle RoF related stuff
 			if (attack.rof.toString().toLowerCase().includes("x")){
 				split = attack.rof.toString().toLowerCase().split("x")
-				rof.shots = split[0];
-				rof.pellets = split[1];
+				rof.shots = Math.max(split[0], 1);
+				rof.pellets = Math.max(split[1], 1);
 			}
 			else if (attack.rof.toString().toLowerCase().includes("*")){
 				split = attack.rof.toString().toLowerCase().split("*")
-				rof.shots = split[0];
-				rof.pellets = split[1];
+				rof.shots = Math.max(split[0], 1);
+				rof.pellets = Math.max(split[1], 1);
 			}
 			else {
-				rof.shots = attack.rof.trim()
+				rof.shots = Math.max(attack.rof.trim(), 1);
 				rof.pellets = 1;
 			}
 

@@ -5,11 +5,9 @@
     - Destructive Parry
     - Armour HP
     - Surge damage
-    - Apply half and max range for ranged attacks
     - Double check skill based defaults (Metallurgy is at -5?)
     - Reset damage button
     - HP damage applied to token (And if linked it goes to actor?) IDK, all the squidwards were being treated as the same dude. Make that not happen
-    - Input sanitization for rof missing, among other things (Players be dumb)
     - Spells as quick contest, Regular spell range, etc.
     - Rof bonus comes up NaN for some reason? But only sometimes? WTF? (Put in a patch so it will at least zero out. Underlying issue remains)
     - Incidental damage (Rolling 9s vs people behind/front of main target)
@@ -43,6 +41,7 @@ Combat Macro
     - Defence penalty for side/rear
     - Shock penalties
     - AoA (Strong, etc)
+    - Apply half and max range for ranged attacks
     - Add All Out Defence (Double) and (Increased) and figure out how to make double work. (And if double can be a pair of parries/dodges/blocks)
         - Default selects to empty, and add a button to choose the two selections made?
     - Acrobatic/Aerobatic defences
