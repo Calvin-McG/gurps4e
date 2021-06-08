@@ -2,7 +2,6 @@
     - Brette Mode
     - Custom base attribute
     - Spell shit, ie: scalable damage from chargeable missiles
-    - Typeless damage (crushing except not crushing)
     - Destructive Parry
     - Armour HP
     - Surge damage
@@ -13,7 +12,6 @@
     - HP damage applied to token (And if linked it goes to actor?) IDK, all the squidwards were being treated as the same dude. Make that not happen
     - Input sanitization for rof missing, among other things (Players be dumb)
     - Spells as quick contest, Regular spell range, etc.
-    - Low HP should impact dodge (Unless HPT?)
     - Rof bonus comes up NaN for some reason? But only sometimes? WTF? (Put in a patch so it will at least zero out. Underlying issue remains)
     - Incidental damage (Rolling 9s vs people behind/front of main target)
     - Uncategorized at the bottom of the list
@@ -53,6 +51,7 @@ Combat Macro
     - Supernatural Durability
     - Low/High pain threshold
     - Injury Tolerances
+    - Penalty for defending rear
 
 Naval
     - Naval character sheet
