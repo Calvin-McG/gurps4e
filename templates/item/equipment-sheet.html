@@ -112,8 +112,46 @@
                         <input type="text" name="data.melee.{{id}}.blockMod" value="{{melee.blockMod}}"/>
                     </td>
                     <td><input type="text" name="data.melee.{{id}}.damageInput" value="{{melee.damageInput}}" title="{{melee.damageInput}}" style="text-align:left;" /></td>
-                    <td><input type="text" name="data.melee.{{id}}.damageType" value="{{melee.damageType}}" title="{{melee.damageType}}" style="text-align:left;" /></td>
-                    <td><input type="text" name="data.melee.{{id}}.armorDivisor" value="{{melee.armorDivisor}}" title="{{melee.armorDivisor}}" style="text-align:left;" /></td>
+                    <td>
+                        <span class="tooltip">
+                            <input type="text" name="data.melee.{{id}}.damageType" value="{{melee.damageType}}" title="{{melee.damageType}}" style="text-align:left;" />
+                            <span class="tooltiptext" style="margin-left: -100px">
+                                <div>
+                                    <span style="text-decoration: underline">Valid entries are:</span><br>
+                                    burn: Burning<br>
+                                    cor: Corrosion<br>
+                                    cr: Crushing<br>
+                                    cut: Cutting<br>
+                                    fat: Fatigue<br>
+                                    imp: Impaling<br>
+                                    pi-: Small Piercing<br>
+                                    pi: Piercing<br>
+                                    pi+: Large Piercing<br>
+                                    pi++: Huge Piercing<br>
+                                    tox: Toxic<br>
+                                    dam: Untyped<br>
+                                    <span style="text-decoration: underline">Valid modifiers are:</span><br>
+                                    ex: Explosive<br>
+                                    dbk: Double Knockback<br>
+                                    dbt: Double Blunt Trauma<br>
+                                    nw: No Wounding<br>
+                                </div>
+                            </span>
+                        </span>
+                    </td>
+                    <td>
+                        <span class="tooltip">
+                            <input type="text" name="data.melee.{{id}}.armorDivisor" value="{{melee.armorDivisor}}" title="{{melee.armorDivisor}}" style="text-align:left;" />
+                            <span class="tooltiptext" style="margin-left: -100px">
+                                <div>
+                                    Default is 1<br>
+                                    0 makes effective armour infinite<br>
+                                    Using the words 'ignore' or 'cosmic' allows the attack to ignore armour<br>
+                                    Setting this to 'I' will also ignore armour
+                                </div>
+                            </span>
+                        </span>
+                    </td>
                     <td><input type="text" name="data.melee.{{id}}.reach" value="{{melee.reach}}" title="{{melee.reach}}" style="text-align:left;" /></td>
                     <td><input type="text" name="data.melee.{{id}}.st" value="{{melee.st}}"/></td>
                     <td><a class="attack-delete" id="meleee{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
@@ -157,8 +195,46 @@
                         </td>
                         <td><input type="text" name="data.ranged.{{id}}.acc" value="{{ranged.acc}}" data-dtype="Number"/></td>
                         <td><input type="text" name="data.ranged.{{id}}.damageInput" value="{{ranged.damageInput}}" title="{{ranged.damageInput}}" style="text-align:left;" /></td>
-                        <td><input type="text" name="data.ranged.{{id}}.damageType" value="{{ranged.damageType}}" title="{{ranged.damageType}}" style="text-align:left;" /></td>
-                        <td><input type="text" name="data.ranged.{{id}}.armorDivisor" value="{{ranged.armorDivisor}}" title="{{ranged.armorDivisor}}" style="text-align:left;" /></td>
+                        <td>
+                            <span class="tooltip">
+                                <input type="text" name="data.ranged.{{id}}.damageType" value="{{ranged.damageType}}" title="{{ranged.damageType}}" style="text-align:left;" />
+                                <span class="tooltiptext" style="margin-left: -100px">
+                                    <div>
+                                        <span style="text-decoration: underline">Valid entries are:</span><br>
+                                        burn: Burning<br>
+                                        cor: Corrosion<br>
+                                        cr: Crushing<br>
+                                        cut: Cutting<br>
+                                        fat: Fatigue<br>
+                                        imp: Impaling<br>
+                                        pi-: Small Piercing<br>
+                                        pi: Piercing<br>
+                                        pi+: Large Piercing<br>
+                                        pi++: Huge Piercing<br>
+                                        tox: Toxic<br>
+                                        dam: Untyped<br>
+                                        <span style="text-decoration: underline">Valid modifiers are:</span><br>
+                                        ex: Explosive<br>
+                                        dbk: Double Knockback<br>
+                                        dbt: Double Blunt Trauma<br>
+                                        nw: No Wounding<br>
+                                    </div>
+                                </span>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="tooltip">
+                                <input type="text" name="data.ranged.{{id}}.armorDivisor" value="{{ranged.armorDivisor}}" title="{{ranged.armorDivisor}}" style="text-align:left;" />
+                                <span class="tooltiptext" style="margin-left: -100px">
+                                    <div>
+                                        Default is 1<br>
+                                        0 makes effective armour infinite<br>
+                                        Using the words 'ignore' or 'cosmic' allows the attack to ignore armour<br>
+                                        Setting this to 'I' will also ignore armour
+                                    </div>
+                                </span>
+                            </span>
+                        </td>
                         <td><input type="text" name="data.ranged.{{id}}.range" value="{{ranged.range}}" title="{{ranged.range}}" style="text-align:left;" /></td>
                         <td><input type="text" name="data.ranged.{{id}}.rof" value="{{ranged.rof}}" title="{{ranged.rof}}" style="text-align:left;" /></td>
                         <td><input type="text" name="data.ranged.{{id}}.shots" value="{{ranged.shots}}" title="{{ranged.shots}}" style="text-align:left;" /></td>
