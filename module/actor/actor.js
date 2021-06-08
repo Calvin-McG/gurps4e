@@ -2125,7 +2125,7 @@ export class gurpsActor extends Actor {
 					actualDamage -= (1/armourDivisor);
 
 					if (bluntTrauma == 0){ // Kinda hacky, but works for now. TODO - Make less suck
-						bluntTrauma = totalDamage / damageType.bluntReq;
+						bluntTrauma = (totalDamage / damageType.bluntReq) / damageReduction;
 					}
 				}
 			}
@@ -2143,18 +2143,16 @@ export class gurpsActor extends Actor {
 					totalKnockback += knockback;
 				}
 
-				// TODO - Apply damage to location and actor
-
 				let woundCap;
 				let actualWounding;
 				if (location.id.toLowerCase().includes("sublocation")){ // This is a sub location, check the parent for an HP value
 					let subLocation = location.id.split(".")[0]
 					let parentLocation = getProperty(target.data.data.bodyType.body, subLocation);
-					if (damageType.woundModId === "dam") { // Check for untyped damage
-						actualWounding = Math.floor(actualDamage * 1 );
+					if (damageType.woundModId.toString().toLowerCase().includes("dam")) { // Check for untyped damage
+						actualWounding = Math.floor( (actualDamage * 1) / damageReduction );
 					}
 					else {
-						actualWounding = Math.floor(actualDamage * getProperty(location, damageType.woundModId) );
+						actualWounding = Math.floor( (actualDamage * getProperty(location, damageType.woundModId)) / damageReduction );
 					}
 					if (parentLocation.hp){// Apply damage to the parent location if it tracks HP
 						woundCap = parentLocation.hp.value; // Damage is capped to however much HP is left in the limb
@@ -2171,14 +2169,14 @@ export class gurpsActor extends Actor {
 					}
 				}
 				else {
+					if (damageType.woundModId.toString().toLowerCase().includes("dam")) { // Check for untyped damage
+						actualWounding = Math.floor( (actualDamage * 1) / damageReduction );
+					}
+					else {
+						actualWounding = Math.floor((actualDamage * getProperty(location, damageType.woundModId)) / damageReduction );
+					}
 					if (location.hp){ // Apply damage to the location if it tracks HP
 						woundCap = location.hp.value; // Damage is capped to however much HP is left in the limb
-						if (damageType.woundModId === "dam") { // Check for untyped damage
-							actualWounding = Math.floor(actualDamage * 1 );
-						}
-						else {
-							actualWounding = Math.floor(actualDamage * getProperty(location, damageType.woundModId) );
-						}
 						location.hp.value -= actualWounding
 						location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
 					}
@@ -2203,7 +2201,6 @@ export class gurpsActor extends Actor {
 				else {
 					totalInjury += actualWounding;
 				}
-
 				html += "<div>The location takes " + actualWounding + " injury</div>";
 			}
 			else if (actualDamage <= 0) { // No damage has penetrated DR
