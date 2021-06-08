@@ -7,7 +7,6 @@
     - Surge damage
     - Apply half and max range for ranged attacks
     - Double check skill based defaults (Metallurgy is at -5?)
-    - Shield does not appear in attack macro (Cap is 4 attack profiles for some reason? And old attacks sometimes disappear? None of Raven's attacks would show up at all)
     - Reset damage button
     - HP damage applied to token (And if linked it goes to actor?) IDK, all the squidwards were being treated as the same dude. Make that not happen
     - Input sanitization for rof missing, among other things (Players be dumb)
@@ -49,7 +48,7 @@ Combat Macro
     - Acrobatic/Aerobatic defences
     - Damage Reduction
     - Supernatural Durability
-    - Low/High pain threshold
+    - Low/High pain threshold - Stunning/knockdown and shock
     - Injury Tolerances
     - Penalty for defending rear
 

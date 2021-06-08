@@ -984,6 +984,7 @@ export class gurpsActor extends Actor {
 
 	singleTargetDialog(selfToken, targetToken){
 		let attacks = this.listAttacks(selfToken.actor);
+		console.log(attacks)
 
 		let htmlContent = "<div>";
 		htmlContent += "<table>";
@@ -1102,8 +1103,7 @@ export class gurpsActor extends Actor {
 	}
 
 	listAttacks(actor){
-		let q = 0;
-		let p = 0;
+		console.log(actor)
 		let meleeAttacks = [];
 		let rangedAttacks = [];
 		let melee;
@@ -1111,20 +1111,21 @@ export class gurpsActor extends Actor {
 
 		for (let y = 0; y < actor.data.items.length; y++){
 			if (actor.data.items[y].type == "Trait" || actor.data.items[y].type == "Equipment"){
-				while (actor.data.items[y].data.melee[q]) {
-					melee = actor.data.items[y].data.melee[q];
+				let meleeKeys = Object.keys(actor.data.items[y].data.melee); // Collect all the melee keys
+				let rangedKeys = Object.keys(actor.data.items[y].data.ranged); // Collect all the ranged keys
+
+				for (let m = 0; m < meleeKeys.length; m++){
+					melee = getProperty(actor.data.items[y].data.melee, meleeKeys[m]);
 					melee.weapon = actor.data.items[y].name
 
 					meleeAttacks.push(melee);
-					q++;
 				}
 
-				while (actor.data.items[y].data.ranged[p]) {
-					ranged = actor.data.items[y].data.ranged[p];
+				for (let r = 0; r < rangedKeys.length; r++){
+					ranged = getProperty(actor.data.items[y].data.ranged, rangedKeys[r]);
 					ranged.weapon = actor.data.items[y].name
 
 					rangedAttacks.push(ranged);
-					p++;
 				}
 			}
 		}
@@ -1158,7 +1159,7 @@ export class gurpsActor extends Actor {
 			pellets: 1,
 			rof: 1
 		}
-		if (attack.type === "ranged") { // Check to see if RoF exists. This is a shorthand for whether the attack is ranged or melee
+		if (attack.type === "ranged") { // For ranged attacks, handle RoF related stuff
 			if (attack.rof.toString().toLowerCase().includes("x")){
 				split = attack.rof.toString().toLowerCase().split("x")
 				rof.shots = split[0];
