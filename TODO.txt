@@ -1,4 +1,20 @@
-// TODO from session 5/27/2021
+TODO from session 6/10/2021
+    - EX/Frag macro
+    - Figure out issue with old body types
+    - Move and attack
+    - Default to humanoid
+    - Default selected DR types
+    - Minimum default Rcl of 1
+    - Imp did 11 damage, 10 got through, and did 10 injury to Lower Chest
+    - Cr did 8 damage, 8 got through, and did 8 injury to the neck
+
+From session 6/10/2021
+    - Will roll game setting for feverish defence
+    - Styling on note fields so they expand with dialog expansion
+    - Enlarge die next to skill rolls
+    - Skill die as macro. (Draggable? Callable?)
+
+from session 5/27/2021
     - Brette Mode
     - Custom base attribute
     - Spell shit, ie: scalable damage from chargeable missiles
