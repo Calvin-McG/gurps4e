@@ -1553,7 +1553,7 @@ export class gurpsActor extends Actor {
 
 		modModalContent += "<tr><td>SM Modifier:</td><td>" + sizeModModifier + "</td></tr>";
 
-		let odds = rollHelpers.levelToOdds((+attack.level + +totalModifier))
+		let odds = rollHelpers.levelToOdds(+attack.level + +totalModifier)
 
 		modModalContent += "<tr><td>Total Modifier</td><td>" + totalModifier + "</td></tr>" +
 			"<tr><td>Effective Skill</td><td>" + (+attack.level + +totalModifier) + "</td></tr>" +
@@ -1649,7 +1649,7 @@ export class gurpsActor extends Actor {
 				messageContent += "<div style='display: grid; grid-template-columns: 0.1fr auto;'><input type='checkbox' checked class='checkbox' id='" + locations[m].id + "' value='" + locations[m].id + "' name='" + locations[m].id + "' /><span style='line-height: 26px;'>" + locationLabel + "</span></div>";
 			}
 
-			messageContent += "</br><input type='button' class='attemptActiveDefences' value='Attempt Active Defences'/>"
+			messageContent += "</br><input type='button' class='attemptActiveDefences' value='Attempt Active Defences'/><input type='button' class='noActiveDefences' value='No Active Defences'/>"
 
 			let locationIDs = [];
 
@@ -1827,6 +1827,26 @@ export class gurpsActor extends Actor {
 			close: html => console.log("This always is logged no matter which option is chosen")
 		})
 		activeDefenceModal.render(true)
+	}
+
+	noActiveDefences(event) {
+		event.preventDefault();
+
+		function filterChecked(item){
+			return item.checked; // Return whatever the status of the checkbox is.
+		}
+
+		let checkboxes = event.target.parentElement.getElementsByClassName("checkbox");
+		let checkedBoxes = Object.values(checkboxes).filter(filterChecked);
+		let locationIDs = [];
+
+		for (let c = 0; c < checkedBoxes.length; c++){
+			locationIDs[c] = checkedBoxes[c].id;
+		}
+
+		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
+
+		this.applyDamage(flags, locationIDs);
 	}
 
 	gatherOptions(html, type, flags, locationIDs){

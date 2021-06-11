@@ -22,38 +22,9 @@ Hooks.on("renderChatMessage", async (app, html, msg) => {
     html.html("").css("display", "none");
   }
 
-  html.find('.test').click(_test.bind(this));
-
   html.find('.attemptActiveDefences').click(attemptActiveDefences.bind(this));
+  html.find('.noActiveDefences').click(noActiveDefences.bind(this));
 })
-
-function _test(event) {
-  event.preventDefault();
-  console.log(event);
-  console.log("Test Successful");
-
-  let checkboxes = event.target.parentElement.getElementsByClassName("checkbox");
-
-  console.log($(event.target.parentElement.parentElement)[0].dataset.messageId);
-
-  console.log(checkboxes);
-
-  let checkedBoxes = Object.values(checkboxes).filter(filterChecked);
-
-  console.log(checkedBoxes);
-
-  console.log(game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId));
-
-  let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
-
-  console.log(flags);
-
-  console.log(game.actors.get(flags.target))
-
-  console.log(game.actors.get(flags.target).numToWords(1))
-
-  console.log(game.actors.get(flags.attacker))
-}
 
 function attemptActiveDefences(event) {
   event.preventDefault();
@@ -61,6 +32,8 @@ function attemptActiveDefences(event) {
   game.actors.get(flags.target).attemptActiveDefences(event);
 }
 
-function filterChecked(item){
-  return item.checked; // Return whatever the status of the checkbox is.
+function noActiveDefences(event) {
+  event.preventDefault();
+  let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
+  game.actors.get(flags.target).noActiveDefences(event);
 }
