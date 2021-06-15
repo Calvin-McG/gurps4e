@@ -4,9 +4,9 @@ TODO from session 6/10/2021
     - Move and attack
     - Default to humanoid
     - Default selected DR types
-    - Minimum default Rcl of 1
     - Imp did 11 damage, 10 got through, and did 10 injury to Lower Chest
     - Cr did 8 damage, 8 got through, and did 8 injury to the neck
+    - Modifier does not apply to skills running off of default. (Set up for innate attack + dabbler trick)
 
 From session 6/10/2021
     - Will roll game setting for feverish defence
@@ -46,6 +46,7 @@ Misc
     - Journal - Item linky thing like CoC on char sheets
 
 Combat Macro
+    - Tight beam burning - 1x damage
     - Attack specific macros
     - Injury tolerances, Damage Resistance
     - ST Multiplier for range (With skill bonuses to ST)

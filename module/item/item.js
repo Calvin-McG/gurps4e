@@ -46,6 +46,20 @@ export class gurpsItem extends Item {
   }
 
   _prepareEquipmentData(itemData, data) {
+    // Check for undefined on cost, weight, and quantity
+    if (typeof data.cost === undefined || typeof data.cost == null) { // Undefined set to 0
+      this.data.data.cost = 0;
+      this._data.data.cost = 0;
+    }
+    if (typeof data.weight === undefined || typeof data.weight == null) { // Undefined set to 0
+      this.data.data.weight = 0;
+      this._data.data.weight = 0;
+    }
+    if (typeof data.quantity === undefined || typeof data.quantity == null) { // Undefined set to 0
+      this.data.data.quantity = 0;
+      this._data.data.quantity = 0;
+    }
+
     //Calculated total weight and cost
     this._data.data.ttlCost = (data.cost * data.quantity);
     this._data.data.ttlWeight = (data.weight * data.quantity);
@@ -53,6 +67,10 @@ export class gurpsItem extends Item {
     this.data.data.ttlWeight = (data.weight * data.quantity);
 
     //Constrain TL to valid values
+    if (typeof data.tl === undefined || typeof data.tl == null) { // Undefined set to 0
+      this._data.data.tl = 0;
+      this.data.data.tl = 0;
+    }
     if (data.tl < 0){//Too low
       this._data.data.tl = 0;
       this.data.data.tl = 0;
@@ -64,6 +82,9 @@ export class gurpsItem extends Item {
 
 
     //Constrain LC to valid values
+    if (typeof data.lc === undefined || typeof data.lc == null) { // Undefined set to 0
+      data.lc = 0;
+    }
     if (data.lc < 0){//Too low
       this._data.data.lc = 0;
       this.data.data.lc = 0;
