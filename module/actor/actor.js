@@ -1031,13 +1031,13 @@ export class gurpsActor extends Actor {
 			else {
 				htmlContent += "<td>" + attacks.ranged[q].damage + " " + attacks.ranged[q].damageType + " " + "(" + attacks.ranged[q].armorDivisor + ")</td>";
 			}
-			htmlContent += "<td>" + attacks.ranged[q].acc + "</td>";
+			htmlContent += "<td>" + (attacks.ranged[q].acc ? attacks.ranged[q].acc : 0) + "</td>";
 			htmlContent += "<td>" + attacks.ranged[q].range + "</td>";
 			htmlContent += "<td>" + attacks.ranged[q].rof + "</td>";
 			htmlContent += "<td>" + attacks.ranged[q].shots + "</td>";
 			htmlContent += "<td>" + attacks.ranged[q].st + "</td>";
 			htmlContent += "<td>" + attacks.ranged[q].bulk + "</td>";
-			htmlContent += "<td>" + attacks.ranged[q].rcl + "</td>";
+			htmlContent += "<td>" + (attacks.ranged[q].rcl ? attacks.ranged[q].rcl : 1) + "</td>";
 			htmlContent += "</tr>";
 		}
 
@@ -1622,7 +1622,8 @@ export class gurpsActor extends Actor {
 		else {
 			let hits;
 			if (attack.type == "ranged") {
-				hits = Math.min( ((Math.floor(rollInfo.margin / Math.abs(attack.rcl))) + 1) , rof.rof ); // Get the number of hits based on how many times rcl fits into margin, plus one. Then cap with the number of shots actually fired
+				let rcl = attack.rcl ? attack.rcl : 1;
+				hits = Math.min( ((Math.floor(rollInfo.margin / Math.abs(rcl))) + 1) , rof.rof ); // Get the number of hits based on how many times rcl fits into margin, plus one. Then cap with the number of shots actually fired
 			}
 			else {
 				hits = 1
@@ -1898,7 +1899,7 @@ export class gurpsActor extends Actor {
 		label += target.data.name + " attempts a ";
 
 		if (options.feverishDefence) {
-			// TODO - Subtract 1 FP from the actor
+			// TODO - Do the Will roll thing and Subtract 1 FP from the actor
 			label += "feverish ";
 			totalModifier += 2;
 		}
@@ -2291,8 +2292,6 @@ export class gurpsActor extends Actor {
 		if (totalKnockback > 0) { // Display total knockback
 			html += "<hr><div>" + target.data.name + " is knocked back " + totalKnockback + " yards and must roll at -" + (totalKnockback - 1) + " to avoid falling down.</div>";
 		}
-
-		// TODO - Apply the actual damage as an actor update
 
 		if (totalInjury > 0){
 			let newHP = target.data.data.reserves.hp.value - Math.floor(totalInjury);
