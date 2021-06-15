@@ -93,13 +93,12 @@ export class gurpsItem extends Item {
       this._data.data.lc = 4;
       this.data.data.lc = 4;
     }
-
-    this.prepareAttackData(itemData, data)
   }
 
   prepareAttackData(itemData, data) {
     //Check to see if there is an actor yet
     if (this.actor){
+      let damage;
       //Do logic stuff for melee profiles
       let meleeKeys = Object.keys(data.melee);
       if (meleeKeys.length){//Check to see if there are any melee profiles
@@ -155,9 +154,23 @@ export class gurpsItem extends Item {
             else {
               block = data.melee[meleeKeys[k]].blockMod;
             }
-            this._data.data.melee[meleeKeys[k]].block = block//Update block value
-            this._data.data.melee[meleeKeys[k]].type = "melee" // Update attack type
-            this._data.data.melee[meleeKeys[k]].damage = this.damageParseSwThr(data.melee[meleeKeys[k]].damageInput);//Update damage value
+            damage = this.damageParseSwThr(data.melee[meleeKeys[k]].damageInput);//Update damage value
+            this._data.data.melee[meleeKeys[k]].block = block; // Update block value
+            this.data.data.melee[meleeKeys[k]].block = block; // Update block value
+            this._data.data.melee[meleeKeys[k]].type = "melee"; // Update attack type
+            this.data.data.melee[meleeKeys[k]].type = "melee"; // Update attack type
+            this._data.data.melee[meleeKeys[k]].damage = damage;
+            this.data.data.melee[meleeKeys[k]].damage = damage;
+
+            // Validation for Armour Divisor
+            if (!(data.melee[meleeKeys[k]].armorDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
+                data.melee[meleeKeys[k]].armorDivisor.toString().toLowerCase().includes("cosmic") ||
+                data.melee[meleeKeys[k]].armorDivisor.toString().toLowerCase().includes("i") ||
+                data.melee[meleeKeys[k]].armorDivisor >= 0)
+            ){
+              this._data.data.melee[meleeKeys[k]].armorDivisor = 1;
+              this.data.data.melee[meleeKeys[k]].armorDivisor = 1;
+            }
           }
         }
       }
@@ -187,9 +200,46 @@ export class gurpsItem extends Item {
               }
             }
             level = level + mod;//Update the skill level with the skill modifier
-            this._data.data.ranged[rangedKeys[k]].level = level
-            this._data.data.ranged[rangedKeys[k]].type = "ranged" // Update attack type
-            this._data.data.ranged[rangedKeys[k]].damage = this.damageParseSwThr(data.ranged[rangedKeys[k]].damageInput);
+            this._data.data.ranged[rangedKeys[k]].level = level;
+            this.data.data.ranged[rangedKeys[k]].level = level;
+            this._data.data.ranged[rangedKeys[k]].type = "ranged"; // Update attack type
+            this.data.data.ranged[rangedKeys[k]].type = "ranged"; // Update attack type
+            damage = this.damageParseSwThr(data.ranged[rangedKeys[k]].damageInput);
+            this._data.data.ranged[rangedKeys[k]].damage = damage;
+            this._data.data.ranged[rangedKeys[k]].damage = damage;
+
+            if (typeof data.ranged[rangedKeys[k]].rcl == "undefined" || data.ranged[rangedKeys[k]].rcl <= 0){ // Catch invalid values for rcl. Value must exist and be at least one.
+              this._data.data.ranged[rangedKeys[k]].rcl = 1;
+              this.data.data.ranged[rangedKeys[k]].rcl = 1;
+            }
+            if (typeof data.ranged[rangedKeys[k]].rof == "undefined" || data.ranged[rangedKeys[k]].rof <= 0){ // Catch invalid values for rof. Value must exist and be at least one.
+              this._data.data.ranged[rangedKeys[k]].rof = 1;
+              this.data.data.ranged[rangedKeys[k]].rof = 1;
+            }
+            if (typeof data.ranged[rangedKeys[k]].acc == "undefined" || data.ranged[rangedKeys[k]].acc < 0){ // Catch invalid values for Acc. Value must exist and be at least zero.
+              this._data.data.ranged[rangedKeys[k]].acc = 0;
+              this.data.data.ranged[rangedKeys[k]].acc = 0;
+            }
+
+            // Validation for bulk
+            if (typeof data.ranged[rangedKeys[k]].bulk == "undefined" || data.ranged[rangedKeys[k]].bulk == ""){ // Must exist.
+              this._data.data.ranged[rangedKeys[k]].bulk = -2;
+              this.data.data.ranged[rangedKeys[k]].bulk = -2;
+            }
+            else if (data.ranged[rangedKeys[k]].bulk > 0){ // Must be less than zero. Set positive values to negative equivilent
+              this._data.data.ranged[rangedKeys[k]].bulk = -data.ranged[rangedKeys[k]].bulk;
+              this.data.data.ranged[rangedKeys[k]].bulk = -data.ranged[rangedKeys[k]].bulk;
+            }
+
+            // Validation for Armour Divisor
+            if (!(data.ranged[rangedKeys[k]].armorDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
+                data.ranged[rangedKeys[k]].armorDivisor.toString().toLowerCase().includes("cosmic") ||
+                data.ranged[rangedKeys[k]].armorDivisor.toString().toLowerCase().includes("i") ||
+                data.ranged[rangedKeys[k]].armorDivisor >= 0)
+            ){
+              this._data.data.ranged[rangedKeys[k]].armorDivisor = 1;
+              this.data.data.ranged[rangedKeys[k]].armorDivisor = 1;
+            }
           }
         }
       }
