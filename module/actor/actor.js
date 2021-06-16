@@ -2299,6 +2299,12 @@ export class gurpsActor extends Actor {
 			armourDivisor = attack.armorDivisor; // Set it to whatever they entered.
 		}
 
+		if (target.data.data.injuryTolerances){
+			if (target.data.data.injuryTolerances.damageReduction){
+				damageReduction = target.data.data.injuryTolerances.damageReduction; // Set the target's damage reduction
+			}
+		}
+
 		let damageType = this.extractDamageType(attack);
 
 		let html = "<div>Damage for " + attacker.data.name + "'s " + attack.weapon + " " + attack.name + " against " + target.data.name + "</div>";
@@ -2442,10 +2448,12 @@ export class gurpsActor extends Actor {
 					let subLocation = location.id.split(".")[0]
 					let parentLocation = getProperty(target.data.data.bodyType.body, subLocation);
 					if (damageType.woundModId.toString().toLowerCase().includes("dam")) { // Check for untyped damage
-						actualWounding = Math.floor( (actualDamage * 1) / damageReduction );
+						console.log(damageReduction)
+						actualWounding = Math.floor( (actualDamage / damageReduction) );
 					}
 					else {
-						actualWounding = Math.floor( (actualDamage * getProperty(location, damageType.woundModId)) / damageReduction );
+						console.log(damageReduction)
+						actualWounding = Math.floor( ( (actualDamage * getProperty(location, damageType.woundModId)) / damageReduction) );
 					}
 					if (parentLocation.hp){// Apply damage to the parent location if it tracks HP
 						woundCap = parentLocation.hp.value; // Damage is capped to however much HP is left in the limb
@@ -2463,10 +2471,12 @@ export class gurpsActor extends Actor {
 				}
 				else {
 					if (damageType.woundModId.toString().toLowerCase().includes("dam")) { // Check for untyped damage
-						actualWounding = Math.floor( (actualDamage * 1) / damageReduction );
+						console.log(damageReduction)
+						actualWounding = Math.floor( ((actualDamage * 1) / damageReduction) );
 					}
 					else {
-						actualWounding = Math.floor((actualDamage * getProperty(location, damageType.woundModId)) / damageReduction );
+						console.log(damageReduction)
+						actualWounding = Math.floor(((actualDamage * getProperty(location, damageType.woundModId)) / damageReduction) );
 					}
 					if (location.hp){ // Apply damage to the location if it tracks HP
 						woundCap = location.hp.value; // Damage is capped to however much HP is left in the limb
