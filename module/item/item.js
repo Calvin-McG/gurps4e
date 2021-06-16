@@ -465,7 +465,7 @@ export class gurpsItem extends Item {
         bestAttrDefault += +dabblerBonus;
 
         bestAttrDefault = Math.min(bestAttrDefault, this.onePointInSkill(baseAttr, difficulty)-1);//Set the value either to the best attribute default plus the dabbler bonus, or one less than what they'd get if they spent actual points.
-        level = Math.max(bestAttrDefault, Math.max(...skillDefaultArray))
+        level = Math.max(bestAttrDefault, Math.max(...skillDefaultArray)) + mod;
       }
       else if(points > 0){//They have spent points, calculate accordingly, including buying up from defaults
         base = this.getBaseAttrValue(baseAttr)//Get the base value of the relevant attribute
