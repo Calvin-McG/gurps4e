@@ -214,17 +214,14 @@ export class gurpsActor extends Actor {
 	}
 
 	bodyTypeUpdate(){
+		console.log("Body Type")
 		let bodyType = this.data.data.bodyType.name;
-
-		if(bodyType == ""){ // If the body is blank, remove the body
-			this.data.data.bodyType.body = null;
-			this._data.data.bodyType.body = null;
-			return
-		}
-
 		let actorData = this.data.data;
-
 		let bodyObj = {};
+
+		if(bodyType == ""){ // If the body is blank, default to humanoid
+			bodyType = "humanoid";
+		}
 
 		//Spoders and squids have a brain instead of a skull. Everyone else has a skull
 		if (bodyType == "arachnoid" || bodyType == "octopod"){

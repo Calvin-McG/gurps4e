@@ -2,7 +2,6 @@ TODO from session 6/10/2021
     - EX/Frag macro
     - Figure out issue with old body types
     - Move and attack
-    - Default to humanoid
     - Default selected DR types
     - Imp did 11 damage, 10 got through, and did 10 injury to Lower Chest
     - Cr did 8 damage, 8 got through, and did 8 injury to the neck
