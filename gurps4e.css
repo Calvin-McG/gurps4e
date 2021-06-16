@@ -1214,14 +1214,14 @@ attribute-senses {
 	grid-column: 13 / 17;
 	grid-row: 16 / 18;
 	z-index: 1;
-	background-color: #FF0000;
+	background-color: rgb(193, 6, 6);
 }
 
 .location-abdomen-vitals {
 	grid-column: 13 / 17;
 	grid-row: 18 / 20;
 	z-index: 1;
-	background-color: #FF0000;
+	background-color: rgb(193, 6, 6);
 }
 
 .location-digestive {
@@ -1552,7 +1552,7 @@ attribute-senses {
 	grid-column: 28 / 30;
 	grid-row: 21 / 24;
 	z-index: 1;
-	background-color: #ff0000;
+	background-color: rgb(193, 6, 6);
 }
 
 .location-animal-chest-spine {
@@ -1566,7 +1566,7 @@ attribute-senses {
 	grid-column: 30 / 32;
 	grid-row: 21 / 24;
 	z-index: 1;
-	background-color: #ff0000;
+	background-color: rgb(193, 6, 6);
 }
 
 .location-animal-abdomen-digestive {
