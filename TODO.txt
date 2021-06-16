@@ -67,6 +67,7 @@ Combat Macro
     - Low/High pain threshold - Stunning/knockdown and shock
     - Injury Tolerances
     - Penalty for defending rear
+    - Armour Hardness doesn't work.
 
 Naval
     - Naval character sheet
