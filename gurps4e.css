@@ -11,6 +11,10 @@
 	cursor: pointer;
 }
 
+.rollable {
+	font-size: large;
+}
+
 .inEffect {
 	background-color: #88cc88;
 }

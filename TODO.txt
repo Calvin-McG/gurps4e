@@ -6,7 +6,6 @@ TODO from session 6/10/2021
 From session 6/10/2021
     - Will roll game setting for feverish defence
     - Styling on note fields so they expand with dialog expansion
-    - Enlarge die next to skill rolls
     - Skill die as macro. (Draggable? Callable?)
 
 from session 5/27/2021
@@ -20,7 +19,7 @@ from session 5/27/2021
     - Reset damage button
     - HP damage applied to token (And if linked it goes to actor?) IDK, all the squidwards were being treated as the same dude. Make that not happen
     - Spells as quick contest, Regular spell range, etc.
-    - Rof bonus comes up NaN for some reason? But only sometimes? WTF? (Put in a patch so it will at least zero out. Underlying issue remains)
+    - Rof bonus comes up NaN for some reason? But only sometimes? WTF? (Already put in a patch so it will at least zero out. Underlying issue remains)
     - Incidental damage (Rolling 9s vs people behind/front of main target)
     - Uncategorized at the bottom of the list
 
