@@ -2576,202 +2576,139 @@
 
 			{{!-- Body Type Tab --}}
 			<div id="body-type" class="tab body-type" data-tab="body-type" data-group="primary">
-				<div>
-					<label>Body Type:</label>
-					<select name="data.bodyType.name" class="bodyType">
-						{{#select data.bodyType.name}}
-							<option value="humanoid">Humanoid</option>
-							<option value="wingedHumanoid">Winged Humanoid</option>
-							<option value="quadruped">Quadruped</option>
-							<option value="wingedQuadruped">Winged Quadruped</option>
-							<option value="hexapod">Hexapod</option>
-							<option value="wingedHexapod">Winged Hexapod</option>
-							<option value="centaur">Centaur</option>
-							<option value="avian">Avian</option>
-							<option value="vermiform">Vermiform</option>
-							<option value="lamia">Lamia</option>
-							<option value="wingedLamia">Winged Lamia</option>
-							<option value="octopod">Octopod</option>
-							<option value="cancroid">Cancroid</option>
-							<option value="ichthyoid">Ichthyoid</option>
-							<option value="arachnoid">Arachnoid</option>
-						{{/select}}
-					</select>
-				</div>
 				<div style="display: flex">
-					<table class="injuryTolerancesTable">
-						<tr>
-							<td colspan="2" style="text-align: center; font-weight: bold; border-bottom: #7a7971 2px solid">Injury Settings</td>
-						</tr>
-						<tr>
-							<td>Damage Reduction:</td>
-							<td><input type="number" id="data.injuryTolerances.damageReduction" name="data.injuryTolerances.damageReduction" value="{{data.injuryTolerances.damageReduction}}" data-dtype="Number" style="width: 25px"/></td>
-						</tr>
-						<tr>
-							<td>Supernatural Durability:</td>
-							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.supernaturalDurability" {{checked data.injuryTolerances.supernaturalDurability}} data-dtype="Boolean"/></td>
-						</tr>
-						<tr>
-							<td>Low Pain Threshold:</td>
-							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.lowPainThreshold" {{checked data.injuryTolerances.lowPainThreshold}} data-dtype="Boolean"/></td>
-						</tr>
-						<tr>
-							<td>High Pain Threshold:</td>
-							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.highPainThreshold" {{checked data.injuryTolerances.highPainThreshold}} data-dtype="Boolean"/></td>
-						</tr>
-					</table>
-					<table class="injuryTolerancesTable">
-						<tr>
-							<td colspan="4" style="text-align: center; font-weight: bold; border-bottom: #7a7971 2px solid">Injury Tolerance</td>
-						</tr>
-						<tr>
-							<td class="injuryTolerancesLabel">Diffuse:</td>
-							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.diffuse" {{checked data.injuryTolerances.diffuse}} data-dtype="Boolean"/></td>
-							<td class="injuryTolerancesLabel">No Brain:</td>
-							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noBrain" {{checked data.injuryTolerances.noBrain}} data-dtype="Boolean"/></td>
-						</tr>
-						<tr>
-							<td class="injuryTolerancesLabel">Homogenous:</td>
-							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.homogenous" {{checked data.injuryTolerances.homogenous}} data-dtype="Boolean"/></td>
-							<td class="injuryTolerancesLabel">No Eyes:</td>
-							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noEyes" {{checked data.injuryTolerances.noEyes}} data-dtype="Boolean"/></td>
-						</tr>
-						<tr>
-							<td class="injuryTolerancesLabel">Unliving:</td>
-							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.unliving" {{checked data.injuryTolerances.unliving}} data-dtype="Boolean"/></td>
-							<td class="injuryTolerancesLabel">No Head:</td>
-							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noHead" {{checked data.injuryTolerances.noHead}} data-dtype="Boolean"/></td>
-						</tr>
-						<tr>
-							<td class="injuryTolerancesLabel">Unbreakable Bones:</td>
-							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.unbreakableBones" {{checked data.injuryTolerances.unbreakableBones}} data-dtype="Boolean"/></td>
-							<td class="injuryTolerancesLabel">No Neck:</td>
-							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noNeck" {{checked data.injuryTolerances.noNeck}} data-dtype="Boolean"/></td>
-						</tr>
-						<tr>
-							<td class="injuryTolerancesLabel">No Blood:</td>
-							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noBlood" {{checked data.injuryTolerances.noBlood}} data-dtype="Boolean"/></td>
-							<td class="injuryTolerancesLabel">No Vitals:</td>
-							<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noVitals" {{checked data.injuryTolerances.noVitals}} data-dtype="Boolean"/></td>
-						</tr>
-					</table>
-				</div>
-				{{#if data.bodyType.name}}
-					<table class="dr-entry-table">
-						<tr class="hit-locations">
-							<td class="dr-header"></td>
-							<td class="dr-header">Flex</td>
-							<td class="dr-header">Hardness</td>
-							<td class="dr-damage-types">Burn</td>
-							<td class="dr-damage-types">Cor</td>
-							<td class="dr-damage-types">Cr</td>
-							<td class="dr-damage-types">Cut</td>
-							<td class="dr-damage-types">Fat</td>
-							<td class="dr-damage-types">Imp</td>
-							<td class="dr-damage-types">Pi</td>
-							<td class="dr-damage-types">Tox</td>
-							<td class="dr-header">HP</td>
-							<td class="dr-header">State</td>
-							<td class="dr-header">Penalty</td>
-						</tr>
-						{{#each actor.data.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
+					{{#if data.bodyType.name}}
+					<div>
+						<table class="dr-entry-table" style="width: unset">
+							<tr class="hit-locations">
+								<td class="dr-header"></td>
+								<td class="dr-header">HP</td>
+								<td class="dr-header">State</td>
+								<td class="dr-header">Penalty</td>
+							</tr>
+							{{#each actor.data.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
 							<tr class="hit-locations master-location">
-								<th colspan="11">{{bodyPart.label}}</th>
+								<th colspan="1">{{bodyPart.label}}</th>
 								{{#if bodyPart.hp}}
-									<th class="dr-row">
-										<input type="number" class="partHP" id="data.bodyType.body.{{partId}}.hp" name="data.bodyType.body.{{partId}}.hp.value" value="{{bodyPart.hp.value}}" data-dtype="Number" style="width: 50%;"/>
-										<span style="width: 45%;">/{{bodyPart.hp.max}}</span></th>
-									<th class="dr-row">{{bodyPart.hp.state}}</th>
+								<th class="dr-row">
+									<input type="number" class="partHP" id="data.bodyType.body.{{partId}}.hp" name="data.bodyType.body.{{partId}}.hp.value" value="{{bodyPart.hp.value}}" data-dtype="Number" style="width: 50px;"/>
+									<span style="width: 45%;">/{{bodyPart.hp.max}}</span></th>
+								<th class="dr-row">{{bodyPart.hp.state}}</th>
 								{{else}}
-									<th class="dr-row" colspan="2"></th>
+								<th class="dr-row"></th>
+								<th class="dr-row"></th>
 								{{/if}}
-								<th class="dr-row penalty">{{bodyPart.penalty}}</th>
+								<th class="dr-row penalty">{{bodyPart.penaltyFront}} / {{bodyPart.penaltyBack}}</th>
 							</tr>
 							{{#if bodyPart.subLocation}}<!--Check to see if there are sublocations and display them-->
-								{{#each bodyPart.subLocation as |subLocation locationId|}}<!--Loop through the sublocations-->
-									<tr class="hit-locations">
-										<td class="dr-row">{{subLocation.label}}</td>
-										<td class="dr-row">
-											<input type="checkbox" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.flexible" {{checked subLocation.flexible}} data-dtype="Boolean" style="width: 100%;"/>
-										</td>
-										<td class="dr-row">
-											<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.drHardening" value="{{subLocation.drHardening}}" data-dtype="Number" />
-										</td>
-										<td class="dr-row">
-											<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.drBurn" value="{{subLocation.drBurn}}" data-dtype="Number" />
-										</td>
-										<td class="dr-row">
-											<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.drCor" value="{{subLocation.drCor}}" data-dtype="Number" />
-										</td>
-										<td class="dr-row">
-											<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.drCr" value="{{subLocation.drCr}}" data-dtype="Number" />
-										</td>
-										<td class="dr-row">
-											<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.drCut" value="{{subLocation.drCut}}" data-dtype="Number" />
-										</td>
-										<td class="dr-row">
-											<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.drFat" value="{{subLocation.drFat}}" data-dtype="Number" />
-										</td>
-										<td class="dr-row">
-											<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.drImp" value="{{subLocation.drImp}}" data-dtype="Number" />
-										</td>
-										<td class="dr-row">
-											<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.drPi" value="{{subLocation.drPi}}" data-dtype="Number" />
-										</td>
-										<td class="dr-row">
-											<input type="number" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.drTox" value="{{subLocation.drTox}}" data-dtype="Number" />
-										</td>
-										{{#if subLocation.hp}}
-										<td class="dr-row">
-											<input type="number" class="partHP" id="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.hp" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.hp.value" value="{{subLocation.hp.value}}" data-dtype="Number" style="width: 50%;"/>
-												<span style="width: 45%;">/{{subLocation.hp.max}}</span></td>
-											<td class="dr-row">{{subLocation.hp.state}}</td>
-										{{else}}
-											<td class="dr-row" colspan="2"></td>
-										{{/if}}
-										<td class="dr-row penalty">{{subLocation.penalty}}</td>
-									</tr>
-								{{/each}}
+							{{#each bodyPart.subLocation as |subLocation locationId|}}<!--Loop through the sublocations-->
+							<tr class="hit-locations">
+								<td class="dr-row">{{subLocation.label}}</td>
+								{{#if subLocation.hp}}
+								<td class="dr-row">
+									<input type="number" class="partHP" id="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.hp" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.hp.value" value="{{subLocation.hp.value}}" data-dtype="Number" style="width: 50px;"/>
+									<span style="width: 45%;">/{{subLocation.hp.max}}</span></td>
+								<td class="dr-row">{{subLocation.hp.state}}</td>
+								{{else}}
+								<td class="dr-row"></td>
+								<td class="dr-row"></td>
+								{{/if}}
+								<td class="dr-row penalty">{{subLocation.penaltyFront}} / {{subLocation.penaltyBack}}</td>
+							</tr>
+							{{/each}}
 							{{else}}<!--Display details for parts without sublocations (Pretty much only the skull and brian)-->
-								<tr class="hit-locations">
-									<td class="dr-row">{{bodyPart.label}}</td>
-									<td class="dr-row">
-										<input type="checkbox" name="data.bodyType.body.{{partId}}.flexible" {{checked bodyPart.flexible}} data-dtype="Boolean" style="width: 100%;"/>
-									</td>
-									<td class="dr-row">
-										<input type="number" name="data.bodyType.body.{{partId}}.drHardening" value="{{bodyPart.drHardening}}" data-dtype="Number" />
-									</td>
-									<td class="dr-row">
-										<input type="number" name="data.bodyType.body.{{partId}}.drBurn" value="{{bodyPart.drBurn}}" data-dtype="Number" />
-									</td>
-									<td class="dr-row">
-										<input type="number" name="data.bodyType.body.{{partId}}.drCor" value="{{bodyPart.drCor}}" data-dtype="Number" />
-									</td>
-									<td class="dr-row">
-										<input type="number" name="data.bodyType.body.{{partId}}.drCr" value="{{bodyPart.drCr}}" data-dtype="Number" />
-									</td>
-									<td class="dr-row">
-										<input type="number" name="data.bodyType.body.{{partId}}.drCut" value="{{bodyPart.drCut}}" data-dtype="Number" />
-									</td>
-									<td class="dr-row">
-										<input type="number" name="data.bodyType.body.{{partId}}.drFat" value="{{bodyPart.drFat}}" data-dtype="Number" />
-									</td>
-									<td class="dr-row">
-										<input type="number" name="data.bodyType.body.{{partId}}.drImp" value="{{bodyPart.drImp}}" data-dtype="Number" />
-									</td>
-									<td class="dr-row">
-										<input type="number" name="data.bodyType.body.{{partId}}.drPi" value="{{bodyPart.drPi}}" data-dtype="Number" />
-									</td>
-									<td class="dr-row">
-										<input type="number" name="data.bodyType.body.{{partId}}.drTox" value="{{bodyPart.drTox}}" data-dtype="Number" />
-									</td>
-									<td colspan="2" class="dr-row"></td>
-									<td class="dr-row penalty">{{bodyPart.penalty}}</td>
-								</tr>
+							<tr class="hit-locations">
+								<td class="dr-row">{{bodyPart.label}}</td>
+								<td class="dr-row"></td>
+								<td class="dr-row"></td>
+								<td class="dr-row penalty">{{bodyPart.penaltyFront}} / {{bodyPart.penaltyBack}}</td>
+							</tr>
 							{{/if}}
-						{{/each}}
-					</table>
-				{{/if}}
+							{{/each}}
+						</table>
+					</div>
+					{{/if}}
+					<div style="display: flex; flex-direction: column; padding-left: 1em;">
+						<div>
+							<label>Body Type:</label>
+							<select name="data.bodyType.name" class="bodyType">
+								{{#select data.bodyType.name}}
+								<option value="humanoid">Humanoid</option>
+								<option value="wingedHumanoid">Winged Humanoid</option>
+								<option value="quadruped">Quadruped</option>
+								<option value="wingedQuadruped">Winged Quadruped</option>
+								<option value="hexapod">Hexapod</option>
+								<option value="wingedHexapod">Winged Hexapod</option>
+								<option value="centaur">Centaur</option>
+								<option value="avian">Avian</option>
+								<option value="vermiform">Vermiform</option>
+								<option value="lamia">Lamia</option>
+								<option value="wingedLamia">Winged Lamia</option>
+								<option value="octopod">Octopod</option>
+								<option value="cancroid">Cancroid</option>
+								<option value="ichthyoid">Ichthyoid</option>
+								<option value="arachnoid">Arachnoid</option>
+								{{/select}}
+							</select>
+						</div>
+						<table class="injuryTolerancesTable">
+							<tr>
+								<td colspan="2" style="text-align: center; font-weight: bold; border-bottom: #7a7971 2px solid">Injury Settings</td>
+							</tr>
+							<tr>
+								<td>Damage Reduction:</td>
+								<td><input type="number" id="data.injuryTolerances.damageReduction" name="data.injuryTolerances.damageReduction" value="{{data.injuryTolerances.damageReduction}}" data-dtype="Number" style="width: 25px"/></td>
+							</tr>
+							<tr>
+								<td>Supernatural Durability:</td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.supernaturalDurability" {{checked data.injuryTolerances.supernaturalDurability}} data-dtype="Boolean"/></td>
+							</tr>
+							<tr>
+								<td>Low Pain Threshold:</td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.lowPainThreshold" {{checked data.injuryTolerances.lowPainThreshold}} data-dtype="Boolean"/></td>
+							</tr>
+							<tr>
+								<td>High Pain Threshold:</td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.highPainThreshold" {{checked data.injuryTolerances.highPainThreshold}} data-dtype="Boolean"/></td>
+							</tr>
+						</table>
+						<table class="injuryTolerancesTable">
+							<tr>
+								<td colspan="4" style="text-align: center; font-weight: bold; border-bottom: #7a7971 2px solid">Injury Tolerance</td>
+							</tr>
+							<tr>
+								<td class="injuryTolerancesLabel">Diffuse:</td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.diffuse" {{checked data.injuryTolerances.diffuse}} data-dtype="Boolean"/></td>
+								<td class="injuryTolerancesLabel">No Brain:</td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noBrain" {{checked data.injuryTolerances.noBrain}} data-dtype="Boolean"/></td>
+							</tr>
+							<tr>
+								<td class="injuryTolerancesLabel">Homogenous:</td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.homogenous" {{checked data.injuryTolerances.homogenous}} data-dtype="Boolean"/></td>
+								<td class="injuryTolerancesLabel">No Eyes:</td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noEyes" {{checked data.injuryTolerances.noEyes}} data-dtype="Boolean"/></td>
+							</tr>
+							<tr>
+								<td class="injuryTolerancesLabel">Unliving:</td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.unliving" {{checked data.injuryTolerances.unliving}} data-dtype="Boolean"/></td>
+								<td class="injuryTolerancesLabel">No Head:</td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noHead" {{checked data.injuryTolerances.noHead}} data-dtype="Boolean"/></td>
+							</tr>
+							<tr>
+								<td class="injuryTolerancesLabel">Unbreakable Bones:</td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.unbreakableBones" {{checked data.injuryTolerances.unbreakableBones}} data-dtype="Boolean"/></td>
+								<td class="injuryTolerancesLabel">No Neck:</td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noNeck" {{checked data.injuryTolerances.noNeck}} data-dtype="Boolean"/></td>
+							</tr>
+							<tr>
+								<td class="injuryTolerancesLabel">No Blood:</td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noBlood" {{checked data.injuryTolerances.noBlood}} data-dtype="Boolean"/></td>
+								<td class="injuryTolerancesLabel">No Vitals:</td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noVitals" {{checked data.injuryTolerances.noVitals}} data-dtype="Boolean"/></td>
+							</tr>
+						</table>
+					</div>
+				</div>
 			</div>
 		</section>
 	</div>

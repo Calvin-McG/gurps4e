@@ -3,7 +3,6 @@ TODO from session 6/10/2021
 
 From session 6/10/2021
     - Will roll game setting for feverish defence
-    - Styling on note fields so they expand with dialog expansion
     - Skill die as macro. (Draggable? Callable?)
 
 from session 5/27/2021
