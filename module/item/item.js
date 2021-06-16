@@ -33,6 +33,7 @@ export class gurpsItem extends Item {
     switch (itemData.type) {
       case "Equipment":
         this._prepareEquipmentData(itemData, data);
+        this.prepareAttackData(itemData, data)
         break;
       case "Rollable":
         this._prepareRollableData(itemData, data);
