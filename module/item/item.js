@@ -40,6 +40,7 @@ export class gurpsItem extends Item {
         break;
       case "Trait":
         this._prepareTraitData(itemData, data);
+        this.prepareAttackData(itemData, data)
         break;
       default: // not a supported type
         return ui.notifications.error("This type of item is not supported in the system!");
