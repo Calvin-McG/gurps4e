@@ -30,7 +30,6 @@ export class gurpsActor extends Actor {
 		super.prepareData();
 
 		this.checkUndefined();
-
 		this.bodyTypeUpdate();
 
 		//Total up spent and remaining points
@@ -214,7 +213,6 @@ export class gurpsActor extends Actor {
 	}
 
 	bodyTypeUpdate(){
-		console.log("Body Type")
 		let bodyType = this.data.data.bodyType.name;
 		let actorData = this.data.data;
 		let bodyObj = {};
@@ -1816,6 +1814,7 @@ export class gurpsActor extends Actor {
 			"<tr><td>Effective Skill</td><td>" + (+attack.level + +totalModifier) + "</td></tr>" +
 			"<tr><td>Odds</td><td><span style='font-weight: bold; color: rgb(208, 127, 127)'>" + odds.critFail + "%</span>/<span style='font-weight: bold; color: rgb(141, 142, 222)'>" + odds.success + "%</span>/<span style='font-weight: bold; color: rgb(106, 162, 106)'>" + odds.critSuccess + "%</span></td></tr>" +
 			"<tr><td>Additional Modifier</td><td><input type='number' id='mod' name='mod' value='0' style='width: 50%'/></td></tr>" +
+			"<tr><td>Move and Attack</td><td><input type='checkbox' class='checkbox' id='moveAndAttack' value='moveAndAttack' name='moveAndAttack' /></td></tr>" +
 			"</table>"
 
 		let modModal = new Dialog({
@@ -1826,15 +1825,19 @@ export class gurpsActor extends Actor {
 					icon: '<i class="fas fa-check"></i>',
 					label: "Apply Modifier",
 					callback: (html) => {
-						let mod = html.find('#mod').val()
-						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (+totalModifier + +mod))
+						let mod = html.find('#mod').val();
+						let moveAndAttack = html.find('#moveAndAttack')[0].checked;
+						console.log(moveAndAttack);
+						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (+totalModifier + +mod), moveAndAttack)
 					}
 				},
 				noMod: {
 					icon: '<i class="fas fa-times"></i>',
 					label: "No Modifier",
 					callback: () => {
-						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, totalModifier)
+						let moveAndAttack = html.find('#moveAndAttack')[0].checked;
+						console.log(moveAndAttack);
+						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, totalModifier, moveAndAttack)
 					}
 				},
 				cancel: {
@@ -1852,9 +1855,10 @@ export class gurpsActor extends Actor {
 		modModal.render(true)
 	}
 
-	reportHitResult(target, attacker, attack, relativePosition, rof, locationArray, totalModifiers) {
+	reportHitResult(target, attacker, attack, relativePosition, rof, locationArray, totalModifiers, moveAndAttack) {
 		let label = attacker.nameplate._text + " attacks " + target.nameplate._text + " with a " + attack.weapon + " " + attack.name;
-
+		let level = attack.level;
+		let mod = totalModifiers;
 
 		if (attack.type == "ranged"){
 			if (rof.shots == rof.rof){ // It is not a multiple projectile weapon
@@ -1863,14 +1867,23 @@ export class gurpsActor extends Actor {
 			else { // It is a multiple projectile weapon
 				label += " and fires " + rof.shots + " times for " + rof.rof + " shots.";
 			}
+
+			// Handle move and attack for ranged
+			if (moveAndAttack) {
+				mod = +mod + +attack.bulk; // Add the bulk penalty to the total modifiers
+			}
 		}
 		else {
 			label += ".";
+
+			// Handle move and attack for melee
+			if (moveAndAttack) {
+				level = Math.min(level - 4, 9); // Melee move and attacks are at -4, with a skill cap of 9
+			}
 		}
 
-		let rollInfo = rollHelpers.skillRoll(attack.level, totalModifiers, label, false)
+		let rollInfo = rollHelpers.skillRoll(level, mod, label, false)
 		let messageContent = rollInfo.content;
-
 		let flags = {}
 
 		if (rollInfo.success == false) {
