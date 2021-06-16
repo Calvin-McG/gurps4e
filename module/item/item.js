@@ -33,18 +33,20 @@ export class gurpsItem extends Item {
     switch (itemData.type) {
       case "Equipment":
         this._prepareEquipmentData(itemData, data);
-        this.prepareAttackData(itemData, data)
         break;
       case "Rollable":
         this._prepareRollableData(itemData, data);
         break;
+      case "Spell":
+        this._prepareSpellData();
+        break;
       case "Trait":
         this._prepareTraitData(itemData, data);
-        this.prepareAttackData(itemData, data)
         break;
       default: // not a supported type
         return ui.notifications.error("This type of item is not supported in the system!");
     }
+    this.prepareAttackData(itemData, data)
   }
 
   _prepareEquipmentData(itemData, data) {
@@ -102,145 +104,145 @@ export class gurpsItem extends Item {
     if (this.actor){
       let damage;
       //Do logic stuff for melee profiles
-      let meleeKeys = Object.keys(data.melee);
-      if (meleeKeys.length){//Check to see if there are any melee profiles
-        for (let k = 0; k < meleeKeys.length; k++){
-          if (data.melee[meleeKeys[k]].name){//Check to see if name is filled in. Otherwise don't bother.
-            let level = 0;
-            let mod = +data.melee[meleeKeys[k]].skillMod;
-            let parry = 0;
-            let block = 0;
+      if (data.melee){
+        let meleeKeys = Object.keys(data.melee);
+        if (meleeKeys.length){//Check to see if there are any melee profiles
+          for (let k = 0; k < meleeKeys.length; k++){
+            if (data.melee[meleeKeys[k]].name){//Check to see if name is filled in. Otherwise don't bother.
+              let level = 0;
+              let mod = +data.melee[meleeKeys[k]].skillMod;
+              let parry = 0;
+              let block = 0;
 
-            if (data.melee[meleeKeys[k]].skill.toLowerCase() == "dx"){
-              level = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
-            }
-            else {
-              //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-              for (let i = 0; i < this.actor.data.items.length; i++){
-                if (this.actor.data.items[i].type === "Rollable"){
-                  if (this.actor.data.items[i].data.category === "skill" || this.actor.data.items[i].data.category === "technique"){
+              if (data.melee[meleeKeys[k]].skill.toLowerCase() == "dx"){
+                level = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
+              }
+              else {
+                //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
+                for (let i = 0; i < this.actor.data.items.length; i++){
+                  if (this.actor.data.items[i].type === "Rollable"){
                     if (data.melee[meleeKeys[k]].skill === this.actor.data.items[i].name){
                       level = +this.computeSkillLevel(this.actor.data.items[i].data.category, this.actor.data.items[i].data.defaults, this.actor.data.items[i].data.difficulty, this.actor.data.items[i].data.baseAttr, this.actor.data.items[i].data.baseSkill, this.actor.data.items[i].data.minLevel, this.actor.data.items[i].data.maxLevel, this.actor.data.items[i].data.dabblerPoints, this.actor.data.items[i].data.points, this.actor.data.items[i].data.mod);
                     }
                   }
                 }
               }
-            }
 
-            level = level + mod;//Update the skill level with the skill modifier
-            this._data.data.melee[meleeKeys[k]].level = level//Update skill level
+              level = level + mod;//Update the skill level with the skill modifier
+              this._data.data.melee[meleeKeys[k]].level = level//Update skill level
+              this.data.data.melee[meleeKeys[k]].level = level//Update skill level
 
-            if (Number.isInteger(+data.melee[meleeKeys[k]].parryMod)){//If parry mod is a number, compute normally
-              parry = Math.floor(+( level / 2 + 3 ) + +data.melee[meleeKeys[k]].parryMod);//Calculate the parry value
-              if (this.actor.data.data.enhanced.parry){
-                parry += this.actor.data.data.enhanced.parry;
+              if (Number.isInteger(+data.melee[meleeKeys[k]].parryMod)){//If parry mod is a number, compute normally
+                parry = Math.floor(+( level / 2 + 3 ) + +data.melee[meleeKeys[k]].parryMod);//Calculate the parry value
+                if (this.actor.data.data.enhanced.parry){
+                  parry += this.actor.data.data.enhanced.parry;
+                }
+                if (this.actor.data.data.flag.combatReflexes){
+                  parry += 1;
+                }
               }
-              if (this.actor.data.data.flag.combatReflexes){
-                parry += 1;
+              else {//If it's not a number, display the entry
+                parry = data.melee[meleeKeys[k]].parryMod;
               }
-            }
-            else {//If it's not a number, display the entry
-              parry = data.melee[meleeKeys[k]].parryMod;
-            }
-            this._data.data.melee[meleeKeys[k]].parry = parry//Update parry value
+              this._data.data.melee[meleeKeys[k]].parry = parry//Update parry value
 
-            if (Number.isInteger(+data.melee[meleeKeys[k]].blockMod)) {//If block mod is a number, compute normally
-              block = Math.floor(+( level / 2 + 3 ) + +data.melee[meleeKeys[k]].blockMod);//Calculate the block value
-              if (this.actor.data.data.enhanced.block){
-                block += this.actor.data.data.enhanced.block;
+              if (Number.isInteger(+data.melee[meleeKeys[k]].blockMod)) {//If block mod is a number, compute normally
+                block = Math.floor(+( level / 2 + 3 ) + +data.melee[meleeKeys[k]].blockMod);//Calculate the block value
+                if (this.actor.data.data.enhanced.block){
+                  block += this.actor.data.data.enhanced.block;
+                }
+                if (this.actor.data.data.flag.combatReflexes){
+                  block += 1;
+                }
               }
-              if (this.actor.data.data.flag.combatReflexes){
-                block += 1;
+              else {
+                block = data.melee[meleeKeys[k]].blockMod;
               }
-            }
-            else {
-              block = data.melee[meleeKeys[k]].blockMod;
-            }
-            damage = this.damageParseSwThr(data.melee[meleeKeys[k]].damageInput);//Update damage value
-            this._data.data.melee[meleeKeys[k]].block = block; // Update block value
-            this.data.data.melee[meleeKeys[k]].block = block; // Update block value
-            this._data.data.melee[meleeKeys[k]].type = "melee"; // Update attack type
-            this.data.data.melee[meleeKeys[k]].type = "melee"; // Update attack type
-            this._data.data.melee[meleeKeys[k]].damage = damage;
-            this.data.data.melee[meleeKeys[k]].damage = damage;
+              damage = this.damageParseSwThr(data.melee[meleeKeys[k]].damageInput);//Update damage value
+              this._data.data.melee[meleeKeys[k]].block = block; // Update block value
+              this.data.data.melee[meleeKeys[k]].block = block; // Update block value
+              this._data.data.melee[meleeKeys[k]].type = "melee"; // Update attack type
+              this.data.data.melee[meleeKeys[k]].type = "melee"; // Update attack type
+              this._data.data.melee[meleeKeys[k]].damage = damage;
+              this.data.data.melee[meleeKeys[k]].damage = damage;
 
-            // Validation for Armour Divisor
-            if (!(data.melee[meleeKeys[k]].armorDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
-                data.melee[meleeKeys[k]].armorDivisor.toString().toLowerCase().includes("cosmic") ||
-                data.melee[meleeKeys[k]].armorDivisor.toString().toLowerCase().includes("i") ||
-                data.melee[meleeKeys[k]].armorDivisor >= 0)
-            ){
-              this._data.data.melee[meleeKeys[k]].armorDivisor = 1;
-              this.data.data.melee[meleeKeys[k]].armorDivisor = 1;
+              // Validation for Armour Divisor
+              if (!(data.melee[meleeKeys[k]].armorDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
+                  data.melee[meleeKeys[k]].armorDivisor.toString().toLowerCase().includes("cosmic") ||
+                  data.melee[meleeKeys[k]].armorDivisor.toString().toLowerCase().includes("i") ||
+                  data.melee[meleeKeys[k]].armorDivisor >= 0)
+              ){
+                this._data.data.melee[meleeKeys[k]].armorDivisor = 1;
+                this.data.data.melee[meleeKeys[k]].armorDivisor = 1;
+              }
             }
           }
         }
       }
 
-
       //Do logic stuff for ranged profiles
-      let rangedKeys = Object.keys(data.ranged);
-      if (rangedKeys.length){//Check to see if there are any ranged profiles
-        for (let k = 0; k < rangedKeys.length; k++){
-          if (data.ranged[rangedKeys[k]].name){//Check to see if name is filled in
-            let level = 0;
-            let mod = +data.ranged[rangedKeys[k]].skillMod;
+      if (data.ranged) {
+        let rangedKeys = Object.keys(data.ranged);
+        if (rangedKeys.length){//Check to see if there are any ranged profiles
+          for (let k = 0; k < rangedKeys.length; k++){
+            if (data.ranged[rangedKeys[k]].name){//Check to see if name is filled in
+              let level = 0;
+              let mod = +data.ranged[rangedKeys[k]].skillMod;
 
-            if (data.ranged[rangedKeys[k]].skill.toLowerCase() == "dx"){
-              level = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
-            }
-            else {
-              //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-              for (let i = 0; i < this.actor.data.items.length; i++){
-                if (this.actor.data.items[i].type === "Rollable"){
-                  if (this.actor.data.items[i].data.category === "skill" || this.actor.data.items[i].data.category === "technique"){
+              if (data.ranged[rangedKeys[k]].skill.toLowerCase() == "dx"){
+                level = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
+              }
+              else {
+                //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
+                for (let i = 0; i < this.actor.data.items.length; i++){
+                  if (this.actor.data.items[i].type === "Rollable"){
                     if (data.ranged[rangedKeys[k]].skill === this.actor.data.items[i].name){
                       level = +this.computeSkillLevel(this.actor.data.items[i].data.category, this.actor.data.items[i].data.defaults, this.actor.data.items[i].data.difficulty, this.actor.data.items[i].data.baseAttr, this.actor.data.items[i].data.baseSkill, this.actor.data.items[i].data.minLevel, this.actor.data.items[i].data.maxLevel, this.actor.data.items[i].data.dabblerPoints, this.actor.data.items[i].data.points, this.actor.data.items[i].data.mod);
                     }
                   }
                 }
               }
-            }
-            level = level + mod;//Update the skill level with the skill modifier
-            this._data.data.ranged[rangedKeys[k]].level = level;
-            this.data.data.ranged[rangedKeys[k]].level = level;
-            this._data.data.ranged[rangedKeys[k]].type = "ranged"; // Update attack type
-            this.data.data.ranged[rangedKeys[k]].type = "ranged"; // Update attack type
-            damage = this.damageParseSwThr(data.ranged[rangedKeys[k]].damageInput);
-            this._data.data.ranged[rangedKeys[k]].damage = damage;
-            this._data.data.ranged[rangedKeys[k]].damage = damage;
+              level = level + mod;//Update the skill level with the skill modifier
+              this._data.data.ranged[rangedKeys[k]].level = level;
+              this.data.data.ranged[rangedKeys[k]].level = level;
+              this._data.data.ranged[rangedKeys[k]].type = "ranged"; // Update attack type
+              this.data.data.ranged[rangedKeys[k]].type = "ranged"; // Update attack type
+              damage = this.damageParseSwThr(data.ranged[rangedKeys[k]].damageInput);
+              this._data.data.ranged[rangedKeys[k]].damage = damage;
+              this._data.data.ranged[rangedKeys[k]].damage = damage;
 
-            if (typeof data.ranged[rangedKeys[k]].rcl == "undefined" || data.ranged[rangedKeys[k]].rcl <= 0){ // Catch invalid values for rcl. Value must exist and be at least one.
-              this._data.data.ranged[rangedKeys[k]].rcl = 1;
-              this.data.data.ranged[rangedKeys[k]].rcl = 1;
-            }
-            if (typeof data.ranged[rangedKeys[k]].rof == "undefined" || data.ranged[rangedKeys[k]].rof <= 0){ // Catch invalid values for rof. Value must exist and be at least one.
-              this._data.data.ranged[rangedKeys[k]].rof = 1;
-              this.data.data.ranged[rangedKeys[k]].rof = 1;
-            }
-            if (typeof data.ranged[rangedKeys[k]].acc == "undefined" || data.ranged[rangedKeys[k]].acc < 0){ // Catch invalid values for Acc. Value must exist and be at least zero.
-              this._data.data.ranged[rangedKeys[k]].acc = 0;
-              this.data.data.ranged[rangedKeys[k]].acc = 0;
-            }
+              if (typeof data.ranged[rangedKeys[k]].rcl == "undefined" || data.ranged[rangedKeys[k]].rcl <= 0){ // Catch invalid values for rcl. Value must exist and be at least one.
+                this._data.data.ranged[rangedKeys[k]].rcl = 1;
+                this.data.data.ranged[rangedKeys[k]].rcl = 1;
+              }
+              if (typeof data.ranged[rangedKeys[k]].rof == "undefined" || data.ranged[rangedKeys[k]].rof <= 0){ // Catch invalid values for rof. Value must exist and be at least one.
+                this._data.data.ranged[rangedKeys[k]].rof = 1;
+                this.data.data.ranged[rangedKeys[k]].rof = 1;
+              }
+              if (typeof data.ranged[rangedKeys[k]].acc == "undefined" || data.ranged[rangedKeys[k]].acc < 0){ // Catch invalid values for Acc. Value must exist and be at least zero.
+                this._data.data.ranged[rangedKeys[k]].acc = 0;
+                this.data.data.ranged[rangedKeys[k]].acc = 0;
+              }
 
-            // Validation for bulk
-            if (typeof data.ranged[rangedKeys[k]].bulk == "undefined" || data.ranged[rangedKeys[k]].bulk == ""){ // Must exist.
-              this._data.data.ranged[rangedKeys[k]].bulk = -2;
-              this.data.data.ranged[rangedKeys[k]].bulk = -2;
-            }
-            else if (data.ranged[rangedKeys[k]].bulk > 0){ // Must be less than zero. Set positive values to negative equivilent
-              this._data.data.ranged[rangedKeys[k]].bulk = -data.ranged[rangedKeys[k]].bulk;
-              this.data.data.ranged[rangedKeys[k]].bulk = -data.ranged[rangedKeys[k]].bulk;
-            }
+              // Validation for bulk
+              if (typeof data.ranged[rangedKeys[k]].bulk == "undefined" || data.ranged[rangedKeys[k]].bulk == ""){ // Must exist.
+                this._data.data.ranged[rangedKeys[k]].bulk = -2;
+                this.data.data.ranged[rangedKeys[k]].bulk = -2;
+              }
+              else if (data.ranged[rangedKeys[k]].bulk > 0){ // Must be less than zero. Set positive values to negative equivilent
+                this._data.data.ranged[rangedKeys[k]].bulk = -data.ranged[rangedKeys[k]].bulk;
+                this.data.data.ranged[rangedKeys[k]].bulk = -data.ranged[rangedKeys[k]].bulk;
+              }
 
-            // Validation for Armour Divisor
-            if (!(data.ranged[rangedKeys[k]].armorDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
-                data.ranged[rangedKeys[k]].armorDivisor.toString().toLowerCase().includes("cosmic") ||
-                data.ranged[rangedKeys[k]].armorDivisor.toString().toLowerCase().includes("i") ||
-                data.ranged[rangedKeys[k]].armorDivisor >= 0)
-            ){
-              this._data.data.ranged[rangedKeys[k]].armorDivisor = 1;
-              this.data.data.ranged[rangedKeys[k]].armorDivisor = 1;
+              // Validation for Armour Divisor
+              if (!(data.ranged[rangedKeys[k]].armorDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
+                  data.ranged[rangedKeys[k]].armorDivisor.toString().toLowerCase().includes("cosmic") ||
+                  data.ranged[rangedKeys[k]].armorDivisor.toString().toLowerCase().includes("i") ||
+                  data.ranged[rangedKeys[k]].armorDivisor >= 0)
+              ){
+                this._data.data.ranged[rangedKeys[k]].armorDivisor = 1;
+                this.data.data.ranged[rangedKeys[k]].armorDivisor = 1;
+              }
             }
           }
         }
@@ -411,7 +413,7 @@ export class gurpsItem extends Item {
     return bonus;
   }
 
-  computeSkillLevel(category, defaults, difficulty, baseAttr, baseSkill, minLevel, maxLevel, dabblerPoints, pts, mod){
+  computeSkillLevel(category, defaults, difficulty, baseAttr, baseSkill, minLevel, maxLevel, dabblerPoints, pts, mod) {
     let base = 0;
     let level = 0;
     let points = pts;
@@ -426,11 +428,11 @@ export class gurpsItem extends Item {
     let per = attributeHelpers.calcPerOrWill(iq, this.actor.data.data.primaryAttributes.perception);
     let will = attributeHelpers.calcPerOrWill(iq, this.actor.data.data.primaryAttributes.will);
 
-    if (category === 'skill') {//It's a skill
-      //Figure out defaults
+    if (category === 'skill') { // It's a skill
+      // Figure out defaults
       let q = 0;
-      while (defaults[q]) {//While the current entry is not null
-        //Check attributes first, add any results to the array of attribute defaults
+      while (defaults[q]) { // While the current entry is not null
+        // Check attributes first, add any results to the array of attribute defaults
         if (defaults[q].skill.toUpperCase() === 'ST' || defaults[q].skill.toUpperCase() === 'STRENGTH') {
           attrDefaultArray.push(st + +defaults[q].mod);
         }
@@ -449,7 +451,7 @@ export class gurpsItem extends Item {
         else if (defaults[q].skill.toUpperCase() === 'WILL') {
           attrDefaultArray.push(will + +defaults[q].mod);
         }
-        //Then check other skills, add any results to the array of skill defaults
+        // Then check other skills, add any results to the array of skill defaults
         else {
           for (let i = 0; i < this.actor.data.items.length; i++) {
             if (this.actor.data.items[i].type === "Rollable") {
@@ -465,22 +467,22 @@ export class gurpsItem extends Item {
       }
       //We now have a lists of all skill and attribute defaults
 
-      if (points <= 0 || (difficulty == "W" && points < 3)) {//They haven't spent any points, or have spent too few points to make a difference for a Wildcard skill. Display default, after account for dabbler
+      if (points <= 0 || (difficulty == "W" && points < 3)) { // They haven't spent any points, or have spent too few points to make a difference for a Wildcard skill. Display default, after account for dabbler
         let bestAttrDefault = Math.max(...attrDefaultArray);
         bestAttrDefault += +dabblerBonus;
 
-        bestAttrDefault = Math.min(bestAttrDefault, this.onePointInSkill(baseAttr, difficulty)-1);//Set the value either to the best attribute default plus the dabbler bonus, or one less than what they'd get if they spent actual points.
+        bestAttrDefault = Math.min(bestAttrDefault, this.onePointInSkill(baseAttr, difficulty)-1); // Set the value either to the best attribute default plus the dabbler bonus, or one less than what they'd get if they spent actual points.
         level = Math.max(bestAttrDefault, Math.max(...skillDefaultArray)) + mod;
       }
-      else if(points > 0){//They have spent points, calculate accordingly, including buying up from defaults
-        base = this.getBaseAttrValue(baseAttr)//Get the base value of the relevant attribute
-        let bestDefault = Math.max(...skillDefaultArray, ...attrDefaultArray);//Get the best default
+      else if(points > 0){ // They have spent points, calculate accordingly, including buying up from defaults
+        base = this.getBaseAttrValue(baseAttr) // Get the base value of the relevant attribute
+        let bestDefault = Math.max(...skillDefaultArray, ...attrDefaultArray); // Get the best default
 
-        if (bestDefault >= this.onePointInSkill(baseAttr, difficulty)){//The best default is equal to or better than what you'd get by spending points. Account for Improving Skills from Default (B. 173)
-          points = points + this.defaultIsWorth(baseAttr, difficulty, bestDefault);//The effective point value is whatever they put in, plus whatever their default is worth.
+        if (bestDefault >= this.onePointInSkill(baseAttr, difficulty)){ // The best default is equal to or better than what you'd get by spending points. Account for Improving Skills from Default (B. 173)
+          points = points + this.defaultIsWorth(baseAttr, difficulty, bestDefault); // The effective point value is whatever they put in, plus whatever their default is worth.
         }
 
-        //Compute skill value based on effective points spent on the skill
+        // Compute skill value based on effective points spent on the skill
         level = base + this.pointsToBonus(points, difficulty) + mod;
       }
     }
@@ -519,8 +521,58 @@ export class gurpsItem extends Item {
     return level;
   }
 
+  computeSpellLevel(points, mod, attributeMod, difficulty, magery, attribute) {
+    let level = 0;
+    let totalMagicAttribute = 0;
+    if (attribute != "") { // Attribute is not blank
+      totalMagicAttribute += this.getBaseAttrValue(attribute)
+    }
+    totalMagicAttribute += attributeMod ? attributeMod : 0;
+    totalMagicAttribute += magery ? magery : 0;
+    this.data.data.magicalAbility = totalMagicAttribute;
+
+    if (points <= 0 || (difficulty == "W" && points < 3)) { // They haven't spent any points, or have spent too few points to make a difference for a Wildcard skill. Display default, after account for dabbler
+      level = mod;
+    }
+    else if(points > 0){ // They have spent points, calculate accordingly, including buying up from defaults
+      // Compute skill value based on effective points spent on the skill
+      level = totalMagicAttribute + this.pointsToBonus(points, difficulty) + mod;
+    }
+
+    return level;
+  }
+
+  _prepareSpellData() {
+    if (this.actor){
+      if (this.actor.data.data.magic) {
+
+        // Calculate the total magical attribute
+        let totalMagicAttribute = 0;
+        let points = this.data.data.points;
+        let mod = this.data.data.mod;
+        let attributeMod = this.actor.data.data.magic.attributeMod;
+        let difficulty = this.data.data.difficulty;
+        let magery = this.actor.data.data.magic.magery;
+        let attribute = this.actor.data.data.magic.attribute;
+
+        let level = this.computeSpellLevel(points, mod, attributeMod, difficulty, magery, attribute)
+
+        if (attribute != "") { // Attribute is not blank
+          totalMagicAttribute += this.getBaseAttrValue(attribute)
+        }
+
+        totalMagicAttribute += attributeMod ? attributeMod : 0;
+        totalMagicAttribute += magery ? magery : 0;
+        this.data.data.magicalAbility = totalMagicAttribute;
+
+        this.data.data.level = level;
+        this._data.data.level = level;
+      }
+    }
+  }
+
   _prepareRollableData(itemData, data) {
-    if (this.data.data.category == ""){//The category will be blank upon initilization. Set it to skill so that the form's dynamic elements display correctly the first time it's opened.
+    if (this.data.data.category == ""){//The category will be blank upon initialization. Set it to skill so that the form's dynamic elements display correctly the first time it's opened.
       this.data.data.category = "skill";
     }
 
@@ -532,7 +584,5 @@ export class gurpsItem extends Item {
     }
   }
 
-  _prepareTraitData(itemData, data) {
-    this.prepareAttackData(itemData, data)
-  }
+  _prepareTraitData(itemData, data) {}
 }

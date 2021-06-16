@@ -270,6 +270,12 @@
             "mod": 0,
             "points": 0
           }
+        },
+        "magic": {
+          "attribute": "Intelligence",
+          "attributeMod": 0,
+          "magery": 0,
+          "totalMagicAttribute": 0
         }
       }
     },
@@ -284,15 +290,13 @@
       "Equipment",
       "Hit-Location",
       "Rollable",
-      "Trait"
+      "Trait",
+      "Spell"
     ],
     "templates": {
       "base": {
         "notes": "",
         "shortNotes": ""
-      },
-      "onMain": {
-        "onMain": false
       },
       "countable": {
         "quantity": 1,
@@ -331,7 +335,7 @@
         "subCategory": ""
       },
       "difficulty": {
-        "difficulty": ""
+        "difficulty": "H"
       },
       "baseAttr": {
         "baseAttr": ""
@@ -400,8 +404,23 @@
         "baseSkillLevel",
         "techniqueLimits",
         "mod",
+        "defaults"
+      ]
+    },
+    "Spell": {
+      "templates": [
+        "base",
+        "level",
+        "points",
+        "subCategory",
+        "difficulty",
+        "magicalAbility",
+        "baseSkill",
+        "baseSkillLevel",
+        "mod",
         "defaults",
-        "onMain"
+        "melee",
+        "ranged"
       ]
     },
     "Trait": {

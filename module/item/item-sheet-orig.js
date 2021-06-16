@@ -9,7 +9,7 @@ export class gurpsItemSheet extends ItemSheet {
     return mergeObject(super.defaultOptions, {
       classes: ["gurps4e", "sheet", "item"],
       width: 635,
-      height: 450,
+      height: 530,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "notes" }]
     });
   }
@@ -69,20 +69,36 @@ export class gurpsItemSheet extends ItemSheet {
     }
 
     _onAddRow(event) {
+        if(typeof this.item.data.data.melee == "undefined") {
+            this.item.data.data.melee = {
+                "melee": []
+            }
+        }
         let keys = Object.keys(this.item.data.data.melee);
         let newKey = 0;
         if (keys.length){//Array is not empty
             newKey = (+keys[keys.length-1] + +1);
+        }
+        else {
+            newKey = 0;
         }
 
         let newRow = { "name": "" };
         this.item.update({ ["data.melee." + newKey]: newRow });
     }
     _onAddRangedRow(event) {
+        if (typeof this.item.data.data.ranged == "undefined") {
+            this.item.data.data.ranged = {
+                "ranged": []
+            }
+        }
         let keys = Object.keys(this.item.data.data.ranged);
         let newKey = 0;
         if (keys.length){//Array is not empty
             newKey = (+keys[keys.length-1] + +1);
+        }
+        else {
+            newKey = 0;
         }
 
         let newRow = { "name": "" };

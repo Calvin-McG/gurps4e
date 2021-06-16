@@ -41,6 +41,9 @@ export class gurpsActor extends Actor {
 		//Convert spent points into their effective values
 		this.recalcAtrValues();
 
+		// Update magic related stuff
+		this.updateMagic();
+
 		// Sort out the player's senses.
 		this.recalcSenses();
 
@@ -758,10 +761,12 @@ export class gurpsActor extends Actor {
 		this.data.traitCategories = [];
 		this.data.equipmentCategories = [];
 		this.data.rollableCategories = [];
+		this.data.spellCategories = [];
 
 		this.data.traitCategories.push("");
 		this.data.equipmentCategories.push("");
 		this.data.rollableCategories.push("");
+		this.data.spellCategories.push("");
 
 		for (let w = 0; w < this.data.items.length; w++) {
 			if(this.data.items[w].data.subCategory){
@@ -774,6 +779,11 @@ export class gurpsActor extends Actor {
 					else if (this.data.items[w].type == "Rollable"){
 						if (!this.data.rollableCategories.includes(this.data.items[w].data.subCategory.trim())) {//Make sure the rollable array doesn't already contain the category.
 							this.data.rollableCategories.push(this.data.items[w].data.subCategory.trim())
+						}
+					}
+					else if (this.data.items[w].type == "Spell"){
+						if (!this.data.spellCategories.includes(this.data.items[w].data.subCategory.trim())) {//Make sure the spell array doesn't already contain the category.
+							this.data.spellCategories.push(this.data.items[w].data.subCategory.trim())
 						}
 					}
 					else if (this.data.items[w].type == "Equipment"){
@@ -1118,6 +1128,47 @@ export class gurpsActor extends Actor {
 							}
 						}
 					}
+				}
+			}
+		}
+	}
+
+	getBaseAttrValue(baseAttr) {
+		let base = 0;
+		if (baseAttr.toUpperCase() == 'ST' || baseAttr.toUpperCase() == 'STRENGTH'){
+			let smDiscount = attributeHelpers.calcSMDiscount(this.actor.data.data.bio.sm)
+			base = attributeHelpers.calcStOrHt(this.data.data.primaryAttributes.strength, smDiscount);
+		}
+		else if (baseAttr.toUpperCase() == 'DX' || baseAttr.toUpperCase() == 'DEXTERITY') {
+			base = attributeHelpers.calcDxOrIq(this.data.data.primaryAttributes.dexterity);
+		}
+		else if (baseAttr.toUpperCase() == 'IQ' || baseAttr.toUpperCase() == 'INTELLIGENCE') {
+			base = attributeHelpers.calcDxOrIq(this.data.data.primaryAttributes.intelligence);
+		}
+		else if (baseAttr.toUpperCase() == 'HT' || baseAttr.toUpperCase() == 'HEALTH') {
+			base = attributeHelpers.calcStOrHt(this.data.data.primaryAttributes.health, 1);
+		}
+		else if (baseAttr.toUpperCase() == 'PER' || baseAttr.toUpperCase() == 'PERCEPTION') {
+			base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(this.data.data.primaryAttributes.intelligence), this.data.data.primaryAttributes.perception);
+		}
+		else if (baseAttr.toUpperCase() == 'WILL') {
+			base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(this.data.data.primaryAttributes.intelligence), this.data.data.primaryAttributes.will);
+		}
+		return base;
+	}
+
+	updateMagic() {
+		if (this.data) {
+			if (this.data.data) {
+				if (this.data.data.magic) { // Character has the magic block
+					// Calculate the total magical attribute
+					let totalMagicAttribute = 0;
+					if (this.data.data.magic.attribute != "") { // Attribute is not blank
+						totalMagicAttribute += this.getBaseAttrValue(this.data.data.magic.attribute)
+					}
+					totalMagicAttribute += this.data.data.magic.attributeMod ? this.data.data.magic.attributeMod : 0;
+					totalMagicAttribute += this.data.data.magic.magery ? this.data.data.magic.magery : 0;
+					this.data.data.magic.totalMagicAttribute = totalMagicAttribute;
 				}
 			}
 		}
