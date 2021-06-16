@@ -1878,7 +1878,9 @@ export class gurpsActor extends Actor {
 
 			// Handle move and attack for melee
 			if (moveAndAttack) {
-				level = Math.min(level - 4, 9); // Melee move and attacks are at -4, with a skill cap of 9
+				level = level + mod - 4; // Add the modifier and the move and attack penalty to the level so we can cap it
+				mod = 0; // Blank the modifier so it doesn't mess with the macro
+				level = Math.min(level, 9); // Melee move and attacks are at -4, with a skill cap of 9
 			}
 		}
 
@@ -2277,15 +2279,14 @@ export class gurpsActor extends Actor {
 	}
 
 	applyDamage(flags, locationsHit) {
-		let target = game.actors.get(flags.target);
-		let attacker = game.actors.get(flags.attacker);
-		let attack = flags.attack;
-		let targetST = target.data.data.primaryAttributes.knockback.value;
-		let totalKnockback = 0;
-		let totalInjury = 0;
-		let totalFatInj = 0;
+		let target 			= game.actors.get(flags.target);
+		let attacker 		= game.actors.get(flags.attacker);
+		let attack 			= flags.attack;
+		let targetST 		= target.data.data.primaryAttributes.knockback.value;
+		let totalKnockback 	= 0;
+		let totalInjury 	= 0;
+		let totalFatInj 	= 0;
 		let damageReduction = 1;
-
 		let armourDivisor;
 
 		if (typeof attack.armorDivisor == "undefined" || attack.armorDivisor == ""){ // Armour divisor is undefined or blank

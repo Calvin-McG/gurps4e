@@ -1,7 +1,5 @@
 TODO from session 6/10/2021
     - EX/Frag macro
-    - Imp did 11 damage, 10 got through, and did 10 injury to Lower Chest
-    - Cr did 8 damage, 8 got through, and did 8 injury to the neck
 
 From session 6/10/2021
     - Will roll game setting for feverish defence
@@ -15,11 +13,9 @@ from session 5/27/2021
     - Destructive Parry
     - Armour HP
     - Surge damage
-    - Double check skill based defaults (Metallurgy is at -5?)
     - Reset damage button
     - HP damage applied to token (And if linked it goes to actor?) IDK, all the squidwards were being treated as the same dude. Make that not happen
     - Spells as quick contest, Regular spell range, etc.
-    - Rof bonus comes up NaN for some reason? But only sometimes? WTF? (Already put in a patch so it will at least zero out. Underlying issue remains)
     - Incidental damage (Rolling 9s vs people behind/front of main target)
     - Uncategorized at the bottom of the list
 

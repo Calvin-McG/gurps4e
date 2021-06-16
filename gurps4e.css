@@ -21,7 +21,7 @@
 
 #sheet {
 	display: grid;
-	grid-template-rows: 120px 0fr 0fr auto auto;
+	grid-template-rows: 120px 0fr 0fr 0fr;
 }
 
 #personal {
