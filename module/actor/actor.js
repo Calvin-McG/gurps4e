@@ -208,6 +208,33 @@ export class gurpsActor extends Actor {
 				this.data.data.flag.showSenses = false;
 			}
 		}
+
+		// Check for injury tolerance block
+		if (typeof this.data.data.injuryTolerances == 'undefined') { // If there is not an injury tolerance block, add one.
+			this.data.data.injuryTolerances = {
+				damageReduction: 1,
+				diffuse: false,
+				highPainThreshold: false,
+				homogenous: false,
+				lowPainThreshold: false,
+				noBlood: false,
+				noBrain: false,
+				noEyes: false,
+				noHead: false,
+				noNeck: false,
+				noVitals: false,
+				supernaturalDurability: false,
+				unbreakableBones: false,
+				unliving: false
+			}
+		}
+		else { // If there is an injury tolerance block, make sure damage reduction exists.
+			if (typeof this.data.data.injuryTolerances.damageReduction == 'undefined' ||
+				this.data.data.injuryTolerances.damageReduction == "" ||
+				this.data.data.injuryTolerances.damageReduction == null) {
+				this.data.data.injuryTolerances.damageReduction = 1;
+			}
+		}
 	}
 
 	bodyTypeUpdate(){
