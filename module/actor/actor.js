@@ -36,6 +36,7 @@ export class gurpsActor extends Actor {
 		this.recalcAtrPoints();
 		this.recalcTraitPoints();
 		this.recalcSkillPoints();
+		this.recalcSpellPoints()
 		this.recalcPointTotals();
 
 		//Convert spent points into their effective values
@@ -630,6 +631,18 @@ export class gurpsActor extends Actor {
 		this.data.data.points.skills = skillPoints;
     }
 
+	recalcSpellPoints() {
+		var spellPoints = +0;
+		//Iterate through the list of skills. Advantages and Disadvantages
+		for (let i = 0; i < this.data.items.length; i++){
+			if (this.data.items[i].type === "Spell"){
+				spellPoints = spellPoints += this.data.items[i].data.points
+			}
+		}
+		this.data.data.points.spells = spellPoints;
+		console.log(spellPoints)
+	}
+
 	recalcEncValues(){
 		var st = this.data.data.primaryAttributes.lifting.value;
 
@@ -749,7 +762,7 @@ export class gurpsActor extends Actor {
 		let unspent;
 		let spent;
 
-		spent = +this.data.data.points.attributes + +this.data.data.points.traits + +this.data.data.points.skills;
+		spent = +this.data.data.points.attributes + +this.data.data.points.traits + +this.data.data.points.skills + +this.data.data.points.spells;
 
 		unspent = +this.data.data.points.total - +spent;
 

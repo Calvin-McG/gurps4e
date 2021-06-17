@@ -31,7 +31,7 @@
 		"portrait actorname reserves pointTotals"
 		"portrait racegender reserves pointTotals";
 	grid-template-columns: 100px 2fr 1fr auto;
-	grid-template-rows: 55px 50px;
+	grid-template-rows: 55px 60px;
 	grid-gap: 5px;
 }
 

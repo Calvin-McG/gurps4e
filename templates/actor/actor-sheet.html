@@ -91,7 +91,7 @@
 				</div>
 
 				<div id="pointTotals">
-					<table>
+					<table style="margin: unset">
 						<tr>
 							<td class="">Total:</td>
 							<td class="pointTotal">{{numberFormat data.points.total decimals=0}}</td>
@@ -116,6 +116,12 @@
 							<td class="">Skills:</td>
 							<td class="pointTotal">{{numberFormat data.points.skills decimals=0}}</td>
 						</tr>
+						{{#if data.points.spells}}
+						<tr>
+							<td class="">Spells:</td>
+							<td class="pointTotal">{{numberFormat data.points.spells decimals=0}}</td>
+						</tr>
+						{{/if}}
 						<tr>
 							<td class="">Unspent:</td>
 							<td><input type="text" name="data.points.unspent" class="pointTotal unspentEntry" value="{{data.points.unspent}}" data-dtype="Number"/></td>
