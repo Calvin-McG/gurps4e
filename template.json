@@ -289,7 +289,6 @@
   "Item": {
     "types": [
       "Equipment",
-      "Hit-Location",
       "Rollable",
       "Trait",
       "Spell"
