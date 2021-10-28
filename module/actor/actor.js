@@ -62,6 +62,8 @@ export class gurpsActor extends Actor {
 
 		//Recalculate encumberance values, along with effective dodge and move. Do this last so move and dodge is correct.
 		this.recalcEncValues();
+
+		console.log(this.data)
 	}
 
 	checkUndefined(){
@@ -1336,61 +1338,109 @@ export class gurpsActor extends Actor {
 		let attacks = this.listAttacks(selfToken.actor);
 
 		let htmlContent = "<div>";
-		htmlContent += "<table>";
 
-		htmlContent += "<tr><td colspan='8' class='trait-category-header' style='text-align: center;'>Melee Attacks</td></tr>";
-		htmlContent += "<tr><td></td><td>Weapon</td><td>Attack</td><td>Level</td><td>Damage</td><td>Reach</td><td>Parry</td><td>ST</td></tr>";
+		if (attacks.melee.length > 0) {
+			htmlContent += "<table>";
 
-		for (let x = 0; x < attacks.melee.length; x++){
-			htmlContent += "<tr>";
-			htmlContent += "<td><input type='radio' id='melee" + x + "' name='melee' value='" + x + "'></td>";
-			htmlContent += "<td>" + attacks.melee[x].weapon + "</td>";
-			htmlContent += "<td>" + attacks.melee[x].name + "</td>";
-			htmlContent += "<td>" + attacks.melee[x].level + "</td>";
+			htmlContent += "<tr><td colspan='8' class='trait-category-header' style='text-align: center;'>Melee Attacks</td></tr>";
+			htmlContent += "<tr><td></td><td>Weapon</td><td>Attack</td><td>Level</td><td>Damage</td><td>Reach</td><td>Parry</td><td>ST</td></tr>";
 
-			if(attacks.melee[x].armorDivisor == 1){//Only show armour divisor if it's something other than 1
-				htmlContent += "<td>" + attacks.melee[x].damage + " " + attacks.melee[x].damageType + "</td>";
+			for (let x = 0; x < attacks.melee.length; x++){
+				htmlContent += "<tr>";
+				if (x == 0) {
+					htmlContent += "<td><input checked type='radio' id='melee" + x + "' name='melee' value='" + x + "'></td>";
+				}
+				else {
+					htmlContent += "<td><input type='radio' id='melee" + x + "' name='melee' value='" + x + "'></td>";
+				}
+				htmlContent += "<td>" + attacks.melee[x].weapon + "</td>";
+				htmlContent += "<td>" + attacks.melee[x].name + "</td>";
+				htmlContent += "<td>" + attacks.melee[x].level + "</td>";
+
+				if(attacks.melee[x].armorDivisor == 1){//Only show armour divisor if it's something other than 1
+					htmlContent += "<td>" + attacks.melee[x].damage + " " + attacks.melee[x].damageType + "</td>";
+				}
+				else {
+					htmlContent += "<td>" + attacks.melee[x].damage + " " + attacks.melee[x].damageType + " " + "(" + attacks.melee[x].armorDivisor + ")</td>";
+				}
+
+				htmlContent += "<td>" + attacks.melee[x].reach + "</td>";
+				htmlContent += "<td>" + attacks.melee[x].parry + attacks.melee[x].parryType + "</td>";
+				htmlContent += "<td>" + attacks.melee[x].st + "</td>";
+				htmlContent += "</tr>";
 			}
-			else {
-				htmlContent += "<td>" + attacks.melee[x].damage + " " + attacks.melee[x].damageType + " " + "(" + attacks.melee[x].armorDivisor + ")</td>";
-			}
 
-			htmlContent += "<td>" + attacks.melee[x].reach + "</td>";
-			htmlContent += "<td>" + attacks.melee[x].parry + attacks.melee[x].parryType + "</td>";
-			htmlContent += "<td>" + attacks.melee[x].st + "</td>";
-			htmlContent += "</tr>";
+			htmlContent += "</table>";
 		}
 
-		htmlContent += "</table>";
+		if (attacks.ranged.length > 0){
+			htmlContent += "<table>";
 
-		htmlContent += "<table>";
+			htmlContent += "<tr><td colspan='12' class='trait-category-header' style='text-align: center;'>Ranged Attacks</td></tr>";
+			htmlContent += "<tr><td></td><td>Weapon</td><td>Attack</td><td>Level</td><td>Damage</td><td>Acc</td><td>Range</td><td>RoF</td><td>Shots</td><td>ST</td><td>Bulk</td><td>Rcl</td></tr>";
 
-		htmlContent += "<tr><td colspan='12' class='trait-category-header' style='text-align: center;'>Ranged Attacks</td></tr>";
-		htmlContent += "<tr><td></td><td>Weapon</td><td>Attack</td><td>Level</td><td>Damage</td><td>Acc</td><td>Range</td><td>RoF</td><td>Shots</td><td>ST</td><td>Bulk</td><td>Rcl</td></tr>";
-
-		for (let q = 0; q < attacks.ranged.length; q++){
-			htmlContent += "<tr>";
-			htmlContent += "<td><input type='radio' id='range" + q + "' name='range' value='" + q + "'></td>";
-			htmlContent += "<td>" + attacks.ranged[q].weapon + "</td>";
-			htmlContent += "<td>" + attacks.ranged[q].name + "</td>";
-			htmlContent += "<td>" + attacks.ranged[q].level + "</td>";
-			if(attacks.ranged[q].armorDivisor == 1){//Only show armour divisor if it's something other than 1
-				htmlContent += "<td>" + attacks.ranged[q].damage + " " + attacks.ranged[q].damageType + "</td>";
+			for (let q = 0; q < attacks.ranged.length; q++){
+				htmlContent += "<tr>";
+				if (q == 0) {
+					htmlContent += "<td><input checked type='radio' id='range" + q + "' name='range' value='" + q + "'></td>";
+				}
+				else {
+					htmlContent += "<td><input type='radio' id='range" + q + "' name='range' value='" + q + "'></td>";
+				}
+				htmlContent += "<td>" + attacks.ranged[q].weapon + "</td>";
+				htmlContent += "<td>" + attacks.ranged[q].name + "</td>";
+				htmlContent += "<td>" + attacks.ranged[q].level + "</td>";
+				if(attacks.ranged[q].armorDivisor == 1){//Only show armour divisor if it's something other than 1
+					htmlContent += "<td>" + attacks.ranged[q].damage + " " + attacks.ranged[q].damageType + "</td>";
+				}
+				else {
+					htmlContent += "<td>" + attacks.ranged[q].damage + " " + attacks.ranged[q].damageType + " " + "(" + attacks.ranged[q].armorDivisor + ")</td>";
+				}
+				htmlContent += "<td>" + (attacks.ranged[q].acc ? attacks.ranged[q].acc : 0) + "</td>";
+				htmlContent += "<td>" + attacks.ranged[q].range + "</td>";
+				htmlContent += "<td>" + attacks.ranged[q].rof + "</td>";
+				htmlContent += "<td>" + attacks.ranged[q].shots + "</td>";
+				htmlContent += "<td>" + attacks.ranged[q].st + "</td>";
+				htmlContent += "<td>" + attacks.ranged[q].bulk + "</td>";
+				htmlContent += "<td>" + (attacks.ranged[q].rcl ? attacks.ranged[q].rcl : 1) + "</td>";
+				htmlContent += "</tr>";
 			}
-			else {
-				htmlContent += "<td>" + attacks.ranged[q].damage + " " + attacks.ranged[q].damageType + " " + "(" + attacks.ranged[q].armorDivisor + ")</td>";
-			}
-			htmlContent += "<td>" + (attacks.ranged[q].acc ? attacks.ranged[q].acc : 0) + "</td>";
-			htmlContent += "<td>" + attacks.ranged[q].range + "</td>";
-			htmlContent += "<td>" + attacks.ranged[q].rof + "</td>";
-			htmlContent += "<td>" + attacks.ranged[q].shots + "</td>";
-			htmlContent += "<td>" + attacks.ranged[q].st + "</td>";
-			htmlContent += "<td>" + attacks.ranged[q].bulk + "</td>";
-			htmlContent += "<td>" + (attacks.ranged[q].rcl ? attacks.ranged[q].rcl : 1) + "</td>";
-			htmlContent += "</tr>";
+
+			htmlContent += "</table>";
 		}
 
-		htmlContent += "</table>";
+		if (attacks.affliction.length > 0){
+			htmlContent += "<table>";
+
+			htmlContent += "<tr><td colspan='12' class='trait-category-header' style='text-align: center;'>Afflictions</td></tr>";
+			htmlContent += "<tr><td></td><td>Affliction</td><td>Name</td><td>Level</td><td>Damage</td><td>Resistance Roll</td><td>Rule Of</td></tr>";
+
+			for (let q = 0; q < attacks.affliction.length; q++){
+				console.log(attacks.affliction[q])
+				htmlContent += "<tr>";
+				if (q == 0) {
+					htmlContent += "<td><input checked type='radio' id='affliction" + q + "' name='affliction' value='" + q + "'></td>";
+				}
+				else {
+					htmlContent += "<td><input type='radio' id='affliction" + q + "' name='affliction' value='" + q + "'></td>";
+				}
+				htmlContent += "<td>" + attacks.affliction[q].weapon + "</td>";
+				htmlContent += "<td>" + attacks.affliction[q].name + "</td>";
+				htmlContent += "<td>" + attacks.affliction[q].level + "</td>";
+				if(attacks.affliction[q].armorDivisor == 1){//Only show armour divisor if it's something other than 1
+					htmlContent += "<td>" + attacks.affliction[q].damage + " " + attacks.affliction[q].damageType + "</td>";
+				}
+				else {
+					htmlContent += "<td>" + attacks.affliction[q].damage + " " + attacks.affliction[q].damageType + " " + "(" + attacks.affliction[q].armorDivisor + ")</td>";
+				}
+				htmlContent += "<td>" + attacks.affliction[q].resistanceRoll + " " + attacks.affliction[q].resistanceRollPenalty + "</td>";
+				htmlContent += "<td>" + attacks.affliction[q].ruleOf + "</td>";
+				htmlContent += "</tr>";
+			}
+
+			htmlContent += "</table>";
+		}
+
 		htmlContent += "</div>";
 
 
@@ -1432,6 +1482,22 @@ export class gurpsActor extends Actor {
 						}
 					}
 				},
+				affliction: {
+					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M216 23.86c0-23.8-30.65-32.77-44.15-13.04C48 191.85 224 200 224 288c0 35.63-29.11 64.46-64.85 63.99-35.17-.45-63.15-29.77-63.15-64.94v-85.51c0-21.7-26.47-32.23-41.43-16.5C27.8 213.16 0 261.33 0 320c0 105.87 86.13 192 192 192s192-86.13 192-192c0-170.29-168-193-168-296.14z" class=""></path></svg>',
+					label: "Select Affliction",
+					callback: () => {
+						let elements = document.getElementsByName('affliction');
+						let attack;
+						for (let e = 0; e < elements.length; e++){
+							if(elements[e].checked){
+								attack = e;
+							}
+						}
+						if (typeof attack !== "undefined") {
+							this.afflictionOnTarget(selfToken, attacks.affliction[attack], targetToken)
+						}
+					}
+				},
 				cancel: {
 					icon: '<i class="fas fa-times"></i>',
 					label: "Cancel",
@@ -1454,31 +1520,49 @@ export class gurpsActor extends Actor {
 	listAttacks(actor){
 		let meleeAttacks = [];
 		let rangedAttacks = [];
+		let afflictionAttacks = [];
 		let melee;
 		let ranged;
+		let affliction;
 
 		for (let y = 0; y < actor.data.items.length; y++){
-			if (actor.data.items[y].type == "Trait" || actor.data.items[y].type == "Equipment"){
-				let meleeKeys = Object.keys(actor.data.items[y].data.melee); // Collect all the melee keys
-				let rangedKeys = Object.keys(actor.data.items[y].data.ranged); // Collect all the ranged keys
+			if (actor.data.items[y].type == "Trait" || actor.data.items[y].type == "Equipment" || actor.data.items[y].type == "Spell"){
+				console.log(actor.data.items[y].data)
+				if (actor.data.items[y].data.melee) {
+					let meleeKeys = Object.keys(actor.data.items[y].data.melee); // Collect all the melee keys
+					for (let m = 0; m < meleeKeys.length; m++){
+						melee = getProperty(actor.data.items[y].data.melee, meleeKeys[m]);
+						melee.weapon = actor.data.items[y].name
 
-				for (let m = 0; m < meleeKeys.length; m++){
-					melee = getProperty(actor.data.items[y].data.melee, meleeKeys[m]);
-					melee.weapon = actor.data.items[y].name
-
-					meleeAttacks.push(melee);
+						meleeAttacks.push(melee);
+					}
 				}
 
-				for (let r = 0; r < rangedKeys.length; r++){
-					ranged = getProperty(actor.data.items[y].data.ranged, rangedKeys[r]);
-					ranged.weapon = actor.data.items[y].name
+				if (actor.data.items[y].data.ranged) {
+					let rangedKeys = Object.keys(actor.data.items[y].data.ranged); // Collect all the ranged keys
+					for (let r = 0; r < rangedKeys.length; r++){
+						ranged = getProperty(actor.data.items[y].data.ranged, rangedKeys[r]);
+						ranged.weapon = actor.data.items[y].name
 
-					rangedAttacks.push(ranged);
+						rangedAttacks.push(ranged);
+					}
+				}
+
+				if (actor.data.items[y].data.affliction) {
+					let afflictionKeys = Object.keys(actor.data.items[y].data.affliction); // Collect all the affliction keys
+					for (let a = 0; a < afflictionKeys.length; a++){
+						affliction = getProperty(actor.data.items[y].data.affliction, afflictionKeys[a]);
+						affliction.weapon = actor.data.items[y].name;
+						affliction.type = "affliction";
+						console.log(actor.data.items[y]);
+
+						afflictionAttacks.push(affliction);
+					}
 				}
 			}
 		}
 
-		return { "melee": meleeAttacks, "ranged": rangedAttacks}
+		return { "melee": meleeAttacks, "ranged": rangedAttacks, "affliction": afflictionAttacks}
 	}
 
 	attackOnTarget(attacker, attack, target) {
@@ -1626,6 +1710,168 @@ export class gurpsActor extends Actor {
 		// let label = attacker.nameplate._text + " attacks " + target.nameplate._text + " with a " + attack.weapon + " " + attack.name + "."
 		//
 		// rollHelpers.skillRoll(attack.level, 0, label)
+	}
+
+	afflictionOnTarget(attacker, attack, target) {
+		console.log(attacker);
+		console.log(attack);
+		console.log(target);
+
+		let distanceRaw = Math.round(canvas.grid.measureDistance(attacker, target));
+		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.data.gridUnits);
+		let distancePenalty = -distanceYards;
+		let totalModifier = distancePenalty;
+
+		let modModalContent =  "<table>";
+		modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.data.gridUnits + ")</td><td>" + distancePenalty + "</td></tr>"; // Display the distance penalty
+
+		let odds = rollHelpers.levelToOdds(+attack.level + +totalModifier)
+
+		modModalContent += "<tr><td>Total Modifier</td><td>" + totalModifier + "</td></tr>" +
+			"<tr><td>Effective Skill</td><td>" + (+attack.level + +totalModifier) + "</td></tr>" +
+			"<tr><td>Odds</td><td><span style='font-weight: bold; color: rgb(208, 127, 127)'>" + odds.critFail + "%</span>/<span style='font-weight: bold; color: rgb(141, 142, 222)'>" + odds.success + "%</span>/<span style='font-weight: bold; color: rgb(106, 162, 106)'>" + odds.critSuccess + "%</span></td></tr>" +
+			"<tr><td>Additional Modifier</td><td><input type='number' id='mod' name='mod' value='0' style='width: 50%'/></td></tr>" +
+			"</table>";
+
+		let modModal = new Dialog({
+			title: "Modifier Dialog",
+			content: modModalContent,
+			buttons: {
+				mod: {
+					icon: '<i class="fas fa-check"></i>',
+					label: "Apply Modifier",
+					callback: (html) => {
+						let mod = html.find('#mod').val();
+						this.reportAfflictionResult(target, attacker, attack, (+totalModifier + +mod))
+					}
+				},
+				noMod: {
+					icon: '<i class="fas fa-times"></i>',
+					label: "No Modifier",
+					callback: () => {
+						this.reportAfflictionResult(target, attacker, attack, totalModifier)
+					}
+				},
+				cancel: {
+					icon: '<i class="fas fa-times"></i>',
+					label: "Cancel",
+					callback: () => {
+
+					}
+				}
+			},
+			default: "mod",
+			render: html => console.log("Register interactivity in the rendered dialog"),
+			close: html => console.log("This always is logged no matter which option is chosen")
+		})
+		modModal.render(true)
+	}
+
+	reportAfflictionResult(target, attacker, attack, totalModifiers) {
+		console.log(target);
+		console.log(attacker);
+		console.log(attack);
+		console.log(totalModifiers);
+
+		// Make own roll.
+		let label = attacker.nameplate._text + " casts " + attack.weapon + " " + attack.name + " on " + target.nameplate._text + ".";
+		let level = attack.level;
+		let mod = totalModifiers;
+
+		let rollInfo = rollHelpers.skillRoll(level, mod, label, false)
+		let messageContent = rollInfo.content;
+		let flags = {}
+
+		if (rollInfo.success == false) {
+			messageContent += attacker.nameplate._text + "'s spell fails</br>";
+		}
+		else {
+			messageContent += "</br><input type='button' class='quickContest' value='Quick Contest'/><input type='button' class='attemptResistanceRoll' value='Resistance Roll'/><input type='button' class='noResistanceRoll' value='No Defence'/>"
+
+			flags = {
+				target: target.actor.data._id,
+				attacker: attacker.actor.data._id,
+				attack: attack,
+				margin: rollInfo.margin
+			}
+		}
+		// Everything is assembled, send the message
+		ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type, flags: flags});
+	}
+
+	noResistanceRoll(event) {
+		event.preventDefault();
+		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
+		console.log(flags)
+		this.applyAffliction(flags);
+	}
+
+	quickContest(event) {
+		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
+		// Make own roll.
+		let label = attacker.nameplate._text + " casts " + attack.weapon + " " + attack.name + " on " + target.nameplate._text + ".";
+		let level = attack.level;
+		let mod = totalModifiers;
+
+		let rollInfo = rollHelpers.skillRoll(level, mod, label, false)
+		let messageContent = rollInfo.content;
+
+		if (rollInfo.success == false) {
+			messageContent += attacker.nameplate._text + "'s spell fails</br>";
+		}
+		else {
+			messageContent += "</br><input type='button' class='quickContest' value='Quick Contest'/><input type='button' class='attemptResistanceRoll' value='Resistance Roll'/><input type='button' class='noResistanceRoll' value='No Defence'/>"
+		}
+
+		ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
+	}
+
+	attemptResistanceRoll(event) {
+		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
+		let target 			= game.actors.get(flags.target);
+		let attacker 		= game.actors.get(flags.attacker);
+		// Make own roll.
+		let label = target.nameplate._text + " attempts a resistance roll.";
+		let level = attack.level;
+		let mod = totalModifiers;
+
+		let rollInfo = rollHelpers.skillRoll(level, mod, label, false)
+		let messageContent = rollInfo.content;
+
+		if (rollInfo.success == false) {
+			messageContent += attacker.nameplate._text + "'s spell fails</br>";
+		}
+		else {
+			messageContent += "</br><input type='button' class='quickContest' value='Quick Contest'/><input type='button' class='attemptResistanceRoll' value='Resistance Roll'/><input type='button' class='noResistanceRoll' value='No Defence'/>"
+		}
+
+		ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
+	}
+
+	applyAffliction(flags) {
+		let target 			= game.actors.get(flags.target);
+		let attacker 		= game.actors.get(flags.attacker);
+		let attack 			= flags.attack;
+		let damageReduction = 1;
+		let armourDivisor;
+
+		if (typeof attack.armorDivisor == "undefined" || attack.armorDivisor == ""){ // Armour divisor is undefined or blank
+			armourDivisor = 1; // Set it to the default of 1
+		}
+		else if (attack.armorDivisor.toString().toLowerCase().includes("ignore") || attack.armorDivisor.toString().toLowerCase().includes("cosmic") || attack.armorDivisor.toString().toLowerCase().includes("i")){
+			armourDivisor = "Ignores Armour"; // Set to a negative number, which we'll later use to ignore armour entirely.
+		}
+		else {
+			armourDivisor = attack.armorDivisor; // Set it to whatever they entered.
+		}
+
+		if (target.data.data.injuryTolerances){
+			if (target.data.data.injuryTolerances.damageReduction){
+				damageReduction = target.data.data.injuryTolerances.damageReduction; // Set the target's damage reduction
+			}
+		}
+
+		let damageType = this.extractDamageType(attack);
 	}
 
 	selectedRandom(target, attacker, attack, relativePosition, rof) { // Select random hit location
@@ -1884,7 +2130,7 @@ export class gurpsActor extends Actor {
 			modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.data.gridUnits + ")</td><td>" + distancePenalty + "</td></tr>" + // Display the ranged specific modifiers
 								"<tr><td>RoF Bonus:</td><td>" + rofBonus + "</td></tr>";
 		}
-		else {
+		else if (attack.type === "melee") {
 			// Sort out the effective SM modifier based on the game's settings and the attacker/target SM
 			if (game.settings.get("gurps4e", "meleeRelativeSM")) { // Game is using relative SM rules for melee attacks
 				sizeModModifier = this.getSM(target.actor) - this.getSM(attacker.actor);
@@ -1961,7 +2207,7 @@ export class gurpsActor extends Actor {
 				mod = +mod + +attack.bulk; // Add the bulk penalty to the total modifiers
 			}
 		}
-		else {
+		else if (attack.type === "melee") {
 			label += ".";
 
 			// Handle move and attack for melee

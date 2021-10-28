@@ -554,6 +554,36 @@
 					{{/each}}
 					{{/each}}
 				</table>
+				<table class="items-list">
+					<tr class="bold">
+						<td>Affliction</td>
+						<td>Attack Name</td>
+						<td>Level</td>
+						<td>Damage</td>
+						<td>Resistance Roll</td>
+						<td>Rule Of</td>
+					</tr>
+					{{#each actor.items as |item id|}}
+					{{#each item.data.affliction as |affliction mid|}}
+					<tr>
+						<td>{{item.name}}</td>
+						<td>{{affliction.name}}</td>
+						<td>
+							{{item.data.level}}
+							<label class="fa fa-dice-six rollable" data-level="{{item.data.level}}"
+								   data-label="Casts &lt;b&gt;{{item.name}} {{affliction.name}}&lt;/b&gt;" data-type="skill"></label>
+						</td>
+						<td>
+							{{affliction.damage}} {{affliction.damageType}} ({{affliction.armorDivisor}})
+							<label class="fa fa-dice-six rollable" data-level="{{affliction.damage}}"
+								   data-label="Makes a &lt;b&gt;{{item.name}} {{affliction.name}}&lt;/b&gt; Damage roll." data-type="damage"></label>
+						</td>
+						<td>{{affliction.resistanceRoll}} {{affliction.resistanceRollPenalty}}</td>
+						<td>{{affliction.ruleOf}}</td>
+					</tr>
+					{{/each}}
+					{{/each}}
+				</table>
 			</div>
 
 			{{!-- Items Tab --}}

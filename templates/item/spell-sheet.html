@@ -15,6 +15,21 @@
             </table>
             <table class="">
                 <tr>
+                    <td>Spell Class</td>
+                    <td>
+                        <select name="data.spellClass">
+                            {{#select data.spellClass}}
+                            <option value="Regular">Regular</option>
+                            <option value="Missile">Missile</option>
+                            <option value="Melee">Melee</option>
+                            <option value="Area">Area</option>
+                            <option value="Blocking">Blocking</option>
+                            <option value="Information">Information</option>
+                            {{/select}}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td>Difficulty</td>
                     <td>
                         <select name="data.difficulty">
@@ -60,11 +75,18 @@
         <div class="header">
             <a class="item" data-tab="notes">Notes</a>
         </div>
+        {{#if  (eq data.spellClass "Melee") }}
         <div class="header">
             <a class="item" data-tab="melee">Melee</a>
         </div>
+        {{/if}}
+        {{#if  (eq data.spellClass "Missile") }}
         <div class="header">
             <a class="item" data-tab="ranged">Ranged</a>
+        </div>
+        {{/if}}
+        <div class="header">
+            <a class="item" data-tab="affliction">Affliction</a>
         </div>
     </nav>
 
@@ -100,7 +122,7 @@
                     {{#each data.melee as |melee id|}}
                     <tr class="equipment-entry">
                         <td><input type="text" name="data.melee.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
-                        <td class="resource-label">{{log melee}}{{log data}}{{melee.level}}</td>
+                        <td class="resource-label">{{melee.level}}</td>
                         <td class="equipmentInputInput">
                             <input type="text" name="data.melee.{{id}}.skill" value="{{melee.skill}}" title="{{melee.skill}}" style="text-align:left;" />/
                             <input type="text" name="data.melee.{{id}}.skillMod" value="{{melee.skillMod}}" data-dtype="Number"/>
@@ -240,6 +262,89 @@
                         <td><input type="text" name="data.ranged.{{id}}.rcl" value="{{ranged.rcl}}" title="{{ranged.rcl}}" style="text-align:left;" /></td>
                         <td><input type="text" name="data.ranged.{{id}}.st" value="{{ranged.st}}"/></td>
                         <td><a class="ranged-delete" id="ranged{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
+                    </tr>
+                    {{/each}}
+                </table>
+            </div>
+        </div>
+
+        {{!-- Affliction Tab --}}
+        <div class="tab stats" data-tab="affliction" data-group="primary">
+            <h3 class="addAfflictionRow" style="text-align: right;">Add Row</h3>
+            <div class="tab">
+                <table>
+                    <tr class="equipment-header">
+                        <td class="resource-label">Name</td>
+                        <td class="resource-label">Damage</td>
+                        <td class="resource-label">Type</td>
+                        <td class="resource-label">Divisor</td>
+                        <td class="resource-label">Effect Description</td>
+                        <td class="resource-label">Resistance Roll</td>
+                        <td class="resource-label">Rule Of</td>
+                        <td class="resource-label"></td>
+                    </tr>
+                    {{#each data.affliction as |affliction id|}}
+                    <tr class="equipment-entry">
+                        <td><input type="text" name="data.affliction.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left; width: 85px;" /></td>
+                        <td><input type="text" name="data.affliction.{{id}}.damageInput" value="{{affliction.damageInput}}" title="{{affliction.damageInput}}" style="text-align:left; width: 40px;" /></td>
+                        <td>
+                            <span class="tooltip">
+                                <input type="text" name="data.affliction.{{id}}.damageType" value="{{affliction.damageType}}" title="{{affliction.damageType}}" style="text-align:left; width: 40px;" />
+                                <span class="tooltiptext" style="margin-left: -100px">
+                                    <div>
+                                        <span style="text-decoration: underline">Valid entries are:</span><br>
+                                        burn: Burning<br>
+                                        cor: Corrosion<br>
+                                        cr: Crushing<br>
+                                        cut: Cutting<br>
+                                        fat: Fatigue<br>
+                                        imp: Impaling<br>
+                                        pi-: Small Piercing<br>
+                                        pi: Piercing<br>
+                                        pi+: Large Piercing<br>
+                                        pi++: Huge Piercing<br>
+                                        tox: Toxic<br>
+                                        dam: Untyped<br>
+                                        <span style="text-decoration: underline">Valid modifiers are:</span><br>
+                                        ex: Explosive<br>
+                                        dbk: Double Knockback<br>
+                                        dbt: Double Blunt Trauma<br>
+                                        nw: No Wounding<br>
+                                    </div>
+                                </span>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="tooltip">
+                                <input type="text" name="data.affliction.{{id}}.armorDivisor" value="{{affliction.armorDivisor}}" title="{{affliction.armorDivisor}}" style="text-align:left; width: 40px;" />
+                                <span class="tooltiptext" style="margin-left: -100px">
+                                    <div>
+                                        Default is 1<br>
+                                        0 makes effective armour infinite<br>
+                                        Using the words 'ignore' or 'cosmic' allows the attack to ignore armour<br>
+                                        Setting this to 'I' will also ignore armour
+                                    </div>
+                                </span>
+                            </span>
+                        </td>
+                        <td><input type="text" name="data.affliction.{{id}}.desc" value="{{desc}}" title="{{desc}}" style="text-align:left;" /></td>
+                        <td style="display: flex;">
+                            <select name="data.affliction.{{id}}.resistanceRoll">
+                                {{#select affliction.resistanceRoll}}
+                                    <option value="">None</option>
+                                    <option value="Strength">ST</option>
+                                    <option value="Dexterity">DX</option>
+                                    <option value="Intelligence">IQ</option>
+                                    <option value="Health">HT</option>
+                                    <option value="Will">Will</option>
+                                    <option value="Perception">Per</option>
+                                    <option value="Fright">Fright</option>
+                                {{/select}}
+                            </select>
+                            <input type="text" placeholder="-0" name="data.affliction.{{id}}.resistanceRollPenalty" value="{{affliction.resistanceRollPenalty}}" title="{{affliction.resistanceRollPenalty}}" style="text-align:left; width: 40px" />
+                        </td>
+                        <td><input type="text" name="data.affliction.{{id}}.ruleOf" value="{{affliction.ruleOf}}" title="{{affliction.ruleOf}}" style="text-align:left; width: 40px;" /></td>
+                        <td><a class="affliction-delete" id="affliction{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
                     </tr>
                     {{/each}}
                 </table>

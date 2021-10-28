@@ -39,6 +39,7 @@ export class gurpsItem extends Item {
         break;
       case "Spell":
         this._prepareSpellData();
+        this.prepareAfflictionData(itemData, data)
         break;
       case "Trait":
         this._prepareTraitData(itemData, data);
@@ -242,6 +243,37 @@ export class gurpsItem extends Item {
               ){
                 this._data.data.ranged[rangedKeys[k]].armorDivisor = 1;
                 this.data.data.ranged[rangedKeys[k]].armorDivisor = 1;
+              }
+            }
+          }
+        }
+      }
+
+      if (data.affliction){
+        let afflictionKeys = Object.keys(data.affliction);
+        if (afflictionKeys.length){//Check to see if there are any melee profiles
+          for (let k = 0; k < afflictionKeys.length; k++){
+            if (data.affliction[afflictionKeys[k]].name){//Check to see if name is filled in. Otherwise don't bother.
+              console.log(data)
+              console.log(data.affliction[afflictionKeys[k]])
+
+              damage = this.damageParseSwThr(data.affliction[afflictionKeys[k]].damageInput);//Update damage value
+
+              this._data.data.affliction[afflictionKeys[k]].level   = data.level;
+              this.data.data.affliction[afflictionKeys[k]].level    = data.level;
+              this._data.data.affliction[afflictionKeys[k]].type    = "affliction"; // Update attack type
+              this.data.data.affliction[afflictionKeys[k]].type     = "affliction"; // Update attack type
+              this._data.data.affliction[afflictionKeys[k]].damage  = damage;
+              this.data.data.affliction[afflictionKeys[k]].damage   = damage;
+
+              // Validation for Armour Divisor
+              if (!(data.affliction[afflictionKeys[k]].armorDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
+                  data.affliction[afflictionKeys[k]].armorDivisor.toString().toLowerCase().includes("cosmic") ||
+                  data.affliction[afflictionKeys[k]].armorDivisor.toString().toLowerCase().includes("i") ||
+                  data.affliction[afflictionKeys[k]].armorDivisor >= 0)
+              ){
+                this._data.data.affliction[afflictionKeys[k]].armorDivisor = 1;
+                this.data.data.affliction[afflictionKeys[k]].armorDivisor = 1;
               }
             }
           }
@@ -585,4 +617,6 @@ export class gurpsItem extends Item {
   }
 
   _prepareTraitData(itemData, data) {}
+
+  prepareAfflictionData(itemData, data) {}
 }

@@ -24,6 +24,9 @@ Hooks.on("renderChatMessage", async (app, html, msg) => {
 
   html.find('.attemptActiveDefences').click(attemptActiveDefences.bind(this));
   html.find('.noActiveDefences').click(noActiveDefences.bind(this));
+  html.find('.quickContest').click(quickContest.bind(this));
+  html.find('.attemptResistanceRoll').click(attemptResistanceRoll.bind(this));
+  html.find('.noResistanceRoll').click(noResistanceRoll.bind(this));
 })
 
 function attemptActiveDefences(event) {
@@ -36,4 +39,22 @@ function noActiveDefences(event) {
   event.preventDefault();
   let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
   game.actors.get(flags.target).noActiveDefences(event);
+}
+
+function quickContest(event) {
+  event.preventDefault();
+  let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
+  game.actors.get(flags.target).quickContest(event);
+}
+
+function attemptResistanceRoll(event) {
+  event.preventDefault();
+  let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
+  game.actors.get(flags.target).attemptResistanceRoll(event);
+}
+
+function noResistanceRoll(event) {
+  event.preventDefault();
+  let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
+  game.actors.get(flags.target).noResistanceRoll(event);
 }

@@ -323,6 +323,9 @@
       "ranged": {
         "ranged": []
       },
+      "affliction": {
+        "affliction": []
+      },
       "defaults": {
         "defaults": []
       },
@@ -421,7 +424,8 @@
         "mod",
         "defaults",
         "melee",
-        "ranged"
+        "ranged",
+        "affliction"
       ]
     },
     "Trait": {

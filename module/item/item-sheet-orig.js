@@ -57,11 +57,13 @@ export class gurpsItemSheet extends ItemSheet {
         // User clicked addRow
         html.find('.addRow').click(this._onAddRow.bind(this));
         html.find('.addRangedRow').click(this._onAddRangedRow.bind(this));
+        html.find('.addAfflictionRow').click(this._onAddAfflictionRow.bind(this));
         html.find('.addDefaultRow').click(this._onAddDefaultRow.bind(this));
 
         //User clicked delete thingy on the row
         html.find('.attack-delete').click(this._onDeleteRow.bind(this));
         html.find('.ranged-delete').click(this._onDeleteRangedRow.bind(this));
+        html.find('.affliction-delete').click(this._onDeleteAfflictionRow.bind(this));
         html.find('.default-delete').click(this._onDeleteDefaultRow.bind(this));
 
         // Update body type
@@ -104,6 +106,29 @@ export class gurpsItemSheet extends ItemSheet {
         let newRow = { "name": "" };
         this.item.update({ ["data.ranged." + newKey]: newRow });
     }
+    _onAddAfflictionRow(event) {
+        if (typeof this.item.data.data.affliction == "undefined") {
+            this.item.data.data.affliction = {
+                "0" : []
+            }
+        }
+        let keys = Object.keys(this.item.data.data.affliction);
+        let newKey = 0;
+        if (keys.length){//Array is not empty
+            newKey = (+keys[keys.length-1] + +1);
+        }
+        else {
+            newKey = 0;
+        }
+        let newRow = {
+            "name": "",
+            "resistanceRoll": "",
+            "armorDivisor": "I",
+            "resistanceRollPenalty": 0,
+            "ruleOf": 16
+        };
+        this.item.update({ ["data.affliction." + newKey]: newRow });
+    }
     _onAddDefaultRow(event) {
         let keys = Object.keys(this.item.data.data.defaults);
         let newKey = 0;
@@ -123,6 +148,11 @@ export class gurpsItemSheet extends ItemSheet {
     _onDeleteRangedRow(event) {
         let id = event.currentTarget.id.substring(6);
         this.item.update({ ["data.ranged.-=" + id] : null});
+    }
+
+    _onDeleteAfflictionRow(event) {
+        let id = event.currentTarget.id.substring(10);
+        this.item.update({ ["data.affliction.-=" + id] : null});
     }
 
     _onDeleteDefaultRow(event) {
