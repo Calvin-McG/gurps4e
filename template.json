@@ -25,7 +25,7 @@
           },
           "sm": {
             "label": "Size Mod",
-            "value": ""
+            "value": 0
           },
           "tl": {
             "label": "TL",

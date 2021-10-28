@@ -33,6 +33,7 @@ Misc
     - Make armour display suck less (Pull from location dr instead of array object bullshit
     - Leveled traits
     - Journal - Item linky thing like CoC on char sheets
+    - Validation for SM changes (Trying to input a string should default back to 0, rather than blanking)
 
 Combat Macro
     - Tight beam burning - 1x damage
