@@ -8,19 +8,19 @@
             <div class="equipmentDetails" id="equipmentDetails">
                 <div id="qty" class="equipmentStat">
                     <label class="resource-label">Qty:</label>
-                    <input type="text" name="data.quantity" value="{{data.quantity}}" data-dtype="Number"/>
+                    <input type="text" name="data.quantity" value="{{data.data.quantity}}" data-dtype="Number"/>
                 </div>
                 <div id="tl" class="equipmentStat">
                     <label class="resource-label">TL:</label>
-                    <input type="text" name="data.tl" value="{{data.tl}}" data-dtype="Number"/>
+                    <input type="text" name="data.tl" value="{{data.data.tl}}" data-dtype="Number"/>
                 </div>
                 <div id="lc" class="equipmentStat">
                     <label class="resource-label">LC:</label>
-                    <input type="text" name="data.lc" value="{{data.lc}}" data-dtype="Number"/>
+                    <input type="text" name="data.lc" value="{{data.data.lc}}" data-dtype="Number"/>
                 </div>
                 <div id="equipped" class="flexrow">
                     <select name="data.equipStatus" class="equipStatusSelect">
-                        {{#select data.equipStatus}}
+                        {{#select data.data.equipStatus}}
                         <option value="equipped">Equipped</option>
                         <option value="carried">Carried</option>
                         <option value="notCarried">Not Carried</option>
@@ -29,24 +29,24 @@
                 </div>
                 <div id="subCategory" class="flexrow">
                     <label class="resource-label" style="flex: 0.5;">Race / Meta Trait / Etc:</label>
-                    <input type="text" style="flex: 1;" name="data.subCategory" value="{{data.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
+                    <input type="text" style="flex: 1;" name="data.subCategory" value="{{data.data.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
                 </div>
                 <div id="value" class="equipmentStatLong">
                     <label class="resource-label">Value:</label>
-                    <input type="text" name="data.cost" value="{{data.cost}}" data-dtype="Number"/>
-                    <label class="resource-label"> / {{data.ttlCost}}$ total</label>
+                    <input type="text" name="data.cost" value="{{data.data.cost}}" data-dtype="Number"/>
+                    <label class="resource-label"> / {{data.data.ttlCost}}$ total</label>
                 </div>
                 <div id="weight" class="equipmentStatLong">
                     <label class="resource-label">Weight:</label>
-                    <input type="text" name="data.weight" value="{{data.weight}}" data-dtype="Number"/>
-                    <label class="resource-label"> / {{data.ttlWeight}}lbs total</label>
+                    <input type="text" name="data.weight" value="{{data.data.weight}}" data-dtype="Number"/>
+                    <label class="resource-label"> / {{data.data.ttlWeight}}lbs total</label>
                 </div>
             </div>
         </div>
     </header>
     <div style="padding-top: 2px;">
         <label class="resource-label" style="width: 32px;">Short Notes:</label>
-        <input type="text" name="data.shortNotes" value="{{data.shortNotes}}" style="width: calc(100% - 78px);"/>
+        <input type="text" name="data.shortNotes" value="{{data.data.shortNotes}}" style="width: calc(100% - 78px);"/>
     </div>
 
     {{!-- Sheet Tab Navigation --}}
@@ -72,7 +72,7 @@
         <div class="tab stats" data-tab="notes" data-group="primary">
             <h3 class="bold">Detailed Notes</h3>
             <div class="tab">
-                <textarea rows="8" name="data.notes">{{{data.notes}}}</textarea>
+                <textarea rows="8" name="data.notes">{{{data.data.notes}}}</textarea>
             </div>
         </div>
 
@@ -95,7 +95,7 @@
                     <td class="resource-label">ST</td>
                     <td class="resource-label"></td>
                 </tr>
-                {{#each data.melee as |melee id|}}
+                {{#each data.data.melee as |melee id|}}
                 <tr class="equipment-entry">
                     <td class="resource-label">{{id}}</td>
                     <td><input type="text" name="data.melee.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
@@ -184,7 +184,7 @@
                         <td class="resource-label">Malf</td>
                         <td class="resource-label"></td>
                     </tr>
-                    {{#each data.ranged as |ranged id|}}
+                    {{#each data.data.ranged as |ranged id|}}
                     <tr class="equipment-entry">
                         <td class="resource-label">{{id}}</td>
                         <td><input type="text" name="data.ranged.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
@@ -255,7 +255,7 @@
                 <span>
                     <label>Body Type:</label>
                     <select name="data.armour.bodyType.name" class="bodyType">
-                        {{#select data.armour.bodyType.name}}
+                        {{#select data.data.armour.bodyType.name}}
                         <option value="">Make a Selection</option>
                         <option value="humanoid">Humanoid</option>
                         <option value="wingedHumanoid">Winged Humanoid</option>
@@ -275,7 +275,7 @@
                         {{/select}}
                     </select>
                 </span>
-                {{#if (eq data.armour.bodyType.name "") }}
+                {{#if (eq data.data.armour.bodyType.name "") }}
                     <br>Please only set body type if this equipment applies DR. Otherwise the formula that adds up armour will check this for DR values. With enough items on your sheet it will eventually degrade performance.
                 {{else}}
                 <span class="tooltip">
@@ -293,7 +293,7 @@
                 </span>
                 {{/if}}
                 <table class="dr-entry-table">
-                    {{#unless (eq data.armour.bodyType.name "") }}
+                    {{#unless (eq data.data.armour.bodyType.name "") }}
                         <tr class="hit-locations">
                             <td class="dr-header"></td>
                             <td class="dr-header">Flex</td>
@@ -308,7 +308,7 @@
                             <td class="dr-damage-types">Tox</td>
                         </tr>
                     {{/unless}}
-                    {{#each data.armour.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
+                    {{#each data.data.armour.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
                     <tr class="hit-locations master-location">
                         <th colspan="11">{{bodyPart.label}}</th>
                     </tr>
