@@ -18,6 +18,12 @@ from session 5/27/2021
     - Incidental damage (Rolling 9s vs people behind/front of main target)
     - Uncategorized at the bottom of the list
 
+Fix display of tabs
+    - Items
+    - Armour Display
+    - Body Type
+    - Magic
+
 Layered Armour
     - Make entering armour faster and suck less
     - Slam thingy
