@@ -446,6 +446,17 @@ export class gurpsItem extends Item {
     return bonus;
   }
 
+  computeSkillLevelWithoutDefaults(difficulty, baseAttr, points, mod) {
+    let level = 0;
+    if (this.actor.data) { // Make sure there's an actor before computing skill level
+      let base = this.getBaseAttrValue(baseAttr) // Get the base value of the relevant attribute
+      // Compute skill value based on points spent on the skill
+      level = base + this.pointsToBonus(points, difficulty) + mod;
+    }
+
+    return level;
+  }
+
   computeSkillLevel(category, defaults, difficulty, baseAttr, baseSkill, minLevel, maxLevel, dabblerPoints, pts, mod) {
     let level = 0;
     if (this.actor.data) { // Make sure there's an actor before computing skill level
