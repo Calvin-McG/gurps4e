@@ -625,7 +625,7 @@ export class gurpsActor extends Actor {
     recalcSkillPoints() {
         var skillPoints = +0;
         //Iterate through the list of skills. Advantages and Disadvantages
-        for (let i = 0; i < this.data.items.length; i++){
+        for (let i = 0; i < this.data.items._source.length; i++){
             if (this.data.items._source[i].type === "Rollable"){
                 skillPoints = skillPoints += this.data.items._source[i].data.points
             }
