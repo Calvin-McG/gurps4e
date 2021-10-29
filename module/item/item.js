@@ -15,7 +15,7 @@ export class gurpsItem extends Item {
    * Note: This method is called on every item belonging to the actor, not just
    * the one being edited. So, if all the prepareItem methods are pointless we
    * should eliminate them.
-   * 
+   *
    * itemData includes:
    *  _id:""
    *  name:""
@@ -30,7 +30,7 @@ export class gurpsItem extends Item {
     let itemData = this.data;
     let data = itemData.data;
 
-    switch (itemData.type) {
+    switch (this.data.type) {
       case "Equipment":
         this._prepareEquipmentData(itemData, data);
         break;
@@ -42,12 +42,13 @@ export class gurpsItem extends Item {
         this.prepareAfflictionData(itemData, data)
         break;
       case "Trait":
-        this._prepareTraitData(itemData, data);
+        this._prepareTraitData();
         break;
       default: // not a supported type
         return ui.notifications.error("This type of item is not supported in the system!");
     }
     this.prepareAttackData(itemData, data)
+    console.log(this)
   }
 
   _prepareEquipmentData(itemData, data) {
@@ -616,7 +617,7 @@ export class gurpsItem extends Item {
     }
   }
 
-  _prepareTraitData(itemData, data) {}
+  _prepareTraitData() {}
 
   prepareAfflictionData(itemData, data) {}
 }
