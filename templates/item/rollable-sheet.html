@@ -17,43 +17,49 @@
                 <div class="flexrow">
                     <label class="resource-label">Category</label>
                     <select name="data.category">
-                        {{#select data.category}}
+                        {{#select data.data.category}}
                         <option value="skill">Skill</option>
                         <option value="technique">Technique</option>
                         {{/select}}
                     </select>
                 </div>
-
-                {{#if (or (eq data.category "skill")) }}
-                <div class="flexrow">
-                    <label class="resource-label">Difficulty</label>
-                    <select name="data.difficulty">
-                        {{#select data.difficulty}}
-                        <option value="E">Easy</option>
-                        <option value="A">Average</option>
-                        <option value="H">Hard</option>
-                        <option value="VH">Very Hard</option>
-                        <option value="W">Wildcard</option>
-                        {{/select}}
-                    </select>
-                </div>
+                {{log data}}
+                {{log data.data}}
+                {{log data.data.category}}
+                {{#if (eq data.data.category "skill") }}
+                    {{log "-skill"}}
+                    {{log data.data.category}}
+                    <div class="flexrow">
+                        <label class="resource-label">Difficulty</label>
+                        <select name="data.difficulty">
+                            {{#select data.data.difficulty}}
+                            <option value="E">Easy</option>
+                            <option value="A">Average</option>
+                            <option value="H">Hard</option>
+                            <option value="VH">Very Hard</option>
+                            <option value="W">Wildcard</option>
+                            {{/select}}
+                        </select>
+                    </div>
                 {{else}}
-                <div class="flexrow">
-                    <label class="resource-label">Difficulty</label>
-                    <select name="data.difficulty">
-                        {{#select data.difficulty}}
-                        <option value="A">Average</option>
-                        <option value="H">Hard</option>
-                        {{/select}}
-                    </select>
-                </div>
+                    {{log "-technique"}}
+                    {{log data.data.category}}
+                    <div class="flexrow">
+                        <label class="resource-label">Difficulty</label>
+                        <select name="data.difficulty">
+                            {{#select data.data.difficulty}}
+                            <option value="A">Average</option>
+                            <option value="H">Hard</option>
+                            {{/select}}
+                        </select>
+                    </div>
                 {{/if}}
 
-                {{#if (or (eq data.category "skill")) }}
+                {{#if (eq data.data.category "skill") }}
                 <div class="flexrow">
                     <label class="resource-label">Base Attribute</label>
                     <select name="data.baseAttr">
-                        {{#select data.baseAttr}}
+                        {{#select data.data.baseAttr}}
                         <option value="ST">ST</option>
                         <option value="DX">DX</option>
                         <option value="IQ">IQ</option>
@@ -66,38 +72,38 @@
                 {{else}}
                 <div class="flexrow baseSkillRow" id="baseSkillRow">
                     <label id="baseSkillLabel" class="resource-label">Base Skill</label>
-                    <input id="baseSkillText" type="text" name="data.baseSkill" value="{{data.baseSkill}}" data-dtype="String"/>
-                    <label id="baseSkillLevel" style="margin: auto">{{data.baseSkillLevel}}</label>
+                    <input id="baseSkillText" type="text" name="data.baseSkill" value="{{data.data.baseSkill}}" data-dtype="String"/>
+                    <label id="baseSkillLevel" style="margin: auto">{{data.data.baseSkillLevel}}</label>
                 </div>
                 <div class="flexrow">
                     <label class="resource-label">Base Penalty</label>
-                    <input type="text" name="data.minLevel" value="{{data.minLevel}}" data-dtype="Number"/>
+                    <input type="text" name="data.minLevel" value="{{data.data.minLevel}}" data-dtype="Number"/>
                 </div>
                 <div class="flexrow">
                     <label class="resource-label">Max Bonus</label>
-                    <input type="text" name="data.maxLevel" value="{{data.maxLevel}}" data-dtype="Number"/>
+                    <input type="text" name="data.maxLevel" value="{{data.data.maxLevel}}" data-dtype="Number"/>
                 </div>
                 {{/if}}
 
                 <div class="flexrow">
                     <label class="resource-label">Modifier</label>
-                    <input type="text" name="data.mod" value="{{data.mod}}" data-dtype="Number"/>
+                    <input type="text" name="data.mod" value="{{data.data.mod}}" data-dtype="Number"/>
                 </div>
                 <div class="flexrow">
                     <label class="resource-label">Level</label>
-                    {{data.level}}
+                    {{data.data.level}}
                 </div>
                 <div class="flexrow">
                     <label class="resource-label">Points</label>
-                    <input type="text" name="data.points" value="{{data.points}}" data-dtype="Number"/>
+                    <input type="text" name="data.points" value="{{data.data.points}}" data-dtype="Number"/>
                 </div>
                 <div id="subCategory" class="flexrow">
                     <label class="resource-label">Race / Meta Trait / Etc:</label>
-                    <input type="text" name="data.subCategory" value="{{data.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
+                    <input type="text" name="data.subCategory" value="{{data.data.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
                 </div>
                 <div class="flexrow">
                     <label class="resource-label">Notes</label>
-                    <input type="text" name="data.shortNotes" value="{{data.shortNotes}}"/>
+                    <input type="text" name="data.shortNotes" value="{{data.data.shortNotes}}"/>
                 </div>
             </div>
         </div>
@@ -108,7 +114,7 @@
         <div class="header">
             <a class="item" data-tab="notes">Notes</a>
         </div>
-        {{#if (or (eq data.category "skill")) }}
+        {{#if (or (eq data.data.category "skill")) }}
         <div class="header">
             <a class="item" data-tab="defaults">Defaults</a>
         </div>
@@ -125,7 +131,7 @@
         <div class="tab stats" data-tab="notes" data-group="primary">
             <h3 class="bold">Detailed Notes</h3>
             <div class="tab">
-                <textarea rows="8" name="data.notes">{{{data.notes}}}</textarea>
+                <textarea rows="8" name="data.notes">{{{data.data.notes}}}</textarea>
             </div>
         </div>
 
@@ -139,7 +145,7 @@
                         <td>Modifier</td>
                         <td></td>
                     </tr>
-                    {{#each data.defaults as |defaults id|}}
+                    {{#each data.data.defaults as |defaults id|}}
                     <tr class="equipment-entry">
                         <td><input type="text" name="data.defaults.{{id}}.skill" value="{{skill}}" title="{{skill}}" style="text-align:left;" /></td>
                         <td><input type="text" name="data.defaults.{{id}}.mod" value="{{mod}}" title="{{mod}}" style="text-align:left;" /></td>
@@ -155,7 +161,7 @@
             <div class="flexrow">
                 <label class="resource-label">Dabbler Points</label>
                 <select name="data.dabblerPoints">
-                    {{#select data.dabblerPoints}}
+                    {{#select data.data.dabblerPoints}}
                     <option value="0">0: Default +0</option>
                     <option value="1">1: Default +1</option>
                     <option value="2">2: Default +2</option>
