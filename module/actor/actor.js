@@ -9,19 +9,19 @@ import { actorHelpers } from "../../helpers/actorHelpers.js";
  * @extends {Actor}
  */
 export class gurpsActor extends Actor {
-
-	/**
-	 * Override the create() function to provide additional GURPS4e functionality.
-	 *
-	 * This overridden create() function adds flags to an actor upon creation.
-	 *
-	 * @param {Object} data				Barebones actor data which this function adds onto.
-	 * @param {Object} options		 (Unused) Additional options which customize the creation workflow.
-	 *
-	 */
-	static async create(data, options) {
-		super.create(data, options); // Follow through the the rest of the Actor creation process upstream
-	}
+	//
+	// /**
+	//  * Override the create() function to provide additional GURPS4e functionality.
+	//  *
+	//  * This overridden create() function adds flags to an actor upon creation.
+	//  *
+	//  * @param {Object} data				Barebones actor data which this function adds onto.
+	//  * @param {Object} options		 (Unused) Additional options which customize the creation workflow.
+	//  *
+	//  */
+	// static async create(data, options) {
+	// 	super.create(data, options); // Follow through the the rest of the Actor creation process upstream
+	// }
 
 	/**
 	 * Augment the basic actor data with additional dynamic data.
@@ -60,10 +60,10 @@ export class gurpsActor extends Actor {
 		//Update part specific HP
 		this.partHP();
 
-		//Recalculate encumberance values, along with effective dodge and move. Do this last so move and dodge is correct.
+		//Recalculate encumbrance values, along with effective dodge and move. Do this last so move and dodge is correct.
 		this.recalcEncValues();
 
-		console.log(this.data)
+		console.log(this)
 	}
 
 	checkUndefined(){
@@ -606,13 +606,13 @@ export class gurpsActor extends Actor {
 		let perkPoints = +0;
 
 		// Iterate through the list of traits. Advantages and Disadvantages
-        for (let i = 0; i < this.data.items.length; i++){
-            if (this.data.items[i].type === "Trait"){
-                traitPoints = traitPoints += this.data.items[i].data.points;
-				advantagePoints = this.data.items[i].data.category.toLowerCase() === "advantage" ? advantagePoints += this.data.items[i].data.points : advantagePoints;
-                disadvantagePoints = this.data.items[i].data.category.toLowerCase() === "disadvantage" ? disadvantagePoints += this.data.items[i].data.points : disadvantagePoints;
-				quirkPoints = this.data.items[i].data.category.toLowerCase() === "quirk" ? quirkPoints += this.data.items[i].data.points : quirkPoints;
-				perkPoints = this.data.items[i].data.category.toLowerCase() === "perk" ? perkPoints += this.data.items[i].data.points : perkPoints;
+        for (let i = 0; i < this.data.items._source.length; i++){
+            if (this.data.items._source[i].type === "Trait"){
+                traitPoints = traitPoints += this.data.items._source[i].data.points;
+				advantagePoints = this.data.items._source[i].data.category.toLowerCase() === "advantage" ? advantagePoints += this.data.items._source[i].data.points : advantagePoints;
+                disadvantagePoints = this.data.items._source[i].data.category.toLowerCase() === "disadvantage" ? disadvantagePoints += this.data.items._source[i].data.points : disadvantagePoints;
+				quirkPoints = this.data.items._source[i].data.category.toLowerCase() === "quirk" ? quirkPoints += this.data.items._source[i].data.points : quirkPoints;
+				perkPoints = this.data.items._source[i].data.category.toLowerCase() === "perk" ? perkPoints += this.data.items._source[i].data.points : perkPoints;
             }
         }
 		this.data.data.points.traits = traitPoints;
@@ -626,8 +626,8 @@ export class gurpsActor extends Actor {
         var skillPoints = +0;
         //Iterate through the list of skills. Advantages and Disadvantages
         for (let i = 0; i < this.data.items.length; i++){
-            if (this.data.items[i].type === "Rollable"){
-                skillPoints = skillPoints += this.data.items[i].data.points
+            if (this.data.items._source[i].type === "Rollable"){
+                skillPoints = skillPoints += this.data.items._source[i].data.points
             }
         }
 		this.data.data.points.skills = skillPoints;
@@ -637,8 +637,8 @@ export class gurpsActor extends Actor {
 		var spellPoints = +0;
 		//Iterate through the list of skills. Advantages and Disadvantages
 		for (let i = 0; i < this.data.items.length; i++){
-			if (this.data.items[i].type === "Spell"){
-				spellPoints = spellPoints += this.data.items[i].data.points
+			if (this.data.items._source[i].type === "Spell"){
+				spellPoints = spellPoints += this.data.items._source[i].data.points
 			}
 		}
 		this.data.data.points.spells = spellPoints;
@@ -695,9 +695,9 @@ export class gurpsActor extends Actor {
 		carriedCost = 0;
 		//Running loop to total up weight and value for the sheet
 		for (let l = 0; l < this.data.items.length; l++){
-			if (this.data.items[l].type == "Equipment"){
-				carriedWeight = this.data.items[l].data.ttlWeight + carriedWeight;
-				carriedCost = this.data.items[l].data.ttlCost + carriedCost;
+			if (this.data.items._source[l].type == "Equipment"){
+				carriedWeight = this.data.items._source[l].data.ttlWeight + carriedWeight;
+				carriedCost = this.data.items._source[l].data.ttlCost + carriedCost;
 			}
 		}
 
@@ -763,7 +763,6 @@ export class gurpsActor extends Actor {
 	recalcPointTotals() {
 		let unspent;
 		let spent;
-
 		spent = +this.data.data.points.attributes + +this.data.data.points.traits + +this.data.data.points.skills + +this.data.data.points.spells;
 
 		unspent = +this.data.data.points.total - +spent;
@@ -783,27 +782,30 @@ export class gurpsActor extends Actor {
 		this.data.rollableCategories.push("");
 		this.data.spellCategories.push("");
 
-		for (let w = 0; w < this.data.items.length; w++) {
-			if(this.data.items[w].data.subCategory){
-				if(this.data.items[w].data.subCategory.trim() != ""){//If subcategory is not blank
-					if(this.data.items[w].type == "Trait"){
-						if(!this.data.traitCategories.includes(this.data.items[w].data.subCategory.trim())){//Make sure the trait array doesn't already contain the category.
-							this.data.traitCategories.push(this.data.items[w].data.subCategory.trim())
+		console.log(this.data)
+		console.log(this.data.items._source)
+		for (let w = 0; w < this.data.items._source.length; w++) {
+			console.log(this.data.items._source[w].data)
+			if(this.data.items._source[w].data.subCategory){
+				if(this.data.items._source[w].data.subCategory.trim() != ""){//If subcategory is not blank
+					if(this.data.items._source[w].type == "Trait"){
+						if(!this.data.traitCategories.includes(this.data.items._source[w].data.subCategory.trim())){//Make sure the trait array doesn't already contain the category.
+							this.data.traitCategories.push(this.data.items._source[w].data.subCategory.trim())
 						}
 					}
-					else if (this.data.items[w].type == "Rollable"){
-						if (!this.data.rollableCategories.includes(this.data.items[w].data.subCategory.trim())) {//Make sure the rollable array doesn't already contain the category.
-							this.data.rollableCategories.push(this.data.items[w].data.subCategory.trim())
+					else if (this.data.items._source[w].type == "Rollable"){
+						if (!this.data.rollableCategories.includes(this.data.items._source[w].data.subCategory.trim())) {//Make sure the rollable array doesn't already contain the category.
+							this.data.rollableCategories.push(this.data.items._source[w].data.subCategory.trim())
 						}
 					}
-					else if (this.data.items[w].type == "Spell"){
-						if (!this.data.spellCategories.includes(this.data.items[w].data.subCategory.trim())) {//Make sure the spell array doesn't already contain the category.
-							this.data.spellCategories.push(this.data.items[w].data.subCategory.trim())
+					else if (this.data.items._source[w].type == "Spell"){
+						if (!this.data.spellCategories.includes(this.data.items._source[w].data.subCategory.trim())) {//Make sure the spell array doesn't already contain the category.
+							this.data.spellCategories.push(this.data.items._source[w].data.subCategory.trim())
 						}
 					}
-					else if (this.data.items[w].type == "Equipment"){
-						if (!this.data.equipmentCategories.includes(this.data.items[w].data.subCategory.trim())) {//Make sure the item array doesn't already contain the category.
-							this.data.equipmentCategories.push(this.data.items[w].data.subCategory.trim())
+					else if (this.data.items._source[w].type == "Equipment"){
+						if (!this.data.equipmentCategories.includes(this.data.items._source[w].data.subCategory.trim())) {//Make sure the item array doesn't already contain the category.
+							this.data.equipmentCategories.push(this.data.items._source[w].data.subCategory.trim())
 						}
 					}
 				}
@@ -864,7 +866,7 @@ export class gurpsActor extends Actor {
 						items = items.sort(sortArmourByLayer); // Take the above list and sort by layer. Index 0 is lowest, index infinity is highest.
 
 						for (let l = 0; l < items.length; l++){ // Loop through the characters items and apply any relevant DR.
-							armour[l+1] = this.getArmour(items[l].data.armour.bodyType.body, this.data.data.bodyType.body, l+1);
+							armour[l+1] = this.getArmour(items._source[l].data.armour.bodyType.body, this.data.data.bodyType.body, l+1);
 							let damageTypeOneObject;
 							let damageTypeTwoObject;
 
@@ -1526,35 +1528,35 @@ export class gurpsActor extends Actor {
 		let affliction;
 
 		for (let y = 0; y < actor.data.items.length; y++){
-			if (actor.data.items[y].type == "Trait" || actor.data.items[y].type == "Equipment" || actor.data.items[y].type == "Spell"){
-				console.log(actor.data.items[y].data)
-				if (actor.data.items[y].data.melee) {
-					let meleeKeys = Object.keys(actor.data.items[y].data.melee); // Collect all the melee keys
+			if (actor.data.items._source[y].type == "Trait" || actor.data.items._source[y].type == "Equipment" || actor.data.items._source[y].type == "Spell"){
+				console.log(actor.data.items._source[y].data)
+				if (actor.data.items._source[y].data.melee) {
+					let meleeKeys = Object.keys(actor.data.items._source[y].data.melee); // Collect all the melee keys
 					for (let m = 0; m < meleeKeys.length; m++){
-						melee = getProperty(actor.data.items[y].data.melee, meleeKeys[m]);
-						melee.weapon = actor.data.items[y].name
+						melee = getProperty(actor.data.items._source[y].data.melee, meleeKeys[m]);
+						melee.weapon = actor.data.items._source[y].name
 
 						meleeAttacks.push(melee);
 					}
 				}
 
-				if (actor.data.items[y].data.ranged) {
-					let rangedKeys = Object.keys(actor.data.items[y].data.ranged); // Collect all the ranged keys
+				if (actor.data.items._source[y].data.ranged) {
+					let rangedKeys = Object.keys(actor.data.items._source[y].data.ranged); // Collect all the ranged keys
 					for (let r = 0; r < rangedKeys.length; r++){
-						ranged = getProperty(actor.data.items[y].data.ranged, rangedKeys[r]);
-						ranged.weapon = actor.data.items[y].name
+						ranged = getProperty(actor.data.items._source[y].data.ranged, rangedKeys[r]);
+						ranged.weapon = actor.data.items._source[y].name
 
 						rangedAttacks.push(ranged);
 					}
 				}
 
-				if (actor.data.items[y].data.affliction) {
-					let afflictionKeys = Object.keys(actor.data.items[y].data.affliction); // Collect all the affliction keys
+				if (actor.data.items._source[y].data.affliction) {
+					let afflictionKeys = Object.keys(actor.data.items._source[y].data.affliction); // Collect all the affliction keys
 					for (let a = 0; a < afflictionKeys.length; a++){
-						affliction = getProperty(actor.data.items[y].data.affliction, afflictionKeys[a]);
-						affliction.weapon = actor.data.items[y].name;
+						affliction = getProperty(actor.data.items._source[y].data.affliction, afflictionKeys[a]);
+						affliction.weapon = actor.data.items._source[y].name;
 						affliction.type = "affliction";
-						console.log(actor.data.items[y]);
+						console.log(actor.data.items._source[y]);
 
 						afflictionAttacks.push(affliction);
 					}
@@ -2328,16 +2330,16 @@ export class gurpsActor extends Actor {
 		dodges.push(dodge);
 
 		if (target.data.items) {
-			for (let a = 0; a < target.data.items.length; a++){ // Loop through the items
-				if (target.data.items[a].data.melee) {
-					let item = target.data.items[a].data;
+			for (let a = 0; a < target.data.items._source.length; a++){ // Loop through the items
+				if (target.data.items._source[a].data.melee) {
+					let item = target.data.items._source[a].data;
 					let keys = Object.keys(item.melee)
 					if (true){ // Look for items with melee profiles
 						for (let b = 0; b < keys.length; b++){ // Loop through the melee profiles
 							let profile = getProperty(item.melee, keys[b])
 							if (Number.isInteger(profile.parry)){
 								let parry = {
-									name: target.data.items[a].name,
+									name: target.data.items._source[a].name,
 									level: profile.parry
 								}
 								parries.push(parry)
@@ -2345,7 +2347,7 @@ export class gurpsActor extends Actor {
 
 							if (Number.isInteger(profile.block)){
 								let block = {
-									name: target.data.items[a].name,
+									name: target.data.items._source[a].name,
 									level: profile.block
 								}
 								blocks.push(block)
