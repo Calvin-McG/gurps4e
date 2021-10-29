@@ -3,22 +3,13 @@
  */
 Hooks.on("preCreateActor", (createData) =>{
 
-  // Set Hit Points, Fatigue Points, and display name visibility
-  // mergeObject(createData,
-  //   {"token.bar1" :{"attribute" : "reserves.hp"},        // Default Bar 1 to Hit Points
-  //   "token.bar2" :{"attribute" : "reserves.fp"},         // Default Bar 2 to Fatigue Points
-  //   "token.displayName" : CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,    // Default display name to be on owner hover
-  //   "token.displayBars" : CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,    // Default display bars to be on owner hover
-  //   "token.disposition" : CONST.TOKEN_DISPOSITIONS.NEUTRAL,         // Default disposition to neutral
-  //   "token.name" : createData.name                                  // Set token name to actor name
-  // })
-
-  createData.data.token.bar1 = {"attribute" : "reserves.hp"};
-  createData.data.token.bar2 = {"attribute" : "reserves.fp"};
-  createData.data.token.displayName = CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER;
-  createData.data.token.displayBars = CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER;
-  createData.data.token.disposition = CONST.TOKEN_DISPOSITIONS.NEUTRAL;
-  createData.data.token.name = createData.name;
+  createData.data.update({"token.bar1" :{"attribute" : "reserves.hp"},        // Default Bar 1 to Hit Points
+      "token.bar2" :{"attribute" : "reserves.fp"},         // Default Bar 2 to Fatigue Points
+      "token.displayName" : CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,    // Default display name to be on owner hover
+      "token.displayBars" : CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,    // Default display bars to be on owner hover
+      "token.disposition" : CONST.TOKEN_DISPOSITIONS.NEUTRAL,         // Default disposition to neutral
+      "token.name" : createData.name                                  // Set token name to actor name
+    })
 
   // Set custom default token
   if (!createData.img)
