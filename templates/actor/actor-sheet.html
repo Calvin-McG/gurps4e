@@ -365,7 +365,7 @@
 						<tr class="enc-header">
 							<td>Level</td><td>Max Load</td><td>Move</td><td>Dodge</td>
 						</tr>
-						{{#each data.encumbrance as |enc id|}}
+						{{#each data.data.encumbrance as |enc id|}}
 						<tr class="enc-entry">
 							<td>{{enc.title}}</td>
 							<td>{{enc.lbs}}</td>
@@ -453,7 +453,7 @@
 								<span class="bold">Combat Reflexes:</span>
 							</td>
 							<td>
-								<input type="checkbox" name="data.flag.combatReflexes" {{checked data.flag.combatReflexes}} data-dtype="Boolean"/>
+								<input type="checkbox" name="data.flag.combatReflexes" {{checked data.data.flag.combatReflexes}} data-dtype="Boolean"/>
 							</td>
 							<td colspan="2">
 
