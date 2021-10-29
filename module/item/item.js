@@ -48,7 +48,6 @@ export class gurpsItem extends Item {
         return ui.notifications.error("This type of item is not supported in the system!");
     }
     this.prepareAttackData()
-    console.log(this)
   }
 
   _prepareEquipmentData(itemData, data) {
@@ -104,164 +103,159 @@ export class gurpsItem extends Item {
   prepareAttackData() {
     //Check to see if there is an actor yet
     if (this.actor){
-      let damage;
-      //Do logic stuff for melee profiles
-      if (this.data.data.melee){
-        let meleeKeys = Object.keys(this.data.data.melee);
-        if (meleeKeys.length){//Check to see if there are any melee profiles
-          for (let k = 0; k < meleeKeys.length; k++){
-            if (this.data.data.melee[meleeKeys[k]].name){//Check to see if name is filled in. Otherwise don't bother.
-              let level = 0;
-              let mod = +this.data.data.melee[meleeKeys[k]].skillMod;
-              let parry = 0;
-              let block = 0;
+      if (this.actor.data) {
+        let damage;
+        //Do logic stuff for melee profiles
+        if (this.data.data.melee) {
+          let meleeKeys = Object.keys(this.data.data.melee);
+          if (meleeKeys.length) {//Check to see if there are any melee profiles
+            for (let k = 0; k < meleeKeys.length; k++) {
+              if (this.data.data.melee[meleeKeys[k]].name) {//Check to see if name is filled in. Otherwise don't bother.
+                let level = 0;
+                let mod = +this.data.data.melee[meleeKeys[k]].skillMod;
+                let parry = 0;
+                let block = 0;
 
-              if (this.data.data.melee[meleeKeys[k]].skill.toLowerCase() == "dx"){
-                level = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
-              }
-              else {
-                //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-                for (let i = 0; i < this.actor.data.items._source.length; i++){
-                  if (this.actor.data.items._source[i].type === "Rollable"){
-                    if (this.data.data.melee[meleeKeys[k]].skill === this.actor.data.items._source[i].name){
-                      level = +this.computeSkillLevel(this.actor.data.items._source[i].data.category,
-                          this.actor.data.items._source[i].data.defaults, this.actor.data.items._source[i].data.difficulty,
-                          this.actor.data.items._source[i].data.baseAttr, this.actor.data.items._source[i].data.baseSkill,
-                          this.actor.data.items._source[i].data.minLevel, this.actor.data.items._source[i].data.maxLevel,
-                          this.actor.data.items._source[i].data.dabblerPoints, this.actor.data.items._source[i].data.points,
-                          this.actor.data.items._source[i].data.mod);
+                if (this.data.data.melee[meleeKeys[k]].skill.toLowerCase() == "dx") {
+                  level = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
+                } else {
+                  //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
+                  for (let i = 0; i < this.actor.data.items._source.length; i++) {
+                    if (this.actor.data.items._source[i].type === "Rollable") {
+                      if (this.data.data.melee[meleeKeys[k]].skill === this.actor.data.items._source[i].name) {
+                        level = +this.computeSkillLevel(this.actor.data.items._source[i].data.category,
+                            this.actor.data.items._source[i].data.defaults, this.actor.data.items._source[i].data.difficulty,
+                            this.actor.data.items._source[i].data.baseAttr, this.actor.data.items._source[i].data.baseSkill,
+                            this.actor.data.items._source[i].data.minLevel, this.actor.data.items._source[i].data.maxLevel,
+                            this.actor.data.items._source[i].data.dabblerPoints, this.actor.data.items._source[i].data.points,
+                            this.actor.data.items._source[i].data.mod);
+                      }
                     }
                   }
                 }
-              }
 
-              level = level + mod;//Update the skill level with the skill modifier
-              this.data.data.melee[meleeKeys[k]].level = level//Update skill level
+                level = level + mod;//Update the skill level with the skill modifier
+                this.data.data.melee[meleeKeys[k]].level = level//Update skill level
 
-              if (Number.isInteger(+this.data.data.melee[meleeKeys[k]].parryMod)){//If parry mod is a number, compute normally
-                parry = Math.floor(+( level / 2 + 3 ) + +this.data.data.melee[meleeKeys[k]].parryMod);//Calculate the parry value
-                if (this.actor.data.data.enhanced.parry){
-                  parry += this.actor.data.data.enhanced.parry;
+                if (Number.isInteger(+this.data.data.melee[meleeKeys[k]].parryMod)) {//If parry mod is a number, compute normally
+                  parry = Math.floor(+(level / 2 + 3) + +this.data.data.melee[meleeKeys[k]].parryMod);//Calculate the parry value
+                  if (this.actor.data.data.enhanced.parry) {
+                    parry += this.actor.data.data.enhanced.parry;
+                  }
+                  if (this.actor.data.data.flag.combatReflexes) {
+                    parry += 1;
+                  }
+                } else {//If it's not a number, display the entry
+                  parry = this.data.data.melee[meleeKeys[k]].parryMod;
                 }
-                if (this.actor.data.data.flag.combatReflexes){
-                  parry += 1;
-                }
-              }
-              else {//If it's not a number, display the entry
-                parry = this.data.data.melee[meleeKeys[k]].parryMod;
-              }
-              this.data.data.melee[meleeKeys[k]].parry = parry//Update parry value
+                this.data.data.melee[meleeKeys[k]].parry = parry//Update parry value
 
-              if (Number.isInteger(+this.data.data.melee[meleeKeys[k]].blockMod)) {//If block mod is a number, compute normally
-                block = Math.floor(+( level / 2 + 3 ) + +this.data.data.melee[meleeKeys[k]].blockMod);//Calculate the block value
-                if (this.actor.data.data.enhanced.block){
-                  block += this.actor.data.data.enhanced.block;
+                if (Number.isInteger(+this.data.data.melee[meleeKeys[k]].blockMod)) {//If block mod is a number, compute normally
+                  block = Math.floor(+(level / 2 + 3) + +this.data.data.melee[meleeKeys[k]].blockMod);//Calculate the block value
+                  if (this.actor.data.data.enhanced.block) {
+                    block += this.actor.data.data.enhanced.block;
+                  }
+                  if (this.actor.data.data.flag.combatReflexes) {
+                    block += 1;
+                  }
+                } else {
+                  block = this.data.data.melee[meleeKeys[k]].blockMod;
                 }
-                if (this.actor.data.data.flag.combatReflexes){
-                  block += 1;
-                }
-              }
-              else {
-                block = this.data.data.melee[meleeKeys[k]].blockMod;
-              }
-              damage = this.damageParseSwThr(this.data.data.melee[meleeKeys[k]].damageInput);//Update damage value
-              this.data.data.melee[meleeKeys[k]].block = block; // Update block value
-              this.data.data.melee[meleeKeys[k]].type = "melee"; // Update attack type
-              this.data.data.melee[meleeKeys[k]].damage = damage;
+                damage = this.damageParseSwThr(this.data.data.melee[meleeKeys[k]].damageInput);//Update damage value
+                this.data.data.melee[meleeKeys[k]].block = block; // Update block value
+                this.data.data.melee[meleeKeys[k]].type = "melee"; // Update attack type
+                this.data.data.melee[meleeKeys[k]].damage = damage;
 
-              // Validation for Armour Divisor
-              if (!(this.data.data.melee[meleeKeys[k]].armorDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
-                  this.data.data.melee[meleeKeys[k]].armorDivisor.toString().toLowerCase().includes("cosmic") ||
-                  this.data.data.melee[meleeKeys[k]].armorDivisor.toString().toLowerCase().includes("i") ||
-                  this.data.data.melee[meleeKeys[k]].armorDivisor >= 0)
-              ){
-                this.data.data.melee[meleeKeys[k]].armorDivisor = 1;
+                // Validation for Armour Divisor
+                if (!(this.data.data.melee[meleeKeys[k]].armorDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
+                    this.data.data.melee[meleeKeys[k]].armorDivisor.toString().toLowerCase().includes("cosmic") ||
+                    this.data.data.melee[meleeKeys[k]].armorDivisor.toString().toLowerCase().includes("i") ||
+                    this.data.data.melee[meleeKeys[k]].armorDivisor >= 0)
+                ) {
+                  this.data.data.melee[meleeKeys[k]].armorDivisor = 1;
+                }
               }
             }
           }
         }
-      }
 
-      //Do logic stuff for ranged profiles
-      if (this.data.data.ranged) {
-        let rangedKeys = Object.keys(this.data.data.ranged);
-        if (rangedKeys.length){//Check to see if there are any ranged profiles
-          for (let k = 0; k < rangedKeys.length; k++){
-            if (this.data.data.ranged[rangedKeys[k]].name){//Check to see if name is filled in
-              let level = 0;
-              let mod = +this.data.data.ranged[rangedKeys[k]].skillMod;
+        //Do logic stuff for ranged profiles
+        if (this.data.data.ranged) {
+          let rangedKeys = Object.keys(this.data.data.ranged);
+          if (rangedKeys.length) {//Check to see if there are any ranged profiles
+            for (let k = 0; k < rangedKeys.length; k++) {
+              if (this.data.data.ranged[rangedKeys[k]].name) {//Check to see if name is filled in
+                let level = 0;
+                let mod = +this.data.data.ranged[rangedKeys[k]].skillMod;
 
-              if (this.data.data.ranged[rangedKeys[k]].skill.toLowerCase() == "dx"){
-                level = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
-              }
-              else {
-                //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-                for (let i = 0; i < this.actor.data.items.length; i++){
-                  if (this.actor.data.items[i].type === "Rollable"){
-                    if (this.data.data.ranged[rangedKeys[k]].skill === this.actor.data.items[i].name){
-                      level = +this.computeSkillLevel(this.actor.data.items[i].data.category, this.actor.data.items[i].data.defaults, this.actor.data.items[i].data.difficulty, this.actor.data.items[i].data.baseAttr, this.actor.data.items[i].data.baseSkill, this.actor.data.items[i].data.minLevel, this.actor.data.items[i].data.maxLevel, this.actor.data.items[i].data.dabblerPoints, this.actor.data.items[i].data.points, this.actor.data.items[i].data.mod);
+                if (this.data.data.ranged[rangedKeys[k]].skill.toLowerCase() == "dx") {
+                  level = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
+                } else {
+                  //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
+                  for (let i = 0; i < this.actor.data.items.length; i++) {
+                    if (this.actor.data.items[i].type === "Rollable") {
+                      if (this.data.data.ranged[rangedKeys[k]].skill === this.actor.data.items[i].name) {
+                        level = +this.computeSkillLevel(this.actor.data.items[i].data.category, this.actor.data.items[i].data.defaults, this.actor.data.items[i].data.difficulty, this.actor.data.items[i].data.baseAttr, this.actor.data.items[i].data.baseSkill, this.actor.data.items[i].data.minLevel, this.actor.data.items[i].data.maxLevel, this.actor.data.items[i].data.dabblerPoints, this.actor.data.items[i].data.points, this.actor.data.items[i].data.mod);
+                      }
                     }
                   }
                 }
-              }
-              level = level + mod;//Update the skill level with the skill modifier
-              this.data.data.ranged[rangedKeys[k]].level = level;
-              this.data.data.ranged[rangedKeys[k]].type = "ranged"; // Update attack type
-              damage = this.damageParseSwThr(this.data.data.ranged[rangedKeys[k]].damageInput);
-              this.data.data.ranged[rangedKeys[k]].damage = damage;
+                level = level + mod;//Update the skill level with the skill modifier
+                this.data.data.ranged[rangedKeys[k]].level = level;
+                this.data.data.ranged[rangedKeys[k]].type = "ranged"; // Update attack type
+                damage = this.damageParseSwThr(this.data.data.ranged[rangedKeys[k]].damageInput);
+                this.data.data.ranged[rangedKeys[k]].damage = damage;
 
-              if (typeof this.data.data.ranged[rangedKeys[k]].rcl == "undefined" || this.data.data.ranged[rangedKeys[k]].rcl <= 0){ // Catch invalid values for rcl. Value must exist and be at least one.
-                this.data.data.ranged[rangedKeys[k]].rcl = 1;
-              }
-              if (typeof this.data.data.ranged[rangedKeys[k]].rof == "undefined" || this.data.data.ranged[rangedKeys[k]].rof <= 0){ // Catch invalid values for rof. Value must exist and be at least one.
-                this.data.data.ranged[rangedKeys[k]].rof = 1;
-              }
-              if (typeof this.data.data.ranged[rangedKeys[k]].acc == "undefined" || this.data.data.ranged[rangedKeys[k]].acc < 0){ // Catch invalid values for Acc. Value must exist and be at least zero.
-                this.data.data.ranged[rangedKeys[k]].acc = 0;
-              }
+                if (typeof this.data.data.ranged[rangedKeys[k]].rcl == "undefined" || this.data.data.ranged[rangedKeys[k]].rcl <= 0) { // Catch invalid values for rcl. Value must exist and be at least one.
+                  this.data.data.ranged[rangedKeys[k]].rcl = 1;
+                }
+                if (typeof this.data.data.ranged[rangedKeys[k]].rof == "undefined" || this.data.data.ranged[rangedKeys[k]].rof <= 0) { // Catch invalid values for rof. Value must exist and be at least one.
+                  this.data.data.ranged[rangedKeys[k]].rof = 1;
+                }
+                if (typeof this.data.data.ranged[rangedKeys[k]].acc == "undefined" || this.data.data.ranged[rangedKeys[k]].acc < 0) { // Catch invalid values for Acc. Value must exist and be at least zero.
+                  this.data.data.ranged[rangedKeys[k]].acc = 0;
+                }
 
-              // Validation for bulk
-              if (typeof this.data.data.ranged[rangedKeys[k]].bulk == "undefined" || this.data.data.ranged[rangedKeys[k]].bulk == ""){ // Must exist.
-                this.data.data.ranged[rangedKeys[k]].bulk = -2;
-              }
-              else if (this.data.data.ranged[rangedKeys[k]].bulk > 0){ // Must be less than zero. Set positive values to negative equivilent
-                this.data.data.ranged[rangedKeys[k]].bulk = -this.data.data.ranged[rangedKeys[k]].bulk;
-              }
+                // Validation for bulk
+                if (typeof this.data.data.ranged[rangedKeys[k]].bulk == "undefined" || this.data.data.ranged[rangedKeys[k]].bulk == "") { // Must exist.
+                  this.data.data.ranged[rangedKeys[k]].bulk = -2;
+                } else if (this.data.data.ranged[rangedKeys[k]].bulk > 0) { // Must be less than zero. Set positive values to negative equivilent
+                  this.data.data.ranged[rangedKeys[k]].bulk = -this.data.data.ranged[rangedKeys[k]].bulk;
+                }
 
-              // Validation for Armour Divisor
-              if (!(this.data.data.ranged[rangedKeys[k]].armorDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
-                  this.data.data.ranged[rangedKeys[k]].armorDivisor.toString().toLowerCase().includes("cosmic") ||
-                  this.data.data.ranged[rangedKeys[k]].armorDivisor.toString().toLowerCase().includes("i") ||
-                  this.data.data.ranged[rangedKeys[k]].armorDivisor >= 0)
-              ){
-                this.data.data.ranged[rangedKeys[k]].armorDivisor = 1;
+                // Validation for Armour Divisor
+                if (!(this.data.data.ranged[rangedKeys[k]].armorDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
+                    this.data.data.ranged[rangedKeys[k]].armorDivisor.toString().toLowerCase().includes("cosmic") ||
+                    this.data.data.ranged[rangedKeys[k]].armorDivisor.toString().toLowerCase().includes("i") ||
+                    this.data.data.ranged[rangedKeys[k]].armorDivisor >= 0)
+                ) {
+                  this.data.data.ranged[rangedKeys[k]].armorDivisor = 1;
+                }
               }
             }
           }
         }
-      }
 
-      if (this.data.data.affliction){
-        let afflictionKeys = Object.keys(this.data.data.affliction);
-        if (afflictionKeys.length){//Check to see if there are any melee profiles
-          for (let k = 0; k < afflictionKeys.length; k++){
-            if (this.data.data.affliction[afflictionKeys[k]].name){//Check to see if name is filled in. Otherwise don't bother.
-              console.log(this.data.data)
-              console.log(this.data.data.affliction[afflictionKeys[k]])
+        if (this.data.data.affliction) {
+          let afflictionKeys = Object.keys(this.data.data.affliction);
+          if (afflictionKeys.length) {//Check to see if there are any melee profiles
+            for (let k = 0; k < afflictionKeys.length; k++) {
+              if (this.data.data.affliction[afflictionKeys[k]].name) {//Check to see if name is filled in. Otherwise don't bother.
 
-              damage = this.damageParseSwThr(this.data.data.affliction[afflictionKeys[k]].damageInput);//Update damage value
+                damage = this.damageParseSwThr(this.data.data.affliction[afflictionKeys[k]].damageInput);//Update damage value
 
-              this.data.data.affliction[afflictionKeys[k]].level    = this.data.data.level;
-              this.data.data.affliction[afflictionKeys[k]].type     = "affliction"; // Update attack type
-              this.data.data.affliction[afflictionKeys[k]].damage   = damage;
+                this.data.data.affliction[afflictionKeys[k]].level = this.data.data.level;
+                this.data.data.affliction[afflictionKeys[k]].type = "affliction"; // Update attack type
+                this.data.data.affliction[afflictionKeys[k]].damage = damage;
 
-              // Validation for Armour Divisor
-              if (!(this.data.data.affliction[afflictionKeys[k]].armorDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
-                  this.data.data.affliction[afflictionKeys[k]].armorDivisor.toString().toLowerCase().includes("cosmic") ||
-                  this.data.data.affliction[afflictionKeys[k]].armorDivisor.toString().toLowerCase().includes("i") ||
-                  this.data.data.affliction[afflictionKeys[k]].armorDivisor >= 0)
-              ){
-                this.data.data.affliction[afflictionKeys[k]].armorDivisor = 1;
+                // Validation for Armour Divisor
+                if (!(this.data.data.affliction[afflictionKeys[k]].armorDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
+                    this.data.data.affliction[afflictionKeys[k]].armorDivisor.toString().toLowerCase().includes("cosmic") ||
+                    this.data.data.affliction[afflictionKeys[k]].armorDivisor.toString().toLowerCase().includes("i") ||
+                    this.data.data.affliction[afflictionKeys[k]].armorDivisor >= 0)
+                ) {
+                  this.data.data.affliction[afflictionKeys[k]].armorDivisor = 1;
+                }
               }
             }
           }
@@ -617,7 +611,6 @@ export class gurpsItem extends Item {
     }
 
     if(this.data.data && this.actor){
-      console.log(this.data)
       let level = this.computeSkillLevel(this.data.data.category, this.data.data.defaults, this.data.data.difficulty,
           this.data.data.baseAttr, this.data.data.baseSkill, this.data.data.minLevel, this.data.data.maxLevel,
           this.data.data.dabblerPoints, this.data.data.points, this.data.data.mod)
