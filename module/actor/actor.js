@@ -642,7 +642,6 @@ export class gurpsActor extends Actor {
 			}
 		}
 		this.data.data.points.spells = spellPoints;
-		console.log(spellPoints)
 	}
 
 	recalcEncValues(){
@@ -782,10 +781,7 @@ export class gurpsActor extends Actor {
 		this.data.rollableCategories.push("");
 		this.data.spellCategories.push("");
 
-		console.log(this.data)
-		console.log(this.data.items._source)
 		for (let w = 0; w < this.data.items._source.length; w++) {
-			console.log(this.data.items._source[w].data)
 			if(this.data.items._source[w].data.subCategory){
 				if(this.data.items._source[w].data.subCategory.trim() != ""){//If subcategory is not blank
 					if(this.data.items._source[w].type == "Trait"){
