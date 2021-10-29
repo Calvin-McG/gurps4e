@@ -693,7 +693,7 @@ export class gurpsActor extends Actor {
 		carriedWeight = 0;
 		carriedCost = 0;
 		//Running loop to total up weight and value for the sheet
-		for (let l = 0; l < this.data.items.length; l++){
+		for (let l = 0; l < this.data.items._source.length; l++){
 			if (this.data.items._source[l].type == "Equipment"){
 				carriedWeight = this.data.items._source[l].data.ttlWeight + carriedWeight;
 				carriedCost = this.data.items._source[l].data.ttlCost + carriedCost;
