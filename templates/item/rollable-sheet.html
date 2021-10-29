@@ -24,8 +24,6 @@
                     </select>
                 </div>
                 {{#if (eq data.data.category "skill") }}
-                    {{log "-skill"}}
-                    {{log data.data.category}}
                     <div class="flexrow">
                         <label class="resource-label">Difficulty</label>
                         <select name="data.difficulty">
@@ -39,8 +37,6 @@
                         </select>
                     </div>
                 {{else}}
-                    {{log "-technique"}}
-                    {{log data.data.category}}
                     <div class="flexrow">
                         <label class="resource-label">Difficulty</label>
                         <select name="data.difficulty">
