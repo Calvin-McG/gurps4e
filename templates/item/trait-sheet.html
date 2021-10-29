@@ -9,7 +9,7 @@
                 <div class="flexrow">
                     <label class="resource-label">Category</label>
                     <select name="data.category">
-                        {{#select data.category}}
+                        {{#select data.data.category}}
                             <option value="advantage">Advantage</option>
                             <option value="disadv">Disadvantage</option>
                             <option value="perk">Perk</option>
@@ -19,19 +19,19 @@
                 </div>
                 <div class="flexrow">
                     <label class="resource-label">Roll (If Applicable)</label>
-                    <input type="text" name="data.level" value="{{data.level}}" data-dtype="Number"/>
+                    <input type="text" name="data.level" value="{{data.data.level}}" data-dtype="Number"/>
                 </div>
                 <div class="flexrow">
                     <label class="resource-label">Points</label>
-                    <input type="text" name="data.points" value="{{data.points}}" data-dtype="Number"/>
+                    <input type="text" name="data.points" value="{{data.data.points}}" data-dtype="Number"/>
                 </div>
                 <div class="flexrow">
                     <label class="resource-label">Race / Meta Trait / Etc</label>
-                    <input type="text" name="data.subCategory" value="{{data.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
+                    <input type="text" name="data.subCategory" value="{{data.data.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
                 </div>
                 <div class="flexrow">
                     <label class="resource-label">Notes</label>
-                    <input type="text" name="data.shortNotes" value="{{data.shortNotes}}"/>
+                    <input type="text" name="data.shortNotes" value="{{data.data.shortNotes}}"/>
                 </div>
             </div>
         </div>
