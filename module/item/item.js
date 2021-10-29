@@ -28,14 +28,14 @@ export class gurpsItem extends Item {
     super.prepareData();
     // Get the Item's data
     let itemData = this.data;
-    let data = itemData.data;
+    let data = itemData.data; // this.data.data
 
     switch (this.data.type) {
       case "Equipment":
         this._prepareEquipmentData(itemData, data);
         break;
       case "Rollable":
-        this._prepareRollableData(itemData, data);
+        this._prepareRollableData();
         break;
       case "Spell":
         this._prepareSpellData();
@@ -447,109 +447,115 @@ export class gurpsItem extends Item {
   }
 
   computeSkillLevel(category, defaults, difficulty, baseAttr, baseSkill, minLevel, maxLevel, dabblerPoints, pts, mod) {
-    let base = 0;
     let level = 0;
-    let points = pts;
-    let skillDefaultArray = [];
-    let attrDefaultArray = [];
-    let dabblerBonus = Math.min(dabblerPoints, 3)//If they have four points in dabbler, the bonus is only +3
-    let smDiscount = attributeHelpers.calcSMDiscount(this.actor.data.data.bio.sm);
-    let st = attributeHelpers.calcStOrHt(this.actor.data.data.primaryAttributes.strength, smDiscount)
-    let dx = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
-    let iq = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.intelligence);
-    let ht = attributeHelpers.calcStOrHt(this.actor.data.data.primaryAttributes.health, 1);
-    let per = attributeHelpers.calcPerOrWill(iq, this.actor.data.data.primaryAttributes.perception);
-    let will = attributeHelpers.calcPerOrWill(iq, this.actor.data.data.primaryAttributes.will);
+    if (this.actor.data) { // Make sure there's an actor before computing skill level
+      let base = 0;
+      let points = pts;
+      let skillDefaultArray = [];
+      let attrDefaultArray = [];
+      let dabblerBonus = Math.min(dabblerPoints, 3)//If they have four points in dabbler, the bonus is only +3
+      let smDiscount = attributeHelpers.calcSMDiscount(this.actor.data.data.bio.sm);
+      let st = attributeHelpers.calcStOrHt(this.actor.data.data.primaryAttributes.strength, smDiscount)
+      let dx = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
+      let iq = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.intelligence);
+      let ht = attributeHelpers.calcStOrHt(this.actor.data.data.primaryAttributes.health, 1);
+      let per = attributeHelpers.calcPerOrWill(iq, this.actor.data.data.primaryAttributes.perception);
+      let will = attributeHelpers.calcPerOrWill(iq, this.actor.data.data.primaryAttributes.will);
 
-    if (category === 'skill') { // It's a skill
-      // Figure out defaults
-      let q = 0;
-      while (defaults[q]) { // While the current entry is not null
-        // Check attributes first, add any results to the array of attribute defaults
-        if (defaults[q].skill.toUpperCase() === 'ST' || defaults[q].skill.toUpperCase() === 'STRENGTH') {
-          attrDefaultArray.push(st + +defaults[q].mod);
-        }
-        else if (defaults[q].skill.toUpperCase() === 'DX' || defaults[q].skill.toUpperCase() === 'DEXTERITY') {
-          attrDefaultArray.push(dx + +defaults[q].mod);
-        }
-        else if (defaults[q].skill.toUpperCase() === 'IQ' || defaults[q].skill.toUpperCase() === 'INTELLIGENCE') {
-          attrDefaultArray.push(iq + +defaults[q].mod);
-        }
-        else if (defaults[q].skill.toUpperCase() === 'HT' || defaults[q].skill.toUpperCase() === 'HEALTH') {
-          attrDefaultArray.push(ht + +defaults[q].mod);
-        }
-        else if (defaults[q].skill.toUpperCase() === 'PER' || defaults[q].skill.toUpperCase() === 'PERCEPTION') {
-          attrDefaultArray.push(per + +defaults[q].mod);
-        }
-        else if (defaults[q].skill.toUpperCase() === 'WILL') {
-          attrDefaultArray.push(will + +defaults[q].mod);
-        }
-        // Then check other skills, add any results to the array of skill defaults
-        else {
-          for (let i = 0; i < this.actor.data.items.length; i++) {
-            if (this.actor.data.items[i].type === "Rollable") {
-              if (this.actor.data.items[i].data.category === "skill") {
-                if (defaults[q].skill === this.actor.data.items[i].name) {
-                  skillDefaultArray.push(+this.actor.data.items[i].data.level + +defaults[q].mod);
+      if (category === 'skill') { // It's a skill
+        // Figure out defaults
+        let q = 0;
+        while (defaults[q]) { // While the current entry is not null
+          // Check attributes first, add any results to the array of attribute defaults
+          if (defaults[q].skill.toUpperCase() === 'ST' || defaults[q].skill.toUpperCase() === 'STRENGTH') {
+            attrDefaultArray.push(st + +defaults[q].mod);
+          }
+          else if (defaults[q].skill.toUpperCase() === 'DX' || defaults[q].skill.toUpperCase() === 'DEXTERITY') {
+            attrDefaultArray.push(dx + +defaults[q].mod);
+          }
+          else if (defaults[q].skill.toUpperCase() === 'IQ' || defaults[q].skill.toUpperCase() === 'INTELLIGENCE') {
+            attrDefaultArray.push(iq + +defaults[q].mod);
+          }
+          else if (defaults[q].skill.toUpperCase() === 'HT' || defaults[q].skill.toUpperCase() === 'HEALTH') {
+            attrDefaultArray.push(ht + +defaults[q].mod);
+          }
+          else if (defaults[q].skill.toUpperCase() === 'PER' || defaults[q].skill.toUpperCase() === 'PERCEPTION') {
+            attrDefaultArray.push(per + +defaults[q].mod);
+          }
+          else if (defaults[q].skill.toUpperCase() === 'WILL') {
+            attrDefaultArray.push(will + +defaults[q].mod);
+          }
+          // Then check other skills, add any results to the array of skill defaults
+          else {
+            for (let i = 0; i < this.actor.data.items.length; i++) {
+              if (this.actor.data.items[i].type === "Rollable") {
+                if (this.actor.data.items[i].data.category === "skill") {
+                  if (defaults[q].skill === this.actor.data.items[i].name) {
+                    skillDefaultArray.push(+this.actor.data.items[i].data.level + +defaults[q].mod);
+                  }
                 }
               }
             }
           }
+          q++;
         }
-        q++;
-      }
-      //We now have a lists of all skill and attribute defaults
+        // We now have a lists of all skill and attribute defaults
+        // Add zeros to both arrays to make sure they're not empty. Otherwise Math.max evaluates to -Infinity
+        attrDefaultArray.push(0);
+        skillDefaultArray.push(0);
 
-      if (points <= 0 || (difficulty == "W" && points < 3)) { // They haven't spent any points, or have spent too few points to make a difference for a Wildcard skill. Display default, after account for dabbler
-        let bestAttrDefault = Math.max(...attrDefaultArray);
-        bestAttrDefault += +dabblerBonus;
 
-        bestAttrDefault = Math.min(bestAttrDefault, this.onePointInSkill(baseAttr, difficulty)-1); // Set the value either to the best attribute default plus the dabbler bonus, or one less than what they'd get if they spent actual points.
-        level = Math.max(bestAttrDefault, Math.max(...skillDefaultArray)) + mod;
-      }
-      else if(points > 0){ // They have spent points, calculate accordingly, including buying up from defaults
-        base = this.getBaseAttrValue(baseAttr) // Get the base value of the relevant attribute
-        let bestDefault = Math.max(...skillDefaultArray, ...attrDefaultArray); // Get the best default
-
-        if (bestDefault >= this.onePointInSkill(baseAttr, difficulty)){ // The best default is equal to or better than what you'd get by spending points. Account for Improving Skills from Default (B. 173)
-          points = points + this.defaultIsWorth(baseAttr, difficulty, bestDefault); // The effective point value is whatever they put in, plus whatever their default is worth.
+        if (points <= 0 || (difficulty == "W" && points < 3)) { // They haven't spent any points, or have spent too few points to make a difference for a Wildcard skill. Display default, after account for dabbler
+          let bestAttrDefault = Math.max(...attrDefaultArray); // Get all the attr defaults and pick the highest
+          let bestSkillDefault = Math.max(...skillDefaultArray); // Get all the skill defaults and pick the highest
+          bestAttrDefault += +dabblerBonus; // Add the dabbler bonus, but only to the attr default (Per PU2:16)
+          bestAttrDefault = Math.min(bestAttrDefault, this.onePointInSkill(baseAttr, difficulty)-1) // Cap the boosted default to one less than what you'd get spending points
+          level = Math.max(bestAttrDefault, bestSkillDefault, 0) + mod; // Set the value either to their best default or 0, whichever is highest, plus the modifier
         }
+        else if(points > 0){ // They have spent points, calculate accordingly, including buying up from defaults
+          base = this.getBaseAttrValue(baseAttr) // Get the base value of the relevant attribute
+          let bestDefault = Math.max(...skillDefaultArray, ...attrDefaultArray); // Get the best default
 
-        // Compute skill value based on effective points spent on the skill
-        level = base + this.pointsToBonus(points, difficulty) + mod;
+          if (bestDefault >= this.onePointInSkill(baseAttr, difficulty)){ // The best default is equal to or better than what you'd get by spending points. Account for Improving Skills from Default (B. 173)
+            points = points + this.defaultIsWorth(baseAttr, difficulty, bestDefault); // The effective point value is whatever they put in, plus whatever their default is worth.
+          }
+
+          // Compute skill value based on effective points spent on the skill
+          level = base + this.pointsToBonus(points, difficulty) + mod;
+        }
       }
-    }
 
-    else {//It's a technique
+      else {//It's a technique
 
-      //Loop through all the skills on the sheet, find the one they picked and set that as the base
-      for (let i = 0; i < this.actor.data.items.length; i++){
-        if (this.actor.data.items[i].type === "Rollable"){
-          if (this.actor.data.items[i].data.category === "skill"){
-            if (baseSkill === this.actor.data.items[i].name){
-              base = +this.actor.data.items[i].data.level;
-              this._data.data.baseSkillLevel = base;
-              this.data.data.baseSkillLevel = base;
+        //Loop through all the skills on the sheet, find the one they picked and set that as the base
+        for (let i = 0; i < this.actor.data.items.length; i++){
+          if (this.actor.data.items[i].type === "Rollable"){
+            if (this.actor.data.items[i].data.category === "skill"){
+              if (baseSkill === this.actor.data.items[i].name){
+                base = +this.actor.data.items[i].data.level;
+                this._data.data.baseSkillLevel = base;
+                this.data.data.baseSkillLevel = base;
+              }
             }
           }
         }
-      }
 
-      //Modify Base Skill with Base Penalty
-      level = base + minLevel;
+        //Modify Base Skill with Base Penalty
+        level = base + minLevel;
 
-      //Adjust for difficulty
-      if (difficulty == 'A') {
-        if (points > 0){//They have spent points
-          level = level + points;
+        //Adjust for difficulty
+        if (difficulty == 'A') {
+          if (points > 0){//They have spent points
+            level = level + points;
+          }
         }
-      }
-      else if (difficulty == 'H') {
-        if (points >= 2){//They have spent enough points to matter
-          level = level + points - 1;//First level costs 2, every other costs 1
+        else if (difficulty == 'H') {
+          if (points >= 2){//They have spent enough points to matter
+            level = level + points - 1;//First level costs 2, every other costs 1
+          }
         }
+        level = Math.min((level + mod), (maxLevel + base));
       }
-      level = Math.min((level + mod), (maxLevel + base));
     }
     return level;
   }
@@ -604,15 +610,17 @@ export class gurpsItem extends Item {
     }
   }
 
-  _prepareRollableData(itemData, data) {
+  _prepareRollableData() {
     if (this.data.data.category == ""){//The category will be blank upon initialization. Set it to skill so that the form's dynamic elements display correctly the first time it's opened.
       this.data.data.category = "skill";
     }
 
-    if(data && this.actor){
-      let level = this.computeSkillLevel(data.category, data.defaults, data.difficulty, data.baseAttr, data.baseSkill, data.minLevel, data.maxLevel, data.dabblerPoints, data.points, data.mod)
+    if(this.data.data && this.actor){
+      console.log(this.data)
+      let level = this.computeSkillLevel(this.data.data.category, this.data.data.defaults, this.data.data.difficulty,
+          this.data.data.baseAttr, this.data.data.baseSkill, this.data.data.minLevel, this.data.data.maxLevel,
+          this.data.data.dabblerPoints, this.data.data.points, this.data.data.mod)
 
-      this._data.data.level = level;
       this.data.data.level = level;
     }
   }
