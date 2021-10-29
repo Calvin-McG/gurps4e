@@ -479,8 +479,8 @@
 						<td>Reach</td>
 						<td>ST</td>
 					</tr>
-					{{#each actor.items as |item id|}}
-					{{#each item.data.melee as |melee mid|}}
+					{{#each actor.data.items as |item id|}}
+					{{#each item.data.data.melee as |melee mid|}}
 					<tr>
 						<td>{{item.name}}</td>
 						<td>{{melee.name}}</td>
@@ -528,8 +528,8 @@
 						<td>Rcl</td>
 						<td>ST</td>
 					</tr>
-					{{#each actor.items as |item id|}}
-					{{#each item.data.ranged as |ranged rid|}}
+					{{#each actor.data.items as |item id|}}
+					{{#each item.data.data.ranged as |ranged rid|}}
 					<tr>
 						<td>{{item.name}}</td>
 						<td>{{ranged.name}}</td>
@@ -563,8 +563,8 @@
 						<td>Resistance Roll</td>
 						<td>Rule Of</td>
 					</tr>
-					{{#each actor.items as |item id|}}
-					{{#each item.data.affliction as |affliction mid|}}
+					{{#each actor.data.items as |item id|}}
+					{{#each item.data.data.affliction as |affliction mid|}}
 					<tr>
 						<td>{{item.name}}</td>
 						<td>{{affliction.name}}</td>
