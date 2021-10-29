@@ -464,7 +464,7 @@ export class gurpsItem extends Item {
       let points = pts;
       let skillDefaultArray = [];
       let attrDefaultArray = [];
-      let dabblerBonus = Math.min(dabblerPoints, 3)//If they have four points in dabbler, the bonus is only +3
+      let dabblerBonus = Math.min(dabblerPoints, 3) // If they have four points in dabbler, the bonus is only +3
       let smDiscount = attributeHelpers.calcSMDiscount(this.actor.data.data.bio.sm);
       let st = attributeHelpers.calcStOrHt(this.actor.data.data.primaryAttributes.strength, smDiscount)
       let dx = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
@@ -498,12 +498,15 @@ export class gurpsItem extends Item {
           }
           // Then check other skills, add any results to the array of skill defaults
           else {
-            for (let i = 0; i < this.actor.data.items.length; i++) {
-              if (this.actor.data.items[i].type === "Rollable") {
-                if (this.actor.data.items[i].data.category === "skill") {
-                  if (defaults[q].skill === this.actor.data.items[i].name) {
-                    skillDefaultArray.push(+this.actor.data.items[i].data.level + +defaults[q].mod);
-                  }
+            for (let i = 0; i < this.actor.data.items._source.length; i++) { // Loop through the list of items
+              if (this.actor.data.items._source[i].type === "Rollable") { // Make sure it's a Rollable
+                if (this.actor.data.items._source[i].data.category === "skill") { // Make sure it's a skill and not a technique
+                    if (this.actor.data.items._source[i].data.points > 0) { // Make sure it has more than 0 points
+                      if (defaults[q].skill === this.actor.data.items._source[i].name) { // Make sure it matches the name
+                        let defaultLevel = this.computeSkillLevelWithoutDefaults(this.actor.data.items._source[i].data.difficulty, this.actor.data.items._source[i].data.baseAttr, this.actor.data.items._source[i].data.points, this.actor.data.items._source[i].data.mod)
+                        skillDefaultArray.push(+defaultLevel + +defaults[q].mod);
+                      }
+                    }
                 }
               }
             }
@@ -514,7 +517,6 @@ export class gurpsItem extends Item {
         // Add zeros to both arrays to make sure they're not empty. Otherwise Math.max evaluates to -Infinity
         attrDefaultArray.push(0);
         skillDefaultArray.push(0);
-
 
         if (points <= 0 || (difficulty == "W" && points < 3)) { // They haven't spent any points, or have spent too few points to make a difference for a Wildcard skill. Display default, after account for dabbler
           let bestAttrDefault = Math.max(...attrDefaultArray); // Get all the attr defaults and pick the highest
@@ -537,14 +539,15 @@ export class gurpsItem extends Item {
       }
 
       else {//It's a technique
-
         //Loop through all the skills on the sheet, find the one they picked and set that as the base
-        for (let i = 0; i < this.actor.data.items.length; i++){
-          if (this.actor.data.items[i].type === "Rollable"){
-            if (this.actor.data.items[i].data.category === "skill"){
-              if (baseSkill === this.actor.data.items[i].name){
-                base = +this.actor.data.items[i].data.level;
-                this._data.data.baseSkillLevel = base;
+        for (let i = 0; i < this.actor.data.items._source.length; i++){
+          if (this.actor.data.items._source[i].type === "Rollable"){
+            if (this.actor.data.items._source[i].data.category === "skill"){
+              if (baseSkill === this.actor.data.items._source[i].name){
+                base = this.computeSkillLevelWithoutDefaults(this.actor.data.items._source[i].data.difficulty,
+                    this.actor.data.items._source[i].data.baseAttr, this.actor.data.items._source[i].data.points,
+                    this.actor.data.items._source[i].data.mod)
+
                 this.data.data.baseSkillLevel = base;
               }
             }
