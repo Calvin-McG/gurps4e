@@ -2618,8 +2618,30 @@
 
 			{{!-- Body Type Tab --}}
 			<div id="body-type" class="tab body-type" data-tab="body-type" data-group="primary">
+				<div>
+					<label>Body Type:</label>
+					<select name="data.bodyType.name" class="bodyType">
+						{{#select data.bodyType.name}}
+						<option value="humanoid">Humanoid</option>
+						<option value="wingedHumanoid">Winged Humanoid</option>
+						<option value="quadruped">Quadruped</option>
+						<option value="wingedQuadruped">Winged Quadruped</option>
+						<option value="hexapod">Hexapod</option>
+						<option value="wingedHexapod">Winged Hexapod</option>
+						<option value="centaur">Centaur</option>
+						<option value="avian">Avian</option>
+						<option value="vermiform">Vermiform</option>
+						<option value="lamia">Lamia</option>
+						<option value="wingedLamia">Winged Lamia</option>
+						<option value="octopod">Octopod</option>
+						<option value="cancroid">Cancroid</option>
+						<option value="ichthyoid">Ichthyoid</option>
+						<option value="arachnoid">Arachnoid</option>
+						{{/select}}
+					</select>
+				</div>
 				<div style="display: flex">
-					{{#if data.bodyType.name}}
+					{{#if data.data.bodyType.name}}
 					<div>
 						<table class="dr-entry-table" style="width: unset">
 							<tr class="hit-locations">
@@ -2671,28 +2693,6 @@
 					</div>
 					{{/if}}
 					<div style="display: flex; flex-direction: column; padding-left: 1em;">
-						<div>
-							<label>Body Type:</label>
-							<select name="data.bodyType.name" class="bodyType">
-								{{#select data.bodyType.name}}
-								<option value="humanoid">Humanoid</option>
-								<option value="wingedHumanoid">Winged Humanoid</option>
-								<option value="quadruped">Quadruped</option>
-								<option value="wingedQuadruped">Winged Quadruped</option>
-								<option value="hexapod">Hexapod</option>
-								<option value="wingedHexapod">Winged Hexapod</option>
-								<option value="centaur">Centaur</option>
-								<option value="avian">Avian</option>
-								<option value="vermiform">Vermiform</option>
-								<option value="lamia">Lamia</option>
-								<option value="wingedLamia">Winged Lamia</option>
-								<option value="octopod">Octopod</option>
-								<option value="cancroid">Cancroid</option>
-								<option value="ichthyoid">Ichthyoid</option>
-								<option value="arachnoid">Arachnoid</option>
-								{{/select}}
-							</select>
-						</div>
 						<table class="injuryTolerancesTable">
 							<tr>
 								<td colspan="2" style="text-align: center; font-weight: bold; border-bottom: #7a7971 2px solid">Injury Settings</td>
@@ -2758,24 +2758,24 @@
 				<div style="display: flex; flex-direction: column;">
 					<table>
 						<tr>
-							<td>
+							<td style="width: 20%">
 								Magic Attribute
 							</td>
-							<td style="display: flex">
+							<td style="display: flex;">
 								<span><input type="text" name="data.magic.attribute" value="{{data.data.magic.attribute}}" placeholder="Intelligence" /></span>
 								<span><input type="number" name="data.magic.attributeMod" value="{{data.data.magic.attributeMod}}" placeholder="0" style="width: 25px"/></span>
 							</td>
 						</tr>
 						<tr>
-							<td>
-								Magery
+							<td style="width: 20%">
+								<input type="number" name="data.magic.mageryName" value="{{data.data.magic.mageryName}}" placeholder="Magery" style="width: auto"/>
 							</td>
 							<td>
 								<input type="number" name="data.magic.magery" value="{{data.data.magic.magery}}" placeholder="0" />
 							</td>
 						</tr>
 						<tr>
-							<td>
+							<td style="width: 20%">
 								Magical Ability
 							</td>
 							<td>
@@ -2792,7 +2792,7 @@
 							<td class="item-rolls">Level</td>
 							<td class="item-controls"></td>
 						</tr>
-						{{#each actor.spellCategories as |category cat|}}
+						{{#each actor.data.spellCategories as |category cat|}}
 							{{#unless (eq category "")}}
 								<tr class="item item-header trait-category-header">
 									<td colspan="6">
@@ -2800,26 +2800,26 @@
 									</td>
 								</tr>
 							{{/unless}}
-							{{#each ../actor.items as |item id|}}
+							{{#each ../actor.data.items as |item id|}}
 								{{#if (eq type "Spell")}}
-									{{#if (eq item.data.subCategory category)}}
+									{{#if (eq item.data.data.subCategory category)}}
 										<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item._id}}">
 											<td class="item-image" style="width: 24px; padding: 0 2px">
 												<img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
 											</td>
 											<td class="item-name">
-												{{item.name}}
+												{{item.data.name}}
 											</td>
 											<td class="item-notes">
-												{{data.data.shortNotes}}
+												{{item.data.data.shortNotes}}
 											</td>
 											<td class="item-points" style="width: 4em;">
-												{{data.data.points}}
+												{{item.data.data.points}}
 											</td>
 											<td class="item-skill" style="width: 3em;">
 												<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.data.level}}"
 													   data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
-												{{data.data.level}}
+												{{item.data.data.level}}
 											</td>
 											<td class="item-controls" style="width: 30px;">
 												<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
