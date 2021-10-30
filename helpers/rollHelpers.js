@@ -2,106 +2,103 @@ export class rollHelpers {
 
     static skillRoll(level, modifier, label, chat){
         let effectiveSkill = +level + +modifier;
-        let die1 = new Roll("1d6");
-        let die2 = new Roll("1d6");
-        let die3 = new Roll("1d6");
+        let roll = new Roll("3d6");
         let crit = false;
         let success = false;
 
-        die1.roll();
-        die2.roll();
-        die3.roll();
-        let skillRoll = +die1.total + +die2.total + +die3.total;
-        let margin = +effectiveSkill - +skillRoll;
-        let html = "<div>" + label + "</div>";
+        roll.roll({async: true}).then( result => {
+            let skillRoll = result.result;
+            let margin = +effectiveSkill - +skillRoll;
+            let html = "<div>" + label + "</div>";
 
-        html += "</br>";
+            html += "</br>";
 
-        if(modifier >= 0){//modifier is zero or positive
-            html += "Rolls a " + skillRoll + " vs " + level + " + " + modifier;
-        }
-        else {
-            html += "Rolls a " + skillRoll + " vs " + level + " - " + Math.abs(modifier); // Run Math.abs to allow repositioning the negative symbol.
-        }
+            if(modifier >= 0){//modifier is zero or positive
+                html += "Rolls a " + skillRoll + " vs " + level + " + " + modifier;
+            }
+            else {
+                html += "Rolls a " + skillRoll + " vs " + level + " - " + Math.abs(modifier); // Run Math.abs to allow repositioning the negative symbol.
+            }
 
-        //Code block for display of dice
-        html += "<div>";
-        html += this.dieToIcon(die1.total);
-        html += this.dieToIcon(die2.total);
-        html += this.dieToIcon(die3.total);
-        if (modifier >= 0){ // Modifier is positive
-            html += "<label class='damage-dice-adds'>+</label><label class='damage-dice-adds'>" + modifier + "</label>"
-        }
-        else { // Modifier is negative
-            html += "<label class='damage-dice-adds'>-</label><label class='damage-dice-adds'>" + Math.abs(modifier) + "</label>"
-        }
-        html += "</div>"
+            //Code block for display of dice
+            html += "<div>";
+            html += this.dieToIcon(roll.terms[0].results[0].result);
+            html += this.dieToIcon(roll.terms[0].results[1].result);
+            html += this.dieToIcon(roll.terms[0].results[2].result);
+            if (modifier >= 0){ // Modifier is positive
+                html += "<label class='damage-dice-adds'>+</label><label class='damage-dice-adds'>" + modifier + "</label>"
+            }
+            else { // Modifier is negative
+                html += "<label class='damage-dice-adds'>-</label><label class='damage-dice-adds'>" + Math.abs(modifier) + "</label>"
+            }
+            html += "</div>"
 
-        if (skillRoll == 18){//18 is always a crit fail
-            html += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Automatic Crit Fail by " + margin + "</div>"
-            crit = true;
-            success = false;
-        }
-        else if (skillRoll == 17){//17 is a crit fail if effective skill is less than 16, autofail otherwise
-            if (effectiveSkill < 16){//Less than 16, autocrit
+            if (skillRoll == 18){//18 is always a crit fail
                 html += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Automatic Crit Fail by " + margin + "</div>"
                 crit = true;
                 success = false;
             }
-            else {//Autofail
-                html += "<div style='font-weight: bold; color: rgb(199, 137, 83);'>Automatic Fail by " + margin + "</div>"
+            else if (skillRoll == 17){//17 is a crit fail if effective skill is less than 16, autofail otherwise
+                if (effectiveSkill < 16){//Less than 16, autocrit
+                    html += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Automatic Crit Fail by " + margin + "</div>"
+                    crit = true;
+                    success = false;
+                }
+                else {//Autofail
+                    html += "<div style='font-weight: bold; color: rgb(199, 137, 83);'>Automatic Fail by " + margin + "</div>"
+                    crit = false;
+                    success = false;
+                }
+            }
+            else if (margin <= -10){//Fail by 10 is a crit fail
+                html += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Crit Fail by " + margin + "</div>"
+                crit = true;
+                success = false;
+            }
+            else if (margin < 0){//Fail is a fail
+                html += "<div style='font-weight: bold; color: rgb(199, 137, 83);'>Fail by " + margin + "</div>"
                 crit = false;
                 success = false;
             }
-        }
-        else if (margin <= -10){//Fail by 10 is a crit fail
-            html += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Crit Fail by " + margin + "</div>"
-            crit = true;
-            success = false;
-        }
-        else if (margin < 0){//Fail is a fail
-            html += "<div style='font-weight: bold; color: rgb(199, 137, 83);'>Fail by " + margin + "</div>"
-            crit = false;
-            success = false;
-        }
-        else if (skillRoll == 3 || skillRoll == 4){//3 and 4 are always a crit success
-            html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Automatic Critical Success by " + margin + "</div>"
-            crit = true;
-            success = true;
-        }
-        else if (skillRoll == 5 && effectiveSkill == 15){//5 is a crit if effective skill is 15
-            html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Critical Success by " + margin + "</div>"
-            crit = true;
-            success = true;
-        }
-        else if (skillRoll == 6 && effectiveSkill == 16){//6 is a crit if effective skill is 16
-            html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Critical Success by " + margin + "</div>"
-            crit = true;
-            success = true;
-        }
-        else if (margin >= 0){//Regular success
-            html += "<div style='font-weight: bold; color: rgb(141, 142, 222)'>Success by " + margin + "</div>"
-            crit = false;
-            success = true;
-        }
-        else {//Wtf?
-            html += "<div style='font-weight: bold;'>Unknown result by " + margin + "</div>"
-            crit = false;
-            success = false;
-        }
-
-        if (chat){
-            ChatMessage.create({ content: html, user: game.user._id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
-        }
-        else {
-            return {
-                content: html,
-                crit: crit,
-                success: success,
-                margin: margin,
-                type: CONST.CHAT_MESSAGE_TYPES.OTHER
+            else if (skillRoll == 3 || skillRoll == 4){//3 and 4 are always a crit success
+                html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Automatic Critical Success by " + margin + "</div>"
+                crit = true;
+                success = true;
             }
-        }
+            else if (skillRoll == 5 && effectiveSkill == 15){//5 is a crit if effective skill is 15
+                html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Critical Success by " + margin + "</div>"
+                crit = true;
+                success = true;
+            }
+            else if (skillRoll == 6 && effectiveSkill == 16){//6 is a crit if effective skill is 16
+                html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Critical Success by " + margin + "</div>"
+                crit = true;
+                success = true;
+            }
+            else if (margin >= 0){//Regular success
+                html += "<div style='font-weight: bold; color: rgb(141, 142, 222)'>Success by " + margin + "</div>"
+                crit = false;
+                success = true;
+            }
+            else {//Wtf?
+                html += "<div style='font-weight: bold;'>Unknown result by " + margin + "</div>"
+                crit = false;
+                success = false;
+            }
+
+            if (chat){
+                ChatMessage.create({ content: html, user: game.user._id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+            }
+            else {
+                return {
+                    content: html,
+                    crit: crit,
+                    success: success,
+                    margin: margin,
+                    type: CONST.CHAT_MESSAGE_TYPES.OTHER
+                }
+            }
+        });
     }
 
     static dieToIcon(die){
