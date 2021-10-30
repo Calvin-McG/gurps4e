@@ -656,10 +656,10 @@
 			{{!-- Armour Display Tab --}}
 			<div id="armour-display" class="tab armour-display" data-tab="armour-display" data-group="primary">
 				<div style="display: flex">
-					{{#if (or (eq actor.data.bodyType.name "octopod") (eq actor.data.bodyType.name "humanoid") (eq actor.data.bodyType.name "wingedHumanoid") (eq actor.data.bodyType.name "hexapod") (eq actor.data.bodyType.name "wingedHexapod") (eq actor.data.bodyType.name "centaur") (eq actor.data.bodyType.name "avian"))}}
+					{{#if (or (eq actor.data.data.bodyType.name "octopod") (eq actor.data.data.bodyType.name "humanoid") (eq actor.data.data.bodyType.name "wingedHumanoid") (eq actor.data.data.bodyType.name "hexapod") (eq actor.data.data.bodyType.name "wingedHexapod") (eq actor.data.data.bodyType.name "centaur") (eq actor.data.data.bodyType.name "avian"))}}
 						<div class="hitLocations">
 							<div class="tooltip location-skull">
-								{{#if (eq actor.data.bodyType.name "octopod")}}
+								{{#if (eq actor.data.data.bodyType.name "octopod")}}
 									{{data.data.bodyType.drTypesOne.brain}} / {{data.data.bodyType.drTypesTwo.brain}}
 									<span class="tooltiptext">
 										<span style="text-decoration: underline">Brain -7 (-5 from the back)</span><br>
@@ -830,7 +830,7 @@
 									</div>
 								</span>
 							</div>
-							{{#if (or (eq actor.data.bodyType.name "wingedHumanoid") (eq actor.data.bodyType.name "wingedHexapod"))}}
+							{{#if (or (eq actor.data.data.bodyType.name "wingedHumanoid") (eq actor.data.data.bodyType.name "wingedHexapod"))}}
 								<div class="tooltip location-wing-shoulder-left">
 									{{data.data.bodyType.drTypesOne.wingLeftshoulder}} / {{data.data.bodyType.drTypesTwo.wingLeftshoulder}}
 									<span class="tooltiptext">
@@ -954,7 +954,7 @@
 									</span>
 								</div>
 							{{/if}}
-							{{#if (or (eq actor.data.bodyType.name "octopod"))}}
+							{{#if (or (eq actor.data.data.bodyType.name "octopod"))}}
 							<div class="tooltip location-tentacle1-shoulder-left">
 								{{data.data.bodyType.drTypesOne.tentacleLeft1shoulder}} / {{data.data.bodyType.drTypesTwo.tentacleLeft1shoulder}}
 								<span class="tooltiptext">
@@ -1072,7 +1072,7 @@
 									</span>
 							</div>
 							{{/if}}
-							{{#if (or (eq actor.data.bodyType.name "octopod"))}}
+							{{#if (or (eq actor.data.data.bodyType.name "octopod"))}}
 								<div class="tooltip location-tentacle2-shoulder-left">
 									{{data.data.bodyType.drTypesOne.tentacleLeft2shoulder}} / {{data.data.bodyType.drTypesTwo.tentacleLeft2shoulder}}
 									<span class="tooltiptext">
@@ -1394,7 +1394,7 @@
 								</div>
 							{{/if}}
 
-							{{#if (eq actor.data.bodyType.name "octopod")}}
+							{{#if (eq actor.data.data.bodyType.name "octopod")}}
 								<div class="tooltip location-tentacle3-shoulder-left">
 									{{data.data.bodyType.drTypesOne.tentacleLeft3shoulder}} / {{data.data.bodyType.drTypesTwo.tentacleLeft3shoulder}}
 									<span class="tooltiptext">
@@ -1513,7 +1513,7 @@
 								</div>
 							{{/if}}
 
-							{{#if (or (eq actor.data.bodyType.name "hexapod") (eq actor.data.bodyType.name "wingedHexapod"))}}
+							{{#if (or (eq actor.data.data.bodyType.name "hexapod") (eq actor.data.data.bodyType.name "wingedHexapod"))}}
 								<div class="tooltip location-lower-shoulder-left">
 									{{data.data.bodyType.drTypesOne.lowerArmLeftshoulder}} / {{data.data.bodyType.drTypesTwo.lowerArmLeftshoulder}}
 									<span class="tooltiptext">
@@ -1753,7 +1753,7 @@
 									</div>
 								</span>
 							</div>
-							{{#unless (eq actor.data.bodyType.name "octopod")}}
+							{{#unless (eq actor.data.data.bodyType.name "octopod")}}
 								<div class="tooltip location-torso-spine">
 									{{data.data.bodyType.drTypesOne.upperChestspine}} / {{data.data.bodyType.drTypesTwo.upperChestspine}}<br>
 									{{data.data.bodyType.drTypesOne.lowerChestspine}} / {{data.data.bodyType.drTypesTwo.lowerChestspine}}
@@ -1818,7 +1818,7 @@
 										Injury capped at 2xHP<br>
 										(1xHP if using bleeding)<br>
 									</div>
-									{{#unless (eq actor.data.bodyType.name "octopod")}}
+									{{#unless (eq actor.data.data.bodyType.name "octopod")}}
 										<div>
 											<span style="text-decoration: underline">Pelvis -3</span><br>
 											On a major wound: Lame (Missing Legs) until healed<br>
@@ -1826,7 +1826,7 @@
 									{{/unless}}
 								</span>
 							</div>
-							{{#if (eq actor.data.bodyType.name "centaur")}}
+							{{#if (eq actor.data.data.bodyType.name "centaur")}}
 								<div class="tooltip location-animal-chest">
 									{{data.data.bodyType.drTypesOne.chestAnimalchest}} / {{data.data.bodyType.drTypesTwo.chestAnimalchest}}
 									<span class="tooltiptext">
@@ -1924,7 +1924,7 @@
 											Injury capped at 2xHP<br>
 											(1xHP if using bleeding)<br>
 										</div>
-										{{#unless (eq actor.data.bodyType.name "octopod")}}
+										{{#unless (eq actor.data.data.bodyType.name "octopod")}}
 											<div>
 												<span style="text-decoration: underline">Pelvis -3</span><br>
 												On a major wound: Lame (Missing Legs) until healed<br>
@@ -2168,7 +2168,7 @@
 									</span>
 								</div>
 							{{/if}}
-							{{#if (eq actor.data.bodyType.name "avian")}}
+							{{#if (eq actor.data.data.bodyType.name "avian")}}
 								<div class="tooltip location-tail-shoulder">
 									{{data.data.bodyType.drTypesOne.tailshoulder}} / {{data.data.bodyType.drTypesTwo.tailshoulder}}
 									<span class="tooltiptext">
@@ -2199,7 +2199,7 @@
 									</span>
 								</div>
 							{{/if}}
-							{{#if (eq actor.data.bodyType.name "octopod")}}
+							{{#if (eq actor.data.data.bodyType.name "octopod")}}
 								<div class="tooltip location-tentacle4-thigh-left">
 									{{data.data.bodyType.drTypesOne.tentacleLeft4shoulder}} / {{data.data.bodyType.drTypesTwo.tentacleLeft4shoulder}}
 									<span class="tooltiptext">
@@ -2524,7 +2524,7 @@
 						<div>
 							<label>Damage Type One:</label>
 							<select name="data.bodyType.damageTypeOne">
-								{{#select data.bodyType.damageTypeOne}}
+								{{#select data.data.bodyType.damageTypeOne}}
 									<option value="Burn">Burning</option>
 									<option value="Cor">Corrosion</option>
 									<option value="Cr">Crushing</option>
@@ -2539,7 +2539,7 @@
 						<div>
 							<label>Damage Type Two:</label>
 							<select name="data.bodyType.damageTypeTwo">
-								{{#select data.bodyType.damageTypeTwo}}
+								{{#select data.data.bodyType.damageTypeTwo}}
 									<option value="Burn">Burning</option>
 									<option value="Cor">Corrosion</option>
 									<option value="Cr">Crushing</option>
@@ -2628,7 +2628,7 @@
 								<td class="dr-header">State</td>
 								<td class="dr-header">Penalty</td>
 							</tr>
-							{{#each actor.data.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
+							{{#each actor.data.data.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
 							<tr class="hit-locations master-location">
 								<th colspan="1">{{bodyPart.label}}</th>
 								{{#if bodyPart.hp}}

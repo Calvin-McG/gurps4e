@@ -858,29 +858,28 @@ export class gurpsActor extends Actor {
 						this.data.data.bodyType.drTypesOne = getProperty(armour[0], this.data.data.bodyType.damageTypeOne.toLowerCase());
 						this.data.data.bodyType.drTypesTwo = getProperty(armour[0], this.data.data.bodyType.damageTypeTwo.toLowerCase());
 
-						let items = this.data.items.filter(filterArmour); // Get the character's items and filter out anything that isn't armour
+						let items = this.data.items._source.filter(filterArmour); // Get the character's items and filter out anything that isn't armour
 						items = items.sort(sortArmourByLayer); // Take the above list and sort by layer. Index 0 is lowest, index infinity is highest.
 
 						for (let l = 0; l < items.length; l++){ // Loop through the characters items and apply any relevant DR.
-							armour[l+1] = this.getArmour(items._source[l].data.armour.bodyType.body, this.data.data.bodyType.body, l+1);
+							armour[l+1] = this.getArmour(items[l].data.armour.bodyType.body, this.data.data.bodyType.body, l+1);
 							let damageTypeOneObject;
 							let damageTypeTwoObject;
 
-							if (this.data.data.bodyType.damageTypeOne.length > 0){ // If they've selected a type for display
+							if (this.data.data.bodyType.damageTypeOne.length > 0) { // If they've selected a type for display
 								damageTypeOneObject = getProperty(armour[l+1], this.data.data.bodyType.damageTypeOne.toLowerCase()); // Set the DR
 							}
-							if (this.data.data.bodyType.damageTypeTwo.length > 0){ // If they've selected a second type for display
+							if (this.data.data.bodyType.damageTypeTwo.length > 0) { // If they've selected a second type for display
 								damageTypeTwoObject = getProperty(armour[l+1], this.data.data.bodyType.damageTypeTwo.toLowerCase()); // Set the DR
 							}
 
 							if (this.data.data.bodyType.damageTypeOne.length > 0) {
 								let bodyParts = Object.keys(damageTypeOneObject);
-
 								for (let q = 0; q < bodyParts.length; q++) {
 									if (this.data.data.bodyType.damageTypeOne.length > 0) { // If they've selected a type for display
 										this.data.data.bodyType.drTypesOne[bodyParts[q]] += damageTypeOneObject[bodyParts[q]]
 									}
-									if (this.data.data.bodyType.damageTypeTwo.length > 0) { // If they've selected a second type for display
+									if (this.data.data.bodyType.damageTypeTwo.length > 0 && this.data.data.bodyType.damageTypeOne !== this.data.data.bodyType.damageTypeTwo ) { // If they've selected a second type for display
 										this.data.data.bodyType.drTypesTwo[bodyParts[q]] += damageTypeTwoObject[bodyParts[q]]
 									}
 								}
