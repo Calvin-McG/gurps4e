@@ -861,7 +861,6 @@ attribute-senses {
 }
 
 .injuryTolerancesTable {
-	flex: 1;
 	width: unset;
 	margin: 0px 5px;
 }
