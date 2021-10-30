@@ -192,10 +192,15 @@ export class gurpsItem extends Item {
                   level = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
                 } else {
                   //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-                  for (let i = 0; i < this.actor.data.items.length; i++) {
-                    if (this.actor.data.items[i].type === "Rollable") {
-                      if (this.data.data.ranged[rangedKeys[k]].skill === this.actor.data.items[i].name) {
-                        level = +this.computeSkillLevel(this.actor.data.items[i].data.category, this.actor.data.items[i].data.defaults, this.actor.data.items[i].data.difficulty, this.actor.data.items[i].data.baseAttr, this.actor.data.items[i].data.baseSkill, this.actor.data.items[i].data.minLevel, this.actor.data.items[i].data.maxLevel, this.actor.data.items[i].data.dabblerPoints, this.actor.data.items[i].data.points, this.actor.data.items[i].data.mod);
+                  for (let i = 0; i < this.actor.data.items._source.length; i++) {
+                    if (this.actor.data.items._source[i].type === "Rollable") {
+                      if (this.data.data.ranged[rangedKeys[k]].skill === this.actor.data.items._source[i].name) {
+                        level = +this.computeSkillLevel(this.actor.data.items._source[i].data.category,
+                            this.actor.data.items._source[i].data.defaults, this.actor.data.items._source[i].data.difficulty,
+                            this.actor.data.items._source[i].data.baseAttr, this.actor.data.items._source[i].data.baseSkill,
+                            this.actor.data.items._source[i].data.minLevel, this.actor.data.items._source[i].data.maxLevel,
+                            this.actor.data.items._source[i].data.dabblerPoints, this.actor.data.items._source[i].data.points,
+                            this.actor.data.items._source[i].data.mod);
                       }
                     }
                   }
