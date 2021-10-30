@@ -18,7 +18,7 @@
                     <td>Spell Class</td>
                     <td>
                         <select name="data.spellClass">
-                            {{#select data.spellClass}}
+                            {{#select data.data.spellClass}}
                             <option value="Regular">Regular</option>
                             <option value="Missile">Missile</option>
                             <option value="Melee">Melee</option>
@@ -33,7 +33,7 @@
                     <td>Difficulty</td>
                     <td>
                         <select name="data.difficulty">
-                            {{#select data.difficulty}}
+                            {{#select data.data.difficulty}}
                             <option value="A">Average</option>
                             <option value="H">Hard</option>
                             <option value="VH">Very Hard</option>
@@ -44,27 +44,27 @@
                 </tr>
                 <tr>
                     <td>Magical Ability</td>
-                    <td>{{data.magicalAbility}}</td>
+                    <td>{{data.data.magicalAbility}}</td>
                 </tr>
                 <tr>
                     <td>Modifier</td>
-                    <td><input type="text" name="data.mod" value="{{data.mod}}" data-dtype="Number"/></td>
+                    <td><input type="text" name="data.mod" value="{{data.data.mod}}" data-dtype="Number"/></td>
                 </tr>
                 <tr>
                     <td>Level</td>
-                    <td>{{data.level}}</td>
+                    <td>{{data.data.level}}</td>
                 </tr>
                 <tr>
                     <td>Points</td>
-                    <td><input type="text" name="data.points" value="{{data.points}}" data-dtype="Number"/></td>
+                    <td><input type="text" name="data.points" value="{{data.data.points}}" data-dtype="Number"/></td>
                 </tr>
                 <tr id="subCategory">
                     <td>Category</td>
-                    <td><input type="text" name="data.subCategory" value="{{data.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/></td>
+                    <td><input type="text" name="data.subCategory" value="{{data.data.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/></td>
                 </tr>
                 <tr>
                     <td>Notes</td>
-                    <td><input type="text" name="data.shortNotes" value="{{data.shortNotes}}"/></td>
+                    <td><input type="text" name="data.shortNotes" value="{{data.data.shortNotes}}"/></td>
                 </tr>
             </table>
         </div>
@@ -75,12 +75,12 @@
         <div class="header">
             <a class="item" data-tab="notes">Notes</a>
         </div>
-        {{#if  (eq data.spellClass "Melee") }}
+        {{#if  (eq data.data.spellClass "Melee") }}
         <div class="header">
             <a class="item" data-tab="melee">Melee</a>
         </div>
         {{/if}}
-        {{#if  (eq data.spellClass "Missile") }}
+        {{#if  (or (eq data.data.spellClass "Missile") (eq data.data.spellClass "Area")) }}
         <div class="header">
             <a class="item" data-tab="ranged">Ranged</a>
         </div>
@@ -97,7 +97,7 @@
         <div class="tab stats" data-tab="notes" data-group="primary">
             <h3 class="bold">Detailed Notes</h3>
             <div class="tab">
-                <textarea rows="8" name="data.notes">{{{data.notes}}}</textarea>
+                <textarea rows="8" name="data.notes">{{{data.data.notes}}}</textarea>
             </div>
         </div>
 
@@ -119,7 +119,7 @@
                         <td class="resource-label">ST</td>
                         <td class="resource-label"></td>
                     </tr>
-                    {{#each data.melee as |melee id|}}
+                    {{#each data.data.melee as |melee id|}}
                     <tr class="equipment-entry">
                         <td><input type="text" name="data.melee.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
                         <td class="resource-label">{{melee.level}}</td>
@@ -205,7 +205,7 @@
                         <td class="resource-label">ST</td>
                         <td class="resource-label"></td>
                     </tr>
-                    {{#each data.ranged as |ranged id|}}
+                    {{#each data.data.ranged as |ranged id|}}
                     <tr class="equipment-entry">
                         <td><input type="text" name="data.ranged.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
                         <td class="resource-label">{{ranged.level}}</td>
@@ -283,7 +283,7 @@
                         <td class="resource-label">Rule Of</td>
                         <td class="resource-label"></td>
                     </tr>
-                    {{#each data.affliction as |affliction id|}}
+                    {{#each data.data.affliction as |affliction id|}}
                     <tr class="equipment-entry">
                         <td><input type="text" name="data.affliction.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left; width: 85px;" /></td>
                         <td><input type="text" name="data.affliction.{{id}}.damageInput" value="{{affliction.damageInput}}" title="{{affliction.damageInput}}" style="text-align:left; width: 40px;" /></td>
