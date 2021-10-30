@@ -577,30 +577,34 @@ export class gurpsItem extends Item {
   }
 
   _prepareSpellData() {
-    if (this.actor){
-      if (this.actor.data.data.magic) {
+    if (this.actor) {
+      if (this.actor.data) {
+        if (this.actor.data.data) {
+          if (this.actor.data.data.magic) {
 
-        // Calculate the total magical attribute
-        let totalMagicAttribute = 0;
-        let points = this.data.data.points;
-        let mod = this.data.data.mod;
-        let attributeMod = this.actor.data.data.magic.attributeMod;
-        let difficulty = this.data.data.difficulty;
-        let magery = this.actor.data.data.magic.magery;
-        let attribute = this.actor.data.data.magic.attribute;
+            // Calculate the total magical attribute
+            let totalMagicAttribute = 0;
+            let points = this.data.data.points;
+            let mod = this.data.data.mod;
+            let attributeMod = this.actor.data.data.magic.attributeMod;
+            let difficulty = this.data.data.difficulty;
+            let magery = this.actor.data.data.magic.magery;
+            let attribute = this.actor.data.data.magic.attribute;
 
-        let level = this.computeSpellLevel(points, mod, attributeMod, difficulty, magery, attribute)
+            let level = this.computeSpellLevel(points, mod, attributeMod, difficulty, magery, attribute)
 
-        if (attribute != "") { // Attribute is not blank
-          totalMagicAttribute += this.getBaseAttrValue(attribute)
+            if (attribute != "") { // Attribute is not blank
+              totalMagicAttribute += this.getBaseAttrValue(attribute)
+            }
+
+            totalMagicAttribute += attributeMod ? attributeMod : 0;
+            totalMagicAttribute += magery ? magery : 0;
+            this.data.data.magicalAbility = totalMagicAttribute;
+
+            this.data.data.level = level;
+            this._data.data.level = level;
+          }
         }
-
-        totalMagicAttribute += attributeMod ? attributeMod : 0;
-        totalMagicAttribute += magery ? magery : 0;
-        this.data.data.magicalAbility = totalMagicAttribute;
-
-        this.data.data.level = level;
-        this._data.data.level = level;
       }
     }
   }
