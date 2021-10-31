@@ -2188,7 +2188,6 @@ export class gurpsActor extends Actor {
 		}
 
 		rollHelpers.skillRoll(level, mod, label, false).then( rollInfo => {
-			console.log(rollInfo);
 			let messageContent = rollInfo.content;
 			let flags = {}
 
@@ -2286,7 +2285,6 @@ export class gurpsActor extends Actor {
 		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
 
 		let target = game.actors.get(flags.target);
-
 		let dodges = [];
 		let parries = [];
 		let blocks = [];
@@ -2299,32 +2297,29 @@ export class gurpsActor extends Actor {
 		dodges.push(dodge);
 
 		if (target.data.items) {
-			for (let a = 0; a < target.data.items._source.length; a++){ // Loop through the items
-				if (target.data.items._source[a].data.melee) {
-					let item = target.data.items._source[a].data;
-					let keys = Object.keys(item.melee)
-					if (true){ // Look for items with melee profiles
-						for (let b = 0; b < keys.length; b++){ // Loop through the melee profiles
-							let profile = getProperty(item.melee, keys[b])
-							if (Number.isInteger(profile.parry)){
-								let parry = {
-									name: target.data.items._source[a].name,
-									level: profile.parry
-								}
-								parries.push(parry)
+			target.data.items.forEach((item) => {
+				if (item.data.data.melee) {
+					let keys = Object.keys(item.data.data.melee)
+					for (let b = 0; b < keys.length; b++){ // Loop through the melee profiles
+						let profile = getProperty(item.data.data.melee, keys[b])
+						if (Number.isInteger(profile.parry)){
+							let parry = {
+								name: item.data.name,
+								level: profile.parry
 							}
+							parries.push(parry)
+						}
 
-							if (Number.isInteger(profile.block)){
-								let block = {
-									name: target.data.items._source[a].name,
-									level: profile.block
-								}
-								blocks.push(block)
+						if (Number.isInteger(profile.block)){
+							let block = {
+								name: item.data.name,
+								level: profile.block
 							}
+							blocks.push(block)
 						}
 					}
 				}
-			}
+			})
 		}
 
 		let activeDefenceModalContent =
@@ -2458,7 +2453,6 @@ export class gurpsActor extends Actor {
 	}
 
 	rollActiveDefence(mod, selection, name, options, flags, locationIDs, type) {
-
 		let target = game.actors.get(flags.target);
 
 		// TODO - Get modifiers for posture, encumbrance
@@ -2525,65 +2519,65 @@ export class gurpsActor extends Actor {
 			label += " with their " + name;
 		}
 
-		let rollInfo = rollHelpers.skillRoll(selection, totalModifier, label, false);
+		rollHelpers.skillRoll(selection, totalModifier, label, false).then( rollInfo => {
+			let attacksStopped;
 
-		let attacksStopped;
+			if (rollInfo.margin >= 0) {
+				attacksStopped = Math.min(rollInfo.margin + 1, locationIDs.length);
+			}
+			else {
+				attacksStopped = 0;
+			}
 
-		if (rollInfo.margin >= 0) {
-			attacksStopped = Math.min(rollInfo.margin + 1, locationIDs.length);
-		}
-		else {
-			attacksStopped = 0;
-		}
+			let locationsHit;
+			let attacksThrough;
 
-		let locationsHit;
-		let attacksThrough;
+			if (attacksStopped >= locationIDs.length){ // Stopped as many or more attacks as there actually are
+				additionalMessageContent += target.data.name + " stopped all of the attacks.";
+				let messageContent = rollInfo.content + additionalMessageContent;
 
-		if (attacksStopped >= locationIDs.length){ // Stopped as many or more attacks as there actually are
-			additionalMessageContent += target.data.name + " stopped all of the attacks.";
-			let messageContent = rollInfo.content + additionalMessageContent;
+				// Send the message, no further rolls necessary.
+				ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
+			}
+			else if (attacksStopped <= 0){ // Stopped zero or fewer attacks
+				additionalMessageContent += target.data.name + " does not stop any attacks.</br></br>";
+				additionalMessageContent += locationIDs.length + " attack" + (locationIDs.length > 1 ? "s " : " ") + "get" + (locationIDs.length === 1 ? "s" : "") + " through.";
+				let messageContent = rollInfo.content + additionalMessageContent;
 
-			// Send the message, no further rolls necessary.
-			ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
-		}
-		else if (attacksStopped <= 0){ // Stopped zero or fewer attacks
-			additionalMessageContent += target.data.name + " does not stop any attacks.</br></br>";
-			additionalMessageContent += locationIDs.length + " attack" + (locationIDs.length > 1 ? "s " : " ") + "get" + (locationIDs.length === 1 ? "s" : "") + " through.";
-			let messageContent = rollInfo.content + additionalMessageContent;
+				// Send the message then prepare for damage rolls
+				ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
 
-			// Send the message then prepare for damage rolls
-			ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
+				locationsHit = locationIDs; // All attacks get through
+				this.applyDamage(flags, locationsHit).then();
+			}
+			else if (attacksStopped === 1){ // Stopped one attack, but not all
+				attacksThrough = locationIDs.length - 1;
+				additionalMessageContent += target.data.name + " stopped one attack.</br></br>";
+				additionalMessageContent += attacksThrough + " attack" + (attacksThrough > 1 ? "s " : " ") + "get" + (attacksThrough === 1 ? "s" : "") + " through.";
+				let messageContent = rollInfo.content + additionalMessageContent;
 
-			locationsHit = locationIDs; // All attacks get through
-			this.applyDamage(flags, locationsHit);
-		}
-		else if (attacksStopped === 1){ // Stopped one attack, but not all
-			attacksThrough = locationIDs.length - 1;
-			additionalMessageContent += target.data.name + " stopped one attack.</br></br>";
-			additionalMessageContent += attacksThrough + " attack" + (attacksThrough > 1 ? "s " : " ") + "get" + (attacksThrough === 1 ? "s" : "") + " through.";
-			let messageContent = rollInfo.content + additionalMessageContent;
+				// Send the message then prepare for damage rolls
+				ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
 
-			// Send the message then prepare for damage rolls
-			ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
+				locationsHit = locationIDs.slice(0, locationIDs.length - 1); // Remove the last hit in the array
+				this.applyDamage(flags, locationsHit).then();
+			}
+			else if (attacksStopped > 1){ // Stopped more than one attack, but not all
+				attacksThrough = locationIDs.length - attacksStopped;
+				additionalMessageContent += target.data.name + " stopped " + attacksStopped + " attacks.</br></br>";
+				additionalMessageContent += attacksThrough + " attack" + (attacksThrough > 1 ? "s " : " ") + "get" + (attacksThrough === 1 ? "s" : "") + " through.";
+				let messageContent = rollInfo.content + additionalMessageContent;
 
-			locationsHit = locationIDs.slice(0, locationIDs.length - 1); // Remove the last hit in the array
-			this.applyDamage(flags, locationsHit);
-		}
-		else if (attacksStopped > 1){ // Stopped more than one attack, but not all
-			attacksThrough = locationIDs.length - attacksStopped;
-			additionalMessageContent += target.data.name + " stopped " + attacksStopped + " attacks.</br></br>";
-			additionalMessageContent += attacksThrough + " attack" + (attacksThrough > 1 ? "s " : " ") + "get" + (attacksThrough === 1 ? "s" : "") + " through.";
-			let messageContent = rollInfo.content + additionalMessageContent;
+				// Send the message then prepare for damage rolls
+				ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
 
-			// Send the message then prepare for damage rolls
-			ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
-
-			locationsHit = locationIDs.slice(0, locationIDs.length - attacksStopped); // Remove the last hits in the array
-			this.applyDamage(flags, locationsHit);
-		}
+				locationsHit = locationIDs.slice(0, locationIDs.length - attacksStopped); // Remove the last hits in the array
+				this.applyDamage(flags, locationsHit).then();
+			}
+		})
 	}
 
-	applyDamage(flags, locationsHit) {
+	async applyDamage(flags, locationsHit) {
 		let target 			= game.actors.get(flags.target);
 		let attacker 		= game.actors.get(flags.attacker);
 		let attack 			= flags.attack;
@@ -2618,9 +2612,8 @@ export class gurpsActor extends Actor {
 			let location = getProperty(target.data.data.bodyType.body, locationsHit[i])
 
 			// If the attack is not explosive, roll damage for the attack
-			let damageRoll = new Roll(attack.damage);
-			damageRoll.roll();
-
+			let roll = new Roll(attack.damage);
+			let damageRoll = await roll.roll();
 			let adds = 0;
 
 			// Build the location label
@@ -2654,7 +2647,7 @@ export class gurpsActor extends Actor {
 						}
 					}
 				}
-				adds = (+damageRoll._total - +damageRoll.results[0]);
+				adds = (+damageRoll._total - +damageRoll.dice[0].total);
 			}
 			else {
 				adds = +damageRoll._total;
