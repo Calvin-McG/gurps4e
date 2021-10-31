@@ -1390,7 +1390,6 @@ export class gurpsActor extends Actor {
 			htmlContent += "<tr><td></td><td>Affliction</td><td>Name</td><td>Level</td><td>Damage</td><td>Resistance Roll</td><td>Rule Of</td></tr>";
 
 			for (let q = 0; q < attacks.affliction.length; q++){
-				console.log(attacks.affliction[q])
 				htmlContent += "<tr>";
 				if (q == 0) {
 					htmlContent += "<td><input checked type='radio' id='affliction" + q + "' name='affliction' value='" + q + "'></td>";
@@ -1416,7 +1415,6 @@ export class gurpsActor extends Actor {
 		}
 
 		htmlContent += "</div>";
-
 
 		let singleTargetModal = new Dialog({
 			title: "SHOW ME YOUR MOVES",
@@ -2189,65 +2187,67 @@ export class gurpsActor extends Actor {
 			}
 		}
 
-		let rollInfo = rollHelpers.skillRoll(level, mod, label, false)
-		let messageContent = rollInfo.content;
-		let flags = {}
+		rollHelpers.skillRoll(level, mod, label, false).then( rollInfo => {
+			console.log(rollInfo);
+			let messageContent = rollInfo.content;
+			let flags = {}
 
-		if (rollInfo.success == false) {
-			messageContent += attacker.nameplate._text + " misses " + target.nameplate._text + "</br>";
-		}
-		else {
-			let hits;
-			if (attack.type == "ranged") {
-				let rcl = attack.rcl ? attack.rcl : 1;
-				hits = Math.min( ((Math.floor(rollInfo.margin / Math.abs(rcl))) + 1) , rof.rof ); // Get the number of hits based on how many times rcl fits into margin, plus one. Then cap with the number of shots actually fired
+			if (rollInfo.success == false) {
+				messageContent += attacker.nameplate._text + " misses " + target.nameplate._text + "</br>";
 			}
 			else {
-				hits = 1
-			}
-			messageContent += attacker.nameplate._text + " hits " + target.nameplate._text + " " + this.numToWords(hits) + "</br></br>"; // Display the number of hits
-
-			let locations = locationArray.slice(0, hits); // Shorten the list of locations to the number of hits.
-
-			messageContent += target.nameplate._text + " is struck in the...</br>";
-			for (let m = 0; m < locations.length; m++){
-				let firstLocation = getProperty(target.actor.data.data.bodyType.body, (locations[m].id).split(".")[0]);
-				let firstLabel = firstLocation ? firstLocation.label : "";
-				let secondLabel = locations[m].label
-				let locationLabel;
-				if (firstLabel === secondLabel){
-					locationLabel = firstLabel;
-				}
-				else if (firstLabel === ''){
-					locationLabel = secondLabel;
+				let hits;
+				if (attack.type == "ranged") {
+					let rcl = attack.rcl ? attack.rcl : 1;
+					hits = Math.min( ((Math.floor(rollInfo.margin / Math.abs(rcl))) + 1) , rof.rof ); // Get the number of hits based on how many times rcl fits into margin, plus one. Then cap with the number of shots actually fired
 				}
 				else {
-					locationLabel = firstLabel + " - " + secondLabel;
+					hits = 1
 				}
-				messageContent += "<div style='display: grid; grid-template-columns: 0.1fr auto;'><input type='checkbox' checked class='checkbox' id='" + locations[m].id + "' value='" + locations[m].id + "' name='" + locations[m].id + "' /><span style='line-height: 26px;'>" + locationLabel + "</span></div>";
+				messageContent += attacker.nameplate._text + " hits " + target.nameplate._text + " " + this.numToWords(hits) + "</br></br>"; // Display the number of hits
+
+				let locations = locationArray.slice(0, hits); // Shorten the list of locations to the number of hits.
+
+				messageContent += target.nameplate._text + " is struck in the...</br>";
+				for (let m = 0; m < locations.length; m++){
+					let firstLocation = getProperty(target.actor.data.data.bodyType.body, (locations[m].id).split(".")[0]);
+					let firstLabel = firstLocation ? firstLocation.label : "";
+					let secondLabel = locations[m].label
+					let locationLabel;
+					if (firstLabel === secondLabel){
+						locationLabel = firstLabel;
+					}
+					else if (firstLabel === ''){
+						locationLabel = secondLabel;
+					}
+					else {
+						locationLabel = firstLabel + " - " + secondLabel;
+					}
+					messageContent += "<div style='display: grid; grid-template-columns: 0.1fr auto;'><input type='checkbox' checked class='checkbox' id='" + locations[m].id + "' value='" + locations[m].id + "' name='" + locations[m].id + "' /><span style='line-height: 26px;'>" + locationLabel + "</span></div>";
+				}
+
+				messageContent += "</br><input type='button' class='attemptActiveDefences' value='Attempt Active Defences'/><input type='button' class='noActiveDefences' value='No Active Defences'/>"
+
+				let locationIDs = [];
+
+				for (let l = 0; l < locations.length; l++){
+					locationIDs[l] = locations[l].id;
+				}
+
+				flags = {
+					target: target.actor.data._id,
+					attacker: attacker.actor.data._id,
+					attack: attack,
+					relativePosition: relativePosition,
+					rof: rof,
+					locationIDs: locationIDs,
+					totalModifiers: totalModifiers
+				}
 			}
 
-			messageContent += "</br><input type='button' class='attemptActiveDefences' value='Attempt Active Defences'/><input type='button' class='noActiveDefences' value='No Active Defences'/>"
-
-			let locationIDs = [];
-
-			for (let l = 0; l < locations.length; l++){
-				locationIDs[l] = locations[l].id;
-			}
-
-			flags = {
-				target: target.actor.data._id,
-				attacker: attacker.actor.data._id,
-				attack: attack,
-				relativePosition: relativePosition,
-				rof: rof,
-				locationIDs: locationIDs,
-				totalModifiers: totalModifiers
-			}
-		}
-
-		// Everything is assembled, send the message
-		ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type, flags: flags});
+			// Everything is assembled, send the message
+			ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type, flags: flags});
+		})
 	}
 
 	numToWords(hits){ // Returns a number as a string with no leading or trailing whitespace
