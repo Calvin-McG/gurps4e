@@ -1499,42 +1499,39 @@ export class gurpsActor extends Actor {
 		let ranged;
 		let affliction;
 
-		for (let y = 0; y < actor.data.items._source.length; y++){
-			if (actor.data.items._source[y].type == "Trait" || actor.data.items._source[y].type == "Equipment" || actor.data.items._source[y].type == "Spell"){
-				console.log(actor.data.items._source[y].data)
-				if (actor.data.items._source[y].data.melee) {
-					let meleeKeys = Object.keys(actor.data.items._source[y].data.melee); // Collect all the melee keys
+		actor.data.items.forEach((item) => {
+			if (item.data.type == "Trait" || item.data.type == "Equipment" || item.data.type == "Spell"){
+				if (item.data.data.melee) {
+					let meleeKeys = Object.keys(item.data.data.melee); // Collect all the melee keys
 					for (let m = 0; m < meleeKeys.length; m++){
-						melee = getProperty(actor.data.items._source[y].data.melee, meleeKeys[m]);
-						melee.weapon = actor.data.items._source[y].name
-
+						melee = getProperty(item.data.data.melee, meleeKeys[m]);
+						melee.weapon = item.name
 						meleeAttacks.push(melee);
 					}
 				}
 
-				if (actor.data.items._source[y].data.ranged) {
-					let rangedKeys = Object.keys(actor.data.items._source[y].data.ranged); // Collect all the ranged keys
+				if (item.data.data.ranged) {
+					let rangedKeys = Object.keys(item.data.data.ranged); // Collect all the ranged keys
 					for (let r = 0; r < rangedKeys.length; r++){
-						ranged = getProperty(actor.data.items._source[y].data.ranged, rangedKeys[r]);
-						ranged.weapon = actor.data.items._source[y].name
+						ranged = getProperty(item.data.data.ranged, rangedKeys[r]);
+						ranged.weapon = item.name
 
 						rangedAttacks.push(ranged);
 					}
 				}
 
-				if (actor.data.items._source[y].data.affliction) {
-					let afflictionKeys = Object.keys(actor.data.items._source[y].data.affliction); // Collect all the affliction keys
+				if (item.data.data.affliction) {
+					let afflictionKeys = Object.keys(item.data.data.affliction); // Collect all the affliction keys
 					for (let a = 0; a < afflictionKeys.length; a++){
-						affliction = getProperty(actor.data.items._source[y].data.affliction, afflictionKeys[a]);
-						affliction.weapon = actor.data.items._source[y].name;
+						affliction = getProperty(item.data.data.affliction, afflictionKeys[a]);
+						affliction.weapon = item.name;
 						affliction.type = "affliction";
-						console.log(actor.data.items._source[y]);
 
 						afflictionAttacks.push(affliction);
 					}
 				}
 			}
-		}
+		})
 
 		return { "melee": meleeAttacks, "ranged": rangedAttacks, "affliction": afflictionAttacks}
 	}
