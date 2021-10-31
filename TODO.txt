@@ -1,3 +1,7 @@
+Important
+    - Random hit location always hitting skull
+    - token.actor seems to get the special token version of that actor if they're not linked. If they are linked it just gives the proper actor. Use this for damage macro, etc.
+
 From session 6/10/2021
     - EX/Frag macro
 
@@ -41,9 +45,9 @@ Combat Macro
     - Injury tolerances, Damage Resistance
     - ST Multiplier for range (With skill bonuses to ST)
     - +4 and +7 from adds
+    - Knockdown button
     - Make it remember your last selection for active defences
     - Stunning and knockdown (including hit location stuff)
-    - Knockback effects
     - Death and unconsciousness checks.
     - Defence penalty for side/rear
     - Shock penalties
