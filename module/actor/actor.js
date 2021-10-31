@@ -3,6 +3,7 @@ import { distanceHelpers } from '../../helpers/distanceHelpers.js';
 import { generalHelpers } from '../../helpers/generalHelpers.js';
 import { rollHelpers } from '../../helpers/rollHelpers.js';
 import { actorHelpers } from "../../helpers/actorHelpers.js";
+import { skillHelpers } from "../../helpers/skillHelpers.js";
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -1145,30 +1146,6 @@ export class gurpsActor extends Actor {
 		}
 	}
 
-	getBaseAttrValue(baseAttr) {
-		let base = 0;
-		if (baseAttr.toUpperCase() == 'ST' || baseAttr.toUpperCase() == 'STRENGTH'){
-			let smDiscount = attributeHelpers.calcSMDiscount(this.actor.data.data.bio.sm)
-			base = attributeHelpers.calcStOrHt(this.data.data.primaryAttributes.strength, smDiscount);
-		}
-		else if (baseAttr.toUpperCase() == 'DX' || baseAttr.toUpperCase() == 'DEXTERITY') {
-			base = attributeHelpers.calcDxOrIq(this.data.data.primaryAttributes.dexterity);
-		}
-		else if (baseAttr.toUpperCase() == 'IQ' || baseAttr.toUpperCase() == 'INTELLIGENCE') {
-			base = attributeHelpers.calcDxOrIq(this.data.data.primaryAttributes.intelligence);
-		}
-		else if (baseAttr.toUpperCase() == 'HT' || baseAttr.toUpperCase() == 'HEALTH') {
-			base = attributeHelpers.calcStOrHt(this.data.data.primaryAttributes.health, 1);
-		}
-		else if (baseAttr.toUpperCase() == 'PER' || baseAttr.toUpperCase() == 'PERCEPTION') {
-			base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(this.data.data.primaryAttributes.intelligence), this.data.data.primaryAttributes.perception);
-		}
-		else if (baseAttr.toUpperCase() == 'WILL') {
-			base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(this.data.data.primaryAttributes.intelligence), this.data.data.primaryAttributes.will);
-		}
-		return base;
-	}
-
 	updateMagic() {
 		if (this.data) {
 			if (this.data.data) {
@@ -1176,7 +1153,7 @@ export class gurpsActor extends Actor {
 					// Calculate the total magical attribute
 					let totalMagicAttribute = 0;
 					if (this.data.data.magic.attribute != "") { // Attribute is not blank
-						totalMagicAttribute += this.getBaseAttrValue(this.data.data.magic.attribute)
+						totalMagicAttribute += skillHelpers.getBaseAttrValue(this.data.data.magic.attribute, this)
 					}
 					totalMagicAttribute += this.data.data.magic.attributeMod ? this.data.data.magic.attributeMod : 0;
 					totalMagicAttribute += this.data.data.magic.magery ? this.data.data.magic.magery : 0;
@@ -1522,7 +1499,7 @@ export class gurpsActor extends Actor {
 		let ranged;
 		let affliction;
 
-		for (let y = 0; y < actor.data.items.length; y++){
+		for (let y = 0; y < actor.data.items._source.length; y++){
 			if (actor.data.items._source[y].type == "Trait" || actor.data.items._source[y].type == "Equipment" || actor.data.items._source[y].type == "Spell"){
 				console.log(actor.data.items._source[y].data)
 				if (actor.data.items._source[y].data.melee) {
