@@ -1,5 +1,7 @@
 Current
-    - Facing specific penalties to active defences
+    - Check thigh gap for front/rear
+    - Apply harsh thigh gap setting
+    - check vitals/spine for front/rear, including random rolls
 
 From session 6/10/2021
     - EX/Frag macro

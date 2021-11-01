@@ -2295,7 +2295,12 @@ export class gurpsActor extends Actor {
 
 		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
 
-		let target = game.scenes.get(flags.scene).tokens.get(flags.target).actor;
+		let targetToken = game.scenes.get(flags.scene).tokens.get(flags.target);
+		let attackerToken = game.scenes.get(flags.scene).tokens.get(flags.attacker);
+
+		let facing = this.getFacing(attackerToken.data, targetToken.data);
+		let target = targetToken.actor;
+
 		let dodges = [];
 		let parries = [];
 		let blocks = [];
@@ -2334,9 +2339,40 @@ export class gurpsActor extends Actor {
 		}
 
 		let activeDefenceModalContent =
-			"<div style='text-align: center; font-weight: bold'>General Modifiers</div>" +
-			"<div style='display: grid; grid-template-columns: 1fr 1fr'><span style='text-align: right;'><label for='feverishDefence' style='line-height: 26px;'>Feverish Defence</label></span><span><input type='checkbox' name='feverishDefence' id='feverishDefence' value='feverishDefence' /></span></div>" +
-			"<div style='display: grid; grid-template-columns: 1.5fr 0.5fr 1.5fr 0.5fr 1.5fr 0.5fr'>" +
+			"<div style='text-align: center; font-weight: bold'>General Modifiers</div>"
+
+		if (facing[0] == 0) { // Attacker is in the target's side or rear hexes, warn them
+			activeDefenceModalContent += "" +
+				"<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>The attacker is in one of your side hexes. You have a -2 penalty to defend.</div>"
+		}
+		else if (facing[0] == -1) { // Attacker is in the target's side or rear hexes, warn them
+			activeDefenceModalContent += "" +
+				"<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>The attacker is in one of your rear hexes. If you can defend, you have a -2 penalty to do so.</div>"
+		}
+
+		if (facing[0] <= 0) { // Attacker is in the target's side or rear hexes, give them the option to use Timed Defence.
+			activeDefenceModalContent += "" +
+				"<div style='display: grid; grid-template-columns: 1.5fr 0.5fr 1.5fr 0.5fr 2fr' class='tooltip'>" +
+				"	<span class='tooltiptext'>To use Timed Defence you must have the technique for the specific type of defence you are attempting.<br>" +
+				"							Timed Defence (Dodge) can only be used once per turn</span>" +
+				"		<label for='timedDefence' style='line-height: 26px;'>Timed Defence</label>" +
+				"	</span>" +
+				"	<span>" +
+				"		<input type='checkbox' name='timedDefence' id='timedDefence' value='timedDefence' />" +
+				"	</span>" +
+				"	<span style='text-align: right;'>" +
+				"		<label for='feverishDefence' style='line-height: 26px;'>Feverish Defence</label>" +
+				"	</span>" +
+				"	<span>" +
+				"		<input type='checkbox' name='feverishDefence' id='feverishDefence' value='feverishDefence' />" +
+				"	</span>" +
+				"</div>"
+		}
+		else {
+			activeDefenceModalContent +="<div style='display: grid; grid-template-columns: 1fr 1fr'><span style='text-align: right;'><label for='feverishDefence' style='line-height: 26px;'>Feverish Defence</label></span><span><input type='checkbox' name='feverishDefence' id='feverishDefence' value='feverishDefence' /></span></div>"
+		}
+
+		activeDefenceModalContent += "<div style='display: grid; grid-template-columns: 1.5fr 0.5fr 1.5fr 0.5fr 1.5fr 0.5fr'>" +
 			"   <span><label for='retreat' style='line-height: 26px;'>Retreat</label></span><span><input type='checkbox' name='retreat' id='retreat' value='retreat' /></span>" +
 			"   <span><label for='sideslip' style='line-height: 26px;'>Side Slip</label></span><span><input type='checkbox' name='sideslip' id='sideslip' value='sideslip' /></span>" +
 			"   <span><label for='slip' style='line-height: 26px;'>Slip</label></span><span><input type='checkbox' name='slip' id='slip' value='slip' /></span>" +
@@ -2388,21 +2424,21 @@ export class gurpsActor extends Actor {
 					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" role="img" viewBox="0 0 512 512" style="width: 17px;"><path fill="currentColor" d="M272 96c26.51 0 48-21.49 48-48S298.51 0 272 0s-48 21.49-48 48 21.49 48 48 48zM113.69 317.47l-14.8 34.52H32c-17.67 0-32 14.33-32 32s14.33 32 32 32h77.45c19.25 0 36.58-11.44 44.11-29.09l8.79-20.52-10.67-6.3c-17.32-10.23-30.06-25.37-37.99-42.61zM384 223.99h-44.03l-26.06-53.25c-12.5-25.55-35.45-44.23-61.78-50.94l-71.08-21.14c-28.3-6.8-57.77-.55-80.84 17.14l-39.67 30.41c-14.03 10.75-16.69 30.83-5.92 44.86s30.84 16.66 44.86 5.92l39.69-30.41c7.67-5.89 17.44-8 25.27-6.14l14.7 4.37-37.46 87.39c-12.62 29.48-1.31 64.01 26.3 80.31l84.98 50.17-27.47 87.73c-5.28 16.86 4.11 34.81 20.97 40.09 3.19 1 6.41 1.48 9.58 1.48 13.61 0 26.23-8.77 30.52-22.45l31.64-101.06c5.91-20.77-2.89-43.08-21.64-54.39l-61.24-36.14 31.31-78.28 20.27 41.43c8 16.34 24.92 26.89 43.11 26.89H384c17.67 0 32-14.33 32-32s-14.33-31.99-32-31.99z" class=""></path></svg>',
 					label: "Dodge",
 					callback: (html) => {
-						this.gatherOptions(html, "dodge", flags, locationIDs)
+						this.gatherOptions(html, "dodge", flags, locationIDs, facing[0])
 					}
 				},
 				block: {
 					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M466.5 83.7l-192-80a48.15 48.15 0 0 0-36.9 0l-192 80C27.7 91.1 16 108.6 16 128c0 198.5 114.5 335.7 221.5 380.3 11.8 4.9 25.1 4.9 36.9 0C360.1 472.6 496 349.3 496 128c0-19.4-11.7-36.9-29.5-44.3zM256.1 446.3l-.1-381 175.9 73.3c-3.3 151.4-82.1 261.1-175.8 307.7z" class=""></path></svg>',
 					label: "Block",
 					callback: (html) => {
-						this.gatherOptions(html, "block", flags, locationIDs)
+						this.gatherOptions(html, "block", flags, locationIDs, facing[0])
 					}
 				},
 				parry: {
 					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M507.31 462.06L448 402.75l31.64-59.03c3.33-6.22 2.2-13.88-2.79-18.87l-17.54-17.53c-6.25-6.25-16.38-6.25-22.63 0L420 324 112 16 18.27.16C8.27-1.27-1.42 7.17.17 18.26l15.84 93.73 308 308-16.69 16.69c-6.25 6.25-6.25 16.38 0 22.62l17.53 17.54a16 16 0 0 0 18.87 2.79L402.75 448l59.31 59.31c6.25 6.25 16.38 6.25 22.63 0l22.62-22.62c6.25-6.25 6.25-16.38 0-22.63zm-149.36-76.01L60.78 88.89l-5.72-33.83 33.84 5.72 297.17 297.16-28.12 28.11zm65.17-325.27l33.83-5.72-5.72 33.84L340.7 199.43l33.94 33.94L496.01 112l15.84-93.73c1.43-10-7.01-19.69-18.1-18.1l-93.73 15.84-121.38 121.36 33.94 33.94L423.12 60.78zM199.45 340.69l-45.38 45.38-28.12-28.12 45.38-45.38-33.94-33.94-45.38 45.38-16.69-16.69c-6.25-6.25-16.38-6.25-22.62 0l-17.54 17.53a16 16 0 0 0-2.79 18.87L64 402.75 4.69 462.06c-6.25 6.25-6.25 16.38 0 22.63l22.62 22.62c6.25 6.25 16.38 6.25 22.63 0L109.25 448l59.03 31.64c6.22 3.33 13.88 2.2 18.87-2.79l17.53-17.54c6.25-6.25 6.25-16.38 0-22.63L188 420l45.38-45.38-33.93-33.93z" class=""></path></svg>',
 					label: "Parry",
 					callback: (html) => {
-						this.gatherOptions(html, "parry", flags, locationIDs)
+						this.gatherOptions(html, "parry", flags, locationIDs, facing[0])
 					}
 				}
 			},
@@ -2433,12 +2469,13 @@ export class gurpsActor extends Actor {
 		this.applyDamage(flags, locationIDs);
 	}
 
-	gatherOptions(html, type, flags, locationIDs){
+	gatherOptions(html, type, flags, locationIDs, facing){
 		let selection;
 		let name;
 		let mod = html.find('#mod').val()
 		let options = {
 			feverishDefence: html.find('#feverishDefence')[0].checked,
+			timedDefence: html.find('#timedDefence')[0].checked,
 			retreat: html.find('#retreat')[0].checked,
 			sideslip: html.find('#sideslip')[0].checked,
 			slip: html.find('#slip')[0].checked,
@@ -2459,11 +2496,14 @@ export class gurpsActor extends Actor {
 			name = html.find('#dodgeSelector')[0].innerText.split(":")[0]
 		}
 
+		if (facing <= 0 && !options.timedDefence) { // Attacker is in side or rear hexes and the target is not using a timed defence
+			mod -= 2 // Subtract 2 from the defence modifier
+		}
 
-		this.rollActiveDefence(mod, selection, name, options, flags, locationIDs, type);
+		this.rollActiveDefence(mod, selection, name, options, flags, locationIDs, type, facing);
 	}
 
-	rollActiveDefence(mod, selection, name, options, flags, locationIDs, type) {
+	rollActiveDefence(mod, selection, name, options, flags, locationIDs, type, facing) {
 		let target = game.scenes.get(flags.scene).tokens.get(flags.target).actor;
 
 		// TODO - Get modifiers for posture, encumbrance
@@ -2528,6 +2568,13 @@ export class gurpsActor extends Actor {
 
 		if (type.toLowerCase() !== "dodge"){
 			label += " with their " + name;
+		}
+
+		if (facing == 0) { // Attacker is in side hexes
+			label += " against an attack from the side"
+		}
+		else if (facing == -1) { // Attacker is in rear hexes
+			label += " against an attack from the rear"
 		}
 
 		rollHelpers.skillRoll(selection, totalModifier, label, false).then( rollInfo => {
