@@ -1,3 +1,6 @@
+Current
+    - Facing specific penalties to active defences
+
 From session 6/10/2021
     - EX/Frag macro
 

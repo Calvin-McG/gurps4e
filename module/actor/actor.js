@@ -1235,15 +1235,17 @@ export class gurpsActor extends Actor {
 	}
 
 	// Facing is returned as 1/0/-1 (Front/Side/Rear) and position as 1/-1 (Ahead/Behind)
-	getFacing(selfToken, targetToken){
-		let relativePosition = (Math.atan2(-(targetToken._validPosition.x - selfToken._validPosition.x), (targetToken._validPosition.y - selfToken._validPosition.y)) * 180 / Math.PI); // Takes the atan of the two sets of points after they have been rotated clockwise 90 degrees. This puts the 0 point towards the direction of facing with 180/-180 directly behind
+	// As in, the attacker is in front, in side, in rear of the target (For active defence purposes, depends on target's vision (Peripheral, 360, tunnel, etc)
+	// As in, the attacker is ahead or behind the target (In physical space, has nothing to do with anyone's traits.
+	getFacing(attackerToken, targetToken){
+		let relativePosition = (Math.atan2(-(targetToken.x - attackerToken.x), (targetToken.y - attackerToken.y)) * 180 / Math.PI); // Takes the atan of the two sets of points after they have been rotated clockwise 90 degrees. This puts the 0 point towards the direction of facing with 180/-180 directly behind
 
 		let targetFacing;
-		if (targetToken.data.rotation > 180){ // Correct for facing angles of greater than 180 degrees. Valid range for this macro is -180 to 0 to 180. Not 0 to 360
-			targetFacing = targetToken.data.rotation - 360;
+		if (targetToken.rotation > 180){ // Correct for facing angles of greater than 180 degrees. Valid range for this macro is -180 to 0 to 180. Not 0 to 360
+			targetFacing = targetToken.rotation - 360;
 		}
 		else {
-			targetFacing = targetToken.data.rotation
+			targetFacing = targetToken.rotation
 		}
 
 		let relativeAngle = relativePosition - targetFacing; // Get the relative angle between the two tokens, corrected for the target's facing
@@ -1256,33 +1258,39 @@ export class gurpsActor extends Actor {
 		}
 		relativeAngle = Math.round(relativeAngle); // Round the angle so we don't get cases like 120.172 degrees.
 
-		let leftFrontBound = (0 - (selfToken.actor.data.data.vision.front / 2)); // Get all the bounds for front and side arcs
-		let rightFrontBound = (0 + (selfToken.actor.data.data.vision.front / 2));
-		let leftSideBound = (0 - (selfToken.actor.data.data.vision.side / 2));
-		let rightSideBound = (0 + (selfToken.actor.data.data.vision.side / 2));
+
+		let attackerTokenActor = attackerToken.actor;
+		if (!attackerTokenActor){
+			attackerTokenActor = attackerToken.document.actor;
+		}
+
+		let leftFrontBound = (0 - (attackerTokenActor.data.data.vision.front / 2)); // Get all the bounds for front and side arcs
+		let rightFrontBound = (0 + (attackerTokenActor.data.data.vision.front / 2));
+		let leftSideBound = (0 - (attackerTokenActor.data.data.vision.side / 2));
+		let rightSideBound = (0 + (attackerTokenActor.data.data.vision.side / 2));
 
 		let facing;
 		let position;
 
 		// Determine which arc the attacker is standing in
 		if (relativeAngle >= leftFrontBound && relativeAngle <= rightFrontBound){
-			facing = "front";
+			facing = 1; // Attacker is in the target's "front" vision arc
 		}
 		else if (relativeAngle >= leftSideBound && relativeAngle <= rightSideBound){
-			facing = "side";
+			facing = 0; // Attacker is in the target's "side" vision arc
 		}
 		else {
-			facing = "back";
+			facing = -1; // Attacker is in the target's "back" vision arc
 		}
 
 		let literalRear = game.settings.get("gurps4e", "literalRear");
 
 		// Determine if the attacker is standing in front of or behind the target (In space, not relative to vision cones)
 		if (((relativeAngle >= -90 && relativeAngle <= 90) && literalRear) || ((relativeAngle >= -120 && relativeAngle <= 120) && !literalRear)){
-			position = "ahead";
+			position = 1; // Attacker is ahead of target in physical space
 		}
 		else {
-			position = "behind";
+			position = -1; // Attacker is behind target in physical space
 		}
 
 		return [facing,position]
