@@ -495,9 +495,8 @@ export class gurpsActor extends Actor {
 							console.error(this.data.name + " needs to refresh their body type");
 						}
 					}
-
 					this.data.data.bodyType.body = bodyObj; // Set the body to the new body type that was just assembled.
-					this._data.data.bodyType.body = bodyObj;
+					this.data.data.bodyType.totalWeight = totalWeight // Set the weight to the weight of all the assembled parts
 				}
 			}
 		}
