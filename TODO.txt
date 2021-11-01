@@ -1,7 +1,3 @@
-Important
-    - Random hit location always hitting skull
-    - token.actor seems to get the special token version of that actor if they're not linked. If they are linked it just gives the proper actor. Use this for damage macro, etc.
-
 From session 6/10/2021
     - EX/Frag macro
 
@@ -17,7 +13,6 @@ from session 5/27/2021
     - Armour HP
     - Surge damage
     - Reset damage button
-    - HP damage applied to token (And if linked it goes to actor?) IDK, all the squidwards were being treated as the same dude. Make that not happen
     - Spells as quick contest, Regular spell range, etc.
     - Incidental damage (Rolling 9s vs people behind/front of main target)
     - Uncategorized at the bottom of the list
@@ -40,7 +35,7 @@ Misc
     - Validation for SM changes (Trying to input a string should default back to 0, rather than blanking)
 
 Combat Macro
-    - Tight beam burning - 1x damage
+    - Tight beam burning - 1x damage / 2x for vitals
     - Attack specific macros
     - Injury tolerances, Damage Resistance
     - ST Multiplier for range (With skill bonuses to ST)

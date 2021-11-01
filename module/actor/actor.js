@@ -1757,8 +1757,9 @@ export class gurpsActor extends Actor {
 			messageContent += "</br><input type='button' class='quickContest' value='Quick Contest'/><input type='button' class='attemptResistanceRoll' value='Resistance Roll'/><input type='button' class='noResistanceRoll' value='No Defence'/>"
 
 			flags = {
-				target: target.actor.data._id,
-				attacker: attacker.actor.data._id,
+				target: target.id,
+				attacker: attacker.id,
+				scene: target.scene.id,
 				attack: attack,
 				margin: rollInfo.margin
 			}
@@ -1776,6 +1777,8 @@ export class gurpsActor extends Actor {
 
 	quickContest(event) {
 		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
+		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor;
+		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;
 		// Make own roll.
 		let label = attacker.nameplate._text + " casts " + attack.weapon + " " + attack.name + " on " + target.nameplate._text + ".";
 		let level = attack.level;
@@ -1796,8 +1799,8 @@ export class gurpsActor extends Actor {
 
 	attemptResistanceRoll(event) {
 		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
-		let target 			= game.actors.get(flags.target);
-		let attacker 		= game.actors.get(flags.attacker);
+		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor;
+		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;
 		// Make own roll.
 		let label = target.nameplate._text + " attempts a resistance roll.";
 		let level = attack.level;
@@ -1817,8 +1820,8 @@ export class gurpsActor extends Actor {
 	}
 
 	applyAffliction(flags) {
-		let target 			= game.actors.get(flags.target);
-		let attacker 		= game.actors.get(flags.attacker);
+		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor;
+		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;
 		let attack 			= flags.attack;
 		let damageReduction = 1;
 		let armourDivisor;
@@ -2233,8 +2236,9 @@ export class gurpsActor extends Actor {
 				}
 
 				flags = {
-					target: target.actor.data._id,
-					attacker: attacker.actor.data._id,
+					target: target.id,
+					attacker: attacker.id,
+					scene: target.scene.id,
 					attack: attack,
 					relativePosition: relativePosition,
 					rof: rof,
@@ -2283,7 +2287,7 @@ export class gurpsActor extends Actor {
 
 		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
 
-		let target = game.actors.get(flags.target);
+		let target = game.scenes.get(flags.scene).tokens.get(flags.target).actor;
 		let dodges = [];
 		let parries = [];
 		let blocks = [];
@@ -2452,7 +2456,7 @@ export class gurpsActor extends Actor {
 	}
 
 	rollActiveDefence(mod, selection, name, options, flags, locationIDs, type) {
-		let target = game.actors.get(flags.target);
+		let target = game.scenes.get(flags.scene).tokens.get(flags.target).actor;
 
 		// TODO - Get modifiers for posture, encumbrance
 		let totalModifier;
@@ -2577,8 +2581,8 @@ export class gurpsActor extends Actor {
 	}
 
 	async applyDamage(flags, locationsHit) {
-		let target 			= game.actors.get(flags.target);
-		let attacker 		= game.actors.get(flags.attacker);
+		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor;
+		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;
 		let attack 			= flags.attack;
 		let targetST 		= target.data.data.primaryAttributes.knockback.value;
 		let totalKnockback 	= 0;
@@ -2755,13 +2759,13 @@ export class gurpsActor extends Actor {
 						parentLocation.hp.value -= actualWounding;
 
 						parentLocation.hp.value = Math.max(parentLocation.hp.value, -parentLocation.hp.max) // Value should be the higher of it's actual value and full negative HP.
-						game.actors.get(flags.target).update({ ['data.bodyType.body.' + subLocation + ".hp.value"]: parentLocation.hp.value });
+						target.update({ ['data.bodyType.body.' + subLocation + ".hp.value"]: parentLocation.hp.value });
 					}
 					if (location.hp){ // Apply damage to the child location if it tracks HP
 						location.hp.value -= actualWounding;
 
 						location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
-						game.actors.get(flags.target).update({ ['data.bodyType.body.' + location.id + ".hp.value"]: location.hp.value });
+						target.update({ ['data.bodyType.body.' + location.id + ".hp.value"]: location.hp.value });
 					}
 				}
 				else {
@@ -2814,12 +2818,12 @@ export class gurpsActor extends Actor {
 							woundCap = parentLocation.hp.value; // Damage is capped to however much HP is left in the limb
 							parentLocation.hp.value -= bluntInjury;
 							parentLocation.hp.value = Math.max(parentLocation.hp.value, -parentLocation.hp.max) // Value should be the higher of it's actual value and full negative HP.
-							game.actors.get(flags.target).update({ ['data.bodyType.body.' + subLocation + ".hp.value"]: parentLocation.hp.value });
+							target.update({ ['data.bodyType.body.' + subLocation + ".hp.value"]: parentLocation.hp.value });
 						}
 						if (location.hp){ // Apply damage to the child location if it tracks HP
 							location.hp.value -= bluntInjury;
 							location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
-							game.actors.get(flags.target).update({ ['data.bodyType.body.' + location.id + ".hp.value"]: location.hp.value });
+							target.update({ ['data.bodyType.body.' + location.id + ".hp.value"]: location.hp.value });
 						}
 					}
 					else {
@@ -2869,11 +2873,11 @@ export class gurpsActor extends Actor {
 
 		if (totalInjury > 0){
 			let newHP = target.data.data.reserves.hp.value - Math.floor(totalInjury);
-			game.actors.get(flags.target).update({ ['data.reserves.hp.value']: newHP });
+			target.update({ ['data.reserves.hp.value']: newHP });
 		}
 		if (totalFatInj > 0){
 			let newFP = target.data.data.reserves.hp.value - Math.floor(totalFatInj);
-			game.actors.get(flags.target).update({ ['data.reserves.fp.value']: newFP });
+			target.update({ ['data.reserves.fp.value']: newFP });
 		}
 
 		ChatMessage.create({ content: html, user: game.user._id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
