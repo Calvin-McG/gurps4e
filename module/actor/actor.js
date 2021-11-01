@@ -2342,29 +2342,29 @@ export class gurpsActor extends Actor {
 			"   <span><label for='crossParry' style='line-height: 26px;'>Cross Parry</label></span><span><input type='checkbox' name='crossParry' id='crossParry' value='crossParry' /></span>" +
 			"</div>" +
 			"<div style='display: grid; grid-template-columns: 1fr 1fr 1fr'>" +
-			"<select name='dodgeSelector' id='dodgeSelector'>";
+			"<select style='width: 100%' name='dodgeSelector' id='dodgeSelector'>";
 
 		if (dodges){
 			for (let d = 0; d < dodges.length; d++){
-				activeDefenceModalContent += "<option value='" + dodges[d].level + "'>" + dodges[d].name + ": " + dodges[d].level + "</option>"
+				activeDefenceModalContent += "<option value='" + dodges[d].level + "'>" + dodges[d].level + ": " + dodges[d].name + "</option>"
 			}
 		}
 
 		activeDefenceModalContent += "</select>" +
-			"<select name='blockSelector' id='blockSelector'>";
+			"<select style='width: 100%' name='blockSelector' id='blockSelector'>";
 
 		if (blocks){
 			for (let b = 0; b < blocks.length; b++){
-				activeDefenceModalContent += "<option value='" + blocks[b].level + "'>" + blocks[b].name + ": " + blocks[b].level + "</option>"
+				activeDefenceModalContent += "<option value='" + blocks[b].level + "'>" + blocks[b].level + ": " + blocks[b].name + "</option>"
 			}
 		}
 
 		activeDefenceModalContent += "</select>" +
-			"<select name='parrySelector' id='parrySelector'>";
+			"<select style='width: 100%' name='parrySelector' id='parrySelector'>";
 
 		if (parries){
 			for (let p = 0; p < parries.length; p++){
-				activeDefenceModalContent += "<option value='" + parries[p].level + "'>" + parries[p].name + ": " + parries[p].level + "</option>"
+				activeDefenceModalContent += "<option value='" + parries[p].level + "'>" + parries[p].level + ": " + parries[p].name + "</option>"
 			}
 		}
 
