@@ -3,6 +3,13 @@ Current
     - Apply harsh thigh gap setting
     - check vitals/spine for front/rear, including random rolls
 
+Magic Tab
+    - Magical active defences
+    - Rework the active defence macro to only list relevant options (Only show Magic/Parry/Block if they have those defences)
+    - Make affliction chain actually work
+    - Set up afflictions so that they know if they're quick contest, basic resistance roll, etc
+    - Add college to spells
+
 From session 6/10/2021
     - EX/Frag macro
 
@@ -60,7 +67,6 @@ Combat Macro
     - Supernatural Durability
     - Low/High pain threshold - Stunning/knockdown and shock
     - Injury Tolerances
-    - Penalty for defending rear
     - Armour Hardness doesn't work.
 
 Naval
