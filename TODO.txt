@@ -10,7 +10,6 @@ From session 11/4/2021
     - Feverish Defence Will roll
     - Height relevant modifiers
     - Generic hit location for area spells
-    - Change "Rolls a 13 vs 8 + 3" to "Rolls a 13 vs 11" but with the deets in the tooltip
     - Diomedes was struck NaN times (Rolls a 11 vs 12 -1| Success by 0)
     - SM not getting applied
     - Bless tracker

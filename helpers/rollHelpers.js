@@ -15,10 +15,14 @@ export class rollHelpers {
         html += "</br>";
 
         if(modifier >= 0){//modifier is zero or positive
-            html += "Rolls a " + skillRoll + " vs " + level + " + " + modifier;
+            html += "<span class='tooltip'>Rolls a " + skillRoll + " vs " + (level + modifier) +
+                "<span class='tooltiptext'>" + level + " + " + modifier + "</span>" +
+                "</span>";
         }
         else {
-            html += "Rolls a " + skillRoll + " vs " + level + " - " + Math.abs(modifier); // Run Math.abs to allow repositioning the negative symbol.
+            html += "<span class='tooltip'>Rolls a " + skillRoll + " vs " + (level + modifier) +
+                "<span class='tooltiptext'>" + level + " - " + Math.abs(modifier) + "</span>" +
+                "</span>"; // Run Math.abs to allow repositioning the negative symbol.
         }
 
         //Code block for display of dice
