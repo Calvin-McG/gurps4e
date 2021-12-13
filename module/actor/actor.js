@@ -2583,8 +2583,6 @@ export class gurpsActor extends Actor {
 			mod -= 2 // Subtract 2 from the defence modifier
 		}
 
-		console.log(selection, name, type, mod, options, facing)
-
 		this.rollActiveDefence(mod, selection, name, options, flags, locationIDs, type, facing);
 	}
 
