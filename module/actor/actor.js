@@ -2625,7 +2625,7 @@ export class gurpsActor extends Actor {
 		}
 		else if (options.retreat) {
 			label += "and retreat ";
-			if (type === "parry" && flags.attack.parryType.toUpperCase() !== "F"){ // If it's a parry and is fencing
+			if ((type === "parry" && flags.attack.parryType.toUpperCase() === "F") || type === "dodge"){ // If it's a parry and is fencing OR it's a dodge
 				totalModifier += 3; // Grant the fencing bonus
 			}
 			else {
@@ -2634,7 +2634,7 @@ export class gurpsActor extends Actor {
 		}
 		else if (options.sideslip) {
 			label += "and side slip ";
-			if (type === "parry" && flags.attack.parryType.toUpperCase() !== "F"){ // If it's a parry and is fencing
+			if ((type === "parry" && flags.attack.parryType.toUpperCase() === "F") || type === "dodge"){ // If it's a parry and is fencing OR it's a dodge
 				totalModifier += 2; // Grant the fencing bonus
 			}
 			else {
@@ -2643,7 +2643,7 @@ export class gurpsActor extends Actor {
 		}
 		else if (options.slip) {
 			label += "and slip ";
-			if (type === "parry" && flags.attack.parryType.toUpperCase() !== "F"){ // If it's a parry and is fencing
+			if ((type === "parry" && flags.attack.parryType.toUpperCase() === "F") || type === "dodge"){ // If it's a parry and is fencing OR it's a dodge
 				totalModifier += 1; // Grant the fencing bonus
 			}
 			else {
