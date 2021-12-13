@@ -1714,3 +1714,20 @@ attribute-senses {
 	visibility: visible;
 	opacity: 1;
 }
+
+.def-column {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	flex: 1;
+	text-align: center;
+}
+
+.def-option {
+	display: flex;
+	flex-direction: row;
+}
+
+.general-def-mods {
+	display: flex;
+}

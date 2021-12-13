@@ -15,7 +15,12 @@
             </table>
             <table class="">
                 <tr>
-                    <td>Spell Class</td>
+                    <td class="tooltip">
+                        Spell Class
+                        <span class="tooltiptext" style="margin-left: -100px; bottom: 75%">
+                            <span style="font-weight: bold;">Blocking</span> - Blocking spells that are used against or on other targets, such as Fumble, or Blocking spells that modify the attack or your defence, such as Bladeturning, Block, or Boost Attribute, should be entered as Regular spells.  <br>
+                        </span>
+                    </td>
                     <td>
                         <select name="data.spellClass">
                             {{#select data.data.spellClass}}
@@ -29,6 +34,46 @@
                         </select>
                     </td>
                 </tr>
+                {{#if (eq data.data.spellClass "Blocking") }}
+                <tr>
+                    <td class="tooltip">
+                        Defence Type
+                        <span class="tooltiptext" style="margin-left: -100px">
+                            Blocking spells that count as another type of active defence are typically subject to Deceptive Attacks, Ripostes, Runaround Attacks, Etc.<br><br>
+                            Magical defences like Phase and Blink are not.
+                        </span>
+                    </td>
+                    <td>
+                        <select name="data.defenceType">
+                            {{#select data.data.defenceType}}
+                            <option value="Magic">Magic</option>
+                            <option value="Parry">Parry</option>
+                            <option value="Block">Block</option>
+                            <option value="Dodge">Dodge</option>
+                            {{/select}}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tooltip">
+                        Attacks Stopped
+                        <span class="tooltiptext" style="margin-left: -100px">
+                            <span style="font-weight: bold;">All</span> - A success stops all incoming projectiles. (Such as Phase, Blink, etc)<br>
+                            <span style="font-weight: bold;">Single</span> - A success stops exactly one incoming attack. (Such as Return Missile)<br>
+                            <span style="font-weight: bold;">Regular</span> - A sucess stops a number of attacks equal to the margin of success plus one, as usual. (Like a normal non-magical Dodge)<br>
+                        </span>
+                    </td>
+                    <td>
+                        <select name="data.defenceQty">
+                            {{#select data.data.defenceQty}}
+                            <option value="All">All</option>
+                            <option value="Single">Single</option>
+                            <option value="Regular">Regular</option>
+                            {{/select}}
+                        </select>
+                    </td>
+                </tr>
+                {{/if}}
                 <tr>
                     <td>Difficulty</td>
                     <td>
@@ -43,11 +88,21 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Magical Ability</td>
+                    <td class="tooltip">
+                        Magical Ability
+                        <span class="tooltiptext" style="margin-left: -100px">
+                            Your base magical ability. IQ plus Magery, IQ plus Clerical Investment, whatever the value is for your specific form of magic.
+                        </span>
+                    </td>
                     <td>{{data.data.magicalAbility}}</td>
                 </tr>
                 <tr>
-                    <td>Modifier</td>
+                    <td class="tooltip">
+                        Modifier
+                        <span class="tooltiptext" style="margin-left: -100px">
+                            A spell specific modifier. This is not your Magery or Clerical Investment.
+                        </span>
+                    </td>
                     <td><input type="text" name="data.mod" value="{{data.data.mod}}" data-dtype="Number"/></td>
                 </tr>
                 <tr>
@@ -85,9 +140,11 @@
             <a class="item" data-tab="ranged">Ranged</a>
         </div>
         {{/if}}
+        {{#unless  (or (eq data.data.spellClass "Blocking") (eq data.data.spellClass "Information")) }}
         <div class="header">
             <a class="item" data-tab="affliction">Affliction</a>
         </div>
+        {{/unless}}
     </nav>
 
     {{!-- Sheet Body --}}
