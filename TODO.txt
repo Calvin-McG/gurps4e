@@ -3,6 +3,22 @@ Current
     - Apply harsh thigh gap setting
     - check vitals/spine for front/rear, including random rolls
 
+From session 11/4/2021
+    - Setting points to blank on attr makes points field disappear
+    - Magery field only accepts numbers
+    - dbk Didn't work for Explosive Force Ball
+    - Feverish Defence Will roll
+    - Feverish defence and retreat only gave a +3
+    - Height relevant modifiers
+    - Generic hit location for area spells
+    - Change "Rolls a 13 vs 8 + 3" to "Rolls a 13 vs 11" but with the deets in the tooltip
+    - Diomedes was struck NaN times (Rolls a 11 vs 12 -1| Success by 0)
+    - Funky shit with retreat bonus to active defence (+1 when +3 should apply)
+    - SM not getting applied
+    - Bless tracker
+    - Locational damage not applying to gobbos (13 damage to elbow and 13 wounding went throgh)
+    - Rolled 5 vs 20 and it didn't count as a crit
+
 Magic Tab
     - Magical active defences
     - Rework the active defence macro to only list relevant options (Only show Magic/Parry/Block if they have those defences)
