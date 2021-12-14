@@ -9,7 +9,7 @@ From session 11/4/2021
     - Height relevant modifiers
     - Generic hit location for area spells
     - Diomedes was struck NaN times (Rolls a 11 vs 12 -1| Success by 0)
-    - SM not getting applied
+    - SM not getting applied (Remember it being weird at the time, but it's working now?)
     - Bless tracker
     - Locational damage not applying to gobbos (13 damage to elbow and 13 wounding went throgh)
     - Rolled 5 vs 20 and it didn't count as a crit
@@ -18,13 +18,6 @@ Magic Tab
     - Make affliction chain actually work
     - Set up afflictions so that they know if they're quick contest, basic resistance roll, etc
     - Add college to spells
-
-From session 6/10/2021
-    - EX/Frag macro
-
-From session 6/10/2021
-    - Will roll game setting for feverish defence
-    - Skill die as macro. (Draggable? Callable?)
 
 from session 5/27/2021
     - Brette Mode
@@ -52,10 +45,13 @@ Misc
     - Add area of effect for attacks
     - Make armour display suck less (Pull from location dr instead of array object bullshit
     - Leveled traits
+        - Skill die as macro. (Draggable? Callable?)
     - Journal - Item linky thing like CoC on char sheets
     - Validation for SM changes (Trying to input a string should default back to 0, rather than blanking)
 
 Combat Macro
+    - EX/Frag macro
+    - Will roll game setting for feverish defence
     - Tight beam burning - 1x damage / 2x for vitals
     - Attack specific macros
     - Injury tolerances, Damage Resistance
