@@ -12,8 +12,8 @@ Hooks.once('init', async function() {
   };
 
   // Define custom Entity classes
-  CONFIG.Actor.entityClass = gurpsActor;
-  CONFIG.Item.entityClass = gurpsItem;
+  CONFIG.Actor.documentClass = gurpsActor;
+  CONFIG.Item.documentClass = gurpsItem;
 
   // Register sheet application classes
   Actors.unregisterSheet("core", ActorSheet);

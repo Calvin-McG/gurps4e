@@ -2244,8 +2244,8 @@ export class gurpsActor extends Actor {
 				}
 
 				flags = {
-					target: target.id,
-					attacker: attacker.id,
+					target: target.document.id,
+					attacker: attacker.document.id,
 					scene: target.scene.id,
 					attack: attack,
 					relativePosition: relativePosition,
@@ -2256,7 +2256,7 @@ export class gurpsActor extends Actor {
 			}
 
 			// Everything is assembled, send the message
-			ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type, flags: flags});
+			ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type, flags: flags});
 		})
 	}
 
