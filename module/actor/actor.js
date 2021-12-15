@@ -1772,7 +1772,7 @@ export class gurpsActor extends Actor {
 			}
 		}
 		// Everything is assembled, send the message
-		ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type, flags: flags});
+		ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type, flags: flags});
 	}
 
 	noResistanceRoll(event) {
@@ -1801,7 +1801,7 @@ export class gurpsActor extends Actor {
 			messageContent += "</br><input type='button' class='quickContest' value='Quick Contest'/><input type='button' class='attemptResistanceRoll' value='Resistance Roll'/><input type='button' class='noResistanceRoll' value='No Defence'/>"
 		}
 
-		ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
+		ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type});
 	}
 
 	attemptResistanceRoll(event) {
@@ -1823,7 +1823,7 @@ export class gurpsActor extends Actor {
 			messageContent += "</br><input type='button' class='quickContest' value='Quick Contest'/><input type='button' class='attemptResistanceRoll' value='Resistance Roll'/><input type='button' class='noResistanceRoll' value='No Defence'/>"
 		}
 
-		ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
+		ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type});
 	}
 
 	applyAffliction(flags) {
@@ -2552,13 +2552,13 @@ export class gurpsActor extends Actor {
 		let name;
 		let mod = html.find('#mod').val()
 		let options = {
-			feverishDefence: html.find('#feverishDefence')[0].checked,
-			timedDefence: html.find('#timedDefence')[0].checked,
-			retreat: html.find('#retreat')[0].checked,
-			sideslip: html.find('#sideslip')[0].checked,
-			slip: html.find('#slip')[0].checked,
-			drop: html.find('#drop')[0].checked,
-			crossParry: html.find('#crossParry')[0].checked
+			feverishDefence: 	html.find('#feverishDefence')[0] ? html.find('#feverishDefence')[0].checked : "",
+			timedDefence: 		html.find('#timedDefence')[0] ? html.find('#timedDefence')[0].checked : "",
+			retreat: 			html.find('#retreat')[0] ? html.find('#retreat')[0].checked : "",
+			sideslip: 			html.find('#sideslip')[0] ? html.find('#sideslip')[0].checked : "",
+			slip: 				html.find('#slip')[0] ? html.find('#slip')[0].checked : "",
+			drop: 				html.find('#drop')[0] ? html.find('#drop')[0].checked : "",
+			crossParry: 		html.find('#crossParry')[0] ? html.find('#crossParry')[0].checked : ""
 		}
 
 		if (type.toLowerCase() === 'parry'){
@@ -2677,7 +2677,7 @@ export class gurpsActor extends Actor {
 				let messageContent = rollInfo.content + additionalMessageContent;
 
 				// Send the message, no further rolls necessary.
-				ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
+				ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type});
 			}
 			else if (attacksStopped <= 0){ // Stopped zero or fewer attacks
 				additionalMessageContent += target.data.name + " does not stop any attacks.</br></br>";
@@ -2685,7 +2685,7 @@ export class gurpsActor extends Actor {
 				let messageContent = rollInfo.content + additionalMessageContent;
 
 				// Send the message then prepare for damage rolls
-				ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
+				ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type});
 
 				locationsHit = locationIDs; // All attacks get through
 				this.applyDamage(flags, locationsHit).then();
@@ -2697,7 +2697,7 @@ export class gurpsActor extends Actor {
 				let messageContent = rollInfo.content + additionalMessageContent;
 
 				// Send the message then prepare for damage rolls
-				ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
+				ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type});
 
 				locationsHit = locationIDs.slice(0, locationIDs.length - 1); // Remove the last hit in the array
 				this.applyDamage(flags, locationsHit).then();
@@ -2709,7 +2709,7 @@ export class gurpsActor extends Actor {
 				let messageContent = rollInfo.content + additionalMessageContent;
 
 				// Send the message then prepare for damage rolls
-				ChatMessage.create({ content: messageContent, user: game.user._id, type: rollInfo.type});
+				ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type});
 
 				locationsHit = locationIDs.slice(0, locationIDs.length - attacksStopped); // Remove the last hits in the array
 				this.applyDamage(flags, locationsHit).then();
@@ -3020,7 +3020,7 @@ export class gurpsActor extends Actor {
 		}
 
 		target.update({ 'data': target.data.data });
-		ChatMessage.create({ content: html, user: game.user._id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+		ChatMessage.create({ content: html, user: game.user.data.document.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
 	}
 
 	extractDamageType(attack) {
