@@ -17,7 +17,6 @@ From session 11/4/2021
 Magic Tab
     - Make affliction chain actually work
     - Set up afflictions so that they know if they're quick contest, basic resistance roll, etc
-    - Add college to spells
 
 from session 5/27/2021
     - Brette Mode

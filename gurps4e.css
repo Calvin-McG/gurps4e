@@ -1731,3 +1731,11 @@ attribute-senses {
 .general-def-mods {
 	display: flex;
 }
+
+.item-points {
+	width: 3.5em;
+}
+
+.item-college {
+	width: 11em;
+}

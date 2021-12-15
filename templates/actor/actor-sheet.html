@@ -2789,6 +2789,7 @@
 							<td class="item-image"></td>
 							<td class="item-name">Spell</td>
 							<td class="item-notes">Notes</td>
+							<td class="item-college">College</td>
 							<td class="item-points">Points</td>
 							<td class="item-rolls">Level</td>
 							<td class="item-controls"></td>
@@ -2808,13 +2809,16 @@
 											<td class="item-image" style="width: 24px; padding: 0 2px">
 												<img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
 											</td>
-											<td class="item-name">
+											<td class="item-name" style="width: 9em;">
 												{{item.data.name}}
 											</td>
 											<td class="item-notes">
 												{{item.data.data.shortNotes}}
 											</td>
-											<td class="item-points" style="width: 4em;">
+											<td class="item-college">
+												{{item.data.data.college}}
+											</td>
+											<td class="item-points">
 												{{item.data.data.points}}
 											</td>
 											<td class="item-skill" style="width: 3em;">
