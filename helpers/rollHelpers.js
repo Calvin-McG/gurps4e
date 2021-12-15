@@ -15,12 +15,12 @@ export class rollHelpers {
         html += "</br>";
 
         if(modifier >= 0){//modifier is zero or positive
-            html += "<span class='tooltip'>Rolls a " + skillRoll + " vs " + (level + modifier) +
+            html += "<span class='tooltip'>Rolls a " + skillRoll + " vs " + (+level + +modifier) +
                 "<span class='tooltiptext'>" + level + " + " + modifier + "</span>" +
                 "</span>";
         }
         else {
-            html += "<span class='tooltip'>Rolls a " + skillRoll + " vs " + (level + modifier) +
+            html += "<span class='tooltip'>Rolls a " + skillRoll + " vs " + (+level + +modifier) +
                 "<span class='tooltiptext'>" + level + " - " + Math.abs(modifier) + "</span>" +
                 "</span>"; // Run Math.abs to allow repositioning the negative symbol.
         }
