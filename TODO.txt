@@ -6,12 +6,10 @@ Current
 From session 11/4/2021
     - dbk Didn't work for Explosive Force Ball
     - Feverish Defence Will roll
-    - Height relevant modifiers
+    - Height relevant modifiers (Both melee and range modifiers)
     - Generic hit location for area spells
     - Diomedes was struck NaN times (Rolls a 11 vs 12 -1| Success by 0)
-    - SM not getting applied (Remember it being weird at the time, but it's working now?)
     - Bless tracker
-    - Locational damage not applying to gobbos (13 damage to elbow and 13 wounding went throgh)
     - Rolled 5 vs 20 and it didn't count as a crit
 
 Magic Tab
@@ -60,7 +58,6 @@ Combat Macro
     - Make it remember your last selection for active defences
     - Stunning and knockdown (including hit location stuff)
     - Death and unconsciousness checks.
-    - Defence penalty for side/rear
     - Shock penalties
     - AoA (Strong, etc)
     - Apply half and max range for ranged attacks

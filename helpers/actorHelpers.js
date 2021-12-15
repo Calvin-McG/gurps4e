@@ -64,7 +64,8 @@ export class actorHelpers {
         return part;
     }
 
-    static addFace(hp, id) {
+    static addFace(actorData, id) {
+        let hp = actorData.reserves.hp.max;
         let partHp = Math.ceil(hp/4);
         if (partHp <= hp/4){//Make sure that part hp is greater than one quarter HP
             partHp += 1;
@@ -140,7 +141,7 @@ export class actorHelpers {
                     hp: {
                         max: partHp,
                         state: "Fine",
-                        value: partHp
+                        value: actorData.bodyType.body[id].subLocation.nose.hp.value ? actorData.bodyType.body[id].subLocation.nose.hp.value : partHp
                     },
                     flexible: false
                 },
@@ -173,7 +174,7 @@ export class actorHelpers {
                     hp: {
                         max: partHp,
                         state: "Fine",
-                        value: partHp
+                        value: actorData.bodyType.body[id].subLocation.ears.hp.value ? actorData.bodyType.body[id].subLocation.ears.hp.value : partHp
                     },
                     flexible: false
                 },
@@ -234,7 +235,7 @@ export class actorHelpers {
                     hp: {
                         max: eyeHp,
                         state: "Fine",
-                        value: eyeHp
+                        value: actorData.bodyType.body[id].subLocation.eyes.hp.value ? actorData.bodyType.body[id].subLocation.eyes.hp.value : eyeHp
                     },
                     flexible: false
                 }
@@ -243,14 +244,15 @@ export class actorHelpers {
         return part;
     }
 
-    static addLeg(hp, label, id){
-        let partHp = Math.ceil(hp/2);
-        if (partHp <= hp/2){//Make sure that part hp is greater than one half HP
+    static addLeg(actorData, label, id){
+        let hp = actorData.reserves.hp.max;
+        let partHp = Math.ceil(hp / 2);
+        if (partHp <= hp / 2){//Make sure that part hp is greater than one half HP
             partHp += 1;
         }
 
-        let jointHp = Math.ceil(hp/3);
-        if (jointHp <= hp/3){//Make sure that part hp is greater than one third HP
+        let jointHp = Math.ceil(hp / 3);
+        if (jointHp <= hp / 3){//Make sure that part hp is greater than one third HP
             jointHp += 1;
         }
 
@@ -264,7 +266,7 @@ export class actorHelpers {
             hp: {
                 max: partHp,
                 state: "Fine",
-                value: partHp
+                value: actorData.bodyType.body[id].hp.value ? actorData.bodyType.body[id].hp.value : partHp
             },
             flexible: false,
             subLocation: {
@@ -381,7 +383,7 @@ export class actorHelpers {
                     hp: {
                         max: jointHp,
                         state: "Fine",
-                        value: jointHp
+                        value: actorData.bodyType.body[id].subLocation.knee.hp.value ? actorData.bodyType.body[id].subLocation.knee.hp.value : jointHp
                     },
                     flexible: false
                 },
@@ -447,7 +449,8 @@ export class actorHelpers {
         return part;
     }
 
-    static addTail(hp, id){
+    static addTail(actorData, id){
+        let hp = actorData.reserves.hp.max;
         let partHp = Math.ceil(hp/2);
         if (partHp <= hp/2){//Make sure that part hp is greater than one half HP
             partHp += 1;
@@ -463,7 +466,7 @@ export class actorHelpers {
             hp: {
                 max: partHp,
                 state: "Fine",
-                value: partHp
+                value: actorData.bodyType.body[id].hp.value ? actorData.bodyType.body[id].hp.value : partHp
             },
             flexible: false,
             subLocation: {
@@ -529,7 +532,8 @@ export class actorHelpers {
         return part;
     }
 
-    static addArm(hp, label, id){
+    static addArm(actorData, label, id){
+        let hp = actorData.reserves.hp.max;
         let partHp = Math.ceil(hp/2);
         if (partHp <= hp/2){//Make sure that part hp is greater than one half HP
             partHp += 1;
@@ -550,7 +554,7 @@ export class actorHelpers {
             hp: {
                 max: partHp,
                 state: "Fine",
-                value: partHp
+                value: actorData.bodyType.body[id].hp.value ? actorData.bodyType.body[id].hp.value : partHp
             },
             flexible: false,
             subLocation: {
@@ -639,7 +643,7 @@ export class actorHelpers {
                     hp: {
                         max: jointHp,
                         state: "Fine",
-                        value: jointHp
+                        value: actorData.bodyType.body[id].subLocation.elbow.hp.value ? actorData.bodyType.body[id].subLocation.elbow.hp.value : jointHp
                     },
                     flexible: false
                 },
@@ -733,7 +737,8 @@ export class actorHelpers {
         return part;
     }
 
-    static addChest(hp, label, id){
+    static addChest(actorData, label, id){
+        let hp = actorData.reserves.hp.max;
         let spineHp = hp + 1;
 
         let part = {
@@ -830,7 +835,7 @@ export class actorHelpers {
                     hp: {
                         max: spineHp,
                         state: "Fine",
-                        value: spineHp
+                        value: actorData.bodyType.body[id].subLocation.spine.hp.value ? actorData.bodyType.body[id].subLocation.spine.hp.value : spineHp
                     },
                     flexible: false
                 }
@@ -840,7 +845,8 @@ export class actorHelpers {
         return part;
     }
 
-    static addInvertebrateChest(hp, label, id){
+    static addInvertebrateChest(actorData, label, id){
+        let hp = actorData.reserves.hp.max;
         let part = {
             label: label,
             id: id,
@@ -912,7 +918,8 @@ export class actorHelpers {
         return part;
     }
 
-    static addCentaurAbdomen(hp, label, id){ // This is the abdomen for the humanoid chest
+    static addCentaurAbdomen(actorData, label, id){ // This is the abdomen for the humanoid chest
+        let hp = actorData.reserves.hp.max;
         let pelvisHp = Math.ceil(hp/2);
         if (pelvisHp <= hp/2){ // Make sure that part hp is greater than one half HP
             pelvisHp += 1;
@@ -1012,7 +1019,7 @@ export class actorHelpers {
                     hp: {
                         max: pelvisHp,
                         state: "Fine",
-                        value: pelvisHp
+                        value: actorData.bodyType.body[id].subLocation.pelvis.hp.value ? actorData.bodyType.body[id].subLocation.pelvis.hp.value : pelvisHp
                     },
                     flexible: false
                 }
@@ -1022,7 +1029,8 @@ export class actorHelpers {
         return part;
     }
 
-    static addAbdomen(hp, label, id){
+    static addAbdomen(actorData, label, id){
+        let hp = actorData.reserves.hp.max;
         let pelvisHp = Math.ceil(hp/2);
         if (pelvisHp <= hp/2){//Make sure that part hp is greater than one half HP
             pelvisHp += 1;
@@ -1121,7 +1129,7 @@ export class actorHelpers {
                     hp: {
                         max: pelvisHp,
                         state: "Fine",
-                        value: pelvisHp
+                        value: actorData.bodyType.body[id].subLocation.pelvis.hp.value ? actorData.bodyType.body[id].subLocation.pelvis.hp.value : pelvisHp
                     },
                     weight: 1/6,
                     flexible: false
@@ -1160,7 +1168,8 @@ export class actorHelpers {
         return part;
     }
 
-    static addExtremity(hp, label, id, type, jointName, insideName){
+    static addExtremity(actorData, label, id, type, jointName, insideName){
+        let hp = actorData.reserves.hp.max;
         let partHp = Math.ceil(hp/3);
         let weight;
         if (partHp <= hp/3){ // Make sure that part hp is greater than one third HP
@@ -1193,7 +1202,7 @@ export class actorHelpers {
             hp: {
                 max: partHp,
                 state: "Fine",
-                value: partHp
+                value: actorData.bodyType.body[id].hp.value ? actorData.bodyType.body[id].hp.value : partHp
             },
             flexible: false,
             subLocation: {
@@ -1281,7 +1290,7 @@ export class actorHelpers {
                     hp: {
                         max: jointHp,
                         state: "Fine",
-                        value: jointHp
+                        value: actorData.bodyType.body[id].subLocation.joint.hp.value ? actorData.bodyType.body[id].subLocation.joint.hp.value : jointHp
                     },
                     weight: 1/6,
                     flexible: false
