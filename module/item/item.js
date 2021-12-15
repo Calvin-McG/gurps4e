@@ -33,7 +33,7 @@ export class gurpsItem extends Item {
 
     switch (this.data.type) {
       case "Equipment":
-        this._prepareEquipmentData(itemData, data);
+        this._prepareEquipmentData(data);
         break;
       case "Rollable":
         this._prepareRollableData();
@@ -51,51 +51,51 @@ export class gurpsItem extends Item {
     this.prepareAttackData()
   }
 
-  _prepareEquipmentData(itemData, data) {
+  _prepareEquipmentData() {
     // Check for undefined on cost, weight, and quantity
-    if (typeof data.cost === undefined || typeof data.cost == null) { // Undefined set to 0
+    if (typeof this.data.data.cost === undefined || typeof this.data.data.cost == null) { // Undefined set to 0
       this.data.data.cost = 0;
       this._data.data.cost = 0;
     }
-    if (typeof data.weight === undefined || typeof data.weight == null) { // Undefined set to 0
+    if (typeof this.data.data.weight === undefined || typeof this.data.data.weight == null) { // Undefined set to 0
       this.data.data.weight = 0;
       this._data.data.weight = 0;
     }
-    if (typeof data.quantity === undefined || typeof data.quantity == null) { // Undefined set to 0
+    if (typeof this.data.data.quantity === undefined || typeof this.data.data.quantity == null) { // Undefined set to 0
       this.data.data.quantity = 0;
       this._data.data.quantity = 0;
     }
 
-    //Calculated total weight and cost
-    this._data.data.ttlCost = (data.cost * data.quantity);
-    this._data.data.ttlWeight = (data.weight * data.quantity);
-    this.data.data.ttlCost = (data.cost * data.quantity);
-    this.data.data.ttlWeight = (data.weight * data.quantity);
+    // Calculated total weight and cost
+    this._data.data.ttlCost = (this._data.data.cost * this._data.data.quantity);
+    this._data.data.ttlWeight = (this._data.data.weight * this._data.data.quantity);
+    this.data.data.ttlCost = (this._data.data.cost * this._data.data.quantity);
+    this.data.data.ttlWeight = (this._data.data.weight * this._data.data.quantity);
 
-    //Constrain TL to valid values
-    if (typeof data.tl === undefined || typeof data.tl == null) { // Undefined set to 0
+    // Constrain TL to valid values
+    if (typeof this.data.data.tl === undefined || typeof this.data.data.tl == null) { // Undefined set to 0
       this._data.data.tl = 0;
       this.data.data.tl = 0;
     }
-    if (data.tl < 0){//Too low
+    if (this.data.data.tl < 0){ // Too low
       this._data.data.tl = 0;
       this.data.data.tl = 0;
     }
-    else if (data.tl > 12){//Too high
+    else if (this.data.data.tl > 12){ // Too high
       this._data.data.tl = 12;
       this.data.data.tl = 12;
     }
 
 
     //Constrain LC to valid values
-    if (typeof data.lc === undefined || typeof data.lc == null) { // Undefined set to 0
-      data.lc = 0;
+    if (typeof this.data.data.lc === undefined || typeof this.data.data.lc == null) { // Undefined set to 0
+      this.data.data.lc = 0;
     }
-    if (data.lc < 0){//Too low
+    if (this.data.data.lc < 0){ // Too low
       this._data.data.lc = 0;
       this.data.data.lc = 0;
     }
-    else if (data.lc > 4){//Too high
+    else if (this.data.data.lc > 4){ // Too high
       this._data.data.lc = 4;
       this.data.data.lc = 4;
     }
