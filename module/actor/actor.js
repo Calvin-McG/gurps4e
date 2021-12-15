@@ -1753,26 +1753,27 @@ export class gurpsActor extends Actor {
 		let level = attack.level;
 		let mod = totalModifiers;
 
-		let rollInfo = rollHelpers.skillRoll(level, mod, label, false)
-		let messageContent = rollInfo.content;
-		let flags = {}
+		rollHelpers.skillRoll(level, mod, label, false).then( rollInfo => {
+			let messageContent = rollInfo.content;
+			let flags = {}
 
-		if (rollInfo.success == false) {
-			messageContent += attacker.nameplate._text + "'s spell fails</br>";
-		}
-		else {
-			messageContent += "</br><input type='button' class='quickContest' value='Quick Contest'/><input type='button' class='attemptResistanceRoll' value='Resistance Roll'/><input type='button' class='noResistanceRoll' value='No Defence'/>"
-
-			flags = {
-				target: target.id,
-				attacker: attacker.id,
-				scene: target.scene.id,
-				attack: attack,
-				margin: rollInfo.margin
+			if (rollInfo.success == false) {
+				messageContent += attacker.nameplate._text + "'s spell fails</br>";
 			}
-		}
-		// Everything is assembled, send the message
-		ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type, flags: flags});
+			else {
+				messageContent += "</br><input type='button' class='quickContest' value='Quick Contest'/><input type='button' class='attemptResistanceRoll' value='Resistance Roll'/><input type='button' class='noResistanceRoll' value='No Defence'/>"
+
+				flags = {
+					target: target.id,
+					attacker: attacker.id,
+					scene: target.scene.id,
+					attack: attack,
+					margin: rollInfo.margin
+				}
+			}
+			// Everything is assembled, send the message
+			ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type, flags: flags});
+		})
 	}
 
 	noResistanceRoll(event) {
