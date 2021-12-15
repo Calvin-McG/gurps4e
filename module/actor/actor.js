@@ -1692,9 +1692,11 @@ export class gurpsActor extends Actor {
 		console.log(attack);
 		console.log(target);
 
+		let staffLength = game.scenes.get(target.scene.id).tokens.get(attacker.id).actor.data.data.magic.staff;
 		let distanceRaw = Math.round(canvas.grid.measureDistance(attacker, target));
 		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.data.gridUnits);
-		let distancePenalty = -distanceYards;
+		let modifiedDistanceYards = Math.max(distanceYards - staffLength, 0);
+		let distancePenalty = -modifiedDistanceYards;
 		let totalModifier = distancePenalty;
 
 		let modModalContent =  "<table>";
