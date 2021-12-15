@@ -55,34 +55,26 @@ export class gurpsItem extends Item {
     // Check for undefined on cost, weight, and quantity
     if (typeof this.data.data.cost === undefined || typeof this.data.data.cost == null) { // Undefined set to 0
       this.data.data.cost = 0;
-      this._data.data.cost = 0;
     }
     if (typeof this.data.data.weight === undefined || typeof this.data.data.weight == null) { // Undefined set to 0
       this.data.data.weight = 0;
-      this._data.data.weight = 0;
     }
     if (typeof this.data.data.quantity === undefined || typeof this.data.data.quantity == null) { // Undefined set to 0
       this.data.data.quantity = 0;
-      this._data.data.quantity = 0;
     }
 
     // Calculated total weight and cost
-    this._data.data.ttlCost = (this._data.data.cost * this._data.data.quantity);
-    this._data.data.ttlWeight = (this._data.data.weight * this._data.data.quantity);
-    this.data.data.ttlCost = (this._data.data.cost * this._data.data.quantity);
-    this.data.data.ttlWeight = (this._data.data.weight * this._data.data.quantity);
+    this.data.data.ttlCost = (this.data.data.cost * this.data.data.quantity);
+    this.data.data.ttlWeight = (this.data.data.weight * this.data.data.quantity);
 
     // Constrain TL to valid values
     if (typeof this.data.data.tl === undefined || typeof this.data.data.tl == null) { // Undefined set to 0
-      this._data.data.tl = 0;
       this.data.data.tl = 0;
     }
     if (this.data.data.tl < 0){ // Too low
-      this._data.data.tl = 0;
       this.data.data.tl = 0;
     }
     else if (this.data.data.tl > 12){ // Too high
-      this._data.data.tl = 12;
       this.data.data.tl = 12;
     }
 
@@ -92,11 +84,9 @@ export class gurpsItem extends Item {
       this.data.data.lc = 0;
     }
     if (this.data.data.lc < 0){ // Too low
-      this._data.data.lc = 0;
       this.data.data.lc = 0;
     }
     else if (this.data.data.lc > 4){ // Too high
-      this._data.data.lc = 4;
       this.data.data.lc = 4;
     }
   }
@@ -334,7 +324,6 @@ export class gurpsItem extends Item {
             this.data.data.magicalAbility = totalMagicAttribute;
 
             this.data.data.level = level;
-            this._data.data.level = level;
           }
         }
       }

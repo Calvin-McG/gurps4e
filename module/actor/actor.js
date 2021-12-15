@@ -2773,6 +2773,9 @@ export class gurpsActor extends Actor {
 				locationLabel = firstLabel + " - " + secondLabel;
 			}
 
+			console.log(firstLocation);
+			console.log(secondLocation);
+
 			// Display dice and damage total for this location.
 			html += "<hr>";
 			html += "<div>" + locationLabel + "</div>";
@@ -2883,9 +2886,12 @@ export class gurpsActor extends Actor {
 
 				let woundCap;
 				let actualWounding;
+				console.log(location);
 				if (location.id.toLowerCase().includes("sublocation")){ // This is a sub location, check the parent for an HP value
 					let subLocation = location.id.split(".")[0]
+					console.log(subLocation);
 					let parentLocation = getProperty(target.data.data.bodyType.body, subLocation);
+					console.log(parentLocation);
 					if (damageType.woundModId.toString().toLowerCase().includes("dam")) { // Check for untyped damage
 						actualWounding = Math.floor( (actualDamage / damageReduction) );
 					}
@@ -2893,16 +2899,25 @@ export class gurpsActor extends Actor {
 						actualWounding = Math.floor( ( (actualDamage * getProperty(location, damageType.woundModId)) / damageReduction) );
 					}
 					if (parentLocation.hp){// Apply damage to the parent location if it tracks HP
+						console.log("Parent has HP")
 						woundCap = parentLocation.hp.value; // Damage is capped to however much HP is left in the limb
+						console.log(woundCap)
+						console.log(parentLocation.hp)
 						parentLocation.hp.value -= actualWounding;
-
+						console.log(parentLocation.hp)
 						parentLocation.hp.value = Math.max(parentLocation.hp.value, -parentLocation.hp.max) // Value should be the higher of it's actual value and full negative HP.
+						console.log(parentLocation.hp)
+						console.log('data.bodyType.body.' + subLocation + ".hp.value")
 						target.update({ ['data.bodyType.body.' + subLocation + ".hp.value"]: parentLocation.hp.value });
 					}
 					if (location.hp){ // Apply damage to the child location if it tracks HP
+						console.log("Location has HP")
+						console.log(location.hp)
 						location.hp.value -= actualWounding;
-
+						console.log(location.hp)
 						location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
+						console.log(location.hp)
+						console.log('data.bodyType.body.' + location.id + ".hp.value")
 						target.update({ ['data.bodyType.body.' + location.id + ".hp.value"]: location.hp.value });
 					}
 				}
