@@ -1319,7 +1319,26 @@ export class gurpsActor extends Actor {
 
 		let htmlContent = "<div>";
 
+		let buttons = {};
+
 		if (attacks.melee.length > 0) {
+			buttons.melee = {
+				icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M110.11 227.59c-6.25-6.25-16.38-6.25-22.63 0l-18.79 18.8a16.005 16.005 0 0 0-2 20.19l53.39 80.09-53.43 53.43-29.26-14.63a13.902 13.902 0 0 0-16.04 2.6L4.07 405.36c-5.42 5.43-5.42 14.22 0 19.64L87 507.93c5.42 5.42 14.22 5.42 19.64 0l17.29-17.29a13.873 13.873 0 0 0 2.6-16.03l-14.63-29.26 53.43-53.43 80.09 53.39c6.35 4.23 14.8 3.39 20.19-2l18.8-18.79c6.25-6.25 6.25-16.38 0-22.63l-174.3-174.3zM493.73.16L400 16 171.89 244.11l96 96L496 112l15.83-93.73c1.51-10.56-7.54-19.61-18.1-18.11z" class=""></path></svg>',
+					label: "Select Melee",
+					callback: () => {
+					let elements = document.getElementsByName('melee');
+					let attack;
+
+					for (let e = 0; e < elements.length; e++){
+						if(elements[e].checked){
+							attack = e;
+						}
+					}
+					if (typeof attack !== "undefined") {
+						this.attackOnTarget(selfToken, attacks.melee[attack], targetToken)
+					}
+				}
+			}
 			htmlContent += "<table>";
 
 			htmlContent += "<tr><td colspan='8' class='trait-category-header' style='text-align: center;'>Melee Attacks</td></tr>";
@@ -1354,6 +1373,23 @@ export class gurpsActor extends Actor {
 		}
 
 		if (attacks.ranged.length > 0){
+			buttons.ranged = {
+					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M145.78 287.03l45.26-45.25-90.58-90.58C128.24 136.08 159.49 128 192 128c32.03 0 62.86 7.79 90.33 22.47l46.61-46.61C288.35 78.03 241.3 64 192 64c-49.78 0-97.29 14.27-138.16 40.59l-3.9-3.9c-6.25-6.25-16.38-6.25-22.63 0L4.69 123.31c-6.25 6.25-6.25 16.38 0 22.63l141.09 141.09zm262.36-104.64L361.53 229c14.68 27.47 22.47 58.3 22.47 90.33 0 32.51-8.08 63.77-23.2 91.55l-90.58-90.58-45.26 45.26 141.76 141.76c6.25 6.25 16.38 6.25 22.63 0l22.63-22.63c6.25-6.25 6.25-16.38 0-22.63l-4.57-4.57C433.74 416.63 448 369.11 448 319.33c0-49.29-14.03-96.35-39.86-136.94zM493.22.31L364.63 26.03c-12.29 2.46-16.88 17.62-8.02 26.49l34.47 34.47-250.64 250.63-49.7-16.57a20.578 20.578 0 0 0-21.04 4.96L6.03 389.69c-10.8 10.8-6.46 29.2 8.04 34.04l55.66 18.55 18.55 55.65c4.83 14.5 23.23 18.84 34.04 8.04l63.67-63.67a20.56 20.56 0 0 0 4.97-21.04l-16.57-49.7 250.64-250.64 34.47 34.47c8.86 8.86 24.03 4.27 26.49-8.02l25.72-128.59C513.88 7.8 504.2-1.88 493.22.31z" class=""></path></svg>',
+						label: "Select Ranged",
+						callback: () => {
+						let elements = document.getElementsByName('range');
+						let attack;
+
+						for (let e = 0; e < elements.length; e++){
+							if(elements[e].checked){
+								attack = e;
+							}
+						}
+						if (typeof attack !== "undefined") {
+							this.attackOnTarget(selfToken, attacks.ranged[attack], targetToken)
+						}
+					}
+				}
 			htmlContent += "<table>";
 
 			htmlContent += "<tr><td colspan='12' class='trait-category-header' style='text-align: center;'>Ranged Attacks</td></tr>";
@@ -1390,6 +1426,22 @@ export class gurpsActor extends Actor {
 		}
 
 		if (attacks.affliction.length > 0){
+			buttons.affliction = {
+					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M216 23.86c0-23.8-30.65-32.77-44.15-13.04C48 191.85 224 200 224 288c0 35.63-29.11 64.46-64.85 63.99-35.17-.45-63.15-29.77-63.15-64.94v-85.51c0-21.7-26.47-32.23-41.43-16.5C27.8 213.16 0 261.33 0 320c0 105.87 86.13 192 192 192s192-86.13 192-192c0-170.29-168-193-168-296.14z" class=""></path></svg>',
+						label: "Select Affliction",
+						callback: () => {
+						let elements = document.getElementsByName('affliction');
+						let attack;
+						for (let e = 0; e < elements.length; e++){
+							if(elements[e].checked){
+								attack = e;
+							}
+						}
+						if (typeof attack !== "undefined") {
+							this.afflictionOnTarget(selfToken, attacks.affliction[attack], targetToken)
+						}
+					}
+				}
 			htmlContent += "<table>";
 
 			htmlContent += "<tr><td colspan='12' class='trait-category-header' style='text-align: center;'>Afflictions</td></tr>";
@@ -1420,70 +1472,18 @@ export class gurpsActor extends Actor {
 			htmlContent += "</table>";
 		}
 
+		buttons.cancel = {
+			icon: '<i class="fas fa-times"></i>',
+				label: "Cancel",
+				callback: () => {}
+		}
+
 		htmlContent += "</div>";
 
 		let singleTargetModal = new Dialog({
 			title: "SHOW ME YOUR MOVES",
 			content: htmlContent,
-			buttons: {
-				melee: {
-					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M110.11 227.59c-6.25-6.25-16.38-6.25-22.63 0l-18.79 18.8a16.005 16.005 0 0 0-2 20.19l53.39 80.09-53.43 53.43-29.26-14.63a13.902 13.902 0 0 0-16.04 2.6L4.07 405.36c-5.42 5.43-5.42 14.22 0 19.64L87 507.93c5.42 5.42 14.22 5.42 19.64 0l17.29-17.29a13.873 13.873 0 0 0 2.6-16.03l-14.63-29.26 53.43-53.43 80.09 53.39c6.35 4.23 14.8 3.39 20.19-2l18.8-18.79c6.25-6.25 6.25-16.38 0-22.63l-174.3-174.3zM493.73.16L400 16 171.89 244.11l96 96L496 112l15.83-93.73c1.51-10.56-7.54-19.61-18.1-18.11z" class=""></path></svg>',
-					label: "Select Melee",
-					callback: () => {
-						let elements = document.getElementsByName('melee');
-						let attack;
-
-						for (let e = 0; e < elements.length; e++){
-							if(elements[e].checked){
-								attack = e;
-							}
-						}
-						if (typeof attack !== "undefined") {
-							this.attackOnTarget(selfToken, attacks.melee[attack], targetToken)
-						}
-					}
-				},
-				ranged: {
-					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M145.78 287.03l45.26-45.25-90.58-90.58C128.24 136.08 159.49 128 192 128c32.03 0 62.86 7.79 90.33 22.47l46.61-46.61C288.35 78.03 241.3 64 192 64c-49.78 0-97.29 14.27-138.16 40.59l-3.9-3.9c-6.25-6.25-16.38-6.25-22.63 0L4.69 123.31c-6.25 6.25-6.25 16.38 0 22.63l141.09 141.09zm262.36-104.64L361.53 229c14.68 27.47 22.47 58.3 22.47 90.33 0 32.51-8.08 63.77-23.2 91.55l-90.58-90.58-45.26 45.26 141.76 141.76c6.25 6.25 16.38 6.25 22.63 0l22.63-22.63c6.25-6.25 6.25-16.38 0-22.63l-4.57-4.57C433.74 416.63 448 369.11 448 319.33c0-49.29-14.03-96.35-39.86-136.94zM493.22.31L364.63 26.03c-12.29 2.46-16.88 17.62-8.02 26.49l34.47 34.47-250.64 250.63-49.7-16.57a20.578 20.578 0 0 0-21.04 4.96L6.03 389.69c-10.8 10.8-6.46 29.2 8.04 34.04l55.66 18.55 18.55 55.65c4.83 14.5 23.23 18.84 34.04 8.04l63.67-63.67a20.56 20.56 0 0 0 4.97-21.04l-16.57-49.7 250.64-250.64 34.47 34.47c8.86 8.86 24.03 4.27 26.49-8.02l25.72-128.59C513.88 7.8 504.2-1.88 493.22.31z" class=""></path></svg>',
-					label: "Select Ranged",
-					callback: () => {
-						let elements = document.getElementsByName('range');
-						let attack;
-
-						for (let e = 0; e < elements.length; e++){
-							if(elements[e].checked){
-								attack = e;
-							}
-						}
-						if (typeof attack !== "undefined") {
-							this.attackOnTarget(selfToken, attacks.ranged[attack], targetToken)
-						}
-					}
-				},
-				affliction: {
-					icon: '<svg aria-hidden="true" focusable="false" data-prefix="fas" role="img" viewBox="0 0 512 512" style="width: 14px;"><path fill="currentColor" d="M216 23.86c0-23.8-30.65-32.77-44.15-13.04C48 191.85 224 200 224 288c0 35.63-29.11 64.46-64.85 63.99-35.17-.45-63.15-29.77-63.15-64.94v-85.51c0-21.7-26.47-32.23-41.43-16.5C27.8 213.16 0 261.33 0 320c0 105.87 86.13 192 192 192s192-86.13 192-192c0-170.29-168-193-168-296.14z" class=""></path></svg>',
-					label: "Select Affliction",
-					callback: () => {
-						let elements = document.getElementsByName('affliction');
-						let attack;
-						for (let e = 0; e < elements.length; e++){
-							if(elements[e].checked){
-								attack = e;
-							}
-						}
-						if (typeof attack !== "undefined") {
-							this.afflictionOnTarget(selfToken, attacks.affliction[attack], targetToken)
-						}
-					}
-				},
-				cancel: {
-					icon: '<i class="fas fa-times"></i>',
-					label: "Cancel",
-					callback: () => {
-
-					}
-				}
-			},
+			buttons: buttons,
 			default: "cancel",
 			render: html => console.log("Register interactivity in the rendered dialog"),
 			close: html => console.log("This always is logged no matter which option is chosen")
