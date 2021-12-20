@@ -4,7 +4,6 @@ Current
     - check vitals/spine for front/rear, including random rolls
 
 From session 11/4/2021
-    - dbk Didn't work for Explosive Force Ball
     - Feverish Defence Will roll
     - Height relevant modifiers (Both melee and range modifiers)
     - Generic hit location for area spells
