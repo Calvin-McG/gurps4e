@@ -1485,8 +1485,8 @@ export class gurpsActor extends Actor {
 			content: htmlContent,
 			buttons: buttons,
 			default: "cancel",
-			render: html => console.log("Register interactivity in the rendered dialog"),
-			close: html => console.log("This always is logged no matter which option is chosen")
+			render: html => console.info("Register interactivity in the rendered dialog"),
+			close: html => console.info("This always is logged no matter which option is chosen")
 		},{
 			resizable: true,
 			width: "500"
@@ -1673,8 +1673,8 @@ export class gurpsActor extends Actor {
 				}
 			},
 			default: "randTorso",
-			render: html => console.log("Register interactivity in the rendered dialog"),
-			close: html => console.log("This always is logged no matter which option is chosen")
+			render: html => console.info("Register interactivity in the rendered dialog"),
+			close: html => console.info("This always is logged no matter which option is chosen")
 		},{
 			resizable: true,
 			width: "500"
@@ -1738,8 +1738,8 @@ export class gurpsActor extends Actor {
 				}
 			},
 			default: "mod",
-			render: html => console.log("Register interactivity in the rendered dialog"),
-			close: html => console.log("This always is logged no matter which option is chosen")
+			render: html => console.info("Register interactivity in the rendered dialog"),
+			close: html => console.info("This always is logged no matter which option is chosen")
 		})
 		modModal.render(true)
 	}
@@ -1975,8 +1975,8 @@ export class gurpsActor extends Actor {
 					}
 				},
 				default: "randTorso",
-				render: html => console.log("Register interactivity in the rendered dialog"),
-				close: html => console.log("This always is logged no matter which option is chosen")
+				render: html => console.info("Register interactivity in the rendered dialog"),
+				close: html => console.info("This always is logged no matter which option is chosen")
 			},{
 				resizable: true,
 				width: "500"
@@ -2165,8 +2165,8 @@ export class gurpsActor extends Actor {
 				}
 			},
 			default: "mod",
-			render: html => console.log("Register interactivity in the rendered dialog"),
-			close: html => console.log("This always is logged no matter which option is chosen")
+			render: html => console.info("Register interactivity in the rendered dialog"),
+			close: html => console.info("This always is logged no matter which option is chosen")
 		})
 		modModal.render(true)
 	}
@@ -2525,8 +2525,8 @@ export class gurpsActor extends Actor {
 			content: activeDefenceModalContent,
 			buttons: buttons,
 			default: "dodge",
-			render: html => console.log("Register interactivity in the rendered dialog"),
-			close: html => console.log("This always is logged no matter which option is chosen")
+			render: html => console.info("Register interactivity in the rendered dialog"),
+			close: html => console.info("This always is logged no matter which option is chosen")
 		}, options)
 		activeDefenceModal.render(true)
 	}
