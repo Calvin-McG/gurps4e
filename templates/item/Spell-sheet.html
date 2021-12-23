@@ -340,8 +340,19 @@
                         <td class="resource-label">Type</td>
                         <td class="resource-label">Divisor</td>
                         <td class="resource-label">Effect Description</td>
-                        <td class="resource-label">Resistance Roll</td>
-                        <td class="resource-label">Rule Of</td>
+                        <td class="resource-label">
+                            <span class="tooltip">
+                                Resist With
+                                <span class="tooltiptext" style="margin-left: -100px;">For both Quick Contests and Resistance Rolls.<br>
+                                    Penalty applies to the target's roll in either case.</span>
+                            </span>
+                        </td>
+                        <td class="resource-label">
+                            <span class="tooltip">
+                                Rule Of
+                                <span class="tooltiptext" style="margin-left: -100px;">This should be 13 for Fright and 16 for everything else except in special cases.</span>
+                            </span>
+                        </td>
                         <td class="resource-label"></td>
                     </tr>
                     {{#each data.data.affliction as |affliction id|}}
