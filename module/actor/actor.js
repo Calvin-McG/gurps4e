@@ -1747,7 +1747,7 @@ export class gurpsActor extends Actor {
 	// This runs to calculate and display the result of an attacker attempting to cast an affliction.
 	// On success it provides buttons for the defender to choose from
 	// On a failure it simply reports failure
-	reportAfflictionResult(target, attacker, attack, totalModifiers) {
+	reportAfflictionResult(target, attacker, attack, totalModifiers) { // TODO - Make afflictions know if they are quick contests/resistance rolls - 3
 		let label = attacker.data.name + " casts " + attack.weapon + " " + attack.name + " on " + target.data.name + "."; // Label for the roll
 
 		rollHelpers.skillRoll(attack.level, totalModifiers, label, false).then( rollInfo => { // Make the roll
@@ -1875,7 +1875,7 @@ export class gurpsActor extends Actor {
 		});
 	}
 
-	attemptResistanceRoll(event) {
+	attemptResistanceRoll(event) { // TODO - Make this work - 1
 		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
 		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor;
 		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;
@@ -1897,7 +1897,7 @@ export class gurpsActor extends Actor {
 		ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type});
 	}
 
-	applyAffliction(flags) {
+	applyAffliction(flags) { // TODO - Make this work - 2
 		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor;
 		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;
 		let attack 			= flags.attack;
