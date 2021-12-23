@@ -1783,7 +1783,6 @@ export class gurpsActor extends Actor {
 	noResistanceRoll(event) {
 		event.preventDefault();
 		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
-		console.log(flags)
 		this.applyAffliction(flags);
 	}
 
