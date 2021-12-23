@@ -1744,33 +1744,35 @@ export class gurpsActor extends Actor {
 		modModal.render(true)
 	}
 
+	// This runs to calculate and display the result of an attacker attempting to cast an affliction.
+	// On success it provides buttons for the defender to choose from
+	// On a failure it simply reports failure
 	reportAfflictionResult(target, attacker, attack, totalModifiers) {
-		console.log(target);
-		console.log(attacker);
-		console.log(attack);
-		console.log(totalModifiers);
+		let label = attacker.data.name + " casts " + attack.weapon + " " + attack.name + " on " + target.data.name + "."; // Label for the roll
 
-		// Make own roll.
-		let label = attacker.nameplate._text + " casts " + attack.weapon + " " + attack.name + " on " + target.nameplate._text + ".";
-		let level = attack.level;
-		let mod = totalModifiers;
+		rollHelpers.skillRoll(attack.level, totalModifiers, label, false).then( rollInfo => { // Make the roll
+			let messageContent = rollInfo.content; // Begin message content with the result from the skill roll
+			let flags = {} // Init flags which will be used to pass data between chat messages
 
-		rollHelpers.skillRoll(level, mod, label, false).then( rollInfo => {
-			let messageContent = rollInfo.content;
-			let flags = {}
-
-			if (rollInfo.success == false) {
-				messageContent += attacker.nameplate._text + "'s spell fails</br>";
+			if (rollInfo.success == false) { // If they failed, report failure and stop
+				messageContent += attacker.data.name + "'s spell fails</br>";
 			}
-			else {
-				messageContent += "</br><input type='button' class='quickContest' value='Quick Contest'/><input type='button' class='attemptResistanceRoll' value='Resistance Roll'/><input type='button' class='noResistanceRoll' value='No Defence'/>"
+			else { // If they succeed
+				messageContent += attacker.data.name + "'s spell succeeds</br>"; // Inform the players
+				messageContent += "</br><input type='button' class='quickContest' value='Quick Contest'/><input type='button' class='attemptResistanceRoll' value='Resistance Roll'/><input type='button' class='noResistanceRoll' value='No Defence'/>" // Present defensive options
 
-				flags = {
+				if (rollInfo.crit == true) { // If they crit, pass a note about the effect of crit success
+					messageContent += "<br><br><span style='font-style: italic;'>Important note, criticals have no impact on success/failure of quick contests beyond resulting in a very good or very bad margin of success.<br>" +
+						"They also don't generally impact whether or not someone gets a resistance roll.</span>";
+				}
+
+				flags = { // Compile flags that will be passed along through the chat messages
 					target: target.id,
 					attacker: attacker.id,
 					scene: target.scene.id,
 					attack: attack,
-					margin: rollInfo.margin
+					margin: rollInfo.margin,
+					effectiveSkill: (+level + +mod)
 				}
 			}
 			// Everything is assembled, send the message
