@@ -1,3 +1,5 @@
+import {attributeHelpers} from "./attributeHelpers.js";
+
 export class actorHelpers {
 
     static addSkull(id) {
@@ -1371,5 +1373,36 @@ export class actorHelpers {
         }
 
         return part;
+    }
+
+    static fetchStat(actor, stat) { // Actor should be the actor object, stat should be the string name of the stat in question.
+        console.log(actor);
+        console.log(stat);
+
+        if (stat.toLowerCase() == "strength" || stat.toLowerCase() == "st") {
+            return attributeHelpers.calcStOrHt(actor.data.data.primaryAttributes.strength);
+        }
+        else if (stat.toLowerCase() == "dexterity" || stat.toLowerCase() == "dx") {
+            return attributeHelpers.calcDxOrIq(actor.data.data.primaryAttributes.dexterity);
+        }
+        else if (stat.toLowerCase() == "intelligence" || stat.toLowerCase() == "iq") {
+            return attributeHelpers.calcDxOrIq(actor.data.data.primaryAttributes.intelligence);
+        }
+        else if (stat.toLowerCase() == "health" || stat.toLowerCase() == "ht") {
+            return attributeHelpers.calcStOrHt(actor.data.data.primaryAttributes.health);
+        }
+        else if (stat.toLowerCase() == "will") {
+            return attributeHelpers.calcPerOrWill(actor.data.data.primaryAttributes.will);
+        }
+        else if (stat.toLowerCase() == "perception" || stat.toLowerCase() == "per") {
+            return attributeHelpers.calcPerOrWill(actor.data.data.primaryAttributes.perception);
+        }
+        else if (stat.toLowerCase() == "fright" || stat.toLowerCase() == "fr") {
+            return attributeHelpers.calcFright(actor.data.data.primaryAttributes.fright);
+        }
+        else {
+            console.error("actorHelpers.fetchStat found an incorrect stat name");
+            return -99
+        }
     }
 }
