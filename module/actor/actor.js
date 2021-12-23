@@ -1831,6 +1831,50 @@ export class gurpsActor extends Actor {
 		modModal.render(true);
 	}
 
+	// This method takes the modifier from the defender and uses it to determine the results of the quick contest
+	reportQuickContestResult(target, attacker, attack, flags, mod) {
+		let label = target.data.name + " attempts to resist the " + attack.weapon + " " + attack.name + " cast by " + attacker.name + "."; // Setup the label that heads the chat message
+		let resistanceLevel = +actorHelpers.fetchStat(target, attack.resistanceRoll); // Fetch the resistance level based on the attack's target attribute
+		let effectiveResistanceLevel = resistanceLevel + +mod + +attack.resistanceRollPenalty; // Figure out the effective level based on the above, the modifier from the attack, and the modifier provided by the user
+		let margin = flags.margin; // Get the margin from the flags
+
+		let ruleOfLimiter = Math.max(+attack.ruleOf, +effectiveResistanceLevel) // Limiter is the higher of Rule of 16/13/X and the target's resistance roll.
+
+		if (attack.level > ruleOfLimiter) { // The attacker's skill was higher than Rule of 16/13/X, correct for that.
+			margin = margin - (attack.level - ruleOfLimiter); // Subtract the difference between the skill level and Rule Of from the margin of success to determine the effective margin
+		}
+
+		rollHelpers.skillRoll(resistanceLevel, (+mod + +attack.resistanceRollPenalty), label, false).then( rollInfo => { // Make the defender's roll
+			let messageContent = rollInfo.content; // Start the message with the string returned by the skillRoll helper
+			messageContent += "<br>"
+			messageContent += attacker.name + " has an effective margin of success of <span style='font-weight: bold'>" + margin + "</span> after modifiers and the Rule of <span style='font-weight: bold'>" + attack.ruleOf + "</span><br><br>"; // Inform the user of the attacker's effective margin of success and mention the Rule of X
+
+			if (rollInfo.success == false) { // Target failed the roll entirely
+				messageContent += "<span style='font-weight: bold; color: rgb(199, 137, 83);'>" + target.data.name + " fails to resist</span></br>"; // Tell everyone
+				this.applyAffliction(flags); // Call the method that applies the affliction effects
+			}
+			else if (rollInfo.margin < margin) { // Target succeeded, but by less than the attacker did
+				messageContent += "<span style='font-weight: bold; color: rgb(199, 137, 83)'>" + target.data.name + " succeeds by <span style='font-weight: bold'>" + rollInfo.margin + "</span> but fails to resist</span></br>"; // Tell everyone
+				this.applyAffliction(flags); // Call the method that applies the affliction effects
+			}
+			else if (rollInfo.margin >= margin) { // Target succeeded, tieing or beating the attacker
+				messageContent +=  "<span style='font-weight: bold; color: rgb(141, 142, 222)'>" + target.data.name + " succeeds by <span style='font-weight: bold'>" + rollInfo.margin + "</span> and resists successfully</span></br>"; // Tell everyone
+			}
+			else { // None of the above caught the result
+				messageContent += "Some weird shit has happened.</br>" + // Let the users know that some weird shit has happened but nothing has changed on the target of the affliction
+					"No effects or damage will apply.</br>" +
+					"The data has been printed to the log.</br>"
+				console.error(target, attacker, attack, flags, mod, resistanceLevel, effectiveResistanceLevel, margin, ruleOfLimiter) // Print the error to console
+			}
+
+			if (rollInfo.crit == true) { // The result was a crit, which doesn't actually do anything in quick contests
+				messageContent += "<span style='font-style: italic;'>Important note, criticals have no impact on success/failure of quick contests beyond resulting in a very good or very bad margin of success.</span>"; // Inform the players of this fact
+			}
+
+			ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type}); // Send the actual message
+		});
+	}
+
 	attemptResistanceRoll(event) {
 		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
 		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor;
