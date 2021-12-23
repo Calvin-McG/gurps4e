@@ -1786,26 +1786,49 @@ export class gurpsActor extends Actor {
 		this.applyAffliction(flags);
 	}
 
+	// This is run when a defender clicks the "Quick Contest" button after being the target of an affliction
 	quickContest(event) {
-		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
-		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor;
-		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;
-		// Make own roll.
-		let label = attacker.nameplate._text + " casts " + attack.weapon + " " + attack.name + " on " + target.nameplate._text + ".";
-		let level = attack.level;
-		let mod = totalModifiers;
+		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags; // Get the flags which hold all the actual data
+		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor; // Fetch the target using the appropriate methods
+		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;// Fetch the attacker using the appropriate methods
+		let attack 			= flags.attack; // Fetch the attack from the flags
 
-		let rollInfo = rollHelpers.skillRoll(level, mod, label, false)
-		let messageContent = rollInfo.content;
+		// Build the message displayed on the dialog asking the user for any modifiers
+		let modModalContent = "<div>" + attacker.name + " is casting " + attack.weapon + " " + attack.name + " on you.</div>" +
+			"<div>" + "It is a quick contest of " + attack.resistanceRoll + attack.resistanceRollPenalty + " </div>" +
+			"<div>Modifier: <input type='number' placeholder='Modifier' id='mod' name='mod' value='0' style='width: 50%'/></div>";
 
-		if (rollInfo.success == false) {
-			messageContent += attacker.nameplate._text + "'s spell fails</br>";
-		}
-		else {
-			messageContent += "</br><input type='button' class='quickContest' value='Quick Contest'/><input type='button' class='attemptResistanceRoll' value='Resistance Roll'/><input type='button' class='noResistanceRoll' value='No Defence'/>"
-		}
-
-		ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type});
+		// Build the dialog itself
+		let modModal = new Dialog({
+			title: "Modifier Dialog",
+			content: modModalContent,
+			buttons: {
+				mod: {
+					icon: '<i class="fas fa-check"></i>',
+					label: "Apply Modifier",
+					callback: (html) => {
+						let mod = html.find('#mod').val(); // Get the modifier from the input field
+						this.reportQuickContestResult(target, attacker, attack, flags, +mod)
+					}
+				},
+				noMod: {
+					icon: '<i class="fas fa-times"></i>',
+					label: "No Modifier",
+					callback: () => {
+						this.reportQuickContestResult(target, attacker, attack, flags, 0)
+					}
+				},
+				cancel: {
+					icon: '<i class="fas fa-times"></i>',
+					label: "Cancel",
+					callback: () => {} // Do nothing
+				}
+			},
+			default: "mod",
+			render: html => console.info("Register interactivity in the rendered dialog"),
+			close: html => console.info("This always is logged no matter which option is chosen")
+		})
+		modModal.render(true);
 	}
 
 	attemptResistanceRoll(event) {
