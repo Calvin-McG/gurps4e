@@ -18,6 +18,9 @@ export class generalHelpers {
         else if (rof >= 25)  { // At this point the scaling is logarithmic
             bonus = Math.floor(1.4427 * Math.log(rof) + 0.3562);
         }
+        else {
+            bonus = 0; // Make sure it doesn't return undefined.
+        }
 
         return bonus;
     }

@@ -2156,7 +2156,7 @@ export class gurpsActor extends Actor {
 		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.data.gridUnits);
 		let distancePenalty = distanceHelpers.distancePenalty(distanceYards);
 
-		let rofBonus = generalHelpers.rofToBonus(rof.rof); // TODO - Something is making this return undefined in some cases. Maybe fixed?
+		let rofBonus = generalHelpers.rofToBonus(rof.rof);
 		if (typeof rofBonus == "undefined") { // RoF is sometimes coming through undefined. Catch that.
 			rofBonus = 0;
 		}
