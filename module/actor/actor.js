@@ -1772,7 +1772,7 @@ export class gurpsActor extends Actor {
 					scene: target.scene.id,
 					attack: attack,
 					margin: rollInfo.margin,
-					effectiveSkill: (+level + +mod)
+					effectiveSkill: (+attack.level + +mod)
 				}
 			}
 			// Everything is assembled, send the message
