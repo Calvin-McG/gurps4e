@@ -1875,26 +1875,78 @@ export class gurpsActor extends Actor {
 		});
 	}
 
-	attemptResistanceRoll(event) { // TODO - Make this work - 1
-		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
-		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor;
-		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;
-		// Make own roll.
-		let label = target.nameplate._text + " attempts a resistance roll.";
-		let level = attack.level;
-		let mod = totalModifiers;
+	// This is run when a defender clicks the "Quick Contest" button after being the target of an affliction
+	attemptResistanceRoll(event) {
+		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags; // Get the flags which hold all the actual data
+		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor; // Fetch the target using the appropriate methods
+		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;// Fetch the attacker using the appropriate methods
+		let attack 			= flags.attack; // Fetch the attack from the flags
 
-		let rollInfo = rollHelpers.skillRoll(level, mod, label, false)
-		let messageContent = rollInfo.content;
+		// Build the message displayed on the dialog asking the user for any modifiers
+		let modModalContent = "<div>" + attacker.name + " is casting " + attack.weapon + " " + attack.name + " on you.</div>" +
+			"<div>" + "You are resisting with " + attack.resistanceRoll + attack.resistanceRollPenalty + " </div>" +
+			"<div>Modifier: <input type='number' placeholder='Modifier' id='mod' name='mod' value='0' style='width: 50%'/></div>";
 
-		if (rollInfo.success == false) {
-			messageContent += attacker.nameplate._text + "'s spell fails</br>";
-		}
-		else {
-			messageContent += "</br><input type='button' class='quickContest' value='Quick Contest'/><input type='button' class='attemptResistanceRoll' value='Resistance Roll'/><input type='button' class='noResistanceRoll' value='No Defence'/>"
-		}
+		// Build the dialog itself
+		let modModal = new Dialog({
+			title: "Modifier Dialog",
+			content: modModalContent,
+			buttons: {
+				mod: {
+					icon: '<i class="fas fa-check"></i>',
+					label: "Apply Modifier",
+					callback: (html) => {
+						let mod = html.find('#mod').val(); // Get the modifier from the input field
+						this.reportResistanceRollResult(target, attacker, attack, flags, +mod)
+					}
+				},
+				noMod: {
+					icon: '<i class="fas fa-times"></i>',
+					label: "No Modifier",
+					callback: () => {
+						this.reportResistanceRollResult(target, attacker, attack, flags, 0)
+					}
+				},
+				cancel: {
+					icon: '<i class="fas fa-times"></i>',
+					label: "Cancel",
+					callback: () => {} // Do nothing
+				}
+			},
+			default: "mod",
+			render: html => console.info("Register interactivity in the rendered dialog"),
+			close: html => console.info("This always is logged no matter which option is chosen")
+		})
+		modModal.render(true);
+	}
 
-		ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type});
+	// This method takes the modifier from the defender and uses it to determine the results of the resistance roll
+	reportResistanceRollResult(target, attacker, attack, flags, mod) {
+		let label = target.data.name + " attempts to resist the " + attack.weapon + " " + attack.name + " cast by " + attacker.name + "."; // Setup the label that heads the chat message
+		let resistanceLevel = +actorHelpers.fetchStat(target, attack.resistanceRoll); // Fetch the resistance level based on the attack's target attribute
+		let effectiveResistanceLevel = resistanceLevel + +mod + +attack.resistanceRollPenalty; // Figure out the effective level based on the above, the modifier from the attack, and the modifier provided by the user
+
+		rollHelpers.skillRoll(resistanceLevel, (+mod + +attack.resistanceRollPenalty), label, false).then( rollInfo => { // Make the defender's resistance roll
+			let messageContent = rollInfo.content; // Start the message with the string returned by the skillRoll helper
+			messageContent += "<br>"
+
+			if (rollInfo.success == false) { // Target failed the roll
+				messageContent += "<span style='font-weight: bold; color: rgb(199, 137, 83);'>" + target.data.name + " fails to resist</span></br>"; // Tell everyone
+				this.applyAffliction(flags); // Call the method that applies the affliction effects
+			}
+			else if (rollInfo.success == true) { // Target succeeded
+				messageContent += "<span style='font-weight: bold; color: rgb(141, 142, 222)'>" + target.data.name + " resists</span></br>"; // Tell everyone
+				this.applyAffliction(flags); // Call the method that applies the affliction effects
+			}
+			else { // None of the above caught the result
+				messageContent += "Some weird shit has happened.</br>" + // Let the users know that some weird shit has happened but nothing has changed on the target of the affliction
+					"No effects or damage will apply.</br>" +
+					"The data has been printed to the log.</br>"
+				console.error(target, attacker, attack, flags, mod, resistanceLevel, effectiveResistanceLevel, margin, ruleOfLimiter) // Print the error to console
+			}
+
+			ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type}); // Send the actual message
+		});
 	}
 
 	applyAffliction(flags) { // TODO - Make this work - 2
