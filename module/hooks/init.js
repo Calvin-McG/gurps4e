@@ -24,7 +24,7 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  // Register Armour as Dice option
+  // Register Bleeding Rules option
   game.settings.register("gurps4e", "bleeding", {
     name: "Use Bleeding Rules - WIP",
     hint: "",

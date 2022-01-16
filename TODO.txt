@@ -1,7 +1,6 @@
-Current
-    - Check thigh gap for front/rear
+Stuff that's annoying to do
     - Apply harsh thigh gap setting
-    - check vitals/spine for front/rear, including random rolls
+    - Random rolls from front/back hit vitals/spine correctly.
 
 From session 11/4/2021
     - Feverish Defence Will roll
