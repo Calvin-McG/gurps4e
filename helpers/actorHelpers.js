@@ -811,7 +811,7 @@ export class actorHelpers {
                 spine: {
                     label: "Spine",
                     id: id + ".subLocation.spine",
-                    penaltyFront: -8,
+                    penaltyFront: -99,
                     penaltyBack: -8,
                     drBurn: 3,
                     drCor: 3,
