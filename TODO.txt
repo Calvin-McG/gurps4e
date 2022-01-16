@@ -1,5 +1,4 @@
 Stuff that's annoying to do
-    - Apply harsh thigh gap setting
     - Random rolls from front/back hit vitals/spine correctly.
 
 From session 11/4/2021
@@ -27,15 +26,8 @@ from session 5/27/2021
     - Incidental damage (Rolling 9s vs people behind/front of main target)
     - Uncategorized at the bottom of the list
 
-Layered Armour
-    - Make entering armour faster and suck less
-    - Slam thingy
-
 Campaign toggles for...
-    - Edge protection (Optional)
-    - Armour as Dice (Optional)
     - Bleeding (Optional)
-    - Thigh Gap over Artery (Optional)
 
 Misc
     - Add area of effect for attacks
@@ -68,13 +60,6 @@ Combat Macro
     - Low/High pain threshold - Stunning/knockdown and shock
     - Injury Tolerances
     - Armour Hardness doesn't work.
-
-Naval
-    - Naval character sheet
-
-Design
-    - Gun design system
-    - Laser design system
 
 ===Jake's Requests===
 A blank inventory character sheet at some point for chests and inventories would be really helpful though
