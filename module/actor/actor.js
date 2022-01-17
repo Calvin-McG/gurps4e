@@ -1747,7 +1747,7 @@ export class gurpsActor extends Actor {
 	// This runs to calculate and display the result of an attacker attempting to cast an affliction.
 	// On success it provides buttons for the defender to choose from
 	// On a failure it simply reports failure
-	reportAfflictionResult(target, attacker, attack, totalModifiers) { // TODO - Make afflictions know if they are quick contests/resistance rolls - 3
+	reportAfflictionResult(target, attacker, attack, totalModifiers) {
 		let label = attacker.data.name + " casts " + attack.weapon + " " + attack.name + " on " + target.data.name + "."; // Label for the roll
 
 		rollHelpers.skillRoll(attack.level, totalModifiers, label, false).then( rollInfo => { // Make the roll
@@ -1949,7 +1949,7 @@ export class gurpsActor extends Actor {
 		});
 	}
 
-	applyAffliction(flags) { // TODO - Make this work - 2
+	applyAffliction(flags) {
 		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor;
 		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;
 		let attack 			= flags.attack;
@@ -2726,7 +2726,6 @@ export class gurpsActor extends Actor {
 		label += target.data.name + " attempts a ";
 
 		if (options.feverishDefence) {
-			// TODO - Do the Will roll thing and Subtract 1 FP from the actor
 			label += "feverish ";
 			totalModifier += 2;
 		}
@@ -2739,7 +2738,6 @@ export class gurpsActor extends Actor {
 
 		// Block for retreat options
 		if (options.drop && type === "dodge") {
-			// TODO - Add thing that sets the unit prone
 			label += "and drop ";
 			totalModifier += 3;
 		}
