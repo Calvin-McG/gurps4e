@@ -2857,6 +2857,7 @@ export class gurpsActor extends Actor {
 		let totalInjury 	= 0;
 		let totalFatInj 	= 0;
 		let damageReduction = 1;
+		let largeArea		= false;
 		let armourDivisor;
 
 		if (typeof attack.armorDivisor == "undefined" || attack.armorDivisor == ""){ // Armour divisor is undefined or blank
@@ -2867,6 +2868,15 @@ export class gurpsActor extends Actor {
 		}
 		else {
 			armourDivisor = attack.armorDivisor; // Set it to whatever they entered.
+		}
+
+		// The attack is large area attack
+		if (attack.damageType.toString().toLowerCase().includes("area") || attack.damageType.toString().toLowerCase().includes("la") ) {
+			largeArea = true; // Set the area flag
+
+			for (let i = 0; i < locationsHit.length; i++){ // Loop through all the locations
+				locationsHit[i] = 'upperChest.subLocation.chest'; // Set them to the upper chest
+			}
 		}
 
 		if (target.data.data.injuryTolerances){
@@ -2951,8 +2961,14 @@ export class gurpsActor extends Actor {
 
 			html += "<label class='damage-dice-small-adds'> = " + totalDamage + "</label>";
 
-			if (armourDivisor != 1){
+			if (armourDivisor != 1 && largeArea){
+				html += "<label class='damage-dice-small-adds'> (" + armourDivisor + ") Large Area Injury</label>";
+			}
+			else if (armourDivisor != 1){
 				html += "<label class='damage-dice-small-adds'> (" + armourDivisor + ")</label>";
+			}
+			else if (largeArea) {
+				html += "<label class='damage-dice-small-adds'> Large Area Injury</label>";
 			}
 
 			html += "</div>";
@@ -2970,7 +2986,10 @@ export class gurpsActor extends Actor {
 					effectiveDR = 0
 				}
 				else {
-					effectiveDR = Math.floor(dr / armourDivisor); // Get the effective DR after armour divisor
+					if (largeArea) {
+						effectiveDR = Math.ceil(dr / 2); // This should be torso DR averaged with lowest DR. But for now it's just dividing torso DR by 2. Large Area Injury rounds DR up
+					}
+					effectiveDR = Math.floor(dr / armourDivisor); // Get the effective DR after armour divisor. Armour divisors round DR down.
 				}
 
 				let drStops = Math.min(actualDamage, effectiveDR); // Get the actual amount of damage stopped by the armour
