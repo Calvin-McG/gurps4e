@@ -1818,9 +1818,18 @@ export class gurpsActor extends Actor {
 		let attack 			= flags.attack; // Fetch the attack from the flags
 
 		// Build the message displayed on the dialog asking the user for any modifiers
-		let modModalContent = "<div>" + attacker.name + " is casting " + attack.weapon + " " + attack.name + " on you.</div>" +
-			"<div>" + "It is a quick contest of " + attack.resistanceRoll + attack.resistanceRollPenalty + " </div>" +
-			"<div>Modifier: <input type='number' placeholder='Modifier' id='mod' name='mod' value='0' style='width: 50%'/></div>";
+		let modModalContent = "<div>" + attacker.name + " is casting " + attack.weapon + " " + attack.name + " on you.</div>";
+
+		if (attack.resistanceRollPenalty > 0) {
+			modModalContent += "<div>" + "It is a quick contest of " + attack.resistanceRoll + " + " + attack.resistanceRollPenalty + " </div>";
+		}
+		else if (attack.resistanceRollPenalty < 0) {
+			modModalContent += "<div>" + "It is a quick contest of " + attack.resistanceRoll + " - " + attack.resistanceRollPenalty + " </div>";
+		}
+		else {
+			modModalContent += "<div>" + "It is a quick contest of " + attack.resistanceRoll + " </div>";
+		}
+		modModalContent += "<div>Modifier: <input type='number' placeholder='Modifier' id='mod' name='mod' value='0' style='width: 50%'/></div>";
 
 		// Build the dialog itself
 		let modModal = new Dialog({
@@ -1907,9 +1916,19 @@ export class gurpsActor extends Actor {
 		let attack 			= flags.attack; // Fetch the attack from the flags
 
 		// Build the message displayed on the dialog asking the user for any modifiers
-		let modModalContent = "<div>" + attacker.name + " is casting " + attack.weapon + " " + attack.name + " on you.</div>" +
-			"<div>" + "You are resisting with " + attack.resistanceRoll + attack.resistanceRollPenalty + " </div>" +
-			"<div>Modifier: <input type='number' placeholder='Modifier' id='mod' name='mod' value='0' style='width: 50%'/></div>";
+		let modModalContent = "<div>" + attacker.name + " is casting " + attack.weapon + " " + attack.name + " on you.</div>";
+
+		if (attack.resistanceRollPenalty > 0) {
+			modModalContent += "<div>" + "You are resisting with " + attack.resistanceRoll + " + " + attack.resistanceRollPenalty + " </div>";
+		}
+		else if (attack.resistanceRollPenalty < 0) {
+			modModalContent += "<div>" + "You are resisting with " + attack.resistanceRoll + " - " + attack.resistanceRollPenalty + " </div>";
+		}
+		else {
+			modModalContent += "<div>" + "You are resisting with " + attack.resistanceRoll + " </div>";
+		}
+
+		modModalContent += "<div>Modifier: <input type='number' placeholder='Modifier' id='mod' name='mod' value='0' style='width: 50%'/></div>";
 
 		// Build the dialog itself
 		let modModal = new Dialog({
