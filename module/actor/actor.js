@@ -2880,11 +2880,11 @@ export class gurpsActor extends Actor {
 		let html = "<div>Damage for " + attacker.data.name + "'s " + attack.weapon + " " + attack.name + " against " + target.data.name + "</div>";
 		for (let i = 0; i < locationsHit.length; i++){
 			let bluntTrauma = 0;
-			let location = getProperty(target.data.data.bodyType.body, locationsHit[i])
+			let location = getProperty(target.data.data.bodyType.body, locationsHit[i]);
 
 			// If the attack is not explosive, roll damage for the attack
 			let roll = new Roll(attack.damage);
-			let damageRoll = await roll.roll();
+			let damageRoll = await roll.roll({async: true});
 			let adds = 0;
 
 			// Build the location label
