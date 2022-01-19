@@ -1974,8 +1974,20 @@ export class gurpsActor extends Actor {
 	}
 
 	async applyAffliction(flags) {
-		let locationsHit = ['upperChest.subLocation.chest'];
-		await this.applyDamage(flags, locationsHit)
+		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor;
+		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;
+		let attack 			= flags.attack;
+
+		if (attack.damage == 0 || attack.damage == "") {
+			let html = "<div>Damage for " + attacker.data.name + "'s " + attack.weapon + " " + attack.name + " against " + target.data.name + "</div>";
+			html += "<hr>" + attack.desc + "<br>"
+			html += "<hr>";
+			ChatMessage.create({ content: html, user: game.user.data.document.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+		}
+		else {
+			let locationsHit = ['upperChest.subLocation.chest'];
+			await this.applyDamage(flags, locationsHit, attack.desc);
+		}
 	}
 
 	selectedRandom(target, attacker, attack, relativePosition, rof) { // Select random hit location
@@ -2841,7 +2853,7 @@ export class gurpsActor extends Actor {
 		})
 	}
 
-	async applyDamage(flags, locationsHit) {
+	async applyDamage(flags, locationsHit, additionalMessage) {
 		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor;
 		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;
 		let attack 			= flags.attack;
@@ -2881,6 +2893,11 @@ export class gurpsActor extends Actor {
 		let damageType = this.extractDamageType(attack);
 
 		let html = "<div>Damage for " + attacker.data.name + "'s " + attack.weapon + " " + attack.name + " against " + target.data.name + "</div>";
+
+		if (additionalMessage) {
+			html += "<hr>" + additionalMessage + "<br>"
+		}
+
 		for (let i = 0; i < locationsHit.length; i++){
 			let bluntTrauma = 0;
 			let location = getProperty(target.data.data.bodyType.body, locationsHit[i]);
