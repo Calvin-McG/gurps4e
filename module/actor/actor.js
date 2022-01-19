@@ -1980,30 +1980,9 @@ export class gurpsActor extends Actor {
 		});
 	}
 
-	applyAffliction(flags) {
-		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor;
-		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;
-		let attack 			= flags.attack;
-		let damageReduction = 1;
-		let armourDivisor;
-
-		if (typeof attack.armorDivisor == "undefined" || attack.armorDivisor == ""){ // Armour divisor is undefined or blank
-			armourDivisor = 1; // Set it to the default of 1
-		}
-		else if (attack.armorDivisor.toString().toLowerCase().includes("ignore") || attack.armorDivisor.toString().toLowerCase().includes("cosmic") || attack.armorDivisor.toString().toLowerCase().includes("i")){
-			armourDivisor = "Ignores Armour"; // Set to a negative number, which we'll later use to ignore armour entirely.
-		}
-		else {
-			armourDivisor = attack.armorDivisor; // Set it to whatever they entered.
-		}
-
-		if (target.data.data.injuryTolerances){
-			if (target.data.data.injuryTolerances.damageReduction){
-				damageReduction = target.data.data.injuryTolerances.damageReduction; // Set the target's damage reduction
-			}
-		}
-
-		let damageType = this.extractDamageType(attack);
+	async applyAffliction(flags) {
+		let locationsHit = ['upperChest.subLocation.chest'];
+		await this.applyDamage(flags, locationsHit)
 	}
 
 	selectedRandom(target, attacker, attack, relativePosition, rof) { // Select random hit location
