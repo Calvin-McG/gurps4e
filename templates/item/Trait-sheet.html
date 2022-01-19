@@ -49,6 +49,9 @@
             <a class="item" data-tab="ranged">Ranged</a>
         </div>
         <div class="header">
+            <a class="item" data-tab="affliction">Affliction</a>
+        </div>
+        <div class="header">
             <a class="item" data-tab="armour">Armour</a>
         </div>
     </nav>
@@ -225,6 +228,129 @@
                         <td><input type="text" name="data.ranged.{{id}}.rcl" value="{{ranged.rcl}}" title="{{ranged.rcl}}" style="text-align:left;" /></td>
                         <td><input type="text" name="data.ranged.{{id}}.st" value="{{ranged.st}}"/></td>
                         <td><a class="ranged-delete" id="ranged{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
+                    </tr>
+                    {{/each}}
+                </table>
+            </div>
+        </div>
+
+        {{!-- Affliction Tab --}}
+        <div class="tab stats" data-tab="affliction" data-group="primary">
+            <h3 class="addAfflictionRow" style="text-align: right;">Add Row</h3>
+            <div class="tab">
+                <table>
+                    <tr class="equipment-header">
+                        <td class="resource-label">Name</td>
+                        <td class="resource-label">Level</td>
+                        <td class="resource-label">Skill Name / Mod</td>
+                        <td class="resource-label">Damage</td>
+                        <td class="resource-label">Type</td>
+                        <td class="resource-label">Divisor</td>
+                        <td class="resource-label">Effect Description</td>
+                        <td class="resource-label">Range Penalties</td>
+                        <td class="resource-label" style="width: 240px">
+                            <span class="tooltip">
+                                Resist With
+                                <span class="tooltiptext" style="margin-left: -100px;">For both Quick Contests and Resistance Rolls.<br>
+                                    Penalty applies to the target's roll in either case.</span>
+                            </span>
+                        </td>
+                        <td class="resource-label">
+                            <span class="tooltip">
+                                Rule Of
+                                <span class="tooltiptext" style="margin-left: -100px;">This should be 13 for Fright and 16 for everything else except in special cases.</span>
+                            </span>
+                        </td>
+                        <td class="resource-label"></td>
+                    </tr>
+                    {{#each data.data.affliction as |affliction id|}}
+                    <tr class="equipment-entry">
+                        <td><input type="text" name="data.affliction.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
+                        <td class="resource-label">{{ranged.level}}</td>
+                        <td class="equipmentInputInput">
+                            <input type="text" name="data.affliction.{{id}}.skill" value="{{affliction.skill}}" title="{{ranged.skill}}" style="text-align:left;" />/
+                            <input type="text" name="data.affliction.{{id}}.skillMod" value="{{affliction.skillMod}}" data-dtype="Number"/>
+                        </td>
+                        <td><input type="text" name="data.affliction.{{id}}.damageInput" value="{{affliction.damageInput}}" title="{{affliction.damageInput}}" style="text-align:left; width: 40px;" /></td>
+                        <td>
+                            <span class="tooltip">
+                                <input type="text" name="data.affliction.{{id}}.damageType" value="{{affliction.damageType}}" title="{{affliction.damageType}}" style="text-align:left; width: 40px;" />
+                                <span class="tooltiptext" style="margin-left: -100px">
+                                    <div>
+                                        <span style="text-decoration: underline">Valid entries are:</span><br>
+                                        burn: Burning<br>
+                                        cor: Corrosion<br>
+                                        cr: Crushing<br>
+                                        cut: Cutting<br>
+                                        fat: Fatigue<br>
+                                        imp: Impaling<br>
+                                        pi-: Small Piercing<br>
+                                        pi: Piercing<br>
+                                        pi+: Large Piercing<br>
+                                        pi++: Huge Piercing<br>
+                                        tox: Toxic<br>
+                                        dam: Untyped<br>
+                                        <span style="text-decoration: underline">Valid modifiers are:</span><br>
+                                        ex: Explosive<br>
+                                        dbk: Double Knockback<br>
+                                        dbt: Double Blunt Trauma<br>
+                                        nw: No Wounding<br>
+                                        la: Large Area Injury<br>
+                                        area: Large Area Injury<br>
+                                    </div>
+                                </span>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="tooltip">
+                                <input type="text" name="data.affliction.{{id}}.armorDivisor" value="{{affliction.armorDivisor}}" title="{{affliction.armorDivisor}}" style="text-align:left; width: 40px;" />
+                                <span class="tooltiptext" style="margin-left: -100px">
+                                    <div>
+                                        Default is 1<br>
+                                        0 makes effective armour infinite<br>
+                                        Using the words 'ignore' or 'cosmic' allows the attack to ignore armour<br>
+                                        Setting this to 'I' will also ignore armour
+                                    </div>
+                                </span>
+                            </span>
+                        </td>
+                        <td><input type="text" name="data.affliction.{{id}}.desc" value="{{desc}}" title="{{desc}}" style="text-align:left;" /></td>
+                        <td class="resource-label">
+                            <select name="data.affliction.{{id}}.rangePenalties">
+                                {{#select affliction.rangePenalties}}
+                                <option value="">Make a Selection</option>
+                                <option value="regular">Regular (-1/yard)</option>
+                                <option value="ssrt">Size/Speed/Range Table</option>
+                                <option value="long">Long Distance Penalties</option>
+                                <option value="none">None</option>
+                                {{/select}}
+                            </select>
+                        </td>
+                        <td style="display: flex; width: 240px" >
+                            <select name="data.affliction.{{id}}.resistanceType">
+                                {{#select affliction.resistanceType}}
+                                <option value="">Make a Selection</option>
+                                <option value="contest">Quick Contest</option>
+                                <option value="resistance">Resistance</option>
+                                <option value="irresistible">Irresistible</option>
+                                {{/select}}
+                            </select>
+                            <select name="data.affliction.{{id}}.resistanceRoll" class="resistanceRoll">
+                                {{#select affliction.resistanceRoll}}
+                                <option value="">None</option>
+                                <option value="Strength">ST</option>
+                                <option value="Dexterity">DX</option>
+                                <option value="Intelligence">IQ</option>
+                                <option value="Health">HT</option>
+                                <option value="Will">Will</option>
+                                <option value="Perception">Per</option>
+                                <option value="Fright">Fright</option>
+                                {{/select}}
+                            </select>
+                            <input type="text" placeholder="-0" name="data.affliction.{{id}}.resistanceRollPenalty" value="{{affliction.resistanceRollPenalty}}" title="{{affliction.resistanceRollPenalty}}" style="text-align:left; width: 40px; margin: unset" />
+                        </td>
+                        <td><input type="text" name="data.affliction.{{id}}.ruleOf" value="{{affliction.ruleOf}}" title="{{affliction.ruleOf}}" style="text-align:left; width: 40px;" /></td>
+                        <td><a class="affliction-delete" id="affliction{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
                     </tr>
                     {{/each}}
                 </table>
