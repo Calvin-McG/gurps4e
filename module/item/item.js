@@ -40,7 +40,6 @@ export class gurpsItem extends Item {
         break;
       case "Spell":
         this._prepareSpellData();
-        this.prepareAfflictionData(itemData, data)
         break;
       case "Trait":
         this._prepareTraitData();
@@ -234,13 +233,32 @@ export class gurpsItem extends Item {
 
         if (this.data.data.affliction) {
           let afflictionKeys = Object.keys(this.data.data.affliction);
-          if (afflictionKeys.length) {//Check to see if there are any melee profiles
+          if (afflictionKeys.length) { // Check to see if there are any affliction profiles
             for (let k = 0; k < afflictionKeys.length; k++) {
-              if (this.data.data.affliction[afflictionKeys[k]].name) {//Check to see if name is filled in. Otherwise don't bother.
+              if (this.data.data.affliction[afflictionKeys[k]].name) { // Check to see if name is filled in. Otherwise don't bother.
 
-                damage = this.damageParseSwThr(this.data.data.affliction[afflictionKeys[k]].damageInput);//Update damage value
+                damage = this.damageParseSwThr(this.data.data.affliction[afflictionKeys[k]].damageInput); // Update damage value
 
-                this.data.data.affliction[afflictionKeys[k]].level = this.data.data.level;
+
+                if (this.data.type == "Spell") {
+                  this.data.data.affliction[afflictionKeys[k]].level = this.data.data.level;
+                }
+                else {
+                  // Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
+                  for (let i = 0; i < this.actor.data.items._source.length; i++) {
+                    if (this.actor.data.items._source[i].type === "Rollable") {
+                      if (this.data.data.affliction[afflictionKeys[k]].skill === this.actor.data.items._source[i].name) {
+                        this.data.data.affliction[afflictionKeys[k]].level = +skillHelpers.computeSkillLevel(this.actor, this.actor.data.items._source[i].data.category,
+                            this.actor.data.items._source[i].data.defaults, this.actor.data.items._source[i].data.difficulty,
+                            this.actor.data.items._source[i].data.baseAttr, this.actor.data.items._source[i].data.baseSkill,
+                            this.actor.data.items._source[i].data.minLevel, this.actor.data.items._source[i].data.maxLevel,
+                            this.actor.data.items._source[i].data.dabblerPoints, this.actor.data.items._source[i].data.points,
+                            this.actor.data.items._source[i].data.mod) + +this.data.data.affliction[afflictionKeys[k]].skillMod;;
+                      }
+                    }
+                  }
+                }
+
                 this.data.data.affliction[afflictionKeys[k]].type = "affliction"; // Update attack type
                 this.data.data.affliction[afflictionKeys[k]].damage = damage;
 
@@ -345,6 +363,4 @@ export class gurpsItem extends Item {
   }
 
   _prepareTraitData() {}
-
-  prepareAfflictionData(itemData, data) {}
 }
