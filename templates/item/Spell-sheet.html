@@ -340,7 +340,8 @@
                         <td class="resource-label">Type</td>
                         <td class="resource-label">Divisor</td>
                         <td class="resource-label">Effect Description</td>
-                        <td class="resource-label">
+                        <td class="resource-label">Range Penalties</td>
+                        <td class="resource-label" style="width: 240px">
                             <span class="tooltip">
                                 Resist With
                                 <span class="tooltiptext" style="margin-left: -100px;">For both Quick Contests and Resistance Rolls.<br>
@@ -400,8 +401,27 @@
                             </span>
                         </td>
                         <td><input type="text" name="data.affliction.{{id}}.desc" value="{{desc}}" title="{{desc}}" style="text-align:left;" /></td>
-                        <td style="display: flex;">
-                            <select name="data.affliction.{{id}}.resistanceRoll">
+                        <td class="resource-label">
+                            <select name="data.affliction.{{id}}.rangePenalties">
+                                {{#select affliction.rangePenalties}}
+                                <option value="">Make a Selection</option>
+                                <option value="regular">Regular (-1/yard)</option>
+                                <option value="ssrt">Size/Speed/Range Table</option>
+                                <option value="long">Long Distance Penalties</option>
+                                <option value="none">None</option>
+                                {{/select}}
+                            </select>
+                        </td>
+                        <td style="display: flex; width: 240px" >
+                            <select name="data.affliction.{{id}}.resistanceType">
+                                {{#select affliction.resistanceType}}
+                                <option value="">Make a Selection</option>
+                                <option value="contest">Quick Contest</option>
+                                <option value="resistance">Resistance</option>
+                                <option value="irresistible">Irresistible</option>
+                                {{/select}}
+                            </select>
+                            <select name="data.affliction.{{id}}.resistanceRoll" class="resistanceRoll">
                                 {{#select affliction.resistanceRoll}}
                                     <option value="">None</option>
                                     <option value="Strength">ST</option>
@@ -413,7 +433,7 @@
                                     <option value="Fright">Fright</option>
                                 {{/select}}
                             </select>
-                            <input type="text" placeholder="-0" name="data.affliction.{{id}}.resistanceRollPenalty" value="{{affliction.resistanceRollPenalty}}" title="{{affliction.resistanceRollPenalty}}" style="text-align:left; width: 40px" />
+                            <input type="text" placeholder="-0" name="data.affliction.{{id}}.resistanceRollPenalty" value="{{affliction.resistanceRollPenalty}}" title="{{affliction.resistanceRollPenalty}}" style="text-align:left; width: 40px; margin: unset" />
                         </td>
                         <td><input type="text" name="data.affliction.{{id}}.ruleOf" value="{{affliction.ruleOf}}" title="{{affliction.ruleOf}}" style="text-align:left; width: 40px;" /></td>
                         <td><a class="affliction-delete" id="affliction{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>

@@ -1690,11 +1690,30 @@ export class gurpsActor extends Actor {
 		console.log(attack);
 		console.log(target);
 
-		let staffLength = game.scenes.get(target.scene.id).tokens.get(attacker.id).actor.data.data.magic.staff;
-		let distanceRaw = Math.round(canvas.grid.measureDistance(attacker, target));
-		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.data.gridUnits);
-		let modifiedDistanceYards = Math.max(distanceYards - staffLength, 0);
-		let distancePenalty = -modifiedDistanceYards;
+		let staffLength = game.scenes.get(target.scene.id).tokens.get(attacker.id).actor.data.data.magic.staff; // Get the length of the player's staff
+		let distanceRaw = Math.round(canvas.grid.measureDistance(attacker, target)); // Get the raw distance between target and attacker
+		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.data.gridUnits); // Convert the raw distance to the distance in yards
+		let modifiedDistanceYards = Math.max(distanceYards - staffLength, 0); // Reduce the distance in yards by the length of the staff
+		let distancePenalty = 0;
+		console.log(attack)
+		console.log(attack.rangePenalties)
+
+		if (attack.rangePenalties == "regular") {
+			distancePenalty = -modifiedDistanceYards; // Regular range penalty is just the distance in yards
+		}
+		else if (attack.rangePenalties == "ssrt") {
+			distancePenalty = distanceHelpers.distancePenalty(modifiedDistanceYards); // Call the distance helper to get the ssrt range penalty
+		}
+		else if (attack.rangePenalties == "long") {
+			distancePenalty = distanceHelpers.longDistancePenalty(modifiedDistanceYards); // Call the distance helper to get the long range penalty
+		}
+		else if (attack.rangePenalties == "none") {
+			distancePenalty = 0;
+		}
+		else {
+			distancePenalty = -modifiedDistanceYards; // If they don't make a selection, assume regular spell penalties
+		}
+
 		let totalModifier = distancePenalty;
 
 		let modModalContent =  "<table>";
@@ -1746,6 +1765,7 @@ export class gurpsActor extends Actor {
 	// On success it provides buttons for the defender to choose from
 	// On a failure it simply reports failure
 	reportAfflictionResult(target, attacker, attack, totalModifiers) {
+		console.log(attack);
 		let label = attacker.data.name + " casts " + attack.weapon + " " + attack.name + " on " + target.data.name + "."; // Label for the roll
 
 		rollHelpers.skillRoll(attack.level, totalModifiers, label, false).then( rollInfo => { // Make the roll
@@ -1757,7 +1777,20 @@ export class gurpsActor extends Actor {
 			}
 			else { // If they succeed
 				messageContent += attacker.data.name + "'s spell succeeds</br>"; // Inform the players
-				messageContent += "</br><input type='button' class='quickContest' value='Quick Contest'/><input type='button' class='attemptResistanceRoll' value='Resistance Roll'/><input type='button' class='noResistanceRoll' value='No Defence'/>" // Present defensive options
+
+				// Build the response options based on the resistance type of the attack
+				if (attack.resistanceType == "contest") { // If they've selected quick contest, only show the quick contest and no defence buttons
+					messageContent += "</br><input type='button' class='quickContest' value='Quick Contest'/><input type='button' class='noResistanceRoll' value='No Defence'/>"
+				}
+				else if (attack.resistanceType == "resistance") { // If they've selected resistance, only show the resistance and no defence buttons
+					messageContent += "</br><input type='button' class='attemptResistanceRoll' value='Resistance Roll'/><input type='button' class='noResistanceRoll' value='No Defence'/>"
+				}
+				else if (attack.resistanceType == "irresistible") { // If they've selected irrisistable, only show the no defence button
+					messageContent += "</br><input type='button' class='noResistanceRoll' value='No Defence'/>"
+				}
+				else { // If they've not set a type, or if there's an issue, show all the buttons and let them pick.
+					messageContent += "</br><input type='button' class='quickContest' value='Quick Contest'/><input type='button' class='attemptResistanceRoll' value='Resistance Roll'/><input type='button' class='noResistanceRoll' value='No Defence'/>"
+				}
 
 				if (rollInfo.crit == true) { // If they crit, pass a note about the effect of crit success
 					messageContent += "<br><br><span style='font-style: italic;'>Important note, criticals have no impact on success/failure of quick contests beyond resulting in a very good or very bad margin of success.<br>" +
