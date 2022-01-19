@@ -104,8 +104,58 @@ export class distanceHelpers {
         return distance;
     }
 
+    // This method returns the normal distance penalty based on the Size/Speed/Range table
     static distancePenalty(distance){
         return Math.min(Math.floor(2 - (6 * Math.log10(distance))),0);
+    }
+
+    // This method takes the distance in yards and returns the long range distance penalty
+    static longDistancePenalty(distance){
+        let penalty = 0;
+        if (distance <= 200){
+            penalty = 0;
+        }
+        else if (distance <= 880){ // Half a mile
+            penalty = -1;
+        }
+        else if (distance <= (1760 * 1)){ // One mile
+            penalty = -2;
+        }
+        else if (distance <= (1760 * 3)){ // Three miles, distance to the horizon for a 6ft humanoid
+            penalty = -3;
+        }
+        else if (distance <= (1760 * 10)){ // Ten miles, distance to the horizon for a warship
+            penalty = -4;
+        }
+        else if (distance <= (1760 * 30)){ // Thirty miles
+            penalty = -5;
+        }
+        else if (distance <= (1760 * 100)){
+            penalty = -6;
+        }
+        else if (distance <= (1760 * 300)){
+            penalty = -7;
+        }
+        else if (distance <= (1760 * 1000)){
+            penalty = -8;
+        }
+        else if (distance <= (1760 * 3000)){
+            penalty = -9;
+        }
+        else if (distance <= (1760 * 10000)){ // Less than half the circumference of the earth (12,450 miles)
+            penalty = -10;
+        }
+        else if (distance <= (1760 * 30000)){ // Greater than the circumference of the earth (24,901 miles)
+            penalty = -11;
+        }
+        else if (distance <= (1760 * 100000)){
+            penalty = -12;
+        }
+        else if (distance <= (1760 * 300000)){ // Distance from the centre of the earth to the centre of the moon (238,855 miles)
+            penalty = -13;
+        }
+
+        return penalty;
     }
 
     static sizeToDistance(sm){
