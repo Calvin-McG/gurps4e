@@ -629,7 +629,12 @@ export class attributeHelpers {
     }
 
     static calcStOrHt(attribute, smDiscount){
-        return +10 + +attribute.mod + +Math.floor(attribute.points / +(+10 * +smDiscount));
+        if (smDiscount) {
+            return +10 + +attribute.mod + +Math.floor(+attribute.points / +(+10 * +smDiscount));
+        }
+        else {
+            return +10 + +attribute.mod + +Math.floor(+attribute.points / +(+10 * +1));
+        }
     }
 
     static calcDxOrIq(attribute){
@@ -657,11 +662,21 @@ export class attributeHelpers {
     }
 
     static calcLiftingSt(st, lifting, smDiscount){
-        return +st + +lifting.mod + +Math.floor(lifting.points / +( +3 * +smDiscount));
+        if (smDiscount) {
+            return +st + +lifting.mod + +Math.floor(lifting.points / +( +3 * +smDiscount));
+        }
+        else {
+            return +st + +lifting.mod + +Math.floor(lifting.points / +( +3 * +1));
+        }
     }
 
     static calcStrikingSt(st, striking, smDiscount){
-        return +st + +striking.mod + +Math.floor(striking.points / +(+5 * +smDiscount));
+        if (smDiscount) {
+            return +st + +striking.mod + +Math.floor(striking.points / +(+5 * +smDiscount));
+        }
+        else {
+            return +st + +striking.mod + +Math.floor(striking.points / +(+5 * +1));
+        }
     }
 
     static calcHealthSubdue(ht, subdue){
