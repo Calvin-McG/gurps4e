@@ -402,9 +402,7 @@ export class gurpsItemSheet extends ItemSheet {
             bodyObj.neck = this.addNeck();
         }
 
-        this.item.update({ "data.armour.bodyType.-=body" : null}).then( item => {// Remove the old body
-            this.item.update({ "data.armour.bodyType.body" : bodyObj }) // Add the new body
-        });
+        this.item.update({ "data.armour.bodyType.body" : bodyObj }) // Add the new body
     }
 
     addSkull() {
