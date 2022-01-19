@@ -63,8 +63,6 @@ export class gurpsActor extends Actor {
 
 		//Recalculate encumbrance values, along with effective dodge and move. Do this last so move and dodge is correct.
 		this.recalcEncValues();
-
-		console.log(this)
 	}
 
 	checkUndefined(){
