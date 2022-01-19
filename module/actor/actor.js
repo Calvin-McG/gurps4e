@@ -1686,17 +1686,11 @@ export class gurpsActor extends Actor {
 	}
 
 	afflictionOnTarget(attacker, attack, target) {
-		console.log(attacker);
-		console.log(attack);
-		console.log(target);
-
 		let staffLength = game.scenes.get(target.scene.id).tokens.get(attacker.id).actor.data.data.magic.staff; // Get the length of the player's staff
 		let distanceRaw = Math.round(canvas.grid.measureDistance(attacker, target)); // Get the raw distance between target and attacker
 		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.data.gridUnits); // Convert the raw distance to the distance in yards
 		let modifiedDistanceYards = Math.max(distanceYards - staffLength, 0); // Reduce the distance in yards by the length of the staff
 		let distancePenalty = 0;
-		console.log(attack)
-		console.log(attack.rangePenalties)
 
 		if (attack.rangePenalties == "regular") {
 			distancePenalty = -modifiedDistanceYards; // Regular range penalty is just the distance in yards
@@ -1765,7 +1759,6 @@ export class gurpsActor extends Actor {
 	// On success it provides buttons for the defender to choose from
 	// On a failure it simply reports failure
 	reportAfflictionResult(target, attacker, attack, totalModifiers) {
-		console.log(attack);
 		let label = attacker.data.name + " casts " + attack.weapon + " " + attack.name + " on " + target.data.name + "."; // Label for the roll
 
 		rollHelpers.skillRoll(attack.level, totalModifiers, label, false).then( rollInfo => { // Make the roll

@@ -1376,8 +1376,6 @@ export class actorHelpers {
     }
 
     static fetchStat(actor, stat) { // Actor should be the actor object, stat should be the string name of the stat in question.
-        console.log(actor);
-        console.log(stat);
 
         if (stat.toLowerCase() == "strength" || stat.toLowerCase() == "st") {
             let smDiscount = attributeHelpers.calcSMDiscount(actor.data.data.bio.sm)
