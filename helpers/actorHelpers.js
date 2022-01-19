@@ -1380,7 +1380,8 @@ export class actorHelpers {
         console.log(stat);
 
         if (stat.toLowerCase() == "strength" || stat.toLowerCase() == "st") {
-            return attributeHelpers.calcStOrHt(actor.data.data.primaryAttributes.strength);
+            let smDiscount = attributeHelpers.calcSMDiscount(actor.data.data.bio.sm)
+            return attributeHelpers.calcStOrHt(actor.data.data.primaryAttributes.strength, smDiscount);
         }
         else if (stat.toLowerCase() == "dexterity" || stat.toLowerCase() == "dx") {
             return attributeHelpers.calcDxOrIq(actor.data.data.primaryAttributes.dexterity);
