@@ -59,7 +59,136 @@ export class gurpsItemSheet extends ItemSheet {
         html.find('.default-delete').click(this._onDeleteDefaultRow.bind(this));
 
         // Update body type
-        html.find('.bodyType').change(this._onBodyTypeChange.bind(this))
+        html.find('.bodyType').change(this._onBodyTypeChange.bind(this));
+
+        html.find('.subLocationDRUp').click(this._subLocationDRUp.bind(this));
+        html.find('.subLocationDRDown').click(this._subLocationDRDown.bind(this));
+
+        html.find('.locationDRUp').click(this._locationDRUp.bind(this));
+        html.find('.locationDRDown').click(this._locationDRDown.bind(this));
+
+        html.find('.burnDRUp').click(   this._burnDRUp.bind(this));
+        html.find('.burnDRDown').click( this._burnDRDown.bind(this));
+        html.find('.corDRUp').click(   this._corDRUp.bind(this));
+        html.find('.corDRDown').click( this._corDRDown.bind(this));
+        html.find('.crDRUp').click(   this._crDRUp.bind(this));
+        html.find('.crDRDown').click( this._crDRDown.bind(this));
+        html.find('.cutDRUp').click(   this._cutDRUp.bind(this));
+        html.find('.cutDRDown').click( this._cutDRDown.bind(this));
+        html.find('.fatDRUp').click(   this._fatDRUp.bind(this));
+        html.find('.fatDRDown').click( this._fatDRDown.bind(this));
+        html.find('.impDRUp').click(   this._impDRUp.bind(this));
+        html.find('.impDRDown').click( this._impDRDown.bind(this));
+        html.find('.piDRUp').click(   this._piDRUp.bind(this));
+        html.find('.piDRDown').click( this._piDRDown.bind(this));
+        html.find('.toxDRUp').click(   this._toxDRUp.bind(this));
+        html.find('.toxDRDown').click( this._toxDRDown.bind(this));
+    }
+
+    _locationDRUp(event) {
+        this.alterLocationDR(event, 1);
+    }
+    _locationDRDown(event) {
+        this.alterLocationDR(event, -1);
+    }
+
+    _subLocationDRUp(event) {
+        this.alterLocationDR(event, 1);
+    }
+    _subLocationDRDown(event) {
+        this.alterLocationDR(event, -1);
+    }
+
+    _burnDRUp(event) {
+        this.alterLocationDR(event, 1, "burn");
+    }
+    _burnDRDown(event) {
+        this.alterLocationDR(event, -1, "burn");
+    }
+    _corDRUp(event) {
+        this.alterLocationDR(event, 1, "cor");
+    }
+    _corDRDown(event) {
+        this.alterLocationDR(event, -1, "cor");
+    }
+    _crDRUp(event) {
+        this.alterLocationDR(event, 1, "cr");
+    }
+    _crDRDown(event) {
+        this.alterLocationDR(event, -1, "cr");
+    }
+    _cutDRUp(event) {
+        this.alterLocationDR(event, 1, "cut");
+    }
+    _cutDRDown(event) {
+        this.alterLocationDR(event, -1, "cut");
+    }
+    _fatDRUp(event) {
+        this.alterLocationDR(event, 1, "fat");
+    }
+    _fatDRDown(event) {
+        this.alterLocationDR(event, -1, "fat");
+    }
+    _impDRUp(event) {
+        this.alterLocationDR(event, 1, "imp");
+    }
+    _impDRDown(event) {
+        this.alterLocationDR(event, -1, "imp");
+    }
+    _piDRUp(event) {
+        this.alterLocationDR(event, 1, "pi");
+    }
+    _piDRDown(event) {
+        this.alterLocationDR(event, -1, "pi");
+    }
+    _toxDRUp(event) {
+        this.alterLocationDR(event, 1, "tox");
+    }
+    _toxDRDown(event) {
+        this.alterLocationDR(event, -1, "tox");
+    }
+
+    alterLocationDR(event, mult, type){ // Event passes the event from the original method, and the mult is the positive or negative change desired.
+        let modifier = mult; // This multiplier is applied to the final change to DR.
+
+        // Each modifier key applies it's own stacking multiplier
+        if (event.altKey) {
+            modifier = modifier * 2;
+        }
+        if (event.shiftKey) {
+            modifier = modifier * 10;
+        }
+        if (event.ctrlKey) {
+            modifier = modifier * 5;
+        }
+
+        let locationDRBlock = getProperty(this.object.data,event.currentTarget.id);
+
+        if (locationDRBlock.subLocation) { // The location has sub locations
+            let locationKeys = Object.keys(locationDRBlock.subLocation);
+            for (let d = 0; d < locationKeys.length; d++) {
+                getProperty(locationDRBlock.subLocation, locationKeys[d]).drBurn += +modifier
+                getProperty(locationDRBlock.subLocation, locationKeys[d]).drCor += +modifier
+                getProperty(locationDRBlock.subLocation, locationKeys[d]).drCr += +modifier
+                getProperty(locationDRBlock.subLocation, locationKeys[d]).drCut += +modifier
+                getProperty(locationDRBlock.subLocation, locationKeys[d]).drFat += +modifier
+                getProperty(locationDRBlock.subLocation, locationKeys[d]).drImp += +modifier
+                getProperty(locationDRBlock.subLocation, locationKeys[d]).drPi += +modifier
+                getProperty(locationDRBlock.subLocation, locationKeys[d]).drTox += +modifier
+            }
+        }
+        else { // The location has no sub locations
+            locationDRBlock.drBurn += +modifier
+            locationDRBlock.drCor += +modifier
+            locationDRBlock.drCr += +modifier
+            locationDRBlock.drCut += +modifier
+            locationDRBlock.drFat += +modifier
+            locationDRBlock.drImp += +modifier
+            locationDRBlock.drPi += +modifier
+            locationDRBlock.drTox += +modifier
+        }
+
+        this.item.update({ [event.currentTarget.id]: locationDRBlock });
     }
 
     _onAddRow(event) {
