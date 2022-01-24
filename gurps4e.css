@@ -1739,3 +1739,8 @@ attribute-senses {
 .item-college {
 	width: 11em;
 }
+
+.dr-damage-type-buttons {
+	display: flex;
+	justify-content: space-around;
+}
