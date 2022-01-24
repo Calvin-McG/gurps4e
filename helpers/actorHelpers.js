@@ -29,7 +29,8 @@ export class actorHelpers {
             drHardening: 1,
             penaltyFront: -7,
             penaltyBack: -5,
-            weight: 0.01851851852,
+            weightFront: 0.01851851852,
+            weightBack: 0.02777777778,
             flexible: false
         };
         return part;
@@ -62,7 +63,8 @@ export class actorHelpers {
             drHardening: 1,
             penaltyFront: -7,
             penaltyBack: -5,
-            weight: 0.01851851852,
+            weightFront: 0.01851851852,
+            weightBack: 0.02777777778,
             flexible: false
         };
         return part;
@@ -85,8 +87,10 @@ export class actorHelpers {
             id: id,
             penaltyFront: -5,
             penaltyBack: -7,
-            weight: 0.02777777778,
-            totalSubWeight: 1,
+            weightFront: 0.02777777778,
+            weightBack: 0.01851851852,
+            totalSubWeightFront: 1,
+            totalSubWeightBack: 1,
             subLocation: {
                 jaw: {
                     label: "Jaw",
@@ -114,7 +118,8 @@ export class actorHelpers {
                     drHardening: 1,
                     penaltyFront: -6,
                     penaltyBack: -6,
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 1/6,
                     flexible: false
                 },
                 nose: {
@@ -143,7 +148,8 @@ export class actorHelpers {
                     drHardening: 1,
                     penaltyFront: -7,
                     penaltyBack: -7,
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 1/6,
                     hp: {
                         max: partHp,
                         state: "Fine",
@@ -177,7 +183,8 @@ export class actorHelpers {
                     drHardening: 1,
                     penaltyFront: -7,
                     penaltyBack: -7,
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 1/6,
                     hp: {
                         max: partHp,
                         state: "Fine",
@@ -211,7 +218,8 @@ export class actorHelpers {
                     drHardening: 1,
                     penaltyFront: -6,
                     penaltyBack: -6,
-                    weight: 2/6,
+                    weightFront: 2/6,
+                    weightBack: 2/6,
                     flexible: false
                 },
                 eyes: { // Kromm's ruling on eyes http://forums.sjgames.com/showpost.php?p=733298&postcount=33
@@ -240,7 +248,8 @@ export class actorHelpers {
                     drHardening: 1,
                     penaltyFront: -9,
                     penaltyBack: -9,
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 1/6,
                     hp: {
                         max: eyeHp,
                         state: "Fine",
@@ -270,8 +279,9 @@ export class actorHelpers {
             id: id,
             penaltyFront: -2,
             penaltyBack: -2,
-            weight: 0.1412037037,
-            totalSubWeight: 1,
+            weightFront: 0.1412037037,
+            totalSubWeightFront: 1,
+            totalSubWeightBack: 1,
             hp: {
                 max: partHp,
                 state: "Fine",
@@ -305,7 +315,8 @@ export class actorHelpers {
                     drHardening: 1,
                     penaltyFront: -4,
                     penaltyBack: -4,
-                    weight: 3/6,
+                    weightFront: 3/6,
+                    weightBack: 3/6,
                     flexible: false
                 },
                 thigh: {
@@ -334,7 +345,8 @@ export class actorHelpers {
                     drHardening: 1,
                     penaltyFront: -5,
                     penaltyBack: -5,
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 1/6,
                     flexible: false
                 },
                 insideThigh: {
@@ -363,7 +375,8 @@ export class actorHelpers {
                     drHardening: 1,
                     penaltyFront: -8,
                     penaltyBack: -3,
-                    weight: 0,
+                    weightFront: 0,
+                    weightBack: 0,
                     flexible: false
                 },
                 knee: {
@@ -392,7 +405,8 @@ export class actorHelpers {
                     drHardening: 1,
                     penaltyFront: -5,
                     penaltyBack: -5,
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 1/6,
                     hp: {
                         max: jointHp,
                         state: "Fine",
@@ -426,7 +440,8 @@ export class actorHelpers {
                     drHardening: 1,
                     penaltyFront: -8,
                     penaltyBack: -8,
-                    weight: 0,
+                    weightFront: 0,
+                    weightBack: 0,
                     flexible: false
                 },
                 artery: {
@@ -455,7 +470,7 @@ export class actorHelpers {
                     drHardening: 1,
                     penaltyFront: -5,
                     penaltyBack: -5,
-                    weight: 1/6,
+                    weightFront: 1/6,
                     flexible: false
                 }
             }
@@ -476,8 +491,10 @@ export class actorHelpers {
             id: id,
             penaltyFront: -2,
             penaltyBack: -2,
-            weight: 0.106481481,
-            totalSubWeight: 1,
+            weightFront: 0.106481481,
+            weightBack: 0.106481481,
+            totalSubWeightFront: 1,
+            totalSubWeightBack: 1,
             hp: {
                 max: partHp,
                 state: "Fine",
@@ -511,7 +528,8 @@ export class actorHelpers {
                     drHardening: 1,
                     penaltyFront: -3,
                     penaltyBack: -3,
-                    weight: 5/6,
+                    weightFront: 5/6,
+                    weightBack: 5/6,
                     flexible: false
                 },
                 shoulder: {
@@ -540,7 +558,8 @@ export class actorHelpers {
                     personalWoundMultTox: 1,
                     personalWoundMultTbb: 1.5,
                     drHardening: 1,
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 1/6,
                     flexible: false
                 }
             }
@@ -566,8 +585,10 @@ export class actorHelpers {
             id: id,
             penaltyFront: -2,
             penaltyBack: -2,
-            weight: 0.106481481,
-            totalSubWeight: 1,
+            weightFront: 0.106481481,
+            weightBack: 0.106481481,
+            totalSubWeightFront: 1,
+            totalSubWeightBack: 1,
             hp: {
                 max: partHp,
                 state: "Fine",
@@ -601,7 +622,8 @@ export class actorHelpers {
                     drHardening: 1,
                     penaltyFront: -4,
                     penaltyBack: -4,
-                    weight: 3/6,
+                    weightFront: 3/6,
+                    weightBack: 3/6,
                     flexible: false
                 },
                 upperArm: {
@@ -630,7 +652,8 @@ export class actorHelpers {
                     drHardening: 1,
                     penaltyFront: -5,
                     penaltyBack: -5,
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 1/6,
                     flexible: false
                 },
                 elbow: {
@@ -659,7 +682,8 @@ export class actorHelpers {
                     drHardening: 1,
                     penaltyFront: -5,
                     penaltyBack: -5,
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 1/6,
                     hp: {
                         max: jointHp,
                         state: "Fine",
@@ -693,7 +717,8 @@ export class actorHelpers {
                     drHardening: 1,
                     penaltyFront: -8,
                     penaltyBack: -8,
-                    weight: 0,
+                    weightFront: 0,
+                    weightBack: 0,
                     flexible: false
                 },
                 shoulder: {
@@ -701,7 +726,8 @@ export class actorHelpers {
                     id: id + ".subLocation.shoulder",
                     penaltyFront: -5,
                     penaltyBack: -5,
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 1/6,
                     drBurn: "",
                     drCor: "",
                     drCr: "",
@@ -730,7 +756,8 @@ export class actorHelpers {
                     id: id + ".subLocation.armpit",
                     penaltyFront: -8,
                     penaltyBack: -8,
-                    weight: 0,
+                    weightFront: 0,
+                    weightBack: 0,
                     drBurn: "",
                     drCor: "",
                     drCr: "",
@@ -769,8 +796,10 @@ export class actorHelpers {
             id: id,
             penaltyFront: -1,
             penaltyBack: -1,
-            weight: 0.12037037,
-            totalSubWeight: 1,
+            weightFront: 0.12037037,
+            weightBack: 0.12037037,
+            totalSubWeightFront: 1,
+            totalSubWeightBack: 1,
             flexible: false,
             subLocation: {
                 chest: {
@@ -799,7 +828,8 @@ export class actorHelpers {
                     drHardening: 1,
                     penaltyFront: -1,
                     penaltyBack: -1,
-                    weight: 5/6,
+                    weightFront: 5/6,
+                    weightBack: 5/6,
                     flexible: false
                 },
                 vitals: {
@@ -828,7 +858,8 @@ export class actorHelpers {
                     personalWoundMultTox: 1,
                     personalWoundMultTbb: 2,
                     drHardening: 1,
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 0,
                     flexible: false
                 },
                 spine: {
@@ -857,7 +888,8 @@ export class actorHelpers {
                     personalWoundMultTox: 1,
                     personalWoundMultTbb: 1,
                     drHardening: 1,
-                    weight: 0,
+                    weightFront: 0,
+                    weightBack: 1/6,
                     hp: {
                         max: spineHp,
                         state: "Fine",
@@ -878,8 +910,10 @@ export class actorHelpers {
             id: id,
             penaltyFront: -1,
             penaltyBack: -1,
-            weight: 0.12037037,
-            totalSubWeight: 1,
+            weightFront: 0.12037037,
+            weightBack: 0.12037037,
+            totalSubWeightFront: 1,
+            totalSubWeightBack: 1,
             flexible: false,
             subLocation: {
                 chest: {
@@ -908,7 +942,8 @@ export class actorHelpers {
                     drHardening: 1,
                     penaltyFront: -1,
                     penaltyBack: -1,
-                    weight: 5/6,
+                    weightFront: 5/6,
+                    weightBack: 5/6,
                     flexible: false
                 },
                 vitals: {
@@ -937,7 +972,8 @@ export class actorHelpers {
                     personalWoundMultTox: 1,
                     personalWoundMultTbb: 2,
                     drHardening: 1,
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 1/6,
                     flexible: false
                 }
             }
@@ -958,8 +994,10 @@ export class actorHelpers {
             id: id,
             penaltyFront: -1,
             penaltyBack: -1,
-            weight: 0.125,
-            totalSubWeight: 5/6,
+            weightFront: 0.125,
+            weightBack: 0.125,
+            totalSubWeightFront: 5/6,
+            totalSubWeightBack: 5/6,
             flexible: false,
             subLocation: {
                 digestiveTract: {
@@ -988,7 +1026,8 @@ export class actorHelpers {
                     personalWoundMultTox: 1,
                     personalWoundMultTbb: 1,
                     drHardening: 1,
-                    weight: 3/6,
+                    weightFront: 3/6,
+                    weightBack: 3/6,
                     flexible: false
                 },
                 vitals: {
@@ -1017,7 +1056,8 @@ export class actorHelpers {
                     personalWoundMultTox: 1,
                     personalWoundMultTbb: 2,
                     drHardening: 1,
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 1/6,
                     flexible: false
                 },
                 pelvis: {
@@ -1046,7 +1086,8 @@ export class actorHelpers {
                     personalWoundMultTox: 1,
                     personalWoundMultTbb: 1,
                     drHardening: 1,
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 1/6,
                     hp: {
                         max: pelvisHp,
                         state: "Fine",
@@ -1072,8 +1113,10 @@ export class actorHelpers {
             id: id,
             penaltyFront: -1,
             penaltyBack: -1,
-            weight: 0.125,
-            totalSubWeight: 1,
+            weightFront: 0.125,
+            weightBack: 0.125,
+            totalSubWeightFront: 1,
+            totalSubWeightBack: 1,
             flexible: false,
             subLocation: {
                 digestiveTract: {
@@ -1102,7 +1145,8 @@ export class actorHelpers {
                     personalWoundMultTox: 1,
                     personalWoundMultTbb: 1,
                     drHardening: 1,
-                    weight: 3/6,
+                    weightFront: 3/6,
+                    weightBack: 3/6,
                     flexible: false
                 },
                 vitals: {
@@ -1131,7 +1175,8 @@ export class actorHelpers {
                     personalWoundMultTox: 1,
                     personalWoundMultTbb: 2,
                     drHardening: 1,
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 1/6,
                     flexible: false
                 },
                 pelvis: {
@@ -1165,7 +1210,8 @@ export class actorHelpers {
                         state: "Fine",
                         value: actorData.bodyType.body[id].subLocation.pelvis.hp.value ? actorData.bodyType.body[id].subLocation.pelvis.hp.value : pelvisHp
                     },
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 1/6,
                     flexible: false
                 },
                 groin: {
@@ -1194,7 +1240,8 @@ export class actorHelpers {
                     personalWoundMultTox: 1,
                     personalWoundMultTbb: 1,
                     drHardening: 1,
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 1/6,
                     flexible: false
                 }
             }
@@ -1232,8 +1279,10 @@ export class actorHelpers {
             id: id,
             penaltyFront: -4,
             penaltyBack: -4,
-            weight: weight,
-            totalSubWeight: 1,
+            weightFront: weight,
+            weightBack: weight,
+            totalSubWeightFront: 1,
+            totalSubWeightBack: 1,
             hp: {
                 max: partHp,
                 state: "Fine",
@@ -1267,7 +1316,8 @@ export class actorHelpers {
                     personalWoundMultTox: 1,
                     personalWoundMultTbb: 1,
                     drHardening: 1,
-                    weight: 5/6,
+                    weightFront: 5/6,
+                    weightBack: 5/6,
                     flexible: false
                 },
                 extremityInterior: {
@@ -1296,7 +1346,8 @@ export class actorHelpers {
                     personalWoundMultTox: 1,
                     personalWoundMultTbb: 1,
                     drHardening: 1,
-                    weight: 0,
+                    weightFront: 0,
+                    weightBack: 0,
                     flexible: false
                 },
                 joint: {
@@ -1330,7 +1381,8 @@ export class actorHelpers {
                         state: "Fine",
                         value: actorData.bodyType.body[id].subLocation.joint.hp.value ? actorData.bodyType.body[id].subLocation.joint.hp.value : jointHp
                     },
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 1/6,
                     flexible: false
                 }
             }
@@ -1345,8 +1397,10 @@ export class actorHelpers {
             id: id,
             penaltyFront: -5,
             penaltyBack: -5,
-            weight: 0.018518519,
-            totalSubWeight: 1,
+            weightFront: 0.018518519,
+            weightBack: 0.018518519,
+            totalSubWeightFront: 1,
+            totalSubWeightBack: 1,
             flexible: false,
             subLocation: {
                 neck: {
@@ -1375,7 +1429,8 @@ export class actorHelpers {
                     personalWoundMultTox: 1,
                     personalWoundMultTbb: 1,
                     drHardening: 1,
-                    weight: 5/6,
+                    weightFront: 5/6,
+                    weightBack: 5/6,
                     flexible: false
                 },
                 vein: {
@@ -1404,7 +1459,8 @@ export class actorHelpers {
                     personalWoundMultTox: 1,
                     personalWoundMultTbb: 1.5,
                     drHardening: 1,
-                    weight: 1/6,
+                    weightFront: 1/6,
+                    weightBack: 1/6,
                     flexible: false
                 }
             }

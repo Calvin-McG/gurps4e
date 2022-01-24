@@ -481,19 +481,22 @@ export class gurpsActor extends Actor {
 					}
 
 					let bodyParts = Object.keys(bodyObj);
-					let totalWeight = 0;
+					let totalWeightFront = 0;
+					let totalWeightBack = 0;
 
 					for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
 						let part = getProperty(bodyObj, bodyParts[i])
 						if (typeof part.weight != "undefined"){
-							totalWeight += part.weight;
+							totalWeightFront += part.weightFront;
+							totalWeightBack += part.weightBack;
 						}
 						else {
 							console.error(this.data.name + " needs to refresh their body type");
 						}
 					}
 					this.data.data.bodyType.body = bodyObj; // Set the body to the new body type that was just assembled.
-					this.data.data.bodyType.totalWeight = totalWeight // Set the weight to the weight of all the assembled parts
+					this.data.data.bodyType.totalWeightFront = totalWeightFront // Set the weight to the weight of all the assembled parts
+					this.data.data.bodyType.totalWeightBack = totalWeightBack // Set the weight to the weight of all the assembled parts
 				}
 			}
 		}
@@ -2012,9 +2015,9 @@ export class gurpsActor extends Actor {
 	selectedRandom(target, attacker, attack, relativePosition, rof) { // Select random hit location
 		let locations = [];
 		for (let i = 0; i < rof.rof; i++){ // Find a different hit location for each shot
-			let generalLocation = this.randomHitLocation(target) // Select a random location
+			let generalLocation = this.randomHitLocation(target, relativePosition) // Select a random location
 			if (generalLocation.subLocation){ // Check to see if there are sub locations
-				let specificLocation = this.randomComplexHitLocation(generalLocation); // Get the sub location
+				let specificLocation = this.randomComplexHitLocation(generalLocation, relativePosition); // Get the sub location
 				locations[i] = specificLocation;
 			}
 			else {
@@ -2030,7 +2033,7 @@ export class gurpsActor extends Actor {
 		for (let i = 0; i < rof.rof; i++){ // Find a different hit location for each shot
 			let generalLocation = this.randomTorsoLocation(target); // Generate a random location from the list of torso locations
 			if (generalLocation.subLocation){ // Check to see if there are sub locations
-				let specificLocation = this.randomComplexHitLocation(generalLocation); // Get the sub location
+				let specificLocation = this.randomComplexHitLocation(generalLocation, relativePosition); // Get the sub location
 				locations[i] = specificLocation;
 			}
 			else {
@@ -2048,7 +2051,7 @@ export class gurpsActor extends Actor {
 			let generalLocation = getProperty(target.actor.data.data.bodyType.body, locationHit); // Get specific hit location
 
 			if (generalLocation.subLocation){ // Check to see if there are sub locations
-				let specificLocation = this.randomComplexHitLocation(generalLocation); // Get the sub location
+				let specificLocation = this.randomComplexHitLocation(generalLocation, relativePosition); // Get the sub location
 				locations[i] = specificLocation;
 			}
 			else {
@@ -2153,17 +2156,30 @@ export class gurpsActor extends Actor {
 		}
 	}
 
-	randomHitLocation(target){
+	randomHitLocation(target, relativePosition){
 		let targetBody = target.actor.data.data.bodyType;
 		let bodyParts = Object.keys(targetBody.body);
-		let roll = Math.random() * (targetBody.totalWeight - 0) + 0; // Roll a number between 0 and the target's total weight.
+
+		let roll;
+		if (relativePosition[1] == 1) { // If the target is facing the attacker
+			roll = Math.random() * (targetBody.totalWeightFront - 0) + 0; // Roll a number between 0 and the target's total front weight.
+		}
+		else { // If the target is facing away from the attacker
+			roll = Math.random() * (targetBody.totalWeightBack - 0) + 0; // Roll a number between 0 and the target's total back weight.
+		}
+
 		let part;
 
 		let i = -1;
 		do {
 			i += 1; // Itterate the index
 			part = getProperty(targetBody.body, bodyParts[i]); // Get the part for the current index
-			roll -= part.weight; // Subtract it's weight from the rolled weight
+			if (relativePosition[1] == 1) { // If the target is facing the attacker
+				roll -= part.weightFront; // Subtract it's weight from the rolled weight
+			}
+			else {
+				roll -= part.weightBack; // Subtract it's weight from the rolled weight
+			}
 		} while (roll > 0) // If the roll drops below zero, stop looping
 
 		let location = part; // Whatever the last part we accessed is the 'rolled' part.
@@ -2187,16 +2203,29 @@ export class gurpsActor extends Actor {
 		return getProperty(targetBody.body, torsoParts[torsoPartsIndex]);
 	}
 
-	randomComplexHitLocation(generalLocation){
+	randomComplexHitLocation(generalLocation, relativePosition){
 		let subLocations = Object.keys(generalLocation.subLocation);
-		let roll = Math.random() * (generalLocation.totalSubWeight - 0) + 0; // Roll a number between 0 and the target's total weight.
+
+		let roll;
+		if (relativePosition[1] == 1) { // If the target is facing the attacker
+			roll = Math.random() * (generalLocation.totalSubWeightFront - 0) + 0; // Roll a number between 0 and the target's total front weight.
+		}
+		else { // If the target is facing away from the attacker
+			roll = Math.random() * (generalLocation.totalSubWeightBack - 0) + 0; // Roll a number between 0 and the target's total back weight.
+		}
+
 		let part;
 
 		let i = -1;
 		do {
 			i += 1; // Itterate the index
 			part = getProperty(generalLocation.subLocation, subLocations[i]); // Get the part for the current index
-			roll -= part.weight; // Subtract it's weight from the rolled weight
+			if (relativePosition[1] == 1) { // If the target is facing the attacker
+				roll -= part.weightFront; // Subtract it's weight from the rolled weight
+			}
+			else {
+				roll -= part.weightBack; // Subtract it's weight from the rolled weight
+			}
 		} while (roll > 0) // If the roll drops below zero, stop looping
 
 		let subLocation = part; // Whatever the last part we accessed is the 'rolled' part.
