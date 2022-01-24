@@ -3007,10 +3007,16 @@ export class gurpsActor extends Actor {
 
 			let drLayers = Object.keys(location.dr)
 
+
+			let drDamageType = damageType.type;
+			if (drDamageType == "tbb") { // For the purposes of DR only, set tbb attacks equivilent to burn since tbb still uses burning DR
+				drDamageType = "burn";
+			}
+
 			// Loop through the armour and take DR away from the damage dealt
 			for (let d = 0; d < drLayers.length; d++){
-				let dr = getProperty(location.dr[d], damageType.type)
-				let effectiveDR = 0
+				let dr = getProperty(location.dr[d], drDamageType);
+				let effectiveDR = 0;
 				if (armourDivisor.toString().toLowerCase() == "ignores armour") { // If the armour divisor is set to ignore armour then effective DR is zero.
 					effectiveDR = 0
 				}
@@ -3272,6 +3278,10 @@ export class gurpsActor extends Actor {
 		else if (attack.damageType.toLowerCase().includes("tox")) {
 			damageType.type = "tox"
 			damageType.woundModId = "personalWoundMultTox";
+		}
+		else if (attack.damageType.toLowerCase().includes("tbb")) {
+			damageType.type = "tbb"
+			damageType.woundModId = "personalWoundMultTbb";
 		}
 		else if (attack.damageType.toLowerCase().includes("dam")) {
 			damageType.type = "dam"
