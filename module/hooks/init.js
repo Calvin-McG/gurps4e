@@ -74,16 +74,6 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  // Register Harsh Thigh Gap option
-  game.settings.register("gurps4e", "harshThighGap", {
-    name: "Thigh gap over artery - WIP",
-    hint: "The 'Inside Thigh' gap lets cut, imp, pi, and tbb hit the artery instead of the thigh.",
-    scope: "world",
-    config: true,
-    default: false,
-    type: Boolean
-  });
-
   // How to get the user who owns the actor: game.users.get((Object.keys(game.actors.getName("character name goes here").data.permission)[1])).data.name
   // game.settings.register("gurps4e", "bretMode", {
   //   name: "Bret Mode",
