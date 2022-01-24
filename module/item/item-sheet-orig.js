@@ -52,7 +52,7 @@ export class gurpsItemSheet extends ItemSheet {
         html.find('.addAfflictionRow').click(this._onAddAfflictionRow.bind(this));
         html.find('.addDefaultRow').click(this._onAddDefaultRow.bind(this));
 
-        //User clicked delete thingy on the row
+        // User clicked delete thingy on the row
         html.find('.attack-delete').click(this._onDeleteRow.bind(this));
         html.find('.ranged-delete').click(this._onDeleteRangedRow.bind(this));
         html.find('.affliction-delete').click(this._onDeleteAfflictionRow.bind(this));
@@ -133,23 +133,131 @@ export class gurpsItemSheet extends ItemSheet {
     }
 
     _onDeleteRow(event) {
-        let id = event.currentTarget.id.substring(6);
-        this.item.update({ ["data.melee.-=" + id] : null});
+        let confirmationModal = new Dialog({
+            title: "Are you sure?",
+            content: "<div style='width: 100%; text-align: center'>Are you sure?</div>",
+            buttons: {
+                delete: {
+                    icon: '<i class="fas fa-trash"></i>',
+                    label: "Delete",
+                    callback: () => {
+                        let id = event.currentTarget.id.substring(6);
+                        this.item.update({ ["data.melee.-=" + id] : null});
+                    }
+                },
+                cancel: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: "Cancel",
+                    callback: () => {
+
+                    }
+                },
+            },
+            default: "cancel",
+            render: html => console.info("Register interactivity in the rendered dialog"),
+            close: html => console.info("This always is logged no matter which option is chosen")
+        },{
+            resizable: true,
+            width: "250"
+        })
+
+        confirmationModal.render(true);
     }
 
     _onDeleteRangedRow(event) {
-        let id = event.currentTarget.id.substring(6);
-        this.item.update({ ["data.ranged.-=" + id] : null});
+        let confirmationModal = new Dialog({
+            title: "Are you sure?",
+            content: "",
+            buttons: {
+                delete: {
+                    icon: '<i class="fas fa-trash" style=\'width: 100%; text-align: center\'></i>',
+                    label: "Delete",
+                    callback: () => {
+                        let id = event.currentTarget.id.substring(6);
+                        this.item.update({ ["data.ranged.-=" + id] : null});
+                    }
+                },
+                cancel: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: "Cancel",
+                    callback: () => {
+
+                    }
+                },
+            },
+            default: "cancel",
+            render: html => console.info("Register interactivity in the rendered dialog"),
+            close: html => console.info("This always is logged no matter which option is chosen")
+        },{
+            resizable: true,
+            width: "250"
+        })
+
+        confirmationModal.render(true);
     }
 
     _onDeleteAfflictionRow(event) {
-        let id = event.currentTarget.id.substring(10);
-        this.item.update({ ["data.affliction.-=" + id] : null});
+        let confirmationModal = new Dialog({
+            title: "Are you sure?",
+            content: "<div style='width: 100%; text-align: center'>Are you sure?</div>",
+            buttons: {
+                delete: {
+                    icon: '<i class="fas fa-trash"></i>',
+                    label: "Delete",
+                    callback: () => {
+                        let id = event.currentTarget.id.substring(10);
+                        this.item.update({ ["data.affliction.-=" + id] : null});
+                    }
+                },
+                cancel: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: "Cancel",
+                    callback: () => {
+
+                    }
+                },
+            },
+            default: "cancel",
+            render: html => console.info("Register interactivity in the rendered dialog"),
+            close: html => console.info("This always is logged no matter which option is chosen")
+        },{
+            resizable: true,
+            width: "250"
+        })
+
+        confirmationModal.render(true);
     }
 
     _onDeleteDefaultRow(event) {
-        let id = event.currentTarget.id.substring(7);
-        this.item.update({ ["data.defaults.-=" + id] : null});
+        let confirmationModal = new Dialog({
+            title: "Are you sure?",
+            content: "<div style='width: 100%; text-align: center'>Are you sure?</div>",
+            buttons: {
+                delete: {
+                    icon: '<i class="fas fa-trash"></i>',
+                    label: "Delete",
+                    callback: () => {
+                        let id = event.currentTarget.id.substring(7);
+                        this.item.update({ ["data.defaults.-=" + id] : null});
+                    }
+                },
+                cancel: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: "Cancel",
+                    callback: () => {
+
+                    }
+                },
+            },
+            default: "cancel",
+            render: html => console.info("Register interactivity in the rendered dialog"),
+            close: html => console.info("This always is logged no matter which option is chosen")
+        },{
+            resizable: true,
+            width: "250"
+        })
+
+        confirmationModal.render(true);
     }
 
     _onBodyTypeChange(event) {

@@ -35,9 +35,36 @@ export class gurpsActorSheet extends ActorSheet {
 
 		// Delete Inventory Item
 		html.find('.item-delete').click(ev => {
-			const li = $(ev.currentTarget).parents(".item");
-			this.actor.deleteOwnedItem(li.data("itemId"));
-			li.slideUp(200, () => this.render(false));
+			let confirmationModal = new Dialog({
+				title: "Are you sure?",
+				content: "<div style='width: 100%; text-align: center'>Are you sure?</div>",
+				buttons: {
+					delete: {
+						icon: '<i class="fas fa-trash"></i>',
+						label: "Delete",
+						callback: () => {
+							const li = $(ev.currentTarget).parents(".item");
+							this.actor.deleteOwnedItem(li.data("itemId"));
+							li.slideUp(200, () => this.render(false));
+						}
+					},
+					cancel: {
+						icon: '<i class="fas fa-times"></i>',
+						label: "Cancel",
+						callback: () => {
+
+						}
+					},
+				},
+				default: "cancel",
+				render: html => console.info("Register interactivity in the rendered dialog"),
+				close: html => console.info("This always is logged no matter which option is chosen")
+			},{
+				resizable: true,
+				width: "250"
+			})
+
+			confirmationModal.render(true);
 		});
 
 		// Rollable checks.
