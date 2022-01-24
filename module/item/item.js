@@ -62,9 +62,13 @@ export class gurpsItem extends Item {
       this.data.data.quantity = 0;
     }
 
+    this.data.data.cost = Math.round(+this.data.data.cost * 100) / 100;
+    this.data.data.weight = Math.round(+this.data.data.weight * 100) / 100;
+    this.data.data.quantity = Math.round(+this.data.data.quantity);
+
     // Calculated total weight and cost
-    this.data.data.ttlCost = (this.data.data.cost * this.data.data.quantity);
-    this.data.data.ttlWeight = (this.data.data.weight * this.data.data.quantity);
+    this.data.data.ttlCost = Math.round((+this.data.data.cost * +this.data.data.quantity) * 100) / 100;
+    this.data.data.ttlWeight = Math.round((+this.data.data.weight * +this.data.data.quantity) * 100) / 100;
 
     // Constrain TL to valid values
     if (typeof this.data.data.tl === undefined || typeof this.data.data.tl == null) { // Undefined set to 0

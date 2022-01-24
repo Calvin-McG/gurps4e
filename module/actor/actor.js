@@ -485,13 +485,17 @@ export class gurpsActor extends Actor {
 					let totalWeightBack = 0;
 
 					for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
-						let part = getProperty(bodyObj, bodyParts[i])
-						if (typeof part.weight != "undefined"){
-							totalWeightFront += part.weightFront;
+						let part = getProperty(bodyObj, bodyParts[i]) // Get the current part
+						if (typeof part.weightFront != "undefined"){ // Check to see if weightFront is defined
+							totalWeightFront += part.weightFront; // Add the front and rear weights
 							totalWeightBack += part.weightBack;
 						}
-						else {
-							console.error(this.data.name + " needs to refresh their body type");
+						else { // If the actor's weighting is not defined with the new front/back setup
+							if (typeof part.weight != "undefined"){ // Check to see if the old part.weight is still defined
+								totalWeightFront += part.weight; // Use that to set the front and back weights instead
+								totalWeightBack += part.weight;
+							}
+							console.error(this.data.name + " needs to refresh their body type"); // Print an error to console
 						}
 					}
 					this.data.data.bodyType.body = bodyObj; // Set the body to the new body type that was just assembled.
@@ -689,21 +693,18 @@ export class gurpsActor extends Actor {
 		this.data.data.encumbrance.heavy.dodge = Math.max(dodge + dodgeMod - 3, 1);
 		this.data.data.encumbrance.xheavy.dodge = Math.max(dodge + dodgeMod - 4, 1);
 
-		//Clear carried weight/cost before retotalling
-		carriedWeight = 0;
-		carriedCost = 0;
-		//Running loop to total up weight and value for the sheet
+		// Running loop to total up weight and value for the sheet
 		for (let l = 0; l < this.data.items._source.length; l++){
 			if (this.data.items._source[l].type == "Equipment"){
-				carriedWeight = this.data.items._source[l].data.ttlWeight + carriedWeight;
-				carriedCost = this.data.items._source[l].data.ttlCost + carriedCost;
+				carriedWeight = (+this.data.items._source[l].data.weight * +this.data.items._source[l].data.quantity) + +carriedWeight;
+				carriedCost = (+this.data.items._source[l].data.cost * +this.data.items._source[l].data.quantity) + +carriedCost;
 			}
 		}
 
-		carriedWeight = Math.round(carriedWeight);
-		carriedCost = Math.round(carriedCost);
+		carriedWeight = Math.round(carriedWeight * 100) / 100;
+		carriedCost = Math.round(carriedCost * 100) / 100;
 
-		//Assign total weight and cost
+		// Assign total weight and cost
 		this.data.data.bio.carriedWeight = carriedWeight;
 		this.data.data.bio.carriedValue = carriedCost
 
