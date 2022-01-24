@@ -167,25 +167,26 @@ export class gurpsItemSheet extends ItemSheet {
         if (locationDRBlock.subLocation) { // The location has sub locations
             let locationKeys = Object.keys(locationDRBlock.subLocation);
             for (let d = 0; d < locationKeys.length; d++) {
-                getProperty(locationDRBlock.subLocation, locationKeys[d]).drBurn += +modifier
-                getProperty(locationDRBlock.subLocation, locationKeys[d]).drCor += +modifier
-                getProperty(locationDRBlock.subLocation, locationKeys[d]).drCr += +modifier
-                getProperty(locationDRBlock.subLocation, locationKeys[d]).drCut += +modifier
-                getProperty(locationDRBlock.subLocation, locationKeys[d]).drFat += +modifier
-                getProperty(locationDRBlock.subLocation, locationKeys[d]).drImp += +modifier
-                getProperty(locationDRBlock.subLocation, locationKeys[d]).drPi += +modifier
-                getProperty(locationDRBlock.subLocation, locationKeys[d]).drTox += +modifier
+                ( (type === "burn" || typeof burn != 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drBurn += +modifier : '');
+                ( (type === "cor" || typeof cor != 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drCor += +modifier : '');
+                ( (type === "cr" || typeof cr != 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drCr += +modifier : '');
+                ( (type === "cut" || typeof cut != 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drCut += +modifier : '');
+                ( (type === "fat" || typeof fat != 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drFat += +modifier : '');
+                ( (type === "imp" || typeof imp != 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drImp += +modifier : '');
+                ( (type === "pi" || typeof pi != 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drPi += +modifier : '');
+                ( (type === "tox" || typeof tox != 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drTox += +modifier : '');
             }
         }
+
         else { // The location has no sub locations
-            locationDRBlock.drBurn += +modifier
-            locationDRBlock.drCor += +modifier
-            locationDRBlock.drCr += +modifier
-            locationDRBlock.drCut += +modifier
-            locationDRBlock.drFat += +modifier
-            locationDRBlock.drImp += +modifier
-            locationDRBlock.drPi += +modifier
-            locationDRBlock.drTox += +modifier
+            ( (type === "burn" || typeof burn != 'undefined') ? locationDRBlock.drBurn += +modifier : '');
+            ( (type === "cor" || typeof cor != 'undefined') ? locationDRBlock.drCor += +modifier : '');
+            ( (type === "cr" || typeof cr != 'undefined') ? locationDRBlock.drCr += +modifier : '');
+            ( (type === "cut" || typeof cut != 'undefined') ? locationDRBlock.drCut += +modifier : '');
+            ( (type === "fat" || typeof fat != 'undefined') ? locationDRBlock.drFat += +modifier : '');
+            ( (type === "imp" || typeof imp != 'undefined') ? locationDRBlock.drImp += +modifier : '');
+            ( (type === "pi" || typeof pi != 'undefined') ? locationDRBlock.drPi += +modifier : '');
+            ( (type === "tox" || typeof tox != 'undefined') ? locationDRBlock.drTox += +modifier : '');
         }
 
         this.item.update({ [event.currentTarget.id]: locationDRBlock });
