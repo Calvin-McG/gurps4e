@@ -1683,10 +1683,6 @@ export class gurpsActor extends Actor {
 		})
 
 		hitLocationModal.render(true);
-
-		// let label = attacker.nameplate._text + " attacks " + target.nameplate._text + " with a " + attack.weapon + " " + attack.name + "."
-		//
-		// rollHelpers.skillRoll(attack.level, 0, label)
 	}
 
 	afflictionOnTarget(attacker, attack, target) {
@@ -2355,7 +2351,7 @@ export class gurpsActor extends Actor {
 	}
 
 	reportHitResult(target, attacker, attack, relativePosition, rof, locationArray, totalModifiers, moveAndAttack) {
-		let label = attacker.nameplate._text + " attacks " + target.nameplate._text + " with a " + attack.weapon + " " + attack.name;
+		let label = attacker.name + " attacks " + target.name + " with a " + attack.weapon + " " + attack.name;
 		let level = attack.level;
 		let mod = totalModifiers;
 
@@ -2388,7 +2384,7 @@ export class gurpsActor extends Actor {
 			let flags = {}
 
 			if (rollInfo.success == false) {
-				messageContent += attacker.nameplate._text + " misses " + target.nameplate._text + "</br>";
+				messageContent += attacker.name + " misses " + target.name + "</br>";
 			}
 			else {
 				let hits;
@@ -2399,11 +2395,11 @@ export class gurpsActor extends Actor {
 				else {
 					hits = 1
 				}
-				messageContent += attacker.nameplate._text + " hits " + target.nameplate._text + " " + this.numToWords(hits) + "</br></br>"; // Display the number of hits
+				messageContent += attacker.name + " hits " + target.name + " " + this.numToWords(hits) + "</br></br>"; // Display the number of hits
 
 				let locations = locationArray.slice(0, hits); // Shorten the list of locations to the number of hits.
 
-				messageContent += target.nameplate._text + " is struck in the...</br>";
+				messageContent += target.name + " is struck in the...</br>";
 				for (let m = 0; m < locations.length; m++){
 					let firstLocation = getProperty(target.actor.data.data.bodyType.body, (locations[m].id).split(".")[0]);
 					let firstLabel = firstLocation ? firstLocation.label : "";

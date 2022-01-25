@@ -153,7 +153,7 @@ export class actorHelpers {
                     hp: {
                         max: partHp,
                         state: "Fine",
-                        value: actorData.bodyType.body[id].subLocation.nose.hp.value ? actorData.bodyType.body[id].subLocation.nose.hp.value : partHp
+                        value: actorData.bodyType.body ? actorData.bodyType.body[id].subLocation.nose.hp.value : partHp
                     },
                     flexible: false
                 },
@@ -188,7 +188,7 @@ export class actorHelpers {
                     hp: {
                         max: partHp,
                         state: "Fine",
-                        value: actorData.bodyType.body[id].subLocation.ears.hp.value ? actorData.bodyType.body[id].subLocation.ears.hp.value : partHp
+                        value: actorData.bodyType.body ? actorData.bodyType.body[id].subLocation.ears.hp.value : partHp
                     },
                     flexible: false
                 },
@@ -253,7 +253,7 @@ export class actorHelpers {
                     hp: {
                         max: eyeHp,
                         state: "Fine",
-                        value: actorData.bodyType.body[id].subLocation.eyes.hp.value ? actorData.bodyType.body[id].subLocation.eyes.hp.value : eyeHp
+                        value: actorData.bodyType.body ? actorData.bodyType.body[id].subLocation.eyes.hp.value : eyeHp
                     },
                     flexible: false
                 }
@@ -285,7 +285,7 @@ export class actorHelpers {
             hp: {
                 max: partHp,
                 state: "Fine",
-                value: actorData.bodyType.body[id].hp.value ? actorData.bodyType.body[id].hp.value : partHp
+                value: actorData.bodyType.body ? actorData.bodyType.body[id].hp.value : partHp
             },
             flexible: false,
             subLocation: {
@@ -410,7 +410,7 @@ export class actorHelpers {
                     hp: {
                         max: jointHp,
                         state: "Fine",
-                        value: actorData.bodyType.body[id].subLocation.knee.hp.value ? actorData.bodyType.body[id].subLocation.knee.hp.value : jointHp
+                        value: actorData.bodyType.body ? actorData.bodyType.body[id].subLocation.knee.hp.value : jointHp
                     },
                     flexible: false
                 },
@@ -498,7 +498,7 @@ export class actorHelpers {
             hp: {
                 max: partHp,
                 state: "Fine",
-                value: actorData.bodyType.body[id].hp.value ? actorData.bodyType.body[id].hp.value : partHp
+                value: actorData.bodyType.body ? actorData.bodyType.body[id].hp.value : partHp
             },
             flexible: false,
             subLocation: {
@@ -592,7 +592,7 @@ export class actorHelpers {
             hp: {
                 max: partHp,
                 state: "Fine",
-                value: actorData.bodyType.body[id].hp.value ? actorData.bodyType.body[id].hp.value : partHp
+                value: actorData.bodyType.body ? actorData.bodyType.body[id].hp.value : partHp
             },
             flexible: false,
             subLocation: {
@@ -687,7 +687,7 @@ export class actorHelpers {
                     hp: {
                         max: jointHp,
                         state: "Fine",
-                        value: actorData.bodyType.body[id].subLocation.elbow.hp.value ? actorData.bodyType.body[id].subLocation.elbow.hp.value : jointHp
+                        value: actorData.bodyType.body ? actorData.bodyType.body[id].subLocation.elbow.hp.value : jointHp
                     },
                     flexible: false
                 },
@@ -893,7 +893,7 @@ export class actorHelpers {
                     hp: {
                         max: spineHp,
                         state: "Fine",
-                        value: actorData.bodyType.body[id].subLocation.spine.hp.value ? actorData.bodyType.body[id].subLocation.spine.hp.value : spineHp
+                        value: actorData.bodyType.body ? actorData.bodyType.body[id].subLocation.spine.hp.value : spineHp
                     },
                     flexible: false
                 }
@@ -1091,7 +1091,7 @@ export class actorHelpers {
                     hp: {
                         max: pelvisHp,
                         state: "Fine",
-                        value: actorData.bodyType.body[id].subLocation.pelvis.hp.value ? actorData.bodyType.body[id].subLocation.pelvis.hp.value : pelvisHp
+                        value: actorData.bodyType.body ? actorData.bodyType.body[id].subLocation.pelvis.hp.value : pelvisHp
                     },
                     flexible: false
                 }
@@ -1208,7 +1208,7 @@ export class actorHelpers {
                     hp: {
                         max: pelvisHp,
                         state: "Fine",
-                        value: actorData.bodyType.body[id].subLocation.pelvis.hp.value ? actorData.bodyType.body[id].subLocation.pelvis.hp.value : pelvisHp
+                        value: actorData.bodyType.body ? actorData.bodyType.body[id].subLocation.pelvis.hp.value : pelvisHp
                     },
                     weightFront: 1/6,
                     weightBack: 1/6,
@@ -1286,7 +1286,7 @@ export class actorHelpers {
             hp: {
                 max: partHp,
                 state: "Fine",
-                value: actorData.bodyType.body[id].hp.value ? actorData.bodyType.body[id].hp.value : partHp
+                value: actorData.bodyType.body ? actorData.bodyType.body[id].hp.value : partHp
             },
             flexible: false,
             subLocation: {
@@ -1379,7 +1379,7 @@ export class actorHelpers {
                     hp: {
                         max: jointHp,
                         state: "Fine",
-                        value: actorData.bodyType.body[id].subLocation.joint.hp.value ? actorData.bodyType.body[id].subLocation.joint.hp.value : jointHp
+                        value: actorData.bodyType.body ? actorData.bodyType.body[id].subLocation.joint.hp.value : jointHp
                     },
                     weightFront: 1/6,
                     weightBack: 1/6,

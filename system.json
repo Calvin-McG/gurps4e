@@ -2,9 +2,9 @@
   "name": "gurps4e",
   "title": "GURPS4E",
   "description": "A GURPS4E system that automates as much as possible",
-  "version": "1.1.0",
-  "minimumCoreVersion": "0.8.9",
-  "compatibleCoreVersion": "0.8.9",
+  "version": "2.0.0",
+  "minimumCoreVersion": "9",
+  "compatibleCoreVersion": "9",
   "templateVersion": 2,
   "author": "Calvin",
   "esmodules": [
