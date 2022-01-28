@@ -10,7 +10,6 @@ console.log(selfActor);
 console.log(targetArray);
 
 if(targetArray.length == 0){//There were no targets, show an error.
-    selfActor.test()
     let noTargetsDialogContent = selfActor.noTargetsDialog();
 
     noTargetsDialogContent.render(true);
