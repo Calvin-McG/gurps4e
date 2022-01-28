@@ -240,6 +240,14 @@ export class gurpsActor extends Actor {
 				this.data.data.injuryTolerances.damageReduction = 1;
 			}
 		}
+
+		if (this.data.data.bio.sm.value == "" || this.data.data.bio.sm.value == null || typeof this.data.data.bio.sm.value == "undefined") {
+			this.data.data.bio.sm.value = 0;
+		}
+
+		if (this.data.data.bio.tl.value == "" || this.data.data.bio.tl.value == null || typeof this.data.data.bio.tl.value == "undefined") {
+			this.data.data.bio.tl.value = 0;
+		}
 	}
 
 	bodyTypeUpdate(){
@@ -2233,14 +2241,17 @@ export class gurpsActor extends Actor {
 	getSM(actor) {
 		let sm = 0;
 		if (actor) { // Make sure all the data is present
-			if (actor.token){
-				if (actor.token.data){
+			if (actor.token){ // If this is a token
+				if (actor.token.data){ // Make sure the data structure exists
 					if (actor.token.data.data){
 						if (actor.token.data.data.bio){
 							if (actor.token.data.data.bio.sm){
 								if (actor.token.data.data.bio.sm.value){
-									if (typeof actor.token.data.data.bio.sm.value == "number") { // SM Exists and is a number
-										sm = actor.token.data.data.bio.sm.value;
+									if (actor.token.data.data.bio.sm.value == "" || actor.token.data.data.bio.sm.value == null || typeof actor.token.data.data.bio.sm.value == "undefined") { // SM is blank, null, or undefined
+										sm = 0; // Default zero
+									}
+									else { // SM is not blank, null, or undefined
+										sm = actor.token.data.data.bio.sm.value; // Set SM equal to the actor's SM value
 									}
 								}
 							}
@@ -2248,12 +2259,17 @@ export class gurpsActor extends Actor {
 					}
 				}
 			}
-			else if (actor.data) {
-				if (actor.data.data) {
+			else if (actor.data) { // If this is not a token
+				if (actor.data.data) { // Make sure the data structure exists
 					if (actor.data.data.bio) {
 						if (actor.data.data.bio.sm) {
 							if (actor.data.data.bio.sm.value) {
-								sm = actor.data.data.bio.sm.value;
+								if (actor.data.data.bio.sm.value == "" || actor.data.data.bio.sm.value == null || typeof actor.data.data.bio.sm.value == "undefined") { // SM is blank, null, or undefined
+									sm = 0; // Default zero
+								}
+								else { // SM is not blank, null, or undefined
+									sm = actor.data.data.bio.sm.value; // Set SM equal to the actor's SM value
+								}
 							}
 						}
 					}

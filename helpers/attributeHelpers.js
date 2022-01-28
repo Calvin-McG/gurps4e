@@ -625,7 +625,13 @@ export class attributeHelpers {
     }
 
     static calcSMDiscount(sm){
-        return Math.min((Math.max(((+10 - +sm.value) / +10), 0.2)) , 1);
+        let sizeMod = sm;
+
+        if (sizeMod == "" || sizeMod == null || typeof sizeMod == "undefined") {
+            sizeMod = 0;
+        }
+
+        return Math.min((Math.max(((+10 - +sizeMod.value) / +10), 0.2)) , 1);
     }
 
     static calcStOrHt(attribute, smDiscount){
