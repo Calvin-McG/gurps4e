@@ -1,9 +1,12 @@
 /**
  * Init function loads tables, registers settings, and loads templates
  */
+import {macroHelpers} from "../../helpers/macroHelpers.js";
+
 Hooks.once("init", () => {
 
   _setGurps4eInitiative();
+  hookAPI();
 
   function _setGurps4eInitiative() {
     let formula = "@primaryAttributes.speed.value + @primaryAttributes.dexterity.value / 10000 + (1d100 - 1) / 1000000";// First three digits are (speed), then [DX], then {d100-1}. Example: (5.00)[10]{38} -> 5001038
@@ -12,6 +15,11 @@ Hooks.once("init", () => {
       formula: formula,
       decimals: decimals
     }
+  }
+
+  function hookAPI() {
+    game.gurpsAPI = macroHelpers;
+    console.log(game)
   }
 
   // Register Armour as Dice option
