@@ -3356,4 +3356,41 @@ export class gurpsActor extends Actor {
 
 		return damageType;
 	}
+
+	async resetDamage() {
+		let reserves = {
+			er: {
+				value: this.data.data.reserves.er.max
+			},
+			hp: {
+				value: this.data.data.reserves.hp.max
+			},
+			fp: {
+				value: this.data.data.reserves.fp.max
+			}
+		}
+
+		this.data.data.reserves = reserves
+
+		let keys = Object.keys(this.data.data.bodyType.body);
+
+		for (let k = 0; k < keys.length; k++) {
+			let location = getProperty(this.data.data.bodyType.body, keys[k]);
+
+			if (location.hp){ // Check to see if the location tracks HP
+				location.hp.value = location.hp.max; // Reset HP
+			}
+			if (location.subLocation) { // Check to see if the location has sublocations
+				let subLocationKeys = Object.keys(location.subLocation); // Gather the subLocation keys for the loop
+				for (let l = 0; l < subLocationKeys.length; l++) { // Loop through the subLocations
+					let subLocation = getProperty(location.subLocation, subLocationKeys[l]);
+					if (subLocation.hp) { // Check to see if the subLocation tracks HP
+						subLocation.hp.value = subLocation.hp.max; // Reset HP
+					}
+				}
+			}
+		}
+
+		this.update({ 'data': this.data.data });
+	}
 }
