@@ -3177,6 +3177,16 @@ export class gurpsActor extends Actor {
 					else {
 						actualWounding = Math.floor( ( (actualDamage * getProperty(location, damageType.woundModId)) / damageReduction) );
 					}
+
+					if (target.data.data.injuryTolerances.diffuse) { // Target is diffuse
+						if (damageType.woundModId.toString().toLowerCase().includes("imp") || damageType.woundModId.toString().toLowerCase().includes("pi")) { // Attack is imp or pi
+							actualWounding = Math.min(actualWounding, 1); // Imp/pi attacks vs diffuse targets are capped at 1 wounding
+						}
+						else { // Attack is not imp or pi
+							actualWounding = Math.min(actualWounding, 2); // All other attacks vs diffuse targets are capped at 2 wounding
+						}
+					}
+
 					if (parentLocation.hp){// Apply damage to the parent location if it tracks HP
 						woundCap = parentLocation.hp.value; // Damage is capped to however much HP is left in the limb
 						parentLocation.hp.value -= actualWounding;
@@ -3199,6 +3209,16 @@ export class gurpsActor extends Actor {
 					else {
 						actualWounding = Math.floor(((actualDamage * getProperty(location, damageType.woundModId)) / damageReduction) );
 					}
+
+					if (target.data.data.injuryTolerances.diffuse) { // Target is diffuse
+						if (damageType.woundModId.toString().toLowerCase().includes("imp") || damageType.woundModId.toString().toLowerCase().includes("pi")) { // Attack is imp or pi
+							actualWounding = Math.min(actualWounding, 1); // Imp/pi attacks vs diffuse targets are capped at 1 wounding
+						}
+						else { // Attack is not imp or pi
+							actualWounding = Math.min(actualWounding, 2); // All other attacks vs diffuse targets are capped at 2 wounding
+						}
+					}
+
 					if (location.hp){ // Apply damage to the location if it tracks HP
 						woundCap = location.hp.value; // Damage is capped to however much HP is left in the limb
 						location.hp.value -= actualWounding
