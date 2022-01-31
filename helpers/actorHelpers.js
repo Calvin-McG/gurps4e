@@ -2,7 +2,7 @@ import {attributeHelpers} from "./attributeHelpers.js";
 
 export class actorHelpers {
 
-    static addSkull(id) {
+    static addSkull(id, brain) {
         let part = {
             label: "Skull",
             id: id,
@@ -14,18 +14,18 @@ export class actorHelpers {
             drImp: 2,
             drPi: 2,
             drTox: "",
-            personalWoundMultBurn: 4,
-            personalWoundMultCor: 4,
-            personalWoundMultCr: 4,
-            personalWoundMultCut: 4,
-            personalWoundMultFat: 1,
-            personalWoundMultImp: 4,
-            personalWoundMultPim: 4,
-            personalWoundMultPi: 4,
-            personalWoundMultPip: 4,
-            personalWoundMultPipp: 4,
-            personalWoundMultTox: 1,
-            personalWoundMultTbb: 4,
+            personalWoundMultBurn   : brain ? 4 : 1,
+            personalWoundMultCor    : brain ? 4 : 1,
+            personalWoundMultCr     : brain ? 4 : 1,
+            personalWoundMultCut    : brain ? 4 : 1.5,
+            personalWoundMultFat    : 1,
+            personalWoundMultImp    : brain ? 4 : 2,
+            personalWoundMultPim    : brain ? 4 : 0.5,
+            personalWoundMultPi     : brain ? 4 : 1,
+            personalWoundMultPip    : brain ? 4 : 1.5,
+            personalWoundMultPipp   : brain ? 4 : 2,
+            personalWoundMultTox    : 1,
+            personalWoundMultTbb    : brain ? 4 : 1,
             drHardening: 1,
             penaltyFront: -7,
             penaltyBack: -5,
@@ -70,7 +70,26 @@ export class actorHelpers {
         return part;
     }
 
-    static addFace(actorData, id) {
+    static addFace(actorData, id, ears, eyeL, eyeR, biteyness, eyesVulnerable) {
+        let hasEars = ears;
+        let bornBiter = biteyness;
+
+        if (typeof hasEars == "undefined"){ // If the ears weren't specifically set
+            hasEars = true; // Give them ears
+        }
+        if (typeof eyeL == "undefined"){ // If the left eye wasn't specifically set
+            eyeL = true; // Give them a left eye
+        }
+        if (typeof eyeR == "undefined"){ // If the right eye wasn't specifically set
+            eyeR = true; // Give them a right eye
+        }
+        if (typeof biteyness == "undefined"){ // If the level of biteyness wasn't specifically set
+            bornBiter = 0; // Default to zero
+        }
+        if (typeof eyesVulnerable == "undefined"){ // If eyesVulnerable wasn't specifically set
+            eyesVulnerable = false; // Default to false
+        }
+
         let hp = actorData.reserves.hp.max;
         let partHp = Math.ceil(hp/4);
         if (partHp <= hp/4){//Make sure that part hp is greater than one quarter HP
@@ -82,6 +101,34 @@ export class actorHelpers {
             eyeHp += 1;
         }
 
+        let totalSubWeight = 6/6;
+
+        if (bornBiter > 0) { // Having any level of born biter makes it more likely to hit the nose at random, so increase total weight
+            totalSubWeight += 1/6;
+        }
+
+        if (eyesVulnerable) {
+            totalSubWeight += 1/6
+            if (!eyeL) { // Having no left eye reduces the weight
+                totalSubWeight -= 1/6;
+            }
+            if (!eyeR) { // Having no right eye reduces the weight
+                totalSubWeight -= 1/6;
+            }
+        }
+        else {
+            if (!eyeL) { // Having no left eye reduces the weight
+                totalSubWeight -= 1/12;
+            }
+            if (!eyeR) { // Having no right eye reduces the weight
+                totalSubWeight -= 1/12;
+            }
+        }
+
+        if (!ears) { // Having no eye reduces the weight
+            totalSubWeight -= 1/6;
+        }
+
         let part = {
             label: "Face",
             id: id,
@@ -89,8 +136,8 @@ export class actorHelpers {
             penaltyBack: -7,
             weightFront: 0.02777777778,
             weightBack: 0.01851851852,
-            totalSubWeightFront: 1,
-            totalSubWeightBack: 1,
+            totalSubWeightFront: totalSubWeight,
+            totalSubWeightBack: totalSubWeight,
             subLocation: {
                 jaw: {
                     label: "Jaw",
@@ -116,8 +163,8 @@ export class actorHelpers {
                     personalWoundMultTox: 1,
                     personalWoundMultTbb: 1,
                     drHardening: 1,
-                    penaltyFront: -6,
-                    penaltyBack: -6,
+                    penaltyFront: -6 + +bornBiter, // Add levels of born biter to the penalty to hit the jaw
+                    penaltyBack: -6 + +bornBiter,
                     weightFront: 1/6,
                     weightBack: 1/6,
                     flexible: false
@@ -146,49 +193,14 @@ export class actorHelpers {
                     personalWoundMultTox: 1,
                     personalWoundMultTbb: 1,
                     drHardening: 1,
-                    penaltyFront: -7,
-                    penaltyBack: -7,
-                    weightFront: 1/6,
-                    weightBack: 1/6,
+                    penaltyFront: -7 + +bornBiter, // Add levels of born biter to the penalty to hit the nose
+                    penaltyBack: -7 + +bornBiter,
+                    weightFront: (bornBiter > 0) ? 2/6 : 1/6, // Having any level of born biter makes it more likely to hit the nose at random
+                    weightBack: (bornBiter > 0) ? 2/6 : 1/6,
                     hp: {
                         max: partHp,
                         state: "Fine",
-                        value: actorData.bodyType.body ? actorData.bodyType.body[id].subLocation.nose.hp.value : partHp
-                    },
-                    flexible: false
-                },
-                ears: {
-                    label: "Ear",
-                    id: id + ".subLocation.ears",
-                    drBurn: "",
-                    drCor: "",
-                    drCr: "",
-                    drCut: "",
-                    drFat: "",
-                    drImp: "",
-                    drPi: "",
-                    drTox: "",
-                    personalWoundMultBurn: 1,
-                    personalWoundMultCor: 1.5,
-                    personalWoundMultCr: 1,
-                    personalWoundMultCut: 1.5,
-                    personalWoundMultFat: 1,
-                    personalWoundMultImp: 2,
-                    personalWoundMultPim: 0.5,
-                    personalWoundMultPi: 1,
-                    personalWoundMultPip: 1.5,
-                    personalWoundMultPipp: 2,
-                    personalWoundMultTox: 1,
-                    personalWoundMultTbb: 1,
-                    drHardening: 1,
-                    penaltyFront: -7,
-                    penaltyBack: -7,
-                    weightFront: 1/6,
-                    weightBack: 1/6,
-                    hp: {
-                        max: partHp,
-                        state: "Fine",
-                        value: actorData.bodyType.body ? actorData.bodyType.body[id].subLocation.ears.hp.value : partHp
+                        value: actorData.bodyType.body ? (actorData.bodyType.body[id] ? actorData.bodyType.body[id].subLocation.nose.hp.value : partHp) : partHp
                     },
                     flexible: false
                 },
@@ -221,10 +233,88 @@ export class actorHelpers {
                     weightFront: 2/6,
                     weightBack: 2/6,
                     flexible: false
+                }
+            }
+        }
+
+        if (eyeL) {
+            part.subLocation.eyeLeft = { // Kromm's ruling on eyes http://forums.sjgames.com/showpost.php?p=733298&postcount=33
+                label: "Left Eye",
+                id: id + ".subLocation.eyeLeft",
+                drBurn: "",
+                drCor: "",
+                drCr: "",
+                drCut: "",
+                drFat: "",
+                drImp: "",
+                drPi: "",
+                drTox: "",
+                personalWoundMultBurn: 4,
+                personalWoundMultCor: 4,
+                personalWoundMultCr: 4,
+                personalWoundMultCut: 4,
+                personalWoundMultFat: 4,
+                personalWoundMultImp: 4,
+                personalWoundMultPim: 4,
+                personalWoundMultPi: 4,
+                personalWoundMultPip: 4,
+                personalWoundMultPipp: 4,
+                personalWoundMultTox: 1,
+                personalWoundMultTbb: 4,
+                drHardening: 1,
+                penaltyFront: eyesVulnerable ? -6 : -9,
+                penaltyBack: eyesVulnerable ? -6 : -9,
+                weightFront: eyesVulnerable ? 1/6 : 1/12,
+                weightBack: eyesVulnerable ? 1/6 : 1/12,
+                hp: {
+                    max: eyeHp,
+                    state: "Fine",
+                    value: actorData.bodyType.body ? actorData.bodyType.body[id] ? actorData.bodyType.body[id].subLocation.eyeLeft.hp.value : partHp : partHp
                 },
-                eyes: { // Kromm's ruling on eyes http://forums.sjgames.com/showpost.php?p=733298&postcount=33
-                    label: "Eyes",
-                    id: id + ".subLocation.eyes",
+                flexible: false
+            }
+        }
+        if (eyeR) {
+            part.subLocation.eyeRight = { // Kromm's ruling on eyes http://forums.sjgames.com/showpost.php?p=733298&postcount=33
+                label: "Right Eye",
+                id: id + ".subLocation.eyeRight",
+                drBurn: "",
+                drCor: "",
+                drCr: "",
+                drCut: "",
+                drFat: "",
+                drImp: "",
+                drPi: "",
+                drTox: "",
+                personalWoundMultBurn: 4,
+                personalWoundMultCor: 4,
+                personalWoundMultCr: 4,
+                personalWoundMultCut: 4,
+                personalWoundMultFat: 4,
+                personalWoundMultImp: 4,
+                personalWoundMultPim: 4,
+                personalWoundMultPi: 4,
+                personalWoundMultPip: 4,
+                personalWoundMultPipp: 4,
+                personalWoundMultTox: 1,
+                personalWoundMultTbb: 4,
+                drHardening: 1,
+                penaltyFront: eyesVulnerable ? -6 : -9,
+                penaltyBack: eyesVulnerable ? -6 : -9,
+                weightFront: eyesVulnerable ? 1/6 : 1/12,
+                weightBack: eyesVulnerable ? 1/6 : 1/12,
+                hp: {
+                    max: eyeHp,
+                    state: "Fine",
+                    value: actorData.bodyType.body ? actorData.bodyType.body[id] ? actorData.bodyType.body[id].subLocation.eyeRight.hp.value : partHp : partHp
+                },
+                flexible: false
+            }
+        }
+        if (hasEars) {
+            part.subLocation.ears = {
+                label: "Ear",
+                    id: id + ".subLocation.ears",
                     drBurn: "",
                     drCor: "",
                     drCr: "",
@@ -233,32 +323,32 @@ export class actorHelpers {
                     drImp: "",
                     drPi: "",
                     drTox: "",
-                    personalWoundMultBurn: 4,
-                    personalWoundMultCor: 4,
-                    personalWoundMultCr: 4,
-                    personalWoundMultCut: 4,
-                    personalWoundMultFat: 4,
-                    personalWoundMultImp: 4,
-                    personalWoundMultPim: 4,
-                    personalWoundMultPi: 4,
-                    personalWoundMultPip: 4,
-                    personalWoundMultPipp: 4,
+                    personalWoundMultBurn: 1,
+                    personalWoundMultCor: 1.5,
+                    personalWoundMultCr: 1,
+                    personalWoundMultCut: 1.5,
+                    personalWoundMultFat: 1,
+                    personalWoundMultImp: 2,
+                    personalWoundMultPim: 0.5,
+                    personalWoundMultPi: 1,
+                    personalWoundMultPip: 1.5,
+                    personalWoundMultPipp: 2,
                     personalWoundMultTox: 1,
-                    personalWoundMultTbb: 4,
+                    personalWoundMultTbb: 1,
                     drHardening: 1,
-                    penaltyFront: -9,
-                    penaltyBack: -9,
+                    penaltyFront: -7,
+                    penaltyBack: -7,
                     weightFront: 1/6,
                     weightBack: 1/6,
                     hp: {
-                        max: eyeHp,
+                    max: partHp,
                         state: "Fine",
-                        value: actorData.bodyType.body ? actorData.bodyType.body[id].subLocation.eyes.hp.value : eyeHp
-                    },
-                    flexible: false
-                }
+                        value: actorData.bodyType.body ? (actorData.bodyType.body[id] ? actorData.bodyType.body[id].subLocation.ears.hp.value : partHp) : partHp
+                },
+                flexible: false
             }
         }
+
         return part;
     }
 
@@ -286,7 +376,7 @@ export class actorHelpers {
             hp: {
                 max: partHp,
                 state: "Fine",
-                value: actorData.bodyType.body ? actorData.bodyType.body[id].hp.value : partHp
+                value: actorData.bodyType.body ? actorData.bodyType.body[id] ? actorData.bodyType.body[id].hp.value : partHp : partHp
             },
             flexible: false,
             subLocation: {
@@ -411,7 +501,7 @@ export class actorHelpers {
                     hp: {
                         max: jointHp,
                         state: "Fine",
-                        value: actorData.bodyType.body ? actorData.bodyType.body[id].subLocation.knee.hp.value : jointHp
+                        value: actorData.bodyType.body ? actorData.bodyType.body[id] ? actorData.bodyType.body[id].subLocation.knee.hp.value : jointHp : jointHp
                     },
                     flexible: false
                 },
@@ -499,7 +589,7 @@ export class actorHelpers {
             hp: {
                 max: partHp,
                 state: "Fine",
-                value: actorData.bodyType.body ? actorData.bodyType.body[id].hp.value : partHp
+                value: actorData.bodyType.body ? actorData.bodyType.body[id] ? actorData.bodyType.body[id].hp.value : partHp : partHp
             },
             flexible: false,
             subLocation: {
@@ -593,7 +683,7 @@ export class actorHelpers {
             hp: {
                 max: partHp,
                 state: "Fine",
-                value: actorData.bodyType.body ? actorData.bodyType.body[id].hp.value : partHp
+                value: actorData.bodyType.body ? actorData.bodyType.body[id] ? actorData.bodyType.body[id].hp.value : partHp : partHp
             },
             flexible: false,
             subLocation: {
@@ -688,7 +778,7 @@ export class actorHelpers {
                     hp: {
                         max: jointHp,
                         state: "Fine",
-                        value: actorData.bodyType.body ? actorData.bodyType.body[id].subLocation.elbow.hp.value : jointHp
+                        value: actorData.bodyType.body ? actorData.bodyType.body[id] ? actorData.bodyType.body[id].subLocation.elbow.hp.value : jointHp : jointHp
                     },
                     flexible: false
                 },
@@ -788,9 +878,13 @@ export class actorHelpers {
         return part;
     }
 
-    static addChest(actorData, label, id){
+    static addChest(actorData, label, id, vitals){
         let hp = actorData.reserves.hp.max;
         let spineHp = hp + 1;
+
+        if (typeof vitals == "undefined") { // If they did not provide a setting for vitals, default true;
+            vitals = true;
+        }
 
         let part = {
             label: label,
@@ -799,8 +893,8 @@ export class actorHelpers {
             penaltyBack: -1,
             weightFront: 0.12037037,
             weightBack: 0.12037037,
-            totalSubWeightFront: 1,
-            totalSubWeightBack: 1,
+            totalSubWeightFront: vitals ? 1 : 5/6,
+            totalSubWeightBack: vitals ? 1 : 5/6,
             flexible: false,
             subLocation: {
                 chest: {
@@ -833,40 +927,10 @@ export class actorHelpers {
                     weightBack: 5/6,
                     flexible: false
                 },
-                vitals: {
-                    label: "Vitals",
-                    id: id + ".subLocation.vitals",
-                    penaltyFront: -3,
-                    penaltyBack: -3,
-                    drBurn: "",
-                    drCor: "",
-                    drCr: "",
-                    drCut: "",
-                    drFat: "",
-                    drImp: "",
-                    drPi: "",
-                    drTox: "",
-                    personalWoundMultBurn: 1,
-                    personalWoundMultCor: 1,
-                    personalWoundMultCr: 1,
-                    personalWoundMultCut: 1.5,
-                    personalWoundMultFat: 1,
-                    personalWoundMultImp: 3,
-                    personalWoundMultPim: 3,
-                    personalWoundMultPi: 3,
-                    personalWoundMultPip: 3,
-                    personalWoundMultPipp: 3,
-                    personalWoundMultTox: 1,
-                    personalWoundMultTbb: 2,
-                    drHardening: 1,
-                    weightFront: 1/6,
-                    weightBack: 0,
-                    flexible: false
-                },
                 spine: {
                     label: "Spine",
                     id: id + ".subLocation.spine",
-                    penaltyFront: -99,
+                    penaltyFront: Number.NEGATIVE_INFINITY,
                     penaltyBack: -8,
                     drBurn: 3,
                     drCor: 3,
@@ -894,18 +958,56 @@ export class actorHelpers {
                     hp: {
                         max: spineHp,
                         state: "Fine",
-                        value: actorData.bodyType.body ? actorData.bodyType.body[id].subLocation.spine.hp.value : spineHp
+                        value: actorData.bodyType.body ? actorData.bodyType.body[id] ? actorData.bodyType.body[id].subLocation.spine.hp.value : spineHp : spineHp
                     },
                     flexible: false
                 }
             }
         }
 
+        if (vitals) {
+            part.subLocation.vitals = {
+                label: "Vitals",
+                    id: id + ".subLocation.vitals",
+                    penaltyFront: -3,
+                    penaltyBack: -3,
+                    drBurn: "",
+                    drCor: "",
+                    drCr: "",
+                    drCut: "",
+                    drFat: "",
+                    drImp: "",
+                    drPi: "",
+                    drTox: "",
+                    personalWoundMultBurn: 1,
+                    personalWoundMultCor: 1,
+                    personalWoundMultCr: 1,
+                    personalWoundMultCut: 1.5,
+                    personalWoundMultFat: 1,
+                    personalWoundMultImp: 3,
+                    personalWoundMultPim: 3,
+                    personalWoundMultPi: 3,
+                    personalWoundMultPip: 3,
+                    personalWoundMultPipp: 3,
+                    personalWoundMultTox: 1,
+                    personalWoundMultTbb: 2,
+                    drHardening: 1,
+                    weightFront: 1/6,
+                    weightBack: 0,
+                    flexible: false
+            }
+        }
+
         return part;
     }
 
-    static addInvertebrateChest(actorData, label, id){
+    static addInvertebrateChest(actorData, label, id, vitals){
         let hp = actorData.reserves.hp.max;
+
+        if (typeof vitals == "undefined") { // If they did not provide a setting for vitals, default true;
+            vitals = true;
+        }
+
         let part = {
             label: label,
             id: id,
@@ -913,8 +1015,8 @@ export class actorHelpers {
             penaltyBack: -1,
             weightFront: 0.12037037,
             weightBack: 0.12037037,
-            totalSubWeightFront: 1,
-            totalSubWeightBack: 1,
+            totalSubWeightFront: vitals ? 1 : 5/6,
+            totalSubWeightBack: vitals ? 1 : 5/6,
             flexible: false,
             subLocation: {
                 chest: {
@@ -946,50 +1048,57 @@ export class actorHelpers {
                     weightFront: 5/6,
                     weightBack: 5/6,
                     flexible: false
-                },
-                vitals: {
-                    label: "Vitals",
-                    id: id + ".subLocation.vitals",
-                    penaltyFront: -3,
-                    penaltyBack: -3,
-                    drBurn: "",
-                    drCor: "",
-                    drCr: "",
-                    drCut: "",
-                    drFat: "",
-                    drImp: "",
-                    drPi: "",
-                    drTox: "",
-                    personalWoundMultBurn: 1,
-                    personalWoundMultCor: 1,
-                    personalWoundMultCr: 1,
-                    personalWoundMultCut: 1.5,
-                    personalWoundMultFat: 1,
-                    personalWoundMultImp: 3,
-                    personalWoundMultPim: 3,
-                    personalWoundMultPi: 3,
-                    personalWoundMultPip: 3,
-                    personalWoundMultPipp: 3,
-                    personalWoundMultTox: 1,
-                    personalWoundMultTbb: 2,
-                    drHardening: 1,
-                    weightFront: 1/6,
-                    weightBack: 1/6,
-                    flexible: false
                 }
+            }
+        }
+
+        if (vitals) {
+            part.subLocation.vitals = {
+                label: "Vitals",
+                id: id + ".subLocation.vitals",
+                penaltyFront: -3,
+                penaltyBack: -3,
+                drBurn: "",
+                drCor: "",
+                drCr: "",
+                drCut: "",
+                drFat: "",
+                drImp: "",
+                drPi: "",
+                drTox: "",
+                personalWoundMultBurn: 1,
+                personalWoundMultCor: 1,
+                personalWoundMultCr: 1,
+                personalWoundMultCut: 1.5,
+                personalWoundMultFat: 1,
+                personalWoundMultImp: 3,
+                personalWoundMultPim: 3,
+                personalWoundMultPi: 3,
+                personalWoundMultPip: 3,
+                personalWoundMultPipp: 3,
+                personalWoundMultTox: 1,
+                personalWoundMultTbb: 2,
+                drHardening: 1,
+                weightFront: 1/6,
+                weightBack: 0,
+                flexible: false
             }
         }
 
         return part;
     }
 
-    static addCentaurAbdomen(actorData, label, id){ // This is the abdomen for the humanoid chest
+    static addCentaurAbdomen(actorData, label, id, vitals){ // This is the abdomen for the humanoid chest
         let hp = actorData.reserves.hp.max;
         let pelvisHp = Math.ceil(hp/2);
         if (pelvisHp <= hp/2){ // Make sure that part hp is greater than one half HP
             pelvisHp += 1;
         }
 
+        if (typeof vitals == "undefined") { // If they did not provide a setting for vitals, default true;
+            vitals = true;
+        }
+
         let part = {
             label: label,
             id: id,
@@ -997,8 +1106,8 @@ export class actorHelpers {
             penaltyBack: -1,
             weightFront: 0.125,
             weightBack: 0.125,
-            totalSubWeightFront: 5/6,
-            totalSubWeightBack: 5/6,
+            totalSubWeightFront: vitals ? 5/6 : 4/6,
+            totalSubWeightBack: vitals ? 5/6 : 4/6,
             flexible: false,
             subLocation: {
                 digestiveTract: {
@@ -1029,36 +1138,6 @@ export class actorHelpers {
                     drHardening: 1,
                     weightFront: 3/6,
                     weightBack: 3/6,
-                    flexible: false
-                },
-                vitals: {
-                    label: "Vitals",
-                    id: id + ".subLocation.vitals",
-                    penaltyFront: -3,
-                    penaltyBack: -3,
-                    drBurn: "",
-                    drCor: "",
-                    drCr: "",
-                    drCut: "",
-                    drFat: "",
-                    drImp: "",
-                    drPi: "",
-                    drTox: "",
-                    personalWoundMultBurn: 1,
-                    personalWoundMultCor: 1,
-                    personalWoundMultCr: 1,
-                    personalWoundMultCut: 1.5,
-                    personalWoundMultFat: 1,
-                    personalWoundMultImp: 3,
-                    personalWoundMultPim: 3,
-                    personalWoundMultPi: 3,
-                    personalWoundMultPip: 3,
-                    personalWoundMultPipp: 3,
-                    personalWoundMultTox: 1,
-                    personalWoundMultTbb: 2,
-                    drHardening: 1,
-                    weightFront: 1/6,
-                    weightBack: 1/6,
                     flexible: false
                 },
                 pelvis: {
@@ -1092,21 +1171,58 @@ export class actorHelpers {
                     hp: {
                         max: pelvisHp,
                         state: "Fine",
-                        value: actorData.bodyType.body ? actorData.bodyType.body[id].subLocation.pelvis.hp.value : pelvisHp
+                        value: actorData.bodyType.body ? actorData.bodyType.body[id] ? actorData.bodyType.body[id].subLocation.pelvis.hp.value : pelvisHp : pelvisHp
                     },
                     flexible: false
                 }
             }
         }
 
+        if (vitals) {
+            part.subLocation.vitals = {
+                label: "Vitals",
+                id: id + ".subLocation.vitals",
+                penaltyFront: -3,
+                penaltyBack: -3,
+                drBurn: "",
+                drCor: "",
+                drCr: "",
+                drCut: "",
+                drFat: "",
+                drImp: "",
+                drPi: "",
+                drTox: "",
+                personalWoundMultBurn: 1,
+                personalWoundMultCor: 1,
+                personalWoundMultCr: 1,
+                personalWoundMultCut: 1.5,
+                personalWoundMultFat: 1,
+                personalWoundMultImp: 3,
+                personalWoundMultPim: 3,
+                personalWoundMultPi: 3,
+                personalWoundMultPip: 3,
+                personalWoundMultPipp: 3,
+                personalWoundMultTox: 1,
+                personalWoundMultTbb: 2,
+                drHardening: 1,
+                weightFront: 1/6,
+                weightBack: 0,
+                flexible: false
+            }
+        }
+
         return part;
     }
 
-    static addAbdomen(actorData, label, id){
+    static addAbdomen(actorData, label, id, vitals){
         let hp = actorData.reserves.hp.max;
         let pelvisHp = Math.ceil(hp/2);
         if (pelvisHp <= hp/2){//Make sure that part hp is greater than one half HP
             pelvisHp += 1;
+        }
+
+        if (typeof vitals == "undefined") { // If they did not provide a setting for vitals, default true;
+            vitals = true;
         }
 
         let part = {
@@ -1116,8 +1232,8 @@ export class actorHelpers {
             penaltyBack: -1,
             weightFront: 0.125,
             weightBack: 0.125,
-            totalSubWeightFront: 1,
-            totalSubWeightBack: 1,
+            totalSubWeightFront: vitals ? 1 : 5/6,
+            totalSubWeightBack: vitals ? 1 : 5/6,
             flexible: false,
             subLocation: {
                 digestiveTract: {
@@ -1150,36 +1266,6 @@ export class actorHelpers {
                     weightBack: 3/6,
                     flexible: false
                 },
-                vitals: {
-                    label: "Vitals",
-                    id: id + ".subLocation.vitals",
-                    penaltyFront: -3,
-                    penaltyBack: -3,
-                    drBurn: "",
-                    drCor: "",
-                    drCr: "",
-                    drCut: "",
-                    drFat: "",
-                    drImp: "",
-                    drPi: "",
-                    drTox: "",
-                    personalWoundMultBurn: 1,
-                    personalWoundMultCor: 1,
-                    personalWoundMultCr: 1,
-                    personalWoundMultCut: 1.5,
-                    personalWoundMultFat: 1,
-                    personalWoundMultImp: 3,
-                    personalWoundMultPim: 3,
-                    personalWoundMultPi: 3,
-                    personalWoundMultPip: 3,
-                    personalWoundMultPipp: 3,
-                    personalWoundMultTox: 1,
-                    personalWoundMultTbb: 2,
-                    drHardening: 1,
-                    weightFront: 1/6,
-                    weightBack: 1/6,
-                    flexible: false
-                },
                 pelvis: {
                     label: "Pelvis",
                     id: id + ".subLocation.pelvis",
@@ -1209,7 +1295,7 @@ export class actorHelpers {
                     hp: {
                         max: pelvisHp,
                         state: "Fine",
-                        value: actorData.bodyType.body ? actorData.bodyType.body[id].subLocation.pelvis.hp.value : pelvisHp
+                        value: actorData.bodyType.body ? actorData.bodyType.body[id] ? actorData.bodyType.body[id].subLocation.pelvis.hp.value : pelvisHp : pelvisHp
                     },
                     weightFront: 1/6,
                     weightBack: 1/6,
@@ -1245,6 +1331,39 @@ export class actorHelpers {
                     weightBack: 1/6,
                     flexible: false
                 }
+            }
+        }
+
+        if (vitals) {
+            part.subLocation.vitals = {
+                label: "Vitals",
+                id: id + ".subLocation.vitals",
+                penaltyFront: -3,
+                penaltyBack: -3,
+                drBurn: "",
+                drCor: "",
+                drCr: "",
+                drCut: "",
+                drFat: "",
+                drImp: "",
+                drPi: "",
+                drTox: "",
+                personalWoundMultBurn: 1,
+                personalWoundMultCor: 1,
+                personalWoundMultCr: 1,
+                personalWoundMultCut: 1.5,
+                personalWoundMultFat: 1,
+                personalWoundMultImp: 3,
+                personalWoundMultPim: 3,
+                personalWoundMultPi: 3,
+                personalWoundMultPip: 3,
+                personalWoundMultPipp: 3,
+                personalWoundMultTox: 1,
+                personalWoundMultTbb: 2,
+                drHardening: 1,
+                weightFront: 1/6,
+                weightBack: 0,
+                flexible: false
             }
         }
 
@@ -1287,7 +1406,7 @@ export class actorHelpers {
             hp: {
                 max: partHp,
                 state: "Fine",
-                value: actorData.bodyType.body ? actorData.bodyType.body[id].hp.value : partHp
+                value: actorData.bodyType.body ? actorData.bodyType.body[id] ? actorData.bodyType.body[id].hp.value : partHp : partHp
             },
             flexible: false,
             subLocation: {
@@ -1380,7 +1499,7 @@ export class actorHelpers {
                     hp: {
                         max: jointHp,
                         state: "Fine",
-                        value: actorData.bodyType.body ? actorData.bodyType.body[id].subLocation.joint.hp.value : jointHp
+                        value: actorData.bodyType.body ? actorData.bodyType.body[id] ? actorData.bodyType.body[id].subLocation.joint.hp.value : jointHp : jointHp
                     },
                     weightFront: 1/6,
                     weightBack: 1/6,

@@ -223,11 +223,6 @@ export class gurpsActor extends Actor {
 				homogenous: false,
 				lowPainThreshold: false,
 				noBlood: false,
-				noBrain: false,
-				noEyes: false,
-				noHead: false,
-				noNeck: false,
-				noVitals: false,
 				supernaturalDurability: false,
 				unbreakableBones: false,
 				unliving: false
@@ -238,6 +233,29 @@ export class gurpsActor extends Actor {
 				this.data.data.injuryTolerances.damageReduction == "" ||
 				this.data.data.injuryTolerances.damageReduction == null) {
 				this.data.data.injuryTolerances.damageReduction = 1;
+			}
+		}
+
+		// Check for body mods block
+		if (typeof this.data.data.bodyModifiers == 'undefined') { // If there is not a body modifier block, add one.
+			this.data.data.bodyModifiers = {
+				bornBiter: 0,
+				noBrain: false,
+				noEyes: false,
+				noHead: false,
+				noNeck: false,
+				noVitals: false,
+				myrmidonHead: false
+			}
+		}
+		else { // If there is an injury tolerance block, make sure bornBiter exists.
+			if (typeof this.data.data.bodyModifiers.bornBiter == 'undefined' || this.data.data.bodyModifiers.bornBiter == "" || this.data.data.bodyModifiers.bornBiter == null) { // bornBiter is blank, null, or undefined
+				this.data.data.bodyModifiers.bornBiter = 0; // Set to default value
+			}
+			else { // bornBiter is not blank, null, or undefined
+				if (this.data.data.bodyModifiers.bornBiter < 0) { // bornBiter is less than zero (an invalid value)
+					this.data.data.bodyModifiers.bornBiter = 0; // Set it to zero
+				}
 			}
 		}
 
@@ -262,17 +280,48 @@ export class gurpsActor extends Actor {
 						bodyType = "humanoid";
 					}
 
-					//Spoders and squids have a brain instead of a skull. Everyone else has a skull
+					// Spoders and squids have a brain instead of a skull. Everyone else has a skull
 					if (bodyType == "arachnoid" || bodyType == "octopod"){
-						bodyObj.brain = actorHelpers.addBrain("brain");
+						if (!(this.data.data.bodyModifiers.noHead || this.data.data.bodyModifiers.noBrain)) { // The user has set neither noHead nor noBrain
+							bodyObj.brain = actorHelpers.addBrain("brain");
+						}
 					}
 					else {
-						bodyObj.skull = actorHelpers.addSkull("skull");
+						if (!this.data.data.bodyModifiers.noHead) { // User has not set noHead
+							bodyObj.skull = actorHelpers.addSkull("skull", !this.data.data.bodyModifiers.noBrain);
+						}
 					}
 
-					//Body parts that apply to all body types
-					bodyObj.face = actorHelpers.addFace(actorData, "face");
-					bodyObj.neck = actorHelpers.addNeck("neck");
+					let eyeL = true;
+					let eyeR = true;
+					if (this.data.data.bodyModifiers.noEyeL) { // The user has set noLeft eye
+						eyeL = false;
+					}
+					if (this.data.data.bodyModifiers.noEyeR) { // The user has set noEyes
+						eyeR = false;
+					}
+					if (this.data.data.bodyModifiers.noEyes) { // The user has set noEyes
+						eyeL = false;
+						eyeR = false;
+					}
+
+					if (!this.data.data.bodyModifiers.noHead) { // The user has not set noHead
+						if (this.data.data.bodyModifiers.myrmidonHead) { // The user has set the myrmidon flag, which removes the ears and enlarges the eyes
+							bodyObj.face = actorHelpers.addFace(actorData, "face", false, eyeL, eyeR, this.data.data.bodyModifiers.bornBiter, true);
+						}
+						else { // The user is using a standard head
+							bodyObj.face = actorHelpers.addFace(actorData, "face", true, eyeL, eyeR, this.data.data.bodyModifiers.bornBiter, false);
+						}
+					}
+
+					if (!this.data.data.bodyModifiers.noNeck) { // The user has not set noNeck
+						bodyObj.neck = actorHelpers.addNeck("neck");
+					}
+
+					let vitals = true;
+					if (this.data.data.bodyModifiers.noVitals) { // The user has no vitals
+						vitals = false;
+					}
 
 					//The following body parts are specific to said body types
 					if (bodyType == "humanoid"){
@@ -280,9 +329,9 @@ export class gurpsActor extends Actor {
 						bodyObj.legRight 	= actorHelpers.addLeg(		actorData, 	"Right Leg"	,"legRight");
 						bodyObj.armLeft 	= actorHelpers.addArm(		actorData, 	"Left Arm"		,"armLeft");
 						bodyObj.armRight 	= actorHelpers.addArm(		actorData, 	"Right Arm"	,"armRight");
-						bodyObj.upperChest 	= actorHelpers.addChest(	actorData,	"Upper Chest"	,"upperChest");
-						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,	"Lower Chest"	,"lowerChest");
-						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,	"Abdomen"		,"abdomen");
+						bodyObj.upperChest 	= actorHelpers.addChest(	actorData,	"Upper Chest"	,"upperChest", vitals);
+						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,	"Lower Chest"	,"lowerChest", vitals);
+						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,	"Abdomen"		,"abdomen", vitals);
 						bodyObj.handLeft 	= actorHelpers.addExtremity(actorData,	"Left Hand"	,"handLeft", "Hand", "Wrist", "Palm");
 						bodyObj.handRight 	= actorHelpers.addExtremity(actorData,	"Right Hand"	,"handRight", "Hand", "Wrist", "Palm");
 						bodyObj.footLeft 	= actorHelpers.addExtremity(actorData,	"Left Foot"	,"footLeft", "Foot", "Ankle", "Sole");
@@ -293,9 +342,9 @@ export class gurpsActor extends Actor {
 						bodyObj.legRight 	= actorHelpers.addLeg(		actorData, 		"Right Leg"	,"legRight");
 						bodyObj.armLeft 	= actorHelpers.addArm(		actorData, 		"Left Arm"		,"armLeft");
 						bodyObj.armRight 	= actorHelpers.addArm(		actorData, 		"Right Arm"	,"armRight");
-						bodyObj.upperChest 	= actorHelpers.addChest(	actorData,		"Upper Chest"	,"upperChest");
-						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,		"Lower Chest"	,"lowerChest");
-						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,	"Abdomen"		,"abdomen");
+						bodyObj.upperChest 	= actorHelpers.addChest(	actorData,		"Upper Chest"	,"upperChest", vitals);
+						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,		"Lower Chest"	,"lowerChest", vitals);
+						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,	"Abdomen"		,"abdomen", vitals);
 						bodyObj.handLeft 	= actorHelpers.addExtremity(actorData,	"Left Hand"	,"handLeft", "Hand", "Wrist", "Palm");
 						bodyObj.handRight 	= actorHelpers.addExtremity(actorData,	"Right Hand"	,"handRight", "Hand", "Wrist", "Palm");
 						bodyObj.footLeft 	= actorHelpers.addExtremity(actorData,	"Left Foot"	,"footLeft", "Foot", "Ankle", "Sole");
@@ -308,9 +357,9 @@ export class gurpsActor extends Actor {
 						bodyObj.hindlegRight 	= actorHelpers.addLeg(		actorData, "Right Hind Leg", "hindlegRight");
 						bodyObj.legLeft 		= actorHelpers.addLeg(		actorData, "Left Foreleg", "legLeft");
 						bodyObj.legRight 		= actorHelpers.addLeg(		actorData, "Right Foreleg", "legRight");
-						bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest");
-						bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest");
-						bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen");
+						bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
+						bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
+						bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
 						bodyObj.footLeft 		= actorHelpers.addExtremity(actorData,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
 						bodyObj.footRight 		= actorHelpers.addExtremity(actorData,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
 						bodyObj.hindFootLeft 	= actorHelpers.addExtremity(actorData,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
@@ -321,9 +370,9 @@ export class gurpsActor extends Actor {
 						bodyObj.hindlegRight 	= actorHelpers.addLeg(		actorData, "Right Hind Leg", "hindlegRight");
 						bodyObj.legLeft 		= actorHelpers.addLeg(		actorData, "Left Foreleg", "legLeft");
 						bodyObj.legRight 		= actorHelpers.addLeg(		actorData, "Right Foreleg", "legRight");
-						bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest");
-						bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest");
-						bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen");
+						bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
+						bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
+						bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
 						bodyObj.footLeft 		= actorHelpers.addExtremity(actorData,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
 						bodyObj.footRight 		= actorHelpers.addExtremity(actorData,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
 						bodyObj.hindFootLeft 	= actorHelpers.addExtremity(actorData,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
@@ -338,9 +387,9 @@ export class gurpsActor extends Actor {
 						bodyObj.armRight 		= actorHelpers.addArm(		actorData, "Right Upper Thorax Arm", "armRight");
 						bodyObj.lowerArmLeft 	= actorHelpers.addArm(		actorData, "Left Lower Thorax Arm", "lowerArmLeft");
 						bodyObj.lowerArmRight 	= actorHelpers.addArm(		actorData, "Right Lower Thorax Arm", "lowerArmRight");
-						bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Thorax", "upperChest");
-						bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Mid Thorax", "lowerChest");
-						bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Lower Thorax", "abdomen");
+						bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Thorax", "upperChest", vitals);
+						bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Mid Thorax", "lowerChest", vitals);
+						bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Lower Thorax", "abdomen", vitals);
 						bodyObj.handLeft 		= actorHelpers.addExtremity(actorData,"Left Upper Thorax Hand", "handLeft", "Hand", "Wrist", "Palm");
 						bodyObj.handRight 		= actorHelpers.addExtremity(actorData,"Right Upper Thorax Hand", "handRight", "Hand", "Wrist", "Palm");
 						bodyObj.lowerHandLeft 	= actorHelpers.addExtremity(actorData,"Left Lower Thorax Hand", "lowerHandLeft", "Hand", "Wrist", "Palm");
@@ -355,9 +404,9 @@ export class gurpsActor extends Actor {
 						bodyObj.armRight 		= actorHelpers.addArm(		actorData, "Right Upper Thorax Arm", "armRight");
 						bodyObj.lowerArmLeft 	= actorHelpers.addArm(		actorData, "Left Lower Thorax Arm", "lowerArmLeft");
 						bodyObj.lowerArmRight 	= actorHelpers.addArm(		actorData, "Right Lower Thorax Arm", "lowerArmRight");
-						bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Thorax", "upperChest");
-						bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Mid Thorax", "lowerChest");
-						bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Lower Thorax", "abdomen");
+						bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Thorax", "upperChest", vitals);
+						bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Mid Thorax", "lowerChest", vitals);
+						bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Lower Thorax", "abdomen", vitals);
 						bodyObj.handLeft 		= actorHelpers.addExtremity(actorData,"Left Upper Thorax Hand", "handLeft", "Hand", "Wrist", "Palm");
 						bodyObj.handRight 		= actorHelpers.addExtremity(actorData,"Right Upper Thorax Hand", "handRight", "Hand", "Wrist", "Palm");
 						bodyObj.lowerHandLeft 	= actorHelpers.addExtremity(actorData,"Left Lower Thorax Hand", "lowerHandLeft", "Hand", "Wrist", "Palm");
@@ -374,11 +423,11 @@ export class gurpsActor extends Actor {
 						bodyObj.legRight 		= actorHelpers.addLeg(				actorData, "Right Foreleg", "legRight");
 						bodyObj.armLeft 		= actorHelpers.addArm(				actorData, "Left Arm", "armLeft");
 						bodyObj.armRight 		= actorHelpers.addArm(				actorData, "Right Arm", "armRight");
-						bodyObj.upperChest 		= actorHelpers.addChest(			actorData,"Humanoid Upper Chest", "upperChest");
-						bodyObj.lowerChest 		= actorHelpers.addChest(			actorData,"Humanoid Lower Chest", "lowerChest");
-						bodyObj.chestAnimal 	= actorHelpers.addChest(			actorData,"Animal Chest", "chestAnimal");
-						bodyObj.abdomen 		= actorHelpers.addCentaurAbdomen(	actorData,"Humanoid Abdomen", "abdomen");
-						bodyObj.animalAbdomen 	= actorHelpers.addAbdomen(			actorData,"Animal Abdomen", "animalAbdomen");
+						bodyObj.upperChest 		= actorHelpers.addChest(			actorData,"Humanoid Upper Chest", "upperChest", vitals);
+						bodyObj.lowerChest 		= actorHelpers.addChest(			actorData,"Humanoid Lower Chest", "lowerChest", vitals);
+						bodyObj.chestAnimal 	= actorHelpers.addChest(			actorData,"Animal Chest", "chestAnimal", vitals);
+						bodyObj.abdomen 		= actorHelpers.addCentaurAbdomen(	actorData,"Humanoid Abdomen", "abdomen", vitals);
+						bodyObj.animalAbdomen 	= actorHelpers.addAbdomen(			actorData,"Animal Abdomen", "animalAbdomen", vitals);
 						bodyObj.footLeft 		= actorHelpers.addExtremity(		actorData,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
 						bodyObj.footRight 		= actorHelpers.addExtremity(		actorData,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
 						bodyObj.handLeft 		= actorHelpers.addExtremity(		actorData,"Left Hand", "handLeft", "Hand", "Wrist", "Palm");
@@ -389,9 +438,9 @@ export class gurpsActor extends Actor {
 					else if (bodyType == "avian"){
 						bodyObj.legLeft 	= actorHelpers.addLeg(		actorData, "Left Leg", "legLeft");
 						bodyObj.legRight 	= actorHelpers.addLeg(		actorData, "Right Leg", "legRight");
-						bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest");
-						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,"Lower Chest","lowerChest");
-						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,"Abdomen","abdomen");
+						bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
+						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,"Lower Chest","lowerChest", vitals);
+						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,"Abdomen","abdomen", vitals);
 						bodyObj.handLeft 	= actorHelpers.addExtremity(actorData,"Left Hand", "handLeft", "Hand", "Wrist", "Palm");
 						bodyObj.handRight 	= actorHelpers.addExtremity(actorData,"Right Hand", "handRight", "Hand", "Wrist", "Palm");
 						bodyObj.footLeft 	= actorHelpers.addExtremity(actorData,"Left Foot", "footLeft", "Foot", "Ankle", "Sole");
@@ -401,16 +450,16 @@ export class gurpsActor extends Actor {
 						bodyObj.wingRight 	= actorHelpers.addArm(		actorData, "Right Wing", "wingRight");
 					}
 					else if (bodyType == "vermiform"){
-						bodyObj.upperChest 	= actorHelpers.addChest(	actorData, "upperChest","Upper Chest");
-						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData, "lowerChest","Lower Chest");
-						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData, "abdomen","Abdomen");
+						bodyObj.upperChest 	= actorHelpers.addChest(	actorData, "upperChest","Upper Chest", vitals);
+						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData, "lowerChest","Lower Chest", vitals);
+						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData, "abdomen","Abdomen", vitals);
 					}
 					else if (bodyType == "lamia"){
 						bodyObj.armLeft 	= actorHelpers.addArm(		actorData, "Left Arm", "armLeft");
 						bodyObj.armRight 	= actorHelpers.addArm(		actorData, "Right Arm", "armRight");
-						bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest");
-						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest");
-						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen");
+						bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
+						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
+						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
 						bodyObj.tail 		= actorHelpers.addTail(		actorData, "tail");
 						bodyObj.handLeft 	= actorHelpers.addExtremity(actorData,"Left Hand", "handLeft", "Hand", "Wrist", "Palm");
 						bodyObj.handRight 	= actorHelpers.addExtremity(actorData,"Right Hand", "handRight", "Hand", "Wrist", "Palm");
@@ -418,9 +467,9 @@ export class gurpsActor extends Actor {
 					else if (bodyType == "wingedLamia"){
 						bodyObj.armLeft 	= actorHelpers.addArm(		actorData, "Left Arm", "armLeft");
 						bodyObj.armRight 	= actorHelpers.addArm(		actorData, "Right Arm", "armRight");
-						bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest");
-						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest");
-						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen");
+						bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
+						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
+						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
 						bodyObj.tail 		= actorHelpers.addTail(		actorData, "tail");
 						bodyObj.handLeft 	= actorHelpers.addExtremity(actorData,"Left Hand", "handLeft", "Hand", "Wrist", "Palm");
 						bodyObj.handRight 	= actorHelpers.addExtremity(actorData,"Right Hand", "handRight", "Hand", "Wrist", "Palm");
@@ -428,9 +477,9 @@ export class gurpsActor extends Actor {
 						bodyObj.wingRight 	= actorHelpers.addArm(		actorData, "Right Wing", "wingRight");
 					}
 					else if (bodyType == "octopod"){
-						bodyObj.upperChest 		= actorHelpers.addInvertebrateChest(actorData,"Upper Chest", "upperChest");
-						bodyObj.lowerChest 		= actorHelpers.addInvertebrateChest(actorData,"Lower Chest", "lowerChest");
-						bodyObj.abdomen 		= actorHelpers.addAbdomen(			actorData,"Abdomen", "abdomen");
+						bodyObj.upperChest 		= actorHelpers.addInvertebrateChest(actorData,"Upper Chest", "upperChest", vitals);
+						bodyObj.lowerChest 		= actorHelpers.addInvertebrateChest(actorData,"Lower Chest", "lowerChest", vitals);
+						bodyObj.abdomen 		= actorHelpers.addAbdomen(			actorData,"Abdomen", "abdomen", vitals);
 						bodyObj.tentacleLeft1 	= actorHelpers.addArm(				actorData, "Left Tentacle 1", "tentacleLeft1");
 						bodyObj.tentacleLeft2 	= actorHelpers.addArm(				actorData, "Left Tentacle 2", "tentacleLeft2");
 						bodyObj.tentacleLeft3 	= actorHelpers.addArm(				actorData, "Left Tentacle 3", "tentacleLeft3");
@@ -447,9 +496,9 @@ export class gurpsActor extends Actor {
 						bodyObj.legRight 		= actorHelpers.addLeg(		actorData, "Right Foreleg", "legRight");
 						bodyObj.armLeft 		= actorHelpers.addArm(		actorData, "Left Arm", "armLeft");
 						bodyObj.armRight 		= actorHelpers.addArm(		actorData, "Right Arm", "armRight");
-						bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest");
-						bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest");
-						bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen");
+						bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
+						bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
+						bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
 						bodyObj.footLeft 		= actorHelpers.addExtremity(actorData,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
 						bodyObj.footRight 		= actorHelpers.addExtremity(actorData,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
 						bodyObj.handLeft 		= actorHelpers.addExtremity(actorData,"Left Claw", "handLeft", "Hand", "Wrist", "Palm");
@@ -458,9 +507,9 @@ export class gurpsActor extends Actor {
 						bodyObj.hindFootRight 	= actorHelpers.addExtremity(actorData,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
 					}
 					else if (bodyType == "ichthyoid"){
-						bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest");
-						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest");
-						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen");
+						bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
+						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
+						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
 						bodyObj.tail 		= actorHelpers.addTail(		actorData, "tail");
 						bodyObj.fin1 		= actorHelpers.addExtremity(actorData,"Dorsal Fin", "fin1", "Fin", "Joint");
 						bodyObj.fin2 		= actorHelpers.addExtremity(actorData,"Left Fin", "fin2", "Fin", "Joint");
@@ -475,9 +524,9 @@ export class gurpsActor extends Actor {
 						bodyObj.foremidlegRight 	= actorHelpers.addLeg(		actorData, "Right Mid Foreleg", "foremidlegRight");
 						bodyObj.legLeft 			= actorHelpers.addLeg(		actorData, "Left Foreleg", "legLeft");
 						bodyObj.legRight 			= actorHelpers.addLeg(		actorData, "Right Foreleg", "legRight");
-						bodyObj.upperChest 			= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest");
-						bodyObj.lowerChest 			= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest");
-						bodyObj.abdomen 			= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen");
+						bodyObj.upperChest 			= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
+						bodyObj.lowerChest 			= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
+						bodyObj.abdomen 			= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
 						bodyObj.footLeft 			= actorHelpers.addExtremity(actorData,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
 						bodyObj.footRight 			= actorHelpers.addExtremity(actorData,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
 						bodyObj.foremidFootLeft 	= actorHelpers.addExtremity(actorData,"Left Mid Fore Foot", "foremidFootLeft", "Foot", "Ankle", "Sole");
@@ -495,13 +544,13 @@ export class gurpsActor extends Actor {
 					for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
 						let part = getProperty(bodyObj, bodyParts[i]) // Get the current part
 						if (typeof part.weightFront != "undefined"){ // Check to see if weightFront is defined
-							totalWeightFront += part.weightFront; // Add the front and rear weights
-							totalWeightBack += part.weightBack;
+							totalWeightFront += +part.weightFront; // Add the front and rear weights
+							totalWeightBack += +part.weightBack;
 						}
 						else { // If the actor's weighting is not defined with the new front/back setup
 							if (typeof part.weight != "undefined"){ // Check to see if the old part.weight is still defined
-								totalWeightFront += part.weight; // Use that to set the front and back weights instead
-								totalWeightBack += part.weight;
+								totalWeightFront += +part.weight; // Use that to set the front and back weights instead
+								totalWeightBack += +part.weight;
 							}
 							console.error(this.data.name + " needs to refresh their body type"); // Print an error to console
 						}
