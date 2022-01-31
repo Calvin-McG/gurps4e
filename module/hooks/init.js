@@ -19,7 +19,6 @@ Hooks.once("init", () => {
 
   function hookAPI() {
     game.gurpsAPI = macroHelpers;
-    console.log(game)
   }
 
   // Register Armour as Dice option

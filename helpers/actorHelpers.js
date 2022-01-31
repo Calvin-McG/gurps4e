@@ -3,11 +3,6 @@ import {attributeHelpers} from "./attributeHelpers.js";
 export class actorHelpers {
 
     static addSkull(actorData, id, brain) {
-        console.log(actorData)
-        console.log(actorData.injuryTolerances)
-        console.log(actorData.injuryTolerances.homogenous)
-        console.log(actorData.injuryTolerances.unliving)
-        console.log(brain)
 
         let part = {
             label: "Skull",
