@@ -283,12 +283,12 @@ export class gurpsActor extends Actor {
 					// Spoders and squids have a brain instead of a skull. Everyone else has a skull
 					if (bodyType == "arachnoid" || bodyType == "octopod"){
 						if (!(this.data.data.bodyModifiers.noHead || this.data.data.bodyModifiers.noBrain)) { // The user has set neither noHead nor noBrain
-							bodyObj.brain = actorHelpers.addBrain("brain");
+							bodyObj.brain = actorHelpers.addBrain(actorData,"brain");
 						}
 					}
 					else {
 						if (!this.data.data.bodyModifiers.noHead) { // User has not set noHead
-							bodyObj.skull = actorHelpers.addSkull("skull", !this.data.data.bodyModifiers.noBrain);
+							bodyObj.skull = actorHelpers.addSkull(actorData,"skull", !this.data.data.bodyModifiers.noBrain);
 						}
 					}
 
@@ -315,7 +315,7 @@ export class gurpsActor extends Actor {
 					}
 
 					if (!this.data.data.bodyModifiers.noNeck) { // The user has not set noNeck
-						bodyObj.neck = actorHelpers.addNeck("neck");
+						bodyObj.neck = actorHelpers.addNeck(actorData,"neck");
 					}
 
 					let vitals = true;
