@@ -280,6 +280,7 @@ export class actorHelpers {
             penaltyFront: -2,
             penaltyBack: -2,
             weightFront: 0.1412037037,
+            weightBack: 0.1412037037,
             totalSubWeightFront: 1,
             totalSubWeightBack: 1,
             hp: {
