@@ -1155,10 +1155,20 @@ export class gurpsActor extends Actor {
 								let state = "Fine";
 
 								if(hp <= (currentPart.hp.max * -1)){ // If part HP is at or below a full negative multiple
-									state = "Destroyed";
+									if (this.data.data.injuryTolerances.unbreakableBones) {
+										state = "Crippled";
+									}
+									else {
+										state = "Destroyed";
+									}
 								}
 								else if(hp <= 0){ // If part HP is at or below a 0
-									state = "Crippled";
+									if (this.data.data.injuryTolerances.unbreakableBones) {
+										state = "Injured";
+									}
+									else {
+										state = "Crippled";
+									}
 								}
 								else if (hp < currentPart.hp.max){ // If part HP is below max
 									state = "Injured";
