@@ -291,7 +291,8 @@
       "Equipment",
       "Rollable",
       "Trait",
-      "Spell"
+      "Spell",
+      "Custom Weapon"
     ],
     "templates": {
       "base": {
@@ -379,7 +380,26 @@
         "lc",
         "equipStatus",
         "melee",
-        "ranged"
+        "ranged",
+        "affliction"
+      ],
+      "armour": {
+        "bodyType": "",
+        "layer": 0
+      }
+    },
+    "Custom Weapon": {
+      "templates": [
+        "base",
+        "countable",
+        "subCategory",
+        "weighable",
+        "tl",
+        "lc",
+        "equipStatus",
+        "melee",
+        "ranged",
+        "affliction"
       ],
       "armour": {
         "bodyType": "",

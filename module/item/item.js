@@ -44,13 +44,16 @@ export class gurpsItem extends Item {
       case "Trait":
         this._prepareTraitData();
         break;
+      case "Custom Weapon":
+        this._prepareCustomWeaponData();
+        break;
       default: // not a supported type
         return ui.notifications.error("This type of item is not supported in the system!");
     }
     this.prepareAttackData()
   }
 
-  _prepareEquipmentData() {
+  validateEquipmentBasics() {
     // Check for undefined on cost, weight, and quantity
     if (typeof this.data.data.cost === undefined || typeof this.data.data.cost == null) { // Undefined set to 0
       this.data.data.cost = 0;
@@ -92,6 +95,16 @@ export class gurpsItem extends Item {
     else if (this.data.data.lc > 4){ // Too high
       this.data.data.lc = 4;
     }
+  }
+
+  _prepareEquipmentData() {
+    this.validateEquipmentBasics();
+  }
+
+  _prepareCustomWeaponData() {
+    this.validateEquipmentBasics();
+
+
   }
 
   prepareAttackData() {

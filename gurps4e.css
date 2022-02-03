@@ -132,6 +132,10 @@
 	grid-area: weight;
 }
 
+#customType {
+	grid-area: xx;
+}
+
 #baseSkillRow {
 	grid-area: baseSkillRow;
 	display: grid;
