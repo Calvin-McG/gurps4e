@@ -733,8 +733,21 @@ export class gurpsItemSheet extends ItemSheet {
                     drHardening: 1,
                     flexible: false
                 },
-                eyes: {//Kromm's ruling on eyes http://forums.sjgames.com/showpost.php?p=733298&postcount=33
-                    label: "Eyes",
+                eyeLeft: {//Kromm's ruling on eyes http://forums.sjgames.com/showpost.php?p=733298&postcount=33
+                    label: "Left Eye",
+                    drBurn: "",
+                    drCor: "",
+                    drCr: "",
+                    drCut: "",
+                    drFat: "",
+                    drImp: "",
+                    drPi: "",
+                    drTox: "",
+                    drHardening: 1,
+                    flexible: false
+                },
+                eyeRight: {//Kromm's ruling on eyes http://forums.sjgames.com/showpost.php?p=733298&postcount=33
+                    label: "Right Eye",
                     drBurn: "",
                     drCor: "",
                     drCr: "",
