@@ -85,8 +85,8 @@ export class gurpsItem extends Item {
     }
 
     //Constrain LC to valid values
-    if (typeof this.data.data.lc === undefined || typeof this.data.data.lc == null) { // Undefined set to 0
-      this.data.data.lc = 0;
+    if (typeof this.data.data.lc === undefined || typeof this.data.data.lc == null) { // Undefined set to 4 (Open)
+      this.data.data.lc = 4;
     }
     if (this.data.data.lc < 0){ // Too low
       this.data.data.lc = 0;
