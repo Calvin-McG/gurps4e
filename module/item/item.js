@@ -84,7 +84,6 @@ export class gurpsItem extends Item {
       this.data.data.tl = 12;
     }
 
-
     //Constrain LC to valid values
     if (typeof this.data.data.lc === undefined || typeof this.data.data.lc == null) { // Undefined set to 0
       this.data.data.lc = 0;

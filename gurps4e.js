@@ -39,4 +39,37 @@ Hooks.once('init', async function() {
   Handlebars.registerHelper('isInt', function (value) {
     return Number.isInteger(value);
   });
+
+  // This helper introdouces conditional operators. It is used like this:
+  // {{#ifCond  data.data.tl '>=' 9 }}
+  //  <div class="header">
+  //   <a class="item" data-tab="melee">Design Laser</a>
+  //  </div>
+  // {{/ifCond}}
+  Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
+    switch (operator) {
+      case '==':
+        return (v1 == v2) ? options.fn(this) : options.inverse(this);
+      case '===':
+        return (v1 === v2) ? options.fn(this) : options.inverse(this);
+      case '!=':
+        return (v1 != v2) ? options.fn(this) : options.inverse(this);
+      case '!==':
+        return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+      case '<':
+        return (v1 < v2) ? options.fn(this) : options.inverse(this);
+      case '<=':
+        return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+      case '>':
+        return (v1 > v2) ? options.fn(this) : options.inverse(this);
+      case '>=':
+        return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+      case '&&':
+        return (v1 && v2) ? options.fn(this) : options.inverse(this);
+      case '||':
+        return (v1 || v2) ? options.fn(this) : options.inverse(this);
+      default:
+        return options.inverse(this);
+    }
+  });
 });
