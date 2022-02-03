@@ -68,12 +68,12 @@
 
 .equipmentStat{
 	display: grid;
-	grid-template-columns: auto 1fr 1fr;
+	grid-template-columns: auto 1fr;
 }
 
 .equipmentStatLong{
 	display: grid;
-	grid-template-columns: auto 1fr auto 1fr;
+	grid-template-columns: auto 1fr auto;
 }
 
 .equipmentInputInput{
