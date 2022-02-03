@@ -81,6 +81,26 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  // Register Hotshots and Overheating option
+  game.settings.register("gurps4e", "hotshotsAndOverheating", {
+    name: "Hotshots and Overheating",
+    hint: "UT 133, at the moment, enabling this mostly just allows the construction of gatling lasers.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
+  // Register Allow Super Science Custom Lasers option
+  game.settings.register("gurps4e", "allowSuperScienceCustomLasers", {
+    name: "Allow Super Science Custom Lasers",
+    hint: "Allows super science laser options like Graviton Beams. Also allows super science versions of non-super science weapons and super science power cells.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
   // How to get the user who owns the actor: game.users.get((Object.keys(game.actors.getName("character name goes here").data.permission)[1])).data.name
   // game.settings.register("gurps4e", "bretMode", {
   //   name: "Bret Mode",
