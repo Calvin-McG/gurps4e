@@ -16,7 +16,7 @@
                 </div>
                 <div id="lc" class="equipmentStat">
                     <label class="resource-label">LC:</label>
-                    <input type="text" name="data.lc" value="{{data.data.lc}}" data-dtype="Number"/>
+                    <span>{{data.data.lc}}</span>
                 </div>
                 <div id="equipped" class="flexrow">
                     <select name="data.equipStatus" class="equipStatusSelect">
@@ -65,6 +65,11 @@
         <div class="header">
             <a class="item" data-tab="notes">Notes</a>
         </div>
+        {{#ifCond  data.data.tl '>=' 9 }}
+        <div class="header">
+            <a class="item" data-tab="designLaser">Design Laser</a>
+        </div>
+        {{/ifCond}}
         <div class="header">
             <a class="item" data-tab="melee">Melee</a>
         </div>
@@ -88,6 +93,11 @@
             <div class="tab">
                 <textarea rows="8" name="data.notes">{{{data.data.notes}}}</textarea>
             </div>
+        </div>
+
+        {{!-- Laser Design Tab --}}
+        <div class="tab stats" data-tab="designLaser" data-group="primary">
+
         </div>
 
         {{!-- Melee Tab --}}
