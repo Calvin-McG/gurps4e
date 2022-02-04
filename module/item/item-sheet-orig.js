@@ -200,22 +200,24 @@ export class gurpsItemSheet extends ItemSheet {
     }
 
     _onAddRow(event) {
+        // If there's no melee container, add one
         if(typeof this.item.data.data.melee == "undefined") {
             this.item.data.data.melee = {
                 "melee": []
             }
         }
-        let keys = Object.keys(this.item.data.data.melee);
-        let newKey = 0;
-        if (keys.length){//Array is not empty
-            newKey = (+keys[keys.length-1] + +1);
+        let keys = Object.keys(this.item.data.data.melee); // Get the existing set of melee keys
+        let newKey = 0; // Init the new key
+        if (keys.length){ // The list of keys is not empty
+            newKey = (+keys[keys.length-1] + +1); // Add the new one in at the end
         }
-        else {
-            newKey = 0;
+        else { // The list of keys is empty
+            newKey = 0; // Add the new one at the start of the empty list
         }
 
-        let newRow = { "name": "" };
-        this.item.update({ ["data.melee." + newKey]: newRow });
+        let newRow = { "name": "" }; // Init the new melee row
+
+        this.item.update({ ["data.melee." + newKey]: newRow }); // Add the new row to the list of melee keys
     }
     _onAddRangedRow(event) {
         if (typeof this.item.data.data.ranged == "undefined") {
