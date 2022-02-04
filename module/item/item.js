@@ -221,8 +221,10 @@ export class gurpsItem extends Item {
       // Set weight modifier for beam type, along with other beam specific settings
       let e = 3;
       let rb = 8
+      let bc = 0;
       let baseShots = 0;
       if (this.data.data.laserDesign.beamType == "laser") {
+        bc = 500;
         this.data.data.laserDesign.armourDivisor = 2;
         this.data.data.laserDesign.damageType = "burn";
 
@@ -256,6 +258,7 @@ export class gurpsItem extends Item {
         e = 3
       }
       else if (this.data.data.laserDesign.beamType == "forceBeam") {
+        bc = 500;
         this.data.data.laserDesign.armourDivisor = 1;
         this.data.data.laserDesign.damageType = "cr dbk";
 
@@ -289,6 +292,7 @@ export class gurpsItem extends Item {
         e = 4
       }
       else if (this.data.data.laserDesign.beamType == "blaster") {
+        bc = 2000;
         this.data.data.laserDesign.armourDivisor = 5;
         this.data.data.laserDesign.damageType = "burn sur";
 
@@ -322,6 +326,7 @@ export class gurpsItem extends Item {
         e = 3
       }
       else if (this.data.data.laserDesign.beamType == "neutralParticleBeam") {
+        bc = 3000;
         this.data.data.laserDesign.armourDivisor = 1;
         this.data.data.laserDesign.damageType = "burn rad sur";
 
@@ -355,6 +360,7 @@ export class gurpsItem extends Item {
         e = 3
       }
       else if (this.data.data.laserDesign.beamType == "rainbowLaser") {
+        bc = 500;
         this.data.data.laserDesign.armourDivisor = 3;
         this.data.data.laserDesign.damageType = "burn";
 
@@ -388,6 +394,7 @@ export class gurpsItem extends Item {
         e = 3
       }
       else if (this.data.data.laserDesign.beamType == "xRayLaser") {
+        bc = 1000;
         this.data.data.laserDesign.armourDivisor = 5;
         this.data.data.laserDesign.damageType = "burn";
 
@@ -421,6 +428,7 @@ export class gurpsItem extends Item {
         e = 3
       }
       else if (this.data.data.laserDesign.beamType == "gravitonBeam") {
+        bc = 2000;
         this.data.data.laserDesign.armourDivisor = "I";
         this.data.data.laserDesign.damageType = "cr";
 
@@ -454,6 +462,7 @@ export class gurpsItem extends Item {
         e = 1.5
       }
       else if (this.data.data.laserDesign.beamType == "pulsar") {
+        bc = 3000;
         this.data.data.laserDesign.armourDivisor = 3;
         this.data.data.laserDesign.damageType = "cr ex rad sur";
 
@@ -487,6 +496,7 @@ export class gurpsItem extends Item {
         e = 6
       }
       else if (this.data.data.laserDesign.beamType == "graser") {
+        bc = 1500;
         this.data.data.laserDesign.armourDivisor = 10;
         this.data.data.laserDesign.damageType = "cr";
 
@@ -533,27 +543,34 @@ export class gurpsItem extends Item {
 
       // Weight modifier and rate of fire for generator
       let g = 1;
+      let gc = 1;
       if (this.data.data.laserDesign.generator == "single") {
+        gc = 1;
         g = 1;
         this.data.data.laserDesign.outputRoF = 1;
       }
       if (this.data.data.laserDesign.generator == "semi") {
+        gc = 1;
         g = 1.25;
         this.data.data.laserDesign.outputRoF = 3;
       }
       if (this.data.data.laserDesign.generator == "light") {
+        gc = 2;
         g = 1.25;
         this.data.data.laserDesign.outputRoF = 10;
       }
       else if (this.data.data.laserDesign.generator == "heavy") {
+        gc = 2;
         g = 2;
         this.data.data.laserDesign.outputRoF = 20;
       }
       else if (this.data.data.laserDesign.generator == "lightGat") {
+        gc = 2.5;
         g = 2;
         this.data.data.laserDesign.outputRoF = 10;
       }
       else if (this.data.data.laserDesign.generator == "heavyGat") {
+        gc = 2.5;
         g = 2;
         this.data.data.laserDesign.outputRoF = 20;
       }
@@ -691,6 +708,9 @@ export class gurpsItem extends Item {
       // Calculate the loaded weight
       this.data.data.laserDesign.loadedWeight = (Math.round(((Math.round(this.data.data.laserDesign.emptyWeight * 100) / 100) + (this.data.data.laserDesign.powerCellQty * this.data.data.laserDesign.powerCellWeight)) * 100) / 100);
 
+      this.data.data.weight = this.data.data.laserDesign.loadedWeight
+      this.data.data.ttlWeight = this.data.data.weight * this.data.data.quantity;
+
       // Calculate the output weight
       this.data.data.laserDesign.outputWeight = this.data.data.laserDesign.loadedWeight + "/" + this.data.data.laserDesign.powerCellQty + this.data.data.laserDesign.powerCell;
 
@@ -711,6 +731,13 @@ export class gurpsItem extends Item {
         this.data.data.laserDesign.outputST = Math.round(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 2.2) + "†";
         this.data.data.laserDesign.outputBulk = Math.min(Math.max(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 1.5, 3),10) * -1;
       }
+      this.data.data.laserDesign.outputBulk = Math.round(this.data.data.laserDesign.outputBulk)
+
+      this.data.data.laserDesign.outputRcl = 1;
+
+      this.data.data.cost = (Math.round(this.data.data.laserDesign.emptyWeight * bc * gc * 100) / 100);
+      this.data.data.ttlCost = this.data.data.cost * this.data.data.quantity;
+
     }
     console.log(this.data.data.laserDesign)
   }
