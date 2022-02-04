@@ -185,6 +185,7 @@ export class gurpsItem extends Item {
           "powerCellWeight": 0,
           "shots": 0,
           "omniBlaster": false,
+          "fieldJacketed": false,
         }
       }
 
@@ -692,45 +693,86 @@ export class gurpsItem extends Item {
       this.data.data.laserDesign.halfRange = this.data.data.laserDesign.damageDice * this.data.data.laserDesign.damageDice * rb * rf;
 
       if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "ir") {
-        this.data.data.laserDesign.halfRangeWater = 0;
+        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+          this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+        }
+        else {
+          this.data.data.laserDesign.halfRangeWater = 0;
+        }
         this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
         this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
       }
       else if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "bg") {
         this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange * 2 / 10) * 10;
-        this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-        this.data.data.laserDesign.halfRangeWater = Math.round(Math.min(this.data.data.laserDesign.halfRange, 150/3) / 10) * 10;
+        this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange * 2 / 10) * 10;
+        this.data.data.laserDesign.halfRangeWater = Math.round(Math.min(this.data.data.laserDesign.halfRange * 2, 150/3) / 10) * 10;
       }
       else if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "uv") {
         this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange * 3 / 10) * 10;
-        this.data.data.laserDesign.halfRangeWater = 0; // Round range to the nearest 10;
-        this.data.data.laserDesign.halfRange = Math.round(Math.min(this.data.data.laserDesign.halfRange * 3, 500/3) / 10) * 10;
+        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+          this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRangeWater * 3 / 10) * 10;
+          this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange * 3 / 10) * 10;
+        }
+        else {
+          this.data.data.laserDesign.halfRangeWater = 0;
+          this.data.data.laserDesign.halfRange = Math.round(Math.min(this.data.data.laserDesign.halfRange * 3, 500/3) / 10) * 10;
+        }
       }
       else if (this.data.data.laserDesign.beamType == "rainbowLaser") {
         this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-        this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10 / 10) * 10;
-        this.data.data.laserDesign.halfRangeWater = 1;
+        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+          this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+          this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+        }
+        else {
+          this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10 / 10) * 10;
+          this.data.data.laserDesign.halfRangeWater = 1;
+        }
       }
       else if (this.data.data.laserDesign.beamType == "xRayLaser") {
         this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-        this.data.data.laserDesign.halfRange = 7;
-        this.data.data.laserDesign.halfRangeWater = 0;
+        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+          this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+          this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+        }
+        else {
+          this.data.data.laserDesign.halfRange = 7;
+          this.data.data.laserDesign.halfRangeWater = 0;
+        }
       }
       else if (this.data.data.laserDesign.beamType == "graser") {
         this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-        this.data.data.laserDesign.halfRange = 70;
-        this.data.data.laserDesign.halfRangeWater = 0;
+        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+          this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+          this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+        }
+        else {
+          this.data.data.laserDesign.halfRange = 70;
+          this.data.data.laserDesign.halfRangeWater = 0;
+        }
       }
       else if (this.data.data.laserDesign.beamType == "blaster") {
-        this.data.data.laserDesign.outputAccSpace = Math.ceil(this.data.data.laserDesign.outputAccSpace / 2);
-        this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-        this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 5 / 10) * 10;
-        this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+          this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+          this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+          this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+        }
+        else {
+          this.data.data.laserDesign.outputAccSpace = Math.ceil(this.data.data.laserDesign.outputAccSpace / 2);
+          this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+          this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 5 / 10) * 10;
+          this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+        }
       }
       else if (this.data.data.laserDesign.beamType == "pulsar") {
         this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
         this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-        this.data.data.laserDesign.halfRange = Math.max(Math.round(this.data.data.laserDesign.halfRange / 10) * 10, 333);
+        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+          this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+        }
+        else {
+          this.data.data.laserDesign.halfRange = Math.min(Math.round(this.data.data.laserDesign.halfRange / 10) * 10, 333);
+        }
       }
       else {
         this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
@@ -742,7 +784,12 @@ export class gurpsItem extends Item {
       if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "ir") {
         this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
         this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
-        this.data.data.laserDesign.maxRangeWater = 1;
+        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+          this.data.data.laserDesign.maxRangeWater = this.data.data.laserDesign.halfRange * 3;
+        }
+        else {
+          this.data.data.laserDesign.maxRangeWater = 1;
+        }
       }
       else if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "bg") {
         this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
@@ -750,24 +797,46 @@ export class gurpsItem extends Item {
         this.data.data.laserDesign.maxRangeWater = this.data.data.laserDesign.halfRangeWater * 3;
       }
       else if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "uv") {
-        this.data.data.laserDesign.maxRange = Math.min(this.data.data.laserDesign.halfRange * 3, 500);
+        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+          this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
+        }
+        else {
+          this.data.data.laserDesign.maxRange = Math.min(this.data.data.laserDesign.halfRange * 3, 500);
+        }
         this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
         this.data.data.laserDesign.maxRangeWater = this.data.data.laserDesign.halfRangeWater * 3;
       }
       else if (this.data.data.laserDesign.beamType == "rainbowLaser") {
+        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+          this.data.data.laserDesign.maxRangeWater = this.data.data.laserDesign.halfRange * 3;
+        }
+        else {
+          this.data.data.laserDesign.maxRangeWater = 2;
+        }
         this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
         this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
-        this.data.data.laserDesign.maxRangeWater = 2;
       }
       else if (this.data.data.laserDesign.beamType == "xRayLaser") {
+        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+          this.data.data.laserDesign.maxRangeWater = this.data.data.laserDesign.halfRangeWater * 3;
+          this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
+        }
+        else {
+          this.data.data.laserDesign.maxRangeWater = 0;
+          this.data.data.laserDesign.maxRange = 20;
+        }
         this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
-        this.data.data.laserDesign.maxRangeWater = 0;
-        this.data.data.laserDesign.maxRange = 20;
       }
       else if (this.data.data.laserDesign.beamType == "graser") {
+        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+          this.data.data.laserDesign.maxRangeWater = this.data.data.laserDesign.halfRangeWater * 3;
+          this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
+        }
+        else {
+          this.data.data.laserDesign.maxRangeWater = 0;
+          this.data.data.laserDesign.maxRange = 200;
+        }
         this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
-        this.data.data.laserDesign.maxRangeWater = 0;
-        this.data.data.laserDesign.maxRange = 200;
       }
       else if (this.data.data.laserDesign.beamType == "blaster") {
         this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
@@ -778,7 +847,7 @@ export class gurpsItem extends Item {
         this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
         this.data.data.laserDesign.maxRangeWater = this.data.data.laserDesign.halfRangeWater * 3;
         this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
-        if (this.data.data.laserDesign.maxRange >= 990) {
+        if (this.data.data.laserDesign.maxRange == 999) {
           this.data.data.laserDesign.maxRange = 1000;
         }
       }
