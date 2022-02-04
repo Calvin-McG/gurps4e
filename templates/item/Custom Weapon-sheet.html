@@ -35,6 +35,9 @@
                     <select name="data.customType" class="equipStatusSelect">
                         {{#select data.data.customType}}
                             <option value="bow">Bow</option>
+                            {{#ifCond data.data.tl '>=' 1 }}
+                                <option value="footbow">Footbow</option>
+                            {{/ifCond}}
                             {{#ifCond data.data.tl '>=' 2 }}
                                 <option value="xbow">Crossbow</option>
                             {{/ifCond}}
@@ -47,7 +50,6 @@
                             {{#ifCond data.data.tl '>=' 9 }}
                                 <option value="laser">Laser Weapon</option>
                             {{/ifCond}}
-
                         {{/select}}
                     </select>
                 </div>

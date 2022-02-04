@@ -118,10 +118,13 @@ export class gurpsItem extends Item {
         this.prepareCustomLaser();
         break;
       case "bow":
-        this.prepareCustomBox();
+        this.prepareCustomBow("bow");
+        break;
+      case "footbow":
+        this.prepareCustomBow("xbow");
         break;
       case "xbow":
-        this.prepareCustomXBow();
+        this.prepareCustomBow("footbow");
         break;
       default: // not a supported type of custom weapon
         return ui.notifications.error("This type of custom weapon is not supported in the system!");
@@ -1292,12 +1295,10 @@ export class gurpsItem extends Item {
     this.data.data.melee = [newRow];
   }
 
-  prepareCustomBox() {
-    console.log("Preparing Bow");
-  }
+  prepareCustomBow(type) {
+    console.log("Preparing " + type);
 
-  prepareCustomXBow() {
-    console.log("Preparing X Bow");
+
   }
 
   prepareAttackData() {
