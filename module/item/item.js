@@ -173,6 +173,7 @@ export class gurpsItem extends Item {
           "powerCell": "C",
           "powerCellWeight": 0,
           "shots": 0,
+          "omniBlaster": false,
         }
       }
 
@@ -746,6 +747,11 @@ export class gurpsItem extends Item {
       this.data.data.laserDesign.outputRcl = 1;
 
       this.data.data.cost = (Math.round(this.data.data.laserDesign.emptyWeight * bc * gc * 100) / 100);
+
+      if (this.data.data.laserDesign.beamType == "blaster" && this.data.data.laserDesign.omniBlaster) {
+        this.data.data.cost = this.data.data.cost * 2;
+      }
+
       this.data.data.ttlCost = this.data.data.cost * this.data.data.quantity;
 
       // Calculate LC

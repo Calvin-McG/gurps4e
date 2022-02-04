@@ -175,6 +175,30 @@
                     </select>
                 </div>
 
+                {{#if (eq data.data.laserDesign.beamType "laser")}}
+                <div>
+                    <label>
+                        Laser Colour
+                    </label>
+                    <select name="data.laserDesign.laserColour">
+                        {{#select data.data.laserDesign.laserColour}}
+                        <option value="ir">Infrared</option>
+                        <option value="bg">Blue-Green</option>
+                        <option value="uv">Ultraviolet</option>
+                        {{/select}}
+                    </select>
+                </div>
+                {{/if}}
+
+                {{#if (eq data.data.laserDesign.beamType "blaster")}}
+                <div>
+                    <label>
+                        Omni-Blaster
+                    </label>
+                    <input type="checkbox" name="data.laserDesign.omniBlaster" {{checked data.data.laserDesign.omniBlaster}} data-dtype="Boolean"/>
+                </div>
+                {{/if}}
+
                 <div>
                     <label>
                         Focal Array Multiplier
