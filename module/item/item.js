@@ -688,6 +688,8 @@ export class gurpsItem extends Item {
         displayAdds = "-" + Math.abs(adds);
       }
       this.data.data.laserDesign.outputDamage = dice + "d6" + displayAdds + " (" + this.data.data.laserDesign.armourDivisor + ") " + this.data.data.laserDesign.damageType;
+      this.data.data.laserDesign.outputDamageWater = dice + "d6" + displayAdds + " (" + this.data.data.laserDesign.armourDivisorWater + ") " + this.data.data.laserDesign.damageType;
+      this.data.data.laserDesign.outputDamageSpace = dice + "d6" + displayAdds + " (" + this.data.data.laserDesign.armourDivisorSpace + ") " + this.data.data.laserDesign.damageType;
 
       // Determine RF for the purposes of range calculation
       let rf = this.data.data.laserDesign.focalArray;
