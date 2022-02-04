@@ -103,7 +103,579 @@ export class gurpsItem extends Item {
   _prepareCustomWeaponData() {
     this.validateEquipmentBasics();
 
+    console.log(this.data.data);
+    console.log(this.data.data.customType);
 
+    switch (this.data.data.customType) {
+      case "muzzleLoader":
+        this.prepareCustomMuzzleLoader();
+        break;
+      case "cartridgeLoader":
+        this.prepareCustomCartridgeLoader();
+        break;
+      case "laser":
+        this.prepareCustomLaser();
+        break;
+      case "bow":
+        this.prepareCustomBox();
+        break;
+      case "xbow":
+        this.prepareCustomXBow();
+        break;
+      default: // not a supported type of custom weapon
+        return ui.notifications.error("This type of custom weapon is not supported in the system!");
+    }
+  }
+
+  prepareCustomMuzzleLoader() {
+    console.log("Preparing Muzzle Loader");
+  }
+
+  prepareCustomCartridgeLoader() {
+    console.log("Preparing Cartridge Loader");
+  }
+
+  prepareCustomLaser() {
+    console.log("Preparing Laser");
+    console.log(this.data.data.laserDesign)
+
+    if (this.data.data.tl >= 9) { // TL must be at least 9 to be able to design a custom laser
+      if (typeof this.data.data.laserDesign == "undefined") { // If the laserDesign block hasn't yet been created
+        this.data.data.laserDesign = { // Create it
+          "configuration": "", // Beamer/Pistol/Rifle/Cannon
+          "beamType": "laser", // Laser/Force Beam/Etc
+          "focalArray": 1, // Numbers map to Tiny, Very Small, etc, through to Extremely Large. Valid entires are 0.1 to 4
+          "focalArraySize": "Medium", // Numbers map to Tiny, Very Small, etc, through to Extremely Large. Valid entires are 0.1 to 4
+          "generator": "semi", // single/semi/light/heavy/lightGat/heavyGat.
+          "hotshotsAndOverheating": game.settings.get("gurps4e", "hotshotsAndOverheating"),
+          "allowSuperScienceCustomLasers": game.settings.get("gurps4e", "allowSuperScienceCustomLasers"),
+          "superScience": false, // Makes use of allowSuperScienceCustomLasers to turn regular science lasers into super science lasers
+          "damageDice": 2.0, //
+          "emptyWeight": 0.0,
+          "outputDamage": "",
+          "outputAcc": 3,
+          "outputRange": "",
+          "outputWeight": "",
+          "outputRoF": 0,
+          "outputShots": "",
+          "outputST": 0,
+          "outputBulk": 0,
+          "outputRcl": 0,
+          "armourDivisor": 1,
+          "damageType": "burn",
+          "halfRange": 0,
+          "maxRange": 0,
+          "superScienceCells": false,
+          "nonRechargeableCells": false,
+          "powerCellQty": 1,
+          "powerCell": "C",
+          "shots": 0,
+        }
+      }
+
+      // Get game settings relevant to the design of the laser
+      this.data.data.laserDesign.hotshotsAndOverheating = game.settings.get("gurps4e", "hotshotsAndOverheating");
+      this.data.data.laserDesign.allowSuperScienceCustomLasers = game.settings.get("gurps4e", "allowSuperScienceCustomLasers");
+
+      // This block categorizes the user's focal array selection into the categories given in the article
+      if (this.data.data.laserDesign.focalArray < 0.175) { // Default tiny is 0.1, average of it and the next size is 0.175
+        this.data.data.laserDesign.focalArraySize = "Tiny";
+      }
+      else if (this.data.data.laserDesign.focalArray < 0.375) { // Default very small is 0.25, average of it and the next size is 0.375
+        this.data.data.laserDesign.focalArraySize = "Very Small";
+      }
+      else if (this.data.data.laserDesign.focalArray < 0.75) { // Default small is 0.5, average of it and the next size is 0.75
+        this.data.data.laserDesign.focalArraySize = "Small";
+      }
+      else if (this.data.data.laserDesign.focalArray < 1.25) { // Default medium is 1, average of it and the next size is 1.25
+        this.data.data.laserDesign.focalArraySize = "Medium";
+      }
+      else if (this.data.data.laserDesign.focalArray < 1.75) { // Default large is 1.5, average of it and the next size is 1.75
+        this.data.data.laserDesign.focalArraySize = "Large";
+      }
+      else if (this.data.data.laserDesign.focalArray < 3) { // Default very large is 2, average of it and the next size is 3
+        this.data.data.laserDesign.focalArraySize = "Very Large";
+      }
+      else { // Anything 3 or over is Extremely Large. Default XL is 4
+        this.data.data.laserDesign.focalArraySize = "Extremely Large";
+      }
+
+      // Weight modifier for superscience beams
+      let s = 1;
+      if (this.data.data.laserDesign.superScience) {
+        s = 0.5;
+      }
+
+      // Set weight modifier for beam type, along with other beam specific settings
+      let e = 3;
+      let rb = 8
+      let baseShots = 0;
+      if (this.data.data.laserDesign.beamType == "laser") {
+        this.data.data.laserDesign.armourDivisor = 2;
+        this.data.data.laserDesign.damageType = "burn";
+
+        if (this.data.data.laserDesign.configuration == "pistol") {
+          this.data.data.laserDesign.outputAcc = 3;
+        }
+        else if (this.data.data.laserDesign.configuration == "rifle") {
+          this.data.data.laserDesign.outputAcc = 6;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 12;
+        }
+        else if (this.data.data.laserDesign.configuration == "cannon") {
+          this.data.data.laserDesign.outputAcc = 18;
+        }
+
+        if (this.data.data.tl <= 9) {
+          baseShots = 225;
+        }
+        else if (this.data.data.tl == 10) {
+          baseShots = 1800;
+        }
+        else if (this.data.data.tl == 11) {
+          baseShots = 7200;
+        }
+        else if (this.data.data.tl == 12) {
+          baseShots = 28800;
+        }
+
+        rb = 40
+        e = 3
+      }
+      else if (this.data.data.laserDesign.beamType == "forceBeam") {
+        this.data.data.laserDesign.armourDivisor = 1;
+        this.data.data.laserDesign.damageType = "cr dbk";
+
+        if (this.data.data.laserDesign.configuration == "pistol") {
+          this.data.data.laserDesign.outputAcc = 3;
+        }
+        else if (this.data.data.laserDesign.configuration == "rifle") {
+          this.data.data.laserDesign.outputAcc = 6;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 12;
+        }
+        else if (this.data.data.laserDesign.configuration == "cannon") {
+          this.data.data.laserDesign.outputAcc = 18;
+        }
+
+        if (this.data.data.tl <= 9) {
+          baseShots = 270;
+        }
+        else if (this.data.data.tl == 10) {
+          baseShots = 1080;
+        }
+        else if (this.data.data.tl == 11) {
+          baseShots = 8640;
+        }
+        else if (this.data.data.tl == 12) {
+          baseShots = 34560;
+        }
+
+        rb = 11
+        e = 4
+      }
+      else if (this.data.data.laserDesign.beamType == "blaster") {
+        this.data.data.laserDesign.armourDivisor = 5;
+        this.data.data.laserDesign.damageType = "burn sur";
+
+        if (this.data.data.laserDesign.configuration == "pistol") {
+          this.data.data.laserDesign.outputAcc = 3;
+        }
+        else if (this.data.data.laserDesign.configuration == "rifle") {
+          this.data.data.laserDesign.outputAcc = 5;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 10;
+        }
+        else if (this.data.data.laserDesign.configuration == "cannon") {
+          this.data.data.laserDesign.outputAcc = 15;
+        }
+
+        if (this.data.data.tl <= 9) {
+          baseShots = 34;
+        }
+        else if (this.data.data.tl == 10) {
+          baseShots = 135;
+        }
+        else if (this.data.data.tl == 11) {
+          baseShots = 1080;
+        }
+        else if (this.data.data.tl == 12) {
+          baseShots = 4320;
+        }
+
+        rb = 32
+        e = 3
+      }
+      else if (this.data.data.laserDesign.beamType == "neutralParticleBeam") {
+        this.data.data.laserDesign.armourDivisor = 1;
+        this.data.data.laserDesign.damageType = "burn rad sur";
+
+        if (this.data.data.laserDesign.configuration == "pistol") {
+          this.data.data.laserDesign.outputAcc = 3;
+        }
+        else if (this.data.data.laserDesign.configuration == "rifle") {
+          this.data.data.laserDesign.outputAcc = 5;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 10;
+        }
+        else if (this.data.data.laserDesign.configuration == "cannon") {
+          this.data.data.laserDesign.outputAcc = 15;
+        }
+
+        if (this.data.data.tl <= 9) {
+          baseShots = 17;
+        }
+        else if (this.data.data.tl == 10) {
+          baseShots = 68;
+        }
+        else if (this.data.data.tl == 11) {
+          baseShots = 1080;
+        }
+        else if (this.data.data.tl == 12) {
+          baseShots = 4320;
+        }
+
+        rb = 32
+        e = 3
+      }
+      else if (this.data.data.laserDesign.beamType == "rainbowLaser") {
+        this.data.data.laserDesign.armourDivisor = 3;
+        this.data.data.laserDesign.damageType = "burn";
+
+        if (this.data.data.laserDesign.configuration == "pistol") {
+          this.data.data.laserDesign.outputAcc = 3;
+        }
+        else if (this.data.data.laserDesign.configuration == "rifle") {
+          this.data.data.laserDesign.outputAcc = 6;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 12;
+        }
+        else if (this.data.data.laserDesign.configuration == "cannon") {
+          this.data.data.laserDesign.outputAcc = 18;
+        }
+
+        if (this.data.data.tl <= 9) {
+          baseShots = 112;
+        }
+        else if (this.data.data.tl == 10) {
+          baseShots = 450;
+        }
+        else if (this.data.data.tl == 11) {
+          baseShots = 3600;
+        }
+        else if (this.data.data.tl == 12) {
+          baseShots = 14400;
+        }
+
+        rb = 56
+        e = 3
+      }
+      else if (this.data.data.laserDesign.beamType == "xRayLaser") {
+        this.data.data.laserDesign.armourDivisor = 5;
+        this.data.data.laserDesign.damageType = "burn";
+
+        if (this.data.data.laserDesign.configuration == "pistol") {
+          this.data.data.laserDesign.outputAcc = 3;
+        }
+        else if (this.data.data.laserDesign.configuration == "rifle") {
+          this.data.data.laserDesign.outputAcc = 6;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 12;
+        }
+        else if (this.data.data.laserDesign.configuration == "cannon") {
+          this.data.data.laserDesign.outputAcc = 18;
+        }
+
+        if (this.data.data.tl <= 9) {
+          baseShots = 112;
+        }
+        else if (this.data.data.tl == 10) {
+          baseShots = 450;
+        }
+        else if (this.data.data.tl == 11) {
+          baseShots = 3600;
+        }
+        else if (this.data.data.tl == 12) {
+          baseShots = 14400;
+        }
+
+        rb = 2000
+        e = 3
+      }
+      else if (this.data.data.laserDesign.beamType == "gravitonBeam") {
+        this.data.data.laserDesign.armourDivisor = "I";
+        this.data.data.laserDesign.damageType = "cr";
+
+        if (this.data.data.laserDesign.configuration == "pistol") {
+          this.data.data.laserDesign.outputAcc = 3;
+        }
+        else if (this.data.data.laserDesign.configuration == "rifle") {
+          this.data.data.laserDesign.outputAcc = 6;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 12;
+        }
+        else if (this.data.data.laserDesign.configuration == "cannon") {
+          this.data.data.laserDesign.outputAcc = 18;
+        }
+
+        if (this.data.data.tl <= 9) {
+          baseShots = 14;
+        }
+        else if (this.data.data.tl == 10) {
+          baseShots = 56;
+        }
+        else if (this.data.data.tl == 11) {
+          baseShots = 450;
+        }
+        else if (this.data.data.tl == 12) {
+          baseShots = 1800;
+        }
+
+        rb = 100
+        e = 1.5
+      }
+      else if (this.data.data.laserDesign.beamType == "pulsar") {
+        this.data.data.laserDesign.armourDivisor = 3;
+        this.data.data.laserDesign.damageType = "cr ex rad sur";
+
+        if (this.data.data.laserDesign.configuration == "pistol") {
+          this.data.data.laserDesign.outputAcc = 3;
+        }
+        else if (this.data.data.laserDesign.configuration == "rifle") {
+          this.data.data.laserDesign.outputAcc = 5;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 10;
+        }
+        else if (this.data.data.laserDesign.configuration == "cannon") {
+          this.data.data.laserDesign.outputAcc = 15;
+        }
+
+        if (this.data.data.tl <= 9) {
+          baseShots = 135;
+        }
+        else if (this.data.data.tl == 10) {
+          baseShots = 540;
+        }
+        else if (this.data.data.tl == 11) {
+          baseShots = 4320;
+        }
+        else if (this.data.data.tl == 12) {
+          baseShots = 17280;
+        }
+
+        rb = 8
+        e = 6
+      }
+      else if (this.data.data.laserDesign.beamType == "graser") {
+        this.data.data.laserDesign.armourDivisor = 10;
+        this.data.data.laserDesign.damageType = "cr";
+
+        if (this.data.data.laserDesign.configuration == "pistol") {
+          this.data.data.laserDesign.outputAcc = 3;
+        }
+        else if (this.data.data.laserDesign.configuration == "rifle") {
+          this.data.data.laserDesign.outputAcc = 6;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 12;
+        }
+        else if (this.data.data.laserDesign.configuration == "cannon") {
+          this.data.data.laserDesign.outputAcc = 18;
+        }
+
+        if (this.data.data.tl <= 9) {
+          baseShots = 28;
+        }
+        else if (this.data.data.tl == 10) {
+          baseShots = 112;
+        }
+        else if (this.data.data.tl == 11) {
+          baseShots = 450;
+        }
+        else if (this.data.data.tl == 12) {
+          baseShots = 1880;
+        }
+
+        rb = 6000
+        e = 3
+      }
+
+      // Weight modifier for focal array
+      let f = 1;
+      let focalArray = +this.data.data.laserDesign.focalArray;
+      if (this.data.data.laserDesign.focalArray < 1.6) { // Below 1.6 the equation is a really annoying fourth order polynomial
+        f = (-0.1422*(focalArray**4))+(1.0155*(focalArray**3))-(2.2582*(focalArray**2))+(2.377*focalArray)+0.0366;
+      }
+      else { // At and above 1.6 the giant polynomial breaks down and we use a linear equation
+        f = (0.2 * focalArray) + 1.2;
+      }
+      f = Math.round(f * 100) / 100; // Round to the nearest two decimals
+
+      // Weight modifier and rate of fire for generator
+      let g = 1;
+      if (this.data.data.laserDesign.generator == "single") {
+        g = 1;
+        this.data.data.laserDesign.outputRoF = 1;
+      }
+      if (this.data.data.laserDesign.generator == "semi") {
+        g = 1.25;
+        this.data.data.laserDesign.outputRoF = 3;
+      }
+      if (this.data.data.laserDesign.generator == "light") {
+        g = 1.25;
+        this.data.data.laserDesign.outputRoF = 10;
+      }
+      else if (this.data.data.laserDesign.generator == "heavy") {
+        g = 2;
+        this.data.data.laserDesign.outputRoF = 20;
+      }
+      else if (this.data.data.laserDesign.generator == "lightGat") {
+        g = 2;
+        this.data.data.laserDesign.outputRoF = 10;
+      }
+      else if (this.data.data.laserDesign.generator == "heavyGat") {
+        g = 2;
+        this.data.data.laserDesign.outputRoF = 20;
+      }
+
+      // Calculate empty weight
+      this.data.data.laserDesign.emptyWeight = (+this.data.data.laserDesign.damageDice * s / e)**3 * f * g;
+
+      // Calculate the output weight
+      this.data.data.laserDesign.outputWeight = Math.round(this.data.data.laserDesign.emptyWeight * 100) / 100 + "/" + 0; // Round empty weight on display
+
+      // Rounding damage dice to dice and adds, per page 13 of Pyramid 37
+      let dice = 0;
+      let adds = 0;
+      if (this.data.data.laserDesign.damageDice < 1) { // Dice is less than 1, use different rules than normal rounding.
+        if (this.data.data.laserDesign.damageDice == 0) {
+          dice = 0;
+          adds = 0;
+        }
+        else if (this.data.data.laserDesign.damageDice <= 0.32) {
+          dice = 1;
+          adds = -5;
+        }
+        else if (this.data.data.laserDesign.damageDice <= 0.42) {
+          dice = 1;
+          adds = -4;
+        }
+        else if (this.data.data.laserDesign.damageDice <= 0.56) {
+          dice = 1;
+          adds = -3;
+        }
+        else if (this.data.data.laserDesign.damageDice <= 0.75) {
+          dice = 1;
+          adds = -2;
+        }
+        else if (this.data.data.laserDesign.damageDice <= 0.95) {
+          dice = 1;
+          adds = -1;
+        }
+        else {
+          dice = 1;
+          adds = 0;
+        }
+      }
+      else {
+        dice = parseInt(this.data.data.laserDesign.damageDice); // Get the number of dice without modifiers or decimals
+        let remainder = +this.data.data.laserDesign.damageDice - +dice; // Get the remainder after above.
+
+        // Use the remainder to figure out the adds
+        if (remainder <= 0.14) {
+          adds = 0;
+        }
+        else if (remainder <= 0.42) {
+          adds = 1;
+        }
+        else if (remainder <= 0.64) {
+          adds = 2;
+        }
+        else if (remainder <= 0.85) {
+          dice += 1; // Add 1d-1
+          adds = -1;
+        }
+        else {
+          dice += 1; // Add a full die if it's greater than 0.85
+          adds = 0;
+        }
+      }
+
+      // Calculate the damage
+      let displayAdds = "";
+      if (adds > 0) { // Adds is more than zero
+        displayAdds = "+" + adds;
+      }
+      else if (adds < 0) { // Adds is less than zero
+        displayAdds = "-" + Math.abs(adds);
+      }
+      this.data.data.laserDesign.outputDamage = dice + "d6" + displayAdds + " (" + this.data.data.laserDesign.armourDivisor + ") " + this.data.data.laserDesign.damageType;
+
+      // Determine RF for the purposes of range calculation
+      let rf = this.data.data.laserDesign.focalArray;
+      if (rf > 1 && rf <= 1.75) {
+        rf = rf * 1.33;
+      }
+      else if (rf >= 1.75) {
+        rf = rf * 2;
+      }
+
+      // Calculate the ranges
+      this.data.data.laserDesign.halfRange = this.data.data.laserDesign.damageDice * this.data.data.laserDesign.damageDice * rb * rf;
+      this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10; // Round range to the nearest 10;
+      this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
+      this.data.data.laserDesign.outputRange = this.data.data.laserDesign.halfRange + " / " + this.data.data.laserDesign.maxRange;
+
+      // // Shots
+      // if (this.data.data.laserDesign.powerCell == "A") {
+      //   baseShots = baseShots * 0.01;
+      // }
+      // else if (this.data.data.laserDesign.powerCell == "B") {
+      //   baseShots = baseShots * 0.1;
+      // }
+      // else if (this.data.data.laserDesign.powerCell == "C") {
+      //   baseShots = baseShots * 1;
+      // }
+      // else if (this.data.data.laserDesign.powerCell == "D") {
+      //   baseShots = baseShots * 10;
+      // }
+      // else if (this.data.data.laserDesign.powerCell == "E") {
+      //   baseShots = baseShots * 100;
+      // }
+      // else if (this.data.data.laserDesign.powerCell == "F") {
+      //   baseShots = baseShots * 1000;
+      // }
+      //
+      // if (this.data.data.laserDesign.superScienceCells) {
+      //   baseShots = baseShots * 5;
+      // }
+      // if (this.data.data.laserDesign.nonRechargeableCells) {
+      //   baseShots = baseShots * 2;
+      // }
+      //
+      // baseShots = baseShots * this.data.data.laserDesign.powerCellQty;
+      //
+      // this.data.data.laserDesign.shots = baseShots / this.data.data.laserDesign.damageDice ** 3;
+
+      // this.data.data.laserDesign.outputShots = this.data.data.laserDesign.shots + "(3)"
+    }
+    console.log(this.data.data.laserDesign)
+  }
+
+  prepareCustomBox() {
+    console.log("Preparing Bow");
+  }
+
+  prepareCustomXBow() {
+    console.log("Preparing X Bow");
   }
 
   prepareAttackData() {
