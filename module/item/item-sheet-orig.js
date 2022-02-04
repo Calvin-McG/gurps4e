@@ -83,6 +83,14 @@ export class gurpsItemSheet extends ItemSheet {
         html.find('.piDRDown').click( this._piDRDown.bind(this));
         html.find('.toxDRUp').click(   this._toxDRUp.bind(this));
         html.find('.toxDRDown').click( this._toxDRDown.bind(this));
+
+        // Mouseover event handlers
+        html.find('.laser-design-row').click(this._showTheThing.bind(this));
+    }
+
+    _showTheThing(event) {
+        console.log(event.currentTarget.id);
+        this.item.showLaserInfo(event.currentTarget.id);
     }
 
     _locationDRUp(event) {

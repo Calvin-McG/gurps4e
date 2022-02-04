@@ -193,6 +193,7 @@ export class gurpsItem extends Item {
           "fieldJacketed": false,
           "graviticFocus": 0,
           "ftl": false,
+          "info": "",
         }
       }
 
@@ -1368,4 +1369,52 @@ export class gurpsItem extends Item {
   }
 
   _prepareTraitData() {}
+
+  showLaserInfo(id) {
+    let info = "";
+    if (id == "laser-configuration") {
+      info = "<table>" +
+          "<tr>" +
+          "<td style='width: 50px;'>Pistol</td>" +
+          "<td><p>It's a pistol. Acc is lower, Bulk is lower, and ST is higher compared to a rifle of equal weight.</p></td>" +
+          "</tr>" +
+          "<tr>" +
+          "<td style='width: 50px;'>Beamer</td>" +
+          "<td><p>Like a TNG phaser. It's the bare minimum laser weapon. Acc is as low as it gets for a laser, but so is Bulk. ST is the same for an equivalent pistol.</p></td>" +
+          "</tr>" +
+          "<tr>" +
+          "<td style='width: 50px;'>Rifle</td>" +
+          "<td><p>It's a rifle. Acc is higher, but so is Bulk. ST is lower compared to a pistol or beamer of equivalent weight but the weapon requires two hands.</p></td>" +
+          "</tr>" +
+          "<tr>" +
+          "<td style='width: 50px;'>Cannon</td>" +
+          "<td><p>Like a beamer, this is a weapon with the bare minimum, but built to fit into a turret or weapon mount. Acc is as high as it gets. Bulk isn't any worse than a rifle, but the weapon must be in a mount to use effectively.</p></td>" +
+          "</tr>" +
+          "</table>"
+    }
+    else if (id == "beam-type") {
+      info = "<table>" +
+          "<tr>" +
+          "<td style='width: 100px;'>Laser (TL9)</td>" +
+          "<td><p>It's a pistol. Acc is lower, Bulk is lower, and ST is higher compared to a rifle of equal weight.</p></td>" +
+          "</tr>" +
+          "<tr>" +
+          "<td style='width: 100px;'>Beamer</td>" +
+          "<td><p>Like a TNG phaser. It's the bare minimum laser weapon. Acc is as low as it gets for a laser, but so is Bulk. ST is the same for an equivalent pistol.</p></td>" +
+          "</tr>" +
+          "<tr>" +
+          "<td style='width: 100px;'>Rifle</td>" +
+          "<td><p>It's a rifle. Acc is higher, but so is Bulk. ST is lower compared to a pistol or beamer of equivalent weight but the weapon requires two hands.</p></td>" +
+          "</tr>" +
+          "<tr>" +
+          "<td style='width: 100px;'>Cannon</td>" +
+          "<td><p>Like a beamer, this is a weapon with the bare minimum, but built to fit into a turret or weapon mount. Acc is as high as it gets. Bulk isn't any worse than a rifle, but the weapon must be in a mount to use effectively.</p></td>" +
+          "</tr>" +
+          "</table>"
+    }
+
+    this.data.data.laserDesign.info = info;
+
+    this.update({ 'data.laserDesign.info': this.data.data.laserDesign.info });
+  }
 }
