@@ -176,7 +176,7 @@ export class gurpsItem extends Item {
           "armourDivisor": 1,
           "armourDivisorWater": 1,
           "armourDivisorSpace": 1,
-          "damageType": "burn",
+          "damageType": "tbb",
           "halfRange": 0,
           "maxRange": 0,
           "halfRangeSpace": 0,
@@ -266,7 +266,7 @@ export class gurpsItem extends Item {
           this.data.data.laserDesign.armourDivisor = 1;
         }
         else {
-          this.data.data.laserDesign.damageType = "burn";
+          this.data.data.laserDesign.damageType = "tbb";
           this.data.data.laserDesign.armourDivisor = 2;
         }
 
@@ -338,7 +338,7 @@ export class gurpsItem extends Item {
         lc = 3;
         bc = 2000;
         this.data.data.laserDesign.armourDivisor = 5;
-        this.data.data.laserDesign.damageType = "burn sur";
+        this.data.data.laserDesign.damageType = "tbb sur";
 
         if (this.data.data.laserDesign.configuration == "pistol") {
           this.data.data.laserDesign.outputAcc = 3;
@@ -373,7 +373,7 @@ export class gurpsItem extends Item {
         lc = 3;
         bc = 3000;
         this.data.data.laserDesign.armourDivisor = 1;
-        this.data.data.laserDesign.damageType = "burn rad sur";
+        this.data.data.laserDesign.damageType = "tbb rad sur";
 
         if (this.data.data.laserDesign.configuration == "pistol") {
           this.data.data.laserDesign.outputAcc = 3;
@@ -408,7 +408,7 @@ export class gurpsItem extends Item {
         lc = 3;
         bc = 500;
         this.data.data.laserDesign.armourDivisor = 3;
-        this.data.data.laserDesign.damageType = "burn";
+        this.data.data.laserDesign.damageType = "tbb";
 
         if (this.data.data.laserDesign.configuration == "pistol") {
           this.data.data.laserDesign.outputAcc = 3;
@@ -448,7 +448,7 @@ export class gurpsItem extends Item {
           this.data.data.laserDesign.armourDivisor = 3;
         }
         else {
-          this.data.data.laserDesign.damageType = "burn";
+          this.data.data.laserDesign.damageType = "tbb";
           this.data.data.laserDesign.armourDivisor = 5;
         }
 
