@@ -152,6 +152,8 @@ export class gurpsItem extends Item {
           "superScience": false, // Makes use of allowSuperScienceCustomLasers to turn regular science lasers into super science lasers
           "damageDice": 2.0, //
           "emptyWeight": 0.0,
+          "weightTweak": 1,
+          "loadedWeight": 0.0,
           "outputDamage": "",
           "outputAcc": 3,
           "outputRange": "",
@@ -684,10 +686,24 @@ export class gurpsItem extends Item {
       this.data.data.laserDesign.outputShots = this.data.data.laserDesign.shots + " (" + reloadTime + ")";
 
       // Calculate empty weight
-      this.data.data.laserDesign.emptyWeight = (+this.data.data.laserDesign.damageDice * s / e)**3 * f * g;
+      this.data.data.laserDesign.emptyWeight = ((+this.data.data.laserDesign.damageDice * s / e)**3 * f * g) * +this.data.data.laserDesign.weightTweak;
+
+      // Calculate the loaded weight
+      this.data.data.laserDesign.loadedWeight = (Math.round(((Math.round(this.data.data.laserDesign.emptyWeight * 100) / 100) + (this.data.data.laserDesign.powerCellQty * this.data.data.laserDesign.powerCellWeight)) * 100) / 100);
 
       // Calculate the output weight
-      this.data.data.laserDesign.outputWeight = ((Math.round(this.data.data.laserDesign.emptyWeight * 100) / 100) + (this.data.data.laserDesign.powerCellQty * this.data.data.laserDesign.powerCellWeight)) + "/" + this.data.data.laserDesign.powerCellQty + this.data.data.laserDesign.powerCell; // Round empty weight on display
+      this.data.data.laserDesign.outputWeight = this.data.data.laserDesign.loadedWeight + "/" + this.data.data.laserDesign.powerCellQty + this.data.data.laserDesign.powerCell;
+
+      // Calculate ST Requirement
+      if (this.data.data.laserDesign.configuration == "pistol" || this.data.data.laserDesign.configuration == "beamer") {
+        this.data.data.laserDesign.outputST = Math.round(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 3.3);
+      }
+      else if (this.data.data.laserDesign.configuration == "cannon") {
+        this.data.data.laserDesign.outputST = Math.round(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 2.4) + "M";
+      }
+      else if (this.data.data.laserDesign.configuration == "rifle") {
+        this.data.data.laserDesign.outputST = Math.round(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 2.2) + "†";
+      }
     }
     console.log(this.data.data.laserDesign)
   }
