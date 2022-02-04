@@ -44,7 +44,8 @@ export class gurpsActorSheet extends ActorSheet {
 						label: "Delete",
 						callback: () => {
 							const li = $(ev.currentTarget).parents(".item");
-							this.actor.deleteOwnedItem(li.data("itemId"));
+							const item = this.actor.items.get(li.data("itemId"));
+							item.delete();
 							li.slideUp(200, () => this.render(false));
 						}
 					},
