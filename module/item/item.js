@@ -103,6 +103,10 @@ export class gurpsItem extends Item {
   _prepareCustomWeaponData() {
     this.validateEquipmentBasics();
 
+    if (typeof this.data.data.customType == "undefined" || this.data.data.customType == null || this.data.data.customType == "") {
+      this.data.data.customType = "muzzleLoader"
+    }
+
     switch (this.data.data.customType) {
       case "muzzleLoader":
         this.prepareCustomMuzzleLoader();
