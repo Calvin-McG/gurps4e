@@ -173,6 +173,15 @@ export class gurpsItem extends Item {
         }
       }
 
+      // Input Validation
+      if (typeof this.data.data.laserDesign.powerCellQty == "undefined" || this.data.data.laserDesign.powerCellQty <= 0 || this.data.data.laserDesign.powerCellQty == "") { // If the cell quantity is blank or negative
+        this.data.data.laserDesign.powerCellQty = 1; // Set to 1
+      }
+      if (typeof this.data.data.laserDesign.damageDice == "undefined" || this.data.data.laserDesign.damageDice <= 0 || this.data.data.laserDesign.damageDice == "") { // If the damage dice is blank or negative
+        this.data.data.laserDesign.damageDice = 1; // Set to 1
+      }
+
+
       // Get game settings relevant to the design of the laser
       this.data.data.laserDesign.hotshotsAndOverheating = game.settings.get("gurps4e", "hotshotsAndOverheating");
       this.data.data.laserDesign.allowSuperScienceCustomLasers = game.settings.get("gurps4e", "allowSuperScienceCustomLasers");
