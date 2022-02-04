@@ -65,10 +65,12 @@
         <div class="header">
             <a class="item" data-tab="notes">Notes</a>
         </div>
-        {{#ifCond  data.data.tl '>=' 9 }}
+        {{#ifCond data.data.tl '>=' 9 }}
+        {{#if (eq data.data.customType "laser")}}
         <div class="header">
             <a class="item" data-tab="designLaser">Design Laser</a>
         </div>
+        {{/if}}
         {{/ifCond}}
         <div class="header">
             <a class="item" data-tab="melee">Melee</a>
@@ -97,226 +99,272 @@
 
         {{!-- Laser Design Tab --}}
         <div class="tab stats" data-tab="designLaser" data-group="primary">
-            <h3 class="bold">Laser Design: Pyramid 3/37</h3>
+            <h1 class="bold" style="text-align: center;">Laser Design: Pyramid 3/37</h1>
             <div class="tab">
-                <div>
-                    <label>
-                        Configuration
-                    </label>
-                    <select name="data.laserDesign.configuration">
-                        {{#select data.data.laserDesign.configuration}}
-                        <option value="pistol">Pistol</option>
-                        <option value="rifle">Rifle</option>
-                        <option value="beamer">Beamer</option>
-                        <option value="cannon">Cannon</option>
-                        {{/select}}
-                    </select>
-                </div>
+                <div class="laser-design-block">
+                    <div style="width: 50%;">
+                        <h2 class="bold" style="text-align: center;">Laser Options</h2>
+                        <table>
+                            <tr>
+                                <td style="width: 150px">
+                                    Configuration
+                                </td>
+                                <td>
+                                    <select name="data.laserDesign.configuration">
+                                        {{#select data.data.laserDesign.configuration}}
+                                        <option value="pistol">Pistol</option>
+                                        <option value="rifle">Rifle</option>
+                                        <option value="beamer">Beamer</option>
+                                        <option value="cannon">Cannon</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                            </tr>
 
-                <div>
-                    <label>
-                        Beam Type
-                    </label>
-                    <select name="data.laserDesign.beamType">
-                        {{#select data.data.laserDesign.beamType}}
-                        <option value="laser">Laser (TL9)</option>
+                            <tr>
+                                <td>
+                                    Beam Type
+                                </td>
+                                <td>
+                                    <select name="data.laserDesign.beamType">
+                                        {{#select data.data.laserDesign.beamType}}
+                                        <option value="laser">Laser (TL9)</option>
+                                        {{#if data.data.laserDesign.allowSuperScienceCustomLasers}}
+                                        {{#ifCond  data.data.tl '>=' 10 }}
+                                        <option value="forceBeam">Force Beam (TL 10^)</option>
+                                        {{/ifCond}}
+                                        {{/if}}
+                                        {{#if (eq data.data.laserDesign.configuration "cannon")}}
+                                        {{#ifCond  data.data.tl '>=' 10 }}
+                                        <option value="blaster">Blaster (TL 10)</option>
+                                        {{/ifCond}}
+                                        {{#ifCond  data.data.tl '>=' 10 }}
+                                        <option value="neutralParticleBeam">Neutral Particle Beam (TL 10)</option>
+                                        {{/ifCond}}
+                                        {{#ifCond  data.data.tl '>=' 11 }}
+                                        <option value="rainbowLaser">Rainbow Laser (TL 11)</option>
+                                        {{/ifCond}}
+                                        {{#ifCond  data.data.tl '>=' 11 }}
+                                        <option value="xRayLaser">X-Ray Laser (TL 11)</option>
+                                        {{/ifCond}}
+                                        {{#if data.data.laserDesign.allowSuperScienceCustomLasers}}
+                                        {{#ifCond  data.data.tl '>=' 11 }}
+                                        <option value="gravitonBeam">Graviton Beam (TL 11^)</option>
+                                        {{/ifCond}}
+                                        {{/if}}
+                                        {{#ifCond  data.data.tl '>=' 11 }}
+                                        <option value="pulsar">Pulsar (TL 11)</option>
+                                        {{/ifCond}}
+                                        {{else}}
+                                        {{#ifCond  data.data.tl '>=' 11 }}
+                                        <option value="blaster">Blaster (TL 11)</option>
+                                        {{/ifCond}}
+                                        {{#ifCond  data.data.tl '>=' 11 }}
+                                        <option value="neutralParticleBeam">Neutral Particle Beam (TL 11)</option>
+                                        {{/ifCond}}
+                                        {{#ifCond  data.data.tl '>=' 11 }}
+                                        <option value="rainbowLaser">Rainbow Laser (TL 11)</option>
+                                        {{/ifCond}}
+                                        {{#ifCond  data.data.tl '>=' 11 }}
+                                        <option value="xRayLaser">X-Ray Laser (TL 11)</option>
+                                        {{/ifCond}}
+                                        {{#if data.data.laserDesign.allowSuperScienceCustomLasers}}
+                                        {{#ifCond  data.data.tl '>=' 11 }}
+                                        <option value="gravitonBeam">Graviton Beam (TL 11^)</option>
+                                        {{/ifCond}}
+                                        {{/if}}
+                                        {{#ifCond  data.data.tl '>=' 12 }}
+                                        <option value="pulsar">Pulsar (TL 12)</option>
+                                        {{/ifCond}}
+                                        {{/if}}
+                                        {{#ifCond  data.data.tl '==' 12 }}
+                                        <option value="graser">Graser (TL 12)</option>
+                                        {{/ifCond}}
+                                        {{/select}}
+                                    </select>
+                                </td>
+                            </tr>
+
+                            {{#if (eq data.data.laserDesign.beamType "laser")}}
+                            <tr>
+                                <td>
+                                    Laser Colour
+                                </td>
+                                <td>
+                                <select name="data.laserDesign.laserColour">
+                                    {{#select data.data.laserDesign.laserColour}}
+                                    <option value="ir">Infrared</option>
+                                    <option value="bg">Blue-Green</option>
+                                    <option value="uv">Ultraviolet</option>
+                                    {{/select}}
+                                </select>
+                                </td>
+                            </tr>
+                            {{/if}}
+
+                            {{#if (eq data.data.laserDesign.beamType "blaster")}}
+                            <tr>
+                                <td>
+                                    Omni-Blaster
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.laserDesign.omniBlaster" {{checked data.data.laserDesign.omniBlaster}} data-dtype="Boolean"/>
+                                </td>
+                            </tr>
+                            {{/if}}
+
+                            <tr>
+                                <td style="line-height: 27.5px">
+                                    Focal Array
+                                </td>
+                                <td style="line-height: 27.5px">
+                                    {{data.data.laserDesign.focalArraySize}} : x{{data.data.laserDesign.focalArray}}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <input type="range" min="0.1" max="4" step="0.05" name="data.laserDesign.focalArray" value="{{data.data.laserDesign.focalArray}}" data-dtype="Number">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    Generator
+                                </td>
+                                <td>
+                                <select name="data.laserDesign.generator">
+                                    {{#select data.data.laserDesign.generator}}
+                                    <option value="single">Single Shot</option>
+                                    <option value="semi">Semi-Auto</option>
+                                    <option value="light">Light Automatic</option>
+                                    <option value="heavy">Heavy Automatic</option>
+                                    {{#if data.data.laserDesign.hotshotsAndOverheating}}
+                                    <option value="lightGat">Light Gatling</option>
+                                    <option value="heavyGat">Heavy Gatling</option>
+                                    {{/if}}
+                                    {{/select}}
+                                </select>
+                                </td>
+                            </tr>
+                        </table>
                         {{#if data.data.laserDesign.allowSuperScienceCustomLasers}}
+                        <h2 class="bold" style="text-align: center; margin-top: 20px">Super Science Options</h2>
+                        <table>
+                        <tr>
+                            <td style="line-height: 27.5px">
+                                Super Science Laser Upgrade
+                            </td>
+                            <td style="line-height: 27.5px">
+                                <input type="checkbox" name="data.laserDesign.superScience" {{checked data.data.laserDesign.superScience}} data-dtype="Boolean"/>
+                            </td>
+                        </tr>
                         {{#ifCond  data.data.tl '>=' 10 }}
-                        <option value="forceBeam">Force Beam (TL 10^)</option>
+                        <tr>
+                            <td style="line-height: 27.5px">
+                                Field Jacketed (TL 10^)
+                            </td>
+                            <td style="line-height: 27.5px">
+                                <input type="checkbox" name="data.laserDesign.fieldJacketed" {{checked data.data.laserDesign.fieldJacketed}} data-dtype="Boolean"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="line-height: 27.5px">
+                                Gravitic Focusing (TL 10^)
+                            </td>
+                            <td style="line-height: 27.5px">
+                                <select name="data.laserDesign.graviticFocus">
+                                    {{#select data.data.laserDesign.graviticFocus}}
+                                    <option value="0">None</option>
+                                    <option value="1">One Level (TL 10^)</option>
+                                    {{#ifCond  data.data.tl '>=' 11 }}
+                                    <option value="2">Two Levels (TL 11^)</option>
+                                    {{#ifCond  data.data.tl '>=' 12 }}
+                                    <option value="3">Three Levels (TL 12^)</option>
+                                    {{/ifCond}}
+                                    {{/ifCond}}
+                                    {{/select}}
+                                </select>
+                            </td>
+                        </tr>
                         {{/ifCond}}
+                        {{#ifCond  data.data.tl '>=' 11 }}
+                        <tr>
+                            <td style="line-height: 27.5px">
+                                FTL (TL 11^)
+                            </td>
+                            <td style="line-height: 27.5px">
+                                <input type="checkbox" name="data.laserDesign.ftl" {{checked data.data.laserDesign.ftl}} data-dtype="Boolean"/>
+                            </td>
+                        </tr>
+                        {{/ifCond}}
+                        </table>
                         {{/if}}
-                        {{#if (eq data.data.laserDesign.configuration "cannon")}}
-                        {{#ifCond  data.data.tl '>=' 10 }}
-                        <option value="blaster">Blaster (TL 10)</option>
-                        {{/ifCond}}
-                        {{#ifCond  data.data.tl '>=' 10 }}
-                        <option value="neutralParticleBeam">Neutral Particle Beam (TL 10)</option>
-                        {{/ifCond}}
-                        {{#ifCond  data.data.tl '>=' 11 }}
-                        <option value="rainbowLaser">Rainbow Laser (TL 11)</option>
-                        {{/ifCond}}
-                        {{#ifCond  data.data.tl '>=' 11 }}
-                        <option value="xRayLaser">X-Ray Laser (TL 11)</option>
-                        {{/ifCond}}
-                        {{#if data.data.laserDesign.allowSuperScienceCustomLasers}}
-                        {{#ifCond  data.data.tl '>=' 11 }}
-                        <option value="gravitonBeam">Graviton Beam (TL 11^)</option>
-                        {{/ifCond}}
-                        {{/if}}
-                        {{#ifCond  data.data.tl '>=' 11 }}
-                        <option value="pulsar">Pulsar (TL 11)</option>
-                        {{/ifCond}}
-                        {{else}}
-                        {{#ifCond  data.data.tl '>=' 11 }}
-                        <option value="blaster">Blaster (TL 11)</option>
-                        {{/ifCond}}
-                        {{#ifCond  data.data.tl '>=' 11 }}
-                        <option value="neutralParticleBeam">Neutral Particle Beam (TL 11)</option>
-                        {{/ifCond}}
-                        {{#ifCond  data.data.tl '>=' 11 }}
-                        <option value="rainbowLaser">Rainbow Laser (TL 11)</option>
-                        {{/ifCond}}
-                        {{#ifCond  data.data.tl '>=' 11 }}
-                        <option value="xRayLaser">X-Ray Laser (TL 11)</option>
-                        {{/ifCond}}
-                        {{#if data.data.laserDesign.allowSuperScienceCustomLasers}}
-                        {{#ifCond  data.data.tl '>=' 11 }}
-                        <option value="gravitonBeam">Graviton Beam (TL 11^)</option>
-                        {{/ifCond}}
-                        {{/if}}
-                        {{#ifCond  data.data.tl '>=' 12 }}
-                        <option value="pulsar">Pulsar (TL 12)</option>
-                        {{/ifCond}}
-                        {{/if}}
-                        {{#ifCond  data.data.tl '==' 12 }}
-                        <option value="graser">Graser (TL 12)</option>
-                        {{/ifCond}}
-                        {{/select}}
-                    </select>
-                </div>
+                        <h2 class="bold" style="text-align: center; margin-top: 20px">Damage and Power</h2>
+                        <table>
+                            <tr>
+                                <td style="line-height: 27.5px">
+                                    Damage Dice
+                                </td>
+                                <td style="line-height: 27.5px">
+                                    <input type="number" name="data.laserDesign.damageDiceInput" value="{{data.data.laserDesign.damageDiceInput}}" data-dtype="Number"/>
+                                </td>
+                            </tr>
 
-                {{#if (eq data.data.laserDesign.beamType "laser")}}
-                <div>
-                    <label>
-                        Laser Colour
-                    </label>
-                    <select name="data.laserDesign.laserColour">
-                        {{#select data.data.laserDesign.laserColour}}
-                        <option value="ir">Infrared</option>
-                        <option value="bg">Blue-Green</option>
-                        <option value="uv">Ultraviolet</option>
-                        {{/select}}
-                    </select>
-                </div>
-                {{/if}}
-
-                {{#if (eq data.data.laserDesign.beamType "blaster")}}
-                <div>
-                    <label>
-                        Omni-Blaster
-                    </label>
-                    <input type="checkbox" name="data.laserDesign.omniBlaster" {{checked data.data.laserDesign.omniBlaster}} data-dtype="Boolean"/>
-                </div>
-                {{/if}}
-
-                <div>
-                    <label>
-                        Focal Array Multiplier
-                    </label>
-                    <label>
-                        {{data.data.laserDesign.focalArraySize}} : x{{data.data.laserDesign.focalArray}}
-                    </label>
-                    <input type="range" min="0.1" max="4" step="0.05" name="data.laserDesign.focalArray" value="{{data.data.laserDesign.focalArray}}" data-dtype="Number">
-                </div>
-
-                <div>
-                    <label>
-                        Generator
-                    </label>
-                    <select name="data.laserDesign.generator">
-                        {{#select data.data.laserDesign.generator}}
-                        <option value="single">Single Shot</option>
-                        <option value="semi">Semi-Auto</option>
-                        <option value="light">Light Automatic</option>
-                        <option value="heavy">Heavy Automatic</option>
-                        {{#if data.data.laserDesign.hotshotsAndOverheating}}
-                        <option value="lightGat">Light Gatling</option>
-                        <option value="heavyGat">Heavy Gatling</option>
-                        {{/if}}
-                        {{/select}}
-                    </select>
-                </div>
-
-                {{#if data.data.laserDesign.allowSuperScienceCustomLasers}}
-                <div>
-                    <label>
-                        Super Science
-                    </label>
-                    <input type="checkbox" name="data.laserDesign.superScience" {{checked data.data.laserDesign.superScience}} data-dtype="Boolean"/>
-                </div>
-                {{#ifCond  data.data.tl '>=' 10 }}
-                <div>
-                    <label>
-                        Field Jacketed (TL 10^)
-                    </label>
-                    <input type="checkbox" name="data.laserDesign.fieldJacketed" {{checked data.data.laserDesign.fieldJacketed}} data-dtype="Boolean"/>
-                </div>
-                <div>
-                    <label>
-                        Gravitic Focusing (TL 10^)
-                    </label>
-                    <select name="data.laserDesign.graviticFocus">
-                        {{#select data.data.laserDesign.graviticFocus}}
-                        <option value="0">None</option>
-                        <option value="1">One Level</option>
-                        {{#ifCond  data.data.tl '>=' 11 }}
-                        <option value="2">Two Levels</option>
-                        {{#ifCond  data.data.tl '>=' 12 }}
-                        <option value="3">Three Levels</option>
-                        {{/ifCond}}
-                        {{/ifCond}}
-                        {{/select}}
-                    </select>
-                </div>
-                {{/ifCond}}
-                {{#ifCond  data.data.tl '>=' 11 }}
-                <div>
-                    <label>
-                        FTL (TL 11^)
-                    </label>
-                    <input type="checkbox" name="data.laserDesign.ftl" {{checked data.data.laserDesign.ftl}} data-dtype="Boolean"/>
-                </div>
-                {{/ifCond}}
-                {{/if}}
-
-                <div>
-                    <label>
-                        Damage Dice
-                    </label>
-                    <input type="number" name="data.laserDesign.damageDiceInput" value="{{data.data.laserDesign.damageDiceInput}}" data-dtype="Number"/>
-                </div>
-
-                <div>
-                    <label>
-                        Power Cell
-                    </label>
-                    <input type="number" name="data.laserDesign.powerCellQty" value="{{data.data.laserDesign.powerCellQty}}" data-dtype="Number"/>
-                    <select name="data.laserDesign.powerCell">
-                        {{#select data.data.laserDesign.powerCell}}
-                        <option value="A">A cell</option>
-                        <option value="B">B cell</option>
-                        <option value="C">C cell</option>
-                        <option value="D">D cell</option>
-                        <option value="E">E cell</option>
-                        <option value="F">F cell</option>
-                        {{/select}}
-                    </select>
-                    {{#if data.data.laserDesign.allowSuperScienceCustomLasers}}
-                    <div>
-                        <label>
-                            Super Science Power Cell
-                        </label>
-                        <input type="checkbox" name="data.laserDesign.superScienceCells" {{checked data.data.laserDesign.superScienceCells}} data-dtype="Boolean"/>
+                            <tr>
+                                <td style="line-height: 27.5px">
+                                    Power System:
+                                </td>
+                                <td style="line-height: 27.5px">
+                                    <input type="number" style="width: 50px;" name="data.laserDesign.powerCellQty" value="{{data.data.laserDesign.powerCellQty}}" data-dtype="Number"/>
+                                    <select name="data.laserDesign.powerCell">
+                                        {{#select data.data.laserDesign.powerCell}}
+                                        <option value="A">A cell{{#ifCond data.data.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
+                                        <option value="B">B cell{{#ifCond data.data.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
+                                        <option value="C">C cell{{#ifCond data.data.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
+                                        <option value="D">D cell{{#ifCond data.data.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
+                                        <option value="E">E cell{{#ifCond data.data.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
+                                        <option value="F">F cell{{#ifCond data.data.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                            </tr>
+                            {{#if data.data.laserDesign.allowSuperScienceCustomLasers}}
+                            <tr>
+                                <td style="line-height: 27.5px">
+                                    Super Science Power Cells
+                                </td>
+                                <td style="line-height: 27.5px">
+                                    <input type="checkbox" name="data.laserDesign.superScienceCells" {{checked data.data.laserDesign.superScienceCells}} data-dtype="Boolean"/>
+                                </td>
+                            </tr>
+                            {{/if}}
+                            <tr>
+                                <td style="line-height: 27.5px">
+                                    Non-Rechargeable Power Cells
+                                </td>
+                                <td style="line-height: 27.5px">
+                                <input type="checkbox" name="data.laserDesign.nonRechargeableCells" {{checked data.data.laserDesign.nonRechargeableCells}} data-dtype="Boolean"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <h2 class="bold" style="text-align: center; margin-top: 20px">Tweaks</h2>
+                        <table>
+                            <tr>
+                                <td style="line-height: 27.5px">
+                                    Tweak Weight x{{data.data.laserDesign.weightTweak}}
+                                </td>
+                                <td>
+                                    <input type="range" min="0.85" max="2" step="0.05" name="data.laserDesign.weightTweak" value="{{data.data.laserDesign.weightTweak}}" data-dtype="Number">
+                                </td>
+                            </tr>
+                        </table>
                     </div>
-                    {{/if}}
-                    <div>
-                        <label>
-                            Non-Rechargeable Power Cell
-                        </label>
-                        <input type="checkbox" name="data.laserDesign.nonRechargeableCells" {{checked data.data.laserDesign.nonRechargeableCells}} data-dtype="Boolean"/>
+                    <div style="width: 50%;">
+                        <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
+
                     </div>
                 </div>
-
-                <div>
-                    <label>
-                        Tweak Weight
-                    </label>
-                    <label>
-                        x{{data.data.laserDesign.weightTweak}}
-                    </label>
-                    <input type="range" min="0.85" max="2" step="0.05" name="data.laserDesign.weightTweak" value="{{data.data.laserDesign.weightTweak}}" data-dtype="Number">
-                </div>
-
                 <table>
                     <tr>
                         <td>TL</td>

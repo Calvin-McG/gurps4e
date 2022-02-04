@@ -8,8 +8,8 @@ export class gurpsItemSheet extends ItemSheet {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: ["gurps4e", "sheet", "item"],
-      width: 635,
-      height: 530,
+      width: 926,
+      height: 770,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "notes" }]
     });
   }

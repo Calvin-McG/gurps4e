@@ -1775,3 +1775,7 @@ attribute-senses {
 	background-color: rgb(0 11 225 / 7.5%) !important;
 	font-style: italic;
 }
+
+.laser-design-block {
+	display: flex;
+}
