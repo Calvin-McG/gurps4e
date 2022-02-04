@@ -194,6 +194,8 @@ export class gurpsItem extends Item {
           "graviticFocus": 0,
           "ftl": false,
           "info": "",
+          "pulseLaser": false,
+          "pulseBeamLaser": false,
         }
       }
 
@@ -209,6 +211,9 @@ export class gurpsItem extends Item {
       }
       if (this.data.data.laserDesign.ftl) {
         this.data.data.laserDesign.fieldJacketed = this.data.data.laserDesign.ftl;
+      }
+      if (!this.data.data.laserDesign.pulseLaser) {
+        this.data.data.laserDesign.pulseBeamLaser = false;
       }
 
       this.data.data.laserDesign.damageDice = this.data.data.laserDesign.damageDiceInput / 2**(parseInt(this.data.data.laserDesign.graviticFocus));
@@ -255,8 +260,15 @@ export class gurpsItem extends Item {
       if (this.data.data.laserDesign.beamType == "laser") {
         lc = 3;
         bc = 500;
-        this.data.data.laserDesign.armourDivisor = 2;
-        this.data.data.laserDesign.damageType = "burn";
+
+        if (this.data.data.laserDesign.pulseLaser){
+          this.data.data.laserDesign.damageType = "cr ex";
+          this.data.data.laserDesign.armourDivisor = 1;
+        }
+        else {
+          this.data.data.laserDesign.damageType = "burn";
+          this.data.data.laserDesign.armourDivisor = 2;
+        }
 
         if (this.data.data.laserDesign.configuration == "pistol") {
           this.data.data.laserDesign.outputAcc = 3;
@@ -430,8 +442,15 @@ export class gurpsItem extends Item {
       else if (this.data.data.laserDesign.beamType == "xRayLaser") {
         lc = 3;
         bc = 1000;
-        this.data.data.laserDesign.armourDivisor = 5;
-        this.data.data.laserDesign.damageType = "burn";
+
+        if (this.data.data.laserDesign.pulseLaser){
+          this.data.data.laserDesign.damageType = "cr ex";
+          this.data.data.laserDesign.armourDivisor = 3;
+        }
+        else {
+          this.data.data.laserDesign.damageType = "burn";
+          this.data.data.laserDesign.armourDivisor = 5;
+        }
 
         if (this.data.data.laserDesign.configuration == "pistol") {
           this.data.data.laserDesign.outputAcc = 3;
@@ -535,8 +554,15 @@ export class gurpsItem extends Item {
       else if (this.data.data.laserDesign.beamType == "graser") {
         lc = 3;
         bc = 1500;
-        this.data.data.laserDesign.armourDivisor = 10;
-        this.data.data.laserDesign.damageType = "cr";
+
+        if (this.data.data.laserDesign.pulseLaser){
+          this.data.data.laserDesign.damageType = "cr ex";
+          this.data.data.laserDesign.armourDivisor = 5;
+        }
+        else {
+          this.data.data.laserDesign.damageType = "cr";
+          this.data.data.laserDesign.armourDivisor = 10;
+        }
 
         if (this.data.data.laserDesign.configuration == "pistol") {
           this.data.data.laserDesign.outputAcc = 3;
@@ -778,6 +804,10 @@ export class gurpsItem extends Item {
       // Calculate the ranges
       // 1/2D Range
       this.data.data.laserDesign.halfRange = this.data.data.laserDesign.damageDiceInput * this.data.data.laserDesign.damageDiceInput * rb * rf;
+
+      if (this.data.data.laserDesign.pulseLaser) {
+        this.data.data.laserDesign.halfRange = this.data.data.laserDesign.halfRange * 2;
+      }
 
       if (parseInt(this.data.data.laserDesign.graviticFocus) > 0 && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
         if (parseInt(this.data.data.laserDesign.graviticFocus) == 1) {
@@ -1068,6 +1098,9 @@ export class gurpsItem extends Item {
         else if (parseInt(this.data.data.laserDesign.graviticFocus) == 3) {
           cf += 7
         }
+      }
+      if (this.data.data.laserDesign.pulseBeamLaser && this.data.data.laserDesign.pulseLaser) {
+        cf += 1
       }
 
       this.data.data.cost = this.data.data.cost * cf;

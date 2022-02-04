@@ -433,6 +433,37 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{#if (or (eq data.data.laserDesign.beamType "laser") (eq data.data.laserDesign.beamType "xRayLaser") (eq data.data.laserDesign.beamType "graser"))}}
+                            <tr class="laser-design-row" id="pulse-laser">
+                                <td style="line-height: 27.5px">
+                                    Pulse Laser
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.laserDesign.pulseLaser" {{checked data.data.laserDesign.pulseLaser}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            {{#if data.data.laserDesign.pulseLaser}}
+                            <tr class="laser-design-row" id="pulse-beam-laser">
+                                <td style="line-height: 27.5px">
+                                    Pulse-Beam Laser
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.laserDesign.pulseLaser" {{checked data.data.laserDesign.pulseBeamLaser}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/if}}
+                            {{/if}}
                         </table>
                     </div>
                     <div style="width: 50%;">
