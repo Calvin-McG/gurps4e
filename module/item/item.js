@@ -153,11 +153,7 @@ export class gurpsItem extends Item {
           "weightTweak": 1,
           "loadedWeight": 0.0,
           "outputDamage": "",
-          "outputDamageWater": "",
-          "outputDamageSpace": "",
           "outputDamageHotshot": "",
-          "outputDamageHotshotWater": "",
-          "outputDamageHotshotSpace": "",
           "outputAcc": 3,
           "outputAccWater": 3,
           "outputAccSpace": 3,
@@ -786,12 +782,8 @@ export class gurpsItem extends Item {
       else if (adds < 0) { // Adds is less than zero
         displayHotshotAdds = "-" + Math.abs(hotshotAdds);
       }
-      this.data.data.laserDesign.outputDamage = dice + "d6" + displayAdds + " (" + this.data.data.laserDesign.armourDivisor + ") " + this.data.data.laserDesign.damageType;
-      this.data.data.laserDesign.outputDamageWater = dice + "d6" + displayAdds + " (" + this.data.data.laserDesign.armourDivisorWater + ") " + this.data.data.laserDesign.damageType;
-      this.data.data.laserDesign.outputDamageSpace = dice + "d6" + displayAdds + " (" + this.data.data.laserDesign.armourDivisorSpace + ") " + this.data.data.laserDesign.damageType;
-      this.data.data.laserDesign.outputDamageHotshots = hotshotDice + "d6" + displayHotshotAdds + " (" + this.data.data.laserDesign.armourDivisor + ") " + this.data.data.laserDesign.damageType;
-      this.data.data.laserDesign.outputDamageHotshotsWater = hotshotDice + "d6" + displayHotshotAdds + " (" + this.data.data.laserDesign.armourDivisorWater + ") " + this.data.data.laserDesign.damageType;
-      this.data.data.laserDesign.outputDamageHotshotsSpace = hotshotDice + "d6" + displayHotshotAdds + " (" + this.data.data.laserDesign.armourDivisorSpace + ") " + this.data.data.laserDesign.damageType;
+      this.data.data.laserDesign.outputDamage = dice + "d6" + displayAdds;
+      this.data.data.laserDesign.outputDamageHotshots = hotshotDice + "d6" + displayHotshotAdds;
 
       // Determine RF for the purposes of range calculation
       let rf = this.data.data.laserDesign.focalArray;

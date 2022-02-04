@@ -548,7 +548,7 @@
                         <td><input type="checkbox" name="data.laserDesign.showAir" {{checked data.data.laserDesign.showAir}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Air</td>
-                        <td>{{data.data.laserDesign.outputDamage}}</td>
+                        <td>{{data.data.laserDesign.outputDamage}} ({{this.data.data.laserDesign.armourDivisor}}) this.data.data.laserDesign.damageType</td>
                         <td>{{data.data.laserDesign.outputAcc}}</td>
                         <td>{{data.data.laserDesign.outputRange}}</td>
                         <td>{{data.data.laserDesign.outputWeight}}</td>
@@ -565,7 +565,7 @@
                         <td><input type="checkbox" name="data.laserDesign.showSpace" {{checked data.data.laserDesign.showSpace}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Space</td>
-                        <td>{{data.data.laserDesign.outputDamageSpace}}</td>
+                        <td>{{data.data.laserDesign.outputDamage}} ({{this.data.data.laserDesign.armourDivisorSpace}}) this.data.data.laserDesign.damageType</td>
                         <td>{{data.data.laserDesign.outputAccSpace}}</td>
                         <td>{{data.data.laserDesign.outputRangeSpace}}</td>
                         <td>{{data.data.laserDesign.outputWeight}}</td>
@@ -582,7 +582,7 @@
                         <td><input type="checkbox" name="data.laserDesign.showWater" {{checked data.data.laserDesign.showWater}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Underwater</td>
-                        <td>{{data.data.laserDesign.outputDamageWater}}</td>
+                        <td>{{data.data.laserDesign.outputDamage}} ({{this.data.data.laserDesign.armourDivisorWater}}) this.data.data.laserDesign.damageType</td>
                         <td>{{data.data.laserDesign.outputAccWater}}</td>
                         <td>{{data.data.laserDesign.outputRangeWater}}</td>
                         <td>{{data.data.laserDesign.outputWeight}}</td>
@@ -601,7 +601,7 @@
                         <td><input type="checkbox" name="data.laserDesign.showAirHotshot" {{checked data.data.laserDesign.showAirHotshot}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Hotshot Air</td>
-                        <td>{{data.data.laserDesign.outputDamageHotshots}}</td>
+                        <td>{{data.data.laserDesign.outputDamageHotshots}} ({{this.data.data.laserDesign.armourDivisor}}) this.data.data.laserDesign.damageType</td>
                         <td>{{data.data.laserDesign.outputAcc}}</td>
                         <td>{{data.data.laserDesign.outputRange}}</td>
                         <td>{{data.data.laserDesign.outputWeight}}</td>
@@ -618,7 +618,7 @@
                         <td><input type="checkbox" name="data.laserDesign.showSpaceHotshot" {{checked data.data.laserDesign.showSpaceHotshot}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Hotshot Space</td>
-                        <td>{{data.data.laserDesign.outputDamageHotshotsSpace}}</td>
+                        <td>{{data.data.laserDesign.outputDamageHotshots}} ({{this.data.data.laserDesign.armourDivisorSpace}}) this.data.data.laserDesign.damageTypeSpace</td>
                         <td>{{data.data.laserDesign.outputAccSpace}}</td>
                         <td>{{data.data.laserDesign.outputRangeSpace}}</td>
                         <td>{{data.data.laserDesign.outputWeight}}</td>
@@ -635,7 +635,7 @@
                         <td><input type="checkbox" name="data.laserDesign.showWaterHotshot" {{checked data.data.laserDesign.showWaterHotshot}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Hotshot Underwater</td>
-                        <td>{{data.data.laserDesign.outputDamageHotshotsWater}}</td>
+                        <td>{{data.data.laserDesign.outputDamageHotshots}} ({{this.data.data.laserDesign.armourDivisorWater}}) this.data.data.laserDesign.damageTypeWater</td>
                         <td>{{data.data.laserDesign.outputAccWater}}</td>
                         <td>{{data.data.laserDesign.outputRangeWater}}</td>
                         <td>{{data.data.laserDesign.outputWeight}}</td>
