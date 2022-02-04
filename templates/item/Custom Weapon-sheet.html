@@ -219,6 +219,37 @@
                     <input type="number" name="data.laserDesign.damageDice" value="{{data.data.laserDesign.damageDice}}" data-dtype="Number"/>
                 </div>
 
+                <div>
+                    <label>
+                        Power Cell
+                    </label>
+                    <input type="number" name="data.laserDesign.powerCellQty" value="{{data.data.laserDesign.powerCellQty}}" data-dtype="Number"/>
+                    <select name="data.laserDesign.powerCell">
+                        {{#select data.data.laserDesign.powerCell}}
+                        <option value="A">A cell</option>
+                        <option value="B">B cell</option>
+                        <option value="C">C cell</option>
+                        <option value="D">D cell</option>
+                        <option value="E">E cell</option>
+                        <option value="F">F cell</option>
+                        {{/select}}
+                    </select>
+                    {{#if data.data.laserDesign.superScience}}
+                    <div>
+                        <label>
+                            Super Science Power Cell
+                        </label>
+                        <input type="checkbox" name="data.laserDesign.superScienceCells" {{checked data.data.laserDesign.superScienceCells}} data-dtype="Boolean"/>
+                    </div>
+                    {{/if}}
+                    <div>
+                        <label>
+                            Non-Rechargeable Power Cell
+                        </label>
+                        <input type="checkbox" name="data.laserDesign.nonRechargeableCells" {{checked data.data.laserDesign.nonRechargeableCells}} data-dtype="Boolean"/>
+                    </div>
+                </div>
+
                 <table>
                     <tr>
                         <td>TL</td>
