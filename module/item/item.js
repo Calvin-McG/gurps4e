@@ -104,7 +104,7 @@ export class gurpsItem extends Item {
     this.validateEquipmentBasics();
 
     if (typeof this.data.data.customType == "undefined" || this.data.data.customType == null || this.data.data.customType == "") {
-      this.data.data.customType = "muzzleLoader"
+      this.data.data.customType = "bow"
     }
 
     switch (this.data.data.customType) {

@@ -34,11 +34,20 @@
                 <div id="customType" class="flexrow">
                     <select name="data.customType" class="equipStatusSelect">
                         {{#select data.data.customType}}
-                            <option value="muzzleLoader">Muzzle Loading Firearm</option>
-                            <option value="cartridgeLoader">Cartridge Loading Firearm</option>
-                            <option value="laser">Laser Weapon</option>
                             <option value="bow">Bow</option>
-                            <option value="xbow">Crossbow</option>
+                            {{#ifCond data.data.tl '>=' 2 }}
+                                <option value="xbow">Crossbow</option>
+                            {{/ifCond}}
+                            {{#ifCond data.data.tl '>=' 3 }}
+                                <option value="muzzleLoader">Muzzle Loading Firearm</option>
+                            {{/ifCond}}
+                            {{#ifCond data.data.tl '>=' 5 }}
+                                <option value="cartridgeLoader">Cartridge Loading Firearm</option>
+                            {{/ifCond}}
+                            {{#ifCond data.data.tl '>=' 9 }}
+                                <option value="laser">Laser Weapon</option>
+                            {{/ifCond}}
+
                         {{/select}}
                     </select>
                 </div>
