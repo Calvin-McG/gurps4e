@@ -103,9 +103,6 @@ export class gurpsItem extends Item {
   _prepareCustomWeaponData() {
     this.validateEquipmentBasics();
 
-    console.log(this.data.data);
-    console.log(this.data.data.customType);
-
     switch (this.data.data.customType) {
       case "muzzleLoader":
         this.prepareCustomMuzzleLoader();
@@ -136,8 +133,6 @@ export class gurpsItem extends Item {
   }
 
   prepareCustomLaser() {
-    console.log("Preparing Laser");
-    console.log(this.data.data.laserDesign)
 
     if (this.data.data.tl >= 9) { // TL must be at least 9 to be able to design a custom laser
       if (typeof this.data.data.laserDesign == "undefined") { // If the laserDesign block hasn't yet been created
@@ -1118,7 +1113,6 @@ export class gurpsItem extends Item {
       this.data.data.lc = lc;
 
     }
-    console.log(this.data.data.laserDesign)
   }
 
   prepareCustomBox() {
