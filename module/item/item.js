@@ -152,6 +152,7 @@ export class gurpsItem extends Item {
           "allowSuperScienceCustomLasers": game.settings.get("gurps4e", "allowSuperScienceCustomLasers"),
           "superScience": false, // Makes use of allowSuperScienceCustomLasers to turn regular science lasers into super science lasers
           "damageDice": 2.0,
+          "hotshotDamageDice": 2.0,
           "damageDiceInput": 2.0,
           "emptyWeight": 0.0,
           "weightTweak": 1,
@@ -159,6 +160,9 @@ export class gurpsItem extends Item {
           "outputDamage": "",
           "outputDamageWater": "",
           "outputDamageSpace": "",
+          "outputDamageHotshot": "",
+          "outputDamageHotshotWater": "",
+          "outputDamageHotshotSpace": "",
           "outputAcc": 3,
           "outputAccWater": 3,
           "outputAccSpace": 3,
@@ -679,6 +683,66 @@ export class gurpsItem extends Item {
         }
       }
 
+      // Hotshots are allowed and this isn't a gatling weapon
+      let hotshotDice = 0;
+      let hotshotAdds = 0;
+      if (this.data.data.laserDesign.hotshotsAndOverheating && !(this.data.data.laserDesign.generator == "lightGat" || this.data.data.laserDesign.generator == "heavyGat")) {
+        this.data.data.laserDesign.hotshotDamageDice = this.data.data.laserDesign.damageDice * 1.3;
+        if (this.data.data.laserDesign.hotshotDamageDice < 1) { // Dice is less than 1, use different rules than normal rounding.
+          if (this.data.data.laserDesign.hotshotDamageDice == 0) {
+            hotshotDice = 0;
+            hotshotAdds = 0;
+          }
+          else if (this.data.data.laserDesign.hotshotDamageDice <= 0.32) {
+            hotshotDice = 1;
+            hotshotAdds = -5;
+          }
+          else if (this.data.data.laserDesign.hotshotDamageDice <= 0.42) {
+            hotshotDice = 1;
+            hotshotAdds = -4;
+          }
+          else if (this.data.data.laserDesign.hotshotDamageDice <= 0.56) {
+            hotshotDice = 1;
+            hotshotAdds = -3;
+          }
+          else if (this.data.data.laserDesign.hotshotDamageDice <= 0.75) {
+            hotshotDice = 1;
+            hotshotAdds = -2;
+          }
+          else if (this.data.data.laserDesign.hotshotDamageDice <= 0.95) {
+            hotshotDice = 1;
+            hotshotAdds = -1;
+          }
+          else {
+            hotshotDice = 1;
+            hotshotAdds = 0;
+          }
+        }
+        else {
+          hotshotDice = parseInt(this.data.data.laserDesign.hotshotDamageDice); // Get the number of dice without modifiers or decimals
+          let remainder = +this.data.data.laserDesign.hotshotDamageDice - +hotshotDice; // Get the remainder after above.
+
+          // Use the remainder to figure out the adds
+          if (remainder <= 0.14) {
+            hotshotAdds = 0;
+          }
+          else if (remainder <= 0.42) {
+            hotshotAdds = 1;
+          }
+          else if (remainder <= 0.64) {
+            hotshotAdds = 2;
+          }
+          else if (remainder <= 0.85) {
+            hotshotDice += 1; // Add 1d-1
+            hotshotAdds = -1;
+          }
+          else {
+            hotshotDice += 1; // Add a full die if it's greater than 0.85
+            hotshotAdds = 0;
+          }
+        }
+      }
+
       // Calculate the damage
       let displayAdds = "";
       if (adds > 0) { // Adds is more than zero
@@ -687,9 +751,19 @@ export class gurpsItem extends Item {
       else if (adds < 0) { // Adds is less than zero
         displayAdds = "-" + Math.abs(adds);
       }
+      let displayHotshotAdds = "";
+      if (hotshotAdds > 0) { // Adds is more than zero
+        displayHotshotAdds = "+" + hotshotAdds;
+      }
+      else if (adds < 0) { // Adds is less than zero
+        displayHotshotAdds = "-" + Math.abs(hotshotAdds);
+      }
       this.data.data.laserDesign.outputDamage = dice + "d6" + displayAdds + " (" + this.data.data.laserDesign.armourDivisor + ") " + this.data.data.laserDesign.damageType;
       this.data.data.laserDesign.outputDamageWater = dice + "d6" + displayAdds + " (" + this.data.data.laserDesign.armourDivisorWater + ") " + this.data.data.laserDesign.damageType;
       this.data.data.laserDesign.outputDamageSpace = dice + "d6" + displayAdds + " (" + this.data.data.laserDesign.armourDivisorSpace + ") " + this.data.data.laserDesign.damageType;
+      this.data.data.laserDesign.outputDamageHotshots = hotshotDice + "d6" + displayHotshotAdds + " (" + this.data.data.laserDesign.armourDivisor + ") " + this.data.data.laserDesign.damageType;
+      this.data.data.laserDesign.outputDamageHotshotsWater = hotshotDice + "d6" + displayHotshotAdds + " (" + this.data.data.laserDesign.armourDivisorWater + ") " + this.data.data.laserDesign.damageType;
+      this.data.data.laserDesign.outputDamageHotshotsSpace = hotshotDice + "d6" + displayHotshotAdds + " (" + this.data.data.laserDesign.armourDivisorSpace + ") " + this.data.data.laserDesign.damageType;
 
       // Determine RF for the purposes of range calculation
       let rf = this.data.data.laserDesign.focalArray;
@@ -939,6 +1013,7 @@ export class gurpsItem extends Item {
       }
 
       this.data.data.laserDesign.outputShots = this.data.data.laserDesign.shots + " (" + reloadTime + ")";
+      this.data.data.laserDesign.outputShotsHotshots = (this.data.data.laserDesign.shots/2) + " (" + reloadTime + ")";
 
       // Calculate empty weight
       this.data.data.laserDesign.emptyWeight = ((+this.data.data.laserDesign.damageDiceInput * s / e)**3 * f * g) * +this.data.data.laserDesign.weightTweak;

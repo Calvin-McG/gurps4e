@@ -1748,3 +1748,30 @@ attribute-senses {
 	display: flex;
 	justify-content: space-around;
 }
+
+.custom-laser-space {
+	background-color: rgb(207 0 225 / 7.5%) !important;
+}
+
+.custom-laser-air {
+	background-color: rgb(0 225 23 / 7.5%) !important;
+}
+
+.custom-laser-water {
+	background-color: rgb(0 11 225 / 7.5%) !important;
+}
+
+.custom-laser-space-hotshot{
+	background-color: rgb(207 0 225 / 7.5%) !important;
+	font-style: italic;
+}
+
+.custom-laser-air-hotshot{
+	background-color: rgb(0 225 23 / 7.5%) !important;
+	font-style: italic;
+}
+
+.custom-laser-water-hotshot{
+	background-color: rgb(0 11 225 / 7.5%) !important;
+	font-style: italic;
+}
