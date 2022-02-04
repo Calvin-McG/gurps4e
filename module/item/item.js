@@ -169,6 +169,7 @@ export class gurpsItem extends Item {
           "nonRechargeableCells": false,
           "powerCellQty": 1,
           "powerCell": "C",
+          "powerCellWeight": 0,
           "shots": 0,
         }
       }
@@ -643,36 +644,48 @@ export class gurpsItem extends Item {
       this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
       this.data.data.laserDesign.outputRange = this.data.data.laserDesign.halfRange + " / " + this.data.data.laserDesign.maxRange;
 
-      // // Shots
-      // if (this.data.data.laserDesign.powerCell == "A") {
-      //   baseShots = baseShots * 0.01;
-      // }
-      // else if (this.data.data.laserDesign.powerCell == "B") {
-      //   baseShots = baseShots * 0.1;
-      // }
-      // else if (this.data.data.laserDesign.powerCell == "C") {
-      //   baseShots = baseShots * 1;
-      // }
-      // else if (this.data.data.laserDesign.powerCell == "D") {
-      //   baseShots = baseShots * 10;
-      // }
-      // else if (this.data.data.laserDesign.powerCell == "E") {
-      //   baseShots = baseShots * 100;
-      // }
-      // else if (this.data.data.laserDesign.powerCell == "F") {
-      //   baseShots = baseShots * 1000;
-      // }
-      //
-      // if (this.data.data.laserDesign.superScienceCells) {
-      //   baseShots = baseShots * 5;
-      // }
-      // if (this.data.data.laserDesign.nonRechargeableCells) {
-      //   baseShots = baseShots * 2;
-      // }
-      //
-      // baseShots = baseShots * this.data.data.laserDesign.powerCellQty;
-      //
-      // this.data.data.laserDesign.shots = baseShots / this.data.data.laserDesign.damageDice ** 3;
+      // Shots
+      let reloadTime = 3;
+      if (this.data.data.laserDesign.powerCell == "A") {
+        baseShots = +baseShots * 0.01;
+        this.data.data.laserDesign.powerCellWeight = 0.005;
+      }
+      else if (this.data.data.laserDesign.powerCell == "B") {
+        baseShots = +baseShots * 0.1;
+        this.data.data.laserDesign.powerCellWeight = 0.05;
+      }
+      else if (this.data.data.laserDesign.powerCell == "C") {
+        baseShots = +baseShots * 1;
+        this.data.data.laserDesign.powerCellWeight = 0.5;
+      }
+      else if (this.data.data.laserDesign.powerCell == "D") {
+        baseShots = +baseShots * 10;
+        reloadTime = 5;
+        this.data.data.laserDesign.powerCellWeight = 5;
+      }
+      else if (this.data.data.laserDesign.powerCell == "E") {
+        baseShots = +baseShots * 100;
+        reloadTime = 5;
+        this.data.data.laserDesign.powerCellWeight = 20;
+      }
+      else if (this.data.data.laserDesign.powerCell == "F") {
+        baseShots = +baseShots * 1000;
+        reloadTime = 5;
+        this.data.data.laserDesign.powerCellWeight = 200;
+      }
+
+      reloadTime = reloadTime * this.data.data.laserDesign.powerCellQty;
+
+      if (this.data.data.laserDesign.superScienceCells) {
+        baseShots = +baseShots * 5;
+      }
+      if (this.data.data.laserDesign.nonRechargeableCells) {
+        baseShots = +baseShots * 2;
+      }
+
+      baseShots = +baseShots * this.data.data.laserDesign.powerCellQty;
+
+      this.data.data.laserDesign.shots = Math.floor(+baseShots / this.data.data.laserDesign.damageDice ** 3);
 
       // this.data.data.laserDesign.outputShots = this.data.data.laserDesign.shots + "(3)"
     }
