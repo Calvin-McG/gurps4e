@@ -105,7 +105,7 @@
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">Laser Options</h2>
                         <table>
-                            <tr class="laser-design-row" id="laser-configuration">
+                            <tr class="laser-design-row">
                                 <td style="width: 150px">
                                     Configuration
                                 </td>
@@ -119,14 +119,14 @@
                                         {{/select}}
                                     </select>
                                 </td>
-                                <td class="question-container">
+                                <td class="question-container" id="laser-configuration">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>
                                 </td>
                             </tr>
 
-                            <tr class="laser-design-row" id="beam-type">
+                            <tr class="laser-design-row">
                                 <td>
                                     Beam Type
                                 </td>
@@ -188,7 +188,7 @@
                                         {{/select}}
                                     </select>
                                 </td>
-                                <td class="question-container">
+                                <td class="question-container" id="beam-type">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>
@@ -196,7 +196,7 @@
                             </tr>
 
                             {{#if (eq data.data.laserDesign.beamType "laser")}}
-                            <tr class="laser-design-row" id="laser-colour">
+                            <tr class="laser-design-row">
                                 <td>
                                     Laser Colour
                                 </td>
@@ -209,7 +209,7 @@
                                     {{/select}}
                                 </select>
                                 </td>
-                                <td class="question-container">
+                                <td class="question-container" id="laser-colour">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>
@@ -218,14 +218,14 @@
                             {{/if}}
 
                             {{#if (eq data.data.laserDesign.beamType "blaster")}}
-                            <tr class="laser-design-row" id="omni-blaster">
+                            <tr class="laser-design-row">
                                 <td>
                                     Omni-Blaster
                                 </td>
                                 <td>
                                     <input type="checkbox" name="data.laserDesign.omniBlaster" {{checked data.data.laserDesign.omniBlaster}} data-dtype="Boolean"/>
                                 </td>
-                                <td class="question-container">
+                                <td class="question-container" id="omni-blaster">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>
@@ -233,14 +233,14 @@
                             </tr>
                             {{/if}}
 
-                            <tr class="laser-design-row" id="focal-array">
+                            <tr class="laser-design-row">
                                 <td style="line-height: 27.5px">
                                     Focal Array
                                 </td>
                                 <td style="line-height: 27.5px">
                                     {{data.data.laserDesign.focalArraySize}} : x{{data.data.laserDesign.focalArray}}
                                 </td>
-                                <td class="question-container">
+                                <td class="question-container" id="focal-array">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>
@@ -253,7 +253,7 @@
                                 </td>
                             </tr>
 
-                            <tr class="laser-design-row" id="laser-generator">
+                            <tr class="laser-design-row">
                                 <td>
                                     Generator
                                 </td>
@@ -271,7 +271,7 @@
                                     {{/select}}
                                 </select>
                                 </td>
-                                <td class="question-container">
+                                <td class="question-container" id="laser-generator">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>
@@ -281,34 +281,34 @@
                         {{#if data.data.laserDesign.allowSuperScienceCustomLasers}}
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Super Science Options</h2>
                         <table>
-                        <tr class="laser-design-row" id="super-science-laser">
+                        <tr class="laser-design-row">
                             <td style="line-height: 27.5px">
                                 Super Science Laser Upgrade
                             </td>
                             <td style="line-height: 27.5px">
                                 <input type="checkbox" name="data.laserDesign.superScience" {{checked data.data.laserDesign.superScience}} data-dtype="Boolean"/>
                             </td>
-                            <td class="question-container">
+                            <td class="question-container" id="super-science-laser">
                                 <div class="question-button">
                                     <i class="fas fa-question"></i>
                                 </div>
                             </td>
                         </tr>
                         {{#ifCond  data.data.tl '>=' 10 }}
-                        <tr class="laser-design-row" id="field-jacket">
+                        <tr class="laser-design-row">
                             <td style="line-height: 27.5px">
                                 Field Jacketed (TL 10^)
                             </td>
                             <td style="line-height: 27.5px">
                                 <input type="checkbox" name="data.laserDesign.fieldJacketed" {{checked data.data.laserDesign.fieldJacketed}} data-dtype="Boolean"/>
                             </td>
-                            <td class="question-container">
+                            <td class="question-container" id="field-jacket">
                                 <div class="question-button">
                                     <i class="fas fa-question"></i>
                                 </div>
                             </td>
                         </tr>
-                        <tr class="laser-design-row" id="gravitic-focusing">
+                        <tr class="laser-design-row">
                             <td style="line-height: 27.5px">
                                 Gravitic Focusing (TL 10^)
                             </td>
@@ -326,7 +326,7 @@
                                     {{/select}}
                                 </select>
                             </td>
-                            <td class="question-container">
+                            <td class="question-container" id="gravitic-focusing">
                                 <div class="question-button">
                                     <i class="fas fa-question"></i>
                                 </div>
@@ -334,14 +334,14 @@
                         </tr>
                         {{/ifCond}}
                         {{#ifCond  data.data.tl '>=' 11 }}
-                        <tr class="laser-design-row" id="ftl-laser">
+                        <tr class="laser-design-row">
                             <td style="line-height: 27.5px">
                                 FTL (TL 11^)
                             </td>
                             <td style="line-height: 27.5px">
                                 <input type="checkbox" name="data.laserDesign.ftl" {{checked data.data.laserDesign.ftl}} data-dtype="Boolean"/>
                             </td>
-                            <td class="question-container">
+                            <td class="question-container" id="ftl-laser">
                                 <div class="question-button">
                                     <i class="fas fa-question"></i>
                                 </div>
@@ -352,21 +352,21 @@
                         {{/if}}
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Damage and Power</h2>
                         <table>
-                            <tr class="laser-design-row" id="laser-damage-dice">
+                            <tr class="laser-design-row">
                                 <td style="line-height: 27.5px">
                                     Damage Dice
                                 </td>
                                 <td style="line-height: 27.5px">
                                     <input type="number" name="data.laserDesign.damageDiceInput" value="{{data.data.laserDesign.damageDiceInput}}" data-dtype="Number"/>
                                 </td>
-                                <td class="question-container">
+                                <td class="question-container" id="laser-damage-dice">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>
                                 </td>
                             </tr>
 
-                            <tr class="laser-design-row" id="laser-power-system">
+                            <tr class="laser-design-row">
                                 <td style="line-height: 27.5px">
                                     Power System:
                                 </td>
@@ -383,35 +383,35 @@
                                         {{/select}}
                                     </select>
                                 </td>
-                                <td class="question-container">
+                                <td class="question-container" id="laser-power-system">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>
                                 </td>
                             </tr>
                             {{#if data.data.laserDesign.allowSuperScienceCustomLasers}}
-                            <tr class="laser-design-row" id="super-science-power-cells">
+                            <tr class="laser-design-row">
                                 <td style="line-height: 27.5px">
                                     Super Science Power Cells
                                 </td>
                                 <td style="line-height: 27.5px">
                                     <input type="checkbox" name="data.laserDesign.superScienceCells" {{checked data.data.laserDesign.superScienceCells}} data-dtype="Boolean"/>
                                 </td>
-                                <td class="question-container">
+                                <td class="question-container" id="super-science-power-cells">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>
                                 </td>
                             </tr>
                             {{/if}}
-                            <tr class="laser-design-row" id="non-rechargeable-power-cells">
+                            <tr class="laser-design-row">
                                 <td style="line-height: 27.5px">
                                     Non-Rechargeable Power Cells
                                 </td>
                                 <td style="line-height: 27.5px">
                                 <input type="checkbox" name="data.laserDesign.nonRechargeableCells" {{checked data.data.laserDesign.nonRechargeableCells}} data-dtype="Boolean"/>
                                 </td>
-                                <td class="question-container">
+                                <td class="question-container" id="non-rechargeable-power-cells">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>
@@ -420,28 +420,28 @@
                         </table>
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Tweaks</h2>
                         <table>
-                            <tr class="laser-design-row" id="laser-weight-tweak">
+                            <tr class="laser-design-row">
                                 <td style="line-height: 27.5px">
                                     Tweak Weight x{{data.data.laserDesign.weightTweak}}
                                 </td>
                                 <td>
                                     <input type="range" min="0.85" max="2" step="0.05" name="data.laserDesign.weightTweak" value="{{data.data.laserDesign.weightTweak}}" data-dtype="Number">
                                 </td>
-                                <td class="question-container">
+                                <td class="question-container" id="laser-weight-tweak">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>
                                 </td>
                             </tr>
                             {{#if (or (eq data.data.laserDesign.beamType "laser") (eq data.data.laserDesign.beamType "xRayLaser") (eq data.data.laserDesign.beamType "graser"))}}
-                            <tr class="laser-design-row" id="pulse-laser">
+                            <tr class="laser-design-row">
                                 <td style="line-height: 27.5px">
                                     Pulse Laser
                                 </td>
                                 <td>
                                     <input type="checkbox" name="data.laserDesign.pulseLaser" {{checked data.data.laserDesign.pulseLaser}} data-dtype="Boolean"/>
                                 </td>
-                                <td class="question-container">
+                                <td class="question-container" id="pulse-laser">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>
@@ -449,14 +449,14 @@
                             </tr>
 
                             {{#if data.data.laserDesign.pulseLaser}}
-                            <tr class="laser-design-row" id="pulse-beam-laser">
+                            <tr class="laser-design-row">
                                 <td style="line-height: 27.5px">
                                     Pulse-Beam Laser
                                 </td>
                                 <td>
                                     <input type="checkbox" name="data.laserDesign.pulseLaser" {{checked data.data.laserDesign.pulseBeamLaser}} data-dtype="Boolean"/>
                                 </td>
-                                <td class="question-container">
+                                <td class="question-container" id="pulse-beam-laser">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>

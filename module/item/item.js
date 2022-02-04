@@ -1403,7 +1403,7 @@ export class gurpsItem extends Item {
 
   _prepareTraitData() {}
 
-  showLaserInfo(id) {
+  showInfo(id) {
     let info = "";
     if (id == "laser-configuration") {
       info = "<table>" +
