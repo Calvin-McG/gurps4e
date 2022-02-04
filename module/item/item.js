@@ -151,7 +151,8 @@ export class gurpsItem extends Item {
           "hotshotsAndOverheating": game.settings.get("gurps4e", "hotshotsAndOverheating"),
           "allowSuperScienceCustomLasers": game.settings.get("gurps4e", "allowSuperScienceCustomLasers"),
           "superScience": false, // Makes use of allowSuperScienceCustomLasers to turn regular science lasers into super science lasers
-          "damageDice": 2.0, //
+          "damageDice": 2.0,
+          "damageDiceInput": 2.0,
           "emptyWeight": 0.0,
           "weightTweak": 1,
           "loadedWeight": 0.0,
@@ -186,6 +187,8 @@ export class gurpsItem extends Item {
           "shots": 0,
           "omniBlaster": false,
           "fieldJacketed": false,
+          "graviticFocus": 0,
+          "ftl": false,
         }
       }
 
@@ -196,7 +199,14 @@ export class gurpsItem extends Item {
       if (typeof this.data.data.laserDesign.damageDice == "undefined" || this.data.data.laserDesign.damageDice <= 0 || this.data.data.laserDesign.damageDice == "") { // If the damage dice is blank or negative
         this.data.data.laserDesign.damageDice = 1; // Set to 1
       }
+      if (this.data.data.laserDesign.graviticFocus == "undefined" || this.data.data.laserDesign.graviticFocus == "") { // If the damage dice is blank or negative
+        this.data.data.laserDesign.graviticFocus = "0"; // Set to zero
+      }
+      if (this.data.data.laserDesign.ftl) {
+        this.data.data.laserDesign.fieldJacketed = this.data.data.laserDesign.ftl;
+      }
 
+      this.data.data.laserDesign.damageDice = this.data.data.laserDesign.damageDiceInput / 2**(parseInt(this.data.data.laserDesign.graviticFocus));
 
       // Get game settings relevant to the design of the laser
       this.data.data.laserDesign.hotshotsAndOverheating = game.settings.get("gurps4e", "hotshotsAndOverheating");
@@ -690,7 +700,19 @@ export class gurpsItem extends Item {
 
       // Calculate the ranges
       // 1/2D Range
-      this.data.data.laserDesign.halfRange = this.data.data.laserDesign.damageDice * this.data.data.laserDesign.damageDice * rb * rf;
+      this.data.data.laserDesign.halfRange = this.data.data.laserDesign.damageDiceInput * this.data.data.laserDesign.damageDiceInput * rb * rf;
+
+      if (parseInt(this.data.data.laserDesign.graviticFocus) > 0 && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+        if (parseInt(this.data.data.laserDesign.graviticFocus) == 1) {
+          this.data.data.laserDesign.halfRange = this.data.data.laserDesign.halfRange * 10;
+        }
+        else if (parseInt(this.data.data.laserDesign.graviticFocus) == 2) {
+          this.data.data.laserDesign.halfRange = this.data.data.laserDesign.halfRange * 10 * 10;
+        }
+        else if (parseInt(this.data.data.laserDesign.graviticFocus) == 3) {
+          this.data.data.laserDesign.halfRange = this.data.data.laserDesign.halfRange * 10 * 10 * 10;
+        }
+      }
 
       if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "ir") {
         if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
@@ -710,7 +732,7 @@ export class gurpsItem extends Item {
       else if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "uv") {
         this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange * 3 / 10) * 10;
         if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
-          this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRangeWater * 3 / 10) * 10;
+          this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange * 3 / 10) * 10;
           this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange * 3 / 10) * 10;
         }
         else {
@@ -857,6 +879,12 @@ export class gurpsItem extends Item {
         this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
       }
 
+      if (this.data.data.laserDesign.ftl && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+        this.data.data.laserDesign.halfRange = this.data.data.laserDesign.maxRangeSpace;
+        this.data.data.laserDesign.halfRangeSpace = this.data.data.laserDesign.maxRangeWater;
+        this.data.data.laserDesign.halfRangeWater = this.data.data.laserDesign.maxRange;
+      }
+
       this.data.data.laserDesign.outputRange = this.data.data.laserDesign.halfRange + " / " + this.data.data.laserDesign.maxRange;
       this.data.data.laserDesign.outputRangeWater = this.data.data.laserDesign.halfRangeWater + " / " + this.data.data.laserDesign.maxRangeWater;
       this.data.data.laserDesign.outputRangeSpace = this.data.data.laserDesign.halfRangeSpace + " / " + this.data.data.laserDesign.maxRangeSpace;
@@ -902,7 +930,7 @@ export class gurpsItem extends Item {
 
       baseShots = +baseShots * this.data.data.laserDesign.powerCellQty;
 
-      this.data.data.laserDesign.shots = Math.floor(+baseShots / this.data.data.laserDesign.damageDice ** 3);
+      this.data.data.laserDesign.shots = Math.floor(+baseShots / this.data.data.laserDesign.damageDiceInput ** 3);
 
       if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "bg") {
         this.data.data.laserDesign.shots = this.data.data.laserDesign.shots / 2;
@@ -911,7 +939,7 @@ export class gurpsItem extends Item {
       this.data.data.laserDesign.outputShots = this.data.data.laserDesign.shots + " (" + reloadTime + ")";
 
       // Calculate empty weight
-      this.data.data.laserDesign.emptyWeight = ((+this.data.data.laserDesign.damageDice * s / e)**3 * f * g) * +this.data.data.laserDesign.weightTweak;
+      this.data.data.laserDesign.emptyWeight = ((+this.data.data.laserDesign.damageDiceInput * s / e)**3 * f * g) * +this.data.data.laserDesign.weightTweak;
 
       // Calculate the loaded weight
       this.data.data.laserDesign.loadedWeight = (Math.round(((Math.round(this.data.data.laserDesign.emptyWeight * 100) / 100) + (this.data.data.laserDesign.powerCellQty * this.data.data.laserDesign.powerCellWeight)) * 100) / 100);
@@ -951,6 +979,17 @@ export class gurpsItem extends Item {
       }
       if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
         cf += 1;
+      }
+      if (parseInt(this.data.data.laserDesign.graviticFocus) > 0){
+        if (parseInt(this.data.data.laserDesign.graviticFocus) == 1) {
+          cf += 1
+        }
+        else if (parseInt(this.data.data.laserDesign.graviticFocus) == 2) {
+          cf += 3
+        }
+        else if (parseInt(this.data.data.laserDesign.graviticFocus) == 3) {
+          cf += 7
+        }
       }
 
       this.data.data.cost = this.data.data.cost * cf;

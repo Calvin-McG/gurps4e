@@ -234,19 +234,46 @@
                     </label>
                     <input type="checkbox" name="data.laserDesign.superScience" {{checked data.data.laserDesign.superScience}} data-dtype="Boolean"/>
                 </div>
+                {{#ifCond  data.data.tl '>=' 10 }}
                 <div>
                     <label>
-                        Field Jacketed
+                        Field Jacketed (TL 10^)
                     </label>
                     <input type="checkbox" name="data.laserDesign.fieldJacketed" {{checked data.data.laserDesign.fieldJacketed}} data-dtype="Boolean"/>
                 </div>
+                <div>
+                    <label>
+                        Gravitic Focusing (TL 10^)
+                    </label>
+                    <select name="data.laserDesign.graviticFocus">
+                        {{#select data.data.laserDesign.graviticFocus}}
+                        <option value="0">None</option>
+                        <option value="1">One Level</option>
+                        {{#ifCond  data.data.tl '>=' 11 }}
+                        <option value="2">Two Levels</option>
+                        {{#ifCond  data.data.tl '>=' 12 }}
+                        <option value="3">Three Levels</option>
+                        {{/ifCond}}
+                        {{/ifCond}}
+                        {{/select}}
+                    </select>
+                </div>
+                {{/ifCond}}
+                {{#ifCond  data.data.tl '>=' 11 }}
+                <div>
+                    <label>
+                        FTL (TL 11^)
+                    </label>
+                    <input type="checkbox" name="data.laserDesign.ftl" {{checked data.data.laserDesign.ftl}} data-dtype="Boolean"/>
+                </div>
+                {{/ifCond}}
                 {{/if}}
 
                 <div>
                     <label>
                         Damage Dice
                     </label>
-                    <input type="number" name="data.laserDesign.damageDice" value="{{data.data.laserDesign.damageDice}}" data-dtype="Number"/>
+                    <input type="number" name="data.laserDesign.damageDiceInput" value="{{data.data.laserDesign.damageDiceInput}}" data-dtype="Number"/>
                 </div>
 
                 <div>
