@@ -192,7 +192,13 @@ export class gurpsItem extends Item {
           "rangedSkill": "",
           "meleeSkill": "",
           "rangedSkillMod": "",
-          "meleeSkillMod": ""
+          "meleeSkillMod": "",
+          "showAir": false,
+          "showSpace": false,
+          "showWater": false,
+          "showAirHotshot": false,
+          "showSpaceHotshot": false,
+          "showWaterHotshot": false,
         }
       }
 
@@ -1120,6 +1126,130 @@ export class gurpsItem extends Item {
     if (this.data.data.laserDesign.meleeProfile) { // If the user wants to include a melee profile
       this.addLaserMeleeProfile() // Include one
     }
+
+    let rangedProfiles = [];
+    // For each ranged profile, check if the box is checked and add the ranged profile accordingly.
+    if (this.data.data.laserDesign.showAir) {
+      let showAir = {
+        "name": this.data.name + " - Air",
+        "skill": this.data.data.laserDesign.rangedSkill,
+        "skillMod": this.data.data.laserDesign.rangedSkillMod,
+        "acc": this.data.data.laserDesign.outputAcc,
+        "damageInput": this.data.data.laserDesign.outputDamage,
+        "damageType": this.data.data.laserDesign.damageType,
+        "armorDivisor": this.data.data.laserDesign.armourDivisor,
+        "range": this.data.data.laserDesign.halfRange + " " + this.data.data.laserDesign.maxRange,
+        "rof": this.data.data.laserDesign.outputRoF,
+        "shots": this.data.data.laserDesign.shots,
+        "bulk": this.data.data.laserDesign.bulk,
+        "rcl": this.data.data.laserDesign.rcl,
+        "st": this.data.data.laserDesign.st,
+        "malf": 17
+      }
+
+      rangedProfiles.push(showAir);
+    }
+    if (this.data.data.laserDesign.showSpace) {
+      let showSpace = {
+        "name": this.data.name + " - Space",
+        "skill": this.data.data.laserDesign.rangedSkill,
+        "skillMod": this.data.data.laserDesign.rangedSkillMod,
+        "acc": this.data.data.laserDesign.outputAccSpace,
+        "damageInput": this.data.data.laserDesign.outputDamage,
+        "damageType": this.data.data.laserDesign.damageType,
+        "armorDivisor": this.data.data.laserDesign.armourDivisorSpace,
+        "range": this.data.data.laserDesign.halfRangeSpace + " " + this.data.data.laserDesign.maxRangeSpace,
+        "rof": this.data.data.laserDesign.outputRoF,
+        "shots": this.data.data.laserDesign.shots,
+        "bulk": this.data.data.laserDesign.bulk,
+        "rcl": this.data.data.laserDesign.rcl,
+        "st": this.data.data.laserDesign.st,
+        "malf": 17
+      }
+
+      rangedProfiles.push(showSpace);
+    }
+    if (this.data.data.laserDesign.showWater) {
+      let showWater = {
+        "name": this.data.name + " - Water",
+        "skill": this.data.data.laserDesign.rangedSkill,
+        "skillMod": this.data.data.laserDesign.rangedSkillMod,
+        "acc": this.data.data.laserDesign.outputAccWater,
+        "damageInput": this.data.data.laserDesign.outputDamage,
+        "damageType": this.data.data.laserDesign.damageType,
+        "armorDivisor": this.data.data.laserDesign.armourDivisorWater,
+        "range": this.data.data.laserDesign.halfRangeWater + " " + this.data.data.laserDesign.maxRangeWater,
+        "rof": this.data.data.laserDesign.outputRoF,
+        "shots": this.data.data.laserDesign.shots / 2,
+        "bulk": this.data.data.laserDesign.bulk,
+        "rcl": this.data.data.laserDesign.rcl,
+        "st": this.data.data.laserDesign.st,
+        "malf": 17
+      }
+
+      rangedProfiles.push(showWater);
+    }
+    if (this.data.data.laserDesign.showAirHotshot && this.data.data.hotshotsAndOverheating && !(this.data.data.configuration.toLowerCase().includes("gat"))) { // The user wants to show hotshots, hotshots are allowed, and this isn't a gatling weapon
+      let showAirHotshot = {
+        "name": this.data.name + " - Hotshot Air",
+        "skill": this.data.data.laserDesign.rangedSkill,
+        "skillMod": this.data.data.laserDesign.rangedSkillMod,
+        "acc": this.data.data.laserDesign.outputAcc,
+        "damageInput": this.data.data.laserDesign.outputDamageHotshots,
+        "damageType": this.data.data.laserDesign.damageType,
+        "armorDivisor": this.data.data.laserDesign.armourDivisor,
+        "range": this.data.data.laserDesign.halfRange + " " + this.data.data.laserDesign.maxRange,
+        "rof": this.data.data.laserDesign.outputRoF,
+        "shots": this.data.data.laserDesign.shots / 2,
+        "bulk": this.data.data.laserDesign.bulk,
+        "rcl": this.data.data.laserDesign.rcl,
+        "st": this.data.data.laserDesign.st,
+        "malf": 14
+      }
+
+      rangedProfiles.push(showAirHotshot);
+    }
+    if (this.data.data.laserDesign.showSpaceHotshot && this.data.data.hotshotsAndOverheating && !(this.data.data.configuration.toLowerCase().includes("gat"))) { // The user wants to show hotshots, hotshots are allowed, and this isn't a gatling weapon
+      let showSpaceHotshot = {
+        "name": this.data.name + " - Space Hotshot",
+        "skill": this.data.data.laserDesign.rangedSkill,
+        "skillMod": this.data.data.laserDesign.rangedSkillMod,
+        "acc": this.data.data.laserDesign.outputAccSpace,
+        "damageInput": this.data.data.laserDesign.outputDamageHotshots,
+        "damageType": this.data.data.laserDesign.damageType,
+        "armorDivisor": this.data.data.laserDesign.armourDivisorSpace,
+        "range": this.data.data.laserDesign.halfRangeSpace + " " + this.data.data.laserDesign.maxRangeSpace,
+        "rof": this.data.data.laserDesign.outputRoF,
+        "shots": this.data.data.laserDesign.shots / 2,
+        "bulk": this.data.data.laserDesign.bulk,
+        "rcl": this.data.data.laserDesign.rcl,
+        "st": this.data.data.laserDesign.st,
+        "malf": 14
+      }
+
+      rangedProfiles.push(showSpaceHotshot);
+    }
+    if (this.data.data.laserDesign.showWaterHotshot && this.data.data.hotshotsAndOverheating && !(this.data.data.configuration.toLowerCase().includes("gat"))) { // The user wants to show hotshots, hotshots are allowed, and this isn't a gatling weapon
+      let showWaterHotshot = {
+        "name": this.data.name + " - Water Hotshot",
+        "skill": this.data.data.laserDesign.rangedSkill,
+        "skillMod": this.data.data.laserDesign.rangedSkillMod,
+        "acc": this.data.data.laserDesign.outputAccWater,
+        "damageInput": this.data.data.laserDesign.outputDamageHotshots,
+        "damageType": this.data.data.laserDesign.damageType,
+        "armorDivisor": this.data.data.laserDesign.armourDivisorWater,
+        "range": this.data.data.laserDesign.halfRangeWater + " " + this.data.data.laserDesign.maxRangeWater,
+        "rof": this.data.data.laserDesign.outputRoF,
+        "shots": this.data.data.laserDesign.shots / 2,
+        "bulk": this.data.data.laserDesign.bulk,
+        "rcl": this.data.data.laserDesign.rcl,
+        "st": this.data.data.laserDesign.st,
+        "malf": 14
+      }
+
+      rangedProfiles.push(showWaterHotshot);
+    }
+    this.data.data.ranged = rangedProfiles;
   }
 
   addLaserMeleeProfile() {
