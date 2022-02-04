@@ -1428,22 +1428,269 @@ export class gurpsItem extends Item {
     else if (id == "beam-type") {
       info = "<table>" +
           "<tr>" +
-          "<td style='width: 100px;'>Laser (TL9)</td>" +
-          "<td><p>It's a pistol. Acc is lower, Bulk is lower, and ST is higher compared to a rifle of equal weight.</p></td>" +
-          "</tr>" +
+          "<td style='width: 160px;'>Laser (TL9)</td>" +
+          "<td><p>Shooty burny light at people. Works in all environments and has an armour divisor of (2)</p></td>" +
+          "</tr>";
+
+      if (this.data.data.tl >= 10){
+        if (this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+          info += "<tr>" +
+              "<td style='width: 160px;'>Force Beam (TL 10^)</td>" +
+              "<td><p>Fus Roh Dah except in a gun. Includes a stun setting.</p></td>" +
+              "</tr>";
+        }
+
+        info += "<tr>" +
+            "<td style='width: 160px;'>Blaster (TL 10)</td>" +
+            "<td><p>Charged particles instead of burny light. Armour divisor of (5), but it doesn't work so well in a vacuum. Slightly lower Acc compared to proper lasers.</p></td>" +
+            "</tr>";
+
+        info += "<tr>" +
+            "<td style='width: 160px;'>Neutral Particle Beam (TL 10)</td>" +
+            "<td><p>Like a Blaster but set up to work in vacuum only, can switch back into Blaster mode to work in air. Slightly lower Acc compared to proper lasers.</p></td>" +
+            "</tr>";
+      }
+
+      if (this.data.data.tl >= 11) {
+        info += "<tr>" +
+            "<td style='width: 160px;'>Rainbow Laser (TL 11)</td>" +
+            "<td><p>Colourfull burny light. Works well in the air and under water, range is severly reduced in a vacum. Armour divisor of (3)</p></td>" +
+            "</tr>";
+
+        info += "<tr>" +
+            "<td style='width: 160px;'>X-Ray Laser (TL 11)</td>" +
+            "<td><p>A fuckin sick laser weapon, if not for the fact it's range in air is terrible. You can probably throw the gun farther than the beam will reach. But it's got AD (5). It's range is ludicrous in space, however.</p></td>" +
+            "</tr>";
+
+        if (this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+          info += "<tr>" +
+              "<td style='width: 160px;'>Graviton Beam (TL 11^)</td>" +
+              "<td><p>Shoot gravity at people. Low damage but it ignores armour.</p></td>" +
+              "</tr>";
+        }
+
+        info += "<tr>" +
+            "<td style='width: 160px;'>Pulsar (TL 11)</td>" +
+            "<td><p>Make people explode. AD (3) crushing explosions.</p></td>" +
+            "</tr>";
+      }
+      if (this.data.data.tl >= 12) {
+        info += "<tr>" +
+            "<td style='width: 160px;'>Graser (TL 12)</td>" +
+            "<td><p>Like the X-Ray laser, this is fuckin sick. AD (10) and in space the range is measured in tens of miles, even for pistols. But in air the range is extremely limited, though better than the X-Ray laser.</p></td>" +
+            "</tr>";
+      }
+      info += "</table>"
+    }
+    else if (id == "laser-colour") {
+      info = "<table>" +
           "<tr>" +
-          "<td style='width: 100px;'>Beamer</td>" +
-          "<td><p>Like a TNG phaser. It's the bare minimum laser weapon. Acc is as low as it gets for a laser, but so is Bulk. ST is the same for an equivalent pistol.</p></td>" +
-          "</tr>" +
+          "<td style='width: 100px;'>Infrared</td>" +
+          "<td>" +
+          "<p>Infrared light is not visible to the naked eye, but the laser might still illuminate dust, smoke, etc, in the path of the beam.</p>" +
+          "<p>While they work in both air and vacuum, their range in water is 0/1.</p>" +
+          "</td>" +
+          "</tr>";
+      info += "<tr>" +
+          "<td style='width: 100px;'>Blue-Green</td>" +
+          "<td><p>These lasers are visible to the naked eye. Range doubles and RoF is halved. Blue-Green lasers use more energy so you get half as many shots per power cell.</p></td>" +
+          "</tr>";
+      info += "<tr>" +
+          "<td style='width: 100px;'>Ultraviolet</td>" +
+          "<td><p>Infrared light is not visible to the naked eye, but the laser might still illuminate dust, smoke, etc, in the path of the beam.</p>" +
+          "<p>UV lasers have triple the range of IR lasers, but damage is halved. Furthermore, range is capped at 500m in atmosphere so these are used primarily in space or to get more range out of more compact designs.</p></td>" +
+          "</tr>";
+      info += "</table>"
+    }
+    else if (id == "omni-blaster") {
+      info = "<table>" +
           "<tr>" +
-          "<td style='width: 100px;'>Rifle</td>" +
-          "<td><p>It's a rifle. Acc is higher, but so is Bulk. ST is lower compared to a pistol or beamer of equivalent weight but the weapon requires two hands.</p></td>" +
-          "</tr>" +
+          "<td>" +
+          "<p>Omni-Blasters cost more but include a built-in electrolaser stun setting.</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
+    else if (id == "focal-array") {
+      info = "<table>" +
           "<tr>" +
-          "<td style='width: 100px;'>Cannon</td>" +
-          "<td><p>Like a beamer, this is a weapon with the bare minimum, but built to fit into a turret or weapon mount. Acc is as high as it gets. Bulk isn't any worse than a rifle, but the weapon must be in a mount to use effectively.</p></td>" +
-          "</tr>" +
-          "</table>"
+          "<td>" +
+          "<p>The size of the focal array determines the maximum range of the weapon, though it obviously makes the weapon heavier.</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
+    else if (id == "laser-generator") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>These options determine how quickly the weapon can draw from its power source, allowing for higher or lower rates of fire. Higher rate of fire options cost and weigh more.</p>" +
+          "</td>" +
+          "</tr>";
+      if (this.data.data.laserDesign.hotshotsAndOverheating) {
+        info += "<tr>" +
+            "<td><p>Gatling versions of the Light and Heavy generators prevent the laser from overheating due to continuous fire, but are incapable of firing hotshots.</p></td>" +
+            "</tr>";
+      }
+      info += "</table>"
+    }
+    else if (id == "super-science-laser") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>This is not a general switch to turn on the super science options</p>" +
+          "<p>Instead it is a specific option that increases the effectiveness of non-superscience weapons to keep up in a world where superscience is available</p>" +
+          "<p>This halves the weight of the weapon, which you could then use to further increase the maximum damage, focal array, etc.</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
+    else if (id == "field-jacket") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>Many laser weapons have penalties for operating in environments they're not designed for. This option removes all such penalties, causing the laser to act as if it were in the ideal environment, whatever that might be.</p>" +
+          "<p>This makes X-Ray Lasers and Grasers very powerful and makes them serious contenders against superscience weapons.</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
+    else if (id == "gravitic-focusing") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>Generally meant for space combat, each level halves damage and multiplies range by 10.</p>" +
+          "<p>Note: This does not bypass range limits. X-Ray lasers are still capped at 20 yards in atmosphere, for example.</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
+    else if (id == "ftl-laser") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>For when light simply isn't fast enough. 1/2D range increases to equal Max range, and all range penalties are halved.</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
+    else if (id == "laser-damage-dice") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>Select the output damage of the laser. This can be any number you like, entered as any positive real number.</p>" +
+          "<p>The number of shots per power cell decreases exponentially as damage increases so the primary limit here is how much ammo you want to carry around.</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
+    else if (id == "laser-power-system") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>Select the number and type of power cells used in the weapon. Power cells need to be loaded individually (Unless you have the Double-Loading technique), so using a fistfull of A-cells to load your gatling laser is a pretty self-limiting choice.</p>" +
+          "<p>The number of shots per power cell decreases exponentially as damage increases so the primary limit here is how much ammo you want to carry around.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table><table>"
+
+      info += "<tr>" +
+          "<td style='width: 45px;'>Type</td>" +
+          "<td>Description</td>" +
+          "<td>Weight</td>" +
+          "<td>Cost</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>A cells</td>" +
+          "<td>The size of a watch battery.</td>" +
+          "<td>0.005 lbs</td>" +
+          "<td>2$</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>B cells</td>" +
+          "<td>The size of a modern AA battery or pistol cartridge.</td>" +
+          "<td>0.05 lbs</td>" +
+          "<td>3$</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>C cells</td>" +
+          "<td>About the size of a pistol magazine, these are the standard for most energy based weapons, as well as power tools and high-energy electronics.</td>" +
+          "<td>0.5 lbs</td>" +
+          "<td>10$</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>D cells</td>" +
+          "<td>The size of a thick book. Often worn as part of a separate backpack, these are used to power semi-portable weapons.</td>" +
+          "<td>5 lbs</td>" +
+          "<td>100$</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>E cells</td>" +
+          "<td>About the size of a backpack, these power small vehicles, battlesuits, and emplaced weapons.</td>" +
+          "<td>20 lbs</td>" +
+          "<td>2,000$</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>F cells</td>" +
+          "<td>About the size of a modern compact car engine, these power large vehicles, cannons, and small outposts</td>" +
+          "<td>200 lbs</td>" +
+          "<td>$20,000</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "super-science-power-cells") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>Super science lasers don't actually require super science cells. And super science cells can fit in non-super science lasers. But they double the number of shots per cell so they're a good idea.</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
+    else if (id == "non-rechargeable-power-cells") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>Power cells are usually rechargeable, this option prevents recharging but doubles the number of shots per cell.</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
+    else if (id == "laser-weight-tweak") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>Used to tune the weight of the weapon. Lighter weapons are easier to fit into an encumberence budget but tend to be more flimsy. HT does not change with weight, but HP does.</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
+    else if (id == "pulse-laser") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>When you absolutely, positively, must make someone explode, but they're just out of range to throw a grenade: Get a pulse laser</p>" +
+          "<p>Armour Divisor drops 1 step, but damage changes from tight beam burning to a crushing explosion and range doubles. (Though any hard range limits still apply)</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
+    else if (id == "pulse-beam-laser") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>This option allows you to switch between pulse and beam modes allowing you to take advantage of the beam mode's higher armour divisor</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
     }
 
     this.data.data.laserDesign.info = info;
