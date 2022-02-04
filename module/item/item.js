@@ -1459,7 +1459,7 @@ export class gurpsItem extends Item {
 
         info += "<tr>" +
             "<td style='width: 160px;'>X-Ray Laser (TL 11)</td>" +
-            "<td><p>A fuckin sick laser weapon, if not for the fact it's range in air is terrible. You can probably throw the gun farther than the beam will reach. But it's got AD (5). It's range is ludicrous in space, however.</p></td>" +
+            "<td><p>A fuckin sick laser weapon, if not for the fact it's range in air is terrible. You can probably throw the gun farther than the beam will reach. But it's got AD (5) and its range is ludicrous in space.</p></td>" +
             "</tr>";
 
         if (this.data.data.laserDesign.allowSuperScienceCustomLasers) {
