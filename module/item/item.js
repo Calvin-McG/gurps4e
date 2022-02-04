@@ -945,9 +945,15 @@ export class gurpsItem extends Item {
 
       this.data.data.cost = (Math.round(this.data.data.laserDesign.emptyWeight * bc * gc * 100) / 100);
 
+      let cf = 1
       if (this.data.data.laserDesign.beamType == "blaster" && this.data.data.laserDesign.omniBlaster) {
-        this.data.data.cost = this.data.data.cost * 2;
+        cf += 1;
       }
+      if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+        cf += 1;
+      }
+
+      this.data.data.cost = this.data.data.cost * cf;
 
       this.data.data.ttlCost = this.data.data.cost * this.data.data.quantity;
 
