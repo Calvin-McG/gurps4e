@@ -694,15 +694,22 @@ export class gurpsItem extends Item {
       // Calculate the output weight
       this.data.data.laserDesign.outputWeight = this.data.data.laserDesign.loadedWeight + "/" + this.data.data.laserDesign.powerCellQty + this.data.data.laserDesign.powerCell;
 
-      // Calculate ST Requirement
-      if (this.data.data.laserDesign.configuration == "pistol" || this.data.data.laserDesign.configuration == "beamer") {
+      // Calculate ST and Bulk
+      if (this.data.data.laserDesign.configuration == "pistol") {
         this.data.data.laserDesign.outputST = Math.round(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 3.3);
+        this.data.data.laserDesign.outputBulk = Math.min(Math.max(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 1.25, 1),10) * -1;
+      }
+      else if (this.data.data.laserDesign.configuration == "beamer") {
+        this.data.data.laserDesign.outputST = Math.round(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 3.3);
+        this.data.data.laserDesign.outputBulk = Math.min(Math.max(Math.sqrt(this.data.data.laserDesign.loadedWeight), 0),10) * -1;
       }
       else if (this.data.data.laserDesign.configuration == "cannon") {
         this.data.data.laserDesign.outputST = Math.round(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 2.4) + "M";
+        this.data.data.laserDesign.outputBulk = Math.min(Math.max(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 1.5, 6),10) * -1;
       }
       else if (this.data.data.laserDesign.configuration == "rifle") {
         this.data.data.laserDesign.outputST = Math.round(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 2.2) + "†";
+        this.data.data.laserDesign.outputBulk = Math.min(Math.max(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 1.5, 3),10) * -1;
       }
     }
     console.log(this.data.data.laserDesign)
