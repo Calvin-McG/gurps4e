@@ -1131,11 +1131,6 @@ export class gurpsItem extends Item {
   }
 
   addLaserMeleeProfile() {
-    // If there's no melee container, add one
-    this.data.data.melee = {
-      "melee": []
-    }
-
     let damageMod = Math.abs(this.data.data.laserDesign.outputBulk)-1;
     let damage = "";
 
@@ -1168,7 +1163,7 @@ export class gurpsItem extends Item {
       "st": this.data.data.laserDesign.outputST,
     };
 
-    this.update({ ["data.melee." + 0]: newRow }); // Add the new row to the list of melee keys
+    this.data.data.melee = [newRow];
   }
 
   prepareCustomBox() {

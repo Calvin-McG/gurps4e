@@ -52,9 +52,7 @@ export class gurpsActorSheet extends ActorSheet {
 					cancel: {
 						icon: '<i class="fas fa-times"></i>',
 						label: "Cancel",
-						callback: () => {
-
-						}
+						callback: () => {}
 					},
 				},
 				default: "cancel",
