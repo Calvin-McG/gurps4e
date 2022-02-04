@@ -556,12 +556,6 @@ export class gurpsItem extends Item {
         this.data.data.laserDesign.outputRoF = 20;
       }
 
-      // Calculate empty weight
-      this.data.data.laserDesign.emptyWeight = (+this.data.data.laserDesign.damageDice * s / e)**3 * f * g;
-
-      // Calculate the output weight
-      this.data.data.laserDesign.outputWeight = Math.round(this.data.data.laserDesign.emptyWeight * 100) / 100 + "/" + 0; // Round empty weight on display
-
       // Rounding damage dice to dice and adds, per page 13 of Pyramid 37
       let dice = 0;
       let adds = 0;
@@ -687,7 +681,13 @@ export class gurpsItem extends Item {
 
       this.data.data.laserDesign.shots = Math.floor(+baseShots / this.data.data.laserDesign.damageDice ** 3);
 
-      // this.data.data.laserDesign.outputShots = this.data.data.laserDesign.shots + "(3)"
+      this.data.data.laserDesign.outputShots = this.data.data.laserDesign.shots + " (" + reloadTime + ")";
+
+      // Calculate empty weight
+      this.data.data.laserDesign.emptyWeight = (+this.data.data.laserDesign.damageDice * s / e)**3 * f * g;
+
+      // Calculate the output weight
+      this.data.data.laserDesign.outputWeight = ((Math.round(this.data.data.laserDesign.emptyWeight * 100) / 100) + (this.data.data.laserDesign.powerCellQty * this.data.data.laserDesign.powerCellWeight)) + "/" + this.data.data.laserDesign.powerCellQty + this.data.data.laserDesign.powerCell; // Round empty weight on display
     }
     console.log(this.data.data.laserDesign)
   }
