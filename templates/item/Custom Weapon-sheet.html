@@ -537,6 +537,7 @@
                         <td>17+</td>
                     </tr>
                     {{#if data.data.laserDesign.hotshotsAndOverheating}}
+                    {{#unless (or (eq data.data.laserDesign.generator "lightGat") (eq data.data.laserDesign.generator "heavyGat"))}}
                     <tr class="custom-laser-air-hotshot">
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Hotshot Air</td>
@@ -585,6 +586,7 @@
                         <td>{{data.data.lc}}</td>
                         <td>14</td>
                     </tr>
+                    {{/unless}}
                     {{/if}}
                 </table>
             </div>
