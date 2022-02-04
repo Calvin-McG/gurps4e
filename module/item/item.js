@@ -1369,6 +1369,10 @@ export class gurpsItem extends Item {
     let thr = attributeHelpers.strikingStrengthToThrust(sst);//Get thrust damage
     let sw = attributeHelpers.strikingStrengthToSwing(sst);//Get swing damage
 
+    console.log(damage);
+    if (typeof damage == "undefined" || damage == null){
+      damage = "0";
+    }
     damage = damage.toLowerCase();//Fix any case specific issues
     damage = damage.replace("thr", thr);//Replace thrust
     damage = damage.replace("sw", sw)//Replace swing
