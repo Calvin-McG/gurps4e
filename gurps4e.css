@@ -1780,6 +1780,10 @@ attribute-senses {
 	display: flex;
 }
 
+.laser-design-row {
+	line-height: 27.5px;
+}
+
 .question-container {
 	height: 27.5px;
 	width: 27.5px;

@@ -191,6 +191,12 @@ export class gurpsItem extends Item {
           "info": "",
           "pulseLaser": false,
           "pulseBeamLaser": false,
+          "meleeProfile": false,
+          "cavalierWeapon": false,
+          "rangedSkill": "",
+          "meleeSkill": "",
+          "rangedSkillMod": "",
+          "meleeSkillMod": ""
         }
       }
 
@@ -1112,7 +1118,57 @@ export class gurpsItem extends Item {
 
       this.data.data.lc = lc;
 
+      // Done building the custom laser
+
+      this.addCustomLaserProfiles() // Call the method that takes the profiles the user has selected and add them to the profiles for the weapon
     }
+  }
+
+  addCustomLaserProfiles() {
+    if (this.data.data.laserDesign.meleeProfile) { // If the user wants to include a melee profile
+      this.addLaserMeleeProfile() // Include one
+    }
+  }
+
+  addLaserMeleeProfile() {
+    // If there's no melee container, add one
+    this.data.data.melee = {
+      "melee": []
+    }
+
+    let damageMod = Math.abs(this.data.data.laserDesign.outputBulk)-1;
+    let damage = "";
+
+    if (this.data.data.laserDesign.cavalierWeapon) {
+      damage = "sw+1";
+    }
+    else {
+      if (damageMod > 0) { // damageMod is positive
+        damage = "thr+" + Math.abs(damageMod)
+      }
+      else if (damageMod < 0) { // damageMod is negative
+        damage = "thr-" + Math.abs(damageMod)
+      }
+      else { // damageMod is zero
+        damage = "thr"
+      }
+    }
+
+    let newRow = { // Init the new melee row using the values from the custom weapon
+      "name": (this.data.data.laserDesign.configuration == "pistol" || this.data.data.laserDesign.configuration == "beamer") ? "Pistol Whip" : "Butt Stroke",
+      "skill": this.data.data.laserDesign.meleeSkill,
+      "skillMod": this.data.data.laserDesign.meleeSkillMod,
+      "parry": 0,
+      "parryMod": "",
+      "blockMod": "No",
+      "damageInput": damage,
+      "damageType": "cr",
+      "armorDivisor": 1,
+      "reach": "C",
+      "st": this.data.data.laserDesign.outputST,
+    };
+
+    this.update({ ["data.melee." + 0]: newRow }); // Add the new row to the list of melee keys
   }
 
   prepareCustomBox() {
@@ -1662,7 +1718,7 @@ export class gurpsItem extends Item {
       info = "<table>" +
           "<tr>" +
           "<td>" +
-          "<p>Used to tune the weight of the weapon. Lighter weapons are easier to fit into an encumberence budget but tend to be more flimsy. HT does not change with weight, but HP does.</p>" +
+          "<p>Used to tune the weight of the weapon. Lighter weapons are easier to fit into an encumberence budget but tend to be more flimsy. HT does not change with weight, but HP does. Heavier weapons also tend to have higher Bulk, which can be desireable if you want to hit people with it.</p>" +
           "</td>" +
           "</tr>";
       info += "</table>"
@@ -1682,6 +1738,42 @@ export class gurpsItem extends Item {
           "<tr>" +
           "<td>" +
           "<p>This option allows you to switch between pulse and beam modes allowing you to take advantage of the beam mode's higher armour divisor</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
+    else if (id == "melee-profile") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>This option adds a melee attack profile to the weapon that allows you to strike people with the weapon.</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
+    else if (id == "cavalier-weapon") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>In the style of muzzle loading cavalry pistols, this weapon is designed specifically for striking and it does swing+1 crushing.</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
+    else if (id == "laser-ranged-skill") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>Enter the skill used for this weapon's ranged attack profiles.</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
+    else if (id == "laser-melee-skill") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>Enter the skill used for this weapon's melee attack profiles.</p>" +
           "</td>" +
           "</tr>";
       info += "</table>"

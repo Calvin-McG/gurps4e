@@ -455,15 +455,80 @@
                             </tr>
                             {{/if}}
                             {{/if}}
+                            <tr class="laser-design-row">
+                                <td style="line-height: 27.5px">
+                                    Include a melee profile
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.laserDesign.meleeProfile" {{checked data.data.laserDesign.meleeProfile}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="melee-profile">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            {{#if data.data.laserDesign.meleeProfile}}
+                                <tr class="laser-design-row">
+                                    <td style="line-height: 27.5px">
+                                        Cavalier Weapon
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="data.laserDesign.cavalierWeapon" {{checked data.data.laserDesign.cavalierWeapon}} data-dtype="Boolean"/>
+                                    </td>
+                                    <td class="question-container" id="cavalier-weapon">
+                                        <div class="question-button">
+                                            <i class="fas fa-question"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {{/if}}
                         </table>
+
+                        <h2 class="bold" style="text-align: center; margin-top: 20px">Skills</h2>
+                        <table>
+                            <tr class="laser-design-row">
+                                <td style="line-height: 27.5px" colspan="2">
+                                    <input style="width: 75%" type="text" placeholder="Ranged Skill" name="data.laserDesign.rangedSkill" value="{{data.data.laserDesign.rangedSkill}}"/>
+                                    <input style="width: 20%" type="number" placeholder="Mod" name="data.laserDesign.rangedSkillMod" value="{{data.data.laserDesign.rangedSkillMod}}"/>
+                                </td>
+                                <td class="question-container" id="laser-ranged-skill">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            {{#if data.data.laserDesign.meleeProfile}}
+                            <tr class="laser-design-row">
+                                <td style="line-height: 27.5px" colspan="2">
+                                    <input style="width: 75%" type="text" placeholder="Melee Skill" name="data.laserDesign.meleeSkill" value="{{data.data.laserDesign.meleeSkill}}"/>
+                                    <input style="width: 20%" type="number" placeholder="Mod" name="data.laserDesign.meleeSkillMod" value="{{data.data.laserDesign.meleeSkillMod}}"/>
+                                </td>
+                                <td class="question-container" id="laser-melee-skill">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/if}}
+                        </table>
+
                     </div>
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
                         <div class="equipment-info-container">{{{data.data.laserDesign.info}}}</div>
                     </div>
                 </div>
+
+                <div>
+                    <h2 class="bold" style="text-align: center;">Design Results</h2>
+                    <h3 class="bold" style="text-align: center;">Check the boxes to have that row added to your combat tab and the combat macro.</h3>
+                </div>
                 <table>
                     <tr>
+                        <td>Show</td>
                         <td>TL</td>
                         <td>Weapon</td>
                         <td>Damage</td>
@@ -480,6 +545,7 @@
                         <td>Malf</td>
                     </tr>
                     <tr class="custom-laser-air">
+                        <td><input type="checkbox" name="data.laserDesign.showAir" {{checked data.data.laserDesign.showAir}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Air</td>
                         <td>{{data.data.laserDesign.outputDamage}}</td>
@@ -496,6 +562,7 @@
                         <td>17+</td>
                     </tr>
                     <tr class="custom-laser-space">
+                        <td><input type="checkbox" name="data.laserDesign.showSpace" {{checked data.data.laserDesign.showSpace}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Space</td>
                         <td>{{data.data.laserDesign.outputDamageSpace}}</td>
@@ -512,6 +579,7 @@
                         <td>17+</td>
                     </tr>
                     <tr class="custom-laser-water">
+                        <td><input type="checkbox" name="data.laserDesign.showWater" {{checked data.data.laserDesign.showWater}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Underwater</td>
                         <td>{{data.data.laserDesign.outputDamageWater}}</td>
@@ -530,6 +598,7 @@
                     {{#if data.data.laserDesign.hotshotsAndOverheating}}
                     {{#unless (or (eq data.data.laserDesign.generator "lightGat") (eq data.data.laserDesign.generator "heavyGat"))}}
                     <tr class="custom-laser-air-hotshot">
+                        <td><input type="checkbox" name="data.laserDesign.showAirHotshot" {{checked data.data.laserDesign.showAirHotshot}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Hotshot Air</td>
                         <td>{{data.data.laserDesign.outputDamageHotshots}}</td>
@@ -546,6 +615,7 @@
                         <td>14</td>
                     </tr>
                     <tr class="custom-laser-space-hotshot">
+                        <td><input type="checkbox" name="data.laserDesign.showSpaceHotshot" {{checked data.data.laserDesign.showSpaceHotshot}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Hotshot Space</td>
                         <td>{{data.data.laserDesign.outputDamageHotshotsSpace}}</td>
@@ -562,6 +632,7 @@
                         <td>14</td>
                     </tr>
                     <tr class="custom-laser-water-hotshot">
+                        <td><input type="checkbox" name="data.laserDesign.showWaterHotshot" {{checked data.data.laserDesign.showWaterHotshot}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Hotshot Underwater</td>
                         <td>{{data.data.laserDesign.outputDamageHotshotsWater}}</td>
