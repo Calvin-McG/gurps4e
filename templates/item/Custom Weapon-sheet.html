@@ -139,7 +139,7 @@
                                     {{/if}}
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.data.bowDesign.strongBowCrossbowFinesse" {{checked data.data.bowDesign.strongBowCrossbowFinesse}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="data.bowDesign.strongBowCrossbowFinesse" {{checked data.data.bowDesign.strongBowCrossbowFinesse}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="strong-bow-crossbow-finesse">
                                     <div class="question-button">
@@ -229,6 +229,84 @@
                                     </div>
                                 </td>
                             </tr>
+                        </table>
+
+                        <h2 class="bold" style="text-align: center;">Material Options</h2>
+                        <table>
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Working Bow Material 1
+                                </td>
+                                <td>
+                                    <select name="data.bowDesign.workingMaterialOne">
+                                        {{#select data.data.bowDesign.workingMaterialOne}}
+                                        {{#each data.data.bowDesign.materials as |material id|}}
+                                        {{#ifCond ../data.data.tl '>=' material.tl}}
+                                        <option value="{{material.name}}">{{material.name}}</option>
+                                        {{/ifCond}}
+                                        {{/each}}
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="working-material">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            {{#if data.data.bowDesign.magicalMaterials}}
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Is Material 1 Essential?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.bowDesign.workingMaterialOneEssential" {{checked data.data.bowDesign.workingMaterialOneEssential}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="working-material-essential">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/if}}
+
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Working Bow Material 2
+                                </td>
+                                <td>
+                                    <select name="data.bowDesign.workingMaterialTwo">
+                                        {{#select data.data.bowDesign.workingMaterialTwo}}
+                                        {{#each data.data.bowDesign.materials as |material id|}}
+                                        {{#ifCond ../data.data.tl '>=' material.tl}}
+                                        <option value="{{material.name}}">{{material.name}}</option>
+                                        {{/ifCond}}
+                                        {{/each}}
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="working-material">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{#if data.data.bowDesign.magicalMaterials}}
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Is Material 2 Essential?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.bowDesign.workingMaterialTwoEssential" {{checked data.data.bowDesign.workingMaterialTwoEssential}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="working-material-essential">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/if}}
                         </table>
                     </div>
                     <div style="width: 50%;">

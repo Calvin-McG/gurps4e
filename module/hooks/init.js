@@ -125,10 +125,19 @@ Hooks.once("init", () => {
         "However, the principles behind the construction of a compound bow are only TL2. " +
         "Setting this option to 'true' strictly interprets this to mean compound bows only become available at TL7+ " +
         "Leaving this option false uses the TL2 as the limit. ",
-
     scope: "world",
     config: true,
     default: false,
+    type: Boolean
+  });
+
+  game.settings.register("gurps4e", "simpleEssentialMaterials", {
+    name: "Simple Essential Materials",
+    hint: "Essential materials are supposed to be three times as strong. This option makes that the case. Tensile strength is 3x it's base value and that's it. " +
+        "With this option off, tensile strength is 9x it's base value and elastic modulus is 3x it's base value. This results in a max strain that is three times the value of the base material which is important for making bows.",
+    scope: "world",
+    config: true,
+    default: true,
     type: Boolean
   });
 

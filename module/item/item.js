@@ -1316,6 +1316,8 @@ export class gurpsItem extends Item {
         "maxDrawLength": 0,
         "workingMaterialOne": "",
         "workingMaterialTwo": "",
+        "workingMaterialOneEssential": false,
+        "workingMaterialTwoEssential": false,
         "bowConstruction": "", // Straight/Recurve/Reflex/Compound/Reflex Recurve
         "bowShape": "", // Round/Rectangular or D-Section
         "n": 0, // Width:Thickness ratio
@@ -1348,6 +1350,9 @@ export class gurpsItem extends Item {
     this.data.data.bowDesign.magicalMaterials = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
     this.data.data.bowDesign.compoundBowStrictTL = game.settings.get("gurps4e", "compoundBowStrictTL");
     this.data.data.bowDesign.fixedBonusStrongbow = game.settings.get("gurps4e", "fixedBonusStrongbow");
+
+    // Get materials
+    this.data.data.bowDesign.materials = game.materialAPI.fetchBowMaterials();
 
     // Do actual code stuff
     this.data.data.bowDesign.type = type;
@@ -2314,7 +2319,83 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
+    else if (id == "working-material") {
+      info = "<table>";
 
+      info += "<tr>" +
+          "<td>" +
+          "<p>Your choice of materials determines how good your bow is at turning your draw weight into damage. " +
+          "All the other options matter, but its the materials that decide the relationship between energy in and energy out." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Material 1 and 2 don't occupy any special position, the two are interchangeable." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>You can even set both dropdowns to the same material if you like, and this was often the case historically. " +
+          "English Longbows were made entirely of European Yew, for example." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Silk and sinew are a special case. Since you can't make a bow out of cloth, they must be combined with another material." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+
+      info += "</table>"
+
+      info += "<h2>Okay, but which do I choose?</h2>";
+
+      info += "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Good choices are: Osage Orange, Elm, Bamboo, Hickory, Horn, Sinew, and European Yew" +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Horn and Sinew bows were very effective historically, and they remain good in GURPS." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>The biggest problem you're likely to have here is the materials most efficient at turning your draw weight into damage also don't have the capacity to store as much energy. " +
+          "Steel is a very poor material for bows, but saw use in historical crossbows because it could store a ton of energy. " +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "working-material-essential") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Rather than use a specific essential material, this checkbox makes whatever material you've selected essential, tripling it's stats." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+
+    }
     this.data.data.info = info;
 
     this.update({ 'data.info': this.data.data.info });
