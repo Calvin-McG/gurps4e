@@ -121,10 +121,10 @@ export class gurpsItem extends Item {
         this.prepareCustomBow("bow");
         break;
       case "footbow":
-        this.prepareCustomBow("xbow");
+        this.prepareCustomBow("footbow");
         break;
       case "xbow":
-        this.prepareCustomBow("footbow");
+        this.prepareCustomBow("xbow");
         break;
       default: // not a supported type of custom weapon
         return ui.notifications.error("This type of custom weapon is not supported in the system!");
