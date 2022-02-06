@@ -122,7 +122,7 @@
                                     User ST
                                 </td>
                                 <td>
-                                    <input type="number" name="data.bowDesign.drawWeight" value="{{data.data.bowDesign.drawWeight}}" data-dtype="Number"/>
+                                    <input type="number" name="data.bowDesign.userST" value="{{data.data.bowDesign.userST}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="user-st">
                                     <div class="question-button">
@@ -169,6 +169,26 @@
                                 </td>
                             </tr>
 
+                        </table>
+                        <h2 class="bold" style="text-align: center;">
+                            {{#if (eq data.data.bowDesign.type "bow")}}Bow {{/if}}
+                            {{#if (eq data.data.bowDesign.type "xbow")}}Cross Bow {{/if}}
+                            {{#if (eq data.data.bowDesign.type "footbow")}}Footbow {{/if}}
+                            Options</h2>
+                        <table>
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Draw Weight
+                                </td>
+                                <td>
+                                    <input type="number" name="data.bowDesign.drawWeight" value="{{data.data.bowDesign.drawWeight}}" data-dtype="Number"/>
+                                </td>
+                                <td class="question-container" id="draw-weight">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                     <div style="width: 50%;">
