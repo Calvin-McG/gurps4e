@@ -104,6 +104,21 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  game.settings.register("gurps4e", "compoundBowStrictTL", {
+    name: "Strict TL limits for Compound Bows",
+    hint: "Compound bows make clever use of pulleys, cams, and mechanical advantage to get more power out of a bow or crossbow. " +
+        "The first compound bow ever actually made was created in 1966 by Holless Wilbur Allen. " +
+        "Strictly speaking, this places compound bows in the middle of TL7. " +
+        "However, the principles behind the construction of a compound bow are only TL2. " +
+        "Setting this option to 'true' strictly interprets this to mean compound bows only become available at TL7+ " +
+        "Leaving this option false uses the TL2 as the limit. ",
+
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
   // game.settings.register("gurps4e", "allowSuperScienceMaterialsForCustom", {
   //   name: "Allow Super Science Materials For Custom Weapons",
   //   hint: "Allows Essential Metal, Giant Spider Silk, etc, when creating custom weapons.",
