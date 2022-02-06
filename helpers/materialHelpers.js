@@ -12,7 +12,7 @@ export class materialHelpers {
                 "tl": 10
             },
             {
-                "name": "Aluminum 7075-T6 (for arrow shafts and bow risers)",
+                "name": "Aluminum 7075-T6",
                 "densityLbsCuIn": 0.101,
                 "tensileStPsi": 72500,
                 "elasticModulusPsi": 10400000,
@@ -219,7 +219,7 @@ export class materialHelpers {
                 "tl": 3
             },
             {
-                "name": "Wood - Apple (Horse apple, Hedge apple, Osage Orange)",
+                "name": "Wood - Apple",
                 "densityLbsCuIn": 0.034,
                 "tensileStPsi": 19250,
                 "elasticModulusPsi": 1682000,
@@ -228,7 +228,34 @@ export class materialHelpers {
                 "tl": 0
             },
             {
-                "name": "Wood - Ash, Birch, or Elm",
+                "name": "Wood - Horse apple",
+                "densityLbsCuIn": 0.034,
+                "tensileStPsi": 19250,
+                "elasticModulusPsi": 1682000,
+                "a": 0.95,
+                "builtIn": true,
+                "tl": 0
+            },
+            {
+                "name": "Wood - Hedge apple",
+                "densityLbsCuIn": 0.034,
+                "tensileStPsi": 19250,
+                "elasticModulusPsi": 1682000,
+                "a": 0.95,
+                "builtIn": true,
+                "tl": 0
+            },
+            {
+                "name": "Wood - Osage Orange",
+                "densityLbsCuIn": 0.034,
+                "tensileStPsi": 19250,
+                "elasticModulusPsi": 1682000,
+                "a": 0.95,
+                "builtIn": true,
+                "tl": 0
+            },
+            {
+                "name": "Wood - Ash",
                 "densityLbsCuIn": 0.023,
                 "tensileStPsi": 13000,
                 "elasticModulusPsi": 1560000,
@@ -237,7 +264,34 @@ export class materialHelpers {
                 "tl": 0
             },
             {
-                "name": "Wood - Aspen or Poplar",
+                "name": "Wood - Birch",
+                "densityLbsCuIn": 0.023,
+                "tensileStPsi": 13000,
+                "elasticModulusPsi": 1560000,
+                "a": 0.87,
+                "builtIn": true,
+                "tl": 0
+            },
+            {
+                "name": "Wood - Elm",
+                "densityLbsCuIn": 0.023,
+                "tensileStPsi": 13000,
+                "elasticModulusPsi": 1560000,
+                "a": 0.87,
+                "builtIn": true,
+                "tl": 0
+            },
+            {
+                "name": "Wood - Aspen",
+                "densityLbsCuIn": 0.014,
+                "tensileStPsi": 8250,
+                "elasticModulusPsi": 1260000,
+                "a": 0.77,
+                "builtIn": true,
+                "tl": 0
+            },
+            {
+                "name": "Wood - Poplar",
                 "densityLbsCuIn": 0.014,
                 "tensileStPsi": 8250,
                 "elasticModulusPsi": 1260000,
@@ -282,7 +336,34 @@ export class materialHelpers {
                 "tl": 0
             },
             {
-                "name": "Wood - Fir (Douglas, mountain, balsam, silver)",
+                "name": "Wood - Douglas Fir",
+                "densityLbsCuIn": 0.016,
+                "tensileStPsi": 9750,
+                "elasticModulusPsi": 1525000,
+                "a": 0.75,
+                "builtIn": true,
+                "tl": 0
+            },
+            {
+                "name": "Wood - Mountain Fir",
+                "densityLbsCuIn": 0.016,
+                "tensileStPsi": 9750,
+                "elasticModulusPsi": 1525000,
+                "a": 0.75,
+                "builtIn": true,
+                "tl": 0
+            },
+            {
+                "name": "Wood - Balsam Fir",
+                "densityLbsCuIn": 0.016,
+                "tensileStPsi": 9750,
+                "elasticModulusPsi": 1525000,
+                "a": 0.75,
+                "builtIn": true,
+                "tl": 0
+            },
+            {
+                "name": "Wood - Silver Fir",
                 "densityLbsCuIn": 0.016,
                 "tensileStPsi": 9750,
                 "elasticModulusPsi": 1525000,
@@ -300,7 +381,7 @@ export class materialHelpers {
                 "tl": 0
             },
             {
-                "name": "Wood - IronWood - black",
+                "name": "Wood - Black Ironwood",
                 "densityLbsCuIn": 0.043,
                 "tensileStPsi": 25800,
                 "elasticModulusPsi": 2990000,
@@ -309,7 +390,7 @@ export class materialHelpers {
                 "tl": 0
             },
             {
-                "name": "Wood - Maple (red, sugar)",
+                "name": "Wood - Red Maple",
                 "densityLbsCuIn": 0.022,
                 "tensileStPsi": 14500,
                 "elasticModulusPsi": 1740000,
@@ -318,7 +399,16 @@ export class materialHelpers {
                 "tl": 0
             },
             {
-                "name": "Wood - Maple, silver",
+                "name": "Wood - Sugar Maple",
+                "densityLbsCuIn": 0.022,
+                "tensileStPsi": 14500,
+                "elasticModulusPsi": 1740000,
+                "a": 0.81,
+                "builtIn": true,
+                "tl": 0
+            },
+            {
+                "name": "Wood - Silver Maple",
                 "densityLbsCuIn": 0.018,
                 "tensileStPsi": 9000,
                 "elasticModulusPsi": 1150000,
@@ -345,7 +435,7 @@ export class materialHelpers {
                 "tl": 0
             },
             {
-                "name": "Wood - Pine (white, red, longleaf), Cherry (black)",
+                "name": "Wood - White Pine",
                 "densityLbsCuIn": 0.019,
                 "tensileStPsi": 12250,
                 "elasticModulusPsi": 1595000,
@@ -354,7 +444,34 @@ export class materialHelpers {
                 "tl": 0
             },
             {
-                "name": "Wood - Spruce or Redwood",
+                "name": "Wood - Red Pine",
+                "densityLbsCuIn": 0.019,
+                "tensileStPsi": 12250,
+                "elasticModulusPsi": 1595000,
+                "a": 0.79,
+                "builtIn": true,
+                "tl": 0
+            },
+            {
+                "name": "Wood - Longleaf Pine",
+                "densityLbsCuIn": 0.019,
+                "tensileStPsi": 12250,
+                "elasticModulusPsi": 1595000,
+                "a": 0.79,
+                "builtIn": true,
+                "tl": 0
+            },
+            {
+                "name": "Wood - Black Cherry",
+                "densityLbsCuIn": 0.019,
+                "tensileStPsi": 12250,
+                "elasticModulusPsi": 1595000,
+                "a": 0.79,
+                "builtIn": true,
+                "tl": 0
+            },
+            {
+                "name": "Wood - Spruce",
                 "densityLbsCuIn": 0.016,
                 "tensileStPsi": 10500,
                 "elasticModulusPsi": 1443000,
@@ -363,7 +480,16 @@ export class materialHelpers {
                 "tl": 0
             },
             {
-                "name": "Wood - Walnut, black",
+                "name": "Wood - Redwood",
+                "densityLbsCuIn": 0.016,
+                "tensileStPsi": 10500,
+                "elasticModulusPsi": 1443000,
+                "a": 0.76,
+                "builtIn": true,
+                "tl": 0
+            },
+            {
+                "name": "Wood - Black Walnut",
                 "densityLbsCuIn": 0.020,
                 "tensileStPsi": 14750,
                 "elasticModulusPsi": 1682000,
@@ -372,7 +498,7 @@ export class materialHelpers {
                 "tl": 0
             },
             {
-                "name": "Wood - Willow, black",
+                "name": "Wood - Black Willow",
                 "densityLbsCuIn": 0.015,
                 "tensileStPsi": 6200,
                 "elasticModulusPsi": 725000,
@@ -381,7 +507,7 @@ export class materialHelpers {
                 "tl": 0
             },
             {
-                "name": "Wood - Yew, European",
+                "name": "Wood - European Yew",
                 "densityLbsCuIn": 0.024,
                 "tensileStPsi": 15000,
                 "elasticModulusPsi": 1320000,
