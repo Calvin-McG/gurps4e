@@ -1534,7 +1534,6 @@ export class gurpsItem extends Item {
     let thr = attributeHelpers.strikingStrengthToThrust(sst);//Get thrust damage
     let sw = attributeHelpers.strikingStrengthToSwing(sst);//Get swing damage
 
-    console.log(damage);
     if (typeof damage == "undefined" || damage == null){
       damage = "0";
     }

@@ -109,7 +109,8 @@ Hooks.once("init", () => {
     hint: "By default Strongbow and Crossbow Finesse directly increase the user's effective ST. " +
         "This works fine for quick gameplay but can lead to inconsistent behaviour when using custom bows. " +
         "Turning this option on instead changes the bonus from +1/+2 ST to +15%/+30% draw weight. " +
-        "Fixed in this case means that the bonus to draw weight doesn't change based on the ST of the user, not that the alternative is somehow broken.",
+        "Fixed in this case means that the bonus to draw weight doesn't change based on the ST of the user, not that the alternative is somehow broken. " +
+        "This option has a negative impact on characters below ST 14, and a positive impact on characters above ST 14. ST 14 characters are not impacted.",
     scope: "world",
     config: true,
     default: true,
