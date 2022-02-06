@@ -1,7 +1,8 @@
 /**
  * Init function loads tables, registers settings, and loads templates
  */
-import {macroHelpers} from "../../helpers/macroHelpers.js";
+import { macroHelpers } from "../../helpers/macroHelpers.js";
+import { materialHelpers } from "../../helpers/materialHelpers.js";
 
 Hooks.once("init", () => {
 
@@ -9,7 +10,7 @@ Hooks.once("init", () => {
   hookAPI();
 
   function _setGurps4eInitiative() {
-    let formula = "@primaryAttributes.speed.value + @primaryAttributes.dexterity.value / 10000 + (1d100 - 1) / 1000000";// First three digits are (speed), then [DX], then {d100-1}. Example: (5.00)[10]{38} -> 5001038
+    let formula = "@primaryAttributes.speed.value + @primaryAttributes.dexterity.value / 10000 + (1d100 - 1) / 1000000"; // First three digits are (speed), then [DX], then {d100-1}. Example: (5.00)[10]{38} -> 5001038
     let decimals = 6;
     CONFIG.Combat.initiative = {
       formula: formula,
@@ -19,6 +20,7 @@ Hooks.once("init", () => {
 
   function hookAPI() {
     game.gurpsAPI = macroHelpers;
+    game.materialAPI = materialHelpers;
   }
 
   // Register Armour as Dice option
@@ -120,6 +122,7 @@ Hooks.once("init", () => {
     default: true,
     type: Boolean
   });
+
   // Pre-load templates
   loadTemplates([
     "systems/gurps4e/templates/actor/actor-sheet.html",
