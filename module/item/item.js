@@ -140,7 +140,6 @@ export class gurpsItem extends Item {
   }
 
   prepareCustomLaser() {
-
     if (this.data.data.tl >= 9) { // TL must be at least 9 to be able to design a custom laser
       if (typeof this.data.data.laserDesign == "undefined") { // If the laserDesign block hasn't yet been created
         this.data.data.laserDesign = { // Create it
@@ -1298,6 +1297,43 @@ export class gurpsItem extends Item {
   prepareCustomBow(type) {
     console.log("Preparing " + type);
 
+    if (typeof this.data.data.bowDesign == "undefined") { // If the bowDesign block hasn't yet been created
+      this.data.data.bowDesign = { // Create it
+        "type": type, // bow/footbow/xbow
+        "magicalMaterials": false,
+        "superScienceMaterials": false,
+        "compoundBowStrictTL": false,
+        "cinematic": false,
+        "riser": false, // Some inputs are only available for crossbows and bows with risers. This lets those options show up for bows and footbows.
+        "compound": false,
+        "compoundLoops": 1,
+        "drawWeight": 0, // In lbs
+        "totalBowLength": 0, // In inches
+        "workingPercentage": 0,
+        "targetDrawLength": 0,
+        "workingMaterialOne": "",
+        "workingMaterialTwo": "",
+        "bowConstruction": "", // Straight/Recurve/Reflex/Compound/Reflex Recurve
+        "bowShape": "", // Round/Rectangular or D-Section
+        "n": 0, // Width:Thickness ratio
+        "quality": "", // Cheap/Good/Fine(Accurate)
+        "thickness": 0,
+        "riserMaterialOne": "", // Also used for crossbow stocks
+        "riserMaterialTwo": "", // Also used for crossbow stocks
+        "allowedRiserDeflection": 0,
+        "selectedRiserWidth": 0,
+        "xbowSupportLength": 0,
+      }
+    }
+
+    if (typeof this.data.data.bowDesign.arrows == "undefined") { // If the arrows block hasn't yet been created
+      this.data.data.bowDesign.arrows = []
+    }
+
+    this.data.data.bowDesign.magicalMaterials = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
+    this.data.data.bowDesign.compoundBowStrictTL = game.settings.get("gurps4e", "compoundBowStrictTL");
+
+    this.data.data.bowDesign.type = type;
 
   }
 
