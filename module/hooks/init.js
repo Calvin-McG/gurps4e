@@ -104,6 +104,18 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  game.settings.register("gurps4e", "fixedBonusStrongbow", {
+    name: "Fixed bonus for Strongbow and Crossbow Finesse",
+    hint: "By default Strongbow and Crossbow Finesse directly increase the user's effective ST. " +
+        "This works fine for quick gameplay but can lead to inconsistent behaviour when using custom bows. " +
+        "Turning this option on instead changes the bonus from +1/+2 ST to +15%/+30% draw weight. " +
+        "Fixed in this case means that the bonus to draw weight doesn't change based on the ST of the user, not that the alternative is somehow broken.",
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
   game.settings.register("gurps4e", "compoundBowStrictTL", {
     name: "Strict TL limits for Compound Bows",
     hint: "Compound bows make clever use of pulleys, cams, and mechanical advantage to get more power out of a bow or crossbow. " +

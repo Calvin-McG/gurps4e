@@ -1323,6 +1323,7 @@ export class gurpsItem extends Item {
         "allowedRiserDeflection": 0,
         "selectedRiserWidth": 0,
         "xbowSupportLength": 0,
+        "fixedBonusStrongbow": true,
       }
     }
 
@@ -1332,6 +1333,7 @@ export class gurpsItem extends Item {
 
     this.data.data.bowDesign.magicalMaterials = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
     this.data.data.bowDesign.compoundBowStrictTL = game.settings.get("gurps4e", "compoundBowStrictTL");
+    this.data.data.bowDesign.fixedBonusStrongbow = game.settings.get("gurps4e", "fixedBonusStrongbow");
 
     this.data.data.bowDesign.type = type;
 
