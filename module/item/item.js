@@ -1311,8 +1311,9 @@ export class gurpsItem extends Item {
         "userST": 0,
         "userBL": 0,
         "totalBowLength": 0, // In inches
-        "workingPercentage": 0,
+        "workingPercentage": 100,
         "targetDrawLength": 0,
+        "maxDrawLength": 0,
         "workingMaterialOne": "",
         "workingMaterialTwo": "",
         "bowConstruction": "", // Straight/Recurve/Reflex/Compound/Reflex Recurve
@@ -1335,10 +1336,20 @@ export class gurpsItem extends Item {
       this.data.data.bowDesign.arrows = []
     }
 
+    // Validations
+    if (this.data.data.bowDesign.workingPercentage > 100) {
+      this.data.data.bowDesign.workingPercentage = 100;
+    }
+    else if (this.data.data.bowDesign.workingPercentage < 0){
+      this.data.data.bowDesign.workingPercentage = 0;
+    }
+
+    // Get game settings
     this.data.data.bowDesign.magicalMaterials = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
     this.data.data.bowDesign.compoundBowStrictTL = game.settings.get("gurps4e", "compoundBowStrictTL");
     this.data.data.bowDesign.fixedBonusStrongbow = game.settings.get("gurps4e", "fixedBonusStrongbow");
 
+    // Do actual code stuff
     this.data.data.bowDesign.type = type;
 
     // TODO Check if the bow is on an actor and fetch the Lifting ST
@@ -2144,6 +2155,163 @@ export class gurpsItem extends Item {
       info += "<tr>" +
           "<td colspan='5'>Time to fire does not include the round you're actually firing on. So it takes that many rounds to make the weapon ready to fire on the following turn.</td>" +
           "</tr>"
+      info += "</table>"
+    }
+    else if (id == "target-draw-length") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>This is how far back you can pull the string, compared to the absolute maximum draw length allowed by the current design." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>High draw weight is good because it means there's more energy in the bow. " +
+          "High draw length is good because it means that energy is being applied for longer. " +
+          "For that reason, you want this number to be as high as you can possibly get away with." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Beyond the limit on draw length given by your design, you're also limited by the bio-mechanics of actually drawing the thing." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      if (this.data.data.bowDesign.type == "bow") {
+        info += "<tr>" +
+            "<td>" +
+            "<p>The basic formula for draw length is your height in inches, minus 15, and then divided by two.</p>. " +
+            "</p>" +
+            "</td>" +
+            "</tr>";
+
+        info += "<tr>" +
+            "<td>" +
+            "<p>" +
+            "Some short bows can have draw lengths as high as 60% of the user's height, but this is extreme, and you can't really go higher than that." +
+            "</p>" +
+            "</td>" +
+            "</tr>";
+      }
+      else if (this.data.data.bowDesign.type == "footbow") {
+        info += "<tr>" +
+            "<td>" +
+            "<p>A footbow's draw length is usually around 60% of the person's height, but it can go as high as 75%. Flying characters in particular are much more likely to use the full 75%." +
+            "</p>" +
+            "</td>" +
+            "</tr>";
+
+        info += "<tr>" +
+            "<td>" +
+            "<p>" +
+            "Draw lengths over 75% aren't really possible, and there's not much reason for picking a draw length lower than 60% unless it's mass produced by or for a group with an average height lower than your own." +
+            "</p>" +
+            "</td>" +
+            "</tr>";
+      }
+      else if (this.data.data.bowDesign.type == "xbow") {
+        info += "<tr>" +
+            "<td>" +
+            "<p>With crossbows such as they are, you can make the draw length of a crossbow as high as you like, with the following two limits." +
+            "</p>" +
+            "</td>" +
+            "</tr>";
+        info += "<tr>" +
+            "<td>" +
+            "<p>Bulk/Weight: Bigger crossbows are heavier and have worse bulk scores, but maybe you're fine with that. This is a soft limit." +
+            "</p>" +
+            "</td>" +
+            "</tr>";
+        info += "<tr>" +
+            "<td>" +
+            "<p>Materials: This is the hard limit. Some materials will be too flimsy and snap under the strain if you set this too high. Some materials are too stiff and just won't bend enough." +
+            "</p>" +
+            "</td>" +
+            "</tr>";
+        info += "<tr>" +
+            "<td>" +
+            "<p>My suggestion it to set this as high as you think makes sense. Just keep in mind you might need to come back and reduce it later." +
+            "</p>" +
+            "</td>" +
+            "</tr>";
+      }
+
+      info += "</table>"
+    }
+    else if (id == "total-bow-length") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>This is the distance from one end of the bow stave to the other." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Increasing this doesn't directly increase damage, but bows with long draw lengths and high draw weights generally need to have long limbs for the design to actually work." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Longer bows also increase the weight and Bulk of the bow, but sometimes the bow just needs to be that big to work properly." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Granted, going for a bow larger than you necessarily need can also increase the 1/2D and Max range." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      if (this.data.data.bowDesign.type == "bow") {
+        info += "<tr>" +
+            "<td>" +
+            "<p>A longbow is generally 100 to 105% of the user's height, but higher values are possible. Some Japanese Yumi are as much as 140% of the user's height." +
+            "</p>" +
+            "</td>" +
+            "</tr>";
+      }
+      else {
+        info += "<tr>" +
+            "<td>" +
+            "<p>There is no hard limit for the bow length, just keep in mind that the bigger it gets the harder it will be to use. Bulk is one thing, but if it's too large you may not be able to use it in confined spaces, indoors, etc." +
+            "</p>" +
+            "</td>" +
+            "</tr>";
+      }
+
+      info += "</table>"
+    }
+    else if (id == "working-bow-length") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>This is how much of the bow's length that actually works as a spring to drive the arrow. You generally want this to be 100%" +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>If this number is something other than 100%, then your bow has a non-working riser that exists only to make the bow taller without actually storing energy. This can be helpful to increase max draw length in certain cases." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+
       info += "</table>"
     }
 
