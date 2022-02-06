@@ -23,7 +23,6 @@ Hooks.once("init", () => {
     game.materialAPI = materialHelpers;
   }
 
-  // Register Armour as Dice option
   game.settings.register("gurps4e", "armourAsDice", {
     name: "Armour As Dice - WIP",
     hint: "Pyramid 3/34. DR converts to dice at 1d per 3.5. These dice are subtracted from the the attack, then the remainder is rolled. Makes guns behave better in HT and UT, is less appropriate for fantasy games with melee weapons and muscle powered ranged weapons.",
@@ -33,7 +32,6 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  // Register Bleeding Rules option
   game.settings.register("gurps4e", "bleeding", {
     name: "Use Bleeding Rules - WIP",
     hint: "",
@@ -43,7 +41,6 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  // Register Rigid armour can take blunt trauma option
   game.settings.register("gurps4e", "rigidBluntTrauma", {
     name: "Extended Blunt Trauma",
     hint: "Allows rigid armour to take blunt trauma",
@@ -53,7 +50,6 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  // Register relative SM option for melee attacks
   game.settings.register("gurps4e", "meleeRelativeSM", {
     name: "Melee attacks follow relative SM",
     hint: "While this is true the difference between the attacker and target's SM applies as a modifier on the attack. While this is false the modifier is simply the target's SM.",
@@ -63,7 +59,6 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  // Register relative SM option for ranged attacks
   game.settings.register("gurps4e", "rangedRelativeSM", {
     name: "Ranged attacks follow relative SM",
     hint: "While this is true the difference between the attacker and target's SM applies as a modifier on the attack. While this is false the modifier is simply the target's SM.",
@@ -73,7 +68,6 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  // Register Edge Protection option
   game.settings.register("gurps4e", "edgeProtection", {
     name: "Edge Protection - WIP",
     hint: "Cutting attacks must double the target DR or do crushing damage instead",
@@ -83,7 +77,6 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  // Register Hotshots and Overheating option
   game.settings.register("gurps4e", "hotshotsAndOverheating", {
     name: "Hotshots and Overheating",
     hint: "UT 133, at the moment, enabling this mostly just allows the construction of gatling lasers.",
@@ -93,7 +86,6 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  // Register Allow Super Science Custom Lasers option
   game.settings.register("gurps4e", "allowSuperScienceCustomLasers", {
     name: "Allow Super Science Custom Lasers",
     hint: "Allows super science laser options like Graviton Beams. Also allows super science versions of non-super science weapons and super science power cells.",
@@ -102,6 +94,24 @@ Hooks.once("init", () => {
     default: false,
     type: Boolean
   });
+
+  game.settings.register("gurps4e", "allowMagicalMaterialsForCustom", {
+    name: "Allow Magical Materials For Custom Weapons",
+    hint: "Allows Essential Metal, Giant Spider Silk, etc, when creating custom weapons.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
+  // game.settings.register("gurps4e", "allowSuperScienceMaterialsForCustom", {
+  //   name: "Allow Super Science Materials For Custom Weapons",
+  //   hint: "Allows Essential Metal, Giant Spider Silk, etc, when creating custom weapons.",
+  //   scope: "world",
+  //   config: true,
+  //   default: false,
+  //   type: Boolean
+  // });
 
   // How to get the user who owns the actor: game.users.get((Object.keys(game.actors.getName("character name goes here").data.permission)[1])).data.name
   // game.settings.register("gurps4e", "bretMode", {
