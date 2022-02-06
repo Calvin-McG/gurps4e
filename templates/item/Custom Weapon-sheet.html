@@ -76,13 +76,26 @@
         <div class="header">
             <a class="item" data-tab="notes">Notes</a>
         </div>
-        {{#ifCond data.data.tl '>=' 9 }}
         {{#if (eq data.data.customType "laser")}}
         <div class="header">
             <a class="item" data-tab="designLaser">Design Laser</a>
         </div>
         {{/if}}
-        {{/ifCond}}
+        {{#if (eq data.data.customType "bow")}}
+        <div class="header">
+            <a class="item" data-tab="designBow">Design Bow</a>
+        </div>
+        {{/if}}
+        {{#if (eq data.data.customType "footbow")}}
+        <div class="header">
+            <a class="item" data-tab="designBow">Design Footbow</a>
+        </div>
+        {{/if}}
+        {{#if (eq data.data.customType "xbow")}}
+        <div class="header">
+            <a class="item" data-tab="designBow">Design Crossbow</a>
+        </div>
+        {{/if}}
     </nav>
 
     {{!-- Sheet Body --}}
@@ -96,15 +109,23 @@
             </div>
         </div>
 
+        {{!-- Bow Design Tab --}}
+        <div class="tab stats" data-tab="designBow" data-group="primary">
+            <h1 class="bold" style="text-align: center;">The Deadly Spring: Pyramid 3/33</h1>
+            <div class="tab">
+                <div class="bow-design-block"></div>
+            </div>
+        </div>
+
         {{!-- Laser Design Tab --}}
         <div class="tab stats" data-tab="designLaser" data-group="primary">
             <h1 class="bold" style="text-align: center;">Laser Design: Pyramid 3/37</h1>
             <div class="tab">
-                <div class="laser-design-block">
+                <div class="design-block">
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">Laser Options</h2>
                         <table>
-                            <tr class="laser-design-row">
+                            <tr class="design-row">
                                 <td style="width: 150px">
                                     Configuration
                                 </td>
@@ -125,7 +146,7 @@
                                 </td>
                             </tr>
 
-                            <tr class="laser-design-row">
+                            <tr class="design-row">
                                 <td>
                                     Beam Type
                                 </td>
@@ -195,7 +216,7 @@
                             </tr>
 
                             {{#if (eq data.data.laserDesign.beamType "laser")}}
-                            <tr class="laser-design-row">
+                            <tr class="design-row">
                                 <td>
                                     Laser Colour
                                 </td>
@@ -217,7 +238,7 @@
                             {{/if}}
 
                             {{#if (eq data.data.laserDesign.beamType "blaster")}}
-                            <tr class="laser-design-row">
+                            <tr class="design-row">
                                 <td>
                                     Omni-Blaster
                                 </td>
@@ -232,7 +253,7 @@
                             </tr>
                             {{/if}}
 
-                            <tr class="laser-design-row">
+                            <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Focal Array
                                 </td>
@@ -252,7 +273,7 @@
                                 </td>
                             </tr>
 
-                            <tr class="laser-design-row">
+                            <tr class="design-row">
                                 <td>
                                     Generator
                                 </td>
@@ -280,7 +301,7 @@
                         {{#if data.data.laserDesign.allowSuperScienceCustomLasers}}
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Super Science Options</h2>
                         <table>
-                        <tr class="laser-design-row">
+                        <tr class="design-row">
                             <td style="line-height: 27.5px">
                                 Super Science Laser Upgrade
                             </td>
@@ -294,7 +315,7 @@
                             </td>
                         </tr>
                         {{#ifCond  data.data.tl '>=' 10 }}
-                        <tr class="laser-design-row">
+                        <tr class="design-row">
                             <td style="line-height: 27.5px">
                                 Field Jacketed (TL 10^)
                             </td>
@@ -307,7 +328,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr class="laser-design-row">
+                        <tr class="design-row">
                             <td style="line-height: 27.5px">
                                 Gravitic Focusing (TL 10^)
                             </td>
@@ -333,7 +354,7 @@
                         </tr>
                         {{/ifCond}}
                         {{#ifCond  data.data.tl '>=' 11 }}
-                        <tr class="laser-design-row">
+                        <tr class="design-row">
                             <td style="line-height: 27.5px">
                                 FTL (TL 11^)
                             </td>
@@ -351,7 +372,7 @@
                         {{/if}}
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Damage and Power</h2>
                         <table>
-                            <tr class="laser-design-row">
+                            <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Damage Dice
                                 </td>
@@ -365,7 +386,7 @@
                                 </td>
                             </tr>
 
-                            <tr class="laser-design-row">
+                            <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Power System:
                                 </td>
@@ -389,7 +410,7 @@
                                 </td>
                             </tr>
                             {{#if data.data.laserDesign.allowSuperScienceCustomLasers}}
-                            <tr class="laser-design-row">
+                            <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Super Science Power Cells
                                 </td>
@@ -403,7 +424,7 @@
                                 </td>
                             </tr>
                             {{/if}}
-                            <tr class="laser-design-row">
+                            <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Non-Rechargeable Power Cells
                                 </td>
@@ -419,7 +440,7 @@
                         </table>
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Tweaks</h2>
                         <table>
-                            <tr class="laser-design-row">
+                            <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Tweak Weight x{{data.data.laserDesign.weightTweak}}
                                 </td>
@@ -433,7 +454,7 @@
                                 </td>
                             </tr>
                             {{#if (or (eq data.data.laserDesign.beamType "laser") (eq data.data.laserDesign.beamType "xRayLaser") (eq data.data.laserDesign.beamType "graser"))}}
-                            <tr class="laser-design-row">
+                            <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Pulse Laser
                                 </td>
@@ -448,7 +469,7 @@
                             </tr>
 
                             {{#if data.data.laserDesign.pulseLaser}}
-                            <tr class="laser-design-row">
+                            <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Pulse-Beam Laser
                                 </td>
@@ -463,7 +484,7 @@
                             </tr>
                             {{/if}}
                             {{/if}}
-                            <tr class="laser-design-row">
+                            <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Include a melee profile
                                 </td>
@@ -478,7 +499,7 @@
                             </tr>
 
                             {{#if data.data.laserDesign.meleeProfile}}
-                                <tr class="laser-design-row">
+                                <tr class="design-row">
                                     <td style="line-height: 27.5px">
                                         Cavalier Weapon
                                     </td>
@@ -496,7 +517,7 @@
 
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Skills</h2>
                         <table>
-                            <tr class="laser-design-row">
+                            <tr class="design-row">
                                 <td style="line-height: 27.5px" colspan="2">
                                     <input style="width: 75%" type="text" placeholder="Ranged Skill" name="data.laserDesign.rangedSkill" value="{{data.data.laserDesign.rangedSkill}}"/>
                                     <input style="width: 20%" type="number" placeholder="Mod" name="data.laserDesign.rangedSkillMod" value="{{data.data.laserDesign.rangedSkillMod}}"/>
@@ -509,7 +530,7 @@
                             </tr>
 
                             {{#if data.data.laserDesign.meleeProfile}}
-                            <tr class="laser-design-row">
+                            <tr class="design-row">
                                 <td style="line-height: 27.5px" colspan="2">
                                     <input style="width: 75%" type="text" placeholder="Melee Skill" name="data.laserDesign.meleeSkill" value="{{data.data.laserDesign.meleeSkill}}"/>
                                     <input style="width: 20%" type="number" placeholder="Mod" name="data.laserDesign.meleeSkillMod" value="{{data.data.laserDesign.meleeSkillMod}}"/>

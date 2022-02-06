@@ -1776,11 +1776,11 @@ attribute-senses {
 	font-style: italic;
 }
 
-.laser-design-block {
+.design-block {
 	display: flex;
 }
 
-.laser-design-row {
+.design-row {
 	line-height: 27.5px;
 }
 
