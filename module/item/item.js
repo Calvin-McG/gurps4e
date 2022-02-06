@@ -1324,6 +1324,8 @@ export class gurpsItem extends Item {
         "selectedRiserWidth": 0,
         "xbowSupportLength": 0,
         "fixedBonusStrongbow": true,
+        "strongBowCrossbowFinesse": false,
+        "strongBowCrossbowFinesseEffect": 0
       }
     }
 
@@ -1336,6 +1338,10 @@ export class gurpsItem extends Item {
     this.data.data.bowDesign.fixedBonusStrongbow = game.settings.get("gurps4e", "fixedBonusStrongbow");
 
     this.data.data.bowDesign.type = type;
+
+    // TODO Check if the bow is on an actor and fetch the Lifting ST
+
+    // TODO Check if the bow is on an actor and fetch Strongbow/Crossbow Finesse
 
   }
 
@@ -1941,9 +1947,52 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
+    else if (id == "user-st") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>If this weapon is on an actor it will automatically fetch the lifting ST level of that actor. Otherwise you can input a value here for testing, design, etc.</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
+    else if (id == "strong-bow-crossbow-finesse") {
+      info = "<table>";
+      if (this.data.data.bowDesign.fixedBonusStrongbow) {
+        info += "<tr>" +
+            "<td>This perk increases your draw weight by 15% your skill is at DX+1, or by 30% if your skill is at DX+2. This is then used to figure out what kind of draw weight you can handle.</td>" +
+            "</tr>";
+      }
+      else {
+        info += "<tr>" +
+            "<td>This perk increases your ST by 1 if your skill is at DX+1, or by 2 if your skill is at DX+2. This is then used to figure out what kind of draw weight you can handle.</td>" +
+            "</tr>";
+      }
+      info += "<tr>" +
+          "<td>" +
+          "<p>If this weapon is on an actor it will search the traits in an attempt to find one with a name exactly matching the one given here. " +
+          "Once I add leveled perks and traits it'll check the level directly." +
+          "But for now, if it finds one it will automatically set the value based on the number of points (one or two). " +
+          "If it doesn't find anything you can always set the value yourself." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
+    else if (id == "strong-bow-crossbow-finesse-effect") {
+      info = "<table>";
 
-    this.data.data.laserDesign.info = info;
+      info += "<tr>" +
+          "<td>" +
+          "<p>For bows not currently attached to an actor, this allows you to spoof the effect that the perk would have on the wielder." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
 
-    this.update({ 'data.laserDesign.info': this.data.data.laserDesign.info });
+    this.data.data.info = info;
+
+    this.update({ 'data.info': this.data.data.info });
   }
 }

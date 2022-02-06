@@ -113,7 +113,69 @@
         <div class="tab stats" data-tab="designBow" data-group="primary">
             <h1 class="bold" style="text-align: center;">The Deadly Spring: Pyramid 3/33</h1>
             <div class="tab">
-                <div class="bow-design-block"></div>
+                <div class="design-block">
+                    <div style="width: 50%;">
+                        <h2 class="bold" style="text-align: center;">User Options</h2>
+                        <table>
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    User ST
+                                </td>
+                                <td>
+                                    <input type="number" name="data.bowDesign.drawWeight" value="{{data.data.bowDesign.drawWeight}}" data-dtype="Number"/>
+                                </td>
+                                <td class="question-container" id="user-st">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    {{#if (eq data.data.bowDesign.type "xbow")}}
+                                    Crossbow Finesse
+                                    {{else}}
+                                    Strongbow
+                                    {{/if}}
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.data.bowDesign.strongBowCrossbowFinesse" {{checked data.data.bowDesign.strongBowCrossbowFinesse}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="strong-bow-crossbow-finesse">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- TODO - Make this only show up if there is not an actor -->
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    {{#if (eq data.data.bowDesign.type "xbow")}}
+                                    Crossbow Finesse
+                                    {{else}}
+                                    Strongbow
+                                    {{/if}}
+                                    Spoof:
+
+                                    {{data.data.bowDesign.strongBowCrossbowFinesseEffect}}
+                                </td>
+                                <td>
+                                    <input type="range" min="0" max="2" step="1" name="data.bowDesign.strongBowCrossbowFinesseEffect" value="{{data.data.bowDesign.strongBowCrossbowFinesseEffect}}" data-dtype="Number">
+                                </td>
+                                <td class="question-container" id="strong-bow-crossbow-finesse-effect">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+                    <div style="width: 50%;">
+                        <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
+                        <div class="equipment-info-container">{{{data.data.info}}}</div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -547,7 +609,7 @@
                     </div>
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
-                        <div class="equipment-info-container">{{{data.data.laserDesign.info}}}</div>
+                        <div class="equipment-info-container">{{{data.data.info}}}</div>
                     </div>
                 </div>
 
