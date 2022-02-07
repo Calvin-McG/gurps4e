@@ -243,8 +243,8 @@
                                     Working Bow Material 1
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.workingMaterialOne">
-                                        {{#select data.data.bowDesign.workingMaterialOne}}
+                                    <select name="data.bowDesign.workingMaterialOne.name">
+                                        {{#select data.data.bowDesign.workingMaterialOne.name}}
                                         {{#each data.data.bowDesign.materials as |material id|}}
                                         {{#ifCond ../data.data.tl '>=' material.tl}}
                                         <option value="{{material.name}}">{{material.name}}</option>
@@ -281,8 +281,8 @@
                                     Working Bow Material 2
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.workingMaterialTwo">
-                                        {{#select data.data.bowDesign.workingMaterialTwo}}
+                                    <select name="data.bowDesign.workingMaterialTwo.name">
+                                        {{#select data.data.bowDesign.workingMaterialTwo.name}}
                                         {{#each data.data.bowDesign.materials as |material id|}}
                                         {{#ifCond ../data.data.tl '>=' material.tl}}
                                         <option value="{{material.name}}">{{material.name}}</option>

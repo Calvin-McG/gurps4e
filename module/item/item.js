@@ -1,5 +1,6 @@
 import { attributeHelpers } from '../../helpers/attributeHelpers.js';
 import { skillHelpers } from '../../helpers/skillHelpers.js';
+import {materialHelpers} from "../../helpers/materialHelpers.js";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -1334,6 +1335,75 @@ export class gurpsItem extends Item {
       }
     }
 
+    if (typeof this.data.data.bowDesign.workingMaterialOne == "undefined") { // If the material block hasn't yet been created
+      this.data.data.bowDesign.workingMaterialOne = { // Create it
+        "a": 0,
+        "densityLbsCuIn": 0,
+        "elasticModulusPsi": 0,
+        "name": "",
+        "tensileStPsi": 0,
+        "tl": 0,
+        "maxStrain": 0,
+        "bowCostPerLb": 0,
+        "arrowCostPerLb": 0,
+      }
+    }
+
+    if (typeof this.data.data.bowDesign.workingMaterialTwo == "undefined") { // If the material block hasn't yet been created
+      this.data.data.bowDesign.workingMaterialTwo = { // Create it
+        "a": 0,
+        "densityLbsCuIn": 0,
+        "elasticModulusPsi": 0,
+        "name": "",
+        "tensileStPsi": 0,
+        "tl": 0,
+        "maxStrain": 0,
+        "bowCostPerLb": 0,
+        "arrowCostPerLb": 0,
+      }
+    }
+
+    if (typeof this.data.data.bowDesign.workingMaterialAvg == "undefined") { // If the material block hasn't yet been created
+      this.data.data.bowDesign.workingMaterialAvg = { // Create it
+        "a": 0,
+        "densityLbsCuIn": 0,
+        "elasticModulusPsi": 0,
+        "tensileStPsi": 0,
+        "tl": 0,
+        "maxStrain": 0,
+        "bowCostPerLb": 0,
+        "arrowCostPerLb": 0,
+      }
+    }
+
+    if (typeof this.data.data.bowDesign.riserMaterialOne == "undefined") { // If the material block hasn't yet been created
+      this.data.data.bowDesign.riserMaterialOne = { // Create it
+        "a": 0,
+        "densityLbsCuIn": 0,
+        "elasticModulusPsi": 0,
+        "name": "",
+        "tensileStPsi": 0,
+        "tl": 0,
+        "maxStrain": 0,
+        "bowCostPerLb": 0,
+        "arrowCostPerLb": 0,
+      }
+    }
+
+    if (typeof this.data.data.bowDesign.riserMaterialTwo == "undefined") { // If the material block hasn't yet been created
+      this.data.data.bowDesign.riserMaterialTwo = { // Create it
+        "a": 0,
+        "densityLbsCuIn": 0,
+        "elasticModulusPsi": 0,
+        "name": "",
+        "tensileStPsi": 0,
+        "tl": 0,
+        "maxStrain": 0,
+        "bowCostPerLb": 0,
+        "arrowCostPerLb": 0,
+      }
+    }
+
     if (typeof this.data.data.bowDesign.arrows == "undefined") { // If the arrows block hasn't yet been created
       this.data.data.bowDesign.arrows = []
     }
@@ -1371,6 +1441,47 @@ export class gurpsItem extends Item {
       this.data.data.bowDesign.userBL = ((this.data.data.bowDesign.userST+this.data.data.bowDesign.strongBowCrossbowFinesseEffect) * (this.data.data.bowDesign.userST+this.data.data.bowDesign.strongBowCrossbowFinesseEffect))/5
     }
 
+    // Fetch the materials
+    this.data.data.bowDesign.workingMaterialOne = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.workingMaterialOne.name);
+    this.data.data.bowDesign.workingMaterialTwo = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.workingMaterialTwo.name);
+    this.data.data.bowDesign.riserMaterialOne   = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.riserMaterialOne.name);
+    this.data.data.bowDesign.riserMaterialTwo   = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.riserMaterialTwo.name);
+
+    // Calculate the inferred values
+    if (typeof this.data.data.bowDesign.workingMaterialOne != "undefined") {
+      this.data.data.bowDesign.workingMaterialOne.maxStrain = this.data.data.bowDesign.workingMaterialOne.tensileStPsi  / this.data.data.bowDesign.workingMaterialOne.elasticModulusPsi;
+      this.data.data.bowDesign.workingMaterialOne.bowCostPerLb  = Math.round(this.data.data.bowDesign.workingMaterialOne.tensileStPsi ** 2 / 100 / this.data.data.bowDesign.workingMaterialOne.elasticModulusPsi / this.data.data.bowDesign.workingMaterialOne.densityLbsCuIn*100)/100;
+      this.data.data.bowDesign.workingMaterialOne.arrowCostPerLb  = Math.round(this.data.data.bowDesign.workingMaterialOne.elasticModulusPsi / this.data.data.bowDesign.workingMaterialOne.densityLbsCuIn*1.25/9000000*100)/100;
+    }
+    if (typeof this.data.data.bowDesign.workingMaterialTwo != "undefined") {
+      this.data.data.bowDesign.workingMaterialTwo.maxStrain = this.data.data.bowDesign.workingMaterialTwo.tensileStPsi  / this.data.data.bowDesign.workingMaterialTwo.elasticModulusPsi;
+      this.data.data.bowDesign.workingMaterialTwo.bowCostPerLb  = Math.round(this.data.data.bowDesign.workingMaterialTwo.tensileStPsi ** 2 / 100 / this.data.data.bowDesign.workingMaterialTwo.elasticModulusPsi / this.data.data.bowDesign.workingMaterialTwo.densityLbsCuIn*100)/100;
+      this.data.data.bowDesign.workingMaterialTwo.arrowCostPerLb  = Math.round(this.data.data.bowDesign.workingMaterialTwo.elasticModulusPsi / this.data.data.bowDesign.workingMaterialTwo.densityLbsCuIn*1.25/9000000*100)/100;
+    }
+    if (typeof this.data.data.bowDesign.riserMaterialOne != "undefined") {
+      this.data.data.bowDesign.riserMaterialOne.maxStrain   = this.data.data.bowDesign.riserMaterialOne.tensileStPsi    / this.data.data.bowDesign.riserMaterialOne.elasticModulusPsi;
+      this.data.data.bowDesign.riserMaterialOne.bowCostPerLb    = Math.round(this.data.data.bowDesign.riserMaterialOne.tensileStPsi   ** 2 / 100 / this.data.data.bowDesign.riserMaterialOne.elasticModulusPsi   / this.data.data.bowDesign.riserMaterialOne.densityLbsCuIn*100)/100;
+      this.data.data.bowDesign.riserMaterialOne.arrowCostPerLb    = Math.round(this.data.data.bowDesign.riserMaterialOne.elasticModulusPsi / this.data.data.bowDesign.riserMaterialOne.densityLbsCuIn*1.25/9000000*100)/100;
+    }
+    if (typeof this.data.data.bowDesign.riserMaterialTwo != "undefined") {
+      this.data.data.bowDesign.riserMaterialTwo.maxStrain   = this.data.data.bowDesign.riserMaterialTwo.tensileStPsi    / this.data.data.bowDesign.riserMaterialTwo.elasticModulusPsi;
+      this.data.data.bowDesign.riserMaterialTwo.bowCostPerLb    = Math.round(this.data.data.bowDesign.riserMaterialTwo.tensileStPsi   ** 2 / 100 / this.data.data.bowDesign.riserMaterialTwo.elasticModulusPsi   / this.data.data.bowDesign.riserMaterialTwo.densityLbsCuIn*100)/100;
+      this.data.data.bowDesign.riserMaterialTwo.arrowCostPerLb    = Math.round(this.data.data.bowDesign.riserMaterialTwo.elasticModulusPsi / this.data.data.bowDesign.riserMaterialTwo.densityLbsCuIn*1.25/9000000*100)/100;
+    }
+
+    // Put together the average values
+    this.data.data.bowDesign.workingMaterialAvg = { // Create it
+      "a"                 : (this.data.data.bowDesign.workingMaterialOne.a + this.data.data.bowDesign.workingMaterialTwo.a)/2,
+      "densityLbsCuIn"    : (this.data.data.bowDesign.workingMaterialOne.densityLbsCuIn + this.data.data.bowDesign.workingMaterialTwo.densityLbsCuIn)/2,
+      "elasticModulusPsi" : (this.data.data.bowDesign.workingMaterialOne.elasticModulusPsi + this.data.data.bowDesign.workingMaterialTwo.elasticModulusPsi)/2,
+      "tensileStPsi"      : (this.data.data.bowDesign.workingMaterialOne.tensileStPsi + this.data.data.bowDesign.workingMaterialTwo.tensileStPsi)/2,
+      "tl"                : Math.max(this.data.data.bowDesign.workingMaterialOne.tl + this.data.data.bowDesign.workingMaterialTwo.tl),
+      "maxStrain"         : (this.data.data.bowDesign.workingMaterialOne.maxStrain + this.data.data.bowDesign.workingMaterialTwo.maxStrain)/2,
+      "bowCostPerLb"      : (this.data.data.bowDesign.workingMaterialOne.bowCostPerLb + this.data.data.bowDesign.workingMaterialTwo.bowCostPerLb)/2,
+      "arrowCostPerLb"    : (this.data.data.bowDesign.workingMaterialOne.arrowCostPerLb + this.data.data.bowDesign.workingMaterialTwo.arrowCostPerLb)/2,
+    }
+
+    console.log(this.data.data.bowDesign);
   }
 
   prepareAttackData() {
@@ -2490,7 +2601,6 @@ export class gurpsItem extends Item {
           "</tr>";
 
       info += "</table>"
-
     }
     this.data.data.info = info;
 
