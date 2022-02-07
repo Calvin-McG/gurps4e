@@ -1335,6 +1335,9 @@ export class gurpsItem extends Item {
         "shape": "d",
         "crossSection": 1,
         "bowType": "straight", // straight/recurve/
+        "limbThickness": 0,
+        "limbMinThickness": 0,
+        "deflection": 0,
       }
     }
 
@@ -2726,6 +2729,33 @@ export class gurpsItem extends Item {
       info += "<tr>" +
           "<td>Compound</td>" +
           "<td>It's got pulleys and shit.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "limb-thickness") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>You (generally) want this to be as low as possible to keep the design efficient, with two caveats:" +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>The thickness needs to be at least as high as the minimum thickness given here. If it's any lower the bow will break rather than bend." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>The deflection cannot be too high. 35% is reasonable, and the absolute limit is 50%. " +
+          "And keep in mind that some historical bows did go all the way to 50% deflection, particularly reflex and recurve bows." +
+          "</p>" +
+          "</td>" +
           "</tr>";
 
       info += "</table>"

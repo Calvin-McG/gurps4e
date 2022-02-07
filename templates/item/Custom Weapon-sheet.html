@@ -313,6 +313,12 @@
                             </tr>
                             {{/if}}
 
+                        </table>
+
+                        <h2 class="bold" style="text-align: center;">Limb Construction</h2>
+
+                        <table>
+
                             <tr class="design-row">
                                 <td style="width: 150px">
                                     Bow Shape
@@ -374,6 +380,38 @@
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Thickness
+                                </td>
+                                <td>
+                                    <input type="number" name="data.bowDesign.limbThickness" value="{{data.data.bowDesign.limbThickness}}" data-dtype="Number"/>
+                                </td>
+                                <td class="question-container" id="limb-thickness" rowspan="3">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Minimum Thickness
+                                </td>
+                                <td>
+                                    {{data.data.bowDesign.limbMinThickness}}
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Deflection
+                                </td>
+                                <td>
+                                    {{data.data.bowDesign.deflection}}
                                 </td>
                             </tr>
                         </table>
