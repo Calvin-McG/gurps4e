@@ -96,6 +96,11 @@
             <a class="item" data-tab="designBow">Design Crossbow</a>
         </div>
         {{/if}}
+        {{#if (or (eq data.data.customType "xbow") (eq data.data.customType "footbow") (eq data.data.customType "bow")) }}
+        <div class="header">
+            <a class="item" data-tab="materials">Material Catalogue</a>
+        </div>
+        {{/if}}
     </nav>
 
     {{!-- Sheet Body --}}
@@ -314,6 +319,73 @@
                         <div class="equipment-info-container">{{{data.data.info}}}</div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        {{!-- Material Catalogue Tab --}}
+        <div class="tab stats" data-tab="materials" data-group="primary">
+            <h2 class="bold">Material Catalogue</h2>
+            <div>
+                <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
+                <div class="equipment-info-container">{{{data.data.info}}}</div>
+            </div>
+            <div class="tab">
+                <table>
+                    <tr class="design-row">
+                        <td class="question-container">
+                            Name
+                        </td>
+                        <td class="question-container" id="bow-density">
+                            Density (lbs/cu in) <div class="small-question-button">
+                            <i class="fas fa-question"></i>
+                        </div>
+                        </td>
+                        <td class="question-container" id="bow-tensile-st">
+                            Tensile St (psi) <div class="small-question-button">
+                            <i class="fas fa-question"></i>
+                        </div>
+                        </td>
+                        <td class="question-container" id="bow-elastic-modulus">
+                            Elastic Modulus (psi) <div class="small-question-button">
+                            <i class="fas fa-question"></i>
+                        </div>
+                        </td>
+                        <td class="question-container" id="bow-max-strain">
+                            Max Strain <div class="small-question-button">
+                            <i class="fas fa-question"></i>
+                        </div>
+                        </td>
+                        <td class="question-container" id="bow-buckling-constant">
+                            Buckling Constant <div class="small-question-button">
+                            <i class="fas fa-question"></i>
+                        </div>
+                        </td>
+                        <td class="question-container" id="bow-cost-per-lb">
+                            Bow cost/lb <div class="small-question-button">
+                            <i class="fas fa-question"></i>
+                        </div>
+                        </td>
+                        <td class="question-container" id="bow-arrow-cost-per-lb">
+                            Arrow cost/lb <div class="small-question-button">
+                            <i class="fas fa-question"></i>
+                        </div>
+                        </td>
+                    </tr>
+                    {{#each data.data.bowDesign.materials as |material id|}}
+                    {{#ifCond ../data.data.tl '>=' material.tl}}
+                    <tr class="design-row">
+                        <td>{{material.name}}</td>
+                        <td>{{material.densityLbsCuIn}}</td>
+                        <td>{{material.tensileStPsi}}</td>
+                        <td>{{material.elasticModulusPsi}}</td>
+                        <td style="{{{calcMaxStrainStyle material.tensileStPsi material.elasticModulusPsi}}}">{{calcMaxStrain material.tensileStPsi material.elasticModulusPsi}}</td>
+                        <td style="{{{bucklingConstantStyle material.a}}}">{{material.a}}</td>
+                        <td>{{calcBowCost material.tensileStPsi material.elasticModulusPsi densityLbsCuIn}}</td>
+                        <td>{{calcArrowCost material.elasticModulusPsi densityLbsCuIn}}</td>
+                    </tr>
+                    {{/ifCond}}
+                    {{/each}}
+                </table>
             </div>
         </div>
 

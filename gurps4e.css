@@ -1799,6 +1799,15 @@ attribute-senses {
 	border-radius: 5px;
 }
 
+.small-question-button {
+	height: 15px;
+	width: 15px;
+	text-align: center;
+	line-height: 15px;
+	border: black 1px solid;
+	border-radius: 5px;
+}
+
 .equipment-info-container {
 	position: sticky;
 	top: 20px;

@@ -40,7 +40,7 @@ Hooks.once('init', async function() {
     return Number.isInteger(value);
   });
 
-  // This helper introdouces conditional operators. It is used like this:
+  // This helper introduces conditional operators. It is used like this:
   // {{#ifCond  data.data.tl '>=' 9 }}
   //  <div class="header">
   //   <a class="item" data-tab="melee">Design Laser</a>
@@ -71,5 +71,44 @@ Hooks.once('init', async function() {
       default:
         return options.inverse(this);
     }
+  });
+
+  Handlebars.registerHelper("calcMaxStrain", function(tensileStPsi, elasticModulusPsi) {
+    let maxStrain = (tensileStPsi / elasticModulusPsi) * 100 ;
+    maxStrain = Math.round(maxStrain * 100) / 100;
+    maxStrain = maxStrain + "%"
+
+    return maxStrain;
+  });
+
+  Handlebars.registerHelper("calcMaxStrainStyle", function(tensileStPsi, elasticModulusPsi) {
+    let maxStrain = (tensileStPsi / elasticModulusPsi) * 100 ;
+    maxStrain = Math.round(maxStrain * 100) / 100;
+
+    let r = maxStrain * 9;
+    let g = maxStrain * 31;
+    let b = maxStrain * 9;
+
+    let style = "font-weight: bold; color: rgb(" + r + " " + g + " " + b + " / 100%) !important;"
+
+    return style;
+  });
+
+  Handlebars.registerHelper("bucklingConstantStyle", function(a) {
+    let ia = 1.2 - a;
+
+    let r = ia * 100;
+    let g = ia * 300;
+    let b = ia * 100;
+
+    return "font-weight: bold; color: rgb(" + r + " " + g + " " + b + " / 100%) !important;";
+  });
+
+  Handlebars.registerHelper("calcBowCost", function(tensileStPsi, elasticModulusPsi, densityLbsCuIn) {
+    return (Math.round(tensileStPsi ** 2 / 100 / elasticModulusPsi / densityLbsCuIn*100)/100) + " $";
+  });
+
+  Handlebars.registerHelper("calcArrowCost", function(elasticModulusPsi, densityLbsCuIn) {
+    return (Math.round(elasticModulusPsi / densityLbsCuIn*1.25/9000000*100)/100) + " $";
   });
 });

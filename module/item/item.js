@@ -2388,7 +2388,103 @@ export class gurpsItem extends Item {
 
       info += "<tr>" +
           "<td>" +
-          "<p>Rather than use a specific essential material, this checkbox makes whatever material you've selected essential, tripling it's stats." +
+          "<p>Rather than use a specific essential material, this checkbox makes whatever material you've selected essential, making it three times as strong." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+
+    }
+    else if (id == "bow-density") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Denser materials generally lead to heavier bows." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "bow-tensile-st") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Materials with higher tensile strength can (usually) store more energy. Which is to say, they can handle high draw weights." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "bow-elastic-modulus") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Materials with higher elastic modulus take more force to bend." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "bow-max-strain") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Materials with higher max strain are better at turning stored energy (That's your draw weight) into kinetic energy (That's your damage)" +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "bow-buckling-constant") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>TLDR: Low numbers good." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>This is only used for arrows. There's all sorts of physicsy stuff going on behind the scenes, but all you really need to know is this: " +
+          "Your arrows have a minimum weight based on how powerful the bow is and what material it is made out of. Otherwise the arrow is too weak and snaps when you fire it. " +
+          "Lower numbers here mean that the material is strong enough to make a lighter arrow. This increases range, how many arrows you can carry, and usually means cheaper arrows." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Ideal materials, are: Carbon Fibre, Aluminum, Steel, E-glass fibreglass, Aspen, Poplar, and Pine. Wrought Iron is also surprisingly decent and a bit cheaper than steel." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "bow-cost-per-lb" || id == "bow-arrow-cost-per-lb") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Good materials are expensive. There's not much you can do to avoid that. However, none of these materials are really a bad deal. You're getting what you pay for." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>This also means the price can be used as a shorthand for quality, though it's not quite perfect." +
           "</p>" +
           "</td>" +
           "</tr>";
