@@ -2548,6 +2548,13 @@ export class gurpsItem extends Item {
 
       info += "<tr>" +
           "<td>" +
+          "<p>TLDR: High numbers good." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
           "<p>Materials with higher max strain are better at turning stored energy (That's your draw weight) into kinetic energy (That's your damage)" +
           "</p>" +
           "</td>" +
