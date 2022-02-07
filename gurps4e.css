@@ -1828,3 +1828,8 @@ attribute-senses {
 .bow-draw-table td, th {
 	border: 2px solid rgb(255 255 255 / 50%);
 }
+
+.material-catalogue-table td, th {
+	border: 2px solid rgb(255 255 255 / 50%);
+	padding: 5px;
+}
