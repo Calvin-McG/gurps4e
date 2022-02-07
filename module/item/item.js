@@ -1331,7 +1331,10 @@ export class gurpsItem extends Item {
         "xbowSupportLength": 0,
         "fixedBonusStrongbow": true,
         "strongBowCrossbowFinesse": false,
-        "strongBowCrossbowFinesseEffect": 0
+        "strongBowCrossbowFinesseEffect": 0,
+        "shape": "d",
+        "crossSection": 1,
+        "bowType": "straight", // straight/recurve/
       }
     }
 
@@ -2605,6 +2608,124 @@ export class gurpsItem extends Item {
           "<p>This also means the price can be used as a shorthand for quality, though it's not quite perfect." +
           "</p>" +
           "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "bow-shape") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>D-Section bows are shaped like a D or like a rectangle. Round bows are round." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>D-Section bows are nearly always better, but you might only be able to make round bows with certain materials." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "cross-section") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Width vs Thickness ratio." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>If it's less than 1, it's thicker than it is wide. If it's more than 1, it's thinner than it is wide." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Sensible values range between 0.5 and 10, but technically anything is allowed." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Higher numbers allow for higher draw length, but are less efficient at turning draw weight into damage." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "bow-type") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>TLDR: Pick the lowest entry on the list that you are allowed." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>The further you go down this list, the better bows get at storing more energy in smaller packages." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Smaller bows have lower Bulk scores and are generally easier to use in confied spaces." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Smaller bows are also generally more efficient at turning stored energy (your draw weight) into kinetic energy (damage)." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>But aside from these designs making the bow more expensive to produce, they might not be available to you if the designs are unfamiliar to your culture." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+
+      info += "<h2>But what do these options actually mean?</h2>";
+
+      info += "<table>";
+
+      info += "<tr>" +
+          "<td>Straight</td>" +
+          "<td>Like an english longbow, most historical steel crossbows, and so on. The bow stave, the bit that actually bends, is straight when unstrung.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Recurve</td>" +
+          "<td>The end of the limbs bend away from the user when the bow is unstrung. This puts more strain on the materials, but also lets you get more power out of the bow.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Reflex</td>" +
+          "<td>The entire limb bends way from the user when the bow is unstrung. This puts even more strain on the materials, allowing you to get even more power.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Compound</td>" +
+          "<td>It's got pulleys and shit.</td>" +
           "</tr>";
 
       info += "</table>"

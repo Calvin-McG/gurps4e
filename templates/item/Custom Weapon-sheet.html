@@ -312,6 +312,70 @@
                                 </td>
                             </tr>
                             {{/if}}
+
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Bow Shape
+                                </td>
+                                <td>
+                                    <select name="data.bowDesign.shape">
+                                        {{#select data.data.bowDesign.shape}}
+                                        <option value="d">D-Section</option>
+                                        <option value="round">Round</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="bow-shape">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Cross Section
+                                </td>
+                                <td>
+                                    <input type="number" name="data.bowDesign.crossSection" value="{{data.data.bowDesign.crossSection}}" data-dtype="Number"/>
+                                </td>
+                                <td class="question-container" id="cross-section">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Bow Type
+                                </td>
+                                <td>
+                                    <select name="data.bowDesign.bowType">
+                                        {{#select data.data.bowDesign.bowType}}
+                                        <option value="straight">Straight</option>
+                                        {{#ifCond data.data.tl '>=' 1}}
+                                        <option value="recurve">Recurve</option>
+                                        <option value="reflex">Reflex</option>
+                                        {{/ifCond}}
+                                        {{#if data.data.bowDesign.compoundBowStrictTL}}
+                                        {{#ifCond data.data.tl '>=' 7}}
+                                        <option value="compound">Compound</option>
+                                        {{/ifCond}}
+                                        {{else}}
+                                        {{#ifCond data.data.tl '>=' 2}}
+                                        <option value="compound">Compound</option>
+                                        {{/ifCond}}
+                                        {{/if}}
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="bow-type">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                     <div style="width: 50%;">
