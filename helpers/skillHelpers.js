@@ -1,9 +1,19 @@
 import { attributeHelpers } from "./attributeHelpers.js";
 
 export class skillHelpers {
-    static computeSkillLevel(actor, category, defaults, difficulty, baseAttr, baseSkill, minLevel, maxLevel, dabblerPoints, pts, mod) {
+    static computeSkillLevel(actor, item) {
         let level = 0;
         if (actor.data) { // Make sure there's an actor before computing skill level
+            let category = item.category;
+            let defaults = item.defaults;
+            let difficulty = item.difficulty;
+            let baseAttr = item.baseAttr;
+            let baseSkill = item.baseSkill;
+            let minLevel = item.minLevel;
+            let maxLevel = item.maxLevel;
+            let dabblerPoints = item.dabblerPoints;
+            let pts = item.points;
+            let mod = item.mod;
             let base = 0;
             let points = pts;
             let skillDefaultArray = [];
@@ -88,9 +98,7 @@ export class skillHelpers {
                     if (actor.data.items._source[i].type === "Rollable"){
                         if (actor.data.items._source[i].data.category === "skill"){
                             if (baseSkill === actor.data.items._source[i].name){
-                                base = this.computeSkillLevelWithoutDefaults(actor, actor.data.items._source[i].data.difficulty,
-                                    actor.data.items._source[i].data.baseAttr, actor.data.items._source[i].data.points,
-                                    actor.data.items._source[i].data.mod)
+                                base = this.computeSkillLevelWithoutDefaults(actor, actor.data.items._source[i].data)
 
                                 this.data.data.baseSkillLevel = base;
                             }

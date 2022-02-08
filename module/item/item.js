@@ -1513,12 +1513,7 @@ export class gurpsItem extends Item {
                   for (let i = 0; i < this.actor.data.items._source.length; i++) {
                     if (this.actor.data.items._source[i].type === "Rollable") {
                       if (this.data.data.melee[meleeKeys[k]].skill === this.actor.data.items._source[i].name) {
-                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.data.items._source[i].data.category,
-                            this.actor.data.items._source[i].data.defaults, this.actor.data.items._source[i].data.difficulty,
-                            this.actor.data.items._source[i].data.baseAttr, this.actor.data.items._source[i].data.baseSkill,
-                            this.actor.data.items._source[i].data.minLevel, this.actor.data.items._source[i].data.maxLevel,
-                            this.actor.data.items._source[i].data.dabblerPoints, this.actor.data.items._source[i].data.points,
-                            this.actor.data.items._source[i].data.mod);
+                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.data.items._source[i].data);
                       }
                     }
                   }
@@ -1585,12 +1580,7 @@ export class gurpsItem extends Item {
                   for (let i = 0; i < this.actor.data.items._source.length; i++) {
                     if (this.actor.data.items._source[i].type === "Rollable") {
                       if (this.data.data.ranged[rangedKeys[k]].skill === this.actor.data.items._source[i].name) {
-                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.data.items._source[i].data.category,
-                            this.actor.data.items._source[i].data.defaults, this.actor.data.items._source[i].data.difficulty,
-                            this.actor.data.items._source[i].data.baseAttr, this.actor.data.items._source[i].data.baseSkill,
-                            this.actor.data.items._source[i].data.minLevel, this.actor.data.items._source[i].data.maxLevel,
-                            this.actor.data.items._source[i].data.dabblerPoints, this.actor.data.items._source[i].data.points,
-                            this.actor.data.items._source[i].data.mod);
+                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.data.items._source[i].data);
                       }
                     }
                   }
@@ -1648,12 +1638,7 @@ export class gurpsItem extends Item {
                   for (let i = 0; i < this.actor.data.items._source.length; i++) {
                     if (this.actor.data.items._source[i].type === "Rollable") {
                       if (this.data.data.affliction[afflictionKeys[k]].skill === this.actor.data.items._source[i].name) {
-                        this.data.data.affliction[afflictionKeys[k]].level = +skillHelpers.computeSkillLevel(this.actor, this.actor.data.items._source[i].data.category,
-                            this.actor.data.items._source[i].data.defaults, this.actor.data.items._source[i].data.difficulty,
-                            this.actor.data.items._source[i].data.baseAttr, this.actor.data.items._source[i].data.baseSkill,
-                            this.actor.data.items._source[i].data.minLevel, this.actor.data.items._source[i].data.maxLevel,
-                            this.actor.data.items._source[i].data.dabblerPoints, this.actor.data.items._source[i].data.points,
-                            this.actor.data.items._source[i].data.mod) + +this.data.data.affliction[afflictionKeys[k]].skillMod;;
+                        this.data.data.affliction[afflictionKeys[k]].level = +skillHelpers.computeSkillLevel(this.actor, this.actor.data.items._source[i].data) + +this.data.data.affliction[afflictionKeys[k]].skillMod;;
                       }
                     }
                   }
@@ -1757,9 +1742,7 @@ export class gurpsItem extends Item {
     }
 
     if(this.data.data && this.actor){
-      let level = skillHelpers.computeSkillLevel(this.actor, this.data.data.category, this.data.data.defaults, this.data.data.difficulty,
-          this.data.data.baseAttr, this.data.data.baseSkill, this.data.data.minLevel, this.data.data.maxLevel,
-          this.data.data.dabblerPoints, this.data.data.points, this.data.data.mod)
+      let level = skillHelpers.computeSkillLevel(this.actor, this.data.data);
 
       this.data.data.level = level;
     }
