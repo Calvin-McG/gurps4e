@@ -1547,6 +1547,45 @@ export class gurpsItem extends Item {
     }
 
     // Do all the math shit
+
+    // Calc k factor
+    let k = 0;
+    if (this.data.data.bowDesign.shape == "round") { // Bow is round
+      k = 64/Math.PI;
+    }
+    else { // Bow is D-section
+      k = 12 / this.data.data.bowDesign.crossSection;
+    }
+
+    // Get constructionFactor based on bowType
+    let constructionFactor = 0;
+    if (this.data.data.bowDesign.bowType == "straight") {
+      constructionFactor = 1;
+    }
+    else if (this.data.data.bowDesign.bowType == "recurve") {
+      constructionFactor = 1.3;
+    }
+    else if (this.data.data.bowDesign.bowType == "reflex") {
+      constructionFactor = 1.6;
+    }
+    else if (this.data.data.bowDesign.bowType == "compound") {
+      constructionFactor = 1;
+    }
+
+    console.log(k)
+    console.log(this.data.data.bowDesign.workingMaterialAvg.tensileStPsi, this.data.data.bowDesign.workingMaterialAvg.elasticModulusPsi)
+
+    // Begin minimum thickness calc
+    this.data.data.bowDesign.limbMinThickness = ((k * this.data.data.bowDesign.drawWeight * (this.data.data.bowDesign.totalBowLength * (this.data.data.bowDesign.workingPercentage / 100)) * constructionFactor)/(8 * this.data.data.bowDesign.workingMaterialAvg.tensileStPsi)) ** (1/3);
+    this.data.data.bowDesign.limbMinThickness = Math.round(this.data.data.bowDesign.limbMinThickness * 10000) / 10000;
+
+    // Begin Deflection calc
+    this.data.data.bowDesign.deflection = ((k * this.data.data.bowDesign.drawWeight * (this.data.data.bowDesign.totalBowLength * (this.data.data.bowDesign.workingPercentage / 100)) ** 3) / (32 * this.data.data.bowDesign.workingMaterialAvg.elasticModulusPsi * this.data.data.bowDesign.limbThickness ** 4)) / (this.data.data.bowDesign.totalBowLength * (this.data.data.bowDesign.workingPercentage / 100))
+    this.data.data.bowDesign.deflection = Math.round(this.data.data.bowDesign.deflection * 100) / 100 * 100;
+
+    this.data.data.bowDesign.maxDrawLength = 0
+
+    console.log(this.data.data.bowDesign.deflection)
   }
 
   prepareAttackData() {
