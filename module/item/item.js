@@ -1345,6 +1345,7 @@ export class gurpsItem extends Item {
         "skill": "",
         "skillMod": 0,
         "realisticBowScale": false,
+        "loops": 1,
       }
     }
 
@@ -2825,6 +2826,18 @@ export class gurpsItem extends Item {
       info += "<tr>" +
           "<td>Compound</td>" +
           "<td>It's got pulleys and shit.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "bow-loops") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>The number of loops or pulleys on the bow. Most compound bows have 3, but 2 or 4 is also acceptable. " +
+          "In theory, any number is acceptable, but more than 4 starts to get very complicated.</p>" +
+          "</td>" +
           "</tr>";
 
       info += "</table>"
