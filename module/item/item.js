@@ -1344,6 +1344,7 @@ export class gurpsItem extends Item {
         "stockLength": 0,
         "skill": "",
         "skillMod": 0,
+        "realisticBowScale": false,
       }
     }
 
@@ -1436,6 +1437,7 @@ export class gurpsItem extends Item {
     this.data.data.bowDesign.magicalMaterials = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
     this.data.data.bowDesign.compoundBowStrictTL = game.settings.get("gurps4e", "compoundBowStrictTL");
     this.data.data.bowDesign.fixedBonusStrongbow = game.settings.get("gurps4e", "fixedBonusStrongbow");
+    this.data.data.bowDesign.realisticBowScale = game.settings.get("gurps4e", "realisticBowScale");
 
     // Get materials
     this.data.data.bowDesign.materials = game.materialAPI.fetchBowMaterials();

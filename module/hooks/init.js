@@ -131,6 +131,16 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  game.settings.register("gurps4e", "realisticBowScale", {
+    name: "Realistic Scale Bows",
+    hint: "The default is Cinematic scale, which is designed to match the bows seen in Basic and Low Tech. " +
+        "Realistic scale instead sets the damage to better reflect the difference between bows and firearms. ",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
   game.settings.register("gurps4e", "simpleEssentialMaterials", {
     name: "Simple Essential Materials",
     hint: "Essential materials are supposed to be three times as strong. This option makes that the case. Tensile strength is 3x it's base value and that's it. " +
