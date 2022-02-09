@@ -186,7 +186,7 @@
                         </table>
                         <h2 class="bold" style="text-align: center;">
                             {{#if (eq data.data.bowDesign.type "bow")}}Bow {{/if}}
-                            {{#if (eq data.data.bowDesign.type "xbow")}}Cross Bow {{/if}}
+                            {{#if (eq data.data.bowDesign.type "xbow")}}Crossbow {{/if}}
                             {{#if (eq data.data.bowDesign.type "footbow")}}Footbow {{/if}}
                             Options</h2>
                         <table>
@@ -237,6 +237,25 @@
                                     <input type="number" name="data.bowDesign.workingPercentage" value="{{data.data.bowDesign.workingPercentage}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="working-bow-length">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Quality
+                                </td>
+                                <td>
+                                    <select name="data.bowDesign.quality">
+                                        {{#select data.data.bowDesign.quality}}
+                                        <option value="cheap">Cheap</option>
+                                        <option value="good">Good</option>
+                                        <option value="fine">Fine (Accurate)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="bow-quality">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>
@@ -1207,7 +1226,6 @@
                             </tr>
                             {{/if}}
                         </table>
-
                     </div>
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>

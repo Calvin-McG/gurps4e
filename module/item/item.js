@@ -1320,7 +1320,7 @@ export class gurpsItem extends Item {
         "workingMaterialOneEssential": false,
         "workingMaterialTwoEssential": false,
         "bowConstruction": "", // Straight/Recurve/Reflex/Compound
-        "quality": "", // Cheap/Good/Fine(Accurate)
+        "quality": "good", // cheap/good/fine
         "riserMaterialOne": "",
         "riserMaterialTwo": "",
         "riserMaterialOneEssential": false,
@@ -1692,7 +1692,6 @@ export class gurpsItem extends Item {
     this.data.data.weight = limbsWeight + riserWeight + stockWeight;
 
     // Calculate Stored Energy
-
     let z = 0.057;
     if (this.data.data.bowDesign.bowConstruction == "straight") {
       z = 0.057;
@@ -1719,9 +1718,6 @@ export class gurpsItem extends Item {
     else {
       this.data.data.bowDesign.damagePoints = Math.sqrt(kineticEnergy) / 1.75;
     }
-
-    console.log(potentialEnergy, kineticEnergy);
-    console.log(this.data.data.bowDesign.damagePoints);
 
     // Only round things prior to display after all the actual math is done.
     this.data.data.bowDesign.maxDrawLength = Math.round(this.data.data.bowDesign.maxDrawLength * 100) / 100;
@@ -3127,6 +3123,17 @@ export class gurpsItem extends Item {
       info += "<tr>" +
           "<td>" +
           "<p>The skill used to fire the weapon.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "bow-quality") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Cheap bows are less expensive and less accurate, Fine bows are more expensive and more accurate.</p>" +
           "</td>" +
           "</tr>";
 
