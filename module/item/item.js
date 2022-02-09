@@ -1296,8 +1296,6 @@ export class gurpsItem extends Item {
   }
 
   prepareCustomBow(type) {
-    console.log("Preparing " + type);
-
     if (typeof this.data.data.bowDesign == "undefined") { // If the bowDesign block hasn't yet been created
       this.data.data.bowDesign = { // Create it
         "type": type, // bow/footbow/xbow
@@ -1310,6 +1308,7 @@ export class gurpsItem extends Item {
         "compoundLoops": 1,
         "drawWeight": 0, // In lbs
         "userST": 0,
+        "userSTFromActor": true,
         "userBL": 0,
         "totalBowLength": 0, // In inches
         "workingPercentage": 100,
@@ -1326,18 +1325,25 @@ export class gurpsItem extends Item {
         "thickness": 0,
         "riserMaterialOne": "", // Also used for crossbow stocks
         "riserMaterialTwo": "", // Also used for crossbow stocks
+        "riserMaterialOneEssential": false,
+        "riserMaterialTwoEssential": false,
         "allowedRiserDeflection": 0,
         "selectedRiserWidth": 0,
         "xbowSupportLength": 0,
         "fixedBonusStrongbow": true,
         "strongBowCrossbowFinesse": false,
         "strongBowCrossbowFinesseEffect": 0,
+        "strongBowCrossbowFinesseFromActor": true,
         "shape": "d",
         "crossSection": 1,
         "bowType": "straight", // straight/recurve/
         "limbThickness": 0,
         "limbMinThickness": 0,
         "deflection": 0,
+        "allowedDeflection": 0.07,
+        "stockLength": 0,
+        "skill": "",
+        "skillMod": 0,
       }
     }
 
@@ -1422,6 +1428,10 @@ export class gurpsItem extends Item {
       this.data.data.bowDesign.workingPercentage = 0;
     }
 
+    if (this.data.data.bowDesign.workingPercentage < 100) {
+      this.data.data.bowDesign.riser = true;
+    }
+
     // Get game settings
     this.data.data.bowDesign.magicalMaterials = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
     this.data.data.bowDesign.compoundBowStrictTL = game.settings.get("gurps4e", "compoundBowStrictTL");
@@ -1433,18 +1443,67 @@ export class gurpsItem extends Item {
     // Do actual code stuff
     this.data.data.bowDesign.type = type;
 
-    // TODO Check if the bow is on an actor and fetch the Lifting ST
+    this.data.data.bowDesign.userSTFromActor = false; // Reset whether we're getting the ST from the actor.
+    this.data.data.bowDesign.strongBowCrossbowFinesseFromActor = false; // Reset whether we're getting the perk from the user.
+    if (this.actor) { // If there's an actor
+      if (this.actor.data) {
+        if (this.actor.data.data) {
+          console.log(this.actor.data.data.primaryAttributes.lifting.value)
 
-    // TODO Check if the bow is on an actor and fetch Strongbow/Crossbow Finesse
+          let smDiscount = attributeHelpers.calcSMDiscount(this.actor.data.data.bio.sm);
+          let st = attributeHelpers.calcStOrHt(this.actor.data.data.primaryAttributes.strength, smDiscount);
+          let lifting = attributeHelpers.calcLiftingSt(st, this.actor.data.data.primaryAttributes.lifting, smDiscount)
 
-    // TODO Work out the numerical value of the Strongbow/Crossbow Finesse bonus
+          this.data.data.bowDesign.userST = lifting; // Get lifting ST from the user
+          this.data.data.bowDesign.userSTFromActor = true; // Flag that we're getting the ST from the user
 
-    if (this.data.data.bowDesign.fixedBonusStrongbow) {
-      this.data.data.bowDesign.userBL = (this.data.data.bowDesign.userST * this.data.data.bowDesign.userST)/5; // Basic Lift
-      this.data.data.bowDesign.userBL = this.data.data.bowDesign.userBL * (1 + (0.15 * this.data.data.bowDesign.strongBowCrossbowFinesseEffect)) // Basic lift plus the perk's bonus
+          for (let i = 0; i < this.actor.data.items._source.length; i++) { // Loop through the list of the actor's items
+            if (this.actor.data.items._source[i].type === "Trait") { // Make sure it's a trait
+              if ((this.actor.data.items._source[i].name.toLowerCase() == "strongbow" || // Check if they have strongbow
+                  this.actor.data.items._source[i].name.toLowerCase() == "strong bow") &&
+                  (this.data.data.bowDesign.type == "bow" || this.data.data.bowDesign.type == "footbow")) { // And make sure this is a bow
+                this.data.data.bowDesign.strongBowCrossbowFinesseFromActor = true; // Flag that the perk is coming from the actor.
+                this.data.data.bowDesign.strongBowCrossbowFinesse = true; // Set the status of the perk
+              }
+              else if ((this.actor.data.items._source[i].name.toLowerCase() == "crossbow finesse") && (this.data.data.bowDesign.type == "xbow")) {
+                this.data.data.bowDesign.strongBowCrossbowFinesseFromActor = true; // Flag that the perk is coming from the actor.
+                this.data.data.bowDesign.strongBowCrossbowFinesse = true; // Set the status of the perk
+              }
+            }
+          }
+        }
+      }
     }
-    else {
-      this.data.data.bowDesign.userBL = ((this.data.data.bowDesign.userST+this.data.data.bowDesign.strongBowCrossbowFinesseEffect) * (this.data.data.bowDesign.userST+this.data.data.bowDesign.strongBowCrossbowFinesseEffect))/5
+
+    if (this.data.data.bowDesign.strongBowCrossbowFinesse) { // If the perk is set
+      if (this.actor) { // If there's an actor we will need to fetch the finesse effect from the sheet
+        let skillLevel = 0;
+        let attrLevel = 0;
+        let relativeBonus = 0;
+        for (let i = 0; i < this.actor.data.items._source.length; i++) { // Loop through the list of the actor's items
+          if (this.actor.data.items._source[i].type === "Rollable") { // Make sure it's a skill
+            if (this.actor.data.items._source[i].name.toLowerCase() == this.data.data.bowDesign.skill.toLowerCase()) { // And make sure it matches the skill name they've given
+              skillLevel = skillHelpers.computeSkillLevel(this.actor, this.actor.data.items._source[i].data); // Get the skill level.
+              attrLevel = skillHelpers.getBaseAttrValue(this.actor.data.items._source[i].data.baseAttr, this.actor); // Get the attribute level
+              relativeBonus = skillLevel - attrLevel;
+              relativeBonus = Math.max(relativeBonus, 0); // Make the bonus at least zero.
+              relativeBonus = Math.min(relativeBonus, 2); // Make the bonus no more than two
+              this.data.data.bowDesign.strongBowCrossbowFinesseEffect = relativeBonus;
+            }
+          }
+        }
+      }
+
+      if (this.data.data.bowDesign.fixedBonusStrongbow) { // If we're using the fixed bonus
+        this.data.data.bowDesign.userBL = (this.data.data.bowDesign.userST * this.data.data.bowDesign.userST)/5; // Basic Lift
+        this.data.data.bowDesign.userBL = this.data.data.bowDesign.userBL * (1 + (0.15 * this.data.data.bowDesign.strongBowCrossbowFinesseEffect)) // Basic lift plus the perk's bonus
+      }
+      else { // If it's not
+        this.data.data.bowDesign.userBL = ((this.data.data.bowDesign.userST+this.data.data.bowDesign.strongBowCrossbowFinesseEffect) * (this.data.data.bowDesign.userST+this.data.data.bowDesign.strongBowCrossbowFinesseEffect))/5
+      }
+    }
+    else { // If the perk is not set at all
+      this.data.data.bowDesign.userBL = ((this.data.data.bowDesign.userST) * (this.data.data.bowDesign.userST))/5
     }
 
     // Fetch the materials
@@ -1487,7 +1546,7 @@ export class gurpsItem extends Item {
       "arrowCostPerLb"    : (this.data.data.bowDesign.workingMaterialOne.arrowCostPerLb + this.data.data.bowDesign.workingMaterialTwo.arrowCostPerLb)/2,
     }
 
-    console.log(this.data.data.bowDesign);
+    // Do all the math shit
   }
 
   prepareAttackData() {
@@ -2563,9 +2622,22 @@ export class gurpsItem extends Item {
 
       info += "<tr>" +
           "<td>" +
-          "<p>This is only used for arrows. There's all sorts of physicsy stuff going on behind the scenes, but all you really need to know is this: " +
+          "<p>This is only used for arrows, crossbow stocks, and bow risers.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Arrows: There's all sorts of physicsy stuff going on behind the scenes, but all you really need to know is this: " +
           "Your arrows have a minimum weight based on how powerful the bow is and what material it is made out of. Otherwise the arrow is too weak and snaps when you fire it. " +
           "Lower numbers here mean that the material is strong enough to make a lighter arrow. This increases range, how many arrows you can carry, and usually means cheaper arrows." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Risers and Stocks: You obviously want these to be strong and light. The buckling constant is a good indicator of whether something is strong enough to make a good stock/riser. Beyond that, just check the cost and weight." +
           "</p>" +
           "</td>" +
           "</tr>";
@@ -2738,6 +2810,101 @@ export class gurpsItem extends Item {
           "<p>The deflection cannot be too high. 35% is reasonable, and the absolute limit is 50%. " +
           "And keep in mind that some historical bows did go all the way to 50% deflection, particularly reflex and recurve bows." +
           "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "riser-material") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>You want a material that is strong and light. If it's too weak it'll bend and that's no good. And if it's heavy then it's a pain in the ass to fit in your encumbrance." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+
+      info += "<h2>Okay, but which do I choose?</h2>";
+
+      info += "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Good choices are: Carbon Fibre, Aluminum, Steel, E-glass fibreglass, Aspen, Poplar, and Pine. Wrought Iron is also surprisingly decent and a bit cheaper than steel." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "riser-material-essential") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Rather than use a specific essential material, this checkbox makes whatever material you've selected essential, making it three times as strong. " +
+          "In effect, this makes the riser three times as light." +
+          "</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "riser-width") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>This is how wide the riser or stock is. It must be at least as wide as the bow is, but otherwise you can set whatever value you like.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>When combined with the 'Allowed Deflection' setting, this determines how heavy the stock/riser is.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "allowed-deflection") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>This is how much the stock or riser is allowed to bend when you draw the bow. Bending is bad, it makes the bow less efficient. " +
+          "But preventing bending entirely is really fuckin' hard, and makes the bow heavier. So decide how much you will allow.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>What's really going on is that this slider increases the thickness of the stock to match the level of deflection you've selected.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "stock-length") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>This is how long the stock is. It must be at least as long as the draw length. Beyond that, any value is allowed.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "bow-skill") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>The skill used to fire the weapon.</p>" +
           "</td>" +
           "</tr>";
 

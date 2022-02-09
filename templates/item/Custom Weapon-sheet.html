@@ -127,7 +127,11 @@
                                     User ST
                                 </td>
                                 <td>
+                                    {{#if data.data.bowDesign.userSTFromActor}}
+                                    {{data.data.bowDesign.userST}}
+                                    {{else}}
                                     <input type="number" name="data.bowDesign.userST" value="{{data.data.bowDesign.userST}}" data-dtype="Number"/>
+                                    {{/if}}
                                 </td>
                                 <td class="question-container" id="user-st">
                                     <div class="question-button">
@@ -144,7 +148,11 @@
                                     {{/if}}
                                 </td>
                                 <td>
+                                    {{#if data.data.bowDesign.strongBowCrossbowFinesseFromActor}}
+                                    {{data.data.bowDesign.strongBowCrossbowFinesse}}
+                                    {{else}}
                                     <input type="checkbox" name="data.bowDesign.strongBowCrossbowFinesse" {{checked data.data.bowDesign.strongBowCrossbowFinesse}} data-dtype="Boolean"/>
+                                    {{/if}}
                                 </td>
                                 <td class="question-container" id="strong-bow-crossbow-finesse">
                                     <div class="question-button">
@@ -153,6 +161,7 @@
                                 </td>
                             </tr>
                             <!-- TODO - Make this only show up if there is not an actor -->
+                            {{#unless data.data.bowDesign.strongBowCrossbowFinesseFromActor}}
                             <tr class="design-row">
                                 <td style="width: 150px">
                                     {{#if (eq data.data.bowDesign.type "xbow")}}
@@ -173,7 +182,7 @@
                                     </div>
                                 </td>
                             </tr>
-
+                            {{/unless}}
                         </table>
                         <h2 class="bold" style="text-align: center;">
                             {{#if (eq data.data.bowDesign.type "bow")}}Bow {{/if}}
@@ -412,6 +421,143 @@
                                 </td>
                                 <td>
                                     {{data.data.bowDesign.deflection}}
+                                </td>
+                            </tr>
+                        </table>
+
+                        {{#if (or (eq data.data.bowDesign.type "xbow") (eq data.data.bowDesign.riser true))}}
+                            <h2 class="bold" style="text-align: center;">
+                                {{#if (eq data.data.bowDesign.type "xbow")}}
+                                    Stock Construction
+                                {{else}}
+                                    {{#if data.data.bowDesign.riser}}
+                                        Riser Construction
+                                    {{/if}}
+                                {{/if}}
+                            </h2>
+                            <table>
+                                <tr class="design-row">
+                                    <td style="width: 150px">
+                                        {{#if (eq data.data.bowDesign.type "xbow")}}
+                                        Stock Material 1
+                                        {{else}}
+                                        Riser Material 1
+                                        {{/if}}
+                                    </td>
+                                    <td>
+                                        <select name="data.bowDesign.riserMaterialOne.name">
+                                            {{#select data.data.bowDesign.riserMaterialOne.name}}
+                                            {{#each data.data.bowDesign.materials as |material id|}}
+                                            {{#ifCond ../data.data.tl '>=' material.tl}}
+                                            <option value="{{material.name}}">{{material.name}}</option>
+                                            {{/ifCond}}
+                                            {{/each}}
+                                            {{/select}}
+                                        </select>
+                                    </td>
+                                    <td class="question-container" id="riser-material">
+                                        <div class="question-button">
+                                            <i class="fas fa-question"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{#if data.data.bowDesign.magicalMaterials}}
+                                <tr class="design-row">
+                                    <td style="width: 150px">
+                                        Is Material 1 Essential?
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="data.bowDesign.riserMaterialOneEssential" {{checked data.data.bowDesign.riserMaterialOneEssential}} data-dtype="Boolean"/>
+                                    </td>
+                                    <td class="question-container" id="riser-material-essential">
+                                        <div class="question-button">
+                                            <i class="fas fa-question"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{/if}}
+                                <tr class="design-row">
+                                    <td style="width: 150px">
+                                        {{#if (eq data.data.bowDesign.type "xbow")}}
+                                        Stock Material 2
+                                        {{else}}
+                                        Riser Material 2
+                                        {{/if}}
+                                    </td>
+                                    <td>
+                                        <select name="data.bowDesign.riserMaterialTwo.name">
+                                            {{#select data.data.bowDesign.riserMaterialTwo.name}}
+                                            {{#each data.data.bowDesign.materials as |material id|}}
+                                            {{#ifCond ../data.data.tl '>=' material.tl}}
+                                            <option value="{{material.name}}">{{material.name}}</option>
+                                            {{/ifCond}}
+                                            {{/each}}
+                                            {{/select}}
+                                        </select>
+                                    </td>
+                                    <td class="question-container" id="riser-material">
+                                        <div class="question-button">
+                                            <i class="fas fa-question"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{#if data.data.bowDesign.magicalMaterials}}
+                                <tr class="design-row">
+                                    <td style="width: 150px">
+                                        Is Material 2 Essential?
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="data.bowDesign.riserMaterialTwoEssential" {{checked data.data.bowDesign.riserMaterialTwoEssential}} data-dtype="Boolean"/>
+                                    </td>
+                                    <td class="question-container" id="riser-material-essential">
+                                        <div class="question-button">
+                                            <i class="fas fa-question"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{/if}}
+                                <tr class="design-row">
+                                    <td style="width: 150px">
+                                        Allowed Deflection: {{data.data.bowDesign.allowedDeflection}}%
+                                    </td>
+                                    <td>
+                                        <input type="range" min="0.01" max="0.1" step="0.01" name="data.bowDesign.allowedDeflection" value="{{data.data.bowDesign.allowedDeflection}}" data-dtype="Number">
+                                    </td>
+                                    <td class="question-container" id="allowed-deflection">
+                                        <div class="question-button">
+                                            <i class="fas fa-question"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{#if (eq data.data.bowDesign.type "xbow")}}
+                                <tr class="design-row">
+                                    <td style="width: 150px">
+                                        Stock Length
+                                    </td>
+                                    <td>
+                                        <input type="number" name="data.bowDesign.stockLength" value="{{data.data.bowDesign.stockLength}}" data-dtype="Number"/>
+                                    </td>
+                                    <td class="question-container" id="stock-length">
+                                        <div class="question-button">
+                                            <i class="fas fa-question"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{/if}}
+                            </table>
+                        {{/if}}
+
+                        <h2 class="bold" style="text-align: center; margin-top: 20px">Skills</h2>
+                        <table>
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px" colspan="2">
+                                    <input style="width: 75%" type="text" placeholder="Skill" name="data.bowDesign.skill" value="{{data.data.bowDesign.skill}}"/>
+                                    <input style="width: 20%" type="number" placeholder="Mod" name="data.bowDesign.skillMod" value="{{data.data.bowDesign.skillMod}}"/>
+                                </td>
+                                <td class="question-container" id="bow-skill">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
                                 </td>
                             </tr>
                         </table>
