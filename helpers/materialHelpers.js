@@ -12,6 +12,22 @@ export class materialHelpers {
         return selectedMaterial;
     }
 
+    static essentializeMaterial(material) {
+        const simpleEssentialMaterials = game.settings.get("gurps4e", "simpleEssentialMaterials");
+
+        let essentialMaterial = material;
+
+        if (simpleEssentialMaterials) {
+            essentialMaterial.tensileStPsi = essentialMaterial.tensileStPsi * 3;
+            essentialMaterial.a = essentialMaterial.a / 3;
+        }
+        else {
+            essentialMaterial.tensileStPsi = essentialMaterial.tensileStPsi * 9;
+            essentialMaterial.elasticModulusPsi = essentialMaterial.elasticModulusPsi * 9;
+            essentialMaterial.tensileStPsi = essentialMaterial.tensileStPsi / 3;
+        }
+    }
+
     static fetchBowMaterials() {
         const materials = [
             {

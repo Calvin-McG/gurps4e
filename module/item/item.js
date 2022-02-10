@@ -1365,7 +1365,7 @@ export class gurpsItem extends Item {
         "quality": "good",
         "outerDiameter": 0.5,
         "innerDiameter": 0,
-        "arrowhead": "War, Light"
+        "arrowhead": "War, Light",
       }
     }
 
@@ -1513,7 +1513,6 @@ export class gurpsItem extends Item {
     this.data.data.bowDesign.compoundBowStrictTL      = game.settings.get("gurps4e", "compoundBowStrictTL");
     this.data.data.bowDesign.fixedBonusStrongbow      = game.settings.get("gurps4e", "fixedBonusStrongbow");
     this.data.data.bowDesign.realisticBowScale        = game.settings.get("gurps4e", "realisticBowScale");
-    this.data.data.bowDesign.simpleEssentialMaterials = game.settings.get("gurps4e", "simpleEssentialMaterials");
 
     // Get materials
     this.data.data.bowDesign.materials = game.materialAPI.fetchBowMaterials();
@@ -1595,10 +1594,38 @@ export class gurpsItem extends Item {
 
     if (typeof this.data.data.bowDesign.arrow.material.name != "undefined") {
       this.data.data.bowDesign.arrow.material = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.arrow.material.name);
+
+      if (this.data.data.bowDesign.arrow.materialEssential) {
+        this.data.data.bowDesign.arrow.material = game.materialAPI.essentializeMaterial(this.data.data.bowDesign.arrow.material);
+      }
     }
 
     if (typeof this.data.data.bowDesign.arrow.arrowhead.style != "undefined") {
       this.data.data.bowDesign.arrow.arrowhead = game.materialAPI.getArrowheadByName(this.data.data.bowDesign.arrow.arrowhead.style);
+    }
+
+    if (this.data.data.bowDesign.workingMaterialOneEssential) {
+      this.data.data.bowDesign.workingMaterialOne = game.materialAPI.essentializeMaterial(this.data.data.bowDesign.workingMaterialOne);
+    }
+
+    if (this.data.data.bowDesign.workingMaterialTwoEssential) {
+      this.data.data.bowDesign.workingMaterialTwo = game.materialAPI.essentializeMaterial(this.data.data.bowDesign.workingMaterialTwo);
+    }
+
+    if (this.data.data.bowDesign.riserMaterialOneEssential) {
+      this.data.data.bowDesign.riserMaterialOne = game.materialAPI.essentializeMaterial(this.data.data.bowDesign.riserMaterialOne);
+    }
+
+    if (this.data.data.bowDesign.riserMaterialTwoEssential) {
+      this.data.data.bowDesign.riserMaterialTwo = game.materialAPI.essentializeMaterial(this.data.data.bowDesign.riserMaterialTwo);
+    }
+
+    if (this.data.data.bowDesign.stockMaterialOneEssential) {
+      this.data.data.bowDesign.stockMaterialOne = game.materialAPI.essentializeMaterial(this.data.data.bowDesign.stockMaterialOne);
+    }
+
+    if (this.data.data.bowDesign.stockMaterialTwoEssential) {
+      this.data.data.bowDesign.stockMaterialTwo = game.materialAPI.essentializeMaterial(this.data.data.bowDesign.stockMaterialTwo);
     }
 
     // Calculate the inferred values
