@@ -1749,7 +1749,6 @@ export class gurpsItem extends Item {
 
 
     // Calculate Arrow Stuff
-    console.log(this.data.data.bowDesign.arrows);
     let arrowKeys = Object.keys(this.data.data.bowDesign.arrows); // Get the arrow keys
     if (arrowKeys.length) { // If there are actually keys
       for (let i = 0; i < arrowKeys.length; i++){
@@ -1767,7 +1766,6 @@ export class gurpsItem extends Item {
           this.data.data.bowDesign.arrows[arrowKeys[i]].material.arrowCostPerLb    = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi / this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn*1.25/9000000*100)/100;
         }
 
-        console.log("Looping");
         let a = 1.25 * Math.exp(-0.0000000054 * this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi / this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn);
         this.data.data.bowDesign.arrows[arrowKeys[i]].minOuterDiameter = 2 * (this.data.data.bowDesign.drawWeight * this.data.data.bowDesign.arrows[arrowKeys[i]].length / this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi / a) ** (1/4)
         let shaftWeight = Math.PI/4 * ( this.data.data.bowDesign.arrows[arrowKeys[i]].outerDiameter ** 2 - this.data.data.bowDesign.arrows[arrowKeys[i]].innerDiameter ** 2 ) * this.data.data.bowDesign.arrows[arrowKeys[i]].length * this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn;
@@ -1789,11 +1787,6 @@ export class gurpsItem extends Item {
         if (this.data.data.bowDesign.arrows[arrowKeys[i]].material.tl > 4 && this.data.data.bowDesign.arrows[arrowKeys[i]].innerDiameter > 0) { // Material is synthetic and the arrow is hollow.
           shaftCost = shaftCost * (arrowCF + 4);
         }
-
-        console.log(this.data.data.bowDesign.arrows)
-        console.log(this.data.data.bowDesign.arrows[arrowKeys[i]])
-        console.log(this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead)
-        console.log(this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.cost, arrowCF, shaftCost)
 
         // Calculate arrohead cost
         let arrowHeadCost = 50 * this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.weight;
@@ -1831,8 +1824,6 @@ export class gurpsItem extends Item {
         this.data.data.bowDesign.arrows[arrowKeys[i]].minOuterDiameter = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].minOuterDiameter * 1000) / 1000;
         this.data.data.bowDesign.arrows[arrowKeys[i]].weight = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].weight * 1000) / 1000;
         this.data.data.bowDesign.arrows[arrowKeys[i]].cost = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].cost * 100) / 100;
-
-        console.log(this.data.data.bowDesign.arrows[arrowKeys[i]]);
       }
     }
 
@@ -1842,9 +1833,6 @@ export class gurpsItem extends Item {
     this.data.data.bowDesign.stockThickness = Math.round(this.data.data.bowDesign.stockThickness * 100) / 100;
     this.data.data.bowDesign.riserThickness = Math.round(this.data.data.bowDesign.riserThickness * 100) / 100;
     this.data.data.weight = Math.round(this.data.data.weight * 100) / 100;
-
-    console.log(this.data.data.bowDesign);
-    console.log(this.data.data.bowDesign.arrows);
   }
 
   prepareAttackData() {
