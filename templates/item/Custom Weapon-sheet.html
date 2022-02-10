@@ -725,14 +725,18 @@
                             </tr>
                         </table>
 
-                        <h2 class="bold" style="text-align: center; margin-top: 20px">Projectile Design</h2>
+                        <h2 class="bold" style="text-align: center; margin-top: 20px">Projectile Designs</h2>
+                        {{log data.data.bowDesign.arrows}}
+                        {{#each data.data.bowDesign.arrows as |arrow id|}}
+                        {{log arrow}}
+                        <h2 class="bold" style="text-align: center; margin-top: 20px">Projectile {{id}}</h2>
                         <table>
                             <tr class="design-row">
                                 <td style="width: 150px">
                                     Shaft Length:
                                 </td>
                                 <td>
-                                    <input type="number" name="data.bowDesign.arrow.length" value="{{data.data.bowDesign.arrow.length}}" data-dtype="Number"/>
+                                    <input type="number" name="data.bowDesign.arrows.{{id}}.length" value="{{arrow.length}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="shaft-length">
                                     <div class="question-button">
@@ -746,10 +750,10 @@
                                     Shaft Material
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.arrow.material.name">
-                                        {{#select data.data.bowDesign.arrow.material.name}}
-                                        {{#each data.data.bowDesign.materials as |material id|}}
-                                        {{#ifCond ../data.data.tl '>=' material.tl}}
+                                    <select name="data.bowDesign.arrows.{{id}}.material.name">
+                                        {{#select arrow.material.name}}
+                                        {{#each ../data.data.bowDesign.materials as |material id|}}
+                                        {{#ifCond ../../data.data.tl '>=' material.tl}}
                                         <option value="{{material.name}}">{{material.name}}</option>
                                         {{/ifCond}}
                                         {{/each}}
@@ -768,7 +772,7 @@
                                     Shaft Material Essential
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.bowDesign.arrow.materialEssential" {{checked data.data.bowDesign.arrow.materialEssential}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="data.bowDesign.arrows.{{id}}.materialEssential" {{checked arrow.materialEssential}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="shaft-material-essential">
                                     <div class="question-button">
@@ -782,8 +786,8 @@
                                     Arrow Quality:
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.arrow.quality">
-                                        {{#select data.data.bowDesign.arrow.quality}}
+                                    <select name="data.bowDesign.arrows.{{id}}.quality">
+                                        {{#select arrow.quality}}
                                         <option value="cheap">Cheap</option>
                                         <option value="good">Good</option>
                                         <option value="fine">Fine (Accurate)</option>
@@ -802,7 +806,8 @@
                                     Arrow Outer Diameter
                                 </td>
                                 <td>
-                                    <input type="number" name="data.bowDesign.arrow.outerDiameter" value="{{data.data.bowDesign.arrow.outerDiameter}}" data-dtype="Number"/>
+                                    <input type="number" name="data.bowDesign.arrows.{{id}}.outerDiameter" value="{{arrow.outerDiameter}}" data-dtype="Number" style="width: 45%"/>
+                                     / {{arrow.minOuterDiameter}}
                                 </td>
                                 <td class="question-container" id="arrow-outer-diameter">
                                     <div class="question-button">
@@ -816,7 +821,7 @@
                                     Arrow Inner Diameter
                                 </td>
                                 <td>
-                                    <input type="number" name="data.bowDesign.arrow.innerDiameter" value="{{data.data.bowDesign.arrow.innerDiameter}}" data-dtype="Number"/>
+                                    <input type="number" name="data.bowDesign.arrows.{{id}}.innerDiameter" value="{{arrow.innerDiameter}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="arrow-inner-diameter">
                                     <div class="question-button">
@@ -827,26 +832,92 @@
 
                             <tr class="design-row">
                                 <td style="width: 150px">
-                                    Arrowhead
+                                    Damage Type
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.arrow.arrowhead.style">
-                                        {{#select data.data.bowDesign.arrow.arrowhead}}
-                                        {{#each data.data.bowDesign.arrowheads as |arrowhead id|}}
-                                        {{#ifCond ../data.data.tl '>=' arrowhead.tl}}
-                                        <option value="{{arrowhead.style}}">{{arrowhead.style}}</option>
-                                        {{/ifCond}}
-                                        {{/each}}
+                                    <select name="data.bowDesign.arrows.{{id}}.arrowhead.damageType">
+                                        {{#select arrow.arrowhead.damageType}}
+                                        <option value="imp">Impaling</option>
+                                        <option value="pi">Piercing</option>
+                                        <option value="cut">Cutting</option>
+                                        <option value="cr">Crushing</option>
                                         {{/select}}
                                     </select>
                                 </td>
-                                <td class="question-container" id="arrowhead">
+                                <td class="question-container" id="arrowhead-damage-type">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Armour Divisor
+                                </td>
+                                <td>
+                                    <select name="data.bowDesign.arrows.{{id}}.arrowhead.ad">
+                                        {{#select arrow.arrowhead.ad}}
+                                        <option value="1">(1)</option>
+                                        <option value="0.5">(0.5)</option>
+                                        <option value="2">(2)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="arrowhead-ad">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Barbed
+                                </td>
+                                <td>
+                                    <select name="data.bowDesign.arrows.{{id}}.arrowhead.barbed">
+                                        {{#select arrow.arrowhead.barbed}}
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="arrowhead-barbed">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Arrowhead Weight: {{arrow.arrowhead.weight}} lbs
+                                </td>
+                                <td>
+                                    <input type="range" min="0.015" max="0.1" step="0.005" name="data.bowDesign.arrows.{{id}}.arrowhead.weight" value="{{arrow.arrowhead.weight}}" data-dtype="Number">
+                                </td>
+                                <td class="question-container" id="arrowhead-weight">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Resulting arrow stats:
+                                </td>
+                                <td>
+                                    {{arrow.weight}} lbs, {{arrow.cost}} $
+                                </td>
+                                <td class="question-container" id="arrow-stats">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>
                                 </td>
                             </tr>
                         </table>
+                        {{/each}}
                     </div>
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>

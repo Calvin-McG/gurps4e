@@ -1351,22 +1351,21 @@ export class gurpsItem extends Item {
         "skillMod": 0,
         "realisticBowScale": false,
         "loops": 1,
-        "damagePoints": 0,
-        "arrow": "",
-        "arrowheads": ""
+        "arrows": [],
       }
     }
 
-    if (typeof this.data.data.bowDesign.arrow == "undefined") { // If the arrow block hasn't yet been created
-      this.data.data.bowDesign.arrow = {
+    if (typeof this.data.data.bowDesign.arrows == "undefined") { // If the arrow block hasn't yet been created
+      this.data.data.bowDesign.arrows = [{ // Init the array with a single object
         "length": 0,
         "material": "",
         "materialEssential": false,
         "quality": "good",
         "outerDiameter": 0.5,
+        "minOuterDiameter": 0.5,
         "innerDiameter": 0,
-        "arrowhead": "War, Light",
-      }
+        "arrowhead": {},
+      }]
     }
 
     if (typeof this.data.data.bowDesign.workingMaterialOne == "undefined") { // If the material block hasn't yet been created
@@ -1466,20 +1465,6 @@ export class gurpsItem extends Item {
       }
     }
 
-    if (typeof this.data.data.bowDesign.arrow.material == "undefined") { // If the material block hasn't yet been created
-      this.data.data.bowDesign.arrow.material = { // Create it
-        "a": 0,
-        "densityLbsCuIn": 0,
-        "elasticModulusPsi": 0,
-        "name": "",
-        "tensileStPsi": 0,
-        "tl": 0,
-        "maxStrain": 0,
-        "bowCostPerLb": 0,
-        "arrowCostPerLb": 0,
-      }
-    }
-
     if (typeof this.data.data.bowDesign.arrows == "undefined") { // If the arrows block hasn't yet been created
       this.data.data.bowDesign.arrows = []
     }
@@ -1516,9 +1501,6 @@ export class gurpsItem extends Item {
 
     // Get materials
     this.data.data.bowDesign.materials = game.materialAPI.fetchBowMaterials();
-
-    // Get arrowheads
-    this.data.data.bowDesign.arrowheads = game.materialAPI.fetchArrowheads();
 
     // Do actual code stuff
     this.data.data.bowDesign.type = type;
@@ -1591,18 +1573,6 @@ export class gurpsItem extends Item {
     this.data.data.bowDesign.riserMaterialTwo   = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.riserMaterialTwo.name);
     this.data.data.bowDesign.stockMaterialOne   = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.stockMaterialOne.name);
     this.data.data.bowDesign.stockMaterialTwo   = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.stockMaterialTwo.name);
-
-    if (typeof this.data.data.bowDesign.arrow.material.name != "undefined") {
-      this.data.data.bowDesign.arrow.material = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.arrow.material.name);
-
-      if (this.data.data.bowDesign.arrow.materialEssential) {
-        this.data.data.bowDesign.arrow.material = game.materialAPI.essentializeMaterial(this.data.data.bowDesign.arrow.material);
-      }
-    }
-
-    if (typeof this.data.data.bowDesign.arrow.arrowhead.style != "undefined") {
-      this.data.data.bowDesign.arrow.arrowhead = game.materialAPI.getArrowheadByName(this.data.data.bowDesign.arrow.arrowhead.style);
-    }
 
     if (this.data.data.bowDesign.workingMaterialOneEssential) {
       this.data.data.bowDesign.workingMaterialOne = game.materialAPI.essentializeMaterial(this.data.data.bowDesign.workingMaterialOne);
@@ -1773,17 +1743,97 @@ export class gurpsItem extends Item {
       z = 0.090;
     }
 
+    // Calculate Bow Energy
     let potentialEnergy = this.data.data.bowDesign.drawWeight * this.data.data.bowDesign.drawLength * z; // Potential energy in joules.
     let workingMass = 37 * this.data.data.bowDesign.workingMaterialAvg.densityLbsCuIn * this.data.data.bowDesign.limbMinThickness ** 2 * Math.sqrt(this.data.data.bowDesign.crossSection / l);
-    let arrowMass = 0.1
-    let efficiency = 1 / (1 + workingMass/arrowMass);
-    let kineticEnergy = efficiency * potentialEnergy;
 
-    if (this.data.data.bowDesign.realisticBowScale) {
-      this.data.data.bowDesign.damagePoints = Math.sqrt(kineticEnergy) / 2.5;
-    }
-    else {
-      this.data.data.bowDesign.damagePoints = Math.sqrt(kineticEnergy) / 1.75;
+
+    // Calculate Arrow Stuff
+    console.log(this.data.data.bowDesign.arrows);
+    let arrowKeys = Object.keys(this.data.data.bowDesign.arrows); // Get the arrow keys
+    if (arrowKeys.length) { // If there are actually keys
+      for (let i = 0; i < arrowKeys.length; i++){
+        if (typeof this.data.data.bowDesign.arrows[arrowKeys[i]].material.name != "undefined") {
+          this.data.data.bowDesign.arrows[arrowKeys[i]].material = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.arrows[arrowKeys[i]].material.name);
+
+          if (this.data.data.bowDesign.arrows[arrowKeys[i]].materialEssential) {
+            this.data.data.bowDesign.arrows[arrowKeys[i]].material = game.materialAPI.essentializeMaterial(this.data.data.bowDesign.arrows[arrowKeys[i]].material);
+          }
+        }
+
+        if (typeof this.data.data.bowDesign.arrows[arrowKeys[i]].material != "undefined") {
+          this.data.data.bowDesign.arrows[arrowKeys[i]].material.maxStrain         = this.data.data.bowDesign.arrows[arrowKeys[i]].material.tensileStPsi    / this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi;
+          this.data.data.bowDesign.arrows[arrowKeys[i]].material.bowCostPerLb      = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].material.tensileStPsi   ** 2 / 100 / this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi   / this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn*100)/100;
+          this.data.data.bowDesign.arrows[arrowKeys[i]].material.arrowCostPerLb    = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi / this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn*1.25/9000000*100)/100;
+        }
+
+        console.log("Looping");
+        let a = 1.25 * Math.exp(-0.0000000054 * this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi / this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn);
+        this.data.data.bowDesign.arrows[arrowKeys[i]].minOuterDiameter = 2 * (this.data.data.bowDesign.drawWeight * this.data.data.bowDesign.arrows[arrowKeys[i]].length / this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi / a) ** (1/4)
+        let shaftWeight = Math.PI/4 * ( this.data.data.bowDesign.arrows[arrowKeys[i]].outerDiameter ** 2 - this.data.data.bowDesign.arrows[arrowKeys[i]].innerDiameter ** 2 ) * this.data.data.bowDesign.arrows[arrowKeys[i]].length * this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn;
+        this.data.data.bowDesign.arrows[arrowKeys[i]].weight = shaftWeight + this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.weight;
+
+        let arrowCF = 1;
+        if (this.data.data.bowDesign.arrows[arrowKeys[i]].quality == "fine") {
+          arrowCF = 3;
+        }
+        else if (this.data.data.bowDesign.arrows[arrowKeys[i]].quality == "cheap") {
+          arrowCF = 0.7;
+        }
+        else {
+          arrowCF = 1;
+        }
+
+        let shaftCost = (this.data.data.bowDesign.arrows[arrowKeys[i]].material.arrowCostPerLb * shaftWeight)
+
+        if (this.data.data.bowDesign.arrows[arrowKeys[i]].material.tl > 4 && this.data.data.bowDesign.arrows[arrowKeys[i]].innerDiameter > 0) { // Material is synthetic and the arrow is hollow.
+          shaftCost = shaftCost * (arrowCF + 4);
+        }
+
+        console.log(this.data.data.bowDesign.arrows)
+        console.log(this.data.data.bowDesign.arrows[arrowKeys[i]])
+        console.log(this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead)
+        console.log(this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.cost, arrowCF, shaftCost)
+
+        // Calculate arrohead cost
+        let arrowHeadCost = 50 * this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.weight;
+        // Apply AD CF
+        if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.ad == "0.5") {
+          arrowHeadCost = arrowHeadCost * 0.8;
+        }
+        else if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.ad == "2") {
+          arrowHeadCost = arrowHeadCost * 4;
+        }
+
+        // Apply Damage type CF
+        if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType == "cut") {
+          arrowHeadCost = arrowHeadCost * 0.9;
+        }
+        else if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType == "pi") {
+          arrowHeadCost = arrowHeadCost * 0.8;
+        }
+        else if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType == "cr") {
+          arrowHeadCost = arrowHeadCost * 0.7;
+        }
+
+        this.data.data.bowDesign.arrows[arrowKeys[i]].cost = (arrowHeadCost * arrowCF) + shaftCost;
+
+        let efficiency = 1 / (1 + workingMass/this.data.data.bowDesign.arrows[arrowKeys[i]].weight);
+        let kineticEnergy = efficiency * potentialEnergy;
+
+        if (this.data.data.bowDesign.realisticBowScale) {
+          this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints = Math.sqrt(kineticEnergy) / 2.5;
+        }
+        else {
+          this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints = Math.sqrt(kineticEnergy) / 1.75;
+        }
+
+        this.data.data.bowDesign.arrows[arrowKeys[i]].minOuterDiameter = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].minOuterDiameter * 1000) / 1000;
+        this.data.data.bowDesign.arrows[arrowKeys[i]].weight = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].weight * 1000) / 1000;
+        this.data.data.bowDesign.arrows[arrowKeys[i]].cost = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].cost * 100) / 100;
+
+        console.log(this.data.data.bowDesign.arrows[arrowKeys[i]]);
+      }
     }
 
     // Only round things prior to display after all the actual math is done.
@@ -1793,8 +1843,8 @@ export class gurpsItem extends Item {
     this.data.data.bowDesign.riserThickness = Math.round(this.data.data.bowDesign.riserThickness * 100) / 100;
     this.data.data.weight = Math.round(this.data.data.weight * 100) / 100;
 
-    console.log(this.data.data.bowDesign)
-    console.log(this.data.data.bowDesign.arrow)
+    console.log(this.data.data.bowDesign);
+    console.log(this.data.data.bowDesign.arrows);
   }
 
   prepareAttackData() {
@@ -3242,7 +3292,7 @@ export class gurpsItem extends Item {
 
       info += "<tr>" +
           "<td>" +
-          "<p>This does not impact accuracy.</p>" +
+          "<p>Fine arrows are required to get the accuracy bonus from a Fine bow.</p>" +
           "</td>" +
           "</tr>";
 
@@ -3389,7 +3439,6 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-
     else if (id == "shaft-material-essential") {
       info = "<table>";
 
@@ -3408,7 +3457,85 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
+    else if (id == "arrowhead-damage-type") {
+      info = "<table>";
 
+      info += "<tr>" +
+          "<td>" +
+          "<p>Other wound modifiers beyond impaling are an option, and give a slight discount in projectile cost.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+
+      info += "<table>";
+
+      info += "<tr>" +
+          "<td>Damage Type</td><td>Price Multiplier</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Impaling</td><td>x1.0</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Piercing</td><td>x0.9</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Cutting</td><td>x0.8</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Crushing</td><td>x0.7</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "arrowhead-ad") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Arrows with AD (0.5) are x0.8 cost, and AD (2) is x4</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "arrowhead-barbed") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Barbed arrows must be removed with a First Aid or Surgery roll or they do half damage coming out.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "arrowhead-weight") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Heavier arrowheads tend to do more damage at the expense of range.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "arrow-stats") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>This is the final cost and weight per individual arrow.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
     this.data.data.info = info;
 
     this.update({ 'data.info': this.data.data.info });
