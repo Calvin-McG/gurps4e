@@ -3368,8 +3368,13 @@ export class gurpsItem extends Item {
 
       info += "<tr>" +
           "<td>" +
-          "<p>Rather than use a specific essential material, this checkbox makes whatever material you've selected essential, making it three times as strong. " +
-          "This is not terribly useful for arrows. Once you reach a certain point, the arrow is plenty strong enough as is. " +
+          "<p>Rather than use a specific essential material, this checkbox makes whatever material you've selected essential, making it three times as strong.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>This is not terribly useful for arrows. Once you reach a certain point, the arrow is plenty strong enough as is. " +
           "Unless you're trying to design ultra-light arrows this is really not worth the trouble or expense.</p>" +
           "</td>" +
           "</tr>";
