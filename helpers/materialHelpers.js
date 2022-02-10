@@ -26,6 +26,8 @@ export class materialHelpers {
             essentialMaterial.elasticModulusPsi = essentialMaterial.elasticModulusPsi * 9;
             essentialMaterial.tensileStPsi = essentialMaterial.tensileStPsi / 3;
         }
+
+        return material;
     }
 
     static fetchBowMaterials() {
