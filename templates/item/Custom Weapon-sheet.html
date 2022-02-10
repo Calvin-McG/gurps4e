@@ -724,6 +724,115 @@
                                 </td>
                             </tr>
                         </table>
+
+                        <h2 class="bold" style="text-align: center; margin-top: 20px">Projectile Design</h2>
+                        <table>
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Shaft Length:
+                                </td>
+                                <td>
+                                    <input type="number" name="data.bowDesign.arrow.length" value="{{data.data.bowDesign.arrow.length}}" data-dtype="Number"/>
+                                </td>
+                                <td class="question-container" id="shaft-length">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Shaft Material
+                                </td>
+                                <td>
+                                    <select name="data.bowDesign.arrow.material">
+                                        {{#select data.data.bowDesign.arrow.material}}
+                                        {{#each data.data.bowDesign.materials as |material id|}}
+                                        {{#ifCond ../data.data.tl '>=' material.tl}}
+                                        <option value="{{material.name}}">{{material.name}}</option>
+                                        {{/ifCond}}
+                                        {{/each}}
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="shaft-material">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Arrow Quality:
+                                </td>
+                                <td>
+                                    <select name="data.bowDesign.arrow.quality">
+                                        {{#select data.data.bowDesign.arrow.quality}}
+                                        <option value="cheap">Cheap</option>
+                                        <option value="good">Good</option>
+                                        <option value="fine">Fine (Accurate)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="arrow-quality">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Arrow Outer Diameter
+                                </td>
+                                <td>
+                                    <input type="number" name="data.bowDesign.arrow.outerDiameter" value="{{data.data.bowDesign.arrow.outerDiameter}}" data-dtype="Number"/>
+                                </td>
+                                <td class="question-container" id="arrow-outer-diameter">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Arrow Inner Diameter
+                                </td>
+                                <td>
+                                    <input type="number" name="data.bowDesign.arrow.innerDiameter" value="{{data.data.bowDesign.arrow.innerDiameter}}" data-dtype="Number"/>
+                                </td>
+                                <td class="question-container" id="arrow-inner-diameter">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Arrowhead
+                                </td>
+                                <td>
+                                    <select name="data.bowDesign.arrow.arrowhead">
+                                        {{#select data.data.bowDesign.arrow.arrowhead}}
+                                        {{#each data.data.bowDesign.arrowheads as |arrowhead id|}}
+                                        {{#ifCond ../data.data.tl '>=' arrowhead.tl}}
+                                        <option value="{{arrowhead.style}}">{{arrowhead.style}}</option>
+                                        {{/ifCond}}
+                                        {{/each}}
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="arrowhead">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
@@ -1225,6 +1334,19 @@
                                 </td>
                             </tr>
                             {{/if}}
+                        </table>
+
+                        <h2 class="bold" style="text-align: center; margin-top: 20px">Damage Output</h2>
+                        <table>
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px" colspan="2">
+                                </td>
+                                <td class="question-container" id="bow-damage-output">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                     <div style="width: 50%;">

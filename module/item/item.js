@@ -1352,6 +1352,19 @@ export class gurpsItem extends Item {
         "realisticBowScale": false,
         "loops": 1,
         "damagePoints": 0,
+        "arrow": "",
+        "arrowheads": ""
+      }
+    }
+
+    if (typeof this.data.data.bowDesign.arrow == "undefined") { // If the arrow block hasn't yet been created
+      this.data.data.bowDesign.arrow = {
+        "length": 0,
+        "material": "",
+        "quality": "good",
+        "outerDiameter": 0.5,
+        "innerDiameter": 0,
+        "arrowhead": "War, Light"
       }
     }
 
@@ -1452,6 +1465,20 @@ export class gurpsItem extends Item {
       }
     }
 
+    if (typeof this.data.data.bowDesign.arrow.material == "undefined") { // If the material block hasn't yet been created
+      this.data.data.bowDesign.arrow.material = { // Create it
+        "a": 0,
+        "densityLbsCuIn": 0,
+        "elasticModulusPsi": 0,
+        "name": "",
+        "tensileStPsi": 0,
+        "tl": 0,
+        "maxStrain": 0,
+        "bowCostPerLb": 0,
+        "arrowCostPerLb": 0,
+      }
+    }
+
     if (typeof this.data.data.bowDesign.arrows == "undefined") { // If the arrows block hasn't yet been created
       this.data.data.bowDesign.arrows = []
     }
@@ -1488,6 +1515,9 @@ export class gurpsItem extends Item {
 
     // Get materials
     this.data.data.bowDesign.materials = game.materialAPI.fetchBowMaterials();
+
+    // Get arrowheads
+    this.data.data.bowDesign.arrowheads = game.materialAPI.fetchArrowheads();
 
     // Do actual code stuff
     this.data.data.bowDesign.type = type;
@@ -1560,6 +1590,9 @@ export class gurpsItem extends Item {
     this.data.data.bowDesign.riserMaterialTwo   = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.riserMaterialTwo.name);
     this.data.data.bowDesign.stockMaterialOne   = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.stockMaterialOne.name);
     this.data.data.bowDesign.stockMaterialTwo   = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.stockMaterialTwo.name);
+
+    this.data.data.bowDesign.arrow.material = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.arrow.material.name);
+    this.data.data.bowDesign.arrow.arrowhead = game.materialAPI.getArrowheadByName(this.data.data.bowDesign.arrow.arrowhead.style);
 
     // Calculate the inferred values
     if (typeof this.data.data.bowDesign.workingMaterialOne != "undefined") {
@@ -3136,6 +3169,186 @@ export class gurpsItem extends Item {
           "<p>Cheap bows are less expensive and less accurate, Fine bows are more expensive and more accurate.</p>" +
           "</td>" +
           "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "shaft-length") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Longer arrows are heavier, heavier arrows generally do more damage but have a shorter range.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Arrows must be as long as the draw length, otherwise you can do pretty much whatever you like.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "shaft-material") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>You want a material with a low buckling constant that helps meet the weight you're trying to aim for.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "arrow-quality") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>This does not impact accuracy.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "arrow-outer-diameter") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>The second number is the minimum arrow thickness based on the force put on the arrow. Beyond that you can make the arrow as thick as you like.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "arrow-inner-diameter") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>If this is zero, the arrow is solid. If it's not zero, the arrow is not solid.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>You can use this to tune the weight of the arrow, but in general I suggest leaving it at zero.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "arrowhead") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>Style</td>" +
+          "<td>Wound Mod</td>" +
+          "<td>AD</td>" +
+          "<td>Weight</td>" +
+          "<td>Cost</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Field or Target</td>" +
+          "<td>pi</td>" +
+          "<td>(0.5)</td>" +
+          "<td>0.015</td>" +
+          "<td>$0.50</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Hunting Broadhead</td>" +
+          "<td>imp</td>" +
+          "<td>(1)</td>" +
+          "<td>0.045</td>" +
+          "<td>$2.25</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Hunting Broadhead, Heavy</td>" +
+          "<td>imp</td>" +
+          "<td>(1)</td>" +
+          "<td>0.09</td>" +
+          "<td>$4.50</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>War, Light</td>" +
+          "<td>imp</td>" +
+          "<td>(1)</td>" +
+          "<td>0.02</td>" +
+          "<td>$1</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>War, Light, Barbed</td>" +
+          "<td>imp</td>" +
+          "<td>(1)</td>" +
+          "<td>0.05</td>" +
+          "<td>$2.50</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>War, Heavy</td>" +
+          "<td>imp</td>" +
+          "<td>(1)</td>" +
+          "<td>0.05</td>" +
+          "<td>$2.50</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>War, Heavy, Barbed</td>" +
+          "<td>imp</td>" +
+          "<td>(1)</td>" +
+          "<td>0.075</td>" +
+          "<td>$3.75</td>" +
+          "</tr>";
+
+      if (this.data.data.tl >= 4) {
+        info += "<tr>" +
+            "<td>War, Light, AP</td>" +
+            "<td>imp</td>" +
+            "<td>(2)</td>" +
+            "<td>0.025</td>" +
+            "<td>$5</td>" +
+            "</tr>";
+
+        info += "<tr>" +
+            "<td>War, Light, Barbed, AP</td>" +
+            "<td>imp</td>" +
+            "<td>(2)</td>" +
+            "<td>0.05</td>" +
+            "<td>$10</td>" +
+            "</tr>";
+
+        info += "<tr>" +
+            "<td>War, Heavy, AP</td>" +
+            "<td>imp</td>" +
+            "<td>(2)</td>" +
+            "<td>0.055</td>" +
+            "<td>$11</td>" +
+            "</tr>";
+
+        info += "<tr>" +
+            "<td>War, Heavy, Barbed, AP</td>" +
+            "<td>imp</td>" +
+            "<td>(2)</td>" +
+            "<td>0.075</td>" +
+            "<td>$15</td>" +
+            "</tr>";
+      }
+
+      if (this.data.data.tl >= 7) {
+        info += "<tr>" +
+            "<td>Hunting Broadhead, Modern</td>" +
+            "<td>imp</td>" +
+            "<td>(1)</td>" +
+            "<td>0.015</td>" +
+            "<td>$7.50</td>" +
+            "</tr>";
+      }
 
       info += "</table>"
     }
