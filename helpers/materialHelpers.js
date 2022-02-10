@@ -532,11 +532,11 @@ export class materialHelpers {
         return materials;
     }
 
-    static getArrowheadByName(name) {
+    static getArrowheadByName(style) {
         const arrowheads = this.fetchArrowheads();
         let selectedArrowhead;
         arrowheads.forEach( arrowhead => {
-            if (arrowhead.name.toLowerCase() == name.toLowerCase()) {
+            if (arrowhead.style.toLowerCase() == style.toLowerCase()) {
                 selectedArrowhead = arrowhead;
             }
         })

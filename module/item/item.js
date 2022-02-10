@@ -1591,8 +1591,13 @@ export class gurpsItem extends Item {
     this.data.data.bowDesign.stockMaterialOne   = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.stockMaterialOne.name);
     this.data.data.bowDesign.stockMaterialTwo   = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.stockMaterialTwo.name);
 
-    this.data.data.bowDesign.arrow.material = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.arrow.material.name);
-    this.data.data.bowDesign.arrow.arrowhead = game.materialAPI.getArrowheadByName(this.data.data.bowDesign.arrow.arrowhead.style);
+    if (typeof this.data.data.bowDesign.arrow.material.name != "undefined") {
+      this.data.data.bowDesign.arrow.material = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.arrow.material.name);
+    }
+
+    if (typeof this.data.data.bowDesign.arrow.arrowhead.style != "undefined") {
+      this.data.data.bowDesign.arrow.arrowhead = game.materialAPI.getArrowheadByName(this.data.data.bowDesign.arrow.arrowhead.style);
+    }
 
     // Calculate the inferred values
     if (typeof this.data.data.bowDesign.workingMaterialOne != "undefined") {
@@ -1758,6 +1763,9 @@ export class gurpsItem extends Item {
     this.data.data.bowDesign.stockThickness = Math.round(this.data.data.bowDesign.stockThickness * 100) / 100;
     this.data.data.bowDesign.riserThickness = Math.round(this.data.data.bowDesign.riserThickness * 100) / 100;
     this.data.data.weight = Math.round(this.data.data.weight * 100) / 100;
+
+    console.log(this.data.data.bowDesign)
+    console.log(this.data.data.bowDesign.arrow)
   }
 
   prepareAttackData() {

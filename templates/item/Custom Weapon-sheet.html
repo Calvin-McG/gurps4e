@@ -746,8 +746,8 @@
                                     Shaft Material
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.arrow.material">
-                                        {{#select data.data.bowDesign.arrow.material}}
+                                    <select name="data.bowDesign.arrow.material.name">
+                                        {{#select data.data.bowDesign.arrow.material.name}}
                                         {{#each data.data.bowDesign.materials as |material id|}}
                                         {{#ifCond ../data.data.tl '>=' material.tl}}
                                         <option value="{{material.name}}">{{material.name}}</option>
@@ -816,7 +816,7 @@
                                     Arrowhead
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.arrow.arrowhead">
+                                    <select name="data.bowDesign.arrow.arrowhead.style">
                                         {{#select data.data.bowDesign.arrow.arrowhead}}
                                         {{#each data.data.bowDesign.arrowheads as |arrowhead id|}}
                                         {{#ifCond ../data.data.tl '>=' arrowhead.tl}}
