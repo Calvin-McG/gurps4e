@@ -531,4 +531,119 @@ export class materialHelpers {
 
         return materials;
     }
+
+    static getArrowheadByName(name) {
+        const arrowheads = this.fetchArrowheads();
+        let selectedArrowhead;
+        arrowheads.forEach( arrowhead => {
+            if (arrowhead.name.toLowerCase() == name.toLowerCase()) {
+                selectedArrowhead = arrowhead;
+            }
+        })
+
+        return selectedArrowhead;
+    }
+
+    static fetchArrowheads() {
+        const materials = [
+            {
+                "style"     : "Field or Target",
+                "woundMod"  : "pi",
+                "ad"        : 0.5,
+                "weight"    : 0.015,
+                "cost"      : 0.50,
+                "tl"        : 0,
+            },
+            {
+                "style"     : "Hunting Broadhead",
+                "woundMod"  : "imp",
+                "ad"        : 1,
+                "weight"    : 0.045,
+                "cost"      : 2.25,
+                "tl"        : 0,
+            },
+            {
+                "style"     : "Hunting Broadhead, Heavy",
+                "woundMod"  : "imp",
+                "ad"        : 1,
+                "weight"    : 0.09,
+                "cost"      : 4.50,
+                "tl"        : 0,
+            },
+            {
+                "style"     : "War, Light",
+                "woundMod"  : "imp",
+                "ad"        : 1,
+                "weight"    : 0.02,
+                "cost"      : 1,
+                "tl"        : 0,
+            },
+            {
+                "style"     : "War, Light, Barbed",
+                "woundMod"  : "imp",
+                "ad"        : 1,
+                "weight"    : 0.05,
+                "cost"      : 2.50,
+                "tl"        : 0,
+            },
+            {
+                "style"     : "War, Heavy",
+                "woundMod"  : "imp",
+                "ad"        : 1,
+                "weight"    : 0.05,
+                "cost"      : 2.50,
+                "tl"        : 0,
+            },
+            {
+                "style"     : "War, Heavy, Barbed",
+                "woundMod"  : "imp",
+                "ad"        : 1,
+                "weight"    : 0.075,
+                "cost"      : 3.75,
+                "tl"        : 0,
+            },
+            {
+                "style"     : "War, Light, AP",
+                "woundMod"  : "imp",
+                "ad"        : 2,
+                "weight"    : 0.025,
+                "cost"      : 5,
+                "tl"        : 4,
+            },
+            {
+                "style"     : "War, Light, Barbed, AP",
+                "woundMod"  : "imp",
+                "ad"        : 2,
+                "weight"    : 0.05,
+                "cost"      : 10,
+                "tl"        : 4,
+            },
+            {
+                "style"     : "War, Heavy, AP",
+                "woundMod"  : "imp",
+                "ad"        : 2,
+                "weight"    : 0.055,
+                "cost"      : 11,
+                "tl"        : 4,
+            },
+            {
+                "style"     : "War, Heavy, Barbed, AP",
+                "woundMod"  : "imp",
+                "ad"        : 2,
+                "weight"    : 0.075,
+                "cost"      : 15,
+                "tl"        : 4,
+            },
+            {
+                "style"     : "Hunting Broadhead, Modern",
+                "woundMod"  : "imp",
+                "ad"        : 1,
+                "weight"    : 0.015,
+                "cost"      : 7.50,
+                "tl"        : 4,
+            },
+        ]
+
+        return materials;
+    }
 }
