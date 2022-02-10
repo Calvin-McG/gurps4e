@@ -1361,6 +1361,7 @@ export class gurpsItem extends Item {
       this.data.data.bowDesign.arrow = {
         "length": 0,
         "material": "",
+        "materialEssential": false,
         "quality": "good",
         "outerDiameter": 0.5,
         "innerDiameter": 0,
@@ -1508,10 +1509,11 @@ export class gurpsItem extends Item {
     }
 
     // Get game settings
-    this.data.data.bowDesign.magicalMaterials = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
-    this.data.data.bowDesign.compoundBowStrictTL = game.settings.get("gurps4e", "compoundBowStrictTL");
-    this.data.data.bowDesign.fixedBonusStrongbow = game.settings.get("gurps4e", "fixedBonusStrongbow");
-    this.data.data.bowDesign.realisticBowScale = game.settings.get("gurps4e", "realisticBowScale");
+    this.data.data.bowDesign.magicalMaterials         = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
+    this.data.data.bowDesign.compoundBowStrictTL      = game.settings.get("gurps4e", "compoundBowStrictTL");
+    this.data.data.bowDesign.fixedBonusStrongbow      = game.settings.get("gurps4e", "fixedBonusStrongbow");
+    this.data.data.bowDesign.realisticBowScale        = game.settings.get("gurps4e", "realisticBowScale");
+    this.data.data.bowDesign.simpleEssentialMaterials = game.settings.get("gurps4e", "simpleEssentialMaterials");
 
     // Get materials
     this.data.data.bowDesign.materials = game.materialAPI.fetchBowMaterials();
@@ -3360,6 +3362,21 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
+
+    else if (id == "shaft-material-essential") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Rather than use a specific essential material, this checkbox makes whatever material you've selected essential, making it three times as strong. " +
+          "This is not terribly useful for arrows. Once you reach a certain point, the arrow is plenty strong enough as is. " +
+          "Unless you're trying to design ultra-light arrows this is really not worth the trouble or expense.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+
     this.data.data.info = info;
 
     this.update({ 'data.info': this.data.data.info });
