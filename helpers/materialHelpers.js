@@ -3,11 +3,13 @@ export class materialHelpers {
     static getBowMaterialByName(name) {
         const materials = this.fetchBowMaterials();
         let selectedMaterial;
-        materials.forEach( material => {
-            if (material.name.toLowerCase() == name.toLowerCase()) {
-                selectedMaterial = material;
-            }
-        })
+        if (typeof name != "undefined"){
+            materials.forEach( material => {
+                if (material.name.toLowerCase() == name.toLowerCase()) {
+                    selectedMaterial = material;
+                }
+            })
+        }
 
         return selectedMaterial;
     }

@@ -51,12 +51,14 @@ export class gurpsItemSheet extends ItemSheet {
         html.find('.addRangedRow').click(this._onAddRangedRow.bind(this));
         html.find('.addAfflictionRow').click(this._onAddAfflictionRow.bind(this));
         html.find('.addDefaultRow').click(this._onAddDefaultRow.bind(this));
+        html.find('.addArrowRow').click(this._onAddArrowRow.bind(this));
 
         // User clicked delete thingy on the row
         html.find('.attack-delete').click(this._onDeleteRow.bind(this));
         html.find('.ranged-delete').click(this._onDeleteRangedRow.bind(this));
         html.find('.affliction-delete').click(this._onDeleteAfflictionRow.bind(this));
         html.find('.default-delete').click(this._onDeleteDefaultRow.bind(this));
+        html.find('.deleteArrowRow').click(this._onDeleteArrowRow.bind(this));
 
         // Update body type
         html.find('.bodyType').change(this._onBodyTypeChange.bind(this));
@@ -86,6 +88,83 @@ export class gurpsItemSheet extends ItemSheet {
 
         // Mouseover event handlers
         html.find('.question-container').click(this._showHint.bind(this));
+    }
+
+    _onAddArrowRow(event) {
+        // If there's no arrow container, add one
+        if(typeof this.item.data.data.bowDesign.arrows == "undefined") {
+            this.item.data.data.bowDesign.arrows = [];
+        }
+        let keys = Object.keys(this.item.data.data.bowDesign.arrows); // Get the existing set of arrow keys
+        let newKey = 0; // Init the new key
+        if (keys.length){ // The list of keys is not empty
+            newKey = (+keys[keys.length-1] + +1); // Add the new one in at the end
+        }
+        else { // The list of keys is empty
+            newKey = 0; // Add the new one at the start of the empty list
+        }
+
+        let newRow = {
+            "length": 22,
+            "material": {
+                "a": 0,
+                "densityLbsCuIn": 0,
+                "elasticModulusPsi": 0,
+                "name": "Wood - White Pine",
+                "tensileStPsi": 0,
+                "tl": 0,
+                "maxStrain": 0,
+                "bowCostPerLb": 0,
+                "arrowCostPerLb": 0,
+            },
+            "materialEssential": false,
+            "quality": "good",
+            "outerDiameter": 0.5,
+            "minOuterDiameter": 0.5,
+            "innerDiameter": 0,
+            "arrowhead": {
+                "ad": "1",
+                "barbed": "no",
+                "damageType": "imp",
+                "weight": 0.04
+            },
+        }; // Init the new arrow row
+
+        this.item.data.data.bowDesign.arrows[newKey] = newRow;
+
+        this.item.update({ ["data"]: this.item.data.data }); // Add the new arrow to the list of melee keys
+    }
+
+    _onDeleteArrowRow(event) {
+        let confirmationModal = new Dialog({
+            title: "Are you sure?",
+            content: "<div style='width: 100%; text-align: center'>Are you sure?</div>",
+            buttons: {
+                delete: {
+                    icon: '<i class="fas fa-trash"></i>',
+                    label: "Delete",
+                    callback: () => {
+                        let id = event.currentTarget.id.substring(6);
+                        this.item.update({ ["data.bowDesign.arrows.-=" + id] : null});
+                    }
+                },
+                cancel: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: "Cancel",
+                    callback: () => {
+
+                    }
+                },
+            },
+            default: "cancel",
+            render: html => console.info("Register interactivity in the rendered dialog"),
+            close: html => console.info("This always is logged no matter which option is chosen")
+        },{
+            resizable: true,
+            width: "250"
+        })
+
+        confirmationModal.render(true);
     }
 
     _showHint(event) {

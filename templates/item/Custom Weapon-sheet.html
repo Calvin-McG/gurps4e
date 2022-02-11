@@ -386,8 +386,8 @@
                                     Bow Type
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.bowType">
-                                        {{#select data.data.bowDesign.bowType}}
+                                    <select name="data.bowDesign.bowConstruction">
+                                        {{#select data.data.bowDesign.bowConstruction}}
                                         <option value="straight">Straight</option>
                                         {{#ifCond data.data.tl '>=' 1}}
                                         <option value="recurve">Recurve</option>
@@ -412,6 +412,7 @@
                                 </td>
                             </tr>
 
+                            {{#if (eq data.data.bowDesign.bowConstruction "compound")}}
                             <tr class="design-row">
                                 <td style="width: 150px">
                                     String Loops / Pulleys
@@ -425,6 +426,7 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{/if}}
 
                             <tr class="design-row">
                                 <td style="width: 150px">
@@ -726,10 +728,8 @@
                         </table>
 
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Projectile Designs</h2>
-                        {{log data.data.bowDesign.arrows}}
                         {{#each data.data.bowDesign.arrows as |arrow id|}}
-                        {{log arrow}}
-                        <h2 class="bold" style="text-align: center; margin-top: 20px">Projectile {{id}}</h2>
+                        <h2 class="bold" style="text-align: center; margin-top: 20px">Projectile {{id}} <a class="deleteArrowRow" id="arroww{{id}}" title="Delete Row"><i class="fas fa-trash"></i></a></h2>
                         <table>
                             <tr class="design-row">
                                 <td style="width: 150px">
@@ -918,6 +918,9 @@
                             </tr>
                         </table>
                         {{/each}}
+                        <div>
+                            <a class="addArrowRow" title="Add Row"><h2 class="bold" style="text-align: center;">Add A New Projectile</h2></a>
+                        </div>
                     </div>
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
