@@ -1587,24 +1587,34 @@ export class gurpsItem extends Item {
 
     // Calculate the inferred values
     if (typeof this.data.data.bowDesign.workingMaterialOne != "undefined") {
-      this.data.data.bowDesign.workingMaterialOne.maxStrain = this.data.data.bowDesign.workingMaterialOne.tensileStPsi  / this.data.data.bowDesign.workingMaterialOne.elasticModulusPsi;
-      this.data.data.bowDesign.workingMaterialOne.bowCostPerLb  = Math.round(this.data.data.bowDesign.workingMaterialOne.tensileStPsi ** 2 / 100 / this.data.data.bowDesign.workingMaterialOne.elasticModulusPsi / this.data.data.bowDesign.workingMaterialOne.densityLbsCuIn*100)/100;
-      this.data.data.bowDesign.workingMaterialOne.arrowCostPerLb  = Math.round(this.data.data.bowDesign.workingMaterialOne.elasticModulusPsi / this.data.data.bowDesign.workingMaterialOne.densityLbsCuIn*1.25/9000000*100)/100;
+      this.data.data.bowDesign.workingMaterialOne.maxStrain      = this.data.data.bowDesign.workingMaterialOne.tensileStPsi  / this.data.data.bowDesign.workingMaterialOne.elasticModulusPsi;
+      this.data.data.bowDesign.workingMaterialOne.bowCostPerLb   = Math.round(this.data.data.bowDesign.workingMaterialOne.tensileStPsi ** 2 / 100 / this.data.data.bowDesign.workingMaterialOne.elasticModulusPsi / this.data.data.bowDesign.workingMaterialOne.densityLbsCuIn*100)/100;
+      this.data.data.bowDesign.workingMaterialOne.arrowCostPerLb = Math.round(this.data.data.bowDesign.workingMaterialOne.elasticModulusPsi / this.data.data.bowDesign.workingMaterialOne.densityLbsCuIn*1.25/9000000*100)/100;
     }
     if (typeof this.data.data.bowDesign.workingMaterialTwo != "undefined") {
-      this.data.data.bowDesign.workingMaterialTwo.maxStrain = this.data.data.bowDesign.workingMaterialTwo.tensileStPsi  / this.data.data.bowDesign.workingMaterialTwo.elasticModulusPsi;
-      this.data.data.bowDesign.workingMaterialTwo.bowCostPerLb  = Math.round(this.data.data.bowDesign.workingMaterialTwo.tensileStPsi ** 2 / 100 / this.data.data.bowDesign.workingMaterialTwo.elasticModulusPsi / this.data.data.bowDesign.workingMaterialTwo.densityLbsCuIn*100)/100;
-      this.data.data.bowDesign.workingMaterialTwo.arrowCostPerLb  = Math.round(this.data.data.bowDesign.workingMaterialTwo.elasticModulusPsi / this.data.data.bowDesign.workingMaterialTwo.densityLbsCuIn*1.25/9000000*100)/100;
+      this.data.data.bowDesign.workingMaterialTwo.maxStrain      = this.data.data.bowDesign.workingMaterialTwo.tensileStPsi  / this.data.data.bowDesign.workingMaterialTwo.elasticModulusPsi;
+      this.data.data.bowDesign.workingMaterialTwo.bowCostPerLb   = Math.round(this.data.data.bowDesign.workingMaterialTwo.tensileStPsi ** 2 / 100 / this.data.data.bowDesign.workingMaterialTwo.elasticModulusPsi / this.data.data.bowDesign.workingMaterialTwo.densityLbsCuIn*100)/100;
+      this.data.data.bowDesign.workingMaterialTwo.arrowCostPerLb = Math.round(this.data.data.bowDesign.workingMaterialTwo.elasticModulusPsi / this.data.data.bowDesign.workingMaterialTwo.densityLbsCuIn*1.25/9000000*100)/100;
     }
     if (typeof this.data.data.bowDesign.riserMaterialOne != "undefined") {
-      this.data.data.bowDesign.riserMaterialOne.maxStrain   = this.data.data.bowDesign.riserMaterialOne.tensileStPsi    / this.data.data.bowDesign.riserMaterialOne.elasticModulusPsi;
-      this.data.data.bowDesign.riserMaterialOne.bowCostPerLb    = Math.round(this.data.data.bowDesign.riserMaterialOne.tensileStPsi   ** 2 / 100 / this.data.data.bowDesign.riserMaterialOne.elasticModulusPsi   / this.data.data.bowDesign.riserMaterialOne.densityLbsCuIn*100)/100;
-      this.data.data.bowDesign.riserMaterialOne.arrowCostPerLb    = Math.round(this.data.data.bowDesign.riserMaterialOne.elasticModulusPsi / this.data.data.bowDesign.riserMaterialOne.densityLbsCuIn*1.25/9000000*100)/100;
+      this.data.data.bowDesign.riserMaterialOne.maxStrain      = this.data.data.bowDesign.riserMaterialOne.tensileStPsi    / this.data.data.bowDesign.riserMaterialOne.elasticModulusPsi;
+      this.data.data.bowDesign.riserMaterialOne.bowCostPerLb   = Math.round(this.data.data.bowDesign.riserMaterialOne.tensileStPsi   ** 2 / 100 / this.data.data.bowDesign.riserMaterialOne.elasticModulusPsi   / this.data.data.bowDesign.riserMaterialOne.densityLbsCuIn*100)/100;
+      this.data.data.bowDesign.riserMaterialOne.arrowCostPerLb = Math.round(this.data.data.bowDesign.riserMaterialOne.elasticModulusPsi / this.data.data.bowDesign.riserMaterialOne.densityLbsCuIn*1.25/9000000*100)/100;
     }
     if (typeof this.data.data.bowDesign.riserMaterialTwo != "undefined") {
-      this.data.data.bowDesign.riserMaterialTwo.maxStrain   = this.data.data.bowDesign.riserMaterialTwo.tensileStPsi    / this.data.data.bowDesign.riserMaterialTwo.elasticModulusPsi;
-      this.data.data.bowDesign.riserMaterialTwo.bowCostPerLb    = Math.round(this.data.data.bowDesign.riserMaterialTwo.tensileStPsi   ** 2 / 100 / this.data.data.bowDesign.riserMaterialTwo.elasticModulusPsi   / this.data.data.bowDesign.riserMaterialTwo.densityLbsCuIn*100)/100;
-      this.data.data.bowDesign.riserMaterialTwo.arrowCostPerLb    = Math.round(this.data.data.bowDesign.riserMaterialTwo.elasticModulusPsi / this.data.data.bowDesign.riserMaterialTwo.densityLbsCuIn*1.25/9000000*100)/100;
+      this.data.data.bowDesign.riserMaterialTwo.maxStrain      = this.data.data.bowDesign.riserMaterialTwo.tensileStPsi    / this.data.data.bowDesign.riserMaterialTwo.elasticModulusPsi;
+      this.data.data.bowDesign.riserMaterialTwo.bowCostPerLb   = Math.round(this.data.data.bowDesign.riserMaterialTwo.tensileStPsi   ** 2 / 100 / this.data.data.bowDesign.riserMaterialTwo.elasticModulusPsi   / this.data.data.bowDesign.riserMaterialTwo.densityLbsCuIn*100)/100;
+      this.data.data.bowDesign.riserMaterialTwo.arrowCostPerLb = Math.round(this.data.data.bowDesign.riserMaterialTwo.elasticModulusPsi / this.data.data.bowDesign.riserMaterialTwo.densityLbsCuIn*1.25/9000000*100)/100;
+    }
+    if (typeof this.data.data.bowDesign.stockMaterialOne != "undefined") {
+      this.data.data.bowDesign.stockMaterialOne.maxStrain      = this.data.data.bowDesign.stockMaterialOne.tensileStPsi    / this.data.data.bowDesign.stockMaterialOne.elasticModulusPsi;
+      this.data.data.bowDesign.stockMaterialOne.bowCostPerLb   = Math.round(this.data.data.bowDesign.stockMaterialOne.tensileStPsi   ** 2 / 100 / this.data.data.bowDesign.stockMaterialOne.elasticModulusPsi   / this.data.data.bowDesign.stockMaterialOne.densityLbsCuIn*100)/100;
+      this.data.data.bowDesign.stockMaterialOne.arrowCostPerLb = Math.round(this.data.data.bowDesign.stockMaterialOne.elasticModulusPsi / this.data.data.bowDesign.stockMaterialOne.densityLbsCuIn*1.25/9000000*100)/100;
+    }
+    if (typeof this.data.data.bowDesign.stockMaterialTwo != "undefined") {
+      this.data.data.bowDesign.stockMaterialTwo.maxStrain      = this.data.data.bowDesign.stockMaterialTwo.tensileStPsi    / this.data.data.bowDesign.stockMaterialTwo.elasticModulusPsi;
+      this.data.data.bowDesign.stockMaterialTwo.bowCostPerLb   = Math.round(this.data.data.bowDesign.stockMaterialTwo.tensileStPsi   ** 2 / 100 / this.data.data.bowDesign.stockMaterialTwo.elasticModulusPsi   / this.data.data.bowDesign.stockMaterialTwo.densityLbsCuIn*100)/100;
+      this.data.data.bowDesign.stockMaterialTwo.arrowCostPerLb = Math.round(this.data.data.bowDesign.stockMaterialTwo.elasticModulusPsi / this.data.data.bowDesign.stockMaterialTwo.densityLbsCuIn*1.25/9000000*100)/100;
     }
 
     // Put together the average values
@@ -1628,7 +1638,7 @@ export class gurpsItem extends Item {
         "tensileStPsi": (this.data.data.bowDesign.riserMaterialOne.tensileStPsi + this.data.data.bowDesign.riserMaterialTwo.tensileStPsi) / 2,
         "tl": Math.max(this.data.data.bowDesign.riserMaterialOne.tl + this.data.data.bowDesign.riserMaterialTwo.tl),
         "maxStrain": (this.data.data.bowDesign.riserMaterialOne.maxStrain + this.data.data.bowDesign.riserMaterialTwo.maxStrain) / 2,
-        "bowCostPerLb": (this.data.data.bowDesign.riserMaterialOne.bowCostPerLb + this.data.data.bowDesign.riserMaterialTwo.bowCostPerLb) / 2,
+        "bowCostPerLb": ((this.data.data.bowDesign.riserMaterialOne.bowCostPerLb + this.data.data.bowDesign.riserMaterialTwo.bowCostPerLb) / 2) / 5,
         "arrowCostPerLb": (this.data.data.bowDesign.riserMaterialOne.arrowCostPerLb + this.data.data.bowDesign.riserMaterialTwo.arrowCostPerLb) / 2,
       }
     }
@@ -1640,7 +1650,7 @@ export class gurpsItem extends Item {
         "tensileStPsi": (this.data.data.bowDesign.stockMaterialOne.tensileStPsi + this.data.data.bowDesign.stockMaterialTwo.tensileStPsi) / 2,
         "tl": Math.max(this.data.data.bowDesign.stockMaterialOne.tl + this.data.data.bowDesign.stockMaterialTwo.tl),
         "maxStrain": (this.data.data.bowDesign.stockMaterialOne.maxStrain + this.data.data.bowDesign.stockMaterialTwo.maxStrain) / 2,
-        "bowCostPerLb": (this.data.data.bowDesign.stockMaterialOne.bowCostPerLb + this.data.data.bowDesign.stockMaterialTwo.bowCostPerLb) / 2,
+        "bowCostPerLb": ((this.data.data.bowDesign.stockMaterialOne.bowCostPerLb + this.data.data.bowDesign.stockMaterialTwo.bowCostPerLb) / 2) / 10,
         "arrowCostPerLb": (this.data.data.bowDesign.stockMaterialOne.arrowCostPerLb + this.data.data.bowDesign.stockMaterialTwo.arrowCostPerLb) / 2,
       }
     }
@@ -1852,6 +1862,25 @@ export class gurpsItem extends Item {
       }
     }
 
+    this.data.data.cost = limbsWeight * this.data.data.bowDesign.workingMaterialAvg.bowCostPerLb + riserWeight * this.data.data.bowDesign.riserMaterialAvg.bowCostPerLb + stockWeight * this.data.data.bowDesign.stockMaterialAvg.bowCostPerLb
+
+    if (this.data.data.bowDesign.quality == "fine") {
+      this.data.data.cost = this.data.data.cost * 4;
+    }
+    else if (this.data.data.bowDesign.quality == "cheap") {
+      this.data.data.cost = this.data.data.cost * 0.7;
+    }
+
+    if (this.data.data.bowDesign.bowConstruction == "recurve") {
+      this.data.data.cost = this.data.data.cost * 1.25;
+    }
+    else if (this.data.data.bowDesign.bowConstruction == "reflex") {
+      this.data.data.cost = this.data.data.cost * 1.5;
+    }
+    else if (this.data.data.bowDesign.bowConstruction == "compound") {
+      this.data.data.cost = this.data.data.cost * 2;
+    }
+
     // TODO - Each arrow generates a combat profile that can be added to the character sheet with a checkbox like in the laser tab
 
     // Only round things prior to display after all the actual math is done.
@@ -1860,6 +1889,9 @@ export class gurpsItem extends Item {
     this.data.data.bowDesign.stockThickness = Math.round(this.data.data.bowDesign.stockThickness * 100) / 100;
     this.data.data.bowDesign.riserThickness = Math.round(this.data.data.bowDesign.riserThickness * 100) / 100;
     this.data.data.weight = Math.round(this.data.data.weight * 100) / 100;
+    this.data.data.ttlWeight = this.data.data.weight * this.data.data.quantity;
+    this.data.data.cost = Math.round(this.data.data.cost * 100) / 100;
+    this.data.data.ttlCost = this.data.data.cost * this.data.data.quantity;
 
     console.log(this)
     console.log(this.data.data.bowDesign)
