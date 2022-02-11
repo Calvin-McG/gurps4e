@@ -731,6 +731,20 @@
                         {{#each data.data.bowDesign.arrows as |arrow id|}}
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Projectile {{id}} <a class="deleteArrowRow" id="arroww{{id}}" title="Delete Row"><i class="fas fa-trash"></i></a></h2>
                         <table>
+                            <tr class="design-row">
+                                <td style="width: 160px">
+                                    Projectile Name:
+                                </td>
+                                <td>
+                                    <input type="text" name="data.bowDesign.arrows.{{id}}.name" value="{{arrow.name}}" data-dtype="String"/>
+                                </td>
+                                <td class="question-container" id="arrow-name">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
                             <tr class="design-row" style="{{{shaftLengthStyle arrow.validShaft}}}">
                                 <td style="width: 160px">
                                     Shaft Length:
@@ -939,6 +953,20 @@
                                     Acc: {{arrow.acc}}, Range: {{arrow.halfRange}} / {{arrow.range}}
                                 </td>
                                 <td class="question-container" id="acc-range">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 160px">
+                                    Show Profile
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.bowDesign.arrows.{{id}}.showProfile" {{checked arrow.showProfile}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="bow-show-profile">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>

@@ -1351,6 +1351,7 @@ export class gurpsItem extends Item {
         "realisticBowScale": false,
         "loops": 1,
         "arrows": [],
+        "showProfile": false,
       }
     }
 
@@ -1761,6 +1762,13 @@ export class gurpsItem extends Item {
       accFactor = 1
     }
 
+    if (this.data.data.bowDesign.type == "bow") {
+      this.data.data.bowDesign.st = Math.ceil(Math.sqrt(this.data.data.bowDesign.drawWeight*2));
+    }
+    else {
+      this.data.data.bowDesign.st = Math.ceil(Math.sqrt(5/8 * this.data.data.bowDesign.drawWeight));
+    }
+
     // Calculate Arrow Stuff
     let arrowKeys = Object.keys(this.data.data.bowDesign.arrows); // Get the arrow keys
     if (arrowKeys.length > 0) { // If there are actually keys
@@ -1881,7 +1889,7 @@ export class gurpsItem extends Item {
       this.data.data.cost = this.data.data.cost * 2;
     }
 
-    // TODO - Each arrow generates a combat profile that can be added to the character sheet with a checkbox like in the laser tab
+    this.addCustomBowProfiles()
 
     // Only round things prior to display after all the actual math is done.
     this.data.data.bowDesign.maxDrawLength = Math.round(this.data.data.bowDesign.maxDrawLength * 100) / 100;
@@ -1892,9 +1900,37 @@ export class gurpsItem extends Item {
     this.data.data.ttlWeight = this.data.data.weight * this.data.data.quantity;
     this.data.data.cost = Math.round(this.data.data.cost * 100) / 100;
     this.data.data.ttlCost = this.data.data.cost * this.data.data.quantity;
+  }
 
-    console.log(this)
-    console.log(this.data.data.bowDesign)
+  addCustomBowProfiles() {
+    // Calculate Arrow Stuff
+    let arrowKeys = Object.keys(this.data.data.bowDesign.arrows); // Get the arrow keys
+    if (arrowKeys.length > 0) { // If there are actually keys
+      let rangedProfiles = [];
+      for (let i = 0; i < arrowKeys.length; i++) {
+        if (this.data.data.bowDesign.arrows[arrowKeys[i]].showProfile) {
+          let profile = {
+            "name": this.data.name + " " + this.data.data.bowDesign.arrows[arrowKeys[i]].name,
+            "skill": this.data.data.bowDesign.skill,
+            "skillMod": this.data.data.bowDesign.skillMod,
+            "acc": this.data.data.bowDesign.arrows[arrowKeys[i]].acc,
+            "damageInput": this.data.data.bowDesign.arrows[arrowKeys[i]].dice,
+            "damageType": this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType,
+            "armorDivisor": this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.ad,
+            "range": this.data.data.bowDesign.arrows[arrowKeys[i]].halfRange + "/" + this.data.data.bowDesign.arrows[arrowKeys[i]].range,
+            "rof": "1",
+            "shots": "1",
+            "bulk": this.data.data.bowDesign.bulk,
+            "rcl": "2",
+            "st": this.data.data.bowDesign.st,
+            "malf": 17
+          }
+          rangedProfiles.push(profile);
+        }
+      }
+
+      this.data.data.ranged = rangedProfiles;
+    }
   }
 
   prepareAttackData() {
@@ -3609,6 +3645,28 @@ export class gurpsItem extends Item {
       info += "<tr>" +
           "<td>" +
           "<p>1/2D and Max range are given here, and due to the way arrows and bolts fly through the air, they can in fact be the same.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "bow-show-profile") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Check this box to show this projectile as a profile on the combat tab and combat macro.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "arrow-name") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>This name will be used in the display of the projectile on the combat tab and combat macro.</p>" +
           "</td>" +
           "</tr>";
 

@@ -1573,7 +1573,7 @@ export class gurpsActor extends Actor {
 		let affliction;
 
 		actor.data.items.forEach((item) => {
-			if (item.data.type == "Trait" || item.data.type == "Equipment" || item.data.type == "Spell"){
+			if (item.data.type == "Trait" || item.data.type == "Equipment" || item.data.type == "Spell" || item.data.type == "Custom Weapon"){
 				if (item.data.data.melee) {
 					let meleeKeys = Object.keys(item.data.data.melee); // Collect all the melee keys
 					for (let m = 0; m < meleeKeys.length; m++){
