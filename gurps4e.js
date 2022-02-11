@@ -111,4 +111,31 @@ Hooks.once('init', async function() {
   Handlebars.registerHelper("calcArrowCost", function(elasticModulusPsi, densityLbsCuIn) {
     return (Math.round(elasticModulusPsi / densityLbsCuIn*1.25/9000000*100)/100) + " $";
   });
+
+  Handlebars.registerHelper("drawLengthStyle", function(targetDraw, maxDraw) {
+    if (targetDraw > maxDraw) {
+      return "background-color: rgb( 255 0 0 / 50%) !important;";
+    }
+    else {
+      return "";
+    }
+  });
+
+  Handlebars.registerHelper("deflectionStyle", function(deflection) {
+    if (deflection > 50) {
+      return "background-color: rgb( 255 0 0 / 50%) !important;";
+    }
+    else {
+      return "";
+    }
+  });
+
+  Handlebars.registerHelper("shaftLengthStyle", function(validShaft) {
+    if (validShaft) {
+      return "background-color: rgb( 255 0 0 / 50%) !important;";
+    }
+    else {
+      return "";
+    }
+  });
 });

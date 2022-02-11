@@ -1460,6 +1460,11 @@ export class gurpsItem extends Item {
       this.data.data.bowDesign.workingPercentage = 0;
     }
 
+    // Cross section must not be zero or negative
+    if (!(this.data.data.bowDesign.crossSection > 0)) {
+      this.data.data.bowDesign.crossSection = 1;
+    }
+
     if (this.data.data.bowDesign.workingPercentage < 100) { // If working percent is not 100 then there must be a riser.
       this.data.data.bowDesign.riser = true;
     }
@@ -1745,6 +1750,13 @@ export class gurpsItem extends Item {
           if (this.data.data.bowDesign.arrows[arrowKeys[i]].materialEssential) {
             this.data.data.bowDesign.arrows[arrowKeys[i]].material = game.materialAPI.essentializeMaterial(this.data.data.bowDesign.arrows[arrowKeys[i]].material);
           }
+        }
+
+        if (this.data.data.bowDesign.arrows[arrowKeys[i]].length >= this.data.data.bowDesign.drawLength) {
+          this.data.data.bowDesign.arrows[arrowKeys[i]].validShaft = false;
+        }
+        else {
+          this.data.data.bowDesign.arrows[arrowKeys[i]].validShaft = true;
         }
 
         if (typeof this.data.data.bowDesign.arrows[arrowKeys[i]].material != "undefined") {
