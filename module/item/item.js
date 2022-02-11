@@ -1740,6 +1740,17 @@ export class gurpsItem extends Item {
     let potentialEnergy = this.data.data.bowDesign.drawWeight * this.data.data.bowDesign.drawLength * z; // Potential energy in joules.
     let workingMass = 37 * this.data.data.bowDesign.workingMaterialAvg.densityLbsCuIn * this.data.data.bowDesign.limbMinThickness ** 2 * Math.sqrt(this.data.data.bowDesign.crossSection / l);
 
+    // Bow Bulk
+    this.data.data.bowDesign.bulk = Math.round(9 - 9 * Math.log10(l + r + this.data.data.bowDesign.stockLength));
+
+    let accFactor = 0
+    if (this.data.data.bowDesign.type == "footbow") {
+      accFactor = -1
+    }
+    else if (this.data.data.bowDesign.type == "xbow") {
+      accFactor = 1
+    }
+
     // Calculate Arrow Stuff
     let arrowKeys = Object.keys(this.data.data.bowDesign.arrows); // Get the arrow keys
     if (arrowKeys.length > 0) { // If there are actually keys
@@ -1771,9 +1782,11 @@ export class gurpsItem extends Item {
 
           let arrowCF = 1;
           if (this.data.data.bowDesign.arrows[arrowKeys[i]].quality == "fine") {
+            accFactor += 1
             arrowCF = 3;
           }
           else if (this.data.data.bowDesign.arrows[arrowKeys[i]].quality == "cheap") {
+            accFactor -= 1
             arrowCF = 0.7;
           }
           else {
@@ -1819,9 +1832,22 @@ export class gurpsItem extends Item {
             this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints = Math.sqrt(kineticEnergy) / 1.75;
           }
 
+          let dice = Math.floor(this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints / 3.5);
+          let adds = Math.floor(this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints - (dice * 3.5));
+
+          this.data.data.bowDesign.arrows[arrowKeys[i]].dice = dice + "d6 + " + adds;
+
+          this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints * 100) / 100;
           this.data.data.bowDesign.arrows[arrowKeys[i]].minOuterDiameter = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].minOuterDiameter * 1000) / 1000;
           this.data.data.bowDesign.arrows[arrowKeys[i]].weight = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].weight * 1000) / 1000;
           this.data.data.bowDesign.arrows[arrowKeys[i]].cost = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].cost * 100) / 100;
+
+          this.data.data.bowDesign.arrows[arrowKeys[i]].range = Math.floor(0.34 * kineticEnergy / this.data.data.bowDesign.arrows[arrowKeys[i]].weight);
+          this.data.data.bowDesign.arrows[arrowKeys[i]].halfRange = Math.min(this.data.data.bowDesign.arrows[arrowKeys[i]].range, Math.floor(750 * this.data.data.bowDesign.arrows[arrowKeys[i]].weight/this.data.data.bowDesign.arrows[arrowKeys[i]].outerDiameter ** 2));
+
+          let v = Math.sqrt(5.28 * kineticEnergy / this.data.data.bowDesign.arrows[arrowKeys[i]].weight)
+
+          this.data.data.bowDesign.arrows[arrowKeys[i]].acc = Math.max(0, Math.min(4,  Math.round(3 * Math.log10(v) - this.data.data.bowDesign.bulk/2 - 7.5 + accFactor)));
         }
       }
     }
@@ -3523,6 +3549,34 @@ export class gurpsItem extends Item {
       info += "<tr>" +
           "<td>" +
           "<p>This is the final cost and weight per individual arrow.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "damage-points") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Number of damage points is on the left. That number converted to dice is on the right.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "acc-range") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Acc ranges between 0 and 4. Projectile velocity and weapon bulk positively impact Acc.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>1/2D and Max range are given here, and due to the way arrows and bolts fly through the air, they can in fact be the same.</p>" +
           "</td>" +
           "</tr>";
 
