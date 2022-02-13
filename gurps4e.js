@@ -138,4 +138,13 @@ Hooks.once('init', async function() {
       return "";
     }
   });
+
+  Handlebars.registerHelper("round", function(num, decimals) {
+    if (typeof num != "number") {
+      return num;
+    }
+    else {
+      return (Math.round(num * decimals) / decimals);
+    }
+  });
 });
