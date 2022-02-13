@@ -48,6 +48,9 @@ export class gurpsItem extends Item {
       case "Custom Weapon":
         this._prepareCustomWeaponData();
         break;
+      case "Custom Armour":
+        this._prepareCustomArmourData();
+        break;
       default: // not a supported type
         return ui.notifications.error("This type of item is not supported in the system!");
     }
@@ -98,6 +101,10 @@ export class gurpsItem extends Item {
   }
 
   _prepareEquipmentData() {
+    this.validateEquipmentBasics();
+  }
+
+  _prepareCustomArmourData() {
     this.validateEquipmentBasics();
   }
 

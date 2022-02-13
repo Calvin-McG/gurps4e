@@ -612,7 +612,7 @@
 						{{/unless}}
 
 						{{#each ../actor.data.items as |item id|}}
-							{{#if (or (eq type "Equipment") (eq type "Custom Weapon")) }}
+							{{#if (or (eq type "Equipment") (eq type "Custom Weapon") (eq type "Custom Armour")) }}
 								{{#if (eq item.data.data.subCategory category)}}
 									<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item.id}}">
 										<td class="item-image" style="width: 24px; padding: 0 2px">

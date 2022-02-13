@@ -292,7 +292,8 @@
       "Rollable",
       "Trait",
       "Spell",
-      "Custom Weapon"
+      "Custom Weapon",
+      "Custom Armour"
     ],
     "templates": {
       "base": {
@@ -389,6 +390,20 @@
       }
     },
     "Custom Weapon": {
+      "templates": [
+        "base",
+        "countable",
+        "subCategory",
+        "weighable",
+        "tl",
+        "lc",
+        "equipStatus",
+        "melee",
+        "ranged",
+        "affliction"
+      ]
+    },
+    "Custom Armour": {
       "templates": [
         "base",
         "countable",
