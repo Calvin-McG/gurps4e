@@ -32,27 +32,19 @@ Hooks.once("init", () => {
     type: Number
   });
 
-  game.settings.register("gurps4e", "armourAsDice", {
-    name: "Armour As Dice - WIP",
-    hint: "Pyramid 3/34. DR converts to dice at 1d per 3.5. These dice are subtracted from the the attack, then the remainder is rolled. Makes guns behave better in HT and UT, is less appropriate for fantasy games with melee weapons and muscle powered ranged weapons.",
+  // Register option for what counts as 'rear' when it comes to hit locations where that matters
+  game.settings.register("gurps4e", "literalRear", {
+    name: "Literal rear hit locations",
+    hint: "Certain hit location penalties vary depending on whether you're standing in front of or behind someone. When set to true, in front is the front 180 and behind is the rear 180. When set to false front is the front 240 and rear is the back 120",
     scope: "world",
     config: true,
-    default: false,
-    type: Boolean
-  });
-
-  game.settings.register("gurps4e", "bleeding", {
-    name: "Use Bleeding Rules - WIP",
-    hint: "",
-    scope: "world",
-    config: true,
-    default: false,
+    default: true,
     type: Boolean
   });
 
   game.settings.register("gurps4e", "rigidBluntTrauma", {
     name: "Extended Blunt Trauma",
-    hint: "Allows rigid armour to take blunt trauma",
+    hint: "Allows rigid armour to take blunt trauma.",
     scope: "world",
     config: true,
     default: false,
@@ -77,12 +69,13 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  game.settings.register("gurps4e", "edgeProtection", {
-    name: "Edge Protection - WIP",
-    hint: "Cutting attacks must double the target DR or do crushing damage instead",
+  game.settings.register("gurps4e", "gradualScalingForCustomArmour", {
+    name: "Gradual Scaling For Custom Armour",
+    hint: "Rather than assume every character in the same SM range has armour that weighs exactly the same, this option scales the armour weight to that exact character. " +
+        "This advantages characters at the bottom of an SM range and disadvantages those at the top, but only because it removes abuseable break-points.",
     scope: "world",
     config: true,
-    default: false,
+    default: true,
     type: Boolean
   });
 
@@ -98,15 +91,6 @@ Hooks.once("init", () => {
   game.settings.register("gurps4e", "allowSuperScienceCustomLasers", {
     name: "Allow Super Science Custom Lasers",
     hint: "Allows super science laser options like Graviton Beams. Also allows super science versions of non-super science weapons and super science power cells.",
-    scope: "world",
-    config: true,
-    default: false,
-    type: Boolean
-  });
-
-  game.settings.register("gurps4e", "allowMagicalMaterialsForCustom", {
-    name: "Allow Magical Materials For Custom Weapons",
-    hint: "Allows Essential Metal, Giant Spider Silk, etc, when creating custom weapons.",
     scope: "world",
     config: true,
     default: false,
@@ -150,8 +134,17 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  game.settings.register("gurps4e", "allowMagicalMaterialsForCustom", {
+    name: "Allow Magical Materials For Custom Weapons and Armour",
+    hint: "Allows Essential Metal, Giant Spider Silk, etc, when creating custom weapons and armour.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
   game.settings.register("gurps4e", "simpleEssentialMaterials", {
-    name: "Simple Essential Materials",
+    name: "Simple Essential Materials for Bows, Crossbows, and Footbows",
     hint: "Essential materials are supposed to be three times as strong. This option makes that the case. Tensile strength is 3x it's base value and that's it. " +
         "With this option off, tensile strength is 9x it's base value and elastic modulus is 3x it's base value. This results in a max strain that is three times the value of the base material. " +
         "Simple means that bows made with essential materials are better without actually needing to be designed specifically to take advantage of the new material. " +
@@ -161,15 +154,6 @@ Hooks.once("init", () => {
     default: true,
     type: Boolean
   });
-
-  // game.settings.register("gurps4e", "allowSuperScienceMaterialsForCustom", {
-  //   name: "Allow Super Science Materials For Custom Weapons",
-  //   hint: "Allows Essential Metal, Giant Spider Silk, etc, when creating custom weapons.",
-  //   scope: "world",
-  //   config: true,
-  //   default: false,
-  //   type: Boolean
-  // });
 
   // How to get the user who owns the actor: game.users.get((Object.keys(game.actors.getName("character name goes here").data.permission)[1])).data.name
   // game.settings.register("gurps4e", "bretMode", {
@@ -181,13 +165,30 @@ Hooks.once("init", () => {
   //   type: Boolean
   // });
 
-  // Register option for what counts as 'rear' when it comes to hit locations where that matters
-  game.settings.register("gurps4e", "literalRear", {
-    name: "Literal rear hit locations",
-    hint: "Certain hit location penalties vary depending on whether you're standing in front of or behind someone. When set to true, in front is the front 180 and behind is the rear 180. When set to false front is the front 240 and rear is the back 120",
+  game.settings.register("gurps4e", "edgeProtection", {
+    name: "Edge Protection - WIP",
+    hint: "Cutting attacks must double the target DR or do crushing damage instead",
     scope: "world",
     config: true,
-    default: true,
+    default: false,
+    type: Boolean
+  });
+
+  game.settings.register("gurps4e", "armourAsDice", {
+    name: "Armour As Dice - WIP",
+    hint: "Pyramid 3/34. DR converts to dice at 1d per 3.5. These dice are subtracted from the the attack, then the remainder is rolled. Makes guns behave better in HT and UT, is less appropriate for fantasy games with melee weapons and muscle powered ranged weapons.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
+  game.settings.register("gurps4e", "bleeding", {
+    name: "Use Bleeding Rules - WIP",
+    hint: "",
+    scope: "world",
+    config: true,
+    default: false,
     type: Boolean
   });
 
