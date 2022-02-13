@@ -264,7 +264,7 @@ export class gurpsActor extends Actor {
 		}
 
 		if (this.data.data.bio.tl.value == "" || this.data.data.bio.tl.value == null || typeof this.data.data.bio.tl.value == "undefined") {
-			this.data.data.bio.tl.value = 0;
+			this.data.data.bio.tl.value = game.settings.get("gurps4e", "campaignTL");
 		}
 	}
 

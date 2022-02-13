@@ -8,15 +8,15 @@
             <div class="equipmentDetails" id="equipmentDetails">
                 <div id="qty" class="equipmentStat">
                     <label class="resource-label">Qty:</label>
-                    <input type="text" name="data.quantity" value="{{data.data.quantity}}" data-dtype="Number"/>
+                    <input type="number" name="data.quantity" value="{{data.data.quantity}}" data-dtype="Number"/>
                 </div>
                 <div id="tl" class="equipmentStat">
                     <label class="resource-label">TL:</label>
-                    <input type="text" name="data.tl" value="{{data.data.tl}}" data-dtype="Number"/>
+                    <input type="number" name="data.tl" value="{{data.data.tl}}" data-dtype="Number"/>
                 </div>
                 <div id="lc" class="equipmentStat">
                     <label class="resource-label">LC:</label>
-                    <input type="text" name="data.lc" value="{{data.data.lc}}" data-dtype="Number"/>
+                    <input type="number" name="data.lc" value="{{data.data.lc}}" data-dtype="Number"/>
                 </div>
                 <div id="equipped" class="flexrow">
                     <select name="data.equipStatus" class="equipStatusSelect">
@@ -33,12 +33,12 @@
                 </div>
                 <div id="value" class="equipmentStatLong">
                     <label class="resource-label">Value:</label>
-                    <input type="text" name="data.cost" value="{{data.data.cost}}" data-dtype="Number"/>
+                    <input type="number" name="data.cost" value="{{data.data.cost}}" data-dtype="Number"/>
                     <label class="resource-label"> / {{data.data.ttlCost}}$ total</label>
                 </div>
                 <div id="weight" class="equipmentStatLong">
                     <label class="resource-label">Weight:</label>
-                    <input type="text" name="data.weight" value="{{data.data.weight}}" data-dtype="Number"/>
+                    <input type="number" name="data.weight" value="{{data.data.weight}}" data-dtype="Number"/>
                     <label class="resource-label"> / {{data.data.ttlWeight}}lbs total</label>
                 </div>
             </div>

@@ -23,6 +23,15 @@ Hooks.once("init", () => {
     game.materialAPI = materialHelpers;
   }
 
+  game.settings.register("gurps4e", "campaignTL", {
+    name: "Set the default campaign TL",
+    hint: "TLs can always be changed on the relevant item/actor/etc after the fact, but this sets the default value for new items/actors/etc. This is particularly helpful for new Custom Weapons and Armour where the TL controls which options are available.",
+    scope: "world",
+    config: true,
+    default: 8,
+    type: Number
+  });
+
   game.settings.register("gurps4e", "armourAsDice", {
     name: "Armour As Dice - WIP",
     hint: "Pyramid 3/34. DR converts to dice at 1d per 3.5. These dice are subtracted from the the attack, then the remainder is rolled. Makes guns behave better in HT and UT, is less appropriate for fantasy games with melee weapons and muscle powered ranged weapons.",
