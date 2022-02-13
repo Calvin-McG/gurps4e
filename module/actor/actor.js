@@ -1425,11 +1425,11 @@ export class gurpsActor extends Actor {
 				htmlContent += "<td>" + attacks.melee[x].name + "</td>";
 				htmlContent += "<td>" + attacks.melee[x].level + "</td>";
 
-				if(attacks.melee[x].armorDivisor == 1){//Only show armour divisor if it's something other than 1
+				if(attacks.melee[x].armourDivisor == 1){//Only show armour divisor if it's something other than 1
 					htmlContent += "<td>" + attacks.melee[x].damage + " " + attacks.melee[x].damageType + "</td>";
 				}
 				else {
-					htmlContent += "<td>" + attacks.melee[x].damage + " " + attacks.melee[x].damageType + " " + "(" + attacks.melee[x].armorDivisor + ")</td>";
+					htmlContent += "<td>" + attacks.melee[x].damage + " " + attacks.melee[x].damageType + " " + "(" + attacks.melee[x].armourDivisor + ")</td>";
 				}
 
 				htmlContent += "<td>" + attacks.melee[x].reach + "</td>";
@@ -1475,11 +1475,11 @@ export class gurpsActor extends Actor {
 				htmlContent += "<td>" + attacks.ranged[q].weapon + "</td>";
 				htmlContent += "<td>" + attacks.ranged[q].name + "</td>";
 				htmlContent += "<td>" + attacks.ranged[q].level + "</td>";
-				if(attacks.ranged[q].armorDivisor == 1){//Only show armour divisor if it's something other than 1
+				if(attacks.ranged[q].armourDivisor == 1){//Only show armour divisor if it's something other than 1
 					htmlContent += "<td>" + attacks.ranged[q].damage + " " + attacks.ranged[q].damageType + "</td>";
 				}
 				else {
-					htmlContent += "<td>" + attacks.ranged[q].damage + " " + attacks.ranged[q].damageType + " " + "(" + attacks.ranged[q].armorDivisor + ")</td>";
+					htmlContent += "<td>" + attacks.ranged[q].damage + " " + attacks.ranged[q].damageType + " " + "(" + attacks.ranged[q].armourDivisor + ")</td>";
 				}
 				htmlContent += "<td>" + (attacks.ranged[q].acc ? attacks.ranged[q].acc : 0) + "</td>";
 				htmlContent += "<td>" + attacks.ranged[q].range + "</td>";
@@ -1527,11 +1527,11 @@ export class gurpsActor extends Actor {
 				htmlContent += "<td>" + attacks.affliction[q].weapon + "</td>";
 				htmlContent += "<td>" + attacks.affliction[q].name + "</td>";
 				htmlContent += "<td>" + attacks.affliction[q].level + "</td>";
-				if(attacks.affliction[q].armorDivisor == 1){//Only show armour divisor if it's something other than 1
+				if(attacks.affliction[q].armourDivisor == 1){//Only show armour divisor if it's something other than 1
 					htmlContent += "<td>" + attacks.affliction[q].damage + " " + attacks.affliction[q].damageType + "</td>";
 				}
 				else {
-					htmlContent += "<td>" + attacks.affliction[q].damage + " " + attacks.affliction[q].damageType + " " + "(" + attacks.affliction[q].armorDivisor + ")</td>";
+					htmlContent += "<td>" + attacks.affliction[q].damage + " " + attacks.affliction[q].damageType + " " + "(" + attacks.affliction[q].armourDivisor + ")</td>";
 				}
 				htmlContent += "<td>" + attacks.affliction[q].resistanceRoll + " " + attacks.affliction[q].resistanceRollPenalty + "</td>";
 				htmlContent += "<td>" + attacks.affliction[q].ruleOf + "</td>";
@@ -2985,14 +2985,14 @@ export class gurpsActor extends Actor {
 		let largeArea		= false;
 		let armourDivisor;
 
-		if (typeof attack.armorDivisor == "undefined" || attack.armorDivisor == ""){ // Armour divisor is undefined or blank
+		if (typeof attack.armourDivisor == "undefined" || attack.armourDivisor == ""){ // Armour divisor is undefined or blank
 			armourDivisor = 1; // Set it to the default of 1
 		}
-		else if (attack.armorDivisor.toString().toLowerCase().includes("ignore") || attack.armorDivisor.toString().toLowerCase().includes("cosmic") || attack.armorDivisor.toString().toLowerCase().includes("i")){
+		else if (attack.armourDivisor.toString().toLowerCase().includes("ignore") || attack.armourDivisor.toString().toLowerCase().includes("cosmic") || attack.armourDivisor.toString().toLowerCase().includes("i")){
 			armourDivisor = "Ignores Armour"; // Set to a negative number, which we'll later use to ignore armour entirely.
 		}
 		else {
-			armourDivisor = attack.armorDivisor; // Set it to whatever they entered.
+			armourDivisor = attack.armourDivisor; // Set it to whatever they entered.
 		}
 
 		// The attack is large area attack

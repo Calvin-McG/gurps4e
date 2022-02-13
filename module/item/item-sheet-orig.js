@@ -333,7 +333,7 @@ export class gurpsItemSheet extends ItemSheet {
         let newRow = {
             "name": "",
             "resistanceRoll": "",
-            "armorDivisor": "I",
+            "armourDivisor": "I",
             "resistanceRollPenalty": 0,
             "ruleOf": 16
         };

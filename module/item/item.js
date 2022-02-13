@@ -1144,7 +1144,7 @@ export class gurpsItem extends Item {
         "acc": this.data.data.laserDesign.outputAcc,
         "damageInput": this.data.data.laserDesign.outputDamage,
         "damageType": this.data.data.laserDesign.damageType,
-        "armorDivisor": this.data.data.laserDesign.armourDivisor,
+        "armourDivisor": this.data.data.laserDesign.armourDivisor,
         "range": this.data.data.laserDesign.halfRange + " " + this.data.data.laserDesign.maxRange,
         "rof": this.data.data.laserDesign.outputRoF,
         "shots": this.data.data.laserDesign.shots,
@@ -1164,7 +1164,7 @@ export class gurpsItem extends Item {
         "acc": this.data.data.laserDesign.outputAccSpace,
         "damageInput": this.data.data.laserDesign.outputDamage,
         "damageType": this.data.data.laserDesign.damageType,
-        "armorDivisor": this.data.data.laserDesign.armourDivisorSpace,
+        "armourDivisor": this.data.data.laserDesign.armourDivisorSpace,
         "range": this.data.data.laserDesign.halfRangeSpace + " " + this.data.data.laserDesign.maxRangeSpace,
         "rof": this.data.data.laserDesign.outputRoF,
         "shots": this.data.data.laserDesign.shots,
@@ -1184,7 +1184,7 @@ export class gurpsItem extends Item {
         "acc": this.data.data.laserDesign.outputAccWater,
         "damageInput": this.data.data.laserDesign.outputDamage,
         "damageType": this.data.data.laserDesign.damageType,
-        "armorDivisor": this.data.data.laserDesign.armourDivisorWater,
+        "armourDivisor": this.data.data.laserDesign.armourDivisorWater,
         "range": this.data.data.laserDesign.halfRangeWater + " " + this.data.data.laserDesign.maxRangeWater,
         "rof": this.data.data.laserDesign.outputRoF,
         "shots": this.data.data.laserDesign.shots / 2,
@@ -1204,7 +1204,7 @@ export class gurpsItem extends Item {
         "acc": this.data.data.laserDesign.outputAcc,
         "damageInput": this.data.data.laserDesign.outputDamageHotshots,
         "damageType": this.data.data.laserDesign.damageType,
-        "armorDivisor": this.data.data.laserDesign.armourDivisor,
+        "armourDivisor": this.data.data.laserDesign.armourDivisor,
         "range": this.data.data.laserDesign.halfRange + " " + this.data.data.laserDesign.maxRange,
         "rof": this.data.data.laserDesign.outputRoF,
         "shots": this.data.data.laserDesign.shots / 2,
@@ -1224,7 +1224,7 @@ export class gurpsItem extends Item {
         "acc": this.data.data.laserDesign.outputAccSpace,
         "damageInput": this.data.data.laserDesign.outputDamageHotshots,
         "damageType": this.data.data.laserDesign.damageType,
-        "armorDivisor": this.data.data.laserDesign.armourDivisorSpace,
+        "armourDivisor": this.data.data.laserDesign.armourDivisorSpace,
         "range": this.data.data.laserDesign.halfRangeSpace + " " + this.data.data.laserDesign.maxRangeSpace,
         "rof": this.data.data.laserDesign.outputRoF,
         "shots": this.data.data.laserDesign.shots / 2,
@@ -1244,7 +1244,7 @@ export class gurpsItem extends Item {
         "acc": this.data.data.laserDesign.outputAccWater,
         "damageInput": this.data.data.laserDesign.outputDamageHotshots,
         "damageType": this.data.data.laserDesign.damageType,
-        "armorDivisor": this.data.data.laserDesign.armourDivisorWater,
+        "armourDivisor": this.data.data.laserDesign.armourDivisorWater,
         "range": this.data.data.laserDesign.halfRangeWater + " " + this.data.data.laserDesign.maxRangeWater,
         "rof": this.data.data.laserDesign.outputRoF,
         "shots": this.data.data.laserDesign.shots / 2,
@@ -1287,7 +1287,7 @@ export class gurpsItem extends Item {
       "blockMod": "No",
       "damageInput": damage,
       "damageType": "cr",
-      "armorDivisor": 1,
+      "armourDivisor": 1,
       "reach": "C",
       "st": this.data.data.laserDesign.outputST,
     };
@@ -1916,7 +1916,7 @@ export class gurpsItem extends Item {
             "acc": this.data.data.bowDesign.arrows[arrowKeys[i]].acc,
             "damageInput": this.data.data.bowDesign.arrows[arrowKeys[i]].dice,
             "damageType": this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType,
-            "armorDivisor": this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.ad,
+            "armourDivisor": this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.ad,
             "range": this.data.data.bowDesign.arrows[arrowKeys[i]].halfRange + "/" + this.data.data.bowDesign.arrows[arrowKeys[i]].range,
             "rof": "1",
             "shots": "1",
@@ -1995,12 +1995,12 @@ export class gurpsItem extends Item {
                 this.data.data.melee[meleeKeys[k]].damage = damage;
 
                 // Validation for Armour Divisor
-                if (!(this.data.data.melee[meleeKeys[k]].armorDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
-                    this.data.data.melee[meleeKeys[k]].armorDivisor.toString().toLowerCase().includes("cosmic") ||
-                    this.data.data.melee[meleeKeys[k]].armorDivisor.toString().toLowerCase().includes("i") ||
-                    this.data.data.melee[meleeKeys[k]].armorDivisor >= 0)
+                if (!(this.data.data.melee[meleeKeys[k]].armourDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
+                    this.data.data.melee[meleeKeys[k]].armourDivisor.toString().toLowerCase().includes("cosmic") ||
+                    this.data.data.melee[meleeKeys[k]].armourDivisor.toString().toLowerCase().includes("i") ||
+                    this.data.data.melee[meleeKeys[k]].armourDivisor >= 0)
                 ) {
-                  this.data.data.melee[meleeKeys[k]].armorDivisor = 1;
+                  this.data.data.melee[meleeKeys[k]].armourDivisor = 1;
                 }
               }
             }
@@ -2052,12 +2052,12 @@ export class gurpsItem extends Item {
                 }
 
                 // Validation for Armour Divisor
-                if (!(this.data.data.ranged[rangedKeys[k]].armorDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
-                    this.data.data.ranged[rangedKeys[k]].armorDivisor.toString().toLowerCase().includes("cosmic") ||
-                    this.data.data.ranged[rangedKeys[k]].armorDivisor.toString().toLowerCase().includes("i") ||
-                    this.data.data.ranged[rangedKeys[k]].armorDivisor >= 0)
+                if (!(this.data.data.ranged[rangedKeys[k]].armourDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
+                    this.data.data.ranged[rangedKeys[k]].armourDivisor.toString().toLowerCase().includes("cosmic") ||
+                    this.data.data.ranged[rangedKeys[k]].armourDivisor.toString().toLowerCase().includes("i") ||
+                    this.data.data.ranged[rangedKeys[k]].armourDivisor >= 0)
                 ) {
-                  this.data.data.ranged[rangedKeys[k]].armorDivisor = 1;
+                  this.data.data.ranged[rangedKeys[k]].armourDivisor = 1;
                 }
               }
             }
@@ -2091,12 +2091,12 @@ export class gurpsItem extends Item {
                 this.data.data.affliction[afflictionKeys[k]].damage = damage;
 
                 // Validation for Armour Divisor
-                if (!(this.data.data.affliction[afflictionKeys[k]].armorDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
-                    this.data.data.affliction[afflictionKeys[k]].armorDivisor.toString().toLowerCase().includes("cosmic") ||
-                    this.data.data.affliction[afflictionKeys[k]].armorDivisor.toString().toLowerCase().includes("i") ||
-                    this.data.data.affliction[afflictionKeys[k]].armorDivisor >= 0)
+                if (!(this.data.data.affliction[afflictionKeys[k]].armourDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
+                    this.data.data.affliction[afflictionKeys[k]].armourDivisor.toString().toLowerCase().includes("cosmic") ||
+                    this.data.data.affliction[afflictionKeys[k]].armourDivisor.toString().toLowerCase().includes("i") ||
+                    this.data.data.affliction[afflictionKeys[k]].armourDivisor >= 0)
                 ) {
-                  this.data.data.affliction[afflictionKeys[k]].armorDivisor = 1;
+                  this.data.data.affliction[afflictionKeys[k]].armourDivisor = 1;
                 }
               }
             }
