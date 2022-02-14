@@ -37,7 +37,7 @@ export class actorHelpers {
         return part;
     }
 
-    static addBrain(actorData, id) {
+    static addBrain(actorData, id, brain) {
         let part = {
             label: "Brain",
             id: id,
