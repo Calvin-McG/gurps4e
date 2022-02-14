@@ -14,7 +14,7 @@ export class materialHelpers {
         return selectedMaterial;
     }
 
-    static essentializeMaterial(material) {
+    static essentializeBowMaterial(material) {
         const simpleEssentialMaterials = game.settings.get("gurps4e", "simpleEssentialMaterials");
 
         let essentialMaterial = material;
@@ -30,6 +30,648 @@ export class materialHelpers {
         }
 
         return material;
+    }
+
+    static getArmourMaterialByName(name) {
+        const materials = this.fetchArmourMaterials();
+        let selectedMaterial;
+        if (typeof name != "undefined"){
+            materials.forEach( material => {
+                if (material.name.toLowerCase() == name.toLowerCase()) {
+                    selectedMaterial = material;
+                }
+            })
+        }
+
+        return selectedMaterial;
+    }
+
+    static essentializeArmourMaterial(material) {
+        let essentialMaterial = material;
+
+        essentialMaterial.tensileStPsi = essentialMaterial.tensileStPsi * 9;
+        essentialMaterial.elasticModulusPsi = essentialMaterial.elasticModulusPsi * 9;
+        essentialMaterial.tensileStPsi = essentialMaterial.tensileStPsi / 3;
+
+        return material;
+    }
+
+    static fetchArmourMaterials() {
+        const materials = [
+            {
+                "tl": 0,
+                "name": "No Armor",
+                "wm": 0.0000,
+                "costLT": 0.0000,
+                "costHT": 0.0000,
+                "drPerIn": 0.0000,
+                "maxDR": 0.0000,
+                "fabric": true,
+                "layeredFabric": true,
+                "optimizedFabric": true,
+                "scales": true,
+                "mail": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 0,
+                "name": "Bone",
+                "wm": 1.0000,
+                "costLT": 12.5000,
+                "costHT": 12.5000,
+                "drPerIn": 8.0000,
+                "maxDR": 4.0000,
+                "semiablative": true,
+                "scales": true,
+                "solid": true
+            },
+            {
+                "tl": 0,
+                "name": "Cloth",
+                "wm": 0.8500,
+                "costLT": 8.0000,
+                "costHT": 8.0000,
+                "drPerIn": 4.0000,
+                "maxDR": 4.0000,
+                "combustible": true,
+                "flexible": true,
+                "fabric": true,
+                "layeredFabric": true,
+                "optimizedFabric": true
+            },
+            {
+                "tl": 0,
+                "name": "Horn",
+                "wm": 1.0000,
+                "costLT": 12.5000,
+                "costHT": 12.5000,
+                "drPerIn": 8.0000,
+                "maxDR": 4.0000,
+                "scales": true,
+                "solid": true
+            },
+            {
+                "tl": 0,
+                "name": "Leather",
+                "wm": 0.9000,
+                "costLT": 10.0000,
+                "costHT": 10.0000,
+                "drPerIn": 8.0000,
+                "maxDR": 4.0000,
+                "combustible": true,
+                "flexible": true,
+                "fabric": true,
+                "layeredFabric": true,
+                "optimizedFabric": true,
+                "scales": true
+            },
+            {
+                "tl": 0,
+                "name": "Wood",
+                "wm": 1.4000,
+                "costLT": 3.0000,
+                "costHT": 3.0000,
+                "drPerIn": 1.5000,
+                "maxDR": 2.0000,
+                "combustible": true,
+                "semiablative": true,
+                "scales": true,
+                "solid": true
+            },
+            {
+                "tl": 1,
+                "name": "Low Quality Bronze",
+                "wm": 0.9000,
+                "costLT": 60.0000,
+                "costHT": 12.0000,
+                "drPerIn": 48.0000,
+                "maxDR": 9.0000,
+                "scales": true,
+                "mail": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 1,
+                "name": "High Quality Bronze",
+                "wm": 0.6000,
+                "costLT": 100.0000,
+                "costHT": 20.0000,
+                "drPerIn": 68.0000,
+                "maxDR": 14.0000,
+                "scales": true,
+                "mail": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 1,
+                "name": "Copper",
+                "wm": 1.6000,
+                "costLT": 80.0000,
+                "costHT": 80.0000,
+                "drPerIn": 30.0000,
+                "maxDR": 5.0000,
+                "scales": true,
+                "mail": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 1,
+                "name": "Stone",
+                "wm": 1.2000,
+                "costLT": 12.5000,
+                "costHT": 12.5000,
+                "drPerIn": 13.0000,
+                "maxDR": 5.0000,
+                "scales": true,
+                "solid": true
+            },
+            {
+                "tl": 2,
+                "name": "Low Quality Iron",
+                "wm": 0.8000,
+                "costLT": 15.0000,
+                "costHT": 3.0000,
+                "drPerIn": 52.0000,
+                "maxDR": 10.0000,
+                "scales": true,
+                "mail": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 2,
+                "name": "High Quality Iron",
+                "wm": 0.6000,
+                "costLT": 25.0000,
+                "costHT": 5.0000,
+                "drPerIn": 68.0000,
+                "maxDR": 14.0000,
+                "scales": true,
+                "mail": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 2,
+                "name": "Lead",
+                "wm": 2.0000,
+                "costLT": 12.5000,
+                "costHT": 2.5000,
+                "drPerIn": 30.0000,
+                "maxDR": 4.0000,
+                "scales": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 3,
+                "name": "Steel",
+                "wm": 0.5800,
+                "costLT": 50.0000,
+                "costHT": 10.0000,
+                "drPerIn": 70.0000,
+                "maxDR": 14.0000,
+                "scales": true,
+                "mail": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 4,
+                "name": "Early Hardened Steel",
+                "wm": 0.5000,
+                "costLT": 250.0000,
+                "costHT": 50.0000,
+                "drPerIn": 81.0000,
+                "maxDR": 16.0000,
+                "scales": true,
+                "mail": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 6,
+                "name": "High Strength Steel",
+                "wm": 0.5800,
+                "costLT": 10.0000,
+                "costHT": 2.0000,
+                "drPerIn": 70.0000,
+                "maxDR": 14.0000,
+                "scales": true,
+                "mail": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 6,
+                "name": "Hardened Steel",
+                "wm": 0.5000,
+                "costLT": 17.5000,
+                "costHT": 3.5000,
+                "drPerIn": 82.0000,
+                "maxDR": 16.0000,
+                "scales": true,
+                "mail": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 6,
+                "name": "Rubber",
+                "wm": 0.4500,
+                "costLT": 25.0000,
+                "costHT": 5.0000,
+                "drPerIn": 14.0000,
+                "maxDR": 7.0000,
+                "impact": true,
+                "combustible": true,
+                "flexible": true,
+                "semiablative": true,
+                "fabric": true,
+                "layeredFabric": true,
+                "optimizedFabric": true
+            },
+            {
+                "tl": 6,
+                "name": "Aluminium",
+                "wm": 0.4500,
+                "costLT": 75.0000,
+                "costHT": 15.0000,
+                "drPerIn": 31.0000,
+                "maxDR": 5.0000,
+                "scales": true,
+                "mail": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 7,
+                "name": "Elastic Polymer",
+                "wm": 0.1600,
+                "costLT": 500.0000,
+                "costHT": 100.0000,
+                "drPerIn": 16.0000,
+                "maxDR": 8.0000,
+                "flexible": true,
+                "fabric": true,
+                "layeredFabric": true,
+                "optimizedFabric": true
+            },
+            {
+                "tl": 7,
+                "name": "Nomex",
+                "wm": 0.0660,
+                "costLT": 250.0000,
+                "costHT": 50.0000,
+                "drPerIn": 10.0000,
+                "maxDR": 5.0000,
+                "fireResistant": true,
+                "flexible": true,
+                "fabric": true,
+                "layeredFabric": true,
+                "optimizedFabric": true
+            },
+            {
+                "tl": 7,
+                "name": "Nylon",
+                "wm": 0.5000,
+                "costLT": 125.0000,
+                "costHT": 25.0000,
+                "drPerIn": 6.0000,
+                "maxDR": 3.0000,
+                "ballistic2": true,
+                "flexible": true,
+                "fabric": true,
+                "layeredFabric": true,
+                "optimizedFabric": true
+            },
+            {
+                "tl": 7,
+                "name": "Basic Ceramic",
+                "wm": 0.2000,
+                "costLT": 125.0000,
+                "costHT": 25.0000,
+                "drPerIn": 83.0000,
+                "maxDR": 35.0000,
+                "semiablative": true,
+                "scales": true,
+                "plate": true,
+                "solid": true,
+                "transparent": "TRUE"
+            },
+            {
+                "tl": 7,
+                "name": "Ballistic Resin",
+                "wm": 0.5500,
+                "costLT": 12.5000,
+                "costHT": 2.5000,
+                "drPerIn": 15.0000,
+                "maxDR": 6.0000,
+                "scales": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 7,
+                "name": "Fiberglass",
+                "wm": 0.6000,
+                "costLT": 40.0000,
+                "costHT": 8.0000,
+                "drPerIn": 17.0000,
+                "maxDR": 7.0000,
+                "semiablative": true,
+                "scales": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 7,
+                "name": "High-Strength Aluminum",
+                "wm": 0.4000,
+                "costLT": 60.0000,
+                "costHT": 12.0000,
+                "drPerIn": 35.0000,
+                "maxDR": 10.0000,
+                "scales": true,
+                "mail": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 7,
+                "name": "Plastic",
+                "wm": 0.7500,
+                "costLT": 9.0000,
+                "costHT": 1.8000,
+                "drPerIn": 12.0000,
+                "maxDR": 3.0000,
+                "scales": true,
+                "plate": true,
+                "solid": true,
+                "transparent": "TRUE"
+            },
+            {
+                "tl": 7,
+                "name": "Polycarbonate",
+                "wm": 0.4500,
+                "costLT": 50.0000,
+                "costHT": 10.0000,
+                "drPerIn": 10.0000,
+                "maxDR": 3.0000,
+                "semiablative": true,
+                "scales": true,
+                "plate": true,
+                "solid": true,
+                "transparent": "TRUE"
+            },
+            {
+                "tl": 7,
+                "name": "Steel, Very Hard",
+                "wm": 0.4500,
+                "costLT": 100.0000,
+                "costHT": 20.0000,
+                "drPerIn": 90.0000,
+                "maxDR": 18.0000,
+                "scales": true,
+                "mail": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 7,
+                "name": "Titanium Alloy",
+                "wm": 0.3500,
+                "costLT": 250.0000,
+                "costHT": 50.0000,
+                "drPerIn": 57.0000,
+                "maxDR": 12.0000,
+                "scales": true,
+                "mail": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 8,
+                "name": "Ballistic Polymer",
+                "wm": 0.0600,
+                "costLT": 1000.0000,
+                "costHT": 200.0000,
+                "drPerIn": 48.0000,
+                "maxDR": 24.0000,
+                "flexible": true,
+                "fabric": true,
+                "layeredFabric": true,
+                "optimizedFabric": true
+            },
+            {
+                "tl": 8,
+                "name": "Improved Ballistic Polymer",
+                "wm": 0.0400,
+                "costLT": 1250.0000,
+                "costHT": 250.0000,
+                "drPerIn": 75.0000,
+                "maxDR": 36.0000,
+                "ballistic25": true,
+                "flexible": true,
+                "fabric": true,
+                "layeredFabric": true,
+                "optimizedFabric": true
+            },
+            {
+                "tl": 8,
+                "name": "Kevlar",
+                "wm": 0.1000,
+                "costLT": 400.0000,
+                "costHT": 80.0000,
+                "drPerIn": 33.0000,
+                "maxDR": 16.0000,
+                "ballistic4": true,
+                "ballistic25": true,
+                "flexible": true,
+                "fabric": true,
+                "layeredFabric": true,
+                "optimizedFabric": true
+            },
+            {
+                "tl": 8,
+                "name": "Improved Kevlar",
+                "wm": 0.0800,
+                "costLT": 600.0000,
+                "costHT": 120.0000,
+                "drPerIn": 40.0000,
+                "maxDR": 20.0000,
+                "ballistic3": true,
+                "flexible": true,
+                "fabric": true,
+                "layeredFabric": true,
+                "optimizedFabric": true
+            },
+            {
+                "tl": 8,
+                "name": "Improved Nomex",
+                "wm": 0.0550,
+                "costLT": 175.0000,
+                "costHT": 35.0000,
+                "drPerIn": 10.0000,
+                "maxDR": 5.0000,
+                "flexible": true,
+                "fabric": true,
+                "layeredFabric": true,
+                "optimizedFabric": true
+            },
+            {
+                "tl": 8,
+                "name": "Aramid Fiber",
+                "wm": 0.1600,
+                "costLT": 400.0000,
+                "costHT": 80.0000,
+                "drPerIn": 48.0000,
+                "maxDR": 24.0000,
+                "ballistic4": true,
+                "flexible": true,
+                "fabric": true,
+                "layeredFabric": true,
+                "optimizedFabric": true
+            },
+            {
+                "tl": 8,
+                "name": "Improved Ceramic",
+                "wm": 0.1500,
+                "costLT": 500.0000,
+                "costHT": 100.0000,
+                "drPerIn": 111.0000,
+                "maxDR": 44.0000,
+                "semiablative": true,
+                "scales": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 8,
+                "name": "Laminated Polycarbonate",
+                "wm": 0.2500,
+                "costLT": 125.0000,
+                "costHT": 25.0000,
+                "drPerIn": 12.0000,
+                "maxDR": 5.0000,
+                "semiablative": true,
+                "scales": true,
+                "plate": true,
+                "solid": true,
+                "transparent": "TRUE"
+            },
+            {
+                "tl": 8,
+                "name": "Polymer Composite",
+                "wm": 0.2200,
+                "costLT": 200.0000,
+                "costHT": 40.0000,
+                "drPerIn": 28.0000,
+                "maxDR": 11.0000,
+                "scales": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 8,
+                "name": "Titanium Composite",
+                "wm": 0.2000,
+                "costLT": 1250.0000,
+                "costHT": 250.0000,
+                "drPerIn": 104.0000,
+                "maxDR": 42.0000,
+                "scales": true,
+                "mail": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 8,
+                "name": "Ultra-Strength Steel",
+                "wm": 0.3500,
+                "costLT": 150.0000,
+                "costHT": 30.0000,
+                "drPerIn": 116.0000,
+                "maxDR": 23.0000,
+                "scales": true,
+                "mail": true,
+                "plate": true,
+                "solid": true
+            },
+            {
+                "tl": 9,
+                "name": "Arachnoweave",
+                "wm": 0.0300,
+                "costLT": 3000.0000,
+                "costHT": 600.0000,
+                "drPerIn": 96.0000,
+                "maxDR": 48.0000,
+                "ballistic4": true,
+                "flexible": true,
+                "fabric": true,
+                "layeredFabric": true,
+                "optimizedFabric": true
+            },
+            {
+                "tl": 9,
+                "name": "Basic Nanoweave",
+                "wm": 0.0300,
+                "costLT": 3750.0000,
+                "costHT": 750.0000,
+                "drPerIn": 110.0000,
+                "maxDR": 55.0000,
+                "ballistic3": true,
+                "flexible": true,
+                "fabric": true,
+                "layeredFabric": true,
+                "optimizedFabric": true
+            },
+            {
+                "tl": 9,
+                "name": "Laser-Ablative Polymer",
+                "wm": 0.0180,
+                "costLT": 750.0000,
+                "costHT": 150.0000,
+                "drPerIn": 128.0000,
+                "maxDR": 64.0000,
+                "laser": true,
+                "flexible": true,
+                "fabric": true,
+                "layeredFabric": true,
+                "optimizedFabric": true
+            },
+            {
+                "tl": 9,
+                "name": "Magnetic Liquid Armor",
+                "wm": 0.0320,
+                "costLT": 1000.0000,
+                "costHT": 200.0000,
+                "drPerIn": 90.0000,
+                "maxDR": 45.0000,
+                "ballistic2": true,
+                "flexible": true,
+                "fabric": true,
+                "layeredFabric": true,
+                "optimizedFabric": true
+            },
+            {
+                "tl": 9,
+                "name": "STF Liquid Armor",
+                "wm": 0.0320,
+                "costLT": 750.0000,
+                "costHT": 150.0000,
+                "drPerIn": 90.0000,
+                "maxDR": 45.0000,
+                "ballistic3": true,
+                "fabric": true,
+                "layeredFabric": true,
+                "optimizedFabric": true
+            }
+        ]
     }
 
     static fetchBowMaterials() {

@@ -490,7 +490,7 @@ export class gurpsItemSheet extends ItemSheet {
 
         let bodyObj = {};
 
-        //Spoders and squids have a brain instead of a skull. Everyone else has a skull
+        // Spoders and squids have a brain instead of a skull. Everyone else has a skull
         if (bodyType == "arachnoid" || bodyType == "octopod"){
             bodyObj.brain = this.addBrain();
         }
@@ -498,10 +498,10 @@ export class gurpsItemSheet extends ItemSheet {
             bodyObj.skull = this.addSkull();
         }
 
-        //Body parts that apply to all body types
+        // Body parts that apply to all body types
         bodyObj.face = this.addFace();
 
-        //The following body parts are specific to said body types
+        // The following body parts are specific to said body types
         if (bodyType == "humanoid"){
             bodyObj.legLeft = this.addLeg("Left Leg");
             bodyObj.legRight = this.addLeg("Right Leg");
