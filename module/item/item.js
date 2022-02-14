@@ -1774,126 +1774,135 @@ export class gurpsItem extends Item {
     }
 
     // Calculate Arrow Stuff
-    let arrowKeys = Object.keys(this.data.data.bowDesign.arrows); // Get the arrow keys
-    if (arrowKeys.length > 0) { // If there are actually keys
-      for (let i = 0; i < arrowKeys.length; i++){
-        if (typeof this.data.data.bowDesign.arrows[arrowKeys[i]].material.name != "undefined") {
-          this.data.data.bowDesign.arrows[arrowKeys[i]].material = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.arrows[arrowKeys[i]].material.name);
+    if (typeof this.data.data.bowDesign.arrows != "undefined") {
+      let arrowKeys = Object.keys(this.data.data.bowDesign.arrows); // Get the arrow keys
+      if (arrowKeys.length > 0) { // If there are actually keys
+        for (let i = 0; i < arrowKeys.length; i++){
+          if (typeof this.data.data.bowDesign.arrows[arrowKeys[i]].material.name != "undefined") {
+            this.data.data.bowDesign.arrows[arrowKeys[i]].material = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.arrows[arrowKeys[i]].material.name);
 
-          if (this.data.data.bowDesign.arrows[arrowKeys[i]].materialEssential) {
-            this.data.data.bowDesign.arrows[arrowKeys[i]].material = game.materialAPI.essentializeBowMaterial(this.data.data.bowDesign.arrows[arrowKeys[i]].material);
+            if (this.data.data.bowDesign.arrows[arrowKeys[i]].materialEssential) {
+              this.data.data.bowDesign.arrows[arrowKeys[i]].material = game.materialAPI.essentializeBowMaterial(this.data.data.bowDesign.arrows[arrowKeys[i]].material);
+            }
           }
-        }
 
-        if (this.data.data.bowDesign.arrows[arrowKeys[i]].length >= this.data.data.bowDesign.drawLength) {
-          this.data.data.bowDesign.arrows[arrowKeys[i]].validShaft = false;
-        }
-        else {
-          this.data.data.bowDesign.arrows[arrowKeys[i]].validShaft = true;
-        }
-
-        if (typeof this.data.data.bowDesign.arrows[arrowKeys[i]].material != "undefined") {
-          this.data.data.bowDesign.arrows[arrowKeys[i]].material.maxStrain         = this.data.data.bowDesign.arrows[arrowKeys[i]].material.tensileStPsi    / this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi;
-          this.data.data.bowDesign.arrows[arrowKeys[i]].material.bowCostPerLb      = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].material.tensileStPsi   ** 2 / 100 / this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi   / this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn*100)/100;
-          this.data.data.bowDesign.arrows[arrowKeys[i]].material.arrowCostPerLb    = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi / this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn*1.25/9000000*100)/100;
-
-          let a = 1.25 * Math.exp(-0.0000000054 * this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi / this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn);
-          this.data.data.bowDesign.arrows[arrowKeys[i]].minOuterDiameter = 2 * (this.data.data.bowDesign.drawWeight * this.data.data.bowDesign.arrows[arrowKeys[i]].length / this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi / a) ** (1/4)
-          let shaftWeight = Math.PI/4 * ( this.data.data.bowDesign.arrows[arrowKeys[i]].outerDiameter ** 2 - this.data.data.bowDesign.arrows[arrowKeys[i]].innerDiameter ** 2 ) * this.data.data.bowDesign.arrows[arrowKeys[i]].length * this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn;
-          this.data.data.bowDesign.arrows[arrowKeys[i]].weight = shaftWeight + this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.weight;
-
-          let arrowCF = 1;
-          if (this.data.data.bowDesign.arrows[arrowKeys[i]].quality == "fine") {
-            accFactor += 1
-            arrowCF = 3;
-          }
-          else if (this.data.data.bowDesign.arrows[arrowKeys[i]].quality == "cheap") {
-            accFactor -= 1
-            arrowCF = 0.7;
+          if (this.data.data.bowDesign.arrows[arrowKeys[i]].length >= this.data.data.bowDesign.drawLength) {
+            this.data.data.bowDesign.arrows[arrowKeys[i]].validShaft = false;
           }
           else {
-            arrowCF = 1;
+            this.data.data.bowDesign.arrows[arrowKeys[i]].validShaft = true;
           }
 
-          let shaftCost = (this.data.data.bowDesign.arrows[arrowKeys[i]].material.arrowCostPerLb * shaftWeight)
+          if (typeof this.data.data.bowDesign.arrows[arrowKeys[i]].material != "undefined") {
+            this.data.data.bowDesign.arrows[arrowKeys[i]].material.maxStrain         = this.data.data.bowDesign.arrows[arrowKeys[i]].material.tensileStPsi    / this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi;
+            this.data.data.bowDesign.arrows[arrowKeys[i]].material.bowCostPerLb      = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].material.tensileStPsi   ** 2 / 100 / this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi   / this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn*100)/100;
+            this.data.data.bowDesign.arrows[arrowKeys[i]].material.arrowCostPerLb    = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi / this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn*1.25/9000000*100)/100;
 
-          if (this.data.data.bowDesign.arrows[arrowKeys[i]].material.tl > 4 && this.data.data.bowDesign.arrows[arrowKeys[i]].innerDiameter > 0) { // Material is synthetic and the arrow is hollow.
-            shaftCost = shaftCost * (arrowCF + 4);
+            let a = 1.25 * Math.exp(-0.0000000054 * this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi / this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn);
+            this.data.data.bowDesign.arrows[arrowKeys[i]].minOuterDiameter = 2 * (this.data.data.bowDesign.drawWeight * this.data.data.bowDesign.arrows[arrowKeys[i]].length / this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi / a) ** (1/4)
+            let shaftWeight = Math.PI/4 * ( this.data.data.bowDesign.arrows[arrowKeys[i]].outerDiameter ** 2 - this.data.data.bowDesign.arrows[arrowKeys[i]].innerDiameter ** 2 ) * this.data.data.bowDesign.arrows[arrowKeys[i]].length * this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn;
+            this.data.data.bowDesign.arrows[arrowKeys[i]].weight = shaftWeight + this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.weight;
+
+            let arrowCF = 1;
+            if (this.data.data.bowDesign.arrows[arrowKeys[i]].quality == "fine") {
+              accFactor += 1
+              arrowCF = 3;
+            }
+            else if (this.data.data.bowDesign.arrows[arrowKeys[i]].quality == "cheap") {
+              accFactor -= 1
+              arrowCF = 0.7;
+            }
+            else {
+              arrowCF = 1;
+            }
+
+            let shaftCost = (this.data.data.bowDesign.arrows[arrowKeys[i]].material.arrowCostPerLb * shaftWeight)
+
+            if (this.data.data.bowDesign.arrows[arrowKeys[i]].material.tl > 4 && this.data.data.bowDesign.arrows[arrowKeys[i]].innerDiameter > 0) { // Material is synthetic and the arrow is hollow.
+              shaftCost = shaftCost * (arrowCF + 4);
+            }
+
+            // Calculate arrohead cost
+            let arrowHeadCost = 50 * this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.weight;
+            // Apply AD CF
+            if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.ad == "0.5") {
+              arrowHeadCost = arrowHeadCost * 0.8;
+            }
+            else if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.ad == "2") {
+              arrowHeadCost = arrowHeadCost * 4;
+            }
+
+            // Apply Damage type CF
+            if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType == "cut") {
+              arrowHeadCost = arrowHeadCost * 0.9;
+            }
+            else if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType == "pi") {
+              arrowHeadCost = arrowHeadCost * 0.8;
+            }
+            else if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType == "cr") {
+              arrowHeadCost = arrowHeadCost * 0.7;
+            }
+
+            this.data.data.bowDesign.arrows[arrowKeys[i]].cost = (arrowHeadCost * arrowCF) + shaftCost;
+
+            let efficiency = 1 / (1 + workingMass/this.data.data.bowDesign.arrows[arrowKeys[i]].weight);
+            let kineticEnergy = efficiency * potentialEnergy;
+
+            if (this.data.data.bowDesign.realisticBowScale) {
+              this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints = Math.sqrt(kineticEnergy) / 2.5;
+            }
+            else {
+              this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints = Math.sqrt(kineticEnergy) / 1.75;
+            }
+
+            let dice = Math.floor(this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints / 3.5);
+            let adds = Math.floor(this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints - (dice * 3.5));
+
+            this.data.data.bowDesign.arrows[arrowKeys[i]].dice = dice + "d6 + " + adds;
+
+            this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints * 100) / 100;
+            this.data.data.bowDesign.arrows[arrowKeys[i]].minOuterDiameter = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].minOuterDiameter * 1000) / 1000;
+            this.data.data.bowDesign.arrows[arrowKeys[i]].weight = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].weight * 1000) / 1000;
+            this.data.data.bowDesign.arrows[arrowKeys[i]].cost = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].cost * 100) / 100;
+
+            this.data.data.bowDesign.arrows[arrowKeys[i]].range = Math.floor(0.34 * kineticEnergy / this.data.data.bowDesign.arrows[arrowKeys[i]].weight);
+            this.data.data.bowDesign.arrows[arrowKeys[i]].halfRange = Math.min(this.data.data.bowDesign.arrows[arrowKeys[i]].range, Math.floor(750 * this.data.data.bowDesign.arrows[arrowKeys[i]].weight/this.data.data.bowDesign.arrows[arrowKeys[i]].outerDiameter ** 2));
+
+            let v = Math.sqrt(5.28 * kineticEnergy / this.data.data.bowDesign.arrows[arrowKeys[i]].weight)
+
+            this.data.data.bowDesign.arrows[arrowKeys[i]].acc = Math.max(0, Math.min(4,  Math.round(3 * Math.log10(v) - this.data.data.bowDesign.bulk/2 - 7.5 + accFactor)));
           }
-
-          // Calculate arrohead cost
-          let arrowHeadCost = 50 * this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.weight;
-          // Apply AD CF
-          if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.ad == "0.5") {
-            arrowHeadCost = arrowHeadCost * 0.8;
-          }
-          else if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.ad == "2") {
-            arrowHeadCost = arrowHeadCost * 4;
-          }
-
-          // Apply Damage type CF
-          if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType == "cut") {
-            arrowHeadCost = arrowHeadCost * 0.9;
-          }
-          else if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType == "pi") {
-            arrowHeadCost = arrowHeadCost * 0.8;
-          }
-          else if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType == "cr") {
-            arrowHeadCost = arrowHeadCost * 0.7;
-          }
-
-          this.data.data.bowDesign.arrows[arrowKeys[i]].cost = (arrowHeadCost * arrowCF) + shaftCost;
-
-          let efficiency = 1 / (1 + workingMass/this.data.data.bowDesign.arrows[arrowKeys[i]].weight);
-          let kineticEnergy = efficiency * potentialEnergy;
-
-          if (this.data.data.bowDesign.realisticBowScale) {
-            this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints = Math.sqrt(kineticEnergy) / 2.5;
-          }
-          else {
-            this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints = Math.sqrt(kineticEnergy) / 1.75;
-          }
-
-          let dice = Math.floor(this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints / 3.5);
-          let adds = Math.floor(this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints - (dice * 3.5));
-
-          this.data.data.bowDesign.arrows[arrowKeys[i]].dice = dice + "d6 + " + adds;
-
-          this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints * 100) / 100;
-          this.data.data.bowDesign.arrows[arrowKeys[i]].minOuterDiameter = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].minOuterDiameter * 1000) / 1000;
-          this.data.data.bowDesign.arrows[arrowKeys[i]].weight = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].weight * 1000) / 1000;
-          this.data.data.bowDesign.arrows[arrowKeys[i]].cost = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].cost * 100) / 100;
-
-          this.data.data.bowDesign.arrows[arrowKeys[i]].range = Math.floor(0.34 * kineticEnergy / this.data.data.bowDesign.arrows[arrowKeys[i]].weight);
-          this.data.data.bowDesign.arrows[arrowKeys[i]].halfRange = Math.min(this.data.data.bowDesign.arrows[arrowKeys[i]].range, Math.floor(750 * this.data.data.bowDesign.arrows[arrowKeys[i]].weight/this.data.data.bowDesign.arrows[arrowKeys[i]].outerDiameter ** 2));
-
-          let v = Math.sqrt(5.28 * kineticEnergy / this.data.data.bowDesign.arrows[arrowKeys[i]].weight)
-
-          this.data.data.bowDesign.arrows[arrowKeys[i]].acc = Math.max(0, Math.min(4,  Math.round(3 * Math.log10(v) - this.data.data.bowDesign.bulk/2 - 7.5 + accFactor)));
         }
       }
     }
 
-    this.data.data.cost = limbsWeight * this.data.data.bowDesign.workingMaterialAvg.bowCostPerLb + riserWeight * this.data.data.bowDesign.riserMaterialAvg.bowCostPerLb + stockWeight * this.data.data.bowDesign.stockMaterialAvg.bowCostPerLb
+    if (typeof this.data.data.bowDesign.workingMaterialAvg != "undefined" && typeof this.data.data.bowDesign.riserMaterialAvg != "undefined" && typeof this.data.data.bowDesign.stockMaterialAvg.bowCostPerLb != "undefined") {
+      this.data.data.cost = limbsWeight * this.data.data.bowDesign.workingMaterialAvg.bowCostPerLb + riserWeight * this.data.data.bowDesign.riserMaterialAvg.bowCostPerLb + stockWeight * this.data.data.bowDesign.stockMaterialAvg.bowCostPerLb
 
-    if (this.data.data.bowDesign.quality == "fine") {
-      this.data.data.cost = this.data.data.cost * 4;
+      if (this.data.data.bowDesign.quality == "fine") {
+        this.data.data.cost = this.data.data.cost * 4;
+      }
+      else if (this.data.data.bowDesign.quality == "cheap") {
+        this.data.data.cost = this.data.data.cost * 0.7;
+      }
+
+      if (this.data.data.bowDesign.bowConstruction == "recurve") {
+        this.data.data.cost = this.data.data.cost * 1.25;
+      }
+      else if (this.data.data.bowDesign.bowConstruction == "reflex") {
+        this.data.data.cost = this.data.data.cost * 1.5;
+      }
+      else if (this.data.data.bowDesign.bowConstruction == "compound") {
+        this.data.data.cost = this.data.data.cost * 2;
+      }
     }
-    else if (this.data.data.bowDesign.quality == "cheap") {
-      this.data.data.cost = this.data.data.cost * 0.7;
+    else {
+      this.data.data.cost = 0;
     }
 
-    if (this.data.data.bowDesign.bowConstruction == "recurve") {
-      this.data.data.cost = this.data.data.cost * 1.25;
+    if (typeof this.data.data.bowDesign.arrows != "undefined") {
+      this.addCustomBowProfiles()
     }
-    else if (this.data.data.bowDesign.bowConstruction == "reflex") {
-      this.data.data.cost = this.data.data.cost * 1.5;
-    }
-    else if (this.data.data.bowDesign.bowConstruction == "compound") {
-      this.data.data.cost = this.data.data.cost * 2;
-    }
-
-    this.addCustomBowProfiles()
 
     // Only round things prior to display after all the actual math is done.
     this.data.data.bowDesign.maxDrawLength = Math.round(this.data.data.bowDesign.maxDrawLength * 100) / 100;
