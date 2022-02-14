@@ -147,4 +147,13 @@ Hooks.once('init', async function() {
       return (Math.round(num * decimals) / decimals);
     }
   });
+
+  Handlebars.registerHelper("valueInRangeStyle", function(min, num, max) {
+    if (num < min || num > max) {
+      return "background-color: rgb( 255 0 0 / 50%) !important;";
+    }
+    else {
+      return "";
+    }
+  });
 });

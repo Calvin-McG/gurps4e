@@ -46,14 +46,148 @@ export class materialHelpers {
         return selectedMaterial;
     }
 
+    static getAndCalculateArmourMaterialByName(name, essential) {
+        let selectedMaterial = this.getArmourMaterialByName(name);
+
+        if (essential) {
+            selectedMaterial = this.essentializeArmourMaterial(selectedMaterial);
+        }
+
+        return selectedMaterial;
+    }
+
     static essentializeArmourMaterial(material) {
         let essentialMaterial = material;
 
-        essentialMaterial.tensileStPsi = essentialMaterial.tensileStPsi * 9;
-        essentialMaterial.elasticModulusPsi = essentialMaterial.elasticModulusPsi * 9;
-        essentialMaterial.tensileStPsi = essentialMaterial.tensileStPsi / 3;
+        essentialMaterial.wm = essentialMaterial.wm / 3;
+        essentialMaterial.maxDR = essentialMaterial.maxDR * 3;
+        essentialMaterial.drPerIn = essentialMaterial.drPerIn * 3;
+        essentialMaterial.costLT = essentialMaterial.costLT * 30;
+        essentialMaterial.costHT = essentialMaterial.costHT * 30;
+        essentialMaterial.essential = true;
 
         return material;
+    }
+
+    static getArmourConstructionMethodByName(name) {
+        const constructionTypes = this.fetchArmourConstructionMethods();
+        let selectedConstructionType;
+        if (typeof name != "undefined"){
+            constructionTypes.forEach( constructionType => {
+                if (constructionType.name.toLowerCase() == name.toLowerCase()) {
+                    selectedConstructionType = constructionType;
+                }
+            })
+        }
+
+        return selectedConstructionType;
+    }
+
+    static fetchArmourConstructionMethods() {
+        const constructionMethods = [
+            {
+                "tl": 0,
+                "name": "No Armor",
+                "wm": 0.0000,
+                "cm": 0,
+                "don": 0,
+                "minDR": 0,
+                "flexible": true,
+                "notes": ""
+            },
+            {
+                "tl": 0,
+                "name": "Fabric",
+                "wm": 1,
+                "cm": 1,
+                "don": 2.14,
+                "minDR": 1,
+                "flexible": true,
+                "notes": "-1 DR vs impaling damage"
+            },
+            {
+                "tl": 0,
+                "name": "Layered Fabric",
+                "wm": 1.2,
+                "cm": 2,
+                "don": 4.28,
+                "minDR": 2,
+                "flexible": true,
+                "notes": "Removes the -1 DR vs impaling damage penalty that Fabric has"
+            },
+            {
+                "tl": 1,
+                "name": "Scales",
+                "wm": 1.1,
+                "cm": 1,
+                "don": 4.28,
+                "minDR": 2,
+                "flexible": true,
+                "notes": "-1 DR vs crushing damage unless armour DR is 4+"
+            },
+            {
+                "tl": 1,
+                "name": "Plate",
+                "wm": 0.8,
+                "cm": 5,
+                "don": 6.42,
+                "minDR": 3,
+                "flexible": false,
+                "notes": "Not useable in certain locations like the abdomen. This option is TL4 for ferrous metals."
+            },
+            {
+                "tl": 1,
+                "name": "Solid",
+                "wm": 1,
+                "cm": 1,
+                "don": 2,
+                "minDR": 10,
+                "flexible": false,
+                "notes": "Rarely used in personal armour. Sees limited use in cheap helmets and pectoral plates. This option is TL4 for ferrous metals."
+            },
+            {
+                "tl": 2,
+                "name": "Mail",
+                "wm": 0.9,
+                "cm": 1,
+                "don": 2.14,
+                "minDR": 2,
+                "flexible": true,
+                "notes": "-2 DR vs crushing damage. If this location has more than 10DR then the penalty is -20%"
+            },
+            {
+                "tl": 2,
+                "name": "Segmented Plate",
+                "wm": 1.45,
+                "cm": 2,
+                "don": 6.42,
+                "minDR": 3,
+                "flexible": false,
+                "notes": ""
+            },
+            {
+                "tl": 6,
+                "name": "Impact Absorbing",
+                "wm": 0.65,
+                "cm": 5,
+                "don": 4.28,
+                "minDR": 2,
+                "flexible": true,
+                "notes": "DR is halved against non-crushing attacks."
+            },
+            {
+                "tl": 6,
+                "name": "Optimized Fabric",
+                "wm": 0.8,
+                "cm": 2,
+                "don": 2.14,
+                "minDR": 1,
+                "flexible": true,
+                "notes": "Despite being flexible, optimised fabric is vulnerable to targeting armour chinks."
+            },
+        ];
+
+        return constructionMethods;
     }
 
     static fetchArmourMaterials() {
@@ -672,6 +806,8 @@ export class materialHelpers {
                 "optimizedFabric": true
             }
         ]
+
+        return materials;
     }
 
     static fetchBowMaterials() {

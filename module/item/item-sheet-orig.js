@@ -743,7 +743,8 @@ export class gurpsItemSheet extends ItemSheet {
             drPi: "",
             drTox: "",
             drHardening: 1,
-            flexible: false
+            flexible: false,
+            surfaceArea: 1.4 // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
         };
         return part;
     }
@@ -760,7 +761,8 @@ export class gurpsItemSheet extends ItemSheet {
             drPi: "",
             drTox: "",
             drHardening: 1,
-            flexible: false
+            flexible: false,
+            surfaceArea: 1.4, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
         };
         return part;
     }
@@ -780,7 +782,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 0.7/6, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 nose: {
                     label: "Nose",
@@ -793,7 +796,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 0.7/6, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 ears: {
                     label: "Ears",
@@ -806,7 +810,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 0.7/6, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 cheek: {
                     label: "Cheek",
@@ -819,7 +824,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 0.7/3, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 eyeLeft: {//Kromm's ruling on eyes http://forums.sjgames.com/showpost.php?p=733298&postcount=33
                     label: "Left Eye",
@@ -832,7 +838,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 0.7/12, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 eyeRight: {//Kromm's ruling on eyes http://forums.sjgames.com/showpost.php?p=733298&postcount=33
                     label: "Right Eye",
@@ -845,7 +852,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 0.7/12, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 }
             }
         }
@@ -868,7 +876,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 3.5/2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 thigh: {
                     label: "Thigh",
@@ -881,7 +890,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 3.15/2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 insideThigh: {
                     label: "Inside Thigh",
@@ -894,7 +904,9 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    voider: true,
+                    surfaceArea: 3.15/2/4, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 knee: {
                     label: "Knee",
@@ -907,7 +919,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 0.35/2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 backOfKnee: {
                     label: "Back of Knee",
@@ -920,7 +933,9 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    voider: true,
+                    surfaceArea: 0.35/2/4, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 artery: {
                     label: "Thigh Artery",
@@ -957,7 +972,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 2.8/2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 shoulder: {
                     label: "Shoulder",
@@ -970,7 +986,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 0.7/2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 }
             }
         }
@@ -994,7 +1011,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 1.75/2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 upperArm: {
                     label: "Upper Arm",
@@ -1007,7 +1025,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 0.7/2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 elbow: {
                     label: "Elbow",
@@ -1020,7 +1039,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 0.35/2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 insideElbow: {
                     label: "Inside Elbow",
@@ -1033,7 +1053,9 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    voider: true,
+                    surfaceArea: 0.35/2/4, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 shoulder: {
                     label: "Shoulder",
@@ -1046,7 +1068,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 0.7/2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 armpit: {
                     label: "Armpit",
@@ -1059,7 +1082,9 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    voider: true,
+                    surfaceArea: 0.7/2/4, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 }
             }
         }
@@ -1083,7 +1108,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 5.25 - 5.25/6, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 vitals: {
                     label: "Vitals",
@@ -1096,7 +1122,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 5.25/6/2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 spine: {
                     label: "Spine",
@@ -1109,7 +1136,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 5.25/6/2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 }
             }
         }
@@ -1117,7 +1145,7 @@ export class gurpsItemSheet extends ItemSheet {
         return part;
     }
 
-    addInvertebrateChest(hp, label){
+    addInvertebrateChest(label){
         let part = {
             label: label,
             flexible: false,
@@ -1133,7 +1161,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 5.25 - 5.25/6, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 vitals: {
                     label: "Vitals",
@@ -1146,7 +1175,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 5.25/6, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 }
             }
         }
@@ -1170,7 +1200,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 1.75/2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 vitals: {
                     label: "Vitals",
@@ -1183,7 +1214,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 1.75/6, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 pelvis: {
                     label: "Pelvis",
@@ -1196,7 +1228,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 1.75/6, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 }
             }
         }
@@ -1220,7 +1253,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 1.75/2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 vitals: {
                     label: "Vitals",
@@ -1233,7 +1267,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 1.75/6, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 pelvis: {
                     label: "Pelvis",
@@ -1246,7 +1281,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 1.75/6, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 groin: {
                     label: "Groin",
@@ -1259,7 +1295,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 1.75/6, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 }
             }
         }
@@ -1283,7 +1320,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 0.7/2*(4/6), // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 extremityInterior: {
                     label: insideName,
@@ -1296,7 +1334,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 0.7/2/6, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 joint: {
                     label: jointName,
@@ -1309,7 +1348,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 0.7/2/6, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 }
             }
         }
@@ -1333,7 +1373,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 0.35*(5/6), // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 vein: {
                     label: "Vein",
@@ -1346,7 +1387,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 0.35/6, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 }
             }
         }

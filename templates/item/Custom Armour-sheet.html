@@ -55,8 +55,16 @@
             <a class="item" data-tab="notes">Notes</a>
         </div>
         <div class="header">
-            <a class="item" data-tab="armour">Armour</a>
+            <a class="item" data-tab="setup">Setup</a>
         </div>
+        {{#unless (eq data.data.armour.bodyType.name "") }}
+        <div class="header">
+            <a class="item" data-tab="design">Design</a>
+        </div>
+        <div class="header">
+            <a class="item" data-tab="armour">Display</a>
+        </div>
+        {{/unless}}
     </nav>
 
     {{!-- Sheet Body --}}
@@ -70,8 +78,8 @@
             </div>
         </div>
 
-        {{!-- Armour Tab --}}
-        <div class="tab stats" data-tab="armour" data-group="primary">
+        {{!-- Armour Setup Tab --}}
+        <div class="tab stats" data-tab="setup" data-group="primary">
             <div class="tab">
                 <span>
                     <label>Body Type:</label>
@@ -97,7 +105,7 @@
                     </select>
                 </span>
                 {{#if (eq data.data.armour.bodyType.name "") }}
-                    <br>Please only set body type if this equipment applies DR. Otherwise the formula that adds up armour will check this for DR values. With enough items on your sheet it will eventually degrade performance.
+                <br>Select a body type for this custom armour.
                 {{else}}
                 <span class="tooltip">
                     <label>Layer:</label>
@@ -113,6 +121,137 @@
 					</span>
                 </span>
                 {{/if}}
+            </div>
+        </div>
+
+        {{!-- Armour Design Tab --}}
+        <div class="tab stats" data-tab="design" data-group="primary">
+            <div class="tab">
+                {{#unless (eq data.data.armour.bodyType.name "") }}
+                <div>
+                    <div>
+                        <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
+                        <div class="equipment-info-container">{{{data.data.info}}}</div>
+                    </div>
+                    <table>
+                        <tr class="hit-locations">
+                            <th class="question-container" id="armour-location" style="width: 100px;">
+                                Location
+                                <span class="small-question-button">
+                                    <i class="fas fa-question"></i>
+                                </span>
+                            </th>
+                            <th class="question-container" id="armour-sub-location" style="width: 100px;">
+                                Sublocation
+                                <span class="small-question-button">
+                                    <i class="fas fa-question"></i>
+                                </span>
+                            </th>
+                            <th class="question-container" id="armour-coverage" style="width: 80px;">
+                                Coverage
+                                <span class="small-question-button">
+                                    <i class="fas fa-question"></i>
+                                </span>
+                            </th>
+                            <th class="question-container" id="armour-voider" style="width: 50px;">
+                                Voider?
+                                <span class="small-question-button">
+                                    <i class="fas fa-question"></i>
+                                </span>
+                            </th>
+                            <th class="question-container" id="armour-material" style="width: 190px;">
+                                Armour Material
+                                <span class="small-question-button">
+                                    <i class="fas fa-question"></i>
+                                </span>
+                            </th>
+                            {{#if this.data.data.armourDesign.allowMagicalMaterialsForCustom}}
+                            <th class="question-container" id="armour-material-essential">
+                                Essential
+                                <span class="small-question-button">
+                                    <i class="fas fa-question"></i>
+                                </span>
+                            </th>
+                            {{/if}}
+                            <th class="question-container" id="armour-construction" style="width: 135px;">
+                                Construction
+                                <span class="small-question-button">
+                                    <i class="fas fa-question"></i>
+                                </span>
+                            </th>
+                            <th class="question-container" id="armour-selectedDR" style="width: 85px;">
+                                Selected DR
+                                <span class="small-question-button">
+                                    <i class="fas fa-question"></i>
+                                </span>
+                            </th>
+                        </tr>
+                        {{#each data.data.armour.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
+                        {{#if bodyPart.subLocation}}<!--Check to see if there are sublocations and display them-->
+                        {{#each bodyPart.subLocation as |subLocation locationId|}}<!--Loop through the sublocations-->
+                        <tr class="hit-locations">
+                            <td>
+                                {{bodyPart.label}}
+                            </td>
+                            <td>
+                                {{subLocation.label}}
+                            </td>
+                            <td>
+                                {{round subLocation.surfaceArea 100}}
+                            </td>
+                            <td>
+                                {{subLocation.voider}}
+                            </td>
+                            <td>
+                                <select name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.material.name">
+                                {{#select subLocation.material.name}}
+                                {{#each ../../data.data.armourDesign.materials as |material id|}}
+                                {{#ifCond ../../../data.data.tl '>=' material.tl}}
+                                <option value="{{material.name}}">{{material.name}}</option>
+                                {{/ifCond}}
+                                {{/each}}
+                                {{/select}}
+                                </select>
+                            </td>
+                            {{#if this.data.data.armourDesign.allowMagicalMaterialsForCustom}}
+                            <td>
+                                <input type="checkbox" name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.material.essential" {{checked subLocation.material.essential}} data-dtype="Boolean" style="width: 100%;"/>
+                            </td>
+                            {{/if}}
+                            <td>
+                                <select name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.construction.name">
+                                    {{#select subLocation.construction.name}}
+                                    {{#each ../../data.data.armourDesign.constructionTypes as |construction id|}}
+                                    {{#ifCond ../../../data.data.tl '>=' construction.tl}}
+                                    <option value="{{construction.name}}">{{construction.name}}</option>
+                                    {{/ifCond}}
+                                    {{/each}}
+                                    {{/select}}
+                                </select>
+                            </td>
+                            <td style="{{{valueInRangeStyle subLocation.construction.minDR subLocation.selectedDR subLocation.material.maxDR}}}" class="custom-armour-selected-dr">
+                                {{subLocation.construction.minDR}} / <input type="number" name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.selectedDR" value="{{subLocation.selectedDR}}" data-dtype="Number" style="width: 30px;"/> / {{subLocation.material.maxDR}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                        {{else}}<!--Display details for parts without sublocations (Pretty much only the skull and brian)-->
+                        <tr class="hit-locations">
+                            <td colspan="2">{{bodyPart.label}}</td>
+                            <td>
+                                {{round bodyPart.surfaceArea 100}}
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                    </table>
+                </div>
+                {{/unless}}
+            </div>
+        </div>
+
+        {{!-- Armour Display Tab --}}
+        <div class="tab stats" data-tab="armour" data-group="primary">
+            <div class="tab">
                 <table class="dr-entry-table">
                     {{#unless (eq data.data.armour.bodyType.name "") }}
                         <tr class="hit-locations">
@@ -133,102 +272,43 @@
                     <tr class="hit-locations master-location">
                         <th colspan="11">
                             <div>{{bodyPart.label}}</div>
-                            <div>
-                                <a class="locationDRUp" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
-                                <a class="locationDRDown" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
-                            </div>
                         </th>
-                        <tr>
-                            <td colspan="3"></td>
-                            <td>
-                                <div class="dr-damage-type-buttons">
-                                    <a class="burnDRUp" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
-                                    <a class="burnDRDown" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="dr-damage-type-buttons">
-                                    <a class="corDRUp" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
-                                    <a class="corDRDown" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="dr-damage-type-buttons">
-                                    <a class="crDRUp" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
-                                    <a class="crDRDown" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="dr-damage-type-buttons">
-                                    <a class="cutDRUp" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
-                                    <a class="cutDRDown" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="dr-damage-type-buttons">
-                                    <a class="fatDRUp" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
-                                    <a class="fatDRDown" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="dr-damage-type-buttons">
-                                    <a class="impDRUp" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
-                                    <a class="impDRDown" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="dr-damage-type-buttons">
-                                    <a class="piDRUp" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
-                                    <a class="piDRDown" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="dr-damage-type-buttons">
-                                    <a class="toxDRUp" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
-                                    <a class="toxDRDown" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
-                                </div>
-                            </td>
-                        </tr>
                     </tr>
                     {{#if bodyPart.subLocation}}<!--Check to see if there are sublocations and display them-->
                     {{#each bodyPart.subLocation as |subLocation locationId|}}<!--Loop through the sublocations-->
                     <tr class="hit-locations">
                         <td class="dr-row">
                             <div>{{subLocation.label}}</div>
-                            <div>
-                                <a class="subLocationDRUp" id="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}" title="Sublocation DR Up"><i class="fas fa-arrow-up"></i></a>
-                                <a class="subLocationDRDown" id="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}" title="Sublocation DR Down"><i class="fas fa-arrow-down"></i></a>
-                            </div>
                         </td>
                         <td class="dr-row">
                             <input type="checkbox" name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.flexible" {{checked subLocation.flexible}} data-dtype="Boolean" style="width: 100%;"/>
                         </td>
                         <td class="dr-row">
-                            <input type="number" name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.drHardening" value="{{subLocation.drHardening}}" data-dtype="Number" />
+                            {{subLocation.drHardening}}
                         </td>
                         <td class="dr-row">
-                            <input type="number" name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.drBurn" value="{{subLocation.drBurn}}" data-dtype="Number" />
+                            {{subLocation.drBurn}}
                         </td>
                         <td class="dr-row">
-                            <input type="number" name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.drCor" value="{{subLocation.drCor}}" data-dtype="Number" />
+                            {{subLocation.drCor}}
                         </td>
                         <td class="dr-row">
-                            <input type="number" name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.drCr" value="{{subLocation.drCr}}" data-dtype="Number" />
+                            {{subLocation.drCr}}
                         </td>
                         <td class="dr-row">
-                            <input type="number" name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.drCut" value="{{subLocation.drCut}}" data-dtype="Number" />
+                            {{subLocation.drCut}}
                         </td>
                         <td class="dr-row">
-                            <input type="number" name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.drFat" value="{{subLocation.drFat}}" data-dtype="Number" />
+                            {{subLocation.drFat}}
                         </td>
                         <td class="dr-row">
-                            <input type="number" name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.drImp" value="{{subLocation.drImp}}" data-dtype="Number" />
+                            {{subLocation.drImp}}
                         </td>
                         <td class="dr-row">
-                            <input type="number" name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.drPi" value="{{subLocation.drPi}}" data-dtype="Number" />
+                            {{subLocation.drPi}}
                         </td>
                         <td class="dr-row">
-                            <input type="number" name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.drTox" value="{{subLocation.drTox}}" data-dtype="Number" />
+                            {{subLocation.drTox}}
                         </td>
                     </tr>
                     {{/each}}
@@ -236,34 +316,34 @@
                     <tr class="hit-locations">
                         <td class="dr-row">{{bodyPart.label}}</td>
                         <td class="dr-row">
-                            <input type="checkbox" name="data.armour.bodyType.body.{{partId}}.flexible" {{checked bodyPart.flexible}} data-dtype="Boolean" style="width: 100%;"/>
+                            {{bodyPart.flexible}}
                         </td>
                         <td class="dr-row">
-                            <input type="number" name="data.armour.bodyType.body.{{partId}}.drHardening" value="{{bodyPart.drHardening}}" data-dtype="Number" />
+                            {{bodyPart.drHardening}}
                         </td>
                         <td class="dr-row">
-                            <input type="number" name="data.armour.bodyType.body.{{partId}}.drBurn" value="{{bodyPart.drBurn}}" data-dtype="Number" />
+                            {{bodyPart.drBurn}}
                         </td>
                         <td class="dr-row">
-                            <input type="number" name="data.armour.bodyType.body.{{partId}}.drCor" value="{{bodyPart.drCor}}" data-dtype="Number" />
+                            {{bodyPart.drCor}}
                         </td>
                         <td class="dr-row">
-                            <input type="number" name="data.armour.bodyType.body.{{partId}}.drCr" value="{{bodyPart.drCr}}" data-dtype="Number" />
+                            {{bodyPart.drCr}}
                         </td>
                         <td class="dr-row">
-                            <input type="number" name="data.armour.bodyType.body.{{partId}}.drCut" value="{{bodyPart.drCut}}" data-dtype="Number" />
+                            {{bodyPart.drCut}}
                         </td>
                         <td class="dr-row">
-                            <input type="number" name="data.armour.bodyType.body.{{partId}}.drFat" value="{{bodyPart.drFat}}" data-dtype="Number" />
+                            {{bodyPart.drFat}}
                         </td>
                         <td class="dr-row">
-                            <input type="number" name="data.armour.bodyType.body.{{partId}}.drImp" value="{{bodyPart.drImp}}" data-dtype="Number" />
+                            {{bodyPart.drImp}}
                         </td>
                         <td class="dr-row">
-                            <input type="number" name="data.armour.bodyType.body.{{partId}}.drPi" value="{{bodyPart.drPi}}" data-dtype="Number" />
+                            {{bodyPart.drPi}}
                         </td>
                         <td class="dr-row">
-                            <input type="number" name="data.armour.bodyType.body.{{partId}}.drTox" value="{{bodyPart.drTox}}" data-dtype="Number" />
+                            {{bodyPart.drTox}}
                         </td>
                     </tr>
                     {{/if}}

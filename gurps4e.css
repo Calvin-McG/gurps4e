@@ -1784,12 +1784,6 @@ attribute-senses {
 	line-height: 27.5px;
 }
 
-.question-container {
-	height: 27.5px;
-	width: 27.5px;
-	text-align: center;
-}
-
 .question-button {
 	height: 27.5px;
 	width: 27.5px;
@@ -1832,4 +1826,8 @@ attribute-senses {
 .material-catalogue-table td, th {
 	border: 2px solid rgb(255 255 255 / 50%);
 	padding: 5px;
+}
+
+.custom-armour-selected-dr {
+	text-align: center;
 }

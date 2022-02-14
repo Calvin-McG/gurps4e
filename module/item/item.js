@@ -103,6 +103,68 @@ export class gurpsItem extends Item {
 
   _prepareCustomArmourData() {
     this.validateEquipmentBasics();
+
+    this.data.data.armourDesign = {
+      materials: [],
+      constructionTypes: [],
+      allowMagicalMaterialsForCustom: false,
+    }
+
+    // Get materials and construction methods
+    this.data.data.armourDesign.materials = game.materialAPI.fetchArmourMaterials();
+    this.data.data.armourDesign.constructionTypes = game.materialAPI.fetchArmourConstructionMethods();
+
+    // Get game settings relevant to the design of the laser
+    this.data.data.armourDesign.allowMagicalMaterialsForCustom = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
+
+    console.log(this.data.data);
+    let bodyParts = Object.keys(this.data.data.armour.bodyType.body);
+    for (let i = 0; i < bodyParts.length; i++){
+      if (getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation")) { // Part has sub parts
+        let subParts = Object.keys(getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation"));
+
+        for (let n = 0; n < subParts.length; n++){
+          let currentSubPart = getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n]);
+
+          if (typeof currentSubPart.material != "undefined") {
+            if (this.data.data.armourDesign.allowMagicalMaterialsForCustom) {
+              currentSubPart.material = game.materialAPI.getAndCalculateArmourMaterialByName(currentSubPart.material.name, currentSubPart.material.essential);
+            }
+            else {
+              currentSubPart.material = game.materialAPI.getAndCalculateArmourMaterialByName(currentSubPart.material.name, false);
+            }
+          }
+
+          if (typeof currentSubPart.construction != "undefined") {
+            currentSubPart.construction = game.materialAPI.getArmourConstructionMethodByName(currentSubPart.construction.name);
+          }
+
+          if (typeof currentSubPart.selectedDR == "undefined" || currentSubPart.selectedDR == null) {
+            currentSubPart.selectedDR = 0;
+          }
+        }
+      }
+      else { // Part has no sub parts
+        let currentPart = getProperty(this.data.data.armour.bodyType.body, bodyParts[i]);
+
+        if (typeof currentPart.material != "undefined") {
+          if (this.data.data.armourDesign.allowMagicalMaterialsForCustom) {
+            currentPart.material = game.materialAPI.getAndCalculateArmourMaterialByName(currentPart.material.name, currentPart.material.essential);
+          }
+          else {
+            currentPart.material = game.materialAPI.getAndCalculateArmourMaterialByName(currentPart.material.name, false);
+          }
+        }
+
+        if (typeof currentPart.construction != "undefined") {
+          currentPart.construction = game.materialAPI.getArmourConstructionMethodByName(currentPart.construction.name);
+        }
+
+        if (typeof currentPart.selectedDR == "undefined" || currentPart.selectedDR == null) {
+          currentPart.selectedDR = 0;
+        }
+      }
+    }
   }
 
   _prepareCustomWeaponData() {
@@ -3680,6 +3742,126 @@ export class gurpsItem extends Item {
       info += "<tr>" +
           "<td>" +
           "<p>This name will be used in the display of the projectile on the combat tab and combat macro.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-location") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>The primary location this armour applies to</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-sub-location") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>The sub location this armour applies to.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>An important note: Rules against armour layering don't apply if the second layer of armour only covers half the hit location in question. " +
+          "You can use this to add a second layer of armour to your vitals, shins, forearms, etc. All without taking any DX penalties.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-coverage") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>The square footage of the hit location. Larger locations require more material to armour.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-voider") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>This marks a location as not being an actual hit location. Instead it's a (potential) armour gap. " +
+          "You might not be able to fit plate steel here, but it gives you the opportunity to cover it with leather, mail, etc.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-material") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>A dropdown allowing you to select from the materials available at your TL.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-material-essential") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>A checkbox allowing you to make the material on this location Essential.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-construction") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>A dropdown alloying you to select from the construction methods available for your selected hit location and material at your given TL</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Some hit locations can't use certain construction types, the abdomen, for example, can't be covered with normal plate.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Some materials can't use certain construction types, leather, for example, can't be crafted into mail. (At least not in a way that would be helpful.)</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-selectedDR") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>A slider allowing you to select the amount of DR on this hit location.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>The upper bound is limited by the material you select.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>The lower bound is limited by the construction method you select.</p>" +
           "</td>" +
           "</tr>";
 

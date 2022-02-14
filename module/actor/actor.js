@@ -1144,7 +1144,7 @@ export class gurpsActor extends Actor {
 		if (this.data) {
 			if (this.data.data) {
 				if (this.data.data.bodyType) {
-					if (this.data.data.bodyType.body){
+					if (this.data.data.bodyType.body) {
 						let bodyParts = Object.keys(this.data.data.bodyType.body);
 
 						for (let i = 0; i < bodyParts.length; i++){
