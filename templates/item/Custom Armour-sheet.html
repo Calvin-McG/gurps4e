@@ -242,6 +242,37 @@
                             <td>
                                 {{round bodyPart.surfaceArea 100}}
                             </td>
+                            <td></td>
+                            <td>
+                                <select name="data.armour.bodyType.body.{{partId}}.material.name">
+                                    {{#select bodyPart.material.name}}
+                                    {{#each ../data.data.armourDesign.materials as |material id|}}
+                                    {{#ifCond ../../data.data.tl '>=' material.tl}}
+                                    <option value="{{material.name}}">{{material.name}}</option>
+                                    {{/ifCond}}
+                                    {{/each}}
+                                    {{/select}}
+                                </select>
+                            </td>
+                            {{#if ../this.data.data.armourDesign.allowMagicalMaterialsForCustom}}
+                            <td>
+                                <input type="checkbox" name="data.armour.bodyType.body.{{partId}}.material.essential" {{checked bodyPart.material.essential}} data-dtype="Boolean" style="width: 100%;"/>
+                            </td>
+                            {{/if}}
+                            <td>
+                                <select name="data.armour.bodyType.body.{{partId}}.construction.name">
+                                    {{#select bodyPart.construction.name}}
+                                    {{#each ../data.data.armourDesign.constructionTypes as |construction id|}}
+                                    {{#armourConstructionLimit ../../data.data.tl construction bodyPart bodyPart}}
+                                    <option value="{{construction.name}}">{{construction.name}}</option>
+                                    {{/armourConstructionLimit}}
+                                    {{/each}}
+                                    {{/select}}
+                                </select>
+                            </td>
+                            <td style="{{{valueInRangeStyle bodyPart.construction.minDR bodyPart.selectedDR bodyPart.material.maxDR}}}" class="custom-armour-selected-dr">
+                                {{bodyPart.construction.minDR}} / <input type="number" name="data.armour.bodyType.body.{{partId}}.selectedDR" value="{{bodyPart.selectedDR}}" data-dtype="Number" style="width: 30px;"/> / {{bodyPart.material.maxDR}}
+                            </td>
                         </tr>
                         {{/if}}
                         {{/each}}

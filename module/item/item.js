@@ -51,7 +51,7 @@ export class gurpsItem extends Item {
       default: // not a supported type
         return ui.notifications.error("This type of item is not supported in the system!");
     }
-    this.prepareAttackData()
+    this.prepareAttackData();
   }
 
   validateEquipmentBasics() {
@@ -118,7 +118,6 @@ export class gurpsItem extends Item {
       // Get game settings relevant to the design of the laser
       this.data.data.armourDesign.allowMagicalMaterialsForCustom = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
 
-      console.log(this.data.data);
       let bodyParts = Object.keys(this.data.data.armour.bodyType.body);
       for (let i = 0; i < bodyParts.length; i++){
         if (getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation")) { // Part has sub parts
