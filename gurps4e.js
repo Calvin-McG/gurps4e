@@ -73,6 +73,57 @@ Hooks.once('init', async function() {
     }
   });
 
+  //
+  Handlebars.registerHelper('showVoider', function (bodyPart, subLocation, options) {
+    if (bodyPart.subLocation) { // There are sublocations
+      if (bodyPart.subLocation.thigh) {  // There is a thigh
+        if (!bodyPart.subLocation.thigh.construction.flexible) { // The thigh armour is not flexible
+          return options.fn(this); // Option is allowed
+        }
+        else { // The thigh armour is flexible, so hide the inside thigh location
+          if (subLocation.label.toLowerCase().includes("inside")) {
+            return options.inverse(this); // Option is not allowed
+          }
+        }
+      }
+
+      if (bodyPart.subLocation.knee) { // There is a knee
+        if (!bodyPart.subLocation.knee.construction.flexible) { // The knee armour is not flexible
+          return options.fn(this); // Option is allowed
+        }
+        else { // The knee armour is flexible, so hide the inside knee location
+          if (subLocation.label.toLowerCase().includes("back")) {
+            return options.inverse(this); // Option is not allowed
+          }
+        }
+      }
+
+      if (bodyPart.subLocation.elbow) { // There is an elbow
+        if (!bodyPart.subLocation.elbow.construction.flexible) { // The elbow armour is not flexible
+          return options.fn(this); // Option is allowed
+        }
+        else { // The elbow armour is flexible, so hide the inside elbow location
+          if (subLocation.label.toLowerCase().includes("inside")) {
+            return options.inverse(this); // Option is not allowed
+          }
+        }
+      }
+
+      if (bodyPart.subLocation.shoulder) { // There is a shoulder
+        if (!bodyPart.subLocation.shoulder.construction.flexible) { // The shoulder armour is not flexible
+          return options.fn(this); // Option is allowed
+        }
+        else { // The shoulder armour is flexible, so hide the armpit location
+          if (subLocation.label.toLowerCase().includes("armpit")) {
+            return options.inverse(this); // Option is not allowed
+          }
+        }
+      }
+    }
+
+    return options.fn(this); // Option is allowed
+  });
+
   // A Handlebar helper to decide whether to show certain construction methods based on TL, the material-TL relationship, and location.
   Handlebars.registerHelper('armourConstructionLimit', function (campaignTL, construction, subLocation, bodyPart, options) {
     if (typeof campaignTL != "undefined" && typeof construction != "undefined" && typeof subLocation != "undefined" && typeof bodyPart != "undefined") {

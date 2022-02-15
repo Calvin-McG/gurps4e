@@ -190,6 +190,7 @@
                         {{#if bodyPart.subLocation}}<!--Check to see if there are sublocations and display them-->
                         {{#each bodyPart.subLocation as |subLocation locationId|}}<!--Loop through the sublocations-->
                         {{#if subLocation.surfaceArea}}
+                        {{#showVoider bodyPart subLocation}}
                         <tr class="hit-locations">
                             <td>
                                 {{bodyPart.label}}
@@ -234,6 +235,7 @@
                                 {{subLocation.construction.minDR}} / <input type="number" name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.selectedDR" value="{{subLocation.selectedDR}}" data-dtype="Number" style="width: 30px;"/> / {{subLocation.material.maxDR}}
                             </td>
                         </tr>
+                        {{/showVoider}}
                         {{/if}}
                         {{/each}}
                         {{else}}<!--Display details for parts without sublocations (Pretty much only the skull and brian)-->
