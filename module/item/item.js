@@ -3797,7 +3797,8 @@ export class gurpsItem extends Item {
       info += "<tr>" +
           "<td>" +
           "<p>This marks a location as not being an actual hit location. Instead it's a (potential) armour gap. " +
-          "You might not be able to fit plate steel here, but it gives you the opportunity to cover it with leather, mail, etc.</p>" +
+          "You might not be able to fit plate steel here, but it gives you the opportunity to cover it with leather, mail, etc. " +
+          "Voiders only show up if their parent hit location is constructed with rigid armour. Flexible armour does not leave a voider.</p>" +
           "</td>" +
           "</tr>";
 
