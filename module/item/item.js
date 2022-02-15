@@ -104,65 +104,70 @@ export class gurpsItem extends Item {
   _prepareCustomArmourData() {
     this.validateEquipmentBasics();
 
-    this.data.data.armourDesign = {
-      materials: [],
-      constructionTypes: [],
-      allowMagicalMaterialsForCustom: false,
-    }
+    if (this.data.data.armour.bodyType.body) {
+      this.data.data.armourDesign = {
+        materials: [],
+        constructionTypes: [],
+        allowMagicalMaterialsForCustom: false,
+      }
 
-    // Get materials and construction methods
-    this.data.data.armourDesign.materials = game.materialAPI.fetchArmourMaterials();
-    this.data.data.armourDesign.constructionTypes = game.materialAPI.fetchArmourConstructionMethods();
+      // Get materials and construction methods
+      this.data.data.armourDesign.materials = game.materialAPI.fetchArmourMaterials();
+      this.data.data.armourDesign.constructionTypes = game.materialAPI.fetchArmourConstructionMethods();
 
-    // Get game settings relevant to the design of the laser
-    this.data.data.armourDesign.allowMagicalMaterialsForCustom = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
+      // Get game settings relevant to the design of the laser
+      this.data.data.armourDesign.allowMagicalMaterialsForCustom = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
 
-    console.log(this.data.data);
-    let bodyParts = Object.keys(this.data.data.armour.bodyType.body);
-    for (let i = 0; i < bodyParts.length; i++){
-      if (getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation")) { // Part has sub parts
-        let subParts = Object.keys(getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation"));
+      console.log(this.data.data);
+      let bodyParts = Object.keys(this.data.data.armour.bodyType.body);
+      for (let i = 0; i < bodyParts.length; i++){
+        if (getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation")) { // Part has sub parts
+          let subParts = Object.keys(getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation"));
 
-        for (let n = 0; n < subParts.length; n++){
-          let currentSubPart = getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n]);
+          for (let n = 0; n < subParts.length; n++){
+            let currentSubPart = getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n]);
 
-          if (typeof currentSubPart.material != "undefined") {
+            if (typeof currentSubPart.material != "undefined") {
+              if (this.data.data.armourDesign.allowMagicalMaterialsForCustom) {
+                currentSubPart.material = game.materialAPI.getAndCalculateArmourMaterialByName(currentSubPart.material.name, currentSubPart.material.essential);
+              }
+              else {
+                currentSubPart.material = game.materialAPI.getAndCalculateArmourMaterialByName(currentSubPart.material.name, false);
+              }
+            }
+
+            if (typeof currentSubPart.construction != "undefined") {
+              currentSubPart.construction = game.materialAPI.getArmourConstructionMethodByName(currentSubPart.construction.name);
+            }
+
+            if (typeof currentSubPart.selectedDR == "undefined" || currentSubPart.selectedDR == null) {
+              currentSubPart.selectedDR = 0;
+            }
+          }
+        }
+        else { // Part has no sub parts
+          let currentPart = getProperty(this.data.data.armour.bodyType.body, bodyParts[i]);
+
+          if (typeof currentPart.material != "undefined") {
             if (this.data.data.armourDesign.allowMagicalMaterialsForCustom) {
-              currentSubPart.material = game.materialAPI.getAndCalculateArmourMaterialByName(currentSubPart.material.name, currentSubPart.material.essential);
+              currentPart.material = game.materialAPI.getAndCalculateArmourMaterialByName(currentPart.material.name, currentPart.material.essential);
             }
             else {
-              currentSubPart.material = game.materialAPI.getAndCalculateArmourMaterialByName(currentSubPart.material.name, false);
+              currentPart.material = game.materialAPI.getAndCalculateArmourMaterialByName(currentPart.material.name, false);
             }
           }
 
-          if (typeof currentSubPart.construction != "undefined") {
-            currentSubPart.construction = game.materialAPI.getArmourConstructionMethodByName(currentSubPart.construction.name);
+          if (typeof currentPart.construction != "undefined") {
+            currentPart.construction = game.materialAPI.getArmourConstructionMethodByName(currentPart.construction.name);
           }
 
-          if (typeof currentSubPart.selectedDR == "undefined" || currentSubPart.selectedDR == null) {
-            currentSubPart.selectedDR = 0;
-          }
-        }
-      }
-      else { // Part has no sub parts
-        let currentPart = getProperty(this.data.data.armour.bodyType.body, bodyParts[i]);
-
-        if (typeof currentPart.material != "undefined") {
-          if (this.data.data.armourDesign.allowMagicalMaterialsForCustom) {
-            currentPart.material = game.materialAPI.getAndCalculateArmourMaterialByName(currentPart.material.name, currentPart.material.essential);
-          }
-          else {
-            currentPart.material = game.materialAPI.getAndCalculateArmourMaterialByName(currentPart.material.name, false);
+          if (typeof currentPart.selectedDR == "undefined" || currentPart.selectedDR == null) {
+            currentPart.selectedDR = 0;
           }
         }
 
-        if (typeof currentPart.construction != "undefined") {
-          currentPart.construction = game.materialAPI.getArmourConstructionMethodByName(currentPart.construction.name);
-        }
-
-        if (typeof currentPart.selectedDR == "undefined" || currentPart.selectedDR == null) {
-          currentPart.selectedDR = 0;
-        }
+        // TODO - Limit consturction by TL, material-TL (ferrous plate), and location (Segmented plate on the abdomen).
+        // TODO - Add init for segmented plate on the abdomen.
       }
     }
   }

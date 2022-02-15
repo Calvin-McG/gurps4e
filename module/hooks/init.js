@@ -117,7 +117,8 @@ Hooks.once("init", () => {
         "Strictly speaking, this places compound bows in the middle of TL7. " +
         "However, the principles behind the construction of a compound bow are only TL2. " +
         "Setting this option to 'true' strictly interprets this to mean compound bows only become available at TL7+ " +
-        "Leaving this option false uses the TL2 as the limit. ",
+        "Leaving this option false uses the TL2 as the limit. " +
+        "(As The Deadly Spring article seems to do, as it gives an example of a dwarven compound bow made at TL5.",
     scope: "world",
     config: true,
     default: false,

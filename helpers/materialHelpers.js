@@ -87,7 +87,7 @@ export class materialHelpers {
         const constructionMethods = [
             {
                 "tl": 0,
-                "name": "No Armor",
+                "name": "No Armour",
                 "wm": 0.0000,
                 "cm": 0,
                 "don": 0,
@@ -127,13 +127,15 @@ export class materialHelpers {
             },
             {
                 "tl": 1,
-                "name": "Plate",
+                "name": "Early Plate",
                 "wm": 0.8,
                 "cm": 5,
                 "don": 6.42,
                 "minDR": 3,
                 "flexible": false,
-                "notes": "Not useable in certain locations like the abdomen. This option is TL4 for ferrous metals."
+                "notes": "Not useable in certain locations like the abdomen. This option is TL3 for ferrous metals. " +
+                    "Early Plate uses arming nails instead of sliding rivets. " +
+                    "Weight and cost are the same but armour chinks are easier to target (-6 instead of -8, and -8 instead of -10)"
             },
             {
                 "tl": 1,
@@ -164,6 +166,16 @@ export class materialHelpers {
                 "minDR": 3,
                 "flexible": false,
                 "notes": ""
+            },
+            {
+                "tl": 4,
+                "name": "Plate",
+                "wm": 0.8,
+                "cm": 5,
+                "don": 6.42,
+                "minDR": 3,
+                "flexible": false,
+                "notes": "Not useable in certain locations like the abdomen."
             },
             {
                 "tl": 6,

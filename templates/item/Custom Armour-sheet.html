@@ -166,7 +166,7 @@
                                 </span>
                             </th>
                             {{#if this.data.data.armourDesign.allowMagicalMaterialsForCustom}}
-                            <th class="question-container" id="armour-material-essential">
+                            <th class="question-container" id="armour-material-essential" style="width: 60px;">
                                 Essential
                                 <span class="small-question-button">
                                     <i class="fas fa-question"></i>
@@ -213,7 +213,7 @@
                                 {{/select}}
                                 </select>
                             </td>
-                            {{#if this.data.data.armourDesign.allowMagicalMaterialsForCustom}}
+                            {{#if ../../this.data.data.armourDesign.allowMagicalMaterialsForCustom}}
                             <td>
                                 <input type="checkbox" name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.material.essential" {{checked subLocation.material.essential}} data-dtype="Boolean" style="width: 100%;"/>
                             </td>
@@ -222,9 +222,9 @@
                                 <select name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.construction.name">
                                     {{#select subLocation.construction.name}}
                                     {{#each ../../data.data.armourDesign.constructionTypes as |construction id|}}
-                                    {{#ifCond ../../../data.data.tl '>=' construction.tl}}
+                                    {{#armourConstructionLimit ../../../data.data.tl construction subLocation bodyPart}}
                                     <option value="{{construction.name}}">{{construction.name}}</option>
-                                    {{/ifCond}}
+                                    {{/armourConstructionLimit}}
                                     {{/each}}
                                     {{/select}}
                                 </select>

@@ -73,6 +73,65 @@ Hooks.once('init', async function() {
     }
   });
 
+  // A Handlebar helper to decide whether to show certain construction methods based on TL, the material-TL relationship, and location.
+  Handlebars.registerHelper('armourConstructionLimit', function (campaignTL, construction, subLocation, bodyPart, options) {
+    if (typeof campaignTL != "undefined" && typeof construction != "undefined" && typeof subLocation != "undefined" && typeof bodyPart != "undefined") {
+      if (typeof subLocation.material != "undefined") {
+        let materialName = subLocation.material.name;
+        let material = subLocation.material;
+        let locationLabel = subLocation.label;
+        let constructionTL = construction.tl;
+        let constructionName = construction.name;
+
+        if ((materialName.toLowerCase().includes("iron") || materialName.toLowerCase().includes("steel")) && campaignTL < 3 && (constructionName.toLowerCase() == "early plate" || constructionName.toLowerCase() == "solid")) { // It's a ferrous material, the TL is less than 3, and it's plate/solid construction
+          return options.inverse(this); // Option is not allowed
+        }
+        else if (campaignTL >= constructionTL) { // The TL is within the range
+          // Start checking construction flags against the current name.
+          if (material.fabric && constructionName.toLowerCase() == "fabric") { // Fabric is allowed in any hit location
+            return options.fn(this); // Option is allowed
+          }
+          else if (material.fabric && constructionName.toLowerCase() == "impact absorbing") { // Fabric is allowed in any hit location
+            return options.fn(this); // Option is allowed
+          }
+          else if (material.layeredFabric && constructionName.toLowerCase() == "layered fabric") { // Fabric is allowed in any hit location
+            return options.fn(this); // Option is allowed
+          }
+          else if (material.optimizedFabric && constructionName.toLowerCase() == "optimized fabric") { // Fabric is allowed in any hit location
+            return options.fn(this); // Option is allowed
+          }
+          else if (material.scales && constructionName.toLowerCase() == "scales") { // Scale is allowed in any hit location
+            return options.fn(this); // Option is allowed
+          }
+          else if (material.mail && constructionName.toLowerCase() == "mail") { // Mail is allowed in any hit location
+            return options.fn(this); // Option is allowed
+          }
+          else if (material.plate && constructionName.toLowerCase() == "segmented plate" && !(subLocation.voider)) { // Segmented plate is allowed in any hit location that is not an armour chink
+            return options.fn(this); // Option is allowed
+          }
+          else if (material.plate && constructionName.toLowerCase() == "early plate" && !(subLocation.voider) && !(bodyPart.label.toLowerCase().includes("abdomen"))) { // Segmented plate is allowed in any hit location that is not an armour chink or the abdomen
+            return options.fn(this); // Option is allowed
+          }
+          else if (material.plate && constructionName.toLowerCase() == "plate" && !(subLocation.voider) && !(bodyPart.label.toLowerCase().includes("abdomen"))) { // Segmented plate is allowed in any hit location that is not an armour chink or the abdomen
+            return options.fn(this); // Option is allowed
+          }
+          else if (material.solid && constructionName.toLowerCase() == "solid" && ((bodyPart.label.toLowerCase().includes("skull")) || locationLabel.toLowerCase().includes("vitals"))) { // Solid is only allowed on the vitals and skull
+            return options.fn(this); // Option is allowed
+          }
+          else if (constructionName.toLowerCase() == "no armour") { // No Armour is always allowed
+            return options.fn(this); // Option is allowed
+          }
+          else { // None of the flags match
+            return options.inverse(this); // Option is not allowed
+          }
+        }
+        else {
+          return options.inverse(this); // Option is not allowed
+        }
+      }
+    }
+  });
+
   Handlebars.registerHelper("calcMaxStrain", function(tensileStPsi, elasticModulusPsi) {
     let maxStrain = (tensileStPsi / elasticModulusPsi) * 100 ;
     maxStrain = Math.round(maxStrain * 100) / 100;
