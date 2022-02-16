@@ -200,6 +200,13 @@ Hooks.once('init', async function() {
     }
   });
 
+  Handlebars.registerHelper("inchesToFtIn", function(height) {
+    let feet = Math.floor(height/12);
+    let inches = height - (feet * 12);
+
+    return feet + "' " + inches + '"';
+  });
+
   Handlebars.registerHelper("calcMaxStrainStyle", function(tensileStPsi, elasticModulusPsi) {
     let maxStrain = (tensileStPsi / elasticModulusPsi) * 100 ;
     maxStrain = Math.round(maxStrain * 100) / 100;

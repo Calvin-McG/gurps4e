@@ -109,6 +109,18 @@ export class gurpsActor extends Actor {
 			this.data.data.senses = senses;
 		}
 
+		if (this.data.data.bio.height.value) {
+			if (this.data.data.bio.height.value <= 0) {
+				this.data.data.bio.height.value = 1;
+			}
+		}
+
+		if (this.data.data.bio.weight.value) {
+			if (this.data.data.bio.weight.value <= 0) {
+				this.data.data.bio.weight.value = 1;
+			}
+		}
+
 		if (this.data.data.senses.vis) {
 			this.data.data.senses.vis = {
 				id: "vis",
