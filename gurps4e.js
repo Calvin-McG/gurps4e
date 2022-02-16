@@ -202,7 +202,7 @@ Hooks.once('init', async function() {
 
   Handlebars.registerHelper("inchesToFtIn", function(height) {
     let feet = Math.floor(height/12);
-    let inches = height - (feet * 12);
+    let inches = Math.round((height - (feet * 12)) * 10) / 10;
 
     return feet + "' " + inches + '"';
   });
