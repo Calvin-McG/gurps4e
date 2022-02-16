@@ -202,7 +202,7 @@
                                 {{round subLocation.surfaceArea 100}}
                             </td>
                             <td>
-                                {{subLocation.voider}}
+                                {{boolToYN subLocation.voider}}
                             </td>
                             <td>
                                 <select name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.material.name">
@@ -316,7 +316,7 @@
                             <div>{{subLocation.label}}</div>
                         </td>
                         <td class="dr-row">
-                            {{subLocation.flexible}}
+                            {{boolToYN subLocation.flexible}}
                         </td>
                         <td class="dr-row">
                             {{subLocation.drHardening}}
@@ -351,7 +351,7 @@
                     <tr class="hit-locations">
                         <td class="dr-row">{{bodyPart.label}}</td>
                         <td class="dr-row">
-                            {{bodyPart.flexible}}
+                            {{boolToYN bodyPart.flexible}}
                         </td>
                         <td class="dr-row">
                             {{bodyPart.drHardening}}

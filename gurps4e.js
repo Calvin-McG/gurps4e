@@ -191,6 +191,15 @@ Hooks.once('init', async function() {
     return maxStrain;
   });
 
+  Handlebars.registerHelper("boolToYN", function(bool) {
+    if (bool || bool == "true" || bool == "TRUE" || bool == "True") {
+      return "Yes";
+    }
+    else {
+      return "No"
+    }
+  });
+
   Handlebars.registerHelper("calcMaxStrainStyle", function(tensileStPsi, elasticModulusPsi) {
     let maxStrain = (tensileStPsi / elasticModulusPsi) * 100 ;
     maxStrain = Math.round(maxStrain * 100) / 100;
