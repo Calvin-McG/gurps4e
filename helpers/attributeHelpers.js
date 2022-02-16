@@ -625,7 +625,7 @@ export class attributeHelpers {
     }
 
     static calcSMDiscount(sm){
-        let sizeMod = Math.floor(sm);
+        let sizeMod = sm;
 
         if (sizeMod == "" || sizeMod == null || typeof sizeMod == "undefined") {
             sizeMod = 0;

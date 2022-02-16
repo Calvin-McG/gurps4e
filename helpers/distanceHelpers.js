@@ -159,6 +159,54 @@ export class distanceHelpers {
     }
 
     static sizeToDistance(sm){
-        return Math.round(10^(((sm % 6)+2)/6)) * (10 ** Math.floor(sm/6));
+
+        if (sm >= 0) {
+            return Math.round(10 ** (((sm % 6)+2)/6)) * (10 ** Math.floor(sm/6));
+        }
+        else if (sm == -1) {
+            return 1.5
+        }
+        else if (sm == -2) {
+            return 1
+        }
+        else if (sm == -3) {
+            return 2/3
+        }
+        else if (sm == -4) {
+            return 0.5
+        }
+        else if (sm == -5) {
+            return 1/3
+        }
+        else if (sm == -6) {
+            return 2/3/3
+        }
+        else if (sm == -7) {
+            return 3/7/3
+        }
+        else if (sm == -8) {
+            return 1/4/3
+        }
+        else if (sm == -9) {
+            return 1/6/3
+        }
+        else if (sm == -10) {
+            return 1/8/3
+        }
+        else if (sm == -11) {
+            return 1/36
+        }
+        else if (sm == -12) {
+            return 2/3/36
+        }
+        else if (sm == -13) {
+            return 1/2/36
+        }
+        else if (sm == -14) {
+            return 1/3/36
+        }
+        else if (sm == -15) {
+            return 1/5/36
+        }
     }
 }
