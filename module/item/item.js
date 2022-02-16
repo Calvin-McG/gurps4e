@@ -1,6 +1,7 @@
 import { attributeHelpers } from '../../helpers/attributeHelpers.js';
 import { skillHelpers } from '../../helpers/skillHelpers.js';
 import {materialHelpers} from "../../helpers/materialHelpers.js";
+import {distanceHelpers} from "../../helpers/distanceHelpers.js";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -109,6 +110,12 @@ export class gurpsItem extends Item {
         materials: [],
         constructionTypes: [],
         allowMagicalMaterialsForCustom: false,
+        scalingMethodForCustomArmour: "weight",
+        getSizeFromActor: false,
+        scalingMultiplier: 1,
+        inputWeight: 150, // lbs
+        inputSM: 0,
+        inputHeight: 60, // inches
       }
 
       // Get materials and construction methods
@@ -117,6 +124,42 @@ export class gurpsItem extends Item {
 
       // Get game settings relevant to the design of the laser
       this.data.data.armourDesign.allowMagicalMaterialsForCustom = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
+      this.data.data.armourDesign.scalingMethodForCustomArmour = game.settings.get("gurps4e", "scalingMethodForCustomArmour");
+
+      this.data.data.armourDesign.getSizeFromActor = false;
+      if (this.actor) { // If there's an actor
+        if (this.actor.data) {
+          if (this.actor.data.data) {
+            this.data.data.armourDesign.getSizeFromActor = true;
+            if (this.data.data.armourDesign.scalingMethodForCustomArmour == "weight") { // Scaling using the rules from Pyramid 3-52:16
+              this.data.data.armourDesign.scalingMultiplier = (this.actor.data.data.bio.weight.value / 150) ** (2/3);
+            }
+            else if (this.data.data.armourDesign.scalingMethodForCustomArmour == "sm") { // Scaling using the rules from LTC2:21
+              this.data.data.armourDesign.scalingMultiplier = ((distanceHelpers.sizeToDistance(this.actor.data.data.bio.sm.value) / 10) ** 2);
+            }
+            else if (this.data.data.armourDesign.scalingMethodForCustomArmour == "height") { // Scaling based off the rules from LTC2:21, but gradually scaled based on height.
+              this.data.data.armourDesign.scalingMultiplier = (((5 / 36 * this.actor.data.data.bio.height.value) / 10)  ** 2);
+            }
+            else {
+              this.data.data.armourDesign.scalingMultiplier = 1;
+            }
+          }
+        }
+      }
+      else { // There is no actor
+        if (this.data.data.armourDesign.scalingMethodForCustomArmour == "weight") { // Scaling using the rules from Pyramid 3-52:16
+          this.data.data.armourDesign.scalingMultiplier = (this.data.data.armourDesign.inputWeight / 150) ** (2/3);
+        }
+        else if (this.data.data.armourDesign.scalingMethodForCustomArmour == "sm") { // Scaling using the rules from LTC2:21
+          this.data.data.armourDesign.scalingMultiplier = ((distanceHelpers.sizeToDistance(this.data.data.armourDesign.inputSM) / 10) ** 2);
+        }
+        else if (this.data.data.armourDesign.scalingMethodForCustomArmour == "height") { // Scaling based off the rules from LTC2:21, but gradually scaled based on height.
+          this.data.data.armourDesign.scalingMultiplier = (((5 / 36 * this.data.data.armourDesign.inputHeight) / 10)  ** 2);
+        }
+        else {
+          this.data.data.armourDesign.scalingMultiplier = 1;
+        }
+      }
 
       let bodyParts = Object.keys(this.data.data.armour.bodyType.body);
       for (let i = 0; i < bodyParts.length; i++){
@@ -3867,6 +3910,43 @@ export class gurpsItem extends Item {
       info += "<tr>" +
           "<td>" +
           "<p>The lower bound is limited by the construction method you select.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-body-type") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>The body type this armour is meant for. Though armour meant for a different body type might still fit. (Winged Humanoids and Humanoids can wear each other's helmets, for example)</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-layer") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>Higher layer numbers are placed above lower layer numbers. " +
+          "-∞ is closest to the body. " +
+          "+∞ is furthest from the body. " +
+          "You can enter any real number. " +
+          "Ties won't cause errors but should be avoided.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-input-scaling") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>This is really only for testing. Once this armour is placed onto an actor it will fetch the value directly from the actor.</p>" +
           "</td>" +
           "</tr>";
 

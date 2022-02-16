@@ -69,14 +69,21 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  game.settings.register("gurps4e", "gradualScalingForCustomArmour", {
-    name: "Gradual Scaling For Custom Armour",
-    hint: "Rather than assume every character in the same SM range has armour that weighs exactly the same, this option scales the armour weight to that exact character. " +
-        "This advantages characters at the bottom of an SM range and disadvantages those at the top, but only because it removes abuseable break-points.",
+  game.settings.register("gurps4e", "scalingMethodForCustomArmour", {
+    name: "Scaling Method For Custom Armour",
+    hint: "The default method for armour scaling is SM-Based, where all actors in the same SM range have the same weight and cost multiplier. This is easy if playing on pen and paper but can lead to odd results." +
+        "The alternative presented in the Custom Armour article is Weight-Based scaling. Rather than assume every character in the same SM range has armour that weighs exactly the same, this option scales the armour weight to that exact character. " +
+        "This advantages characters at the bottom of an SM range and disadvantages those at the top, but only because it removes abuseable break-points. " +
+        "Finally, there is also Height-Based scaling. This is basically just the SM-Based scaling, but based on their specific height instead of the SM bracket they fall into.",
     scope: "world",
     config: true,
-    default: true,
-    type: Boolean
+    type: String,
+    choices: {
+      "weight": "Weight-Based",
+      "sm": "SM-Based",
+      "height": "Height-Based"
+    },
+    default: "weight",
   });
 
   game.settings.register("gurps4e", "hotshotsAndOverheating", {

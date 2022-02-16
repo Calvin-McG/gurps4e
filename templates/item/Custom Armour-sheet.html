@@ -81,46 +81,76 @@
         {{!-- Armour Setup Tab --}}
         <div class="tab stats" data-tab="setup" data-group="primary">
             <div class="tab">
-                <span>
-                    <label>Body Type:</label>
-                    <select name="data.armour.bodyType.name" class="bodyType">
-                        {{#select data.data.armour.bodyType.name}}
-                        <option value="">Make a Selection</option>
-                        <option value="humanoid">Humanoid</option>
-                        <option value="wingedHumanoid">Winged Humanoid</option>
-                        <option value="quadruped">Quadruped</option>
-                        <option value="wingedQuadruped">Winged Quadruped</option>
-                        <option value="hexapod">Hexapod</option>
-                        <option value="wingedHexapod">Winged Hexapod</option>
-                        <option value="centaur">Centaur</option>
-                        <option value="avian">Avian</option>
-                        <option value="vermiform">Vermiform</option>
-                        <option value="lamia">Lamia</option>
-                        <option value="wingedLamia">Winged Lamia</option>
-                        <option value="octopod">Octopod</option>
-                        <option value="cancroid">Cancroid</option>
-                        <option value="ichthyoid">Ichthyoid</option>
-                        <option value="arachnoid">Arachnoid</option>
-                        {{/select}}
-                    </select>
-                </span>
-                {{#if (eq data.data.armour.bodyType.name "") }}
-                <br>Select a body type for this custom armour.
-                {{else}}
-                <span class="tooltip">
-                    <label>Layer:</label>
-                    <input type="number" style="width: unset;" name="data.armour.layer" value="{{data.armour.layer}}" data-dtype="Number" />
-                    <span class="tooltiptext">
-                        <div>
-                            Higher layer numbers are placed above lower layer numbers.<br>
-                            -∞ is closest to the body.<br>
-                            +∞ is furthest from the body.<br>
-                            You can enter any real number.<br>
-                            Ties won't cause errors but should be avoided.<br>
-                        </div>
-					</span>
-                </span>
-                {{/if}}
+                <div class="design-block">
+                    <div style="width: 50%;">
+                        <h2 class="bold" style="text-align: center;">User Options</h2>
+                        <table>
+                            <tr class="design-row">
+                                <td>Body Type</td>
+                                <td>
+                                    <select name="data.armour.bodyType.name" class="bodyType">
+                                        {{#select data.data.armour.bodyType.name}}
+                                        <option value="">Make a Selection</option>
+                                        <option value="humanoid">Humanoid</option>
+                                        <option value="wingedHumanoid">Winged Humanoid</option>
+                                        <option value="quadruped">Quadruped</option>
+                                        <option value="wingedQuadruped">Winged Quadruped</option>
+                                        <option value="hexapod">Hexapod</option>
+                                        <option value="wingedHexapod">Winged Hexapod</option>
+                                        <option value="centaur">Centaur</option>
+                                        <option value="avian">Avian</option>
+                                        <option value="vermiform">Vermiform</option>
+                                        <option value="lamia">Lamia</option>
+                                        <option value="wingedLamia">Winged Lamia</option>
+                                        <option value="octopod">Octopod</option>
+                                        <option value="cancroid">Cancroid</option>
+                                        <option value="ichthyoid">Ichthyoid</option>
+                                        <option value="arachnoid">Arachnoid</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="armour-body-type">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td>Layer</td>
+                                <td>
+                                    <input type="number" style="width: unset;" name="data.armour.layer" value="{{data.armour.layer}}" data-dtype="Number" />
+                                </td>
+                                <td class="question-container" id="armour-layer">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            {{#unless data.data.armourDesign.getSizeFromActor}}
+                            <tr class="design-row">
+                                {{#if (eq data.data.armourDesign.scalingMethodForCustomArmour "weight") }}
+                                <td>Input Character Weight:</td><td><input type="number" style="width: unset;" name="data.armourDesign.inputWeight" value="{{data.armourDesign.inputWeight}}" data-dtype="Number" /></td>
+                                {{else if (eq data.data.armourDesign.scalingMethodForCustomArmour "height")}}
+                                <td>Input Character Height:</td><td><input type="number" style="width: unset;" name="data.armourDesign.inputHeight" value="{{data.armourDesign.inputHeight}}" data-dtype="Number" /></td>
+                                {{else}}
+                                <td>Input Character SM:</td><td><input type="number" style="width: unset;" name="data.armourDesign.inputSM" value="{{data.armourDesign.inputSM}}" data-dtype="Number" /></td>
+                                {{/if}}
+                                <td class="question-container" id="armour-input-scaling">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/unless}}
+                        </table>
+                    </div>
+                    <div style="width: 50%;">
+                        <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
+                        <div class="equipment-info-container">{{{data.data.info}}}</div>
+                    </div>
+                </div>
             </div>
         </div>
 
