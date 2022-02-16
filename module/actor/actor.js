@@ -109,6 +109,10 @@ export class gurpsActor extends Actor {
 			this.data.data.senses = senses;
 		}
 
+		if (this.data.data.bio.sm) {
+			this.data.data.bio.sm = Math.floor(this.data.data.bio.sm); // Remove decimal places from SM.
+		}
+
 		if (this.data.data.bio.height.value) {
 			if (this.data.data.bio.height.value <= 0) {
 				this.data.data.bio.height.value = 1;
