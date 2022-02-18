@@ -144,7 +144,12 @@
                                 </td>
                             </tr>
                             {{/unless}}
+                        </table>
 
+                        <h2 class="bold" style="text-align: center;">
+                            Armour Customization
+                        </h2>
+                        <table>
                             <tr class="design-row">
                                 <td>Tailoring</td>
                                 <td>
@@ -183,6 +188,89 @@
                                 </td>
                             </tr>
 
+                            <tr class="design-row">
+                                <td>Hardened Steel</td>
+                                <td>
+                                    <select name="data.armourDesign.steelHardening">
+                                        {{#select data.data.armourDesign.steelHardening}}
+                                        <option value="">None</option>
+                                        <option value="hardened">Hardened Steel</option>
+                                        <option value="duplex">Duplex Plate</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="armour-steel-hardening">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td>Fluting</td>
+                                <td>
+                                    <input type="checkbox" name="data.armourDesign.fluting" {{checked data.data.armourDesign.fluting}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="armour-fluting">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td>Silk</td>
+                                <td>
+                                    <input type="checkbox" name="data.armourDesign.silk" {{checked data.data.armourDesign.silk}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="armour-silk">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td>Reinforced</td>
+                                <td>
+                                    <input type="checkbox" name="data.armourDesign.reinforced" {{checked data.data.armourDesign.reinforced}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="armour-textile-reinforced">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td>Mountain Scale</td>
+                                <td>
+                                    <input type="checkbox" name="data.armourDesign.mountain" {{checked data.data.armourDesign.mountain}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="armour-mountain">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td>Leather Quality</td>
+                                <td>
+                                    <select name="data.armourDesign.leatherQuality">
+                                        {{#select data.data.armourDesign.leatherQuality}}
+                                        <option value="rawhide">Rawhide</option>
+                                        <option value="">Standard</option>
+                                        <option value="quality">Leather of Quality</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="armour-leather-quality">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
                         </table>
 
                         <h2 class="bold" style="text-align: center;">
@@ -232,6 +320,18 @@
                                     </select>
                                 </td>
                                 <td class="question-container" id="armour-clothing">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td>Clothing Status {{data.data.armourDesign.clothingStatus}}</td>
+                                <td>
+                                    <input type="range" min="-2" max="8" step="1" name="data.armourDesign.clothingStatus" value="{{data.data.armourDesign.clothingStatus}}" data-dtype="Number">
+                                </td>
+                                <td class="question-container" id="armour-clothing-status">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>

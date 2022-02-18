@@ -122,6 +122,12 @@ export class gurpsItem extends Item {
           style: "0",
           holdoutReduction: 0,
           concealed: false,
+          clothingStatus: 0,
+          steelHardening: "",
+          fluting: false,
+          leatherQuality: "",
+          silk: false,
+          mountain: false,
         }
       }
 
@@ -4108,6 +4114,15 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
+    else if (id == "armour-clothing-status") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>This is the status level of the clothing you've selected. It determines how fancy your clothing is, and how expensive it is.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
     else if (id == "armour-undercover-clothing") {
       info = "<table>";
 
@@ -4117,6 +4132,103 @@ export class gurpsItem extends Item {
 
       info += "<tr>" +
           "<td>Not only does it make your armour easier to hide, maybe even granting a bonus, it also applies to anything else you might want to hide within the clothing, such as weapons, etc.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-steel-hardening") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>Type</td><td>Effect</td><td>CF</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Hardened Steel</td><td>+1 DR</td><td>+4 CF</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Duplex Plate</td><td>+1 DR and -10% weight</td><td>+8 CF</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-fluting") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>By adding flutes, ribs, and bosses in key areas you can reduce weight with no loss of strength.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>+4 CF and -10% to weight.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-silk") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>Cloth armour may optionally be made of silk.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>CF +19, +1 DR vs cutting and impaling.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-textile-reinforced") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>Cloth and Leather armour may be reinforced to better protect against cutting damage.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>CF +0.25, +1 DR vs cutting, +25% weight.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-textile-reinforced") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>Cloth armour may be reinforced to better protect against cutting damage.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>CF +0.25, +1 DR vs cutting, +25% weight.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-mountain-scale") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>Scale armour can be designed in such a way that the scales lock together under pressure. This increases DR vs crushing.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>CF +1, +1 DR vs crushing.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-butted-mail") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>Mail links are usually held together with a rivet. Butted mail has no such rivets. " +
+          "It's no worse when defending against cuts or blunt trauma, but impaling attacks can force the links apart. " +
+          "It's like your mom. Cheap, and easily penetrated.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>CF -0.6, -3 DR vs impaling.</td>" +
           "</tr>";
 
       info += "</table>"
