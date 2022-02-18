@@ -128,6 +128,8 @@ export class gurpsItem extends Item {
           leatherQuality: "",
           silk: false,
           mountain: false,
+          banded: false,
+          butted: false,
         }
       }
 
@@ -4229,6 +4231,19 @@ export class gurpsItem extends Item {
 
       info += "<tr>" +
           "<td>CF -0.6, -3 DR vs impaling.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-banded-mail") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>This is mail with reinforcing bands to help protect against crushing damage.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>CF +0.5, +2 DR vs crushing.</td>" +
           "</tr>";
 
       info += "</table>"
