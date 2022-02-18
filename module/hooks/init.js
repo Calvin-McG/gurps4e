@@ -86,6 +86,25 @@ Hooks.once("init", () => {
     default: "weight",
   });
 
+  game.settings.register("gurps4e", "adjustedHoldoutPenaltyForCustomArmour", {
+    name: "Adjusted Holdout Penalty For Custom Armour",
+    hint: "By default, the holdout penalty is equal to the DR of the armour if it is rigid, or DR/3 if the armour is flexible. " +
+        "This is fine at low tech levels with mundane materials, but if your campaign is at TL6+ or allows magical materials then this can cause issues. " +
+        "After all, by these rules, a DR 4 piece of leather has the same holdout penalty as a DR 4 piece of Kevlar, despite the fact that the leather is half an inch thick and the kevlar is less than an eighth of an inch. " +
+        "There are three options to address this: First is to make no correction, though this means that a lot of UT armour meant to be worn as clothing has Holdout penalties in the area of -8. (Which is a lot) " +
+        "Second is to correct for this by the weight of the material. Rigid materials use High Quality Iron as the baseline and flexible materials use Leather. " +
+        "Third is to correct for this by the thickness of the material. Again, High Quality Iron and Leather are used as the baseline.",
+    scope: "world",
+    config: true,
+    type: String,
+    choices: {
+      "": "No Correction",
+      "weight": "Weight-Based Correction",
+      "thickness": "Thickness-Based Correction"
+    },
+    default: "thickness",
+  });
+
   game.settings.register("gurps4e", "hotshotsAndOverheating", {
     name: "Hotshots and Overheating",
     hint: "UT 133, at the moment, enabling this mostly just allows the construction of gatling lasers.",
