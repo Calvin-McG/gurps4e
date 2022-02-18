@@ -106,16 +106,23 @@ export class gurpsItem extends Item {
     this.validateEquipmentBasics();
 
     if (this.data.data.armour.bodyType.body) {
-      this.data.data.armourDesign = {
-        materials: [],
-        constructionTypes: [],
-        allowMagicalMaterialsForCustom: false,
-        scalingMethodForCustomArmour: "weight",
-        getSizeFromActor: false,
-        scalingMultiplier: 1,
-        inputWeight: 150, // lbs
-        inputSM: 0,
-        inputHeight: 60, // inches
+      if (typeof this.data.data.armourDesign == "undefined"){
+        this.data.data.armourDesign = {
+          materials: [],
+          constructionTypes: [],
+          allowMagicalMaterialsForCustom: false,
+          scalingMethodForCustomArmour: "weight",
+          adjustedHoldoutPenaltyForCustomArmour: "thickness",
+          getSizeFromActor: false,
+          scalingMultiplier: 1,
+          inputWeight: 150, // lbs
+          inputSM: 0,
+          inputHeight: 60, // inches
+          tailoring: "",
+          style: "0",
+          holdoutReduction: 0,
+          concealed: false,
+        }
       }
 
       // Get materials and construction methods
@@ -125,6 +132,7 @@ export class gurpsItem extends Item {
       // Get game settings relevant to the design of the laser
       this.data.data.armourDesign.allowMagicalMaterialsForCustom = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
       this.data.data.armourDesign.scalingMethodForCustomArmour = game.settings.get("gurps4e", "scalingMethodForCustomArmour");
+      this.data.data.armourDesign.adjustedHoldoutPenaltyForCustomArmour = game.settings.get("gurps4e", "adjustedHoldoutPenaltyForCustomArmour");
 
       this.data.data.armourDesign.getSizeFromActor = false;
       if (this.actor) { // If there's an actor
@@ -3948,6 +3956,167 @@ export class gurpsItem extends Item {
           "<td>" +
           "<p>This is really only for testing. Once this armour is placed onto an actor it will fetch the value directly from the actor.</p>" +
           "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-tailor") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td colspan='2'>This is not the same as styling. However, if you're going for high-status armour, this does contribute to the armour's final Status rating.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Cheap</td>" +
+          "<td>-0.6 CF and -1 to DR. However, cheap armour does not need to be tailored to it's wearer so there is no DX penalty for it not being correctly adjusted.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Regularly Tailored</td>" +
+          "<td>This is the default for armour. It doesn't cost any extra and gives no bonuses or penalties. " +
+          "But even without selecting a higher level of tailoring, it is assumed that Regularly Tailored armour is still tailored to the wearer. " +
+          "Looted, borrowed, and second-hand armour needs to be adjusted by an armourer or else the wearer is at -1DX and -1DR until the issue is corrected.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Expertly Tailored</td>" +
+          "<td>+5 CF, but the Holdout penalty is reduced by 1, and opponents are at an extra -1 to target your armour chinks. This includes voiders such as the inside of the elbow, knee, or armpit. Weight is reduced by 15%</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Masterfully Tailored</td>" +
+          "<td>+29 CF, but the Holdout penalty is reduced by 2, and opponents are at an extra -2 to target your armour chinks. This includes voiders such as the inside of the elbow, knee, or armpit. Weight is reduced by 30%</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-style") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td colspan='2'>Styling alone does not set the Status level of the armour. But it does contribute to the armour's final Status rating.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>No Styling</td>" +
+          "<td>This is the default for armour. It doesn't cost any extra and gives no bonuses or penalties.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Status +1</td>" +
+          "<td>+1 CF, it gives a +1 to reaction rolls where appropriate, including Merchant rolls to sell the gear.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Status +2</td>" +
+          "<td>+4 CF, it gives a +2 to reaction rolls where appropriate, including Merchant rolls to sell the gear. At this point the armour is considered 'Presentation Quality', and is appropriate for parades, display, etc.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Status +3</td>" +
+          "<td>+9 CF, it gives a +3 to reaction rolls where appropriate, including Merchant rolls to sell the gear.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-holdout-reduction") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td colspan='2'>This does not grant a bonus to Holdout, it only removes any penalty inherent in the type and amount of armour. " +
+          "For this reason it's less expensive than getting an actual bonus. Each one point reduction in the penalty raises the cost factor by 1.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-concealed") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>This option is for armour concealed within a specific matching garment. Often this means the armour is built directly into the garment, but that's not necessarily required.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>It does however require that there be <i>something</i> to hide the armour in. You'll pick what that is along the way.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-clothing") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>This is the specific type of clothing you're attempting to hide the armour within.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>The armour designer does not account for you armouring locations that might not be covered by whatever type of clothing you select. " +
+          " It's assumed that you have an appropriate garment covering whichever location you're armouring, of whichever type you selected. (Winter gloves, driving gloves, winter boots, hiking boots, whatever)</td>" +
+          "</tr>";
+
+      info += "</table><table>"
+
+      info += "<tr>" +
+          "<td>Note</td><td>Cost</td><td>Weight</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Swimwear</td>" +
+          "<td>5% Cost of Living</td><td>0.5 lbs</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Summer Clothing</td>" +
+          "<td>10% Cost of Living</td><td>1 lbs</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Normal Clothing</td>" +
+          "<td>20% Cost of Living</td><td>2 lbs</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Winter Clothing</td>" +
+          "<td>30% Cost of Living</td><td>5 lbs</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Long Coat covers the neck, torso, arms, knees, and thighs.</td>" +
+          "<td>50$</td><td>5 lbs</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>The Leather Long Coat grants +1 DR to the neck, torso, arms, knees, and thighs. It need not actually be leather.</td>" +
+          "<td>100$</td><td>10 lbs</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>The Light Quality Leather Long Coat grants +1 DR to the neck, torso, arms, knees, and thighs. It does need to be leather.</td>" +
+          "<td>250$</td><td>5 lbs</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>The Quality Leather Long Coat grants +2 DR to the neck, torso, arms, knees, and thighs. It does need to be leather.</td>" +
+          "<td>500$</td><td>10 lbs</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Nun's Habit</td>" +
+          "<td>35% Cost of Living</td><td>6 lbs</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-undercover-clothing") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>This is the additional holdout bonus granted to the clothing you're hiding the armour within.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Not only does it make your armour easier to hide, maybe even granting a bonus, it also applies to anything else you might want to hide within the clothing, such as weapons, etc.</td>" +
           "</tr>";
 
       info += "</table>"

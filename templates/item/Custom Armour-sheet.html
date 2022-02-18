@@ -119,7 +119,7 @@
                             <tr class="design-row">
                                 <td>Layer</td>
                                 <td>
-                                    <input type="number" style="width: unset;" name="data.armour.layer" value="{{data.armour.layer}}" data-dtype="Number" />
+                                    <input type="number" style="width: unset;" name="data.armour.layer" value="{{data.data.armour.layer}}" data-dtype="Number" />
                                 </td>
                                 <td class="question-container" id="armour-layer">
                                     <div class="question-button">
@@ -131,11 +131,11 @@
                             {{#unless data.data.armourDesign.getSizeFromActor}}
                             <tr class="design-row">
                                 {{#if (eq data.data.armourDesign.scalingMethodForCustomArmour "weight") }}
-                                <td>Input Character Weight:</td><td><input type="number" style="width: unset;" name="data.armourDesign.inputWeight" value="{{data.armourDesign.inputWeight}}" data-dtype="Number" /></td>
+                                <td>Input Character Weight:</td><td><input type="number" style="width: unset;" name="data.armourDesign.inputWeight" value="{{data.data.armourDesign.inputWeight}}" data-dtype="Number" /></td>
                                 {{else if (eq data.data.armourDesign.scalingMethodForCustomArmour "height")}}
-                                <td>Input Character Height:</td><td><input type="number" style="width: unset;" name="data.armourDesign.inputHeight" value="{{data.armourDesign.inputHeight}}" data-dtype="Number" /></td>
+                                <td>Input Character Height:</td><td><input type="number" style="width: unset;" name="data.armourDesign.inputHeight" value="{{data.data.armourDesign.inputHeight}}" data-dtype="Number" /></td>
                                 {{else}}
-                                <td>Input Character SM:</td><td><input type="number" style="width: unset;" name="data.armourDesign.inputSM" value="{{data.armourDesign.inputSM}}" data-dtype="Number" /></td>
+                                <td>Input Character SM:</td><td><input type="number" style="width: unset;" name="data.armourDesign.inputSM" value="{{data.data.armourDesign.inputSM}}" data-dtype="Number" /></td>
                                 {{/if}}
                                 <td class="question-container" id="armour-input-scaling">
                                     <div class="question-button">
@@ -144,6 +144,118 @@
                                 </td>
                             </tr>
                             {{/unless}}
+
+                            <tr class="design-row">
+                                <td>Tailoring</td>
+                                <td>
+                                    <select name="data.armourDesign.tailoring">
+                                        {{#select data.data.armourDesign.tailoring}}
+                                        <option value="cheap">Cheap</option>
+                                        <option value="">Regularly Tailored</option>
+                                        <option value="expert">Expertly Tailored</option>
+                                        <option value="master">Masterfully Tailored</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="armour-tailor">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td>Styling</td>
+                                <td>
+                                    <select name="data.armourDesign.style">
+                                        {{#select data.data.armourDesign.style}}
+                                        <option value="0">No Styling</option>
+                                        <option value="1">+1 Styling</option>
+                                        <option value="2">+2 Styling (Presentation Quality)</option>
+                                        <option value="3">+3 Styling</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="armour-style">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </table>
+
+                        <h2 class="bold" style="text-align: center;">
+                            Armour Concealment
+                        </h2>
+                        <table>
+                            <tr class="design-row">
+                                <td>Concealed Armour</td>
+                                <td>
+                                    <input type="checkbox" name="data.armourDesign.concealed" {{checked data.data.armourDesign.concealed}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="armour-concealed">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{#if data.data.armourDesign.concealed}}
+                            <tr class="design-row">
+                                <td>Holdout Penalty Reduction</td>
+                                <td>
+                                    <input type="number" style="width: unset;" name="data.armourDesign.holdoutReduction" value="{{data.data.armourDesign.holdoutReduction}}" data-dtype="Number" />
+                                </td>
+                                <td class="question-container" id="armour-holdout-reduction">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td>Clothing</td>
+                                <td>
+                                    <select name="data.armourDesign.concealedClothing">
+                                        {{#select data.data.armourDesign.concealedClothing}}
+                                        <option value="">None</option>
+                                        <option value="swimwear">Swimwear (-5)</option>
+                                        <option value="summer">Summer Clothing (-3)</option>
+                                        <option value="standard">Normal Clothing (+0)</option>
+                                        <option value="winter">Winter Clothing (+3)</option>
+                                        <option value="longCoat">Long Coat (+4)</option>
+                                        <option value="leatherLongCoat">Leather Long Coat (+4)</option>
+                                        <option value="lightQualityLeatherLongCoat">Light Quality Leather Long Coat (+4)</option>
+                                        <option value="qualityLeatherLongCoat">Quality Leather Long Coat (+4)</option>
+                                        <option value="habit">Nun's Habit (+5)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="armour-clothing">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td>Undercover Clothing</td>
+                                <td>
+                                    <select name="data.armourDesign.undercoverClothing">
+                                        {{#select data.data.armourDesign.undercoverClothing}}
+                                        <option value="0">No Bonus</option>
+                                        <option value="1">+1 Bonus (+4 CF)</option>
+                                        <option value="2">+2 Bonus (+19 CF)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="armour-undercover-clothing">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/if}}
                         </table>
                     </div>
                     <div style="width: 50%;">
