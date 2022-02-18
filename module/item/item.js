@@ -4243,7 +4243,7 @@ export class gurpsItem extends Item {
           "</tr>";
 
       info += "<tr>" +
-          "<td>CF +0.5, +2 DR vs crushing.</td>" +
+          "<td>CF +0.5, +2 DR vs crushing. +50% weight</td>" +
           "</tr>";
 
       info += "</table>"
