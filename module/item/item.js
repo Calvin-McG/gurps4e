@@ -76,7 +76,7 @@ export class gurpsItem extends Item {
     this.data.data.ttlWeight = Math.round((+this.data.data.weight * +this.data.data.quantity) * 100) / 100;
 
     // Constrain TL to valid values
-    if (typeof this.data.data.tl === undefined || this.data.data.tl == null || this.data.data.tl == "") { // If it's undefined, blank, or null, set to default.
+    if (typeof this.data.data.tl === undefined || this.data.data.tl == null || this.data.data.tl === "") { // If it's undefined, blank, or null, set to default.
       this.data.data.tl = game.settings.get("gurps4e", "campaignTL");
     }
     if (this.data.data.tl < 0){ // Too low
