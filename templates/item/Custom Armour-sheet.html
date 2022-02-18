@@ -221,7 +221,7 @@
                         {{#each bodyPart.subLocation as |subLocation locationId|}}<!--Loop through the sublocations-->
                         {{#if subLocation.surfaceArea}}
                         {{#showVoider bodyPart subLocation}}
-                        <tr class="hit-locations">
+                        <tr class="hit-locations" style="{{{hitLocationStyle bodyPart.label}}}">
                             <td>
                                 {{bodyPart.label}}
                             </td>
@@ -269,7 +269,7 @@
                         {{/if}}
                         {{/each}}
                         {{else}}<!--Display details for parts without sublocations (Pretty much only the skull and brian)-->
-                        <tr class="hit-locations">
+                        <tr class="hit-locations" style="{{{hitLocationStyle bodyPart.label}}}">
                             <td colspan="2">{{bodyPart.label}}</td>
                             <td>
                                 {{round bodyPart.surfaceArea 100}}
