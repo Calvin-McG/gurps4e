@@ -227,6 +227,27 @@ Hooks.once('init', async function() {
     return style;
   });
 
+  Handlebars.registerHelper("hitLocationStyle", function(name) {
+    let char1 = 1;
+    let char2 = Math.floor(name.length/2);
+    let char3 = 0;
+    let b = 0;
+
+    if (!isNaN(name.charAt(name.length - 1))) { // Last character is a number
+      char3 = parseInt(name.charAt(name.length - 1));
+      b = Math.min( Math.max( Math.round( (char3) * 63 ), 0), 255);
+    }
+    else {
+      char3 = name.length - 1;
+      b = Math.min( Math.max( Math.round( (name.toLowerCase().charCodeAt(char3) - 97) * 10.2 ), 0), 255);
+    }
+
+    let r = Math.min( Math.max( Math.round( (name.toLowerCase().charCodeAt(char1) - 97) * 10.2 ), 0), 255);
+    let g = Math.min( Math.max( Math.round( (name.toLowerCase().charCodeAt(char2) - 97) * 10.2 ), 0), 255);
+
+    return "background: rgb(" + r + " " + g + " " + b + " / 40%) !important;";
+  });
+
   Handlebars.registerHelper("bucklingConstantStyle", function(a) {
     let ia = 1.2 - a;
 
