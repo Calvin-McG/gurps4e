@@ -184,7 +184,7 @@ export class materialHelpers {
                 "cm": 5,
                 "don": 4.28,
                 "minDR": 2,
-                "flexible": true,
+                "flexible": false,
                 "notes": "DR is halved against non-crushing attacks."
             },
             {
