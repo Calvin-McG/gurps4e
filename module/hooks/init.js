@@ -161,6 +161,15 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  game.settings.register("gurps4e", "allowSuperScienceMaterialsForCustom", {
+    name: "Allow Super Science Materials For Custom Weapons and Armour",
+    hint: "Allows stuff like Retro-Reflective Armour.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
   game.settings.register("gurps4e", "allowMagicalMaterialsForCustom", {
     name: "Allow Magical Materials For Custom Weapons and Armour",
     hint: "Allows Essential Metal, Giant Spider Silk, etc, when creating custom weapons and armour.",
