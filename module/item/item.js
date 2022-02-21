@@ -130,6 +130,12 @@ export class gurpsItem extends Item {
           mountain: false,
           banded: false,
           butted: false,
+          hasPlate: false,
+          hasScale: false,
+          hasMail: false,
+          hasCloth: false,
+          hasLeather: false,
+          hasSteel: false,
         }
       }
 
@@ -178,6 +184,12 @@ export class gurpsItem extends Item {
       }
 
       let bodyParts = Object.keys(this.data.data.armour.bodyType.body);
+      this.data.data.armourDesign.hasPlate    = false;
+      this.data.data.armourDesign.hasScale    = false;
+      this.data.data.armourDesign.hasMail     = false;
+      this.data.data.armourDesign.hasCloth    = false;
+      this.data.data.armourDesign.hasLeather  = false;
+      this.data.data.armourDesign.hasSteel    = false;
       for (let i = 0; i < bodyParts.length; i++){
         if (getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation")) { // Part has sub parts
           let subParts = Object.keys(getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation"));
@@ -192,10 +204,28 @@ export class gurpsItem extends Item {
               else {
                 currentSubPart.material = game.materialAPI.getAndCalculateArmourMaterialByName(currentSubPart.material.name, false);
               }
+              if (currentSubPart.material.name.toLowerCase().includes("steel")){
+                this.data.data.armourDesign.hasSteel = true;
+              }
+              else if (currentSubPart.material.name.toLowerCase().includes("leather")){
+                this.data.data.armourDesign.hasLeather = true;
+              }
+              else if (currentSubPart.material.name.toLowerCase().includes("cloth")){
+                this.data.data.armourDesign.hasCloth = true;
+              }
             }
 
             if (typeof currentSubPart.construction != "undefined") {
               currentSubPart.construction = game.materialAPI.getArmourConstructionMethodByName(currentSubPart.construction.name);
+              if (currentSubPart.construction.name.toLowerCase().includes("plate")){
+                this.data.data.armourDesign.hasPlate = true;
+              }
+              else if (currentSubPart.construction.name.toLowerCase().includes("scale")){
+                this.data.data.armourDesign.hasScale = true;
+              }
+              else if (currentSubPart.construction.name.toLowerCase().includes("mail")){
+                this.data.data.armourDesign.hasMail = true;
+              }
             }
 
             if (typeof currentSubPart.selectedDR == "undefined" || currentSubPart.selectedDR == null) {
@@ -213,19 +243,34 @@ export class gurpsItem extends Item {
             else {
               currentPart.material = game.materialAPI.getAndCalculateArmourMaterialByName(currentPart.material.name, false);
             }
+            if (currentPart.material.name.toLowerCase().includes("steel")){
+              this.data.data.armourDesign.hasSteel = true;
+            }
+            else if (currentPart.material.name.toLowerCase().includes("leather")){
+              this.data.data.armourDesign.hasLeather = true;
+            }
+            else if (currentPart.material.name.toLowerCase().includes("cloth")){
+              this.data.data.armourDesign.hasCloth = true;
+            }
           }
 
           if (typeof currentPart.construction != "undefined") {
             currentPart.construction = game.materialAPI.getArmourConstructionMethodByName(currentPart.construction.name);
+            if (currentPart.construction.name.toLowerCase().includes("plate")){
+              this.data.data.armourDesign.hasPlate = true;
+            }
+            else if (currentPart.construction.name.toLowerCase().includes("scale")){
+              this.data.data.armourDesign.hasScale = true;
+            }
+            else if (currentPart.construction.name.toLowerCase().includes("mail")){
+              this.data.data.armourDesign.hasMail = true;
+            }
           }
 
           if (typeof currentPart.selectedDR == "undefined" || currentPart.selectedDR == null) {
             currentPart.selectedDR = 0;
           }
         }
-
-        // TODO - Limit consturction by TL, material-TL (ferrous plate), and location (Segmented plate on the abdomen).
-        // TODO - Add init for segmented plate on the abdomen.
       }
     }
   }
@@ -4177,6 +4222,19 @@ export class gurpsItem extends Item {
 
       info += "<tr>" +
           "<td>CF +19, +1 DR vs cutting and impaling.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-paper") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>Cloth armour may optionally be made of paper. It's cheaper but more flamable.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>CF -0.25, Combustible.</td>" +
           "</tr>";
 
       info += "</table>"

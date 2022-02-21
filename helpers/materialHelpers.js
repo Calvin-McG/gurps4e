@@ -374,7 +374,7 @@ export class materialHelpers {
             {
                 "tl": 1,
                 "costLTTL": 4,
-                "name": "Gem-Quality JAde",
+                "name": "Gem-Quality Jade",
                 "wm": 1.2000,
                 "costLT": 125,
                 "costHT": 125,

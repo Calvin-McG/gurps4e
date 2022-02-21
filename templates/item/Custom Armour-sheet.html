@@ -188,6 +188,7 @@
                                 </td>
                             </tr>
 
+                            {{#if data.data.armourDesign.hasSteel}}
                             <tr class="design-row">
                                 <td>Hardened Steel</td>
                                 <td>
@@ -195,7 +196,9 @@
                                         {{#select data.data.armourDesign.steelHardening}}
                                         <option value="">None</option>
                                         <option value="hardened">Hardened Steel</option>
+                                        {{#if data.data.armourDesign.hasPlate}}
                                         <option value="duplex">Duplex Plate</option>
+                                        {{/if}}
                                         {{/select}}
                                     </select>
                                 </td>
@@ -205,7 +208,9 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{/if}}
 
+                            {{#if  (or data.data.armourDesign.hasPlate data.data.armourDesign.hasScale) }}
                             <tr class="design-row">
                                 <td>Fluting</td>
                                 <td>
@@ -217,7 +222,9 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{/if}}
 
+                            {{#if data.data.armourDesign.hasMail}}
                             <tr class="design-row">
                                 <td>Banded Mail</td>
                                 <td>
@@ -241,7 +248,9 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{/if}}
 
+                            {{#if data.data.armourDesign.hasCloth}}
                             <tr class="design-row">
                                 <td>Silk</td>
                                 <td>
@@ -255,6 +264,20 @@
                             </tr>
 
                             <tr class="design-row">
+                                <td>Paper</td>
+                                <td>
+                                    <input type="checkbox" name="data.armourDesign.paper" {{checked data.data.armourDesign.paper}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="armour-paper">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/if}}
+
+                            {{#if  (or data.data.armourDesign.hasCloth data.data.armourDesign.hasLeather) }}
+                            <tr class="design-row">
                                 <td>Reinforced</td>
                                 <td>
                                     <input type="checkbox" name="data.armourDesign.reinforced" {{checked data.data.armourDesign.reinforced}} data-dtype="Boolean"/>
@@ -265,7 +288,9 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{/if}}
 
+                            {{#if data.data.armourDesign.hasScale}}
                             <tr class="design-row">
                                 <td>Mountain Scale</td>
                                 <td>
@@ -277,7 +302,9 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{/if}}
 
+                            {{#if data.data.armourDesign.hasLeather}}
                             <tr class="design-row">
                                 <td>Leather Quality</td>
                                 <td>
@@ -295,6 +322,7 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{/if}}
                         </table>
 
                         <h2 class="bold" style="text-align: center;">
