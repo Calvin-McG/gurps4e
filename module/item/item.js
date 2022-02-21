@@ -148,6 +148,14 @@ export class gurpsItem extends Item {
       this.data.data.armourDesign.scalingMethodForCustomArmour = game.settings.get("gurps4e", "scalingMethodForCustomArmour");
       this.data.data.armourDesign.adjustedHoldoutPenaltyForCustomArmour = game.settings.get("gurps4e", "adjustedHoldoutPenaltyForCustomArmour");
 
+      // Validations
+      if(this.data.data.armourDesign.holdoutReduction < 0) { // If it's less than zero
+        this.data.data.armourDesign.holdoutReduction = 0; // Set it to zero
+      }
+      else { // If it's zero or above
+        this.data.data.armourDesign.holdoutReduction = Math.floor(this.data.data.armourDesign.holdoutReduction); // Round down, decimals are not allowed
+      }
+
       this.data.data.armourDesign.getSizeFromActor = false;
       if (this.actor) { // If there's an actor
         if (this.actor.data) {
