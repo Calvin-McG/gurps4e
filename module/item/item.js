@@ -137,6 +137,9 @@ export class gurpsItem extends Item {
           hasCloth: false,
           hasLeather: false,
           hasSteel: false,
+          hasSole: false,
+          soles: 0,
+          hobnails: false,
         }
       }
 
@@ -204,7 +207,10 @@ export class gurpsItem extends Item {
       this.data.data.armourDesign.hasCloth    = false;
       this.data.data.armourDesign.hasLeather  = false;
       this.data.data.armourDesign.hasSteel    = false;
-      for (let i = 0; i < bodyParts.length; i++){
+      this.data.data.armourDesign.hasSole     = false;
+      this.data.data.armourDesign.soles       = 0;
+
+      for (let i = 0; i < bodyParts.length; i++) {
         if (getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation")) { // Part has sub parts
           let subParts = Object.keys(getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation"));
 
@@ -231,19 +237,30 @@ export class gurpsItem extends Item {
 
             if (typeof currentSubPart.construction != "undefined") {
               currentSubPart.construction = game.materialAPI.getArmourConstructionMethodByName(currentSubPart.construction.name);
-              if (currentSubPart.construction.name.toLowerCase().includes("plate")){
-                this.data.data.armourDesign.hasPlate = true;
-              }
-              else if (currentSubPart.construction.name.toLowerCase().includes("scale")){
-                this.data.data.armourDesign.hasScale = true;
-              }
-              else if (currentSubPart.construction.name.toLowerCase().includes("mail")){
-                this.data.data.armourDesign.hasMail = true;
+              if (typeof currentSubPart.construction.name != "undefined") {
+                if (currentSubPart.construction.name.toLowerCase().includes("plate")) {
+                  this.data.data.armourDesign.hasPlate = true;
+                }
+                else if (currentSubPart.construction.name.toLowerCase().includes("scale")) {
+                  this.data.data.armourDesign.hasScale = true;
+                }
+                else if (currentSubPart.construction.name.toLowerCase().includes("mail")) {
+                  this.data.data.armourDesign.hasMail = true;
+                }
               }
             }
 
             if (typeof currentSubPart.selectedDR == "undefined" || currentSubPart.selectedDR == null) {
               currentSubPart.selectedDR = 0;
+            }
+
+            if (currentSubPart.material && currentSubPart.construction) {
+              if (currentSubPart.material.name && currentSubPart.construction.name) {
+                if (currentSubPart.label.toLowerCase().includes("sole") && currentSubPart.selectedDR > 0 && !currentSubPart.material.name.includes("no armour") && !currentSubPart.construction.name.includes("no armour")) { // There is a sole, it has DR, it has a material, and it has a construction type
+                  this.data.data.armourDesign.hasSole = true; // Set the flag true
+                  this.data.data.armourDesign.soles += 1; // Add to the sole count to account for quadrupeds, etc.
+                }
+              }
             }
           }
         }
@@ -270,14 +287,16 @@ export class gurpsItem extends Item {
 
           if (typeof currentPart.construction != "undefined") {
             currentPart.construction = game.materialAPI.getArmourConstructionMethodByName(currentPart.construction.name);
-            if (currentPart.construction.name.toLowerCase().includes("plate")){
-              this.data.data.armourDesign.hasPlate = true;
-            }
-            else if (currentPart.construction.name.toLowerCase().includes("scale")){
-              this.data.data.armourDesign.hasScale = true;
-            }
-            else if (currentPart.construction.name.toLowerCase().includes("mail")){
-              this.data.data.armourDesign.hasMail = true;
+            if (typeof currentPart.construction.name != "undefined") {
+              if (currentPart.construction.name.toLowerCase().includes("plate")){
+                this.data.data.armourDesign.hasPlate = true;
+              }
+              else if (currentPart.construction.name.toLowerCase().includes("scale")){
+                this.data.data.armourDesign.hasScale = true;
+              }
+              else if (currentPart.construction.name.toLowerCase().includes("mail")){
+                this.data.data.armourDesign.hasMail = true;
+              }
             }
           }
 
@@ -4320,7 +4339,6 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-
     else if (id == "armour-sealed") {
       info = "<table>";
 
@@ -4334,6 +4352,21 @@ export class gurpsItem extends Item {
 
       info += "<tr>" +
           "<td>For an average character, that's going to work out to 213.50$ at TL7 or below, and 106.75$ at TL8 or above.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-hobnailed") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>Hobnails improve the wearer's footing on bad terrain. " +
+          "Removing the -2 to attacks and -1 to defences. " +
+          "However on hard surfaces you're at -1 to Stealth.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>This costs 12.50$ and 0.5lbs per foot.</td>" +
           "</tr>";
 
       info += "</table>"
