@@ -126,6 +126,7 @@ export class gurpsItem extends Item {
           steelHardening: "",
           fluting: false,
           leatherQuality: "",
+          sealed: false,
           silk: false,
           mountain: false,
           banded: false,
@@ -156,6 +157,11 @@ export class gurpsItem extends Item {
         this.data.data.armourDesign.holdoutReduction = Math.floor(this.data.data.armourDesign.holdoutReduction); // Round down, decimals are not allowed
       }
 
+      if (this.data.data.tl < 6) { // TL Less than 6, remove sealed.
+        this.data.data.armourDesign.sealed = false;
+      }
+
+      // Check if there is an actor to fetch stats from
       this.data.data.armourDesign.getSizeFromActor = false;
       if (this.actor) { // If there's an actor
         if (this.actor.data) {
@@ -4310,6 +4316,20 @@ export class gurpsItem extends Item {
 
       info += "<tr>" +
           "<td>CF +0.5, +2 DR vs crushing. +50% weight</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+
+    else if (id == "armour-sealed") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>Sealed Armour grants the Sealed Advantage (So long as it covers your whole body). </td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>This costs 10$ per square foot at TL7 or below, and 5$ per square foot at TL8 or above.</td>" +
           "</tr>";
 
       info += "</table>"

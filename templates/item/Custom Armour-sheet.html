@@ -188,6 +188,20 @@
                                 </td>
                             </tr>
 
+                            {{#ifCond data.data.tl '>=' 6}}
+                            <tr class="design-row">
+                                <td>Sealed</td>
+                                <td>
+                                    <input type="checkbox" name="data.armourDesign.sealed" {{checked data.data.armourDesign.sealed}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="armour-sealed">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/ifCond}}
+
                             {{#if data.data.armourDesign.hasSteel}}
                             <tr class="design-row">
                                 <td>Hardened Steel</td>
