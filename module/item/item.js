@@ -140,6 +140,12 @@ export class gurpsItem extends Item {
           hasSole: false,
           soles: 0,
           hobnails: false,
+          hasPunch: false,
+          punchSkill: "DX",
+          punchSkillMod: 0,
+          hasKick: false,
+          kickSkill: "DX",
+          kickSkillMod: 0,
         }
       }
 
@@ -209,6 +215,8 @@ export class gurpsItem extends Item {
       this.data.data.armourDesign.hasSteel    = false;
       this.data.data.armourDesign.hasSole     = false;
       this.data.data.armourDesign.soles       = 0;
+      this.data.data.armourDesign.hasKick     = false;
+      this.data.data.armourDesign.hasPunch    = false;
 
       for (let i = 0; i < bodyParts.length; i++) {
         if (getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation")) { // Part has sub parts
@@ -259,6 +267,12 @@ export class gurpsItem extends Item {
                 if (currentSubPart.label.toLowerCase().includes("sole") && currentSubPart.selectedDR > 0 && !currentSubPart.material.name.includes("no armour") && !currentSubPart.construction.name.includes("no armour")) { // There is a sole, it has DR, it has a material, and it has a construction type
                   this.data.data.armourDesign.hasSole = true; // Set the flag true
                   this.data.data.armourDesign.soles += 1; // Add to the sole count to account for quadrupeds, etc.
+                }
+                if (currentSubPart.label.toLowerCase().includes("foot") && !currentSubPart.material.name.includes("no armour") && ((currentSubPart.selectedDR >= 1 && !currentSubPart.construction.flexible) || (currentSubPart.selectedDR >= 2))) { // There is a foot, it has a material, and it has 1 DR and it's not flexible, or it has 2 DR and is flexible
+                  this.data.data.armourDesign.hasKick = true; // Set the flag true
+                }
+                if (currentSubPart.label.toLowerCase().includes("hand") && !currentSubPart.material.name.includes("no armour") && ((currentSubPart.selectedDR >= 1 && !currentSubPart.construction.flexible) || (currentSubPart.selectedDR >= 2))) { // There is a hand, it has a material, and it has 1 DR and it's not flexible, or it has 2 DR and is flexible
+                  this.data.data.armourDesign.hasPunch = true; // Set the flag true
                 }
               }
             }
@@ -4367,6 +4381,42 @@ export class gurpsItem extends Item {
 
       info += "<tr>" +
           "<td>This costs 12.50$ and 0.5lbs per foot.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-punch") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>Rigid hand armour with DR 1+ or flexible hand armour with DR 2+ increases kick damage from thr-1 to thr+0. Checking this option adds the increased damage as an attack profile to your sheet.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-punch-skill") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>Enter the skill and skill mod here so the combat macro knows what to roll against when you punch someone.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-kick") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>Rigid foot armour with DR 1+ or flexible foot armour with DR 2+ increases kick damage from thr to thr+1. Checking this option adds the increased damage as an attack profile to your sheet.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-kick-skill") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>Enter the skill and skill mod here so the combat macro knows what to roll against when you kick someone.</td>" +
           "</tr>";
 
       info += "</table>"

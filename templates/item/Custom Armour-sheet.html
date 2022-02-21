@@ -240,7 +240,7 @@
                             </tr>
                             {{/if}}
 
-                            {{#if  (or data.data.armourDesign.hasPlate data.data.armourDesign.hasScale) }}
+                            {{#if (or data.data.armourDesign.hasPlate data.data.armourDesign.hasScale) }}
                             <tr class="design-row">
                                 <td>Fluting</td>
                                 <td>
@@ -354,6 +354,62 @@
                             </tr>
                             {{/if}}
                         </table>
+
+                        {{#if (or data.data.armourDesign.hasPunch data.data.armourDesign.hasKick) }}
+                        <h2 class="bold" style="text-align: center;">Attack Options</h2>
+                        <table>
+                            {{#if data.data.armourDesign.hasPunch}}
+                            <tr class="design-row">
+                                <td>Include punch attack profile</td>
+                                <td>
+                                    <input type="checkbox" name="data.armourDesign.punch" {{checked data.data.armourDesign.punch}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="armour-punch">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="design-row">
+                                <td>Punch Skill</td>
+                                <td>
+                                    <input style="width: 75%" type="text" placeholder="Skill" name="data.armourDesign.punchSkill" value="{{data.data.armourDesign.punchSkill}}"/>
+                                    <input style="width: 20%" type="number" placeholder="Mod" name="data.armourDesign.punchSkillMod" value="{{data.data.armourDesign.punchSkillMod}}"/>
+                                </td>
+                                <td class="question-container" id="armour-punch-skill">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/if}}
+                            {{#if data.data.armourDesign.hasKick}}
+                            <tr class="design-row">
+                                <td>Include kick attack profile</td>
+                                <td>
+                                    <input type="checkbox" name="data.armourDesign.kick" {{checked data.data.armourDesign.kick}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="armour-kick">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="design-row">
+                                <td>Kick Skill</td>
+                                <td>
+                                    <input style="width: 75%" type="text" placeholder="Skill" name="data.armourDesign.kickSkill" value="{{data.data.armourDesign.kickSkill}}"/>
+                                    <input style="width: 20%" type="number" placeholder="Mod" name="data.armourDesign.kickSkillMod" value="{{data.data.armourDesign.kickSkillMod}}"/>
+                                </td>
+                                <td class="question-container" id="armour-kick-skill">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/if}}
+                        </table>
+                        {{/if}}
 
                         <h2 class="bold" style="text-align: center;">
                             Armour Concealment
