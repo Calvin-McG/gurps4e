@@ -218,11 +218,11 @@ export class gurpsItem extends Item {
       this.data.data.armourDesign.hasKick     = false;
       this.data.data.armourDesign.hasPunch    = false;
 
-      for (let i = 0; i < bodyParts.length; i++) {
+      for (let i = 0; i < bodyParts.length; i++) { // Loop through body parts
         if (getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation")) { // Part has sub parts
           let subParts = Object.keys(getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation"));
 
-          for (let n = 0; n < subParts.length; n++){
+          for (let n = 0; n < subParts.length; n++) { // Loop through sub parts
             let currentSubPart = getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n]);
 
             if (typeof currentSubPart.material != "undefined") {
@@ -263,7 +263,7 @@ export class gurpsItem extends Item {
             }
 
             if (currentSubPart.material && currentSubPart.construction) {
-              if (currentSubPart.material.name && currentSubPart.construction.name) {
+              if (currentSubPart.material.name && currentSubPart.construction.name) { // There is both a material and a construction type
                 if (currentSubPart.label.toLowerCase().includes("sole") && currentSubPart.selectedDR > 0 && !currentSubPart.material.name.includes("no armour") && !currentSubPart.construction.name.includes("no armour")) { // There is a sole, it has DR, it has a material, and it has a construction type
                   this.data.data.armourDesign.hasSole = true; // Set the flag true
                   this.data.data.armourDesign.soles += 1; // Add to the sole count to account for quadrupeds, etc.
@@ -273,6 +273,20 @@ export class gurpsItem extends Item {
                 }
                 if (currentSubPart.label.toLowerCase().includes("hand") && !currentSubPart.material.name.includes("no armour") && ((currentSubPart.selectedDR >= 1 && !currentSubPart.construction.flexible) || (currentSubPart.selectedDR >= 2))) { // There is a hand, it has a material, and it has 1 DR and it's not flexible, or it has 2 DR and is flexible
                   this.data.data.armourDesign.hasPunch = true; // Set the flag true
+                }
+
+                if (currentSubPart.selectedDR >= currentSubPart.construction.minDR && currentSubPart.selectedDR <= currentSubPart.material.maxDR) { // DR is between max and min
+                  currentSubPart.weight = currentSubPart.surfaceArea * currentSubPart.material.wm * currentSubPart.construction.wm * currentSubPart.selectedDR;
+                  if (currentSubPart.material.costLTTL <= this.data.data.tl) { // The current TL is at or under the tl breakpoint
+                    currentSubPart.cost = currentSubPart.weight * currentSubPart.construction.cm * currentSubPart.material.costLT;
+                  }
+                  else {
+                    currentSubPart.cost = currentSubPart.weight * currentSubPart.construction.cm * currentSubPart.material.costHT;
+                  }
+                }
+                else {
+                  currentSubPart.weight = 0;
+                  currentSubPart.cost = 0;
                 }
               }
             }
@@ -316,6 +330,24 @@ export class gurpsItem extends Item {
 
           if (typeof currentPart.selectedDR == "undefined" || currentPart.selectedDR == null) {
             currentPart.selectedDR = 0;
+          }
+
+          if (currentPart.material && currentPart.construction) {
+            if (currentPart.material.name && currentPart.construction.name) { // There is both a material and a construction type
+              if (currentPart.selectedDR >= currentPart.construction.minDR && currentPart.selectedDR <= currentPart.material.maxDR) { // DR is between max and min
+                currentPart.weight = currentPart.surfaceArea * currentPart.material.wm * currentPart.construction.wm * currentPart.selectedDR;
+                if (currentPart.material.costLTTL <= this.data.data.tl) { // The current TL is at or under the tl breakpoint
+                  currentPart.cost = currentPart.weight * currentPart.construction.cm * currentPart.material.costLT;
+                }
+                else {
+                  currentPart.cost = currentPart.weight * currentPart.construction.cm * currentPart.material.costHT;
+                }
+              }
+              else {
+                currentPart.weight = 0;
+                currentPart.cost = 0;
+              }
+            }
           }
         }
       }

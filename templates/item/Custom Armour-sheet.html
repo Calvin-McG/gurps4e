@@ -565,6 +565,18 @@
                                     <i class="fas fa-question"></i>
                                 </span>
                             </th>
+                            <th class="question-container" id="armour-cost">
+                                $
+                                <span class="small-question-button">
+                                    <i class="fas fa-question"></i>
+                                </span>
+                            </th>
+                            <th class="question-container" id="armour-weight">
+                                lbs
+                                <span class="small-question-button">
+                                    <i class="fas fa-question"></i>
+                                </span>
+                            </th>
                         </tr>
                         {{#each data.data.armour.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
                         {{#if bodyPart.subLocation}}<!--Check to see if there are sublocations and display them-->
@@ -614,6 +626,12 @@
                             <td style="{{{valueInRangeStyle subLocation.construction.minDR subLocation.selectedDR subLocation.material.maxDR}}}" class="custom-armour-selected-dr">
                                 {{subLocation.construction.minDR}} / <input type="number" name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.selectedDR" value="{{subLocation.selectedDR}}" data-dtype="Number" style="width: 30px;"/> / {{subLocation.material.maxDR}}
                             </td>
+                            <td>
+                                {{round subLocation.cost 100}}
+                            </td>
+                            <td>
+                                {{round subLocation.weight 100}}
+                            </td>
                         </tr>
                         {{/showVoider}}
                         {{/if}}
@@ -654,6 +672,12 @@
                             </td>
                             <td style="{{{valueInRangeStyle bodyPart.construction.minDR bodyPart.selectedDR bodyPart.material.maxDR}}}" class="custom-armour-selected-dr">
                                 {{bodyPart.construction.minDR}} / <input type="number" name="data.armour.bodyType.body.{{partId}}.selectedDR" value="{{bodyPart.selectedDR}}" data-dtype="Number" style="width: 30px;"/> / {{bodyPart.material.maxDR}}
+                            </td>
+                            <td>
+                                {{bodyPart.cost}}
+                            </td>
+                            <td>
+                                {{bodyPart.weight}}
                             </td>
                         </tr>
                         {{/if}}
