@@ -149,7 +149,7 @@ Hooks.once('init', async function() {
           if (material.fabric && constructionName.toLowerCase() == "fabric") { // Fabric is allowed in any hit location
             return options.fn(this); // Option is allowed
           }
-          else if (material.fabric && constructionName.toLowerCase() == "impact absorbing") { // Fabric is allowed in any hit location
+          else if (material.plate && constructionName.toLowerCase() == "impact absorbing") { // Fabric is allowed in any hit location
             return options.fn(this); // Option is allowed
           }
           else if (material.layeredFabric && constructionName.toLowerCase() == "layered fabric" && (!materialName.toLowerCase().includes("leather") || campaignTL >= 1 )) { // Must not be leather, or must be at least TL 1
