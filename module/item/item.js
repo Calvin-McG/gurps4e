@@ -4332,6 +4332,10 @@ export class gurpsItem extends Item {
           "<td>This costs 10$ per square foot at TL7 or below, and 5$ per square foot at TL8 or above.</td>" +
           "</tr>";
 
+      info += "<tr>" +
+          "<td>For an average character, that's going to work out to 213.50$ at TL7 or below, and 106.75$ at TL8 or above.</td>" +
+          "</tr>";
+
       info += "</table>"
     }
     this.data.data.info = info;
