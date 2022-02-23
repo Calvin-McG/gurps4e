@@ -329,12 +329,112 @@ export class gurpsItem extends Item {
                   }
 
                   if (currentSubPart.selectedDR >= currentSubPart.construction.minDR && currentSubPart.selectedDR <= currentSubPart.material.maxDR) { // DR is between max and min
-                    currentSubPart.weight = currentSubPart.surfaceArea * currentSubPart.material.wm * currentSubPart.construction.wm * currentSubPart.selectedDR;
+                    let weightModifier = 1; // Init the weight modifier that is used to account for fine/fluting/etc
+                    let cf = 1; // Init the Cost Factor that is used to account for quality modifiers
+                    let drModifier = 0; // Init the modifier that is used to account for bonus dr from hardened steel, etc.
+
+                    if (this.data.data.armourDesign.tailoring.toLowerCase() == "cheap") {
+                      cf = cf -0.6
+                      drModifier = drModifier - 1;
+                    }
+                    else if (this.data.data.armourDesign.tailoring.toLowerCase() == "expert") {
+                      cf = cf + 5;
+                      weightModifier = weightModifier - 0.15;
+                    }
+                    else if (this.data.data.armourDesign.tailoring.toLowerCase() == "master") {
+                      cf = cf +29
+                      weightModifier = weightModifier - 0.3;
+                    }
+
+                    if (this.data.data.armourDesign.style.toLowerCase() == "1") {
+                      cf += 1;
+                    }
+                    else if (this.data.data.armourDesign.style.toLowerCase() == "2") {
+                      cf += 4;
+                    }
+                    else if (this.data.data.armourDesign.style.toLowerCase() == "3") {
+                      cf += 9;
+                    }
+
+                    // This piece is made of steel, and the user has selected either hardened or duplex
+                    if (currentSubPart.material.name.toLowerCase().includes("steel") && (this.data.data.armourDesign.steelHardening.toLowerCase().includes("hardened") || this.data.data.armourDesign.steelHardening.toLowerCase().includes("duplex"))) {
+                      if (this.data.data.armourDesign.steelHardening.toLowerCase().includes("hardened")) {
+                        cf += 4;
+                        drModifier += 1;
+                      }
+                      else if (this.data.data.armourDesign.steelHardening.toLowerCase().includes("duplex")) {
+                        cf += 8;
+                        weightModifier = weightModifier - 0.1;
+                        drModifier += 1;
+                      }
+                    }
+
+                    // This piece is made of either plate or scale, and the user has selected fluting
+                    if ((currentSubPart.construction.name.toLowerCase().includes("scale") || currentSubPart.construction.name.toLowerCase().includes("plate")) && this.data.data.armourDesign.fluting) {
+                      cf += 4;
+                      weightModifier = weightModifier - 0.1;
+                    }
+
+                    // This piece is made of mail, and the user has selected a mail customization
+                    if ((currentSubPart.construction.name.toLowerCase().includes("mail")) && (this.data.data.armourDesign.banded || this.data.data.armourDesign.butted)) {
+                      if (this.data.data.armourDesign.banded) {
+                        cf += 0.5;
+                        weightModifier = weightModifier + 0.5;
+                        // TODO - +2 DR vs crushing
+                      }
+                      else if (this.data.data.armourDesign.butted) {
+                        cf = cf - 0.6;
+                        // TODO - -3 DR vs impaling
+                      }
+                    }
+
+                    // This piece is made of cloth, and the user has selected a cloth customization
+                    if ((currentSubPart.construction.name.toLowerCase().includes("cloth")) && (this.data.data.armourDesign.silk || this.data.data.armourDesign.paper)) {
+                      if (this.data.data.armourDesign.paper) {
+                        cf -= 0.25;
+                      }
+                      else if (this.data.data.armourDesign.silk) {
+                        cf += 19;
+                        // TODO - +1 DR vs impaling and cutting
+                      }
+                    }
+
+                    // This piece is made of cloth or leather, and the user has selected a reinforcement
+                    if ((currentSubPart.construction.name.toLowerCase().includes("cloth") || currentSubPart.construction.name.toLowerCase().includes("leather")) && this.data.data.armourDesign.reinforced) {
+                      cf += 0.25;
+                      weightModifier += 0.25;
+                      // TODO - +1 DR vs cutting
+                    }
+
+                    // This piece is made of scale, and the user has selected mountain scale
+                    if (currentSubPart.construction.name.toLowerCase().includes("scale") && this.data.data.armourDesign.mountain) {
+                      cf += 1;
+                      // TODO - +1 DR vs crushing
+                    }
+
+                    // This piece is made of leather, and the user has selected a leather customization
+                    if ((currentSubPart.construction.name.toLowerCase().includes("leather")) && (this.data.data.armourDesign.leatherQuality.toLowerCase() == "rawhide" || this.data.data.armourDesign.leatherQuality.toLowerCase() == "quality")) {
+                      if (this.data.data.armourDesign.leatherQuality.toLowerCase() == "rawhide") {
+                        cf = cf -0.6;
+                        // TODO - x0.5 HP
+                      }
+                      else if (this.data.data.armourDesign.leatherQuality.toLowerCase() == "quality") {
+                        cf = cf + 4;
+                        drModifier += 1;
+                      }
+                    }
+
+                    cf += this.data.data.armourDesign.holdoutReduction; // Add the cost factor for the holdout reduction.
+
+                    cf = Math.max(cf, 0.2) // Cost factor can't go less than 80%
+                    weightModifier = Math.max(weightModifier, 0.2) // Weight mod can't go less than 80%
+
+                    currentSubPart.weight = currentSubPart.surfaceArea * currentSubPart.material.wm * currentSubPart.construction.wm * currentSubPart.selectedDR * weightModifier;
                     if (currentSubPart.material.costLTTL <= this.data.data.tl) { // The current TL is at or under the tl breakpoint
-                      currentSubPart.cost = currentSubPart.weight * currentSubPart.construction.cm * currentSubPart.material.costLT;
+                      currentSubPart.cost = currentSubPart.weight * currentSubPart.construction.cm * currentSubPart.material.costLT * cf;
                     }
                     else {
-                      currentSubPart.cost = currentSubPart.weight * currentSubPart.construction.cm * currentSubPart.material.costHT;
+                      currentSubPart.cost = currentSubPart.weight * currentSubPart.construction.cm * currentSubPart.material.costHT * cf;
                     }
                   }
                   else {
