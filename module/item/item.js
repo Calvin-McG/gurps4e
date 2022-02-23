@@ -218,6 +218,9 @@ export class gurpsItem extends Item {
       this.data.data.armourDesign.hasKick     = false;
       this.data.data.armourDesign.hasPunch    = false;
 
+      let unitCost = 0;
+      let unitWeight = 0;
+
       for (let i = 0; i < bodyParts.length; i++) { // Loop through body parts
         if (getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation")) { // Part has sub parts
           let subParts = Object.keys(getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation"));
@@ -264,29 +267,43 @@ export class gurpsItem extends Item {
 
             if (currentSubPart.material && currentSubPart.construction) {
               if (currentSubPart.material.name && currentSubPart.construction.name) { // There is both a material and a construction type
-                if (currentSubPart.label.toLowerCase().includes("sole") && currentSubPart.selectedDR > 0 && !currentSubPart.material.name.includes("no armour") && !currentSubPart.construction.name.includes("no armour")) { // There is a sole, it has DR, it has a material, and it has a construction type
-                  this.data.data.armourDesign.hasSole = true; // Set the flag true
-                  this.data.data.armourDesign.soles += 1; // Add to the sole count to account for quadrupeds, etc.
-                }
-                if (currentSubPart.label.toLowerCase().includes("foot") && !currentSubPart.material.name.includes("no armour") && ((currentSubPart.selectedDR >= 1 && !currentSubPart.construction.flexible) || (currentSubPart.selectedDR >= 2))) { // There is a foot, it has a material, and it has 1 DR and it's not flexible, or it has 2 DR and is flexible
-                  this.data.data.armourDesign.hasKick = true; // Set the flag true
-                }
-                if (currentSubPart.label.toLowerCase().includes("hand") && !currentSubPart.material.name.includes("no armour") && ((currentSubPart.selectedDR >= 1 && !currentSubPart.construction.flexible) || (currentSubPart.selectedDR >= 2))) { // There is a hand, it has a material, and it has 1 DR and it's not flexible, or it has 2 DR and is flexible
-                  this.data.data.armourDesign.hasPunch = true; // Set the flag true
-                }
+                if (currentSubPart.material.name.toLowerCase() != "no armour" && currentSubPart.construction.name.toLowerCase() != "no armour") {
+                  if (currentSubPart.label.toLowerCase().includes("sole") && currentSubPart.selectedDR > 0 && !currentSubPart.material.name.includes("no armour") && !currentSubPart.construction.name.includes("no armour")) { // There is a sole, it has DR, it has a material, and it has a construction type
+                    this.data.data.armourDesign.hasSole = true; // Set the flag true
+                    this.data.data.armourDesign.soles += 1; // Add to the sole count to account for quadrupeds, etc.
+                  }
+                  if (currentSubPart.label.toLowerCase().includes("foot") && !currentSubPart.material.name.includes("no armour") && ((currentSubPart.selectedDR >= 1 && !currentSubPart.construction.flexible) || (currentSubPart.selectedDR >= 2))) { // There is a foot, it has a material, and it has 1 DR and it's not flexible, or it has 2 DR and is flexible
+                    this.data.data.armourDesign.hasKick = true; // Set the flag true
+                  }
+                  if (currentSubPart.label.toLowerCase().includes("hand") && !currentSubPart.material.name.includes("no armour") && ((currentSubPart.selectedDR >= 1 && !currentSubPart.construction.flexible) || (currentSubPart.selectedDR >= 2))) { // There is a hand, it has a material, and it has 1 DR and it's not flexible, or it has 2 DR and is flexible
+                    this.data.data.armourDesign.hasPunch = true; // Set the flag true
+                  }
 
-                if (currentSubPart.selectedDR >= currentSubPart.construction.minDR && currentSubPart.selectedDR <= currentSubPart.material.maxDR) { // DR is between max and min
-                  currentSubPart.weight = currentSubPart.surfaceArea * currentSubPart.material.wm * currentSubPart.construction.wm * currentSubPart.selectedDR;
-                  if (currentSubPart.material.costLTTL <= this.data.data.tl) { // The current TL is at or under the tl breakpoint
-                    currentSubPart.cost = currentSubPart.weight * currentSubPart.construction.cm * currentSubPart.material.costLT;
+                  if (currentSubPart.selectedDR >= currentSubPart.construction.minDR && currentSubPart.selectedDR <= currentSubPart.material.maxDR) { // DR is between max and min
+                    currentSubPart.weight = currentSubPart.surfaceArea * currentSubPart.material.wm * currentSubPart.construction.wm * currentSubPart.selectedDR;
+                    if (currentSubPart.material.costLTTL <= this.data.data.tl) { // The current TL is at or under the tl breakpoint
+                      currentSubPart.cost = currentSubPart.weight * currentSubPart.construction.cm * currentSubPart.material.costLT;
+                    }
+                    else {
+                      currentSubPart.cost = currentSubPart.weight * currentSubPart.construction.cm * currentSubPart.material.costHT;
+                    }
                   }
                   else {
-                    currentSubPart.cost = currentSubPart.weight * currentSubPart.construction.cm * currentSubPart.material.costHT;
+                    currentSubPart.weight = 0;
+                    currentSubPart.cost = 0;
                   }
-                }
-                else {
-                  currentSubPart.weight = 0;
-                  currentSubPart.cost = 0;
+
+                  if (this.data.data.armourDesign.sealed && this.data.data.tl >= 6) { // Armour is sealed and the TL is high enough for it to actually be sealed.
+                    if (this.data.data.tl >= 8) { // At TL 8+, sealed is 5$ per square foot
+                      currentSubPart.cost = currentSubPart.cost + (currentSubPart.surfaceArea * 5);
+                    }
+                    else { // At TL 7-, sealed is 10$ per square foot
+                      currentSubPart.cost = currentSubPart.cost + (currentSubPart.surfaceArea * 10);
+                    }
+                  }
+
+                  unitWeight = unitWeight + currentSubPart.weight;
+                  unitCost = unitCost + currentSubPart.cost;
                 }
               }
             }
@@ -347,10 +364,33 @@ export class gurpsItem extends Item {
                 currentPart.weight = 0;
                 currentPart.cost = 0;
               }
+
+              if (this.data.data.armourDesign.sealed && this.data.data.tl >= 6) { // Armour is sealed and the TL is high enough for it to actually be sealed.
+                if (this.data.data.tl >= 8) { // At TL 8+, sealed is 5$ per square foot
+                  currentPart.cost = currentPart.cost + (currentPart.surfaceArea * 5);
+                }
+                else { // At TL 7-, sealed is 10$ per square foot
+                  currentPart.cost = currentPart.cost + (currentPart.surfaceArea * 10);
+                }
+              }
+
+              unitWeight = unitWeight + currentPart.weight;
+              unitCost = unitCost + currentPart.cost;
             }
           }
         }
       }
+
+      // Hobnail cost and weight handling
+      if (this.data.data.armourDesign.hasSole && this.data.data.armourDesign.soles >= 1 && this.data.data.armourDesign.hobnails) {
+        unitCost += this.data.data.armourDesign.soles * 12.5;
+        unitWeight += this.data.data.armourDesign.soles * 0.5;
+      }
+
+      this.data.data.cost = unitCost;
+      this.data.data.weight = unitWeight;
+      this.data.data.ttlWeight = this.data.data.weight * this.data.data.quantity;
+      this.data.data.ttlCost = this.data.data.cost * this.data.data.quantity;
     }
   }
 
