@@ -212,6 +212,13 @@ export class gurpsItem extends Item {
         this.data.data.armourDesign.leatherQuality = "";
       }
 
+      if (!this.data.data.armourDesign.concealed) { // The armour is not concealed, unset concealment settings.
+        this.data.data.armourDesign.holdoutReduction = 0;
+        this.data.data.armourDesign.concealedClothing = "";
+        this.data.data.armourDesign.clothingStatus = 0;
+        this.data.data.armourDesign.undercoverClothing = "";
+      }
+
       // Check if there is an actor to fetch stats from
       this.data.data.armourDesign.getSizeFromActor = false;
       if (this.actor) { // If there's an actor
