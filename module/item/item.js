@@ -4007,6 +4007,12 @@ export class gurpsItem extends Item {
           "</td>" +
           "</tr>";
 
+      info += "<tr>" +
+          "<td>" +
+          "<p>Essential materials cost 30x as much per pound, max DR is 3x as high, and each point of DR weighs 1/3rd what it normally does.</p>" +
+          "</td>" +
+          "</tr>";
+
       info += "</table>"
     }
     else if (id == "armour-construction") {
