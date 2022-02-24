@@ -674,10 +674,10 @@
                                 {{bodyPart.construction.minDR}} / <input type="number" name="data.armour.bodyType.body.{{partId}}.selectedDR" value="{{bodyPart.selectedDR}}" data-dtype="Number" style="width: 30px;"/> / {{bodyPart.material.maxDR}}
                             </td>
                             <td>
-                                {{bodyPart.cost}}
+                                {{round bodyPart.cost 100}}
                             </td>
                             <td>
-                                {{bodyPart.weight}}
+                                {{round bodyPart.weight 100}}
                             </td>
                         </tr>
                         {{/if}}

@@ -174,51 +174,6 @@ export class gurpsItem extends Item {
         this.data.data.armourDesign.sealed = false;
       }
 
-      if (!this.data.data.armourDesign.hasSole || this.data.data.tl < 2) { // Either no sole or less than TL 2
-        this.data.data.armourDesign.hobnails = false;
-      }
-
-      if (!this.data.data.armourDesign.hasSteel) { // There is no steel, so the steel can't be hardened
-        this.data.data.armourDesign.steelHardening = "";
-      }
-
-      if (this.data.data.armourDesign.hasSteel && !this.data.data.armourDesign.hasPlate) { // There is steel, but not in the form of plate
-        this.data.data.armourDesign.steelHardening = "hardened";
-      }
-
-      if (!this.data.data.armourDesign.hasPlate && !this.data.data.armourDesign.hasScale) { // There is neither plate nor scale, so there can be no fluting
-        this.data.data.armourDesign.fluting = false;
-      }
-
-      if (!this.data.data.armourDesign.hasMail) { // There is no mail, so there can't be mail variants
-        this.data.data.armourDesign.banded = false;
-        this.data.data.armourDesign.butted = false;
-      }
-
-      if (!this.data.data.armourDesign.hasCloth) { // There is no cloth, so there can't be cloth variants
-        this.data.data.armourDesign.silk = false;
-        this.data.data.armourDesign.paper = false;
-      }
-
-      if (!this.data.data.armourDesign.hasLeather && !this.data.data.armourDesign.hasCloth) { // There is neither cloth nor leather, so there can be no reinforcement
-        this.data.data.armourDesign.reinforced = false;
-      }
-
-      if (!this.data.data.armourDesign.hasScale) { // There is no scale, so there can't be scale variants
-        this.data.data.armourDesign.mountain = false;
-      }
-
-      if (!this.data.data.armourDesign.hasLeather) { // There is no leather, so there can't be leather variants
-        this.data.data.armourDesign.leatherQuality = "";
-      }
-
-      if (!this.data.data.armourDesign.concealed) { // The armour is not concealed, unset concealment settings.
-        this.data.data.armourDesign.holdoutReduction = 0;
-        this.data.data.armourDesign.concealedClothing = "";
-        this.data.data.armourDesign.clothingStatus = 0;
-        this.data.data.armourDesign.undercoverClothing = "";
-      }
-
       // Check if there is an actor to fetch stats from
       this.data.data.armourDesign.getSizeFromActor = false;
       if (this.actor) { // If there's an actor
@@ -528,6 +483,51 @@ export class gurpsItem extends Item {
             }
           }
         }
+      }
+
+      if (!this.data.data.armourDesign.hasSole || this.data.data.tl < 2) { // Either no sole or less than TL 2
+        this.data.data.armourDesign.hobnails = false;
+      }
+
+      if (!this.data.data.armourDesign.hasSteel) { // There is no steel, so the steel can't be hardened
+        this.data.data.armourDesign.steelHardening = "";
+      }
+
+      if (this.data.data.armourDesign.hasSteel && !this.data.data.armourDesign.hasPlate) { // There is steel, but not in the form of plate
+        this.data.data.armourDesign.steelHardening = "hardened";
+      }
+
+      if (!this.data.data.armourDesign.hasPlate && !this.data.data.armourDesign.hasScale) { // There is neither plate nor scale, so there can be no fluting
+        this.data.data.armourDesign.fluting = false;
+      }
+
+      if (!this.data.data.armourDesign.hasMail) { // There is no mail, so there can't be mail variants
+        this.data.data.armourDesign.banded = false;
+        this.data.data.armourDesign.butted = false;
+      }
+
+      if (!this.data.data.armourDesign.hasCloth) { // There is no cloth, so there can't be cloth variants
+        this.data.data.armourDesign.silk = false;
+        this.data.data.armourDesign.paper = false;
+      }
+
+      if (!this.data.data.armourDesign.hasLeather && !this.data.data.armourDesign.hasCloth) { // There is neither cloth nor leather, so there can be no reinforcement
+        this.data.data.armourDesign.reinforced = false;
+      }
+
+      if (!this.data.data.armourDesign.hasScale) { // There is no scale, so there can't be scale variants
+        this.data.data.armourDesign.mountain = false;
+      }
+
+      if (!this.data.data.armourDesign.hasLeather) { // There is no leather, so there can't be leather variants
+        this.data.data.armourDesign.leatherQuality = "";
+      }
+
+      if (!this.data.data.armourDesign.concealed) { // The armour is not concealed, unset concealment settings.
+        this.data.data.armourDesign.holdoutReduction = 0;
+        this.data.data.armourDesign.concealedClothing = "";
+        this.data.data.armourDesign.clothingStatus = 0;
+        this.data.data.armourDesign.undercoverClothing = "";
       }
 
       // Hobnail cost and weight handling
