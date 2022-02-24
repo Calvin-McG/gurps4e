@@ -344,7 +344,7 @@ export class gurpsItem extends Item {
                     }
 
                     // This piece is made of cloth, and the user has selected a cloth customization
-                    if ((currentSubPart.construction.name.toLowerCase().includes("cloth")) && (this.data.data.armourDesign.silk || this.data.data.armourDesign.paper)) {
+                    if ((currentSubPart.material.name.toLowerCase().includes("cloth")) && (this.data.data.armourDesign.silk || this.data.data.armourDesign.paper)) {
                       if (this.data.data.armourDesign.paper) {
                         cf -= 0.25;
                       }
@@ -355,7 +355,7 @@ export class gurpsItem extends Item {
                     }
 
                     // This piece is made of cloth or leather, and the user has selected a reinforcement
-                    if ((currentSubPart.construction.name.toLowerCase().includes("cloth") || currentSubPart.construction.name.toLowerCase().includes("leather")) && this.data.data.armourDesign.reinforced) {
+                    if ((currentSubPart.material.name.toLowerCase().includes("cloth") || currentSubPart.material.name.toLowerCase().includes("leather")) && this.data.data.armourDesign.reinforced) {
                       cf += 0.25;
                       weightModifier += 0.25;
                       // TODO - +1 DR vs cutting
@@ -368,7 +368,7 @@ export class gurpsItem extends Item {
                     }
 
                     // This piece is made of leather, and the user has selected a leather customization
-                    if ((currentSubPart.construction.name.toLowerCase().includes("leather")) && (this.data.data.armourDesign.leatherQuality.toLowerCase() == "rawhide" || this.data.data.armourDesign.leatherQuality.toLowerCase() == "quality")) {
+                    if ((currentSubPart.material.name.toLowerCase().includes("leather")) && (this.data.data.armourDesign.leatherQuality.toLowerCase() == "rawhide" || this.data.data.armourDesign.leatherQuality.toLowerCase() == "quality")) {
                       if (this.data.data.armourDesign.leatherQuality.toLowerCase() == "rawhide") {
                         cf = cf -0.6;
                         // TODO - x0.5 HP
@@ -455,31 +455,33 @@ export class gurpsItem extends Item {
 
           if (currentPart.material && currentPart.construction) {
             if (currentPart.material.name && currentPart.construction.name) { // There is both a material and a construction type
-              if (currentPart.selectedDR >= currentPart.construction.minDR && currentPart.selectedDR <= currentPart.material.maxDR) { // DR is between max and min
-                currentPart.weight = currentPart.surfaceArea * currentPart.material.wm * currentPart.construction.wm * currentPart.selectedDR;
-                if (currentPart.material.costLTTL <= this.data.data.tl) { // The current TL is at or under the tl breakpoint
-                  currentPart.cost = currentPart.weight * currentPart.construction.cm * currentPart.material.costLT;
+              if (currentPart.material.name.toLowerCase() != "no armour" && currentPart.construction.name.toLowerCase() != "no armour") {
+                if (currentPart.selectedDR >= currentPart.construction.minDR && currentPart.selectedDR <= currentPart.material.maxDR) { // DR is between max and min
+                  currentPart.weight = currentPart.surfaceArea * currentPart.material.wm * currentPart.construction.wm * currentPart.selectedDR;
+                  if (currentPart.material.costLTTL <= this.data.data.tl) { // The current TL is at or under the tl breakpoint
+                    currentPart.cost = currentPart.weight * currentPart.construction.cm * currentPart.material.costLT;
+                  }
+                  else {
+                    currentPart.cost = currentPart.weight * currentPart.construction.cm * currentPart.material.costHT;
+                  }
                 }
                 else {
-                  currentPart.cost = currentPart.weight * currentPart.construction.cm * currentPart.material.costHT;
+                  currentPart.weight = 0;
+                  currentPart.cost = 0;
                 }
-              }
-              else {
-                currentPart.weight = 0;
-                currentPart.cost = 0;
-              }
 
-              if (this.data.data.armourDesign.sealed && this.data.data.tl >= 6) { // Armour is sealed and the TL is high enough for it to actually be sealed.
-                if (this.data.data.tl >= 8) { // At TL 8+, sealed is 5$ per square foot
-                  currentPart.cost = currentPart.cost + (currentPart.surfaceArea * 5);
+                if (this.data.data.armourDesign.sealed && this.data.data.tl >= 6) { // Armour is sealed and the TL is high enough for it to actually be sealed.
+                  if (this.data.data.tl >= 8) { // At TL 8+, sealed is 5$ per square foot
+                    currentPart.cost = currentPart.cost + (currentPart.surfaceArea * 5);
+                  }
+                  else { // At TL 7-, sealed is 10$ per square foot
+                    currentPart.cost = currentPart.cost + (currentPart.surfaceArea * 10);
+                  }
                 }
-                else { // At TL 7-, sealed is 10$ per square foot
-                  currentPart.cost = currentPart.cost + (currentPart.surfaceArea * 10);
-                }
-              }
 
-              unitWeight = unitWeight + currentPart.weight;
-              unitCost = unitCost + currentPart.cost;
+                unitWeight = unitWeight + currentPart.weight;
+                unitCost = unitCost + currentPart.cost;
+              }
             }
           }
         }
