@@ -840,7 +840,6 @@ export class gurpsActor extends Actor {
 
 		unspent = +this.data.data.points.total - +spent;
 
-		//this.update({ ['data.points.unspent']: unspent });
 		this.data.data.points.unspent = unspent;
 	}
 
@@ -890,7 +889,7 @@ export class gurpsActor extends Actor {
 					if (this.data.data.bodyType.name.length > 0){
 						// Create a function for filtering out armour
 						function filterArmour(item){
-							if ((item.type == "Equipment" && item.data.equipStatus == "equipped") || item.type == "Trait"){ // Check to see if it is a piece of equipment
+							if (((item.type == "Equipment" || item.type == "Custom Armour") && item.data.equipStatus == "equipped") || item.type == "Trait"){ // Check to see if it is a piece of equipment, custom armour, or a trait
 								if (item.data.armour){ // Check to see if data has the armour child object - This should really only be an issue when updating from a version that did not include this data structure.
 									if (item.data.armour.bodyType){ // Check to see if the item has armour
 										if (item.data.armour.bodyType.name){
@@ -978,7 +977,7 @@ export class gurpsActor extends Actor {
 			pi: {},
 			tox: {},
 		};
-		if (object){ // Make sure they have a body
+		if (object) { // Make sure they have a body
 			let bodyParts = Object.keys(object); // Collect all the bodypart names
 
 			for (let i = 0; i < bodyParts.length; i++){ // Loop through all the body parts
