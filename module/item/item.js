@@ -160,7 +160,6 @@ export class gurpsItem extends Item {
       this.data.data.armourDesign.allowMagicalMaterialsForCustom = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
       this.data.data.armourDesign.scalingMethodForCustomArmour = game.settings.get("gurps4e", "scalingMethodForCustomArmour");
       this.data.data.armourDesign.adjustedHoldoutPenaltyForCustomArmour = game.settings.get("gurps4e", "adjustedHoldoutPenaltyForCustomArmour");
-      this.data.data.armourDesign.pfForCustomArmour = game.settings.get("gurps4e", "pfForCustomArmour");
 
       // Validations
       if(this.data.data.armourDesign.holdoutReduction < 0) { // If it's less than zero
@@ -640,6 +639,9 @@ export class gurpsItem extends Item {
               currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 6);
             }
 
+            // Can pass for
+            currentSubPart.armourPercent = (currentSubPart.selectedDR / currentSubPart.material.maxDR);
+
             cf += this.data.data.armourDesign.holdoutReduction; // Add the cost factor for the holdout reduction.
 
             cf = Math.max(cf, 0.2) // Cost factor can't go less than 80%
@@ -667,40 +669,65 @@ export class gurpsItem extends Item {
             }
           }
 
+          this.data.data.armourDesign.armourPercent = Math.max(currentSubPart.armourPercent, this.data.data.armourDesign.armourPercent) // Always use the worst (highest) value
+
           this.data.data.armourDesign.donTime = Math.round(this.data.data.armourDesign.donTime);
           this.data.data.armourDesign.unitWeight += currentSubPart.weight;
           this.data.data.armourDesign.unitCost += currentSubPart.cost;
 
+
+
           // Calculate Status Equivilent
           if (this.data.data.armourDesign.unitCost >= 0) {
-            if (this.data.data.armourDesign.unitCost >= 240) {
-              this.data.data.armourDesign.statisEq = 0;
+            if (this.data.data.armourDesign.unitCost <= 240) {
+              this.data.data.armourDesign.statusEq = "0 - Freeman, apprentice, ordinary citizen";
             }
-            else if (this.data.data.armourDesign.unitCost >= 480) {
-              this.data.data.armourDesign.statisEq = 1;
+            else if (this.data.data.armourDesign.unitCost <= 480) {
+              this.data.data.armourDesign.statusEq = "1 - Squire, merchant, priest, doctor, councilor";
             }
-            else if (this.data.data.armourDesign.unitCost >= 1200) {
-              this.data.data.armourDesign.statisEq = 2;
+            else if (this.data.data.armourDesign.unitCost <= 1200) {
+              this.data.data.armourDesign.statusEq = "2 - Landless knight, mayor, business leader";
             }
-            else if (this.data.data.armourDesign.unitCost >= 4800) {
-              this.data.data.armourDesign.statisEq = 3;
+            else if (this.data.data.armourDesign.unitCost <= 4800) {
+              this.data.data.armourDesign.statusEq = "3 - Landed knight, guild master, big city mayor";
             }
-            else if (this.data.data.armourDesign.unitCost >= 24000) {
-              this.data.data.armourDesign.statisEq = 4;
+            else if (this.data.data.armourDesign.unitCost <= 24000) {
+              this.data.data.armourDesign.statusEq = "4 - Lesser noble, congressional representative, Who’s Who";
             }
-            else if (this.data.data.armourDesign.unitCost >= 240000) {
-              this.data.data.armourDesign.statisEq = 5;
+            else if (this.data.data.armourDesign.unitCost <= 240000) {
+              this.data.data.armourDesign.statusEq = "5 - Great noble, multinational corporate boss";
             }
-            else if (this.data.data.armourDesign.unitCost >= 2400000) {
-              this.data.data.armourDesign.statisEq = 6;
+            else if (this.data.data.armourDesign.unitCost <= 2400000) {
+              this.data.data.armourDesign.statusEq = "6 - Royal family, governor";
             }
-            else if (this.data.data.armourDesign.unitCost >= 24000000) {
-              this.data.data.armourDesign.statisEq = 7;
+            else if (this.data.data.armourDesign.unitCost <= 24000000) {
+              this.data.data.armourDesign.statusEq = "7 - King, pope, president";
             }
-            else if (this.data.data.armourDesign.unitCost >= 240000000) {
-              this.data.data.armourDesign.statisEq = 8;
+            else if (this.data.data.armourDesign.unitCost <= 240000000) {
+              this.data.data.armourDesign.statusEq = "8 - Emperor, god-king, overlord";
             }
           }
+
+          console.log(this.data.data.armourDesign.statusEq)
+          // Can pass for
+
+          if (this.data.data.armourDesign.armourPercent <= (1/6)) {
+            this.data.data.armourDesign.canPassFor = "Swimwear, underwear, or other diaphanous clothing";
+            this.data.data.lc = 4;
+          }
+          else if (this.data.data.armourDesign.armourPercent <= (1/4)) {
+            this.data.data.armourDesign.canPassFor = "Light clothing such as T-shirts, evening wear, skintight suits, etc. and be worn beneath clothes";
+            this.data.data.lc = 4;
+          }
+          else if (this.data.data.armourDesign.armourPercent <= (1/2)) {
+            this.data.data.armourDesign.canPassFor = "Concealed under clothing or pass as ordinary civilian outerwear";
+            this.data.data.lc = 3;
+          }
+          else {
+            this.data.data.armourDesign.canPassFor = "Not concealable. It can only pass as heavy clothing such as a trench coat, biker leathers, etc";
+            this.data.data.lc = 2;
+          }
+
         }
       }
     }
@@ -4811,6 +4838,33 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
+    else if (id == "armour-don-time") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>The time in seconds to put on the armour.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-status-eq") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>Even without decoration, expensive armour is often a sign of status. That's what this is displaying.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id == "armour-can-pass-for") {
+        info = "<table>";
+
+        info += "<tr>" +
+            "<td>The type of clothing this armour might be able to pass for. This is usually not going to work for rigid armour, however, no matter how thin.</td>" +
+            "</tr>";
+
+        info += "</table>"
+      }
     this.data.data.info = info;
 
     this.update({ 'data.info': this.data.data.info });
