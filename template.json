@@ -334,6 +334,8 @@
           "allowMagicalMaterialsForCustom": false,
           "scalingMethodForCustomArmour": "weight",
           "adjustedHoldoutPenaltyForCustomArmour": "thickness",
+          "pfForCustomArmour": false,
+          "statusEq": 0,
           "getSizeFromActor": false,
           "scalingMultiplier": 1,
           "inputWeight": 150,

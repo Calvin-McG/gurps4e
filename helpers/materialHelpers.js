@@ -83,6 +83,55 @@ export class materialHelpers {
         return selectedConstructionType;
     }
 
+    static adToPF(ad) {
+        let pf = 0;
+
+        if (ad <= 0) {
+            pf = 0;
+        }
+        else if (ad <= 9) {
+            pf = 0.5;
+        }
+        else if (ad <= 19) {
+            pf = 1;
+        }
+        else if (ad <= 39) {
+            pf = 2;
+        }
+        else if (ad <= 59) {
+            pf = 5;
+        }
+        else if (ad <= 79) {
+            pf = 10;
+        }
+        else if (ad <= 99) {
+            pf = 20;
+        }
+        else if (ad <= 119) {
+            pf = 50;
+        }
+        else if (ad <= 199) {
+            pf = 100;
+        }
+        else if (ad <= 399) {
+            pf = 200;
+        }
+        else if (ad <= 599) {
+            pf = 500;
+        }
+        else if (ad <= 799) {
+            pf = 1000;
+        }
+        else if (ad <= 999) {
+            pf = 2000;
+        }
+        else {
+            pf = 5000;
+        }
+
+        return pf
+    }
+
     static fetchArmourConstructionMethods() {
         const constructionMethods = [
             {

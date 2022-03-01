@@ -713,11 +713,12 @@
                             <td class="dr-damage-types" style="width: 60px;">Imp</td>
                             <td class="dr-damage-types" style="width: 60px;">Pi</td>
                             <td class="dr-damage-types" style="width: 60px;">Tox</td>
+                            <td class="dr-damage-types" style="width: 60px;">PF</td>
                         </tr>
                     {{/unless}}
                     {{#each data.data.armour.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
                     <tr class="hit-locations master-location">
-                        <th colspan="11">
+                        <th colspan="12">
                             <div>{{bodyPart.label}}</div>
                         </th>
                     </tr>
@@ -757,6 +758,9 @@
                         <td class="dr-row">
                             {{subLocation.drTox}}
                         </td>
+                        <td class="dr-row">
+                            {{subLocation.pf}}
+                        </td>
                     </tr>
                     {{/each}}
                     {{else}}<!--Display details for parts without sublocations (Pretty much only the skull and brian)-->
@@ -791,6 +795,9 @@
                         </td>
                         <td class="dr-row">
                             {{bodyPart.drTox}}
+                        </td>
+                        <td class="dr-row">
+                            {{bodyPart.pf}}
                         </td>
                     </tr>
                     {{/if}}

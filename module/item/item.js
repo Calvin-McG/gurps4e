@@ -160,6 +160,7 @@ export class gurpsItem extends Item {
       this.data.data.armourDesign.allowMagicalMaterialsForCustom = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
       this.data.data.armourDesign.scalingMethodForCustomArmour = game.settings.get("gurps4e", "scalingMethodForCustomArmour");
       this.data.data.armourDesign.adjustedHoldoutPenaltyForCustomArmour = game.settings.get("gurps4e", "adjustedHoldoutPenaltyForCustomArmour");
+      this.data.data.armourDesign.pfForCustomArmour = game.settings.get("gurps4e", "pfForCustomArmour");
 
       // Validations
       if(this.data.data.armourDesign.holdoutReduction < 0) { // If it's less than zero
@@ -513,6 +514,9 @@ export class gurpsItem extends Item {
               currentSubPart.drPi   = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
               currentSubPart.drTox  = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
             }
+
+            // Calculate PF
+            currentSubPart.pf = materialHelpers.adToPF((currentSubPart.selectedDR + drModifier) * currentSubPart.material.wm);
 
             // Calculate Don time
             if (currentSubPart.flexible) {
