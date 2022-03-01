@@ -229,6 +229,7 @@ export class gurpsItem extends Item {
       this.data.data.armourDesign.unitWeight = 0;
       this.data.data.armourDesign.unitDonTime = 0;
 
+      this.data.data.armourDesign.holdout = 0;
       for (let i = 0; i < bodyParts.length; i++) { // Loop through body parts
         if (getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation")) { // Part has sub parts
           let subParts = Object.keys(getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation"));
@@ -300,7 +301,6 @@ export class gurpsItem extends Item {
       this.data.data.weight = this.data.data.armourDesign.unitWeight;
       this.data.data.ttlWeight = this.data.data.weight * this.data.data.quantity;
       this.data.data.ttlCost = this.data.data.cost * this.data.data.quantity;
-      console.log(this.data)
     }
   }
 
@@ -342,6 +342,29 @@ export class gurpsItem extends Item {
       }
     }
 
+    currentSubPart.flexible     = false;
+    currentSubPart.drHardening  = 1;
+    currentSubPart.drBurn       = 0;
+    currentSubPart.drCor        = 0;
+    currentSubPart.drCr         = 0;
+    currentSubPart.drCut        = 0;
+    currentSubPart.drFat        = 0;
+    currentSubPart.drImp        = 0;
+    currentSubPart.drPi         = 0;
+    currentSubPart.drTox        = 0;
+
+    let weightModifier = 1; // Init the weight modifier that is used to account for fine/fluting/etc
+    let cf = 1; // Init the Cost Factor that is used to account for quality modifiers
+    let drModifier = 0; // Init the modifier that is used to account for bonus dr from hardened steel, etc.
+
+    currentSubPart.weight = 0;
+    currentSubPart.cost = 0;
+
+    currentSubPart.pf = 0;
+
+    currentSubPart.in = 0;
+    currentSubPart.mm = 0;
+
     if (typeof currentSubPart.selectedDR == "undefined" || currentSubPart.selectedDR == null) {
       currentSubPart.selectedDR = 0;
     }
@@ -361,9 +384,6 @@ export class gurpsItem extends Item {
           }
 
           if (currentSubPart.selectedDR >= currentSubPart.construction.minDR && currentSubPart.selectedDR <= currentSubPart.material.maxDR) { // DR is between max and min
-            let weightModifier = 1; // Init the weight modifier that is used to account for fine/fluting/etc
-            let cf = 1; // Init the Cost Factor that is used to account for quality modifiers
-            let drModifier = 0; // Init the modifier that is used to account for bonus dr from hardened steel, etc.
 
             if (this.data.data.armourDesign.tailoring.toLowerCase() == "cheap") {
               cf = cf -0.6
@@ -387,7 +407,6 @@ export class gurpsItem extends Item {
             else if (this.data.data.armourDesign.style.toLowerCase() == "3") {
               cf += 9;
             }
-
 
             // This piece is made of steel, and the user has selected either hardened or duplex
             if (currentSubPart.material.name.toLowerCase().includes("steel") && (this.data.data.armourDesign.steelHardening.toLowerCase().includes("hardened") || this.data.data.armourDesign.steelHardening.toLowerCase().includes("duplex"))) {
@@ -415,16 +434,6 @@ export class gurpsItem extends Item {
             }
 
             // Calculate basic DR by material and construction
-            currentSubPart.flexible     = true;
-            currentSubPart.drHardening  = 1;
-            currentSubPart.drBurn       = 0;
-            currentSubPart.drCor        = 0;
-            currentSubPart.drCr         = 0;
-            currentSubPart.drCut        = 0;
-            currentSubPart.drFat        = 0;
-            currentSubPart.drImp        = 0;
-            currentSubPart.drPi         = 0;
-            currentSubPart.drTox        = 0;
             if (currentSubPart.construction.name.toLowerCase() == "fabric") {
               if (currentSubPart.selectedDR <= (currentSubPart.material.drPerIn / 4)) { // Flexible construction types become inflexible if the armour is more than a quarter inch thick.
                 currentSubPart.flexible = true;
@@ -681,7 +690,7 @@ export class gurpsItem extends Item {
 
 
 
-          // Calculate Status Equivilent
+          // Calculate Status Equivalent
           if (this.data.data.armourDesign.unitCost >= 0) {
             if (this.data.data.armourDesign.unitCost <= 240) {
               this.data.data.armourDesign.statusEq = "0 - Freeman, apprentice, ordinary citizen";
@@ -712,9 +721,7 @@ export class gurpsItem extends Item {
             }
           }
 
-          console.log(this.data.data.armourDesign.statusEq)
           // Can pass for
-
           if (this.data.data.armourDesign.armourPercent <= (1/6)) {
             this.data.data.armourDesign.canPassFor = "Swimwear, underwear, or other diaphanous clothing";
             this.data.data.lc = 4;
@@ -731,7 +738,6 @@ export class gurpsItem extends Item {
             this.data.data.armourDesign.canPassFor = "Not concealable. It can only pass as heavy clothing such as a trench coat, biker leathers, etc";
             this.data.data.lc = 2;
           }
-
         }
       }
     }
