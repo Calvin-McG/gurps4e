@@ -534,11 +534,11 @@ export class gurpsItem extends Item {
               if (this.data.data.armourDesign.banded) {
                 cf += 0.5;
                 weightModifier = weightModifier + 0.5;
-                // TODO - +2 DR vs crushing
+                currentSubPart.drCr += 2;
               }
               else if (this.data.data.armourDesign.butted) {
                 cf = cf - 0.6;
-                // TODO - -3 DR vs impaling
+                currentSubPart.drImp = Math.max(currentSubPart.drImp - 3, 0) // DR is at least zero
               }
             }
 
@@ -549,7 +549,8 @@ export class gurpsItem extends Item {
               }
               else if (this.data.data.armourDesign.silk) {
                 cf += 19;
-                // TODO - +1 DR vs impaling and cutting
+                currentSubPart.drImp += 1;
+                currentSubPart.drCut += 1;
               }
             }
 
@@ -557,25 +558,82 @@ export class gurpsItem extends Item {
             if ((currentSubPart.material.name.toLowerCase().includes("cloth") || currentSubPart.material.name.toLowerCase().includes("leather")) && this.data.data.armourDesign.reinforced) {
               cf += 0.25;
               weightModifier += 0.25;
-              // TODO - +1 DR vs cutting
+              currentSubPart.drCut += 1;
             }
 
             // This piece is made of scale, and the user has selected mountain scale
             if (currentSubPart.construction.name.toLowerCase().includes("scale") && this.data.data.armourDesign.mountain) {
               cf += 1;
-              // TODO - +1 DR vs crushing
+              currentSubPart.drCr += 1;
             }
 
-            // This piece is made of leather, and the user has selected a leather customization
-            if ((currentSubPart.material.name.toLowerCase().includes("leather")) && (this.data.data.armourDesign.leatherQuality.toLowerCase() == "rawhide" || this.data.data.armourDesign.leatherQuality.toLowerCase() == "quality")) {
-              if (this.data.data.armourDesign.leatherQuality.toLowerCase() == "rawhide") {
-                cf = cf -0.6;
-                // TODO - x0.5 HP
-              }
-              else if (this.data.data.armourDesign.leatherQuality.toLowerCase() == "quality") {
-                cf = cf + 4;
-                drModifier += 1;
-              }
+            if (currentSubPart.material.ballistic2) {
+              currentSubPart.drBurn = Math.floor((currentSubPart.drBurn) / 2);
+              currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 2);
+              currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 2);
+              currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 2);
+              currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 2);
+              currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 2);
+            }
+            else if (currentSubPart.material.ballistic25) {
+              currentSubPart.drBurn = Math.floor((currentSubPart.drBurn) / 2.5);
+              currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 2.5);
+              currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 2.5);
+              currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 2.5);
+              currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 2.5);
+              currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 2.5);
+            }
+            else if (currentSubPart.material.ballistic3) {
+              currentSubPart.drBurn = Math.floor((currentSubPart.drBurn) / 3);
+              currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 3);
+              currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 3);
+              currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 3);
+              currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 3);
+              currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 3);
+            }
+            else if (currentSubPart.material.ballistic3Bio) {
+              currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 3);
+              currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 3);
+              currentSubPart.drCut  = Math.floor((currentSubPart.drCut ) / 3);
+              currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 3);
+              currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 3);
+              currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 3);
+            }
+            else if (currentSubPart.material.ballistic4) {
+              currentSubPart.drBurn = Math.floor((currentSubPart.drBurn) / 4);
+              currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 4);
+              currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 4);
+              currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 4);
+              currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 4);
+              currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 4);
+            }
+
+            if (currentSubPart.material.laser0) {
+              currentSubPart.drCor  = 0;
+              currentSubPart.drCr   = 0;
+              currentSubPart.drCut  = 0;
+              currentSubPart.drFat  = 0;
+              currentSubPart.drImp  = 0;
+              currentSubPart.drPi   = 0;
+              currentSubPart.drTox  = 0;
+            }
+            else if (currentSubPart.material.laser4) {
+              currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 4);
+              currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 4);
+              currentSubPart.drCut  = Math.floor((currentSubPart.drCut ) / 4);
+              currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 4);
+              currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 4);
+              currentSubPart.drPi   = Math.floor((currentSubPart.drPi  ) / 4);
+              currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 4);
+            }
+            else if (currentSubPart.material.laser6) {
+              currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 6);
+              currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 6);
+              currentSubPart.drCut  = Math.floor((currentSubPart.drCut ) / 6);
+              currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 6);
+              currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 6);
+              currentSubPart.drPi   = Math.floor((currentSubPart.drPi  ) / 6);
+              currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 6);
             }
 
             cf += this.data.data.armourDesign.holdoutReduction; // Add the cost factor for the holdout reduction.
