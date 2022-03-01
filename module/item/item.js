@@ -642,6 +642,10 @@ export class gurpsItem extends Item {
             // Can pass for
             currentSubPart.armourPercent = (currentSubPart.selectedDR / currentSubPart.material.maxDR);
 
+            // Thickness
+            currentSubPart.in = currentSubPart.material.drPerIn / currentSubPart.selectedDR;
+            currentSubPart.mm = 25.4 * currentSubPart.in;
+
             cf += this.data.data.armourDesign.holdoutReduction; // Add the cost factor for the holdout reduction.
 
             cf = Math.max(cf, 0.2) // Cost factor can't go less than 80%

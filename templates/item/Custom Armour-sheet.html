@@ -714,11 +714,12 @@
                             <td class="dr-damage-types" style="width: 60px;">Pi</td>
                             <td class="dr-damage-types" style="width: 60px;">Tox</td>
                             <td class="dr-damage-types" style="width: 60px;">PF</td>
+                            <td class="dr-damage-types" style="width: 60px;">mm/in</td>
                         </tr>
                     {{/unless}}
                     {{#each data.data.armour.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
                     <tr class="hit-locations master-location">
-                        <th colspan="12">
+                        <th colspan="13">
                             <div>{{bodyPart.label}}</div>
                         </th>
                     </tr>
@@ -761,6 +762,9 @@
                         <td class="dr-row">
                             {{subLocation.pf}}
                         </td>
+                        <td class="dr-row">
+                            {{round subLocation.mm 1}} / {{round subLocation.in 10}}
+                        </td>
                     </tr>
                     {{/each}}
                     {{else}}<!--Display details for parts without sublocations (Pretty much only the skull and brian)-->
@@ -798,6 +802,9 @@
                         </td>
                         <td class="dr-row">
                             {{bodyPart.pf}}
+                        </td>
+                        <td class="dr-row">
+                            {{round bodyPart.mm 1}} / {{round bodyPart.in 10}}
                         </td>
                     </tr>
                     {{/if}}
