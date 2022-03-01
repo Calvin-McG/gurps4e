@@ -688,7 +688,33 @@ export class gurpsItem extends Item {
           this.data.data.armourDesign.unitWeight += currentSubPart.weight;
           this.data.data.armourDesign.unitCost += currentSubPart.cost;
 
+          // Holdout
+          if (this.data.data.armourDesign.adjustedHoldoutPenaltyForCustomArmour.toLowerCase() == "") {
+            if (currentSubPart.flexible) {
+              currentSubPart.holdout = currentSubPart.selectedDR / 3;
+            }
+            else {
+              currentSubPart.holdout = currentSubPart.selectedDR;
+            }
+          }
+          else if (this.data.data.armourDesign.adjustedHoldoutPenaltyForCustomArmour.toLowerCase() == "weight") {
+            if (currentSubPart.flexible) {
+              currentSubPart.holdout = currentSubPart.selectedDR / 3 * (currentSubPart.material.wm / 0.9);
+            }
+            else {
+              currentSubPart.holdout = currentSubPart.selectedDR * (currentSubPart.material.wm / 0.6);
+            }
+          }
+          else if (this.data.data.armourDesign.adjustedHoldoutPenaltyForCustomArmour.toLowerCase() == "thickness") {
+            if (currentSubPart.flexible) {
+              currentSubPart.holdout = currentSubPart.selectedDR / 3 * (currentSubPart.material.drPerIn / 8);
+            }
+          else {
+              currentSubPart.holdout = currentSubPart.selectedDR * (currentSubPart.material.drPerIn / 68);
+            }
+          }
 
+          this.data.data.armourDesign.holdout = Math.max(this.data.data.armourDesign.holdout, currentSubPart.holdout);
 
           // Calculate Status Equivalent
           if (this.data.data.armourDesign.unitCost >= 0) {
@@ -4867,14 +4893,23 @@ export class gurpsItem extends Item {
       info += "</table>"
     }
     else if (id == "armour-can-pass-for") {
-        info = "<table>";
+      info = "<table>";
 
-        info += "<tr>" +
-            "<td>The type of clothing this armour might be able to pass for. This is usually not going to work for rigid armour, however, no matter how thin.</td>" +
-            "</tr>";
+      info += "<tr>" +
+          "<td>The type of clothing this armour might be able to pass for. This is usually not going to work for rigid armour, however, no matter how thin.</td>" +
+          "</tr>";
 
-        info += "</table>"
-      }
+      info += "</table>"
+    }
+    else if (id == "armour-holdout") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>This is the worst holdout penalty among all the pieces in this set of armour.</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
     this.data.data.info = info;
 
     this.update({ 'data.info': this.data.data.info });

@@ -715,11 +715,12 @@
                             <td class="dr-damage-types" style="width: 60px;">Tox</td>
                             <td class="dr-damage-types" style="width: 60px;">PF</td>
                             <td class="dr-damage-types" style="width: 60px;">mm/in</td>
+                            <td class="dr-damage-types" style="width: 60px;">Holdout</td>
                         </tr>
                     {{/unless}}
                     {{#each data.data.armour.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
                     <tr class="hit-locations master-location">
-                        <th colspan="13">
+                        <th colspan="14">
                             <div>{{bodyPart.label}}</div>
                         </th>
                     </tr>
@@ -765,6 +766,9 @@
                         <td class="dr-row">
                             {{round subLocation.mm 1}} / {{round subLocation.in 10}}
                         </td>
+                        <td class="dr-row">
+                            {{round subLocation.holdout 1}}
+                        </td>
                     </tr>
                     {{/each}}
                     {{else}}<!--Display details for parts without sublocations (Pretty much only the skull and brian)-->
@@ -805,6 +809,9 @@
                         </td>
                         <td class="dr-row">
                             {{round bodyPart.mm 1}} / {{round bodyPart.in 10}}
+                        </td>
+                        <td class="dr-row">
+                            {{round bodyPart.holdout 1}}
                         </td>
                     </tr>
                     {{/if}}
@@ -849,6 +856,17 @@
                                         {{data.data.armourDesign.canPassFor}}
                                     </td>
                                     <td class="question-container" id="armour-can-pass-for">
+                                        <div class="question-button">
+                                            <i class="fas fa-question"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="design-row">
+                                    <td>Holdout:</td>
+                                    <td>
+                                        {{round data.data.armourDesign.holdout 1}}
+                                    </td>
+                                    <td class="question-container" id="armour-holdout">
                                         <div class="question-button">
                                             <i class="fas fa-question"></i>
                                         </div>
