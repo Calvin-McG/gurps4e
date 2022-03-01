@@ -808,49 +808,53 @@
 
         {{!-- Display Other Tab --}}
         <div class="tab stats" data-tab="other" data-group="primary">
-            <div style="width: 50%;">
-                <h3 class="bold">Other Info</h3>
-                <div class="tab">
-                    <table>
-                        <tr class="design-row">
-                            <td>Time to Don:</td>
-                            <td>
-                                {{data.data.armourDesign.donTime}} seconds
-                            </td>
-                            <td class="question-container" id="armour-don-time">
-                                <div class="question-button">
-                                    <i class="fas fa-question"></i>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr class="design-row">
-                            <td>Status Equivilent:</td>
-                            <td>
-                                {{data.data.armourDesign.statusEq}}
-                            </td>
-                            <td class="question-container" id="armour-status-eq">
-                                <div class="question-button">
-                                    <i class="fas fa-question"></i>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr class="design-row">
-                            <td>Can Pass For:</td>
-                            <td>
-                                {{data.data.armourDesign.canPassFor}}
-                            </td>
-                            <td class="question-container" id="armour-can-pass-for">
-                                <div class="question-button">
-                                    <i class="fas fa-question"></i>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+            <div class="tab">
+                <div class="design-block">
+                    <div style="width: 50%;">
+                        <h3 class="bold">Other Info</h3>
+                        <div class="tab">
+                            <table>
+                                <tr class="design-row">
+                                    <td>Time to Don:</td>
+                                    <td>
+                                        {{data.data.armourDesign.donTime}} seconds
+                                    </td>
+                                    <td class="question-container" id="armour-don-time">
+                                        <div class="question-button">
+                                            <i class="fas fa-question"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="design-row">
+                                    <td>Status Equivalent:</td>
+                                    <td>
+                                        {{data.data.armourDesign.statusEq}}
+                                    </td>
+                                    <td class="question-container" id="armour-status-eq">
+                                        <div class="question-button">
+                                            <i class="fas fa-question"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="design-row">
+                                    <td>Can Pass For:</td>
+                                    <td>
+                                        {{data.data.armourDesign.canPassFor}}
+                                    </td>
+                                    <td class="question-container" id="armour-can-pass-for">
+                                        <div class="question-button">
+                                            <i class="fas fa-question"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="width: 50%;">
+                        <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
+                        <div class="equipment-info-container">{{{data.data.info}}}</div>
+                    </div>
                 </div>
-            </div>
-            <div style="width: 50%;">
-                <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
-                <div class="equipment-info-container">{{{data.data.info}}}</div>
             </div>
         </div>
     </section>
