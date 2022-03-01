@@ -347,6 +347,7 @@
           "steelHardening": "",
           "fluting": false,
           "leatherQuality": "",
+          "donTime": 0,
           "sealed": false,
           "silk": false,
           "mountain": false,

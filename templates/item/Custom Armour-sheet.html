@@ -62,7 +62,10 @@
             <a class="item" data-tab="design">Design</a>
         </div>
         <div class="header">
-            <a class="item" data-tab="armour">Display</a>
+            <a class="item" data-tab="armour">Display Armour</a>
+        </div>
+        <div class="header">
+            <a class="item" data-tab="other">Display Other</a>
         </div>
         {{/unless}}
     </nav>
@@ -792,6 +795,26 @@
                     </tr>
                     {{/if}}
                     {{/each}}
+                </table>
+            </div>
+        </div>
+
+        {{!-- Display Other Tab --}}
+        <div class="tab stats" data-tab="other" data-group="primary">
+            <h3 class="bold">Other Info</h3>
+            <div class="tab">
+                <table>
+                    <tr class="design-row">
+                        <td>Time to Don:</td>
+                        <td>
+                            {{data.data.armourDesign.donTime}} seconds
+                        </td>
+                        <td class="question-container" id="armour-don-time">
+                            <div class="question-button">
+                                <i class="fas fa-question"></i>
+                            </div>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>

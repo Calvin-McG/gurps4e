@@ -515,20 +515,13 @@ export class gurpsItem extends Item {
             }
 
             // Calculate Don time
-            // TODO - Calc don time
-
-            // This piece is made of steel, and the user has selected either hardened or duplex
-            if (currentSubPart.material.name.toLowerCase().includes("steel") && (this.data.data.armourDesign.steelHardening.toLowerCase().includes("hardened") || this.data.data.armourDesign.steelHardening.toLowerCase().includes("duplex"))) {
-              if (this.data.data.armourDesign.steelHardening.toLowerCase().includes("hardened")) {
-                cf += 4;
-                drModifier += 1;
-              }
-              else if (this.data.data.armourDesign.steelHardening.toLowerCase().includes("duplex")) {
-                cf += 8;
-                weightModifier = weightModifier - 0.1;
-                drModifier += 1;
-              }
+            if (currentSubPart.flexible) {
+              currentSubPart.donTime = Math.round(currentSubPart.construction.don * 2/3);
             }
+            else {
+              currentSubPart.donTime = currentSubPart.construction.don;
+            }
+            this.data.data.armourDesign.donTime += currentSubPart.donTime
 
             // This piece is made of either plate or scale, and the user has selected fluting
             if ((currentSubPart.construction.name.toLowerCase().includes("scale") || currentSubPart.construction.name.toLowerCase().includes("plate")) && this.data.data.armourDesign.fluting) {
@@ -612,6 +605,7 @@ export class gurpsItem extends Item {
             }
           }
 
+          this.data.data.armourDesign.donTime = Math.round(this.data.data.armourDesign.donTime);
           this.data.data.armourDesign.unitWeight += currentSubPart.weight;
           this.data.data.armourDesign.unitCost += currentSubPart.cost;
         }
