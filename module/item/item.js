@@ -388,6 +388,32 @@ export class gurpsItem extends Item {
               cf += 9;
             }
 
+
+            // This piece is made of steel, and the user has selected either hardened or duplex
+            if (currentSubPart.material.name.toLowerCase().includes("steel") && (this.data.data.armourDesign.steelHardening.toLowerCase().includes("hardened") || this.data.data.armourDesign.steelHardening.toLowerCase().includes("duplex"))) {
+              if (this.data.data.armourDesign.steelHardening.toLowerCase().includes("hardened")) {
+                cf += 4;
+                drModifier += 1;
+              }
+              else if (this.data.data.armourDesign.steelHardening.toLowerCase().includes("duplex")) {
+                cf += 8;
+                weightModifier = weightModifier - 0.1;
+                drModifier += 1;
+              }
+            }
+
+            // This piece is made of leather, and the user has selected a leather customization
+            if ((currentSubPart.material.name.toLowerCase().includes("leather")) && (this.data.data.armourDesign.leatherQuality.toLowerCase() == "rawhide" || this.data.data.armourDesign.leatherQuality.toLowerCase() == "quality")) {
+              if (this.data.data.armourDesign.leatherQuality.toLowerCase() == "rawhide") {
+                cf = cf -0.6;
+                // TODO - x0.5 HP
+              }
+              else if (this.data.data.armourDesign.leatherQuality.toLowerCase() == "quality") {
+                cf = cf + 4;
+                drModifier += 1;
+              }
+            }
+
             // Calculate basic DR by material and construction
             currentSubPart.flexible     = true;
             currentSubPart.drHardening  = 1;
@@ -407,14 +433,14 @@ export class gurpsItem extends Item {
                 currentSubPart.flexible = false;
               }
 
-              currentSubPart.drBurn = currentSubPart.selectedDR;
-              currentSubPart.drCor  = currentSubPart.selectedDR;
-              currentSubPart.drCr   = currentSubPart.selectedDR;
-              currentSubPart.drCut  = currentSubPart.selectedDR;
-              currentSubPart.drFat  = currentSubPart.selectedDR;
-              currentSubPart.drImp  = Math.max(currentSubPart.selectedDR - 1, 0); // Non-layered fabric is -1 DR vs impaling
-              currentSubPart.drPi   = currentSubPart.selectedDR;
-              currentSubPart.drTox  = currentSubPart.selectedDR;
+              currentSubPart.drBurn = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drCor  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drCr   = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drCut  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drFat  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drImp  = Math.max(currentSubPart.selectedDR - 1 + drModifier, 0); // Non-layered fabric is -1 DR vs impaling
+              currentSubPart.drPi   = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drTox  = currentSubPart.selectedDR + drModifier;
             }
             else if (currentSubPart.construction.name.toLowerCase() == "layered fabric" || currentSubPart.construction.name.toLowerCase() == "optimized fabric") {
               if (currentSubPart.selectedDR <= (currentSubPart.material.drPerIn / 4)) { // Flexible construction types become inflexible if the armour is more than a quarter inch thick.
@@ -424,14 +450,14 @@ export class gurpsItem extends Item {
                 currentSubPart.flexible = false;
               }
 
-              currentSubPart.drBurn = currentSubPart.selectedDR;
-              currentSubPart.drCor  = currentSubPart.selectedDR;
-              currentSubPart.drCr   = currentSubPart.selectedDR;
-              currentSubPart.drCut  = currentSubPart.selectedDR;
-              currentSubPart.drFat  = currentSubPart.selectedDR;
-              currentSubPart.drImp  = currentSubPart.selectedDR;
-              currentSubPart.drPi   = currentSubPart.selectedDR;
-              currentSubPart.drTox  = currentSubPart.selectedDR;
+              currentSubPart.drBurn = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drCor  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drCr   = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drCut  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drFat  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drImp  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drPi   = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drTox  = currentSubPart.selectedDR + drModifier;
             }
             else if (currentSubPart.construction.name.toLowerCase() == "scales") {
               if (currentSubPart.selectedDR <= (currentSubPart.material.drPerIn / 4)) { // Flexible construction types become inflexible if the armour is more than a quarter inch thick.
@@ -441,14 +467,14 @@ export class gurpsItem extends Item {
                 currentSubPart.flexible = false;
               }
 
-              currentSubPart.drBurn = currentSubPart.selectedDR;
-              currentSubPart.drCor  = currentSubPart.selectedDR;
-              currentSubPart.drCr   = currentSubPart.selectedDR >= 5 ? currentSubPart.selectedDR : Math.max(currentSubPart.selectedDR - 1, 0); // Scale with DR 5+ has no penalty vs crushing. Scale with less does have a penalty.
-              currentSubPart.drCut  = currentSubPart.selectedDR;
-              currentSubPart.drFat  = currentSubPart.selectedDR;
-              currentSubPart.drImp  = currentSubPart.selectedDR;
-              currentSubPart.drPi   = currentSubPart.selectedDR;
-              currentSubPart.drTox  = currentSubPart.selectedDR;
+              currentSubPart.drBurn = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drCor  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drCr   = currentSubPart.selectedDR + drModifier >= 5 ? currentSubPart.selectedDR + drModifier : Math.max(currentSubPart.selectedDR + drModifier - 1, 0); // Scale with DR 5+ has no penalty vs crushing. Scale with less does have a penalty.
+              currentSubPart.drCut  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drFat  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drImp  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drPi   = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drTox  = currentSubPart.selectedDR + drModifier;
             }
             else if (currentSubPart.construction.name.toLowerCase() == "mail") {
               if (currentSubPart.selectedDR <= (currentSubPart.material.drPerIn / 4)) { // Flexible construction types become inflexible if the armour is more than a quarter inch thick.
@@ -458,34 +484,34 @@ export class gurpsItem extends Item {
                 currentSubPart.flexible = false;
               }
 
-              currentSubPart.drBurn = currentSubPart.selectedDR;
-              currentSubPart.drCor  = currentSubPart.selectedDR;
-              currentSubPart.drCr   = currentSubPart.selectedDR >= 10 ? Math.floor(currentSubPart.selectedDR * 0.8) : Math.max(currentSubPart.selectedDR - 2, 0); // Mail is -2 DR vs crushing, or -20% DR if it's base DR is 10+
-              currentSubPart.drCut  = currentSubPart.selectedDR;
-              currentSubPart.drFat  = currentSubPart.selectedDR;
-              currentSubPart.drImp  = currentSubPart.selectedDR;
-              currentSubPart.drPi   = currentSubPart.selectedDR;
-              currentSubPart.drTox  = currentSubPart.selectedDR;
+              currentSubPart.drBurn = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drCor  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drCr   = currentSubPart.selectedDR >= 10 ? Math.floor((currentSubPart.selectedDR + drModifier) * 0.8) : Math.max(currentSubPart.selectedDR + drModifier - 2, 0); // Mail is -2 DR vs crushing, or -20% DR if it's base DR is 10+
+              currentSubPart.drCut  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drFat  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drImp  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drPi   = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drTox  = currentSubPart.selectedDR + drModifier;
             }
             else if (currentSubPart.construction.name.toLowerCase() == "early plate" || currentSubPart.construction.name.toLowerCase() == "segmented plate" || currentSubPart.construction.name.toLowerCase() == "plate" || currentSubPart.construction.name.toLowerCase() == "solid") {
-              currentSubPart.drBurn = currentSubPart.selectedDR;
-              currentSubPart.drCor  = currentSubPart.selectedDR;
-              currentSubPart.drCr   = currentSubPart.selectedDR;
-              currentSubPart.drCut  = currentSubPart.selectedDR;
-              currentSubPart.drFat  = currentSubPart.selectedDR;
-              currentSubPart.drImp  = currentSubPart.selectedDR;
-              currentSubPart.drPi   = currentSubPart.selectedDR;
-              currentSubPart.drTox  = currentSubPart.selectedDR;
+              currentSubPart.drBurn = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drCor  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drCr   = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drCut  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drFat  = (currentSubPart.selectedDR + drModifier);
+              currentSubPart.drImp  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drPi   = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drTox  = currentSubPart.selectedDR + drModifier;
             }
             else if (currentSubPart.construction.name.toLowerCase() == "impact absorbing") {
-              currentSubPart.drBurn = Math.floor(currentSubPart.selectedDR / 2);
-              currentSubPart.drCor  = Math.floor(currentSubPart.selectedDR / 2);
-              currentSubPart.drCr   = currentSubPart.selectedDR;
-              currentSubPart.drCut  = Math.floor(currentSubPart.selectedDR / 2);
-              currentSubPart.drFat  = Math.floor(currentSubPart.selectedDR / 2);
-              currentSubPart.drImp  = Math.floor(currentSubPart.selectedDR / 2);
-              currentSubPart.drPi   = Math.floor(currentSubPart.selectedDR / 2);
-              currentSubPart.drTox  = Math.floor(currentSubPart.selectedDR / 2);
+              currentSubPart.drBurn = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
+              currentSubPart.drCor  = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
+              currentSubPart.drCr   = (currentSubPart.selectedDR + drModifier);
+              currentSubPart.drCut  = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
+              currentSubPart.drFat  = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
+              currentSubPart.drImp  = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
+              currentSubPart.drPi   = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
+              currentSubPart.drTox  = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
             }
 
             // Calculate Don time
