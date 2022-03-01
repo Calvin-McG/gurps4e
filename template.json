@@ -327,6 +327,51 @@
       "affliction": {
         "affliction": []
       },
+      "armourDesign": {
+        "armourDesign": {
+          "materials": [],
+          "constructionTypes": [],
+          "allowMagicalMaterialsForCustom": false,
+          "scalingMethodForCustomArmour": "weight",
+          "adjustedHoldoutPenaltyForCustomArmour": "thickness",
+          "getSizeFromActor": false,
+          "scalingMultiplier": 1,
+          "inputWeight": 150,
+          "inputSM": 0,
+          "inputHeight": 60,
+          "tailoring": "",
+          "style": "0",
+          "holdoutReduction": 0,
+          "concealed": false,
+          "clothingStatus": 0,
+          "steelHardening": "",
+          "fluting": false,
+          "leatherQuality": "",
+          "sealed": false,
+          "silk": false,
+          "mountain": false,
+          "banded": false,
+          "butted": false,
+          "hasPlate": false,
+          "hasScale": false,
+          "hasMail": false,
+          "hasCloth": false,
+          "hasLeather": false,
+          "hasSteel": false,
+          "hasSole": false,
+          "soles": 0,
+          "hobnails": false,
+          "hasPunch": false,
+          "punchSkill": "DX",
+          "punchSkillMod": 0,
+          "hasKick": false,
+          "kickSkill": "DX",
+          "kickSkillMod": 0,
+          "unitCost": 0,
+          "unitWeight": 0,
+          "unitDonTime": 0
+        }
+      },
       "defaults": {
         "defaults": []
       },
@@ -414,7 +459,8 @@
         "equipStatus",
         "melee",
         "ranged",
-        "affliction"
+        "affliction",
+        "armourDesign"
       ],
       "armour": {
         "bodyType": "",

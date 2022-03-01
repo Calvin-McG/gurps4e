@@ -1831,3 +1831,10 @@ attribute-senses {
 .custom-armour-selected-dr {
 	text-align: center;
 }
+
+.saveItem {
+	border: black 1px solid;
+	border-radius: 5px;
+	padding: 2px 8px;
+	background: rgb(100 100 100/ 25%);
+}

@@ -86,9 +86,15 @@ export class gurpsItemSheet extends ItemSheet {
         html.find('.toxDRUp').click(   this._toxDRUp.bind(this));
         html.find('.toxDRDown').click( this._toxDRDown.bind(this));
 
-        // Mouseover event handlers
+        // Click event handlers
         html.find('.question-container').click(this._showHint.bind(this));
+        html.find('.saveItem').click(this._saveItem.bind(this));
     }
+
+    _saveItem(event) {
+        this.item.update({ ["data"]: this.item.data.data }); // Add the new arrow to the list of melee keys
+    }
+
 
     _onAddArrowRow(event) {
         // If there's no arrow container, add one
