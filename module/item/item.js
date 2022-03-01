@@ -670,6 +670,37 @@ export class gurpsItem extends Item {
           this.data.data.armourDesign.donTime = Math.round(this.data.data.armourDesign.donTime);
           this.data.data.armourDesign.unitWeight += currentSubPart.weight;
           this.data.data.armourDesign.unitCost += currentSubPart.cost;
+
+          // Calculate Status Equivilent
+          if (this.data.data.armourDesign.unitCost >= 0) {
+            if (this.data.data.armourDesign.unitCost >= 240) {
+              this.data.data.armourDesign.statisEq = 0;
+            }
+            else if (this.data.data.armourDesign.unitCost >= 480) {
+              this.data.data.armourDesign.statisEq = 1;
+            }
+            else if (this.data.data.armourDesign.unitCost >= 1200) {
+              this.data.data.armourDesign.statisEq = 2;
+            }
+            else if (this.data.data.armourDesign.unitCost >= 4800) {
+              this.data.data.armourDesign.statisEq = 3;
+            }
+            else if (this.data.data.armourDesign.unitCost >= 24000) {
+              this.data.data.armourDesign.statisEq = 4;
+            }
+            else if (this.data.data.armourDesign.unitCost >= 240000) {
+              this.data.data.armourDesign.statisEq = 5;
+            }
+            else if (this.data.data.armourDesign.unitCost >= 2400000) {
+              this.data.data.armourDesign.statisEq = 6;
+            }
+            else if (this.data.data.armourDesign.unitCost >= 24000000) {
+              this.data.data.armourDesign.statisEq = 7;
+            }
+            else if (this.data.data.armourDesign.unitCost >= 240000000) {
+              this.data.data.armourDesign.statisEq = 8;
+            }
+          }
         }
       }
     }
