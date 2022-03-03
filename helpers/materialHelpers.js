@@ -192,7 +192,7 @@ export class materialHelpers {
                 "wm": 1,
                 "cm": 1,
                 "don": 2,
-                "minDR": 10,
+                "minDR": 1,
                 "flexible": false,
                 "notes": "Rarely used in personal armour. Sees limited use in cheap helmets and pectoral plates. This option is TL4 for ferrous metals."
             },

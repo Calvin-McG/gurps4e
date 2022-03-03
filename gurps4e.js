@@ -173,7 +173,7 @@ Hooks.once('init', async function() {
           else if (material.plate && constructionName.toLowerCase() == "plate" && !(subLocation.voider) && !(bodyPart.label.toLowerCase().includes("abdomen"))) { // Segmented plate is allowed in any hit location that is not an armour chink or the abdomen
             return options.fn(this); // Option is allowed
           }
-          else if (material.solid && constructionName.toLowerCase() == "solid" && ((bodyPart.label.toLowerCase().includes("skull")) || locationLabel.toLowerCase().includes("vitals"))) { // Solid is only allowed on the vitals and skull
+          else if (material.solid && constructionName.toLowerCase() == "solid" && ((bodyPart.label.toLowerCase().includes("skull")) || locationLabel.toLowerCase().includes("vitals") || locationLabel.toLowerCase().includes("eye"))) { // Solid is only allowed in certain locations
             return options.fn(this); // Option is allowed
           }
           else if (constructionName.toLowerCase() == "no armour") { // No Armour is always allowed
