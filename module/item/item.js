@@ -228,6 +228,7 @@ export class gurpsItem extends Item {
       this.data.data.armourDesign.unitCost = 0;
       this.data.data.armourDesign.unitWeight = 0;
       this.data.data.armourDesign.unitDonTime = 0;
+      this.data.data.armourDesign.donTime = 0;
 
       this.data.data.armourDesign.holdout = 0;
       for (let i = 0; i < bodyParts.length; i++) { // Loop through body parts
@@ -295,6 +296,55 @@ export class gurpsItem extends Item {
       if (this.data.data.armourDesign.hasSole && this.data.data.armourDesign.soles >= 1 && this.data.data.armourDesign.hobnails) {
         this.data.data.armourDesign.unitCost += this.data.data.armourDesign.soles * 12.5;
         this.data.data.armourDesign.unitWeight += this.data.data.armourDesign.soles * 0.5;
+      }
+
+      // Calculate Status Equivalent
+      if (this.data.data.armourDesign.unitCost >= 0) {
+        if (this.data.data.armourDesign.unitCost <= 240) {
+          this.data.data.armourDesign.statusEq = "0 - Freeman, apprentice, ordinary citizen";
+        }
+        else if (this.data.data.armourDesign.unitCost <= 480) {
+          this.data.data.armourDesign.statusEq = "1 - Squire, merchant, priest, doctor, councilor";
+        }
+        else if (this.data.data.armourDesign.unitCost <= 1200) {
+          this.data.data.armourDesign.statusEq = "2 - Landless knight, mayor, business leader";
+        }
+        else if (this.data.data.armourDesign.unitCost <= 4800) {
+          this.data.data.armourDesign.statusEq = "3 - Landed knight, guild master, big city mayor";
+        }
+        else if (this.data.data.armourDesign.unitCost <= 24000) {
+          this.data.data.armourDesign.statusEq = "4 - Lesser noble, congressional representative, Who’s Who";
+        }
+        else if (this.data.data.armourDesign.unitCost <= 240000) {
+          this.data.data.armourDesign.statusEq = "5 - Great noble, multinational corporate boss";
+        }
+        else if (this.data.data.armourDesign.unitCost <= 2400000) {
+          this.data.data.armourDesign.statusEq = "6 - Royal family, governor";
+        }
+        else if (this.data.data.armourDesign.unitCost <= 24000000) {
+          this.data.data.armourDesign.statusEq = "7 - King, pope, president";
+        }
+        else if (this.data.data.armourDesign.unitCost <= 240000000) {
+          this.data.data.armourDesign.statusEq = "8 - Emperor, god-king, overlord";
+        }
+      }
+
+      // Can pass for
+      if (this.data.data.armourDesign.armourPercent <= (1/6)) {
+        this.data.data.armourDesign.canPassFor = "Swimwear, underwear, or other diaphanous clothing";
+        this.data.data.lc = 4;
+      }
+      else if (this.data.data.armourDesign.armourPercent <= (1/4)) {
+        this.data.data.armourDesign.canPassFor = "Light clothing such as T-shirts, evening wear, skintight suits, etc. and be worn beneath clothes";
+        this.data.data.lc = 4;
+      }
+      else if (this.data.data.armourDesign.armourPercent <= (1/2)) {
+        this.data.data.armourDesign.canPassFor = "Concealed under clothing or pass as ordinary civilian outerwear";
+        this.data.data.lc = 3;
+      }
+      else {
+        this.data.data.armourDesign.canPassFor = "Not concealable. It can only pass as heavy clothing such as a trench coat, biker leathers, etc";
+        this.data.data.lc = 2;
       }
 
       this.data.data.cost = this.data.data.armourDesign.unitCost;
@@ -527,7 +577,10 @@ export class gurpsItem extends Item {
             currentSubPart.pf = materialHelpers.adToPF((currentSubPart.selectedDR + drModifier) * currentSubPart.material.wm);
 
             // Calculate Don time
-            if (currentSubPart.flexible) {
+            if (currentSubPart.selectedDR == 0) {
+              currentSubPart.donTime = 0;
+            }
+            else if (currentSubPart.flexible) {
               currentSubPart.donTime = Math.round(currentSubPart.construction.don * 2/3);
             }
             else {
@@ -714,56 +767,31 @@ export class gurpsItem extends Item {
             }
           }
 
-          this.data.data.armourDesign.holdout = Math.max(this.data.data.armourDesign.holdout, currentSubPart.holdout);
+          if (this.data.data.armourDesign.concealed) { // If it's concealed, run concealment related code
+            currentSubPart.holdout = Math.max(currentSubPart.holdout - this.data.data.armourDesign.holdoutReduction, 0); // Apply any holdout penalty reduction, but only remove penalties, don't grant any bonus.
+          }
 
-          // Calculate Status Equivalent
-          if (this.data.data.armourDesign.unitCost >= 0) {
-            if (this.data.data.armourDesign.unitCost <= 240) {
-              this.data.data.armourDesign.statusEq = "0 - Freeman, apprentice, ordinary citizen";
+          currentSubPart.holdout *= -1; // Flip the holdout penalty to negative
+
+          if (this.data.data.armourDesign.concealed) { // If it's concealed, run concealment related code
+            if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "swimwear") {
+              currentSubPart.holdout = currentSubPart.holdout - 5;
             }
-            else if (this.data.data.armourDesign.unitCost <= 480) {
-              this.data.data.armourDesign.statusEq = "1 - Squire, merchant, priest, doctor, councilor";
+            else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "summer") {
+              currentSubPart.holdout = currentSubPart.holdout - 3;
             }
-            else if (this.data.data.armourDesign.unitCost <= 1200) {
-              this.data.data.armourDesign.statusEq = "2 - Landless knight, mayor, business leader";
+            else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "winter") {
+              currentSubPart.holdout = currentSubPart.holdout + 3;
             }
-            else if (this.data.data.armourDesign.unitCost <= 4800) {
-              this.data.data.armourDesign.statusEq = "3 - Landed knight, guild master, big city mayor";
+            else if (this.data.data.armourDesign.concealedClothing.toLowerCase().includes("longcoat")) {
+              currentSubPart.holdout = currentSubPart.holdout + 4;
             }
-            else if (this.data.data.armourDesign.unitCost <= 24000) {
-              this.data.data.armourDesign.statusEq = "4 - Lesser noble, congressional representative, Who’s Who";
-            }
-            else if (this.data.data.armourDesign.unitCost <= 240000) {
-              this.data.data.armourDesign.statusEq = "5 - Great noble, multinational corporate boss";
-            }
-            else if (this.data.data.armourDesign.unitCost <= 2400000) {
-              this.data.data.armourDesign.statusEq = "6 - Royal family, governor";
-            }
-            else if (this.data.data.armourDesign.unitCost <= 24000000) {
-              this.data.data.armourDesign.statusEq = "7 - King, pope, president";
-            }
-            else if (this.data.data.armourDesign.unitCost <= 240000000) {
-              this.data.data.armourDesign.statusEq = "8 - Emperor, god-king, overlord";
+            else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "habit") {
+              currentSubPart.holdout = currentSubPart.holdout + 5;
             }
           }
 
-          // Can pass for
-          if (this.data.data.armourDesign.armourPercent <= (1/6)) {
-            this.data.data.armourDesign.canPassFor = "Swimwear, underwear, or other diaphanous clothing";
-            this.data.data.lc = 4;
-          }
-          else if (this.data.data.armourDesign.armourPercent <= (1/4)) {
-            this.data.data.armourDesign.canPassFor = "Light clothing such as T-shirts, evening wear, skintight suits, etc. and be worn beneath clothes";
-            this.data.data.lc = 4;
-          }
-          else if (this.data.data.armourDesign.armourPercent <= (1/2)) {
-            this.data.data.armourDesign.canPassFor = "Concealed under clothing or pass as ordinary civilian outerwear";
-            this.data.data.lc = 3;
-          }
-          else {
-            this.data.data.armourDesign.canPassFor = "Not concealable. It can only pass as heavy clothing such as a trench coat, biker leathers, etc";
-            this.data.data.lc = 2;
-          }
+          this.data.data.armourDesign.holdout = Math.min(this.data.data.armourDesign.holdout, currentSubPart.holdout);
         }
       }
     }
