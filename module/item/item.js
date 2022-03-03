@@ -2,6 +2,7 @@ import { attributeHelpers } from '../../helpers/attributeHelpers.js';
 import { skillHelpers } from '../../helpers/skillHelpers.js';
 import {materialHelpers} from "../../helpers/materialHelpers.js";
 import {distanceHelpers} from "../../helpers/distanceHelpers.js";
+import {economicHelpers} from "../../helpers/economicHelpers.js";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -347,8 +348,88 @@ export class gurpsItem extends Item {
         this.data.data.lc = 2;
       }
 
-      this.data.data.cost = this.data.data.armourDesign.unitCost;
-      this.data.data.weight = this.data.data.armourDesign.unitWeight;
+      let clothingCF = 1;
+      let clothingWM = 1;
+      this.data.data.armourDesign.clothingCost = 0;
+      this.data.data.armourDesign.clothingWeight = 0;
+      // Handle cost and weight for armour concealed within clothing
+      if (this.data.data.armourDesign.concealed) { // If it's concealed, run concealment related code
+        // Tailoring applies to the clothing as well
+        if (this.data.data.armourDesign.tailoring.toLowerCase() == "expert") {
+          clothingCF = clothingCF + 5;
+          clothingWM = clothingWM - 0.15;
+        }
+        else if (this.data.data.armourDesign.tailoring.toLowerCase() == "master") {
+          clothingCF = clothingCF +29
+          clothingWM = clothingWM - 0.3;
+        }
+
+        if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "swimwear") {
+          this.data.data.armourDesign.clothingCost = economicHelpers.getColByStatus(this.data.data.armourDesign.clothingStatus) * 0.05;
+          this.data.data.armourDesign.clothingWeight = 0.5;
+        }
+        else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "summer") {
+          this.data.data.armourDesign.clothingCost = economicHelpers.getColByStatus(this.data.data.armourDesign.clothingStatus) * 0.10;
+          this.data.data.armourDesign.clothingWeight = 1;
+        }
+        else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "standard") {
+          this.data.data.armourDesign.clothingCost = economicHelpers.getColByStatus(this.data.data.armourDesign.clothingStatus) * 0.20;
+          this.data.data.armourDesign.clothingWeight = 2;
+        }
+        else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "winter") {
+          this.data.data.armourDesign.clothingCost = economicHelpers.getColByStatus(this.data.data.armourDesign.clothingStatus) * 0.30;
+          this.data.data.armourDesign.clothingWeight = 5;
+        }
+        else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "longcoat") {
+          this.data.data.armourDesign.clothingCost = 50;
+          this.data.data.armourDesign.clothingWeight = 5;
+        }
+        else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "leatherLongCoat") {
+          this.data.data.armourDesign.clothingCost = 100;
+          this.data.data.armourDesign.clothingWeight = 10;
+        }
+        else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "lightQualityLeatherLongCoat") {
+          this.data.data.armourDesign.clothingCost = 250;
+          this.data.data.armourDesign.clothingWeight = 5;
+        }
+        else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "qualityLeatherLongCoat") {
+          this.data.data.armourDesign.clothingCost = 500;
+          this.data.data.armourDesign.clothingWeight = 10;
+        }
+        else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "habit") {
+          this.data.data.armourDesign.clothingCost = economicHelpers.getColByStatus(this.data.data.armourDesign.clothingStatus) * 0.35;
+          this.data.data.armourDesign.clothingWeight = 6;
+        }
+        else {
+          this.data.data.armourDesign.clothingCost = 0;
+          this.data.data.armourDesign.clothingWeight = 0;
+        }
+
+        if (this.data.data.armourDesign.undercoverClothing == "1") {
+          clothingCF += 4;
+        }
+        else if (this.data.data.armourDesign.undercoverClothing == "2") {
+          clothingCF += 19;
+        }
+
+        this.data.data.armourDesign.clothingCost = this.data.data.armourDesign.clothingCost * clothingCF;
+        this.data.data.armourDesign.clothingWeight = this.data.data.armourDesign.clothingWeight * clothingWM;
+      }
+
+      if (this.data.data.armourDesign.clothingCost > this.data.data.armourDesign.unitCost) {
+        this.data.data.cost = (this.data.data.armourDesign.unitCost * 0.8) + this.data.data.armourDesign.clothingCost;
+      }
+      else {
+        this.data.data.cost = this.data.data.armourDesign.unitCost + (this.data.data.armourDesign.clothingCost * 0.8);
+      }
+
+      if (this.data.data.armourDesign.clothingWeight > this.data.data.armourDesign.unitWeight) {
+        this.data.data.weight = (this.data.data.armourDesign.unitWeight * 0.8) + this.data.data.armourDesign.clothingWeight;
+      }
+      else {
+        this.data.data.weight = this.data.data.armourDesign.unitWeight + (this.data.data.armourDesign.clothingWeight * 0.8);
+      }
+
       this.data.data.ttlWeight = this.data.data.weight * this.data.data.quantity;
       this.data.data.ttlCost = this.data.data.cost * this.data.data.quantity;
     }
@@ -788,6 +869,13 @@ export class gurpsItem extends Item {
             }
             else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "habit") {
               currentSubPart.holdout = currentSubPart.holdout + 5;
+            }
+
+            if (this.data.data.armourDesign.undercoverClothing == "1") {
+              currentSubPart.holdout += 1;
+            }
+            else if (this.data.data.armourDesign.undercoverClothing == "2") {
+              currentSubPart.holdout += 2;
             }
           }
 
