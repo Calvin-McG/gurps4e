@@ -242,10 +242,23 @@ export class gurpsItem extends Item {
       this.data.data.armourDesign.holdout = 0;
       for (let i = 0; i < bodyParts.length; i++) { // Loop through body parts
         if (getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation")) { // Part has sub parts
-          let subParts = Object.keys(getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation"));
+          let subParts = getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation");
+          let subPartKeys = Object.keys(subParts);
 
-          for (let n = 0; n < subParts.length; n++) { // Loop through sub parts
-            let currentSubPart = getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n]);
+          for (let n = 0; n < subPartKeys.length; n++) { // Loop through sub parts
+            let currentSubPart = getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation." + subPartKeys[n]);
+
+            if (subParts.thigh) { // There is a thigh
+              if (subParts.thigh.construction && subParts.thigh.material) { // It has been correctly armoured
+                if (currentSubPart.label.toLowerCase() == "thigh artery") { // Current part is a thigh artery
+                  currentSubPart.construction = subParts.thigh.construction;
+                  currentSubPart.material = subParts.thigh.material;
+                  currentSubPart.selectedDR = subParts.thigh.selectedDR;
+                  currentSubPart.surfaceArea = 0;
+                }
+              }
+            }
+
             this.prepareLocationalCustomArmour(currentSubPart);
           }
         }
