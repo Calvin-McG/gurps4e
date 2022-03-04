@@ -3,6 +3,7 @@ import { skillHelpers } from '../../helpers/skillHelpers.js';
 import {materialHelpers} from "../../helpers/materialHelpers.js";
 import {distanceHelpers} from "../../helpers/distanceHelpers.js";
 import {economicHelpers} from "../../helpers/economicHelpers.js";
+import {actorHelpers} from "../../helpers/actorHelpers.js";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -451,8 +452,67 @@ export class gurpsItem extends Item {
         this.data.data.weight = this.data.data.armourDesign.unitWeight + (this.data.data.armourDesign.clothingWeight * 0.8);
       }
 
+      if (this.data.data.armourDesign.punch || this.data.data.armourDesign.kick) {
+        this.addUnarmedProfiles(this.data.data.armourDesign.punch, this.data.data.armourDesign.kick);
+      }
+
       this.data.data.ttlWeight = this.data.data.weight * this.data.data.quantity;
       this.data.data.ttlCost = this.data.data.cost * this.data.data.quantity;
+    }
+  }
+
+  addUnarmedProfiles(punch, kick) {
+    let unarmedST = 10;
+    if (this.actor) { // If there's an actor
+      if (this.actor.data) {
+        if (this.actor.data.data) {
+          unarmedST = actorHelpers.fetchStat(this.actor, "st");
+        }
+      }
+    }
+
+    let punchRow = {};
+    let kickRow = {};
+
+    if (punch) {
+      punchRow = { // Init the new melee row using the values from the custom weapon
+        "name": "Punch",
+        "skill": this.data.data.armourDesign.punchSkill,
+        "skillMod": this.data.data.armourDesign.punchSkillMod,
+        "parryMod": 0,
+        "parryType": "F",
+        "blockMod": "No",
+        "damageInput": "thr",
+        "damageType": "cr",
+        "armourDivisor": 1,
+        "reach": "C",
+        "st": unarmedST,
+      };
+    }
+    if (kick) {
+      kickRow = { // Init the new melee row using the values from the custom weapon
+        "name": "Kick",
+        "skill": this.data.data.armourDesign.kickSkill,
+        "skillMod": this.data.data.armourDesign.kickSkillMod,
+        "parryMod": 0,
+        "parryType": "F",
+        "blockMod": "No",
+        "damageInput": "thr+1",
+        "damageType": "cr",
+        "armourDivisor": 1,
+        "reach": "C",
+        "st": unarmedST,
+      };
+    }
+
+    if (kick && punch) {
+      this.data.data.melee = [punchRow, kickRow];
+    }
+    else if (kick) {
+      this.data.data.melee = [kickRow];
+    }
+    else if (punch) {
+      this.data.data.melee = [punchRow];
     }
   }
 
