@@ -583,425 +583,423 @@ export class gurpsItem extends Item {
 
     if (currentSubPart.material && currentSubPart.construction) {
       if (currentSubPart.material.name && currentSubPart.construction.name) { // There is both a material and a construction type
-        if (currentSubPart.material.name.toLowerCase() != "no armour" && currentSubPart.construction.name.toLowerCase() != "no armour") {
-          if (currentSubPart.label.toLowerCase().includes("sole") && currentSubPart.selectedDR > 0 && !currentSubPart.material.name.includes("no armour") && !currentSubPart.construction.name.includes("no armour")) { // There is a sole, it has DR, it has a material, and it has a construction type
-            this.data.data.armourDesign.hasSole = true; // Set the flag true
-            this.data.data.armourDesign.soles += 1; // Add to the sole count to account for quadrupeds, etc.
+        if (currentSubPart.label.toLowerCase().includes("sole") && currentSubPart.selectedDR > 0 && !currentSubPart.material.name.includes("no armour") && !currentSubPart.construction.name.includes("no armour")) { // There is a sole, it has DR, it has a material, and it has a construction type
+          this.data.data.armourDesign.hasSole = true; // Set the flag true
+          this.data.data.armourDesign.soles += 1; // Add to the sole count to account for quadrupeds, etc.
+        }
+        if (currentSubPart.label.toLowerCase().includes("foot") && !currentSubPart.material.name.includes("no armour") && ((currentSubPart.selectedDR >= 1 && !currentSubPart.construction.flexible) || (currentSubPart.selectedDR >= 2))) { // There is a foot, it has a material, and it has 1 DR and it's not flexible, or it has 2 DR and is flexible
+          this.data.data.armourDesign.hasKick = true; // Set the flag true
+        }
+        if (currentSubPart.label.toLowerCase().includes("hand") && !currentSubPart.material.name.includes("no armour") && ((currentSubPart.selectedDR >= 1 && !currentSubPart.construction.flexible) || (currentSubPart.selectedDR >= 2))) { // There is a hand, it has a material, and it has 1 DR and it's not flexible, or it has 2 DR and is flexible
+          this.data.data.armourDesign.hasPunch = true; // Set the flag true
+        }
+
+        if (currentSubPart.selectedDR >= currentSubPart.construction.minDR && currentSubPart.selectedDR <= currentSubPart.material.maxDR) { // DR is between max and min
+
+          if (this.data.data.armourDesign.tailoring.toLowerCase() == "cheap") {
+            cf = cf -0.6
+            drModifier = drModifier - 1;
           }
-          if (currentSubPart.label.toLowerCase().includes("foot") && !currentSubPart.material.name.includes("no armour") && ((currentSubPart.selectedDR >= 1 && !currentSubPart.construction.flexible) || (currentSubPart.selectedDR >= 2))) { // There is a foot, it has a material, and it has 1 DR and it's not flexible, or it has 2 DR and is flexible
-            this.data.data.armourDesign.hasKick = true; // Set the flag true
+          else if (this.data.data.armourDesign.tailoring.toLowerCase() == "expert") {
+            cf = cf + 5;
+            weightModifier = weightModifier - 0.15;
           }
-          if (currentSubPart.label.toLowerCase().includes("hand") && !currentSubPart.material.name.includes("no armour") && ((currentSubPart.selectedDR >= 1 && !currentSubPart.construction.flexible) || (currentSubPart.selectedDR >= 2))) { // There is a hand, it has a material, and it has 1 DR and it's not flexible, or it has 2 DR and is flexible
-            this.data.data.armourDesign.hasPunch = true; // Set the flag true
+          else if (this.data.data.armourDesign.tailoring.toLowerCase() == "master") {
+            cf = cf +29
+            weightModifier = weightModifier - 0.3;
           }
 
-          if (currentSubPart.selectedDR >= currentSubPart.construction.minDR && currentSubPart.selectedDR <= currentSubPart.material.maxDR) { // DR is between max and min
+          if (this.data.data.armourDesign.style.toLowerCase() == "1") {
+            cf += 1;
+          }
+          else if (this.data.data.armourDesign.style.toLowerCase() == "2") {
+            cf += 4;
+          }
+          else if (this.data.data.armourDesign.style.toLowerCase() == "3") {
+            cf += 9;
+          }
 
-            if (this.data.data.armourDesign.tailoring.toLowerCase() == "cheap") {
-              cf = cf -0.6
-              drModifier = drModifier - 1;
-            }
-            else if (this.data.data.armourDesign.tailoring.toLowerCase() == "expert") {
-              cf = cf + 5;
-              weightModifier = weightModifier - 0.15;
-            }
-            else if (this.data.data.armourDesign.tailoring.toLowerCase() == "master") {
-              cf = cf +29
-              weightModifier = weightModifier - 0.3;
-            }
-
-            if (this.data.data.armourDesign.style.toLowerCase() == "1") {
-              cf += 1;
-            }
-            else if (this.data.data.armourDesign.style.toLowerCase() == "2") {
+          // This piece is made of steel, and the user has selected either hardened or duplex
+          if (currentSubPart.material.name.toLowerCase().includes("steel") && (this.data.data.armourDesign.steelHardening.toLowerCase().includes("hardened") || this.data.data.armourDesign.steelHardening.toLowerCase().includes("duplex"))) {
+            if (this.data.data.armourDesign.steelHardening.toLowerCase().includes("hardened")) {
               cf += 4;
+              drModifier += 1;
             }
-            else if (this.data.data.armourDesign.style.toLowerCase() == "3") {
-              cf += 9;
-            }
-
-            // This piece is made of steel, and the user has selected either hardened or duplex
-            if (currentSubPart.material.name.toLowerCase().includes("steel") && (this.data.data.armourDesign.steelHardening.toLowerCase().includes("hardened") || this.data.data.armourDesign.steelHardening.toLowerCase().includes("duplex"))) {
-              if (this.data.data.armourDesign.steelHardening.toLowerCase().includes("hardened")) {
-                cf += 4;
-                drModifier += 1;
-              }
-              else if (this.data.data.armourDesign.steelHardening.toLowerCase().includes("duplex")) {
-                cf += 8;
-                weightModifier = weightModifier - 0.1;
-                drModifier += 1;
-              }
-            }
-
-            // This piece is made of leather, and the user has selected a leather customization
-            if ((currentSubPart.material.name.toLowerCase().includes("leather")) && (this.data.data.armourDesign.leatherQuality.toLowerCase() == "rawhide" || this.data.data.armourDesign.leatherQuality.toLowerCase() == "quality")) {
-              if (this.data.data.armourDesign.leatherQuality.toLowerCase() == "rawhide") {
-                cf = cf -0.6;
-                // TODO - x0.5 HP
-              }
-              else if (this.data.data.armourDesign.leatherQuality.toLowerCase() == "quality") {
-                cf = cf + 4;
-                drModifier += 1;
-              }
-            }
-
-            // Handle bonus DR from leather coat options
-            if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "leatherlongcoat" || this.data.data.armourDesign.concealedClothing.toLowerCase() == "lightqualityleatherlongcoat" || this.data.data.armourDesign.concealedClothing.toLowerCase() == "qualityleatherlongcoat") {
-              let leatherCoatBonus = 1; // Most of the coats give +1 DR
-              if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "qualityleatherlongcoat") { // Quality heavy leather coats give +2
-                leatherCoatBonus = 2;
-              }
-
-              if (currentSubPart.label.toLowerCase() == "thigh"                || currentSubPart.label.toLowerCase() == "inside thigh" ||
-                  currentSubPart.label.toLowerCase() == "knee"                 || currentSubPart.label.toLowerCase() == "back of knee" ||
-                  currentSubPart.label.toLowerCase() == "thigh artery"         || currentSubPart.label.toLowerCase() == "shoulder" ||
-                  currentSubPart.label.toLowerCase() == "forearm"              || currentSubPart.label.toLowerCase() == "upper arm" ||
-                  currentSubPart.label.toLowerCase() == "elbow"                || currentSubPart.label.toLowerCase() == "inside elbow" ||
-                  currentSubPart.label.toLowerCase() == "armpit"               || currentSubPart.label.toLowerCase() == "vitals" ||
-                  currentSubPart.label.toLowerCase() == "spine"                || currentSubPart.label.toLowerCase() == "upper chest" ||
-                  currentSubPart.label.toLowerCase() == "lower chest"          || currentSubPart.label.toLowerCase() == "humanoid upper chest" ||
-                  currentSubPart.label.toLowerCase() == "humanoid lower chest" || currentSubPart.label.toLowerCase() == "animal chest" ||
-                  currentSubPart.label.toLowerCase() == "upper thorax"         || currentSubPart.label.toLowerCase() == "mid thorax" ||
-                  currentSubPart.label.toLowerCase() == "digestive tract"      || currentSubPart.label.toLowerCase() == "pelvis" ||
-                  currentSubPart.label.toLowerCase() == "groin"                || currentSubPart.label.toLowerCase() == "abdomen" ||
-                  currentSubPart.label.toLowerCase() == "animal abdomen"       || currentSubPart.label.toLowerCase() == "lower thorax" ||
-                  currentSubPart.label.toLowerCase() == "neck"                 || currentSubPart.label.toLowerCase() == "vein") {
-                drModifier += leatherCoatBonus;
-              }
-            }
-
-            // Calculate basic DR by material and construction
-            if (currentSubPart.construction.name.toLowerCase() == "fabric") {
-              if (currentSubPart.selectedDR <= (currentSubPart.material.drPerIn / 4)) { // Flexible construction types become inflexible if the armour is more than a quarter inch thick.
-                currentSubPart.flexible = true;
-              }
-              else {
-                currentSubPart.flexible = false;
-              }
-
-              currentSubPart.drBurn = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drCor  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drCr   = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drCut  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drFat  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drImp  = Math.max(currentSubPart.selectedDR - 1 + drModifier, 0); // Non-layered fabric is -1 DR vs impaling
-              currentSubPart.drPi   = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drTox  = currentSubPart.selectedDR + drModifier;
-            }
-            else if (currentSubPart.construction.name.toLowerCase() == "layered fabric" || currentSubPart.construction.name.toLowerCase() == "optimized fabric") {
-              if (currentSubPart.selectedDR <= (currentSubPart.material.drPerIn / 4)) { // Flexible construction types become inflexible if the armour is more than a quarter inch thick.
-                currentSubPart.flexible = true;
-              }
-              else {
-                currentSubPart.flexible = false;
-              }
-
-              currentSubPart.drBurn = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drCor  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drCr   = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drCut  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drFat  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drImp  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drPi   = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drTox  = currentSubPart.selectedDR + drModifier;
-            }
-            else if (currentSubPart.construction.name.toLowerCase() == "scales") {
-              if (currentSubPart.selectedDR <= (currentSubPart.material.drPerIn / 4)) { // Flexible construction types become inflexible if the armour is more than a quarter inch thick.
-                currentSubPart.flexible = true;
-              }
-              else {
-                currentSubPart.flexible = false;
-              }
-
-              currentSubPart.drBurn = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drCor  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drCr   = currentSubPart.selectedDR + drModifier >= 5 ? currentSubPart.selectedDR + drModifier : Math.max(currentSubPart.selectedDR + drModifier - 1, 0); // Scale with DR 5+ has no penalty vs crushing. Scale with less does have a penalty.
-              currentSubPart.drCut  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drFat  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drImp  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drPi   = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drTox  = currentSubPart.selectedDR + drModifier;
-            }
-            else if (currentSubPart.construction.name.toLowerCase() == "mail") {
-              if (currentSubPart.selectedDR <= (currentSubPart.material.drPerIn / 4)) { // Flexible construction types become inflexible if the armour is more than a quarter inch thick.
-                currentSubPart.flexible = true;
-              }
-              else {
-                currentSubPart.flexible = false;
-              }
-
-              currentSubPart.drBurn = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drCor  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drCr   = currentSubPart.selectedDR >= 10 ? Math.floor((currentSubPart.selectedDR + drModifier) * 0.8) : Math.max(currentSubPart.selectedDR + drModifier - 2, 0); // Mail is -2 DR vs crushing, or -20% DR if it's base DR is 10+
-              currentSubPart.drCut  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drFat  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drImp  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drPi   = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drTox  = currentSubPart.selectedDR + drModifier;
-            }
-            else if (currentSubPart.construction.name.toLowerCase() == "early plate" || currentSubPart.construction.name.toLowerCase() == "segmented plate" || currentSubPart.construction.name.toLowerCase() == "plate" || currentSubPart.construction.name.toLowerCase() == "solid") {
-              currentSubPart.drBurn = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drCor  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drCr   = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drCut  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drFat  = (currentSubPart.selectedDR + drModifier);
-              currentSubPart.drImp  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drPi   = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drTox  = currentSubPart.selectedDR + drModifier;
-            }
-            else if (currentSubPart.construction.name.toLowerCase() == "impact absorbing") {
-              currentSubPart.drBurn = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
-              currentSubPart.drCor  = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
-              currentSubPart.drCr   = (currentSubPart.selectedDR + drModifier);
-              currentSubPart.drCut  = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
-              currentSubPart.drFat  = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
-              currentSubPart.drImp  = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
-              currentSubPart.drPi   = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
-              currentSubPart.drTox  = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
-            }
-            else {
-              currentSubPart.drBurn = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drCor  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drCr   = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drCut  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drFat  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drImp  = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drPi   = currentSubPart.selectedDR + drModifier;
-              currentSubPart.drTox  = currentSubPart.selectedDR + drModifier;
-            }
-
-            // Calculate PF
-            currentSubPart.pf = materialHelpers.adToPF((currentSubPart.selectedDR + drModifier) * currentSubPart.material.wm);
-
-            // Calculate Don time
-            if (currentSubPart.selectedDR == 0) {
-              currentSubPart.donTime = 0;
-            }
-            else if (currentSubPart.flexible) {
-              currentSubPart.donTime = Math.round(currentSubPart.construction.don * 2/3);
-            }
-            else {
-              currentSubPart.donTime = currentSubPart.construction.don;
-            }
-            this.data.data.armourDesign.donTime += currentSubPart.donTime
-
-            // This piece is made of either plate or scale, and the user has selected fluting
-            if ((currentSubPart.construction.name.toLowerCase().includes("scale") || currentSubPart.construction.name.toLowerCase().includes("plate")) && this.data.data.armourDesign.fluting) {
-              cf += 4;
+            else if (this.data.data.armourDesign.steelHardening.toLowerCase().includes("duplex")) {
+              cf += 8;
               weightModifier = weightModifier - 0.1;
+              drModifier += 1;
+            }
+          }
+
+          // This piece is made of leather, and the user has selected a leather customization
+          if ((currentSubPart.material.name.toLowerCase().includes("leather")) && (this.data.data.armourDesign.leatherQuality.toLowerCase() == "rawhide" || this.data.data.armourDesign.leatherQuality.toLowerCase() == "quality")) {
+            if (this.data.data.armourDesign.leatherQuality.toLowerCase() == "rawhide") {
+              cf = cf -0.6;
+              // TODO - x0.5 HP
+            }
+            else if (this.data.data.armourDesign.leatherQuality.toLowerCase() == "quality") {
+              cf = cf + 4;
+              drModifier += 1;
+            }
+          }
+
+          // Handle bonus DR from leather coat options
+          if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "leatherlongcoat" || this.data.data.armourDesign.concealedClothing.toLowerCase() == "lightqualityleatherlongcoat" || this.data.data.armourDesign.concealedClothing.toLowerCase() == "qualityleatherlongcoat") {
+            let leatherCoatBonus = 1; // Most of the coats give +1 DR
+            if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "qualityleatherlongcoat") { // Quality heavy leather coats give +2
+              leatherCoatBonus = 2;
             }
 
-            // This piece is made of mail, and the user has selected a mail customization
-            if ((currentSubPart.construction.name.toLowerCase().includes("mail")) && (this.data.data.armourDesign.banded || this.data.data.armourDesign.butted)) {
-              if (this.data.data.armourDesign.banded) {
-                cf += 0.5;
-                weightModifier = weightModifier + 0.5;
-                currentSubPart.drCr += 2;
-              }
-              else if (this.data.data.armourDesign.butted) {
-                cf = cf - 0.6;
-                currentSubPart.drImp = Math.max(currentSubPart.drImp - 3, 0) // DR is at least zero
-              }
+            if (currentSubPart.label.toLowerCase() == "thigh"                || currentSubPart.label.toLowerCase() == "inside thigh" ||
+                currentSubPart.label.toLowerCase() == "knee"                 || currentSubPart.label.toLowerCase() == "back of knee" ||
+                currentSubPart.label.toLowerCase() == "thigh artery"         || currentSubPart.label.toLowerCase() == "shoulder" ||
+                currentSubPart.label.toLowerCase() == "forearm"              || currentSubPart.label.toLowerCase() == "upper arm" ||
+                currentSubPart.label.toLowerCase() == "elbow"                || currentSubPart.label.toLowerCase() == "inside elbow" ||
+                currentSubPart.label.toLowerCase() == "armpit"               || currentSubPart.label.toLowerCase() == "vitals" ||
+                currentSubPart.label.toLowerCase() == "spine"                || currentSubPart.label.toLowerCase() == "upper chest" ||
+                currentSubPart.label.toLowerCase() == "lower chest"          || currentSubPart.label.toLowerCase() == "humanoid upper chest" ||
+                currentSubPart.label.toLowerCase() == "humanoid lower chest" || currentSubPart.label.toLowerCase() == "animal chest" ||
+                currentSubPart.label.toLowerCase() == "upper thorax"         || currentSubPart.label.toLowerCase() == "mid thorax" ||
+                currentSubPart.label.toLowerCase() == "digestive tract"      || currentSubPart.label.toLowerCase() == "pelvis" ||
+                currentSubPart.label.toLowerCase() == "groin"                || currentSubPart.label.toLowerCase() == "abdomen" ||
+                currentSubPart.label.toLowerCase() == "animal abdomen"       || currentSubPart.label.toLowerCase() == "lower thorax" ||
+                currentSubPart.label.toLowerCase() == "neck"                 || currentSubPart.label.toLowerCase() == "vein") {
+              drModifier += leatherCoatBonus;
+            }
+          }
+
+          // Calculate basic DR by material and construction
+          if (currentSubPart.construction.name.toLowerCase() == "fabric") {
+            if (currentSubPart.selectedDR <= (currentSubPart.material.drPerIn / 4)) { // Flexible construction types become inflexible if the armour is more than a quarter inch thick.
+              currentSubPart.flexible = true;
+            }
+            else {
+              currentSubPart.flexible = false;
             }
 
-            // This piece is made of cloth, and the user has selected a cloth customization
-            if ((currentSubPart.material.name.toLowerCase().includes("cloth")) && (this.data.data.armourDesign.silk || this.data.data.armourDesign.paper)) {
-              if (this.data.data.armourDesign.paper) {
-                cf -= 0.25;
-              }
-              else if (this.data.data.armourDesign.silk) {
-                cf += 19;
-                currentSubPart.drImp += 1;
-                currentSubPart.drCut += 1;
-              }
+            currentSubPart.drBurn = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drCor  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drCr   = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drCut  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drFat  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drImp  = Math.max(currentSubPart.selectedDR - 1 + drModifier, 0); // Non-layered fabric is -1 DR vs impaling
+            currentSubPart.drPi   = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drTox  = currentSubPart.selectedDR + drModifier;
+          }
+          else if (currentSubPart.construction.name.toLowerCase() == "layered fabric" || currentSubPart.construction.name.toLowerCase() == "optimized fabric") {
+            if (currentSubPart.selectedDR <= (currentSubPart.material.drPerIn / 4)) { // Flexible construction types become inflexible if the armour is more than a quarter inch thick.
+              currentSubPart.flexible = true;
+            }
+            else {
+              currentSubPart.flexible = false;
             }
 
-            // This piece is made of cloth or leather, and the user has selected a reinforcement
-            if ((currentSubPart.material.name.toLowerCase().includes("cloth") || currentSubPart.material.name.toLowerCase().includes("leather")) && this.data.data.armourDesign.reinforced) {
-              cf += 0.25;
-              weightModifier += 0.25;
+            currentSubPart.drBurn = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drCor  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drCr   = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drCut  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drFat  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drImp  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drPi   = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drTox  = currentSubPart.selectedDR + drModifier;
+          }
+          else if (currentSubPart.construction.name.toLowerCase() == "scales") {
+            if (currentSubPart.selectedDR <= (currentSubPart.material.drPerIn / 4)) { // Flexible construction types become inflexible if the armour is more than a quarter inch thick.
+              currentSubPart.flexible = true;
+            }
+            else {
+              currentSubPart.flexible = false;
+            }
+
+            currentSubPart.drBurn = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drCor  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drCr   = currentSubPart.selectedDR + drModifier >= 5 ? currentSubPart.selectedDR + drModifier : Math.max(currentSubPart.selectedDR + drModifier - 1, 0); // Scale with DR 5+ has no penalty vs crushing. Scale with less does have a penalty.
+            currentSubPart.drCut  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drFat  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drImp  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drPi   = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drTox  = currentSubPart.selectedDR + drModifier;
+          }
+          else if (currentSubPart.construction.name.toLowerCase() == "mail") {
+            if (currentSubPart.selectedDR <= (currentSubPart.material.drPerIn / 4)) { // Flexible construction types become inflexible if the armour is more than a quarter inch thick.
+              currentSubPart.flexible = true;
+            }
+            else {
+              currentSubPart.flexible = false;
+            }
+
+            currentSubPart.drBurn = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drCor  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drCr   = currentSubPart.selectedDR >= 10 ? Math.floor((currentSubPart.selectedDR + drModifier) * 0.8) : Math.max(currentSubPart.selectedDR + drModifier - 2, 0); // Mail is -2 DR vs crushing, or -20% DR if it's base DR is 10+
+            currentSubPart.drCut  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drFat  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drImp  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drPi   = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drTox  = currentSubPart.selectedDR + drModifier;
+          }
+          else if (currentSubPart.construction.name.toLowerCase() == "early plate" || currentSubPart.construction.name.toLowerCase() == "segmented plate" || currentSubPart.construction.name.toLowerCase() == "plate" || currentSubPart.construction.name.toLowerCase() == "solid") {
+            currentSubPart.drBurn = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drCor  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drCr   = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drCut  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drFat  = (currentSubPart.selectedDR + drModifier);
+            currentSubPart.drImp  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drPi   = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drTox  = currentSubPart.selectedDR + drModifier;
+          }
+          else if (currentSubPart.construction.name.toLowerCase() == "impact absorbing") {
+            currentSubPart.drBurn = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
+            currentSubPart.drCor  = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
+            currentSubPart.drCr   = (currentSubPart.selectedDR + drModifier);
+            currentSubPart.drCut  = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
+            currentSubPart.drFat  = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
+            currentSubPart.drImp  = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
+            currentSubPart.drPi   = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
+            currentSubPart.drTox  = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
+          }
+          else {
+            currentSubPart.drBurn = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drCor  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drCr   = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drCut  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drFat  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drImp  = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drPi   = currentSubPart.selectedDR + drModifier;
+            currentSubPart.drTox  = currentSubPart.selectedDR + drModifier;
+          }
+
+          // Calculate PF
+          currentSubPart.pf = materialHelpers.adToPF((currentSubPart.selectedDR + drModifier) * currentSubPart.material.wm);
+
+          // Calculate Don time
+          if (currentSubPart.selectedDR == 0) {
+            currentSubPart.donTime = 0;
+          }
+          else if (currentSubPart.flexible) {
+            currentSubPart.donTime = Math.round(currentSubPart.construction.don * 2/3);
+          }
+          else {
+            currentSubPart.donTime = currentSubPart.construction.don;
+          }
+          this.data.data.armourDesign.donTime += currentSubPart.donTime
+
+          // This piece is made of either plate or scale, and the user has selected fluting
+          if ((currentSubPart.construction.name.toLowerCase().includes("scale") || currentSubPart.construction.name.toLowerCase().includes("plate")) && this.data.data.armourDesign.fluting) {
+            cf += 4;
+            weightModifier = weightModifier - 0.1;
+          }
+
+          // This piece is made of mail, and the user has selected a mail customization
+          if ((currentSubPart.construction.name.toLowerCase().includes("mail")) && (this.data.data.armourDesign.banded || this.data.data.armourDesign.butted)) {
+            if (this.data.data.armourDesign.banded) {
+              cf += 0.5;
+              weightModifier = weightModifier + 0.5;
+              currentSubPart.drCr += 2;
+            }
+            else if (this.data.data.armourDesign.butted) {
+              cf = cf - 0.6;
+              currentSubPart.drImp = Math.max(currentSubPart.drImp - 3, 0) // DR is at least zero
+            }
+          }
+
+          // This piece is made of cloth, and the user has selected a cloth customization
+          if ((currentSubPart.material.name.toLowerCase().includes("cloth")) && (this.data.data.armourDesign.silk || this.data.data.armourDesign.paper)) {
+            if (this.data.data.armourDesign.paper) {
+              cf -= 0.25;
+            }
+            else if (this.data.data.armourDesign.silk) {
+              cf += 19;
+              currentSubPart.drImp += 1;
               currentSubPart.drCut += 1;
             }
+          }
 
-            // This piece is made of scale, and the user has selected mountain scale
-            if (currentSubPart.construction.name.toLowerCase().includes("scale") && this.data.data.armourDesign.mountain) {
-              cf += 1;
-              currentSubPart.drCr += 1;
-            }
+          // This piece is made of cloth or leather, and the user has selected a reinforcement
+          if ((currentSubPart.material.name.toLowerCase().includes("cloth") || currentSubPart.material.name.toLowerCase().includes("leather")) && this.data.data.armourDesign.reinforced) {
+            cf += 0.25;
+            weightModifier += 0.25;
+            currentSubPart.drCut += 1;
+          }
 
-            if (currentSubPart.material.ballistic2) {
-              currentSubPart.drBurn = Math.floor((currentSubPart.drBurn) / 2);
-              currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 2);
-              currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 2);
-              currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 2);
-              currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 2);
-              currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 2);
-            }
-            else if (currentSubPart.material.ballistic25) {
-              currentSubPart.drBurn = Math.floor((currentSubPart.drBurn) / 2.5);
-              currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 2.5);
-              currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 2.5);
-              currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 2.5);
-              currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 2.5);
-              currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 2.5);
-            }
-            else if (currentSubPart.material.ballistic3) {
-              currentSubPart.drBurn = Math.floor((currentSubPart.drBurn) / 3);
-              currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 3);
-              currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 3);
-              currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 3);
-              currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 3);
-              currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 3);
-            }
-            else if (currentSubPart.material.ballistic3Bio) {
-              currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 3);
-              currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 3);
-              currentSubPart.drCut  = Math.floor((currentSubPart.drCut ) / 3);
-              currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 3);
-              currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 3);
-              currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 3);
-            }
-            else if (currentSubPart.material.ballistic4) {
-              currentSubPart.drBurn = Math.floor((currentSubPart.drBurn) / 4);
-              currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 4);
-              currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 4);
-              currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 4);
-              currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 4);
-              currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 4);
-            }
+          // This piece is made of scale, and the user has selected mountain scale
+          if (currentSubPart.construction.name.toLowerCase().includes("scale") && this.data.data.armourDesign.mountain) {
+            cf += 1;
+            currentSubPart.drCr += 1;
+          }
 
-            if (currentSubPart.material.laser0) {
-              currentSubPart.drCor  = 0;
-              currentSubPart.drCr   = 0;
-              currentSubPart.drCut  = 0;
-              currentSubPart.drFat  = 0;
-              currentSubPart.drImp  = 0;
-              currentSubPart.drPi   = 0;
-              currentSubPart.drTox  = 0;
-            }
-            else if (currentSubPart.material.laser4) {
-              currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 4);
-              currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 4);
-              currentSubPart.drCut  = Math.floor((currentSubPart.drCut ) / 4);
-              currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 4);
-              currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 4);
-              currentSubPart.drPi   = Math.floor((currentSubPart.drPi  ) / 4);
-              currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 4);
-            }
-            else if (currentSubPart.material.laser6) {
-              currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 6);
-              currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 6);
-              currentSubPart.drCut  = Math.floor((currentSubPart.drCut ) / 6);
-              currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 6);
-              currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 6);
-              currentSubPart.drPi   = Math.floor((currentSubPart.drPi  ) / 6);
-              currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 6);
-            }
+          if (currentSubPart.material.ballistic2) {
+            currentSubPart.drBurn = Math.floor((currentSubPart.drBurn) / 2);
+            currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 2);
+            currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 2);
+            currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 2);
+            currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 2);
+            currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 2);
+          }
+          else if (currentSubPart.material.ballistic25) {
+            currentSubPart.drBurn = Math.floor((currentSubPart.drBurn) / 2.5);
+            currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 2.5);
+            currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 2.5);
+            currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 2.5);
+            currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 2.5);
+            currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 2.5);
+          }
+          else if (currentSubPart.material.ballistic3) {
+            currentSubPart.drBurn = Math.floor((currentSubPart.drBurn) / 3);
+            currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 3);
+            currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 3);
+            currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 3);
+            currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 3);
+            currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 3);
+          }
+          else if (currentSubPart.material.ballistic3Bio) {
+            currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 3);
+            currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 3);
+            currentSubPart.drCut  = Math.floor((currentSubPart.drCut ) / 3);
+            currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 3);
+            currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 3);
+            currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 3);
+          }
+          else if (currentSubPart.material.ballistic4) {
+            currentSubPart.drBurn = Math.floor((currentSubPart.drBurn) / 4);
+            currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 4);
+            currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 4);
+            currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 4);
+            currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 4);
+            currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 4);
+          }
 
-            // Can pass for
-            currentSubPart.armourPercent = (currentSubPart.selectedDR / currentSubPart.material.maxDR);
+          if (currentSubPart.material.laser0) {
+            currentSubPart.drCor  = 0;
+            currentSubPart.drCr   = 0;
+            currentSubPart.drCut  = 0;
+            currentSubPart.drFat  = 0;
+            currentSubPart.drImp  = 0;
+            currentSubPart.drPi   = 0;
+            currentSubPart.drTox  = 0;
+          }
+          else if (currentSubPart.material.laser4) {
+            currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 4);
+            currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 4);
+            currentSubPart.drCut  = Math.floor((currentSubPart.drCut ) / 4);
+            currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 4);
+            currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 4);
+            currentSubPart.drPi   = Math.floor((currentSubPart.drPi  ) / 4);
+            currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 4);
+          }
+          else if (currentSubPart.material.laser6) {
+            currentSubPart.drCor  = Math.floor((currentSubPart.drCor ) / 6);
+            currentSubPart.drCr   = Math.floor((currentSubPart.drCr  ) / 6);
+            currentSubPart.drCut  = Math.floor((currentSubPart.drCut ) / 6);
+            currentSubPart.drFat  = Math.floor((currentSubPart.drFat ) / 6);
+            currentSubPart.drImp  = Math.floor((currentSubPart.drImp ) / 6);
+            currentSubPart.drPi   = Math.floor((currentSubPart.drPi  ) / 6);
+            currentSubPart.drTox  = Math.floor((currentSubPart.drTox ) / 6);
+          }
 
-            // Thickness
-            if (currentSubPart.selectedDR <= 0) {
-              currentSubPart.in = 0;
-            }
-            else {
-              currentSubPart.in = currentSubPart.selectedDR / currentSubPart.material.drPerIn;
-            }
-            currentSubPart.mm = 25.4 * currentSubPart.in;
+          // Can pass for
+          currentSubPart.armourPercent = (currentSubPart.selectedDR / currentSubPart.material.maxDR);
 
-            cf += this.data.data.armourDesign.holdoutReduction; // Add the cost factor for the holdout reduction.
-
-            cf = Math.max(cf, 0.2) // Cost factor can't go less than 80%
-            weightModifier = Math.max(weightModifier, 0.2) // Weight mod can't go less than 80%
-
-            currentSubPart.weight = currentSubPart.surfaceArea * currentSubPart.material.wm * currentSubPart.construction.wm * currentSubPart.selectedDR * weightModifier;
-            if (currentSubPart.material.costLTTL <= this.data.data.tl) { // The current TL is at or under the tl breakpoint
-              currentSubPart.cost = currentSubPart.weight * currentSubPart.construction.cm * currentSubPart.material.costLT * cf;
-            }
-            else {
-              currentSubPart.cost = currentSubPart.weight * currentSubPart.construction.cm * currentSubPart.material.costHT * cf;
-            }
+          // Thickness
+          if (currentSubPart.selectedDR <= 0) {
+            currentSubPart.in = 0;
           }
           else {
-            currentSubPart.weight = 0;
-            currentSubPart.cost = 0;
+            currentSubPart.in = currentSubPart.selectedDR / currentSubPart.material.drPerIn;
           }
+          currentSubPart.mm = 25.4 * currentSubPart.in;
 
-          if (this.data.data.armourDesign.sealed && this.data.data.tl >= 6) { // Armour is sealed and the TL is high enough for it to actually be sealed.
-            if (this.data.data.tl >= 8) { // At TL 8+, sealed is 5$ per square foot
-              currentSubPart.cost = currentSubPart.cost + (currentSubPart.surfaceArea * 5);
-            }
-            else { // At TL 7-, sealed is 10$ per square foot
-              currentSubPart.cost = currentSubPart.cost + (currentSubPart.surfaceArea * 10);
-            }
+          cf += this.data.data.armourDesign.holdoutReduction; // Add the cost factor for the holdout reduction.
+
+          cf = Math.max(cf, 0.2) // Cost factor can't go less than 80%
+          weightModifier = Math.max(weightModifier, 0.2) // Weight mod can't go less than 80%
+
+          currentSubPart.weight = currentSubPart.surfaceArea * currentSubPart.material.wm * currentSubPart.construction.wm * currentSubPart.selectedDR * weightModifier;
+          if (currentSubPart.material.costLTTL <= this.data.data.tl) { // The current TL is at or under the tl breakpoint
+            currentSubPart.cost = currentSubPart.weight * currentSubPart.construction.cm * currentSubPart.material.costLT * cf;
           }
-
-          this.data.data.armourDesign.armourPercent = Math.max(currentSubPart.armourPercent, this.data.data.armourDesign.armourPercent) // Always use the worst (highest) value
-
-          this.data.data.armourDesign.donTime = Math.round(this.data.data.armourDesign.donTime);
-          this.data.data.armourDesign.unitWeight += currentSubPart.weight;
-          this.data.data.armourDesign.unitCost += currentSubPart.cost;
-
-          // Holdout
-          if (this.data.data.armourDesign.adjustedHoldoutPenaltyForCustomArmour.toLowerCase() == "") {
-            if (currentSubPart.flexible) {
-              currentSubPart.holdout = currentSubPart.selectedDR / 3;
-            }
-            else {
-              currentSubPart.holdout = currentSubPart.selectedDR;
-            }
-          }
-          else if (this.data.data.armourDesign.adjustedHoldoutPenaltyForCustomArmour.toLowerCase() == "weight") {
-            if (currentSubPart.flexible) {
-              currentSubPart.holdout = currentSubPart.selectedDR / 3 * (currentSubPart.material.wm / 0.9);
-            }
-            else {
-              currentSubPart.holdout = currentSubPart.selectedDR * (currentSubPart.material.wm / 0.6);
-            }
-          }
-          else if (this.data.data.armourDesign.adjustedHoldoutPenaltyForCustomArmour.toLowerCase() == "thickness") {
-            if (currentSubPart.flexible) {
-              currentSubPart.holdout = currentSubPart.selectedDR / 3 * (currentSubPart.material.drPerIn / 8);
-            }
           else {
-              currentSubPart.holdout = currentSubPart.selectedDR * (currentSubPart.material.drPerIn / 68);
-            }
+            currentSubPart.cost = currentSubPart.weight * currentSubPart.construction.cm * currentSubPart.material.costHT * cf;
           }
-
-          if (this.data.data.armourDesign.concealed) { // If it's concealed, run concealment related code
-            currentSubPart.holdout = Math.max(currentSubPart.holdout - this.data.data.armourDesign.holdoutReduction, 0); // Apply any holdout penalty reduction, but only remove penalties, don't grant any bonus.
-          }
-
-          currentSubPart.holdout *= -1; // Flip the holdout penalty to negative
-
-          if (this.data.data.armourDesign.concealed) { // If it's concealed, run concealment related code
-            if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "swimwear") {
-              currentSubPart.holdout = currentSubPart.holdout - 5;
-            }
-            else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "summer") {
-              currentSubPart.holdout = currentSubPart.holdout - 3;
-            }
-            else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "winter") {
-              currentSubPart.holdout = currentSubPart.holdout + 3;
-            }
-            else if (this.data.data.armourDesign.concealedClothing.toLowerCase().includes("longcoat")) {
-              currentSubPart.holdout = currentSubPart.holdout + 4;
-            }
-            else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "habit") {
-              currentSubPart.holdout = currentSubPart.holdout + 5;
-            }
-
-            if (this.data.data.armourDesign.undercoverClothing == "1") {
-              currentSubPart.holdout += 1;
-            }
-            else if (this.data.data.armourDesign.undercoverClothing == "2") {
-              currentSubPart.holdout += 2;
-            }
-          }
-
-          this.data.data.armourDesign.holdout = Math.min(this.data.data.armourDesign.holdout, currentSubPart.holdout);
         }
+        else {
+          currentSubPart.weight = 0;
+          currentSubPart.cost = 0;
+        }
+
+        if (this.data.data.armourDesign.sealed && this.data.data.tl >= 6) { // Armour is sealed and the TL is high enough for it to actually be sealed.
+          if (this.data.data.tl >= 8) { // At TL 8+, sealed is 5$ per square foot
+            currentSubPart.cost = currentSubPart.cost + (currentSubPart.surfaceArea * 5);
+          }
+          else { // At TL 7-, sealed is 10$ per square foot
+            currentSubPart.cost = currentSubPart.cost + (currentSubPart.surfaceArea * 10);
+          }
+        }
+
+        this.data.data.armourDesign.armourPercent = Math.max(currentSubPart.armourPercent, this.data.data.armourDesign.armourPercent) // Always use the worst (highest) value
+
+        this.data.data.armourDesign.donTime = Math.round(this.data.data.armourDesign.donTime);
+        this.data.data.armourDesign.unitWeight += currentSubPart.weight;
+        this.data.data.armourDesign.unitCost += currentSubPart.cost;
+
+        // Holdout
+        if (this.data.data.armourDesign.adjustedHoldoutPenaltyForCustomArmour.toLowerCase() == "") {
+          if (currentSubPart.flexible) {
+            currentSubPart.holdout = currentSubPart.selectedDR / 3;
+          }
+          else {
+            currentSubPart.holdout = currentSubPart.selectedDR;
+          }
+        }
+        else if (this.data.data.armourDesign.adjustedHoldoutPenaltyForCustomArmour.toLowerCase() == "weight") {
+          if (currentSubPart.flexible) {
+            currentSubPart.holdout = currentSubPart.selectedDR / 3 * (currentSubPart.material.wm / 0.9);
+          }
+          else {
+            currentSubPart.holdout = currentSubPart.selectedDR * (currentSubPart.material.wm / 0.6);
+          }
+        }
+        else if (this.data.data.armourDesign.adjustedHoldoutPenaltyForCustomArmour.toLowerCase() == "thickness") {
+          if (currentSubPart.flexible) {
+            currentSubPart.holdout = currentSubPart.selectedDR / 3 * (currentSubPart.material.drPerIn / 8);
+          }
+        else {
+            currentSubPart.holdout = currentSubPart.selectedDR * (currentSubPart.material.drPerIn / 68);
+          }
+        }
+
+        if (this.data.data.armourDesign.concealed) { // If it's concealed, run concealment related code
+          currentSubPart.holdout = Math.max(currentSubPart.holdout - this.data.data.armourDesign.holdoutReduction, 0); // Apply any holdout penalty reduction, but only remove penalties, don't grant any bonus.
+        }
+
+        currentSubPart.holdout *= -1; // Flip the holdout penalty to negative
+
+        if (this.data.data.armourDesign.concealed) { // If it's concealed, run concealment related code
+          if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "swimwear") {
+            currentSubPart.holdout = currentSubPart.holdout - 5;
+          }
+          else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "summer") {
+            currentSubPart.holdout = currentSubPart.holdout - 3;
+          }
+          else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "winter") {
+            currentSubPart.holdout = currentSubPart.holdout + 3;
+          }
+          else if (this.data.data.armourDesign.concealedClothing.toLowerCase().includes("longcoat")) {
+            currentSubPart.holdout = currentSubPart.holdout + 4;
+          }
+          else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "habit") {
+            currentSubPart.holdout = currentSubPart.holdout + 5;
+          }
+
+          if (this.data.data.armourDesign.undercoverClothing == "1") {
+            currentSubPart.holdout += 1;
+          }
+          else if (this.data.data.armourDesign.undercoverClothing == "2") {
+            currentSubPart.holdout += 2;
+          }
+        }
+
+        this.data.data.armourDesign.holdout = Math.min(this.data.data.armourDesign.holdout, currentSubPart.holdout);
       }
     }
   }
