@@ -954,7 +954,8 @@ export class gurpsItemSheet extends ItemSheet {
                     drPi: "",
                     drTox: "",
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    surfaceArea: 0,
                 }
             }
         }
