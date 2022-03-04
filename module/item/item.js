@@ -842,7 +842,12 @@ export class gurpsItem extends Item {
             currentSubPart.armourPercent = (currentSubPart.selectedDR / currentSubPart.material.maxDR);
 
             // Thickness
-            currentSubPart.in = currentSubPart.selectedDR / currentSubPart.material.drPerIn;
+            if (currentSubPart.selectedDR <= 0) {
+              currentSubPart.in = 0;
+            }
+            else {
+              currentSubPart.in = currentSubPart.selectedDR / currentSubPart.material.drPerIn;
+            }
             currentSubPart.mm = 25.4 * currentSubPart.in;
 
             cf += this.data.data.armourDesign.holdoutReduction; // Add the cost factor for the holdout reduction.
