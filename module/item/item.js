@@ -585,6 +585,31 @@ export class gurpsItem extends Item {
               }
             }
 
+            // Handle bonus DR from leather coat options
+            if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "leatherlongcoat" || this.data.data.armourDesign.concealedClothing.toLowerCase() == "lightqualityleatherlongcoat" || this.data.data.armourDesign.concealedClothing.toLowerCase() == "qualityleatherlongcoat") {
+              let leatherCoatBonus = 1; // Most of the coats give +1 DR
+              if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "qualityleatherlongcoat") { // Quality heavy leather coats give +2
+                leatherCoatBonus = 2;
+              }
+
+              if (currentSubPart.label.toLowerCase() == "thigh"                || currentSubPart.label.toLowerCase() == "inside thigh" ||
+                  currentSubPart.label.toLowerCase() == "knee"                 || currentSubPart.label.toLowerCase() == "back of knee" ||
+                  currentSubPart.label.toLowerCase() == "thigh artery"         || currentSubPart.label.toLowerCase() == "shoulder" ||
+                  currentSubPart.label.toLowerCase() == "forearm"              || currentSubPart.label.toLowerCase() == "upper arm" ||
+                  currentSubPart.label.toLowerCase() == "elbow"                || currentSubPart.label.toLowerCase() == "inside elbow" ||
+                  currentSubPart.label.toLowerCase() == "armpit"               || currentSubPart.label.toLowerCase() == "vitals" ||
+                  currentSubPart.label.toLowerCase() == "spine"                || currentSubPart.label.toLowerCase() == "upper chest" ||
+                  currentSubPart.label.toLowerCase() == "lower chest"          || currentSubPart.label.toLowerCase() == "humanoid upper chest" ||
+                  currentSubPart.label.toLowerCase() == "humanoid lower chest" || currentSubPart.label.toLowerCase() == "animal chest" ||
+                  currentSubPart.label.toLowerCase() == "upper thorax"         || currentSubPart.label.toLowerCase() == "mid thorax" ||
+                  currentSubPart.label.toLowerCase() == "digestive tract"      || currentSubPart.label.toLowerCase() == "pelvis" ||
+                  currentSubPart.label.toLowerCase() == "groin"                || currentSubPart.label.toLowerCase() == "abdomen" ||
+                  currentSubPart.label.toLowerCase() == "animal abdomen"       || currentSubPart.label.toLowerCase() == "lower thorax" ||
+                  currentSubPart.label.toLowerCase() == "neck"                 || currentSubPart.label.toLowerCase() == "vein") {
+                drModifier += leatherCoatBonus;
+              }
+            }
+
             // Calculate basic DR by material and construction
             if (currentSubPart.construction.name.toLowerCase() == "fabric") {
               if (currentSubPart.selectedDR <= (currentSubPart.material.drPerIn / 4)) { // Flexible construction types become inflexible if the armour is more than a quarter inch thick.
@@ -673,6 +698,16 @@ export class gurpsItem extends Item {
               currentSubPart.drImp  = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
               currentSubPart.drPi   = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
               currentSubPart.drTox  = Math.floor((currentSubPart.selectedDR + drModifier) / 2);
+            }
+            else {
+              currentSubPart.drBurn = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drCor  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drCr   = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drCut  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drFat  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drImp  = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drPi   = currentSubPart.selectedDR + drModifier;
+              currentSubPart.drTox  = currentSubPart.selectedDR + drModifier;
             }
 
             // Calculate PF
