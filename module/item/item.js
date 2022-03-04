@@ -500,7 +500,7 @@ export class gurpsItem extends Item {
         "damageInput": "thr+1",
         "damageType": "cr",
         "armourDivisor": 1,
-        "reach": "C",
+        "reach": "C, 1",
         "st": unarmedST,
       };
     }
