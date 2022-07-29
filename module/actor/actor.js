@@ -2420,7 +2420,7 @@ export class gurpsActor extends Actor {
 				noMod: {
 					icon: '<i class="fas fa-times"></i>',
 					label: "No Modifier",
-					callback: () => {
+					callback: (html) => {
 						let moveAndAttack = html.find('#moveAndAttack')[0].checked;
 						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, totalModifier, moveAndAttack)
 					}
@@ -3125,7 +3125,7 @@ export class gurpsActor extends Actor {
 
 
 			let drDamageType = damageType.type;
-			if (drDamageType == "tbb") { // For the purposes of DR only, set tbb attacks equivilent to burn since tbb still uses burning DR
+			if (drDamageType == "tbb") { // For the purposes of DR only, set tbb attacks equivalent to burn since tbb still uses burning DR
 				drDamageType = "burn";
 			}
 
