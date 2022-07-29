@@ -3129,6 +3129,8 @@ export class gurpsActor extends Actor {
 				drDamageType = "burn";
 			}
 
+			let totalLocationDR = 0;
+
 			// Loop through the armour and take DR away from the damage dealt
 			for (let d = 0; d < drLayers.length; d++){
 				let dr = getProperty(location.dr[d], drDamageType);
@@ -3155,6 +3157,8 @@ export class gurpsActor extends Actor {
 				else if (!(location.dr.flexible || game.settings.get("gurps4e", "rigidBluntTrauma"))){ // The armour is not flexible, and the setting for rigid blunt trauma is off.
 					bluntTrauma = 0; // The accumulating blunt trauma has hit a rigid layer and is reduced to zero.
 				}
+
+				totalLocationDR += +effectiveDR;
 			}
 
 			// Add a check for targets with no DR being hit with an attack that has an armour multiplier
@@ -3190,7 +3194,12 @@ export class gurpsActor extends Actor {
 						actualWounding = Math.floor( (actualDamage / damageReduction) );
 					}
 					else {
-						actualWounding = Math.floor( ( (actualDamage * getProperty(location, damageType.woundModId)) / damageReduction) );
+						if (game.settings.get("gurps4e", "edgeProtection") && (damageType.type === "cut") && (!((totalDamage > (totalLocationDR * 2))))) { // If edge protection is enabled, damage type is crushing, and it's not more than twice the DR
+							actualWounding = Math.floor( ( (actualDamage * getProperty(location, "personalWoundMultCr")) / damageReduction) );
+						}
+						else {
+							actualWounding = Math.floor( ( (actualDamage * getProperty(location, damageType.woundModId)) / damageReduction) );
+						}
 					}
 
 					if (target.data.data.injuryTolerances.diffuse) { // Target is diffuse

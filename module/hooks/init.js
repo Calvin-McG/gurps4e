@@ -202,8 +202,8 @@ Hooks.once("init", () => {
   // });
 
   game.settings.register("gurps4e", "edgeProtection", {
-    name: "Edge Protection - WIP",
-    hint: "Cutting attacks must double the target DR or do crushing damage instead",
+    name: "Edge Protection",
+    hint: "Cutting attacks must exceed double the target DR or do crushing damage instead",
     scope: "world",
     config: true,
     default: false,
