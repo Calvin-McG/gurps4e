@@ -201,6 +201,15 @@ Hooks.once("init", () => {
   //   type: Boolean
   // });
 
+  game.settings.register("gurps4e", "allowTL4BreechLoaders", {
+    name: "Allow Breech Loaders at TL4",
+    hint: "Breech loaders are technically TL4, rather than TL5. Though the players should generally need to invent it as a same-TL invention for it to be available this early.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
   game.settings.register("gurps4e", "edgeProtection", {
     name: "Edge Protection",
     hint: "Cutting attacks must exceed double the target DR or do crushing damage instead",

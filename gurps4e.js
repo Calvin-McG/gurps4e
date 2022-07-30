@@ -190,6 +190,22 @@ Hooks.once('init', async function() {
     }
   });
 
+  Handlebars.registerHelper("mmToIn", function(mm, decimals) { // Decimals is entered as a whole numbered power of 10 (1, 10, 100, etc)
+    return Math.round(+mm / 25.4 * +decimals) / +decimals;
+  });
+
+  Handlebars.registerHelper("inTomm", function(inches, decimals) { // Decimals is entered as a whole numbered power of 10 (1, 10, 100, etc)
+    return Math.round(+inches / 25.4 * +decimals) / +decimals;
+  });
+
+  Handlebars.registerHelper("grainsToGrams", function(grains, decimals) { // Decimals is entered as a whole numbered power of 10 (1, 10, 100, etc)
+    return Math.round(+grains * 15.4324 * +decimals) / +decimals;
+  });
+
+  Handlebars.registerHelper("gramsToGrains", function(grams, decimals) { // Decimals is entered as a whole numbered power of 10 (1, 10, 100, etc)
+    return Math.round(+grams / 15.4324 * +decimals) / +decimals;
+  });
+
   Handlebars.registerHelper("calcMaxStrain", function(tensileStPsi, elasticModulusPsi) {
     let maxStrain = (tensileStPsi / elasticModulusPsi) * 100 ;
     maxStrain = Math.round(maxStrain * 100) / 100;

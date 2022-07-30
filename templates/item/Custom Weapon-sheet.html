@@ -42,10 +42,7 @@
                                 <option value="xbow">Crossbow</option>
                             {{/ifCond}}
                             {{#ifCond data.data.tl '>=' 3 }}
-                                <option value="muzzleLoader">Muzzle Loading Firearm</option>
-                            {{/ifCond}}
-                            {{#ifCond data.data.tl '>=' 5 }}
-                                <option value="cartridgeLoader">Cartridge Loading Firearm</option>
+                                <option value="firearm">Firearm</option>
                             {{/ifCond}}
                             {{#ifCond data.data.tl '>=' 9 }}
                                 <option value="laser">Laser Weapon</option>
@@ -94,6 +91,11 @@
         {{#if (eq data.data.customType "xbow")}}
         <div class="header">
             <a class="item" data-tab="designBow">Design Crossbow</a>
+        </div>
+        {{/if}}
+        {{#if (eq data.data.customType "firearm")}}
+        <div class="header">
+            <a class="item" data-tab="designFirearm">Design Firearm</a>
         </div>
         {{/if}}
         {{#if (or (eq data.data.customType "xbow") (eq data.data.customType "footbow") (eq data.data.customType "bow")) }}
@@ -1049,6 +1051,315 @@
                     </tr>
                     {{/ifCond}}
                     {{/each}}
+                </table>
+            </div>
+        </div>
+
+        {{!-- Firearm Design Tab --}}
+        <div class="tab stats" data-tab="designFirearm" data-group="primary">
+            <h1 class="bold" style="text-align: center;">Firearm Design: DouglasCole's Spreadsheet</h1>
+            <div class="tab">
+                <div class="design-block">
+                    <div style="width: 50%;">
+                        <h2 class="bold" style="text-align: center;">Firearm Options</h2>
+                        <table>
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Configuration
+                                </td>
+                                <td>
+                                    <select name="data.firearmDesign.configuration">
+                                        {{#select data.data.firearmDesign.configuration}}
+                                        <option value="cannon">Cannon</option>
+                                        {{#ifCond  data.data.tl '>=' 4 }}
+                                        <option value="pistol">Pistol</option>
+                                        <option value="longarm">Longarm</option>
+                                        <option value="semiportable">Semi-Portable Longarm</option>
+                                        {{/ifCond}}
+                                        {{#ifCond  data.data.tl '>=' 6 }}
+                                        <option value="bullpup">Bullpup Longarm</option>
+                                        {{/ifCond}}
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="firearm-configuration">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Barrel Rifling
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.firearmDesign.rifling" {{checked data.data.firearmDesign.rifling}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="rifling">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td>
+                                    Action Type
+                                </td>
+                                <td>
+                                    <select name="data.firearmDesign.action">
+                                        {{#select data.data.firearmDesign.action}}
+                                        <option value="muzzle">Muzzle Loader (TL3)</option>
+
+                                        {{#if data.data.firearmDesign.allowTL4BreechLoaders}}
+                                            {{#ifCond  data.data.tl '==' 4 }}
+                                                <option value="breech">Breech Loader (TL4)</option>
+                                            {{/ifCond}}
+                                        {{else}}
+                                            {{#ifCond  data.data.tl '>=' 5 }}
+                                                <option value="breech">Breech Loader (TL5)</option>
+                                            {{/ifCond}}
+                                        {{/if}}
+
+                                        {{#ifCond  data.data.tl '>=' 5 }}
+                                        <option value="break">Break Action (TL5)</option>
+                                        <option value="lever">Lever Action (Mid-Late TL5)</option>
+                                        <option value="revolverSA">Single Action Revolver (Mid-Late TL5)</option>
+                                        <option value="pump">Pump Action (Late TL5)</option>
+                                        <option value="bolt">Bolt Action (Very Late TL5)</option>
+                                        {{/ifCond}}
+
+                                        {{#ifCond  data.data.tl '>=' 6 }}
+                                        <option value="revolverDA">Double Action Revolver (TL6)</option>
+                                        <option value="straightPull">Straight Pull Bolt Action (TL6)</option>
+                                        <option value="semi">Semi Automatic (TL6)</option>
+                                        <option value="auto">Automatic (TL6)</option>
+                                        {{/ifCond}}
+
+                                        {{#ifCond  data.data.tl '>=' 7 }}
+                                        <option value="burst">Automatic With Burst (TL7)</option>
+                                        <option value="burst">Automatic With High-Cyclic Burst (Mid TL7)</option>
+                                        {{/ifCond}}
+
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="firearm-action">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td>
+                                    Lock Type
+                                </td>
+                                <td>
+                                    <select name="data.firearmDesign.lock">
+                                        {{#select data.data.firearmDesign.lock}}
+                                        <option value="cannon">Cannonlock (TL 3)</option>
+                                        <option value="match">Matchlock (Very Late TL 3)</option>
+
+                                        {{#ifCond  data.data.tl '>=' 4 }}
+                                        <option value="wheel">Wheellock (TL4)</option>
+                                        <option value="flint">Flintlock (Mid-Early TL4)</option>
+                                        {{/ifCond}}
+
+                                        {{#ifCond  data.data.tl '>=' 5 }}
+                                        <option value="cap">Caplock (Mid TL5)</option>
+                                        <option value="pin">Pinfire (Late TL5)</option>
+                                        <option value="rim">Rimfire (Late TL5)</option>
+                                        {{/ifCond}}
+
+                                        {{#ifCond  data.data.tl '>=' 6 }}
+                                        <option value="centre">Centrefire (Late TL6)</option>
+                                        {{/ifCond}}
+
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="firearm-lock">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Open or Closed Bolt
+                                </td>
+                                <td>
+                                    <select name="data.firearmDesign.bolt">
+                                        {{#select data.data.firearmDesign.bolt}}
+                                        <option value="single">Single Shot</option>
+                                        <option value="closed">Closed</option>
+                                        <option value="open">Open</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="firearm-bolt">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Barrel Length (mm)
+                                </td>
+                                <td style="line-height: 27.5px">
+                                    <input type="number" name="data.firearmDesign.barrelLength" value="{{data.data.firearmDesign.barrelLength}}" data-dtype="Number"/> mm / {{mmToIn data.data.firearmDesign.barrelLength 10}} in
+                                </td>
+                                <td class="question-container" id="barrel-length">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Barrels
+                                </td>
+                                <td style="line-height: 27.5px">
+                                    Quantity: {{data.data.firearmDesign.barrels}}
+                                </td>
+                                <td class="question-container" id="firearm-barrels">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">
+                                    <input type="range" min="1" max="12" step="1" name="data.firearmDesign.barrels" value="{{data.data.firearmDesign.barrels}}" data-dtype="Number">
+                                </td>
+                            </tr>
+
+                        </table>
+
+                        <h2 class="bold" style="text-align: center; margin-top: 20px">Tweaks</h2>
+                        <table>
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Tweak Weight x{{data.data.firearmDesign.weightTweak}}
+                                </td>
+                                <td>
+                                    <input type="range" min="0.85" max="2" step="0.05" name="data.firearmDesign.weightTweak" value="{{data.data.firearmDesign.weightTweak}}" data-dtype="Number">
+                                </td>
+                                <td class="question-container" id="firearm-weight-tweak">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Include a melee profile
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.firearmDesign.meleeProfile" {{checked data.data.firearmDesign.meleeProfile}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="melee-profile">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            {{#if data.data.firearmDesign.meleeProfile}}
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Cavalier Weapon
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.firearmDesign.cavalierWeapon" {{checked data.data.firearmDesign.cavalierWeapon}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="cavalier-weapon">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/if}}
+                        </table>
+
+                        <h2 class="bold" style="text-align: center; margin-top: 20px">Skills</h2>
+                        <table>
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px" colspan="2">
+                                    <input style="width: 75%" type="text" placeholder="Ranged Skill" name="data.firearmDesign.rangedSkill" value="{{data.data.firearmDesign.rangedSkill}}"/>
+                                    <input style="width: 20%" type="number" placeholder="Mod" name="data.firearmDesign.rangedSkillMod" value="{{data.data.firearmDesign.rangedSkillMod}}"/>
+                                </td>
+                                <td class="question-container" id="laser-ranged-skill">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            {{#if data.data.firearmDesign.meleeProfile}}
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px" colspan="2">
+                                    <input style="width: 75%" type="text" placeholder="Melee Skill" name="data.firearmDesign.meleeSkill" value="{{data.data.firearmDesign.meleeSkill}}"/>
+                                    <input style="width: 20%" type="number" placeholder="Mod" name="data.firearmDesign.meleeSkillMod" value="{{data.data.firearmDesign.meleeSkillMod}}"/>
+                                </td>
+                                <td class="question-container" id="laser-melee-skill">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/if}}
+                        </table>
+
+                        <h2 class="bold" style="text-align: center; margin-top: 20px">Damage Output</h2>
+                        <table>
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px" colspan="2">
+                                </td>
+                                <td class="question-container" id="bow-damage-output">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="width: 50%;">
+                        <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
+                        <div class="equipment-info-container">{{{data.data.info}}}</div>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="bold" style="text-align: center;">Design Results</h2>
+                    <h3 class="bold" style="text-align: center;">Check the boxes to have that row added to your combat tab and the combat macro.</h3>
+                </div>
+                <table>
+                    <tr>
+                        <td>Show</td>
+                        <td>TL</td>
+                        <td>Weapon</td>
+                        <td>Damage</td>
+                        <td>Acc</td>
+                        <td>Range</td>
+                        <td>Weight</td>
+                        <td>RoF</td>
+                        <td>Shots</td>
+                        <td>ST</td>
+                        <td>Bulk</td>
+                        <td>Rcl</td>
+                        <td>Cost</td>
+                        <td>LC</td>
+                        <td>Malf</td>
+                    </tr>
                 </table>
             </div>
         </div>

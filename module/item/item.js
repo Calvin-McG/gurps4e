@@ -1012,11 +1012,10 @@ export class gurpsItem extends Item {
     }
 
     switch (this.data.data.customType) {
-      case "muzzleLoader":
-        this.prepareCustomMuzzleLoader();
-        break;
-      case "cartridgeLoader":
-        this.prepareCustomCartridgeLoader();
+      case "firearm":
+      case "muzzleLoader": // Included for backwards compatibility.
+      case "cartridgeLoader": // Included for backwards compatibility.
+        this.prepareCustomFirearm();
         break;
       case "laser":
         this.prepareCustomLaser();
@@ -1035,12 +1034,40 @@ export class gurpsItem extends Item {
     }
   }
 
-  prepareCustomMuzzleLoader() {
-    console.log("Preparing Muzzle Loader");
-  }
-
-  prepareCustomCartridgeLoader() {
+  prepareCustomFirearm() {
     console.log("Preparing Cartridge Loader");
+    if (this.data.data.tl >= 3) { // TL must be at least 3 to design a custom gun
+      if (typeof this.data.data.firearmDesign == "undefined") { // If the firearmDesign block hasn't yet been created
+        this.data.data.firearmDesign = { // Create it
+          "barrelLength": 100, // Measured in mm
+          "barrels": 1, // At least one, whole numbers
+          "configuration": "pistol", // cannon/pistol/bullpup/longarm/semiportable
+          "rifling": true,
+          "bolt": "closed", // single/closed/open
+          "action": "semi", // muzzle/breech/break/bolt/straightPull/lever/pump/revolverSA/revolverDA/semi/auto/burst/highCyclicBurst
+          "lock": "centre", // cannon/match/wheel/flint/cap/pin/rim/centre
+          "allowTL4BreechLoaders": game.settings.get("gurps4e", "allowTL4BreechLoaders"),
+
+          "projectileCalibre": 10, // Measured in mm
+          "projectileMass": 10, // Measured in grains
+          "projectileAspectRatio": 1, // This is a ratio
+          "chamberBore": 10, // Measured in mm
+          "caseLength": 10, // Measured in mm
+          "cartridgeType": "pistol", // rifle/pistol/custom
+          "powder": "smokeless", // smokeless/black
+          "chamberPressure": 35000, // Measured in PSI
+
+          "magazineMaterial": "steel", // steel/alloy/plastic
+          "magazineStyle": "standard", // internal/standard/highDensity/extended/drum
+          "capacity": 1, // Whole positive numbers only
+
+          "fitToOwner": false,
+          "weightTweak": 1, // 0.85 to 999
+          "meleeProfile": false,
+          "cavalierWeapon": false,
+        }
+      }
+    }
   }
 
   prepareCustomLaser() {
@@ -3370,7 +3397,7 @@ export class gurpsItem extends Item {
       info = "<table>" +
           "<tr>" +
           "<td>" +
-          "<p>Used to tune the weight of the weapon. Lighter weapons are easier to fit into an encumberence budget but tend to be more flimsy. HT does not change with weight, but HP does. Heavier weapons also tend to have higher Bulk, which can be desireable if you want to hit people with it.</p>" +
+          "<p>Used to tune the weight of the weapon. Lighter weapons are easier to fit into an encumbrance budget but tend to be more flimsy. HT does not change with weight, but HP does. Heavier weapons also tend to have higher Bulk, which can be desirable if you want to hit people with it.</p>" +
           "</td>" +
           "</tr>";
       info += "</table>"
@@ -3407,7 +3434,7 @@ export class gurpsItem extends Item {
       info = "<table>" +
           "<tr>" +
           "<td>" +
-          "<p>In the style of muzzle loading cavalry pistols, this weapon is designed specifically for striking and it does swing+1 crushing.</p>" +
+          "<p>In the style of muzzle loading cavalry pistols, this weapon is designed specifically for striking and it does swing+1 crushing. Though you need a Ready maneuver to change into the correct grip (Or have Grip Mastery)</p>" +
           "</td>" +
           "</tr>";
       info += "</table>"
@@ -5144,6 +5171,181 @@ export class gurpsItem extends Item {
           "</tr>";
 
       info += "</table>"
+    }
+    else if (id == "firearm-configuration") {
+        info = "<table>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Cannon</td>" +
+            "<td><p>Either an actual cannon, or the sort of really early cannon-style firearm that was held underarm on the end of a pole. Acc is lower (frequently 0), Bulk is higher, and ST is higher compared to a rifle of equal weight.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Pistol</td>" +
+            "<td><p>It's a pistol. Acc is lower, Bulk is lower, and ST is higher compared to a rifle of equal weight.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Rifle</td>" +
+            "<td><p>It's a rifle. Acc is higher, but so is Bulk. ST is lower compared to a pistol or of equivalent weight but the weapon requires two hands.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Semi-Portable Longarm</td>" +
+            "<td><p>It's a thicc rifle. Acc, Bulk, Weight, and ST are all higher. Think Anti-materiel rifle.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Bullpup Longarm</td>" +
+            "<td><p>Like a rifle, but with the magazine or equivilent behind the grip. Lower bulk, but higher weight.</p></td>" +
+            "</tr>" +
+            "</table>"
+    }
+    else if (id == "barrel-length") {
+        info = "<table>";
+
+        info += "<tr>" +
+            "<td>Barrel length increases damage and weight, but doesn't actually have much impact on accuracy.</td>" +
+            "</tr>";
+
+        info += "</table>"
+    }
+    else if (id == "firearm-weight-tweak") {
+        info = "<table>" +
+            "<tr>" +
+            "<td>" +
+            "<p>Used to tune the weight of the weapon. Lighter weapons are easier to fit into an encumbrance budget but tend to be more flimsy and have more Rcl. HT does not change with weight, but HP does. Heavier weapons also tend to have higher Bulk, which can be desirable if you want to hit people with it. They also have less Rcl. Can sometimes also impact Bulk.</p>" +
+            "</td>" +
+            "</tr>";
+        info += "</table>"
+    }
+    else if (id == "rifling") {
+        info = "<table>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Muzzle Loaders</td>" +
+            "<td><p>Increases base reloading time by 20 seconds and Acc by 1. This does cost more.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Historical Firearms</td>" +
+            "<td><p>Increases Acc by 1. This does cost more.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Modern Firearms</td>" +
+            "<td><p>This is treated as the baseline for modern firearms, other than shotguns. Rifled barrels have negative effects on sub-calibre multi-projectile weapons, and fin stabalized weapons.</p></td>" +
+            "</tr>" +
+            "</table>"
+    }
+    else if (id == "firearm-action") {
+        info = "<table>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Muzzle Loaders</td>" +
+            "<td><p>Muskets, etc. They generally take a long time to reload, though various aids exist to speed this up. Reloading time is between 20 and 60 seconds. Rate of fire is 1 per barrel. Loading these in wet conditions all but guarantee they will not fire.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Breech Loaders</td>" +
+            "<td><p>A marginal improvement on the musket. Ammo is loaded from the back, which is quicker, and doesn't penalize you if your barrel is rifled. Reloading time is 10 seconds with loose powder, but as few as 3 with cartridges. Rate of fire is 1 per barrel. With loose powder, loading these in wet conditions are an extremely bad idea, but not as bad as the muzzle loader.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Break Action</td>" +
+            "<td><p>A marginal improvement on the breach loader. Double barrel 12 gauges are break action weapons. Reloading time is generally 3 seconds, loading shells individually. Rate of fire is 1 per barrel.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Lever Action</td>" +
+            "<td><p>The first kinda-fast gun. Reloading time is generally 2 seconds per round. Rate of fire is 2.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Single Action Revolver</td>" +
+            "<td><p>A revolver where you need to cock the hammer with each shot. Reloading time ranges between 10 seconds and 3 seconds per round depending on the lock type. Rate of fire is 1.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Pump Action</td>" +
+            "<td><p>It's what it sounds like. Can be used on any type of weapon, not just shotguns. Reloading time is 2 seconds per round. Rate of fire is 2.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Bolt Action</td>" +
+            "<td><p>It's what it sounds like. Reloading time is 3 seconds, or 2 seconds if loading individual rounds. Rate of fire is 1.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Double Action Revolver</td>" +
+            "<td><p>A revolver where pulling the trigger cocks the hammer. Reloading time ranges between 10 seconds and 3 seconds per round depending on the lock type. Rate of fire is 3.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Straight Pull Bolt Action</td>" +
+            "<td><p>It's a bolt action where the bolt doesn't need to be turned as part of working the action. Slightly speeds things up. Reloading time is 3 seconds, or 2 seconds if loading individual rounds. Rate of fire is 2.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Semi Automatic</td>" +
+            "<td><p>Goes bang every time you pull the trigger. Reloading time is 3 seconds, or 2 seconds if loading individual rounds. Rate of fire is 3.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Automatic</td>" +
+            "<td><p>Goes bang as long as you pull the trigger. Reloading time is 3 seconds, or 2 seconds if loading individual rounds. Rate of fire usually ranges between 9 and 20. Typically pistols will be 15 to 20, intermediate rifles will be 12-15, and full sized rifles will be 9 to 12. But in theory you can set this to whatever you like.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Automatic with Burst</td>" +
+            "<td><p>Automatic, but you can set the number of shots fired each time you pull the trigger. Without this, it can be hard to control how many shots you fire, particularly at high fire rates.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Automatic with High-Cyclic Burst</td>" +
+            "<td><p>Seems similar to the other burst option, but it serves a completely different purpose. Weapons firing in high-cyclic burst mode have a Rcl of 1.</p></td>" +
+            "</tr>" +
+            "</table>"
+    }
+    else if (id == "firearm-lock") {
+        info = "<table>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Cannonlock</td>" +
+            "<td><p>Loaded with loose powder or paper cartridges. Requires you to hold a piece of burning match (really a sort of long-burning rope) to a touch hole. It's janky as fuck if you actually need to carry the weapon around, and is really innaccurate. Reloading time is between 20 and 60 seconds. See LT90 for details, but water and wind will really screw with this gun.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Matchlock</td>" +
+            "<td><p>Loaded with loose powder or paper cartridges. Slightly more advanced than the cannonlock. Now the piece of burning match is attached to the gun and pulling the trigger touches the match to the touch hole. Reloading time is between 20 and 60 seconds. If damp, the weapon will only fire on a crit. See LT90 for details, but water and wind will really screw with this gun.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Wheellock</td>" +
+            "<td><p>Loaded with loose powder or paper cartridges. Uses some clockwork bullshit to spin a wheel like you might see on a modern lighter. Does not need to be cocked light a flint lock. In theory this does protect against <i>very</i> specific types of misfires as you can just pull the trigger again to try firing again without needing to cock anything. Reloading time is between 20 and 60 seconds. See LT90 for details, but water and wind will screw with this gun, though not as bad as the cannon or matchlock.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Flintlock</td>" +
+            "<td><p>Loaded with loose powder or paper cartridges. Very simple, pull a trigger, drop the hammer. Reloading time is between 20 and 60 seconds. See LT90 for details, but water and wind will screw with this gun, though not as bad as the cannon or matchlock.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Caplock</td>" +
+            "<td><p>Loaded with loose powder or paper cartridges and using separate percussion caps. Place a fresh cap on the percussion nipple as part of the loading process, and pulling the trigger drops the hammer detonating the cap. Reloading time is between 10 and 30 seconds. See LT90 for details, but water and wind will screw with this gun, though only if you load it wet. If you load it dry and take it somewhere wet you're probably fine.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Pinfire</td>" +
+            "<td><p>The first self-contained cartridge. Old fashioned, but not actually any slower to load than modern ammo. There are also no issues due to water.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Rimfire</td>" +
+            "<td><p>Another self-contained cartridge. Old fashioned, but still in use today in the 22LR. There are also no issues due to water.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Centrefire</td>" +
+            "<td><p>Modern ammo.</p></td>" +
+            "</tr>" +
+            "</table>"
+    }
+    else if (id == "firearm-barrels") {
+        info = "<table>" +
+            "<tr>" +
+            "<td>" +
+            "<p>Multiple barrels multiply your max RoF, ammo capacity, and increase weight and cost. Each extra barrel costs and weighs 80% as much as the base gun. This increase in weight can also reduce Rcl and increase Bulk.</p>" +
+            "</td>" +
+            "</tr>";
+        info += "</table>"
+    }
+    else if (id == "firearm-bolt") {
+        info = "<table>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Single Shot</td>" +
+            "<td><p>Single shot weapons, muzzle loaders, breech loaders, break actions, etc all use this option.</p></td>" + // TODO - Auto select when appropriate
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Closed</td>" +
+            "<td><p>Unless it's a machinegun, choose this. And if it is a machine gun, maybe still choose this.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Open</td>" +
+            "<td><p>Cheaper, less accurate, but allows for a higher rate of fire and better cooling. Only really used in SMGs, or machine guns meant for continuous fire.</p></td>" +
+            "</tr>" +
+            "</table>"
     }
     this.data.data.info = info;
 
