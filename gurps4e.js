@@ -199,11 +199,11 @@ Hooks.once('init', async function() {
   });
 
   Handlebars.registerHelper("grainsToGrams", function(grains, decimals) { // Decimals is entered as a whole numbered power of 10 (1, 10, 100, etc)
-    return Math.round(+grains * 15.4324 * +decimals) / +decimals;
+    return Math.round(+grains / 15.4324 * +decimals) / +decimals;
   });
 
   Handlebars.registerHelper("gramsToGrains", function(grams, decimals) { // Decimals is entered as a whole numbered power of 10 (1, 10, 100, etc)
-    return Math.round(+grams / 15.4324 * +decimals) / +decimals;
+    return Math.round(+grams * 15.4324 * +decimals) / +decimals;
   });
 
   Handlebars.registerHelper("calcMaxStrain", function(tensileStPsi, elasticModulusPsi) {
