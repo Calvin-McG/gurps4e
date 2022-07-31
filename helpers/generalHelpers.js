@@ -24,4 +24,16 @@ export class generalHelpers {
 
         return bonus;
     }
+
+    static pointsToDiceAndAdds(points) {
+        let diceAndAdds = {
+            "dice": 1,
+            "adds": 0,
+        }
+
+        diceAndAdds.dice = Math.floor(points/3.5);
+        diceAndAdds.adds = Math.floor(3.5*(points/3.5-Math.floor(points/3.5)));
+
+        return diceAndAdds;
+    }
 }
