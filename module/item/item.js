@@ -1052,6 +1052,7 @@ export class gurpsItem extends Item {
           "projectileMass": 10, // Measured in grains
           "projectileAspectRatio": 1, // This is a ratio
           "projectileDensity": 10, // g/cm^2
+          "projectileMaterials": "", // A comma delimited list of material names.
           "chamberBore": 10, // Measured in mm
           "caseLength": 10, // Measured in mm
           "cartridgeType": "pistol", // rifle/pistol/custom
@@ -1128,7 +1129,7 @@ export class gurpsItem extends Item {
       this.data.data.firearmDesign.burnLength = this.data.data.firearmDesign.burnRatio * this.data.data.firearmDesign.caseLength;
 
       // Prerequisite Calculations
-      let barrelBoreMetres        = this.data.data.firearmDesign.projectileCalibre / 1000
+      let barrelBoreMetres        = this.data.data.firearmDesign.projectileCalibre / 1000 // F21
       let chamberBoreMetres       = this.data.data.firearmDesign.chamberBore / 1000
       let chamberPressurePascals  = this.data.data.firearmDesign.chamberPressure * 6896;
       let burnLengthMeters        = this.data.data.firearmDesign.burnLength / 1000;
@@ -1155,6 +1156,21 @@ export class gurpsItem extends Item {
       let damage = Math.round(Math.sqrt(( kineticEnergy ** 1.04)/( bulletCrossSection ** 0.314))/13.3926)
       let diceAndAdds = generalHelpers.pointsToDiceAndAdds(damage);
 
+      // Projectile Density
+      let projectileVolume = (Math.PI*(barrelBoreMetres/2) ** 3+Math.PI/12*barrelBoreMetres ** 2*(2 * barrelBoreMetres * this.data.data.firearmDesign.projectileAspectRatio - barrelBoreMetres)); // I21
+      this.data.data.firearmDesign.projectileDensity = totalAcceleratedKgs / projectileVolume / 1000 // I22 - Measured in g/cm^2
+
+      let projectileMaterialArray = materialHelpers.densityToMaterials(this.data.data.firearmDesign.projectileDensity);
+
+      this.data.data.firearmDesign.projectileMaterials = "";
+
+      for (let d = 0; d < projectileMaterialArray.length; d++) {
+        if (d > 0) {
+          this.data.data.firearmDesign.projectileMaterials += ", ";
+        }
+
+        this.data.data.firearmDesign.projectileMaterials += projectileMaterialArray[d];
+      }
 
       // Adding melee profiles
       if (this.data.data.firearmDesign.meleeProfile) { // If the user wants to include a melee profile
