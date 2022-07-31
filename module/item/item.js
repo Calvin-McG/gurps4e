@@ -5347,6 +5347,170 @@ export class gurpsItem extends Item {
             "</tr>" +
             "</table>"
     }
+    else if (id == "projectile-calibre") {
+        info = "<table>" +
+            "<tr>" +
+            "<td>" +
+            "<p>The width of your bullets. Larger bullets are more massive and tend to carry more energy. Additionally, the calibre sets the wounding modifier.</p>" +
+            "<p>Between 0 and 4 mm, the projectile does pi-</p>" +
+            "<p>Between 4 and 8 mm, the projectile does pi-, unless it's higher velocity, in which case it does pi</p>" +
+            "<p>Between 8 and 10 mm, the projectile does pi</p>" +
+            "<p>Between 10 and 15 mm, the projectile does pi+</p>" +
+            "<p>At 15 mm or more, the projectile does pi++</p>" +
+            "</td>" +
+            "</tr>";
+        info += "</table>"
+    }
+    else if (id == "projectile-aspect") {
+        info = "<table>" +
+            "<tr>" +
+            "<td>" +
+            "<p>A ratio of 1 is a perfectly round ball. Values less than one are shorter than they are wide. Values greater than one are longer than they are wide. If you're not sure what to set here, a value of 1.25 to 2 is probably fine.</p>" +
+            "</td>" +
+            "</tr>";
+        info += "</table>"
+    }
+    else if (id == "projectile-mass") {
+        info = "<table>" +
+            "<tr>" +
+            "<td>" +
+            "<p>Heavier rounds tend to do more damage and carry that damage better at longer ranges.</p>" +
+            "</td>" +
+            "</tr>";
+        info += "</table>"
+    }
+    else if (id == "projectile-density") {
+        info = "<table>" +
+            "<tr>" +
+            "<td>" +
+            "<p>This is the resulting density of the projectile, based on the values you've given. Along with a material that most closely matches the given density. This is mostly here so you know what your bullets are made of.</p>" +
+            "</td>" +
+            "</tr>";
+        info += "</table>"
+      }
+    else if (id == "chamber-bore") {
+        info = "<table>" +
+            "<tr>" +
+            "<td>" +
+            "<p>The chamber bore sets the width of the space your powder fits into. The case length sets the length. More powder means more damage and range. It also means more weight, as there needs to be more material to contain the explosion.</p>" +
+            "</td>" +
+            "</tr>";
+        info += "</table>"
+    }
+    else if (id == "case-length") {
+        info = "<table>" +
+            "<tr>" +
+            "<td>" +
+            "<p>The case length sets the length of the space your powder fits into. The chamber bore sets the width. More powder means more damage and range. It also means more weight, as there needs to be more material to contain the explosion.</p>" +
+            "</td>" +
+            "</tr>";
+        info += "</table>"
+    }
+    else if (id == "cartridge-type") {
+        info = "<table>" +
+            "<tr>" +
+            "<td>" +
+            "<p>Burn length is some genuinely complicated shit, so this is an easy way to handle it. If you're making a pistol, pick pistol. If you're making a rifle, pick rifle. High velocity pistols like the FN57 might choose rifle instead. Custom should only be used if you <i>know</i> a different value for burn length is appropriate.</p>" +
+            "</td>" +
+            "</tr>";
+        info += "</table>"
+    }
+    else if (id == "burn-length") {
+        info = "<table>" +
+            "<tr>" +
+            "<td>" +
+            "<p>Burn length is some genuinely complicated shit, so you should usually just use the cartridge type dropdown to set this. The number here is just a ratio on the case length.</p>" +
+            "</td>" +
+            "</tr>";
+        info += "</table>"
+    }
+    else if (id == "powder-type") {
+        info = "<table>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Black Powder</td>" +
+            "<td><p>The OG way to shoot a mofo. Semi automatic and automatic weapons are theoretically possible with black powder, but they become fouled <i>very</i> quickly.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Smokeless Powder</td>" +
+            "<td><p>Allows higher pressures and won't foul semiautomatic and automatic weapons.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Electrothermal Chemical</td>" +
+            "<td><p>Increases damage and range by 50% over smokeless powder. Double cost. However your weapon also requires electrical power provided by a UT cell. You need to change cells every 10 magazines. A cell for pistols. B cell for SMGs, PDWs, Shotguns, rifles. C cell for heavier weapons. This weight is included in your weapon's final weight.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Electrothermal Kinetic</td>" +
+            "<td><p>Increases damage and range by 100% over smokeless powder. +1 Acc for longarms. Double cost. However your weapon also requires electrical power provided by a UT cell. You need to change cells every 10 magazines. B cell for pistols. C cell for SMGs, PDWs, Shotguns, rifles. D cell for heavier weapons. This weight is included in your weapon's final weight.</p></td>" +
+            "</tr>" +
+            "</table>"
+    }
+    else if (id == "chamber-pressure") {
+        info = "<table>" +
+            "<tr>" +
+            "<td>" +
+            "<p>More pressure means faster bullets that do more damage at a longer range. It also increases the weapon's weight as it needs to contain the pressure.</p>" +
+            "</td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td>" +
+            "<p>Set this as high as you like within the limits of the powder you've selected, just keep encumbrance in mind.</p>" +
+            "</td>" +
+            "</tr>";
+        info += "</table>"
+    }
+    else if (id == "magazine-style") {
+        info = "<table>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Notes</td>" +
+            "<td><p>The magazine style mostly exists to limit the weight and Bulk penalties for larger magainzes.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>None</td>" +
+            "<td><p>There is no magazine. Use this for single shot weapons, breech loaders, and break actions.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Internal</td>" +
+            "<td><p>All ammo is contained within the gun. Think tube magazines on shotguns, revolvers, or clip-fed rifles and pistols. Has the advantage of being lighter and can often be topped up without needing to dump the remaining ammo.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Standard</td>" +
+            "<td><p>A standard detachable box magazine.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Extended</td>" +
+            "<td><p>A standard detachable box magazine. Except longer.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>Drum</td>" +
+            "<td><p>Like an extended magazine, but more compact.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td style='width: 50px;'>High-Density</td>" +
+            "<td><p>Like the coffin mags available for the AR-15. Even more compact than the drum.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "magazine-material") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>Lighter materials are... lighter!</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "magazine-capacity") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>You can set this number as high as you like. But higher values mean more weight and worse Bulk.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "fit-to-owner") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>For +1 CF, your weapon was designed specifically for you. You get +1 to all skills while using it, exactly as with a Weapon Bond. Does not stack with Weapon Bond.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
     this.data.data.info = info;
 
     this.update({ 'data.info': this.data.data.info });
