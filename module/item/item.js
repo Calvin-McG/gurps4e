@@ -1,9 +1,10 @@
 import { attributeHelpers } from '../../helpers/attributeHelpers.js';
 import { skillHelpers } from '../../helpers/skillHelpers.js';
-import {materialHelpers} from "../../helpers/materialHelpers.js";
-import {distanceHelpers} from "../../helpers/distanceHelpers.js";
-import {economicHelpers} from "../../helpers/economicHelpers.js";
-import {actorHelpers} from "../../helpers/actorHelpers.js";
+import { materialHelpers } from "../../helpers/materialHelpers.js";
+import { distanceHelpers } from "../../helpers/distanceHelpers.js";
+import { economicHelpers } from "../../helpers/economicHelpers.js";
+import { actorHelpers } from "../../helpers/actorHelpers.js";
+import { generalHelpers } from "../../helpers/generalHelpers.js";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -1035,7 +1036,6 @@ export class gurpsItem extends Item {
   }
 
   prepareCustomFirearm() {
-    console.log("Preparing Cartridge Loader");
     if (this.data.data.tl >= 3) { // TL must be at least 3 to design a custom gun
       if (typeof this.data.data.firearmDesign == "undefined") { // If the firearmDesign block hasn't yet been created
         this.data.data.firearmDesign = { // Create it
@@ -1051,22 +1051,137 @@ export class gurpsItem extends Item {
           "projectileCalibre": 10, // Measured in mm
           "projectileMass": 10, // Measured in grains
           "projectileAspectRatio": 1, // This is a ratio
+          "projectileDensity": 10, // g/cm^2
           "chamberBore": 10, // Measured in mm
           "caseLength": 10, // Measured in mm
           "cartridgeType": "pistol", // rifle/pistol/custom
+          "burnRatio": 0.35, // This is a ratio of the case length
+          "burnLength": 3.5, // This is the above in mm
           "powder": "smokeless", // smokeless/black
           "chamberPressure": 35000, // Measured in PSI
 
+          "magazineStyle": "standard", // none/internal/standard/highDensity/extended/drum
           "magazineMaterial": "steel", // steel/alloy/plastic
-          "magazineStyle": "standard", // internal/standard/highDensity/extended/drum
           "capacity": 1, // Whole positive numbers only
 
           "fitToOwner": false,
           "weightTweak": 1, // 0.85 to 999
           "meleeProfile": false,
           "cavalierWeapon": false,
+          "rangedSkill": "",
+          "meleeSkill": "",
+          "rangedSkillMod": "",
+          "meleeSkillMod": "",
+
+          "st": 10,
+          "bulk": -3,
         }
       }
+
+      // Input Validation
+      if (typeof this.data.data.firearmDesign.barrelLength == "undefined" || this.data.data.firearmDesign.barrelLength <= 0 || this.data.data.firearmDesign.barrelLength == "") {
+        this.data.data.firearmDesign.barrelLength = 100;
+      }
+      if (typeof this.data.data.firearmDesign.barrels == "undefined" || this.data.data.firearmDesign.barrels <= 0 || this.data.data.firearmDesign.barrels == "") {
+        this.data.data.firearmDesign.barrels = 100;
+      }
+      if (typeof this.data.data.firearmDesign.projectileCalibre == "undefined" || this.data.data.firearmDesign.projectileCalibre <= 0 || this.data.data.firearmDesign.projectileCalibre == "") {
+        this.data.data.firearmDesign.projectileCalibre = 100;
+      }
+      if (typeof this.data.data.firearmDesign.projectileMass == "undefined" || this.data.data.firearmDesign.projectileMass <= 0 || this.data.data.firearmDesign.projectileMass == "") {
+        this.data.data.firearmDesign.projectileMass = 100;
+      }
+      if (typeof this.data.data.firearmDesign.projectileAspectRatio == "undefined" || this.data.data.firearmDesign.projectileAspectRatio <= 0 || this.data.data.firearmDesign.projectileAspectRatio == "") {
+        this.data.data.firearmDesign.projectileAspectRatio = 100;
+      }
+      if (typeof this.data.data.firearmDesign.chamberBore == "undefined" || this.data.data.firearmDesign.chamberBore <= 0 || this.data.data.firearmDesign.chamberBore == "") {
+        this.data.data.firearmDesign.chamberBore = 100;
+      }
+      if (typeof this.data.data.firearmDesign.caseLength == "undefined" || this.data.data.firearmDesign.caseLength <= 0 || this.data.data.firearmDesign.caseLength == "") {
+        this.data.data.firearmDesign.caseLength = 100;
+      }
+      if (typeof this.data.data.firearmDesign.burnRatio == "undefined" || this.data.data.firearmDesign.burnRatio <= 0 || this.data.data.firearmDesign.burnRatio > 1 || this.data.data.firearmDesign.burnRatio == "") {
+        this.data.data.firearmDesign.burnRatio = 0.35;
+      }
+      if (typeof this.data.data.firearmDesign.chamberPressure == "undefined" || this.data.data.firearmDesign.chamberPressure <= 0 || this.data.data.firearmDesign.chamberPressure == "") {
+        this.data.data.firearmDesign.chamberPressure = 100;
+      }
+      if (typeof this.data.data.firearmDesign.capacity == "undefined" || this.data.data.firearmDesign.capacity <= 0 || this.data.data.firearmDesign.capacity == "") {
+        this.data.data.firearmDesign.capacity = 100;
+      }
+      if (typeof this.data.data.firearmDesign.weightTweak == "undefined" || this.data.data.firearmDesign.weightTweak <= 0 || this.data.data.firearmDesign.weightTweak == "") {
+        this.data.data.firearmDesign.weightTweak = 100;
+      }
+
+      this.data.data.firearmDesign.allowTL4BreechLoaders = game.settings.get("gurps4e", "allowTL4BreechLoaders");
+
+      // Begin calculations proper
+
+      // Burn length calculations
+      if (this.data.data.firearmDesign.cartridgeType == "pistol") {
+        this.data.data.firearmDesign.burnRatio = 7 / 24;
+      }
+      else if (this.data.data.firearmDesign.cartridgeType == "rifle") {
+        this.data.data.firearmDesign.burnRatio = 7 / 16
+      }
+
+      this.data.data.firearmDesign.burnLength = this.data.data.firearmDesign.burnRatio * this.data.data.firearmDesign.caseLength;
+
+      // Prerequisite Calculations
+      let barrelBoreMetres        = this.data.data.firearmDesign.projectileCalibre / 1000
+      let chamberBoreMetres       = this.data.data.firearmDesign.chamberBore / 1000
+      let chamberPressurePascals  = this.data.data.firearmDesign.chamberPressure * 6896;
+      let burnLengthMeters        = this.data.data.firearmDesign.burnLength / 1000;
+      let boreCrossSection        = Math.PI * ( barrelBoreMetres / 2) ** 2; // I13
+      let bulletCrossSection      = Math.PI * ( barrelBoreMetres / 2) ** 2; // I17
+      let barrelLengthMetres      = this.data.data.firearmDesign.barrelLength / 1000;
+      let caseLengthMetres        = this.data.data.firearmDesign.caseLength / 1000;
+      let chamberCrossSection     = Math.PI * ( chamberBoreMetres / 2 ) ** 2
+      let chamberVolume           = chamberCrossSection * ( caseLengthMetres * 7/8 - barrelBoreMetres);
+      let fallOffVolume           = chamberVolume + boreCrossSection * burnLengthMeters;
+      let acclerationDistance     = barrelLengthMetres - caseLengthMetres - burnLengthMeters + barrelBoreMetres;
+      let totalAcceleratedKgs     = this.data.data.firearmDesign.projectileMass / 15430; // F22 or F18
+
+      // Actually useful calculations
+
+      // Kinetic Energy
+      let kineticEnergy = ( chamberPressurePascals * ( boreCrossSection * burnLengthMeters + fallOffVolume * Math.log( boreCrossSection * acclerationDistance / fallOffVolume + 1) ) ); // D27 or K12 - Measured in joules
+
+      // Velocity
+      let metresPerSecond = Math.sqrt((2* kineticEnergy / totalAcceleratedKgs )); // D25
+      let feetPerSecond = metresPerSecond * 1000 / (12 * 25.4); // D26
+
+      // Damage
+      let damage = Math.round(Math.sqrt(( kineticEnergy ** 1.04)/( bulletCrossSection ** 0.314))/13.3926)
+      let diceAndAdds = generalHelpers.pointsToDiceAndAdds(damage);
+
+
+      // Adding melee profiles
+      if (this.data.data.firearmDesign.meleeProfile) { // If the user wants to include a melee profile
+        this.addMeleeProfile(this.data.data.firearmDesign.bulk, this.data.data.firearmDesign.cavalierWeapon, this.data.data.firearmDesign.configuration, this.data.data.firearmDesign.meleeSkill, this.data.data.firearmDesign.meleeSkillMod, this.data.data.firearmDesign.st) // Include one
+      }
+
+      // Adding ranged profiles
+      // let rangedProfiles = [];
+      // let baseProfile = { // Construct the base profile
+      //   "name":           "Solid",
+      //   "skill":          this.data.data.firearmDesign.rangedSkill,
+      //   "skillMod":       this.data.data.firearmDesign.rangedSkillMod,
+      //   "acc":            this.data.data.firearmDesign.outputAcc,
+      //   "damageInput":    this.data.data.firearmDesign.outputDamage,
+      //   "damageType":     this.data.data.firearmDesign.damageType,
+      //   "armourDivisor":  this.data.data.firearmDesign.armourDivisor,
+      //   "range":          this.data.data.firearmDesign.halfRange + " " + this.data.data.laserDesign.maxRange,
+      //   "rof":            this.data.data.firearmDesign.outputRoF,
+      //   "shots":          this.data.data.firearmDesign.shots,
+      //   "bulk":           this.data.data.firearmDesign.bulk,
+      //   "rcl":            this.data.data.firearmDesign.rcl,
+      //   "st":             this.data.data.firearmDesign.st,
+      //   "malf":           17
+      // }
+      //
+      // rangedProfiles.push(baseProfile);
+
     }
   }
 
