@@ -1074,6 +1074,15 @@ export class gurpsItem extends Item {
           "rangedSkillMod": "",
           "meleeSkillMod": "",
 
+          "baseAcc": 3,
+          "baseDamage": "3d6+2",
+          "shots": "30+1", // Include closed bolt mod, etc.
+
+          "rof": 3,
+          "halfRange": 10,
+          "maxRange": 100,
+
+          "rcl": 2,
           "st": 10,
           "bulk": -3,
         }
@@ -1154,7 +1163,7 @@ export class gurpsItem extends Item {
 
       // Damage
       let damage = Math.round(Math.sqrt(( kineticEnergy ** 1.04)/( bulletCrossSection ** 0.314))/13.3926)
-      let diceAndAdds = generalHelpers.pointsToDiceAndAdds(damage);
+      this.data.data.firearmDesign.baseDamage = generalHelpers.pointsToDiceAndAdds(damage);
 
       // Projectile Density
       let projectileVolume = (Math.PI*(barrelBoreMetres/2) ** 3+Math.PI/12*barrelBoreMetres ** 2*(2 * barrelBoreMetres * this.data.data.firearmDesign.projectileAspectRatio - barrelBoreMetres)); // I21
@@ -1178,26 +1187,31 @@ export class gurpsItem extends Item {
       }
 
       // Adding ranged profiles
-      // let rangedProfiles = [];
-      // let baseProfile = { // Construct the base profile
-      //   "name":           "Solid",
-      //   "skill":          this.data.data.firearmDesign.rangedSkill,
-      //   "skillMod":       this.data.data.firearmDesign.rangedSkillMod,
-      //   "acc":            this.data.data.firearmDesign.outputAcc,
-      //   "damageInput":    this.data.data.firearmDesign.outputDamage,
-      //   "damageType":     this.data.data.firearmDesign.damageType,
-      //   "armourDivisor":  this.data.data.firearmDesign.armourDivisor,
-      //   "range":          this.data.data.firearmDesign.halfRange + " " + this.data.data.laserDesign.maxRange,
-      //   "rof":            this.data.data.firearmDesign.outputRoF,
-      //   "shots":          this.data.data.firearmDesign.shots,
-      //   "bulk":           this.data.data.firearmDesign.bulk,
-      //   "rcl":            this.data.data.firearmDesign.rcl,
-      //   "st":             this.data.data.firearmDesign.st,
-      //   "malf":           17
-      // }
-      //
-      // rangedProfiles.push(baseProfile);
+      let rangedProfiles = [];
 
+      let baseDamageInput = generalHelpers.diceAndAddsToGURPSOutput(this.data.data.firearmDesign.baseDamage.dice, this.data.data.firearmDesign.baseDamage.adds);
+
+      let baseProfile = { // Construct the base profile
+        "name":           "Baseline",
+        "skill":          this.data.data.firearmDesign.rangedSkill,
+        "skillMod":       this.data.data.firearmDesign.rangedSkillMod,
+        "acc":            this.data.data.firearmDesign.baseAcc,
+        "damageInput":    baseDamageInput,
+        "damageType":     this.data.data.firearmDesign.damageType,
+        "armourDivisor":  1,
+        "range":          this.data.data.firearmDesign.halfRange + " / " + this.data.data.laserDesign.maxRange,
+        "rof":            this.data.data.firearmDesign.outputRoF,
+        "shots":          this.data.data.firearmDesign.shots,
+        "bulk":           this.data.data.firearmDesign.bulk,
+        "rcl":            this.data.data.firearmDesign.rcl,
+        "st":             this.data.data.firearmDesign.st,
+        "malf":           17
+      }
+
+      rangedProfiles.push(baseProfile);
+
+
+      console.log(rangedProfiles);
     }
   }
 
