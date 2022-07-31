@@ -206,6 +206,86 @@ Hooks.once('init', async function() {
     return Math.round(+grams * 15.4324 * +decimals) / +decimals;
   });
 
+  Handlebars.registerHelper("chamberPressureExample", function(psi, powder) { // Decimals is entered as a whole numbered power of 10 (1, 10, 100, etc)
+    if (powder === "black") {
+      if (psi <= 0) {
+        return "Invalid, too low."
+      }
+      else if (psi <= 8000) {
+        return "Black powder shotgun."
+      }
+      else if (psi <= 12000) {
+        return "Large bore gun."
+      }
+      else if (psi <= 14000) {
+        return "Low Pressure Longarm"
+      }
+      else if (psi <= 16000) {
+        return "Longarm"
+      }
+      else if (psi <= 18000) {
+        return "High Pressure Longarm"
+      }
+      else if (psi < 25000) {
+        return "Very High Pressure."
+      }
+      else if (psi === 25000) {
+        return "Black Powder realistic limit."
+      }
+      else if (psi > 25000) {
+        return "Invalid, max psi is 25,000."
+      }
+      else {
+        return "Invalid."
+      }
+    }
+    else {
+      if (psi <= 0) {
+        return "Invalid, too low."
+      }
+      else if (psi <= 12400) {
+        return "Shotgun Shell."
+      }
+      else if (psi <= 14500) {
+        return "High-Brass or Magnum Shotgun Shell."
+      }
+      else if (psi <= 25000) {
+        return "Low Pressure Pistol"
+      }
+      else if (psi <= 42500) {
+        return "Pistol"
+      }
+      else if (psi <= 47500) {
+        return "High Pressure Pistol"
+      }
+      else if (psi <= 50000) {
+        return "Low Pressure Rifle"
+      }
+      else if (psi <= 57500) {
+        return "Rifle"
+      }
+      else if (psi <= 65000) {
+        return "High Pressure Rifle"
+      }
+      else if (psi < 300000) {
+        return "Very High Pressure."
+      }
+      else if (psi === 300000) {
+        return "Smokeless Powder realistic limit."
+      }
+      else if (psi > 300000) {
+        return "Invalid, max psi is 300,000."
+      }
+      else {
+        return "Invalid."
+      }
+    }
+
+
+    return Math.round(+grams * 15.4324 * +decimals) / +decimals;
+  });
+
+
   Handlebars.registerHelper("calcMaxStrain", function(tensileStPsi, elasticModulusPsi) {
     let maxStrain = (tensileStPsi / elasticModulusPsi) * 100 ;
     maxStrain = Math.round(maxStrain * 100) / 100;
