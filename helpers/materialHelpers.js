@@ -26,13 +26,10 @@ export class materialHelpers {
         let selectedMaterial = materials[0]; // Start off selected material with the first entry in the materials list
         if (typeof name != "undefined"){
             materials.forEach( material => {
-                if (density <= material.densityMin) { // Input density must be less than minimum density.
-                    let densityDiff = material.densityMin - density; // The gap between input density and the material we're currently looking at
-                    let selectedDensityDiff = material.densityMin - selectedMaterial.densityMin; // The gap between the currently selected material and the material we're currently looking at.
-
-                    if (selectedDensityDiff > densityDiff) {
-                        selectedMaterial = material;
-                    }
+                let densityDiff = Math.abs(material.densityMin - density); // The gap between input density and the material we're currently looking at
+                let selectedDensityDiff = Math.abs(selectedMaterial.densityMin - density); // The gap between input density and the currently selected material
+                if (selectedDensityDiff > densityDiff) {
+                    selectedMaterial = material;
                 }
             })
         }
@@ -47,13 +44,10 @@ export class materialHelpers {
         let selectedMaterial = materials[0]; // Start off selected material with the first entry in the materials list
         if (typeof name != "undefined"){
             materials.forEach( material => {
-                if (density <= material.densityMax) { // Input density must be less than maximum density.
-                    let densityDiff = material.densityMax - density; // The gap between input density and the material we're currently looking at
-                    let selectedDensityDiff = material.densityMax - selectedMaterial.densityMax; // The gap between the currently selected material and the material we're currently looking at.
-
-                    if (selectedDensityDiff > densityDiff) {
-                        selectedMaterial = material;
-                    }
+                let densityDiff = Math.abs(material.densityMax - density); // The gap between input density and the material we're currently looking at
+                let selectedDensityDiff = Math.abs(selectedMaterial.densityMax - density); // The gap between input density and the currently selected material
+                if (selectedDensityDiff > densityDiff) {
+                    selectedMaterial = material;
                 }
             })
         }
@@ -1490,257 +1484,56 @@ export class materialHelpers {
 
     static fetchProjectileMaterials() {
         const materials = [
-            {
-                "name": "Balsa",
-                "densityMin": 0.11,
-                "densityMax": 0.14
-            },
-            {
-                "name": "Pine",
-                "densityMin": 0.35,
-                "densityMax": 0.85
-            },
-            {
-                "name": "Cedar",
-                "densityMin": 0.37,
-                "densityMax": 0.58
-            },
-            {
-                "name": "Willow",
-                "densityMin": 0.40,
-                "densityMax": 0.60
-            },
-            {
-                "name": "Alder",
-                "densityMin": 0.40,
-                "densityMax": 0.60
-            },
-            {
-                "name": "Rowan",
-                "densityMin": 0.40,
-                "densityMax": 0.60
-            },
-            {
-                "name": "Spruce",
-                "densityMin": 0.40,
-                "densityMax": 0.71
-            },
-            {
-                "name": "Mahogany",
-                "densityMin": 0.50,
-                "densityMax": 0.85
-            },
-            {
-                "name": "Fir",
-                "densityMin": 0.53,
-                "densityMax": 0.74
-            },
-            {
-                "name": "Oak",
-                "densityMin": 0.59,
-                "densityMax": 0.90
-            },
-            {
-                "name": "Hemlock",
-                "densityMin": 0.60,
-                "densityMax": 0.80
-            },
-            {
-                "name": "Maple",
-                "densityMin": 0.63,
-                "densityMax": 0.75
-            },
-            {
-                "name": "Walnut",
-                "densityMin": 0.64,
-                "densityMax": 0.69
-            },
-            {
-                "name": "Cherry",
-                "densityMin": 0.70,
-                "densityMax": 0.90
-            },
-            {
-                "name": "Rosewood",
-                "densityMin": 0.80,
-                "densityMax": 0.88
-            },
-            {
-                "name": "Box Wood",
-                "densityMin": 0.95,
-                "densityMax": 1.20
-            },
-            {
-                "name": "Ebony",
-                "densityMin": 1.10,
-                "densityMax": 1.30
-            },
-            {
-                "name": "Lignum Vitae",
-                "densityMin": 1.17,
-                "densityMax": 1.33
-            },
-            {
-                "name": "Bone",
-                "densityMin": 1.70,
-                "densityMax": 2.00
-            },
-            {
-                "name": "Ivory",
-                "densityMin": 1.80,
-                "densityMax": 1.90
-            },
-            {
-                "name": "Rock Salt",
-                "densityMin": 2.15,
-                "densityMax": 2.25
-            },
-            {
-                "name": "Stone",
-                "densityMin": 2.30,
-                "densityMax": 3.30
-            },
-            {
-                "name": "Mica",
-                "densityMin": 2.60,
-                "densityMax": 3.20
-            },
-            {
-                "name": "Slate",
-                "densityMin": 2.60,
-                "densityMax": 3.30
-            },
-            {
-                "name": "Aluminum",
-                "densityMin": 2.65,
-                "densityMax": 2.75
-            },
-            {
-                "name": "Hornblende",
-                "densityMin": 2.90,
-                "densityMax": 3.00
-            },
-            {
-                "name": "Titanium",
-                "densityMin": 4.50,
-                "densityMax": 4.51
-            },
-            {
-                "name": "Cast Iron",
-                "densityMin": 7.15,
-                "densityMax": 7.25
-            },
-            {
-                "name": "Steel",
-                "densityMin": 7.75,
-                "densityMax": 8.05
-            },
-            {
-                "name": "Iron",
-                "densityMin": 6.98,
-                "densityMax": 7.87
-            },
-            {
-                "name": "Bronze",
-                "densityMin": 7.70,
-                "densityMax": 8.73
-            },
-            {
-                "name": "Copper",
-                "densityMin": 8.79,
-                "densityMax": 8.96
-            },
-            {
-                "name": "Nickle",
-                "densityMin": 8.60,
-                "densityMax": 8.90
-            },
-            {
-                "name": "Silver",
-                "densityMin": 8.59,
-                "densityMax": 10.51
-            },
-            {
-                "name": "Lead",
-                "densityMin": 11.34,
-                "densityMax": 11.35
-            },
-            {
-                "name": "Tungsten",
-                "densityMin": 19.20,
-                "densityMax": 19.25
-            },
-            {
-                "name": "Gold",
-                "densityMin": 17.31,
-                "densityMax": 19.29
-            },
-            {
-                "name": "Hydrogen gas",
-                "densityMin": 0.00,
-                "densityMax": 0.00
-            },
-            {
-                "name": "Helium gas",
-                "densityMin": 0.00,
-                "densityMax": 0.00
-            },
-            {
-                "name": "Air",
-                "densityMin": 0.00,
-                "densityMax": 0.00
-            },
-            {
-                "name": "Aerogel",
-                "densityMin": 0.00,
-                "densityMax": 0.00
-            },
-            {
-                "name": "styrofoam",
-                "densityMin": 0.03,
-                "densityMax": 0.12
-            },
-            {
-                "name": "Carbon Dioxide",
-                "densityMin": 0.00,
-                "densityMax": 0.00
-            },
-            {
-                "name": "Sulfur hexafluoride",
-                "densityMin": 0.01,
-                "densityMax": 0.01
-            },
-            {
-                "name": "Argon",
-                "densityMin": 0.00,
-                "densityMax": 0.00
-            },
-            {
-                "name": "Halon 1301",
-                "densityMin": 0.01,
-                "densityMax": 0.01
-            },
-            {
-                "name": "Grain Alcohol",
-                "densityMin": 0.79,
-                "densityMax": 0.79
-            },
-            {
-                "name": "Water",
-                "densityMin": 1.00,
-                "densityMax": 1.00
-            },
-            {
-                "name": "Aluminum",
-                "densityMin": 2.70,
-                "densityMax": 2.70
-            },
-            {
-                "name": "Osmium",
-                "densityMin": 22.61,
-                "densityMax": 22.61
-            },
-
+            { "name": "Balsa", "densityMin": 	0.110000	, "densityMax": 	0.140000	},
+            { "name": "Pine", "densityMin": 	0.350000	, "densityMax": 	0.850000	},
+            { "name": "Cedar", "densityMin": 	0.370000	, "densityMax": 	0.580000	},
+            { "name": "Willow", "densityMin": 	0.400000	, "densityMax": 	0.600000	},
+            { "name": "Alder", "densityMin": 	0.400000	, "densityMax": 	0.600000	},
+            { "name": "Rowan", "densityMin": 	0.400000	, "densityMax": 	0.600000	},
+            { "name": "Spruce", "densityMin": 	0.400000	, "densityMax": 	0.710000	},
+            { "name": "Mahogany", "densityMin": 	0.500000	, "densityMax": 	0.850000	},
+            { "name": "Fir", "densityMin": 	0.530000	, "densityMax": 	0.740000	},
+            { "name": "Oak", "densityMin": 	0.590000	, "densityMax": 	0.900000	},
+            { "name": "Hemlock", "densityMin": 	0.600000	, "densityMax": 	0.800000	},
+            { "name": "Maple", "densityMin": 	0.630000	, "densityMax": 	0.750000	},
+            { "name": "Walnut", "densityMin": 	0.640000	, "densityMax": 	0.690000	},
+            { "name": "Cherry", "densityMin": 	0.700000	, "densityMax": 	0.900000	},
+            { "name": "Rosewood", "densityMin": 	0.800000	, "densityMax": 	0.880000	},
+            { "name": "Box Wood", "densityMin": 	0.950000	, "densityMax": 	1.200000	},
+            { "name": "Ebony", "densityMin": 	1.100000	, "densityMax": 	1.300000	},
+            { "name": "Lignum Vitae", "densityMin": 	1.170000	, "densityMax": 	1.330000	},
+            { "name": "Bone", "densityMin": 	1.700000	, "densityMax": 	2.000000	},
+            { "name": "Ivory", "densityMin": 	1.800000	, "densityMax": 	1.900000	},
+            { "name": "Rock Salt", "densityMin": 	2.150000	, "densityMax": 	2.250000	},
+            { "name": "Stone", "densityMin": 	2.300000	, "densityMax": 	3.300000	},
+            { "name": "Mica", "densityMin": 	2.600000	, "densityMax": 	3.200000	},
+            { "name": "Slate", "densityMin": 	2.600000	, "densityMax": 	3.300000	},
+            { "name": "Aluminum", "densityMin": 	2.650000	, "densityMax": 	2.750000	},
+            { "name": "Hornblende", "densityMin": 	2.900000	, "densityMax": 	3.000000	},
+            { "name": "Titanium", "densityMin": 	4.500000	, "densityMax": 	4.506000	},
+            { "name": "Cast Iron", "densityMin": 	7.150000	, "densityMax": 	7.250000	},
+            { "name": "Steel", "densityMin": 	7.750000	, "densityMax": 	8.050000	},
+            { "name": "Iron", "densityMin": 	6.980000	, "densityMax": 	7.874000	},
+            { "name": "Bronze", "densityMin": 	7.700000	, "densityMax": 	8.730000	},
+            { "name": "Copper", "densityMin": 	8.790000	, "densityMax": 	8.960000	},
+            { "name": "Nickle", "densityMin": 	8.600000	, "densityMax": 	8.900000	},
+            { "name": "Silver", "densityMin": 	8.590000	, "densityMax": 	10.510000	},
+            { "name": "Lead", "densityMin": 	11.340000	, "densityMax": 	11.350000	},
+            { "name": "Tungsten", "densityMin": 	19.200000	, "densityMax": 	19.250000	},
+            { "name": "Gold", "densityMin": 	17.310000	, "densityMax": 	19.290000	},
+            { "name": "Hydrogen gas", "densityMin": 	0.000089	, "densityMax": 	0.000089	},
+            { "name": "Helium gas", "densityMin": 	0.000180	, "densityMax": 	0.000180	},
+            { "name": "Air", "densityMin": 	0.001204	, "densityMax": 	0.001225	},
+            { "name": "Aerogel", "densityMin": 	0.001000	, "densityMax": 	0.002000	},
+            { "name": "styrofoam", "densityMin": 	0.030000	, "densityMax": 	0.120000	},
+            { "name": "Carbon Dioxide", "densityMin": 	0.001977	, "densityMax": 	0.001977	},
+            { "name": "Sulfur hexafluoride", "densityMin": 	0.006164	, "densityMax": 	0.006164	},
+            { "name": "Argon", "densityMin": 	0.001800	, "densityMax": 	0.001800	},
+            { "name": "Halon 1301", "densityMin": 	0.006600	, "densityMax": 	0.006600	},
+            { "name": "Grain Alcohol", "densityMin": 	0.790000	, "densityMax": 	0.790000	},
+            { "name": "Water", "densityMin": 	1.000000	, "densityMax": 	1.000000	},
+            { "name": "Aluminum", "densityMin": 	2.700000	, "densityMax": 	2.700000	},
+            { "name": "Osmium", "densityMin": 	22.610000	, "densityMax": 	22.610000	},
         ]
 
         return materials;
