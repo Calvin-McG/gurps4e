@@ -2061,7 +2061,7 @@ export class gurpsItem extends Item {
 
   addCustomLaserProfiles() {
     if (this.data.data.laserDesign.meleeProfile) { // If the user wants to include a melee profile
-      this.addLaserMeleeProfile() // Include one
+      this.addMeleeProfile(this.data.data.laserDesign.outputBulk, this.data.data.laserDesign.cavalierWeapon, this.data.data.laserDesign.configuration, this.data.data.laserDesign.meleeSkill, this.data.data.laserDesign.meleeSkillMod, this.data.data.laserDesign.outputST) // Include one
     }
 
     let rangedProfiles = [];
@@ -2189,11 +2189,11 @@ export class gurpsItem extends Item {
     this.data.data.ranged = rangedProfiles;
   }
 
-  addLaserMeleeProfile() {
-    let damageMod = Math.abs(this.data.data.laserDesign.outputBulk)-1;
+  addMeleeProfile(bulk, cavalier, config, meleeSkill, meleeSkillMod, ST) {
+    let damageMod = Math.abs(bulk)-1;
     let damage = "";
 
-    if (this.data.data.laserDesign.cavalierWeapon) {
+    if (cavalier) {
       damage = "sw+1";
     }
     else {
@@ -2209,9 +2209,9 @@ export class gurpsItem extends Item {
     }
 
     let newRow = { // Init the new melee row using the values from the custom weapon
-      "name": (this.data.data.laserDesign.configuration == "pistol" || this.data.data.laserDesign.configuration == "beamer") ? "Pistol Whip" : "Butt Stroke",
-      "skill": this.data.data.laserDesign.meleeSkill,
-      "skillMod": this.data.data.laserDesign.meleeSkillMod,
+      "name": (config == "pistol" || config == "beamer") ? "Pistol Whip" : "Butt Stroke",
+      "skill": meleeSkill,
+      "skillMod": meleeSkillMod,
       "parryMod": 0,
       "parryType": "",
       "blockMod": "No",
@@ -2219,7 +2219,7 @@ export class gurpsItem extends Item {
       "damageType": "cr",
       "armourDivisor": 1,
       "reach": "C",
-      "st": this.data.data.laserDesign.outputST,
+      "st": ST,
     };
 
     this.data.data.melee = [newRow];
