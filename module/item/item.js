@@ -1101,6 +1101,8 @@ export class gurpsItem extends Item {
           "st": 10,
           "stOutput": 10,
           "bulk": -3,
+
+          "yardsPerSecond": 10
         }
       }
 
@@ -1201,6 +1203,7 @@ export class gurpsItem extends Item {
       // Velocity
       let metresPerSecond = Math.sqrt((2* kineticEnergy / totalAcceleratedKgs )); // D25
       let feetPerSecond = metresPerSecond * 1000 / (12 * 25.4); // D26
+      this.data.data.firearmDesign.yardsPerSecond = Math.floor(feetPerSecond / 3);
 
       // Damage
       this.data.data.firearmDesign.baseDamage = Math.round(Math.sqrt(( kineticEnergy ** 1.04)/( bulletCrossSection ** 0.314))/13.3926)
@@ -1492,6 +1495,16 @@ export class gurpsItem extends Item {
       else {
         this.data.data.firearmDesign.rcl = Math.round(this.data.data.firearmDesign.rclRaw);
       }
+
+      // Range
+
+      let sectionalDensity = (this.data.data.firearmDesign.projectileMass/15.43)/(Math.PI*(this.data.data.firearmDesign.projectileCalibre/2) ** 2); // D37
+      let lossCoefficient = 0.000178 * sectionalDensity ** - 1.1213 / Math.pow(this.data.data.firearmDesign.projectileAspectRatio,1/4)*1.65; // D38
+
+      let someWeirdConstant = 0.5 * Math.round(Math.sqrt(kineticEnergy ** 1.04/bulletCrossSection ** 0.314)/13.3926);
+
+      this.data.data.firearmDesign.halfRange = Math.round((Math.log(13.3926)+Math.log(someWeirdConstant)-0.52*Math.log(totalAcceleratedKgs/2)+0.157*Math.log(bulletCrossSection))/(-1.04*lossCoefficient) + Math.log(metresPerSecond)/lossCoefficient);
+      this.data.data.firearmDesign.maxRange = Math.round((Math.log(13.3926)+Math.log(0.017)-0.52*Math.log(totalAcceleratedKgs/2)+0.157*Math.log(bulletCrossSection))/(-1.04*lossCoefficient) + Math.log(metresPerSecond)/lossCoefficient);
 
       // Adding melee profiles
       if (this.data.data.firearmDesign.meleeProfile) { // If the user wants to include a melee profile
@@ -5990,6 +6003,13 @@ export class gurpsItem extends Item {
         info = "<table>" +
             "<tr>" +
             "<td><p>Rcl is obviously a whole number. This is mostly showing the decimals so you've got an idea of how close or far you are to the next value. The minimum Rcl is 2, unless the weapon is a laser or shotgun.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "range-output") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>Half damage and max range, along with velocity. Velocity is only really relevant for specific option rules at extreme range.</p></td>" +
             "</tr>" +
             "</table>"
       }
