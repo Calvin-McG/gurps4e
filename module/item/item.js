@@ -1466,7 +1466,7 @@ export class gurpsItem extends Item {
         bulkConfigMod = 5;
       }
 
-      this.data.data.firearmDesign.bulk = Math.round(0.1-Math.log10(bulkConfigMod) -Math.log10(this.data.data.weight) - (2*Math.log10(bulkLength)))
+      this.data.data.firearmDesign.bulk = 0.1-Math.log10(bulkConfigMod) -Math.log10(this.data.data.weight) - (2*Math.log10(bulkLength))
 
       // Adding melee profiles
       if (this.data.data.firearmDesign.meleeProfile) { // If the user wants to include a melee profile
@@ -5927,12 +5927,26 @@ export class gurpsItem extends Item {
             "</table>"
     }
     else if (id == "acc-output") {
-        info = "<table>" +
-            "<tr>" +
-            "<td><p>The base ACC before further modifiers. For shotshells, expect this to go down by 1.</p></td>" +
-            "</tr>" +
-            "</table>"
-      }
+      info = "<table>" +
+          "<tr>" +
+          "<td><p>The base ACC before further modifiers. For shotshells, expect this to go down by 1.</p></td>" +
+          "</tr>" +
+          "</table>"
+    }
+    else if (id == "bulk-output") {
+      info = "<table>" +
+          "<tr>" +
+          "<td><p>Bulk is obviously a whole number. This is mostly showing the decimals so you've got an idea of how close or far you are to the next value.</p></td>" +
+          "</tr>" +
+          "</table>"
+    }
+    else if (id == "weight-output") {
+      info = "<table>" +
+          "<tr>" +
+          "<td><p>Output of various weight breakdowns.</p></td>" +
+          "</tr>" +
+          "</table>"
+    }
     else if (id == "rate-of-fire") {
         info = "<table>" +
             "<tr>" +

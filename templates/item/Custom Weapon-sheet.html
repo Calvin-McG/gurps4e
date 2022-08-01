@@ -1644,7 +1644,7 @@
                                     Baseline Bulk
                                 </td>
                                 <td>
-                                    {{data.data.firearmDesign.bulk}}
+                                    {{round data.data.firearmDesign.bulk 100}} rounded to {{round data.data.firearmDesign.bulk 1}}
                                 </td>
                                 <td class="question-container" id="bulk-output">
                                     <div class="question-button">
@@ -1660,7 +1660,7 @@
                                 <td>
                                     Unloaded: {{round data.data.firearmDesign.weight 100}} Per Shot: {{round data.data.firearmDesign.baseWeightPerShot 100}} Ammunition: {{round data.data.firearmDesign.ammoWeight 100}} Loaded: {{round data.data.weight 100}}
                                 </td>
-                                <td class="question-container" id="bulk-output">
+                                <td class="question-container" id="weight-output">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>
