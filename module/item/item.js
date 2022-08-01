@@ -1061,6 +1061,11 @@ export class gurpsItem extends Item {
           "powder": "smokeless", // smokeless/black
           "chamberPressure": 35000, // Measured in PSI
 
+          "weight": 10,
+          "ammoWeight": 1,
+          "weightKgs": 10,
+          "baseWeightPerShot": 1,
+
           "magazineStyle": "standard", // none/internal/standard/highDensity/extended/drum
           "magazineMaterial": "steel", // steel/alloy/plastic
           "capacity": 1, // Whole positive numbers only
@@ -1171,13 +1176,13 @@ export class gurpsItem extends Item {
       this.data.data.firearmDesign.burnLength = this.data.data.firearmDesign.burnRatio * this.data.data.firearmDesign.caseLength;
 
       // Prerequisite Calculations
-      let barrelBoreMetres        = this.data.data.firearmDesign.projectileCalibre / 1000 // F21
+      let barrelBoreMetres        = this.data.data.firearmDesign.projectileCalibre / 1000 // F21 / F14
       let chamberBoreMetres       = this.data.data.firearmDesign.chamberBore / 1000
       let chamberPressurePascals  = this.data.data.firearmDesign.chamberPressure * 6896;
       let burnLengthMeters        = this.data.data.firearmDesign.burnLength / 1000;
       let boreCrossSection        = Math.PI * ( barrelBoreMetres / 2) ** 2; // I13
       let bulletCrossSection      = Math.PI * ( barrelBoreMetres / 2) ** 2; // I17
-      let barrelLengthMetres      = this.data.data.firearmDesign.barrelLength / 1000;
+      let barrelLengthMetres      = this.data.data.firearmDesign.barrelLength / 1000; // F17
       let caseLengthMetres        = this.data.data.firearmDesign.caseLength / 1000;
       let chamberCrossSection     = Math.PI * ( chamberBoreMetres / 2 ) ** 2
       let chamberVolume           = chamberCrossSection * ( caseLengthMetres * 7/8 - barrelBoreMetres);
@@ -1296,6 +1301,131 @@ export class gurpsItem extends Item {
         }
       }
 
+      // Weight
+      let configWeightModifier = 45;
+
+      if (this.data.data.firearmDesign.action === "semi") {
+        configWeightModifier = 1.5 / 0.9 * configWeightModifier;
+      }
+      else if (this.data.data.firearmDesign.action === "revolverSA" || this.data.data.firearmDesign.action === "revolverDA") {
+        configWeightModifier = 5 * configWeightModifier;
+      }
+      else { // Else, use the modifier for bolt action weapons.
+        configWeightModifier = 1.5 / 0.75 * configWeightModifier;
+      }
+
+      // Calculate the base receiver weight
+      let receiverWeight = ((kineticEnergy ** 0.66) / configWeightModifier / 1.4 ** (this.data.data.tl - 7))
+
+      // Add weight for revolver cylinder
+      if (this.data.data.firearmDesign.action === "revolverSA" || this.data.data.firearmDesign.action === "revolverDA") {
+        receiverWeight = (receiverWeight) + ((receiverWeight * (this.data.data.firearmDesign.capacity-1)) * 0.132)
+      }
+
+      let wallThickness = this.data.data.firearmDesign.chamberPressure * this.data.data.firearmDesign.projectileCalibre / 2 / 44000000 * (1.4) ** (this.data.data.tl - 7); // H27
+      let barrelDiameter = 2 * (wallThickness) + barrelBoreMetres;
+
+      let barrelWeight = (Math.PI * (barrelBoreMetres / 2 + barrelDiameter) ** 2 - Math.PI * (barrelBoreMetres / 2) ** 2) * barrelLengthMetres * 7860
+
+      this.data.data.firearmDesign.weightKgs = (receiverWeight + barrelWeight) + (((receiverWeight + barrelWeight) * 0.8) * this.data.data.firearmDesign.barrels);
+      this.data.data.firearmDesign.weight = this.data.data.firearmDesign.weightKgs * 2.205;
+
+      // Add weight for ammo
+      let projectileWeight = this.data.data.firearmDesign.projectileMass * 0.000142857;
+
+      let propellantREF = 1;
+      switch (this.data.data.tl) {
+        case 1:
+        case 2:
+        case 3:
+          propellantREF = 0.3;
+          break;
+        case 4:
+          propellantREF = 0.4;
+          break;
+        case 5:
+          propellantREF = 0.5;
+          break;
+        case 6:
+          propellantREF = 0.8;
+          break;
+        case 7:
+          propellantREF = 0.85;
+          break;
+        case 8:
+          propellantREF = 0.9;
+          break;
+        case 9:
+          propellantREF = 0.9 * 1.5;
+          break;
+        case 10:
+          propellantREF = 0.9 * 2;
+          break;
+        case 11:
+          propellantREF = 0.9 * 2.5;
+          break;
+        case 12:
+          propellantREF = 0.9 * 3;
+          break;
+        default:
+          propellantREF = 0.8;
+          break;
+      }
+
+      let powderWeight = kineticEnergy / 4.184; // This is the required mass of TNT in grams
+      powderWeight = powderWeight * 0.00220462; // This is the required mass of TNT in pounds
+      powderWeight = powderWeight / propellantREF; // This is the required mass of propellant, corrected for the REF of the propellant
+
+      this.data.data.firearmDesign.baseWeightPerShot = projectileWeight + powderWeight;
+
+      // Add weight for magazine body
+      let magazineWeightMultiplier = 1;
+      if (this.data.data.firearmDesign.magazineStyle === "none" || this.data.data.firearmDesign.magazineStyle === "internal"){
+        magazineWeightMultiplier = 1;
+      }
+      else if (this.data.data.firearmDesign.magazineMaterial === "steel"){
+        if (this.data.data.firearmDesign.magazineStyle === "standard") {
+          magazineWeightMultiplier = 1.2;
+        }
+        else if (this.data.data.firearmDesign.magazineStyle === "highDensity") {
+          magazineWeightMultiplier = 1.3;
+        }
+        else if (this.data.data.firearmDesign.magazineStyle === "extended") {
+          magazineWeightMultiplier = 1.5;
+        }
+        else if (this.data.data.firearmDesign.magazineStyle === "drum") {
+          magazineWeightMultiplier = 1.6;
+        }
+      }
+      else if (this.data.data.firearmDesign.magazineMaterial === "alloy" || this.data.data.firearmDesign.magazineMaterial === "plastic"){
+        if (this.data.data.firearmDesign.magazineStyle === "standard") {
+          magazineWeightMultiplier = 1.1;
+        }
+        else if (this.data.data.firearmDesign.magazineStyle === "highDensity") {
+          magazineWeightMultiplier = 1.1;
+        }
+        else if (this.data.data.firearmDesign.magazineStyle === "extended") {
+          magazineWeightMultiplier = 1.2;
+        }
+        else if (this.data.data.firearmDesign.magazineStyle === "drum") {
+          magazineWeightMultiplier = 1.3;
+        }
+      }
+
+      let loadedRounds = this.data.data.firearmDesign.capacity;
+      if (this.data.data.firearmDesign.capacity === 0) {
+        loadedRounds = 1
+      }
+      else if (this.data.data.firearmDesign.bolt = "closed") {
+        loadedRounds += 1;
+      }
+
+      loadedRounds = loadedRounds * this.data.data.firearmDesign.barrels;
+
+      this.data.data.firearmDesign.ammoWeight = loadedRounds * this.data.data.firearmDesign.baseWeightPerShot * magazineWeightMultiplier;
+
+      this.data.data.weight = this.data.data.firearmDesign.weight + this.data.data.firearmDesign.ammoWeight;
+
       // Shots
       if (this.data.data.firearmDesign.action === "break" || this.data.data.firearmDesign.action === "breech" || this.data.data.firearmDesign.action === "muzzle") { // The weapon is some version of a single shot weapon, so the number of shots is the same as the number of barrels
         this.data.data.firearmDesign.shots = "1x" + this.data.data.firearmDesign.barrels;
@@ -1311,6 +1441,32 @@ export class gurpsItem extends Item {
           this.data.data.firearmDesign.shots += "x" + this.data.data.firearmDesign.barrels;
         }
       }
+
+      // Bulk
+      let bulkConfigLengthModifier = 304;
+      if (this.data.data.firearmDesign.configuration === "pistol" || this.data.data.firearmDesign.configuration === "bullpup") {
+        bulkConfigLengthModifier = 76;
+      }
+      let bulkLength = (this.data.data.firearmDesign.barrelLength+(this.data.data.firearmDesign.caseLength*2)+bulkConfigLengthModifier)/1000*1.09361*3*12
+
+      let bulkConfigMod = 1;
+      if (this.data.data.firearmDesign.configuration === "cannon") {
+        bulkConfigMod = 6;
+      }
+      else if (this.data.data.firearmDesign.configuration === "pistol") {
+        bulkConfigMod = 2;
+      }
+      else if (this.data.data.firearmDesign.configuration === "bullpup") {
+        bulkConfigMod = 3;
+      }
+      else if (this.data.data.firearmDesign.configuration === "longarm") {
+        bulkConfigMod = 4;
+      }
+      else if (this.data.data.firearmDesign.configuration === "semiportable") {
+        bulkConfigMod = 5;
+      }
+
+      this.data.data.firearmDesign.bulk = Math.round(0.1-Math.log10(bulkConfigMod) -Math.log10(this.data.data.weight) - (2*Math.log10(bulkLength)))
 
       // Adding melee profiles
       if (this.data.data.firearmDesign.meleeProfile) { // If the user wants to include a melee profile
@@ -5700,7 +5856,7 @@ export class gurpsItem extends Item {
         info = "<table>" +
             "<tr>" +
             "<td>" +
-            "<p>More pressure means faster bullets that do more damage at a longer range. It also increases the weapon's weight as it needs to contain the pressure.</p>" +
+            "<p>More pressure means faster bullets that do more damage at a longer range. It also increases the weapon's weight as it needs to contain the pressure, and the weight of the ammo as more propellant is needed to achive the requested pressure.</p>" +
             "</td>" +
             "</tr>" +
             "<tr>" +

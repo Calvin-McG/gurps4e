@@ -52,13 +52,13 @@
                 </div>
                 <div id="value" class="equipmentStatLong">
                     <label class="resource-label">Value:</label>
-                    <span>{{data.data.cost}}</span>
-                    <label class="resource-label"> / {{data.data.ttlCost}}$ total</label>
+                    <span>{{round data.data.cost 100}}</span>
+                    <label class="resource-label"> / {{round data.data.ttlCost 100}}$ total</label>
                 </div>
                 <div id="weight" class="equipmentStatLong">
                     <label class="resource-label">Weight:</label>
-                    <span>{{data.data.weight}}</span>
-                    <label class="resource-label"> / {{data.data.ttlWeight}}lbs total</label>
+                    <span>{{round data.data.weight 100}}</span>
+                    <label class="resource-label"> / {{round data.data.ttlWeight 100}}lbs total</label>
                 </div>
             </div>
         </div>
@@ -1410,7 +1410,7 @@
                                     {{#if (eq data.data.firearmDesign.cartridgeType "custom")}}
                                         <input type="range" min="0.01" max="1" step="0.01" name="data.firearmDesign.burnRatio" value="{{data.data.firearmDesign.burnRatio}}" data-dtype="Number"> / {{data.data.firearmDesign.burnRatio}} mm / {{mmToIn data.data.firearmDesign.burnRatio 10}} in
                                     {{else}}
-                                        {{data.data.firearmDesign.burnLength}} / {{data.data.firearmDesign.burnRatio}} mm / {{mmToIn data.data.firearmDesign.burnRatio 10}} in
+                                    {{round data.data.firearmDesign.burnRatio 100}} / {{round data.data.firearmDesign.burnLength 100}} mm / {{mmToIn data.data.firearmDesign.burnRatio 100}} in
                                     {{/if}}
                                 </td>
                                 <td class="question-container" id="burn-length">
@@ -1425,7 +1425,7 @@
                                     Chamber Pressure (psi)
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    <input type="number" name="data.firearmDesign.chamberPressure" value="{{data.data.firearmDesign.chamberPressure}}" data-dtype="Number"/> psi : {{chamberPressureExample data.data.firearmDesign.chamberPressure data.data.firearmDesign.powder}}
+                                    <input type="number" name="data.firearmDesign.chamberPressure" value="{{data.data.firearmDesign.chamberPressure}}" data-dtype="Number"/> : {{chamberPressureExample data.data.firearmDesign.chamberPressure data.data.firearmDesign.powder}}
                                 </td>
                                 <td class="question-container" id="chamber-pressure">
                                     <div class="question-button">
@@ -1633,6 +1633,34 @@
                                     {{data.data.firearmDesign.shots}} ({{data.data.firearmDesign.reload}})
                                 </td>
                                 <td class="question-container" id="shots-output">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Baseline Bulk
+                                </td>
+                                <td>
+                                    {{data.data.firearmDesign.bulk}}
+                                </td>
+                                <td class="question-container" id="bulk-output">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Baseline Weight
+                                </td>
+                                <td>
+                                    Unloaded: {{round data.data.firearmDesign.weight 100}} Per Shot: {{round data.data.firearmDesign.baseWeightPerShot 100}} Ammunition: {{round data.data.firearmDesign.ammoWeight 100}} Loaded: {{round data.data.weight 100}}
+                                </td>
+                                <td class="question-container" id="bulk-output">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>
