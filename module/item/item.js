@@ -5813,6 +5813,11 @@ export class gurpsItem extends Item {
             "<td>" +
             "<p>A ratio of 1 is a perfectly round ball. Values less than one are shorter than they are wide. Values greater than one are longer than they are wide. If you're not sure what to set here, a value of 1.25 to 2 is probably fine.</p>" +
             "</td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td>" +
+            "<p>Generally higher aspect ratios will result in higher ranges.</p>" +
+            "</td>" +
             "</tr>";
         info += "</table>"
     }
