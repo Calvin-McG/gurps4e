@@ -1064,6 +1064,7 @@ export class gurpsItem extends Item {
           "weight": 10,
           "ammoWeight": 1,
           "weightKgs": 10,
+          "loadedWeight": 11,
           "baseWeightPerShot": 1,
 
           "magazineStyle": "standard", // none/internal/standard/highDensity/extended/drum
@@ -1095,8 +1096,10 @@ export class gurpsItem extends Item {
           "halfRange": 10,
           "maxRange": 100,
 
+          "rclRaw": 2,
           "rcl": 2,
           "st": 10,
+          "stOutput": 10,
           "bulk": -3,
         }
       }
@@ -1424,7 +1427,8 @@ export class gurpsItem extends Item {
 
       this.data.data.firearmDesign.ammoWeight = loadedRounds * this.data.data.firearmDesign.baseWeightPerShot * magazineWeightMultiplier;
 
-      this.data.data.weight = this.data.data.firearmDesign.weight + this.data.data.firearmDesign.ammoWeight;
+      this.data.data.firearmDesign.loadedWeight = this.data.data.firearmDesign.weight + this.data.data.firearmDesign.ammoWeight;
+      this.data.data.weight = this.data.data.firearmDesign.loadedWeight;
 
       // Shots
       if (this.data.data.firearmDesign.action === "break" || this.data.data.firearmDesign.action === "breech" || this.data.data.firearmDesign.action === "muzzle") { // The weapon is some version of a single shot weapon, so the number of shots is the same as the number of barrels
@@ -1442,7 +1446,7 @@ export class gurpsItem extends Item {
         }
       }
 
-      // Bulk
+      // Bulk and ST
       let bulkConfigLengthModifier = 304;
       if (this.data.data.firearmDesign.configuration === "pistol" || this.data.data.firearmDesign.configuration === "bullpup") {
         bulkConfigLengthModifier = 76;
@@ -1452,21 +1456,42 @@ export class gurpsItem extends Item {
       let bulkConfigMod = 1;
       if (this.data.data.firearmDesign.configuration === "cannon") {
         bulkConfigMod = 6;
+        this.data.data.firearmDesign.st = (Math.sqrt(this.data.data.weight) * 2.4);
+        this.data.data.firearmDesign.stOutput = Math.round(this.data.data.firearmDesign.st) + "†";
       }
       else if (this.data.data.firearmDesign.configuration === "pistol") {
         bulkConfigMod = 2;
+        this.data.data.firearmDesign.st =Math.sqrt(this.data.data.weight) * 3.3;
+        this.data.data.firearmDesign.stOutput = Math.round(this.data.data.firearmDesign.st);
       }
       else if (this.data.data.firearmDesign.configuration === "bullpup") {
         bulkConfigMod = 3;
+        this.data.data.firearmDesign.st = (Math.sqrt(this.data.data.weight) * 2.2);
+        this.data.data.firearmDesign.stOutput = Math.round(this.data.data.firearmDesign.st) + "†";
       }
       else if (this.data.data.firearmDesign.configuration === "longarm") {
         bulkConfigMod = 4;
+        this.data.data.firearmDesign.st = (Math.sqrt(this.data.data.weight) * 2.2);
+        this.data.data.firearmDesign.stOutput = Math.round(this.data.data.firearmDesign.st) + "†";
       }
       else if (this.data.data.firearmDesign.configuration === "semiportable") {
         bulkConfigMod = 5;
+        this.data.data.firearmDesign.st = (Math.sqrt(this.data.data.weight) * 2.2);
+        this.data.data.firearmDesign.stOutput = Math.round(this.data.data.firearmDesign.st) + "†";
       }
 
       this.data.data.firearmDesign.bulk = 0.1-Math.log10(bulkConfigMod) -Math.log10(this.data.data.weight) - (2*Math.log10(bulkLength))
+
+      // Rcl
+      let mv = totalAcceleratedKgs * metresPerSecond;
+      this.data.data.firearmDesign.rclRaw = mv / (this.data.data.firearmDesign.loadedWeight * 0.453592);
+
+      if (this.data.data.firearmDesign.rclRaw < 2) {
+        this.data.data.firearmDesign.rcl = 2;
+      }
+      else {
+        this.data.data.firearmDesign.rcl = Math.round(this.data.data.firearmDesign.rclRaw);
+      }
 
       // Adding melee profiles
       if (this.data.data.firearmDesign.meleeProfile) { // If the user wants to include a melee profile
@@ -5951,6 +5976,20 @@ export class gurpsItem extends Item {
         info = "<table>" +
             "<tr>" +
             "<td><p>This is the per-barrel RoF. The multiplier for the barrels is applied afterwards.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "st-output") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>ST is obviously a whole number. This is mostly showing the decimals so you've got an idea of how close or far you are to the next value.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "rcl-output") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>Rcl is obviously a whole number. This is mostly showing the decimals so you've got an idea of how close or far you are to the next value. The minimum Rcl is 2, unless the weapon is a laser or shotgun.</p></td>" +
             "</tr>" +
             "</table>"
       }
