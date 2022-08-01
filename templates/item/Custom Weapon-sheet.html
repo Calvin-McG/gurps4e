@@ -1505,6 +1505,55 @@
                         </table>
                         {{/unless}}
 
+                        <h2 class="bold" style="text-align: center; margin-top: 20px">Quality</h2>
+                        <table>
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Firearm Accuracy
+                                </td>
+                                <td>
+                                    <select name="data.firearmDesign.accuracy">
+                                        {{#select data.data.firearmDesign.accuracy}}
+                                        <option value="-1">Cheap</option>
+                                        <option value="0">Good</option>
+                                        {{#ifCond data.data.firearmDesign.baseAcc '>=' 2 }}
+                                        <option value="1">Fine</option>
+                                        {{/ifCond}}
+                                        {{#ifCond data.data.firearmDesign.baseAcc '>=' 4 }}
+                                        <option value="2">Very Fine</option>
+                                        {{/ifCond}}
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="firearm-accuracy">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Firearm Reliability
+                                </td>
+                                <td>
+                                    <select name="data.firearmDesign.reliability">
+                                        {{#select data.data.firearmDesign.reliability}}
+                                        <option value="-2">Cheap</option>
+                                        <option value="0">Good</option>
+                                        <option value="1">Fine</option>
+                                        <option value="2">Very Fine</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="firearm-reliability">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Tweaks</h2>
                         <table>
                             <tr class="design-row">
@@ -1695,6 +1744,21 @@
                                 </td>
                             </tr>
 
+
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Baseline Malf
+                                </td>
+                                <td>
+                                    {{data.data.firearmDesign.malf}}
+                                </td>
+                                <td class="question-container" id="malf-output">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
                             <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Baseline RcL
@@ -1703,6 +1767,36 @@
                                     {{round data.data.firearmDesign.rclRaw 100}} rounded to {{data.data.firearmDesign.rcl}}
                                 </td>
                                 <td class="question-container" id="rcl-output">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Baseline Cost Per Shot
+                                </td>
+                                <td>
+                                    Base Cost: {{round data.data.firearmDesign.cps 100}}
+                                </td>
+                                <td class="question-container" id="cps-output">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Baseline Cost
+                                </td>
+                                <td>
+                                    Base Cost: {{round data.data.firearmDesign.baseCost 100}}
+                                    CF: {{data.data.firearmDesign.cf}}
+                                    Final Cost: {{round data.data.firearmDesign.finalCost 100}}
+                                </td>
+                                <td class="question-container" id="cost-output">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>

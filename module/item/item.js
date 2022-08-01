@@ -1068,6 +1068,12 @@ export class gurpsItem extends Item {
           "weightKgs": 10,
           "loadedWeight": 11,
           "baseWeightPerShot": 1,
+          "baseCost": 1,
+          "cf": 1,
+          "finalCost": 1,
+          "cps": 1,
+          "cpsCf": 1,
+          "finalCps": 1,
 
           "magazineStyle": "standard", // none/internal/standard/highDensity/extended/drum
           "magazineMaterial": "steel", // steel/alloy/plastic
@@ -1113,6 +1119,9 @@ export class gurpsItem extends Item {
           "stOutput": 10,
           "bulk": -3,
 
+          "accuracy": 0, // -2 for cheap, 0 for good, 1 for fine, 2 for very fine. This is a direct mod to ACC
+          "reliability": 0, // -1 for cheap, 0 for good, 1 for fine, 2 for very fine. This is a direct mod to Malf
+
           "yardsPerSecond": 10
         }
       }
@@ -1150,6 +1159,9 @@ export class gurpsItem extends Item {
       }
       if (typeof this.data.data.firearmDesign.weightTweak == "undefined" || this.data.data.firearmDesign.weightTweak <= 0 || this.data.data.firearmDesign.weightTweak == "") {
         this.data.data.firearmDesign.weightTweak = 100;
+      }
+      if (typeof this.data.data.firearmDesign.cf == "undefined" || this.data.data.firearmDesign.cf <= 0 || this.data.data.firearmDesign.cf == "") {
+        this.data.data.firearmDesign.cf = 1;
       }
 
       // The weapon is a muzzle loader, breach loader, or break action and magazine related info will be hidden
@@ -1299,6 +1311,8 @@ export class gurpsItem extends Item {
         this.data.data.firearmDesign.baseAcc = 0;
       }
 
+      this.data.data.firearmDesign.baseAcc += parseInt(this.data.data.firearmDesign.accuracy); // Apply acc modifier for quality level.
+
       // Max Rof calculation
       if (this.data.data.firearmDesign.action === "muzzle" || this.data.data.firearmDesign.action === "breech" || this.data.data.firearmDesign.action === "break" || this.data.data.firearmDesign.action === "bolt"  || this.data.data.firearmDesign.action === "revolverSA") {
         this.data.data.firearmDesign.maxRof = 1;
@@ -1344,48 +1358,65 @@ export class gurpsItem extends Item {
 
       let barrelWeight = (Math.PI * (barrelBoreMetres / 2 + barrelDiameter) ** 2 - Math.PI * (barrelBoreMetres / 2) ** 2) * barrelLengthMetres * 7860
 
-      this.data.data.firearmDesign.weightKgs = (receiverWeight + barrelWeight) + (((receiverWeight + barrelWeight) * 0.8) * this.data.data.firearmDesign.barrels);
+      this.data.data.firearmDesign.weightKgs = (receiverWeight + barrelWeight) + (((receiverWeight + barrelWeight) * 0.8) * (this.data.data.firearmDesign.barrels - 1));
       this.data.data.firearmDesign.weight = this.data.data.firearmDesign.weightKgs * 2.205;
 
       // Add weight for ammo
       let projectileWeight = this.data.data.firearmDesign.projectileMass * 0.000142857;
 
       let propellantREF = 1;
+      let propellantCost = 1; // We'll use this later to determine cost per shot
+      let materialCost = 1; // We'll use this later to determine the weapon's material cost
       switch (this.data.data.tl) {
         case 1:
         case 2:
         case 3:
           propellantREF = 0.3;
+          propellantCost = 5;
+          materialCost = 50;
           break;
         case 4:
           propellantREF = 0.4;
+          propellantCost = 5;
+          materialCost = 50;
           break;
         case 5:
           propellantREF = 0.5;
+          propellantCost = 5;
+          materialCost = 50;
           break;
         case 6:
           propellantREF = 0.8;
+          propellantCost = 7.5;
+          materialCost = 3.50;
           break;
         case 7:
           propellantREF = 0.85;
+          propellantCost = 7.5;
           break;
         case 8:
           propellantREF = 0.9;
+          propellantCost = 7.5;
           break;
         case 9:
           propellantREF = 0.9 * 1.5;
+          propellantCost = 7.5 * 1.5;
           break;
         case 10:
           propellantREF = 0.9 * 2;
+          propellantCost = 7.5 * 2;
           break;
         case 11:
           propellantREF = 0.9 * 2.5;
+          propellantCost = 7.5 * 2.5;
           break;
         case 12:
           propellantREF = 0.9 * 3;
+          propellantCost = 7.5 * 3;
           break;
         default:
           propellantREF = 0.8;
+          propellantCost = 7.5;
           break;
       }
 
@@ -1546,6 +1577,8 @@ export class gurpsItem extends Item {
         this.data.data.firearmDesign.malf += 1;
       }
 
+      this.data.data.firearmDesign.malf += parseInt(this.data.data.firearmDesign.reliability); // Apply malf modifier for quality level.
+
       if (this.data.data.firearmDesign.malf > 17) { // Above a malf of 17, it's set to 17+. Which represents the fact two crit fails are required for the gun to malfunction.
         this.data.data.firearmDesign.malf = "17+";
       }
@@ -1662,8 +1695,115 @@ export class gurpsItem extends Item {
       }
 
       // Cost
-      // TODO
+      let costOfLead = this.data.data.tl >= 5 ? 1 : 2;
+      this.data.data.firearmDesign.cps = (projectileWeight * costOfLead) + (propellantCost * powderWeight);
+      this.data.data.firearmDesign.finalCps = this.data.data.firearmDesign.cf * this.data.data.firearmDesign.cps;
 
+      let cost = 350;
+
+      switch (this.data.data.firearmDesign.configuration) {
+        case "cannon":
+          cost = 350 * 0.75;
+          break;
+        case "pistol":
+          cost = 350;
+          break;
+        case "bullpup":
+          cost = 350 * 2.5;
+          break;
+        case "longarm":
+          cost = 350 * 2;
+          break;
+        case "semiportable":
+          cost = 350 * 6;
+          break;
+        default:
+          cost = 350;
+          break;
+      }
+
+      switch (this.data.data.tl) { // This modifier assumes the weapons are rifled.
+        case 1:
+        case 2:
+        case 3:
+          cost *= 0.4;
+          break;
+        case 4:
+          cost *= 0.5;
+          break;
+        case 5:
+          cost *= 0.6;
+          break;
+        case 6:
+          cost *= 0.8;
+          break;
+        case 7:
+          cost *= 1;
+          break;
+        case 8:
+          cost *= 2;
+          break;
+        case 9:
+          cost *= 2;
+          break;
+        case 10:
+          cost *= 2;
+          break;
+        case 11:
+          cost *= 2;
+          break;
+        case 12:
+          cost *= 2;
+          break;
+        default:
+          cost *= 1;
+          break;
+      }
+
+      if (!this.data.data.firearmDesign.rifling) { // Rifling is available, but it's early TL.
+        cost *= 0.75;
+      }
+
+      cost = cost + ((cost * 0.8) * (this.data.data.firearmDesign.barrels - 1)); // Apply cost for extra barrels
+
+      this.data.data.firearmDesign.cf = 1;
+
+      switch (this.data.data.firearmDesign.accuracy) {
+        case "-2":
+        case "-1":
+          this.data.data.firearmDesign.cf -= 0.4;
+          break;
+        case "0":
+          break;
+        case "1":
+          this.data.data.firearmDesign.cf += 0.75;
+          break;
+        case "2":
+          this.data.data.firearmDesign.cf += 3.75;
+          break;
+        default:
+          break;
+      }
+
+      switch (this.data.data.firearmDesign.reliability) {
+        case "-2":
+        case "-1":
+          this.data.data.firearmDesign.cf -= 0.4;
+          break;
+        case "0":
+          break;
+        case "1":
+          this.data.data.firearmDesign.cf += 0.25;
+          break;
+        case "2":
+          this.data.data.firearmDesign.cf += 1.25;
+          break;
+        default:
+          break;
+      }
+
+      this.data.data.firearmDesign.baseCost = cost;
+      this.data.data.firearmDesign.finalCost = this.data.data.firearmDesign.cf * this.data.data.firearmDesign.baseCost;
 
       // Adding melee profiles
       if (this.data.data.firearmDesign.meleeProfile) { // If the user wants to include a melee profile
@@ -6174,6 +6314,48 @@ export class gurpsItem extends Item {
         info = "<table>" +
             "<tr>" +
             "<td><p>Half damage and max range, along with velocity. Velocity is only really relevant for specific option rules at extreme range.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "firearm-accuracy") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>Some higher quality options are only available if the weapon's base ACC is sufficient. See HT79, but improving the weapon from Good to Fine or Very Fine can be done after the fact.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "firearm-reliability") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>Improving Malf beyond 17 results in a Malf of 17+, which requires two successive crit fails to malfunction. See HT79, but improving the weapon from Good to Fine or Very Fine can be done after the fact.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "shots-output") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>Shots and time to reload.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "malf-output") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>Rolling this number or higher means the weapon malfunctions. (It might still fire, which might still count as a hit). 17+ means that two successive malfunctions must be rolled for the gun to malfunction.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "cps-output") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>Base cost per shot, before any modifiers for ammo</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "cost-output") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>Base cost, Cost Factor from any modifications, and final cost</p></td>" +
             "</tr>" +
             "</table>"
       }
