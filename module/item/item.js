@@ -1091,6 +1091,15 @@ export class gurpsItem extends Item {
           "baseDamageDice": "1d6+0",
           "shots": "30+1", // Include closed bolt mod, etc.
           "reload": 3, // Time in seconds.
+          "reloadFast": 2,
+          "reloadQuickFast": 1,
+          "finalReload": 3, // Time in seconds.
+          "finalReloadFast": 2,
+          "finalReloadQuickFast": 1,
+          "individualLoading": "",
+          "powderFlasks": false,
+          "paperCartridges": false,
+          "carefulLoading": false,
           "baseWoundMod": "pi",
 
           "rof": 3,
@@ -1507,6 +1516,154 @@ export class gurpsItem extends Item {
 
       this.data.data.firearmDesign.halfRange = Math.round((Math.log(13.3926)+Math.log(someWeirdConstant)-0.52*Math.log(totalAcceleratedKgs/2)+0.157*Math.log(bulletCrossSection))/(-1.04*lossCoefficient) + Math.log(metresPerSecond)/lossCoefficient);
       this.data.data.firearmDesign.maxRange = Math.round((Math.log(13.3926)+Math.log(0.017)-0.52*Math.log(totalAcceleratedKgs/2)+0.157*Math.log(bulletCrossSection))/(-1.04*lossCoefficient) + Math.log(metresPerSecond)/lossCoefficient);
+
+      // Malf
+
+      this.data.data.firearmDesign.malf = 17;
+
+      switch (this.data.data.tl) {
+        case 1:
+        case 2:
+        case 3:
+          this.data.data.firearmDesign.malf = 12;
+          break;
+        case 4:
+          this.data.data.firearmDesign.malf = 14;
+          break;
+        case 5:
+          this.data.data.firearmDesign.malf = 16;
+          break;
+        default:
+          this.data.data.firearmDesign.malf = 17;
+          break;
+      }
+
+      if (this.data.data.firearmDesign.action === "straightPull" && this.data.data.tl === 6) { // Straight pull weapons are -1 malf at TL6
+        this.data.data.firearmDesign.malf -= 1;
+      }
+
+      if (this.data.data.tl >= 6 && (this.data.data.firearmDesign.action === "revolverSA" || this.data.data.firearmDesign.action === "revolverDA")) { // Revolvers are +1 malf at higher TLs
+        this.data.data.firearmDesign.malf += 1;
+      }
+
+      if (this.data.data.firearmDesign.malf > 17) { // Above a malf of 17, it's set to 17+. Which represents the fact two crit fails are required for the gun to malfunction.
+        this.data.data.firearmDesign.malf = "17+";
+      }
+
+      // Reload
+      this.data.data.firearmDesign.individualLoading = "";
+      if (this.data.data.firearmDesign.action === "muzzle") {
+        if (this.data.data.firearmDesign.lock === "cannon") {
+          this.data.data.firearmDesign.reload = 30;
+          this.data.data.firearmDesign.reloadFast = 30;
+        }
+        else if (this.data.data.firearmDesign.lock === "match") {
+          if (this.data.data.firearmDesign.configuration === "pistol") {
+            if (this.data.data.firearmDesign.rifling) {
+              this.data.data.firearmDesign.reload = 67;
+              this.data.data.firearmDesign.reloadFast = 54;
+            }
+            else {
+              this.data.data.firearmDesign.reload = 45;
+              this.data.data.firearmDesign.reloadFast = 36;
+            }
+          }
+          else {
+            if (this.data.data.firearmDesign.rifling) {
+              this.data.data.firearmDesign.reload = 90;
+              this.data.data.firearmDesign.reloadFast = 80;
+            }
+            else {
+              this.data.data.firearmDesign.reload = 60;
+              this.data.data.firearmDesign.reloadFast = 50;
+            }
+          }
+        }
+        else if (this.data.data.firearmDesign.lock === "wheel" || this.data.data.firearmDesign.lock === "flint") {
+          if (this.data.data.firearmDesign.configuration === "pistol") {
+            if (this.data.data.firearmDesign.rifling) {
+              this.data.data.firearmDesign.reload = 30;
+              this.data.data.firearmDesign.reloadFast = 24;
+            }
+            else {
+              this.data.data.firearmDesign.reload = 20;
+              this.data.data.firearmDesign.reloadFast = 16;
+            }
+          }
+          else {
+            if (this.data.data.firearmDesign.rifling) {
+              this.data.data.firearmDesign.reload = 60;
+              this.data.data.firearmDesign.reloadFast = 50;
+            }
+            else {
+              this.data.data.firearmDesign.reload = 40;
+              this.data.data.firearmDesign.reloadFast = 30;
+            }
+          }
+        }
+
+        if (this.data.data.firearmDesign.barrels > 1) {
+          this.data.data.firearmDesign.individualLoading = "i";
+        }
+      }
+      else if (this.data.data.firearmDesign.action === "breech") {
+        if (this.data.data.firearmDesign.lock === "pin" || this.data.data.firearmDesign.lock === "rim" || this.data.data.firearmDesign.lock === "centre") {
+          this.data.data.firearmDesign.reload = 3;
+          this.data.data.firearmDesign.reloadFast = 2;
+        }
+        else {
+          this.data.data.firearmDesign.reload = 10;
+          this.data.data.firearmDesign.reloadFast = 8;
+        }
+
+        if (this.data.data.firearmDesign.barrels > 1) {
+          this.data.data.firearmDesign.individualLoading = "i";
+        }
+      }
+      else if (this.data.data.firearmDesign.action === "break") {
+        this.data.data.firearmDesign.reload = 2;
+        this.data.data.firearmDesign.reloadFast = 1;
+
+        if (this.data.data.firearmDesign.barrels > 1) {
+          this.data.data.firearmDesign.individualLoading = "i";
+        }
+      }
+      else if (this.data.data.firearmDesign.magazineStyle === "internal") {
+        this.data.data.firearmDesign.reload = 2;
+        this.data.data.firearmDesign.reloadFast = 1;
+
+        this.data.data.firearmDesign.individualLoading = "i";
+      }
+      else {
+        this.data.data.firearmDesign.reload = 3;
+        this.data.data.firearmDesign.reloadFast = 2;
+      }
+
+      this.data.data.firearmDesign.reloadQuickFast = (this.data.data.firearmDesign.reloadFast - Math.min(Math.floor(this.data.data.firearmDesign.reloadFast * 0.25), 1)); // Quick reload reduces time by 25%, rounded down, but always at least 1 second.
+
+      if (this.data.data.firearmDesign.action === "muzzle" || this.data.data.firearmDesign.action === "breech") {
+        if (this.data.data.firearmDesign.powderFlasks) {
+          this.data.data.firearmDesign.reload -= 5;
+          this.data.data.firearmDesign.reloadFast -= 5;
+          this.data.data.firearmDesign.reloadQuickFast -= 5;
+        }
+
+        else if (this.data.data.firearmDesign.paperCartridges) {
+          this.data.data.firearmDesign.reload           = this.data.data.firearmDesign.reload          / 2;
+          this.data.data.firearmDesign.reloadFast       = this.data.data.firearmDesign.reloadFast      / 2;
+          this.data.data.firearmDesign.reloadQuickFast  = this.data.data.firearmDesign.reloadQuickFast / 2;
+        }
+
+        if (this.data.data.firearmDesign.carefulLoading) {
+          this.data.data.firearmDesign.reload           = this.data.data.firearmDesign.reload          * 2;
+          this.data.data.firearmDesign.reloadFast       = this.data.data.firearmDesign.reloadFast      * 2;
+          this.data.data.firearmDesign.reloadQuickFast  = this.data.data.firearmDesign.reloadQuickFast * 2;
+        }
+      }
+
+      // Cost
+      // TODO
+
 
       // Adding melee profiles
       if (this.data.data.firearmDesign.meleeProfile) { // If the user wants to include a melee profile
@@ -5670,7 +5827,7 @@ export class gurpsItem extends Item {
         info = "<table>" +
             "<tr>" +
             "<td style='width: 50px;'>Muzzle Loaders</td>" +
-            "<td><p>Increases base reloading time by 20 seconds and Acc by 1. This does cost more.</p></td>" +
+            "<td><p>Increases base reloading time by a fair amount and Acc by 1. This does cost more.</p></td>" +
             "</tr>" +
             "<tr>" +
             "<td style='width: 50px;'>Historical Firearms</td>" +
