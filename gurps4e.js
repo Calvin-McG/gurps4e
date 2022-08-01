@@ -398,6 +398,11 @@ Hooks.once('init', async function() {
     }
   });
 
+  // Convert GURPS RoF to rounds per minute
+  Handlebars.registerHelper("rpm", function(rof) {
+    return rof * 60;
+  });
+
   Handlebars.registerHelper("valueInRangeStyle", function(min, num, max) {
     if (num < min || num > max) {
       return "background-color: rgb( 255 0 0 / 50%) !important;";

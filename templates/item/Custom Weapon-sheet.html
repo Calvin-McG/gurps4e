@@ -1089,6 +1089,7 @@
                                 </td>
                             </tr>
 
+                            {{#ifCond data.data.tl '>=' 4 }}
                             <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Barrel Rifling
@@ -1102,6 +1103,7 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{/ifCond}}
 
                             <tr class="design-row">
                                 <td>
@@ -1187,6 +1189,7 @@
                                 </td>
                             </tr>
 
+                            {{#if (or (eq data.data.firearmDesign.action "semi") (eq data.data.firearmDesign.action "auto") (eq data.data.firearmDesign.action "burst") (eq data.data.firearmDesign.action "highCyclicBurst") ) }}
                             <tr class="design-row">
                                 <td style="width: 150px">
                                     Open or Closed Bolt
@@ -1194,7 +1197,6 @@
                                 <td>
                                     <select name="data.firearmDesign.bolt">
                                         {{#select data.data.firearmDesign.bolt}}
-                                        <option value="single">Single Shot</option>
                                         <option value="closed">Closed</option>
                                         <option value="open">Open</option>
                                         {{/select}}
@@ -1206,6 +1208,7 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{/if}}
 
                             <tr class="design-row">
                                 <td style="line-height: 27.5px">
@@ -1226,7 +1229,7 @@
                                     Barrels
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    Quantity: {{data.data.firearmDesign.barrels}}
+                                    {{data.data.firearmDesign.barrels}}
                                 </td>
                                 <td class="question-container" id="firearm-barrels">
                                     <div class="question-button">
@@ -1240,6 +1243,28 @@
                                     <input type="range" min="1" max="12" step="1" name="data.firearmDesign.barrels" value="{{data.data.firearmDesign.barrels}}" data-dtype="Number">
                                 </td>
                             </tr>
+
+                            {{#ifCond data.data.firearmDesign.maxRof '>=' 2}}
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Rate of Fire
+                                </td>
+                                <td style="line-height: 27.5px">
+                                    {{data.data.firearmDesign.rof}} per turn or {{rpm data.data.firearmDesign.rof}} rounds per minute
+                                </td>
+                                <td class="question-container" id="rate-of-fire">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">
+                                    <input type="range" min="1" max="{{data.data.firearmDesign.maxRof}}" step="1" name="data.firearmDesign.rof" value="{{data.data.firearmDesign.rof}}" data-dtype="Number">
+                                </td>
+                            </tr>
+                            {{/ifCond}}
 
                         </table>
 
@@ -1410,6 +1435,7 @@
                             </tr>
                         </table>
 
+                        {{#unless (or (eq data.data.firearmDesign.action "break") (eq data.data.firearmDesign.action "breech") (eq data.data.firearmDesign.action "muzzle") ) }}
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Magazine</h2>
                         <table>
                             <tr class="design-row">
@@ -1477,7 +1503,7 @@
                                 </td>
                             </tr>
                         </table>
-
+                        {{/unless}}
 
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Tweaks</h2>
                         <table>
@@ -1569,12 +1595,44 @@
                             {{/if}}
                         </table>
 
-                        <h2 class="bold" style="text-align: center; margin-top: 20px">Damage Output</h2>
+                        <h2 class="bold" style="text-align: center; margin-top: 20px">Base Output</h2>
                         <table>
                             <tr class="design-row">
-                                <td style="line-height: 27.5px" colspan="2">
+                                <td style="line-height: 27.5px">
+                                    Baseline Damage
                                 </td>
-                                <td class="question-container" id="bow-damage-output">
+                                <td>
+                                    {{data.data.firearmDesign.baseDamage}} {{this.data.data.firearmDesign.baseWoundMod}}, or {{data.data.firearmDesign.baseDamageDice}} {{this.data.data.firearmDesign.baseWoundMod}}
+                                </td>
+                                <td class="question-container" id="damage-output">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Baseline Acc
+                                </td>
+                                <td>
+                                    {{data.data.firearmDesign.baseAcc}}
+                                </td>
+                                <td class="question-container" id="acc-output">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Baseline Shots
+                                </td>
+                                <td>
+                                    {{data.data.firearmDesign.shots}} ({{data.data.firearmDesign.reload}})
+                                </td>
+                                <td class="question-container" id="shots-output">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>

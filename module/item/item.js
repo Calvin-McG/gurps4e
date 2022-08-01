@@ -1042,8 +1042,8 @@ export class gurpsItem extends Item {
           "barrelLength": 100, // Measured in mm
           "barrels": 1, // At least one, whole numbers
           "configuration": "pistol", // cannon/pistol/bullpup/longarm/semiportable
-          "rifling": true,
-          "bolt": "closed", // single/closed/open
+          "rifling": this.data.data.tl >= 5, // At or above TL5 barrels default rifled.
+          "bolt": "closed", // closed/open
           "action": "semi", // muzzle/breech/break/bolt/straightPull/lever/pump/revolverSA/revolverDA/semi/auto/burst/highCyclicBurst
           "lock": "centre", // cannon/match/wheel/flint/cap/pin/rim/centre
           "allowTL4BreechLoaders": game.settings.get("gurps4e", "allowTL4BreechLoaders"),
@@ -1075,10 +1075,18 @@ export class gurpsItem extends Item {
           "meleeSkillMod": "",
 
           "baseAcc": 3,
-          "baseDamage": "3d6+2",
+          "baseDamage": 3.5,
+          "baseDamageObject": {
+            "dice": 1,
+            "adds": 0,
+          },
+          "baseDamageDice": "1d6+0",
           "shots": "30+1", // Include closed bolt mod, etc.
+          "reload": 3, // Time in seconds.
+          "baseWoundMod": "pi",
 
           "rof": 3,
+          "maxRof": 3,
           "halfRange": 10,
           "maxRange": 100,
 
@@ -1123,6 +1131,31 @@ export class gurpsItem extends Item {
         this.data.data.firearmDesign.weightTweak = 100;
       }
 
+      // The weapon is a muzzle loader, breach loader, or break action and magazine related info will be hidden
+      if (this.data.data.firearmDesign.action === "break" || this.data.data.firearmDesign.action === "breech" || this.data.data.firearmDesign.action === "muzzle") {
+        this.data.data.firearmDesign.magazineStyle = "none";
+        this.data.data.firearmDesign.magazineMaterial = "steel";
+        this.data.data.firearmDesign.capacity = 0;
+      }
+
+      // The weapon is not some version of semi or automatic, and open/closed bolt info will be hidden
+      if (this.data.data.firearmDesign.action === "break" ||
+          this.data.data.firearmDesign.action === "breech" ||
+          this.data.data.firearmDesign.action === "muzzle" ||
+          this.data.data.firearmDesign.action === "bolt" ||
+          this.data.data.firearmDesign.action === "straightPull" ||
+          this.data.data.firearmDesign.action === "lever" ||
+          this.data.data.firearmDesign.action === "pump" ||
+          this.data.data.firearmDesign.action === "revolverSA" ||
+          this.data.data.firearmDesign.action === "revolverDA") {
+        this.data.data.firearmDesign.bolt = "closed";
+      }
+
+      // Rifling does not become available until TL4
+      if (this.data.data.tl < 4) {
+        this.data.data.firearmDesign.rifling = false;
+      }
+
       this.data.data.firearmDesign.allowTL4BreechLoaders = game.settings.get("gurps4e", "allowTL4BreechLoaders");
 
       // Begin calculations proper
@@ -1162,8 +1195,8 @@ export class gurpsItem extends Item {
       let feetPerSecond = metresPerSecond * 1000 / (12 * 25.4); // D26
 
       // Damage
-      let damage = Math.round(Math.sqrt(( kineticEnergy ** 1.04)/( bulletCrossSection ** 0.314))/13.3926)
-      this.data.data.firearmDesign.baseDamage = generalHelpers.pointsToDiceAndAdds(damage);
+      this.data.data.firearmDesign.baseDamage = Math.round(Math.sqrt(( kineticEnergy ** 1.04)/( bulletCrossSection ** 0.314))/13.3926)
+      this.data.data.firearmDesign.baseDamageObject = generalHelpers.pointsToDiceAndAdds(this.data.data.firearmDesign.baseDamage);
 
       // Projectile Density
       let projectileVolume = (Math.PI*(barrelBoreMetres/2) ** 3+Math.PI/12*barrelBoreMetres ** 2*(2 * barrelBoreMetres * this.data.data.firearmDesign.projectileAspectRatio - barrelBoreMetres)); // I21
@@ -1181,6 +1214,104 @@ export class gurpsItem extends Item {
         this.data.data.firearmDesign.projectileMaterials += projectileMaterialArray[d];
       }
 
+      // Wound modifier calculation
+
+      if (this.data.data.firearmDesign.projectileCalibre < 4) {
+        this.data.data.firearmDesign.baseWoundMod = "pi-";
+      }
+      else if (this.data.data.firearmDesign.projectileCalibre < 8) {
+        if (kineticEnergy > 1250 || metresPerSecond > 700) { // If the projectile is moving quickly enough or carrying enough energy, count is as 'pi', otherwise it remains pi-
+          this.data.data.firearmDesign.baseWoundMod = "pi";
+        }
+        else {
+          this.data.data.firearmDesign.baseWoundMod = "pi-";
+        }
+      }
+      else if (this.data.data.firearmDesign.projectileCalibre < 10) {
+        this.data.data.firearmDesign.baseWoundMod = "pi";
+      }
+      else if (this.data.data.firearmDesign.projectileCalibre < 15) {
+        this.data.data.firearmDesign.baseWoundMod = "pi+";
+      }
+      else {
+        this.data.data.firearmDesign.baseWoundMod = "pi++";
+      }
+
+      // ACC calculation
+      this.data.data.firearmDesign.baseAcc = 0;
+
+      // Base ACC from configuration
+      if (this.data.data.firearmDesign.configuration === "cannon") {
+        this.data.data.firearmDesign.baseAcc = 1;
+      }
+      else if (this.data.data.firearmDesign.configuration === "pistol") {
+        this.data.data.firearmDesign.baseAcc = 2;
+      }
+      else if (this.data.data.firearmDesign.configuration === "bullpup" || this.data.data.firearmDesign.configuration === "longarm") {
+        this.data.data.firearmDesign.baseAcc = 4;
+      }
+      else if (this.data.data.firearmDesign.configuration === "semiportable") {
+        this.data.data.firearmDesign.baseAcc = 5;
+      }
+
+      // Open/Closed bolt guns
+      if (this.data.data.firearmDesign.bolt === "open") {
+        this.data.data.firearmDesign.baseAcc -= 1; // Open bolt is -1 ACC
+      }
+
+      // Action ACC
+      if (this.data.data.firearmDesign.action === "break" || this.data.data.firearmDesign.action === "bolt" || this.data.data.firearmDesign.action === "straightPull") {
+        this.data.data.firearmDesign.baseAcc += 1;
+      }
+      else if (this.data.data.firearmDesign.action === "breech" || this.data.data.firearmDesign.action === "muzzle") {
+        this.data.data.firearmDesign.baseAcc -= 1;
+      }
+
+      // Rifling ACC
+      if (!this.data.data.firearmDesign.rifling) {
+        this.data.data.firearmDesign.baseAcc -= 1; // Unrifled weapons are -1 Acc
+      }
+
+      // ACC is at least 0
+      if (this.data.data.firearmDesign.baseAcc < 0) {
+        this.data.data.firearmDesign.baseAcc = 0;
+      }
+
+      // Max Rof calculation
+      if (this.data.data.firearmDesign.action === "muzzle" || this.data.data.firearmDesign.action === "breech" || this.data.data.firearmDesign.action === "break" || this.data.data.firearmDesign.action === "bolt"  || this.data.data.firearmDesign.action === "revolverSA") {
+        this.data.data.firearmDesign.maxRof = 1;
+      }
+      else if (this.data.data.firearmDesign.action === "straightPull" || this.data.data.firearmDesign.action === "lever" || this.data.data.firearmDesign.action === "pump") {
+        this.data.data.firearmDesign.maxRof = 2;
+      }
+      else if (this.data.data.firearmDesign.action === "revolverDA" || this.data.data.firearmDesign.action === "semi") {
+        this.data.data.firearmDesign.maxRof = 3;
+      }
+      else if (this.data.data.firearmDesign.action === "auto" || this.data.data.firearmDesign.action === "burst" || this.data.data.firearmDesign.action === "highCyclicBurst") {
+        if (this.data.data.firearmDesign.bolt === "open") {
+          this.data.data.firearmDesign.maxRof = 25;
+        }
+        else {
+          this.data.data.firearmDesign.maxRof = 20;
+        }
+      }
+
+      // Shots
+      if (this.data.data.firearmDesign.action === "break" || this.data.data.firearmDesign.action === "breech" || this.data.data.firearmDesign.action === "muzzle") { // The weapon is some version of a single shot weapon, so the number of shots is the same as the number of barrels
+        this.data.data.firearmDesign.shots = "1x" + this.data.data.firearmDesign.barrels;
+      }
+      else { // The weapon has a magazine of some sort.
+        this.data.data.firearmDesign.shots = this.data.data.firearmDesign.capacity // Base shots is the magazine capacity
+
+        if (this.data.data.firearmDesign.bolt === "closed") { // If it's closed bolt, add +1
+          this.data.data.firearmDesign.shot += "+" + 1
+        }
+
+        if (this.data.data.firearmDesign.barrels > 1) { // If it has multiple barrels, multiply accordingly
+          this.data.data.firearmDesign.shots += "x" + this.data.data.firearmDesign.barrels;
+        }
+      }
+
       // Adding melee profiles
       if (this.data.data.firearmDesign.meleeProfile) { // If the user wants to include a melee profile
         this.addMeleeProfile(this.data.data.firearmDesign.bulk, this.data.data.firearmDesign.cavalierWeapon, this.data.data.firearmDesign.configuration, this.data.data.firearmDesign.meleeSkill, this.data.data.firearmDesign.meleeSkillMod, this.data.data.firearmDesign.st) // Include one
@@ -1189,27 +1320,7 @@ export class gurpsItem extends Item {
       // Adding ranged profiles
       let rangedProfiles = [];
 
-      let baseDamageInput = generalHelpers.diceAndAddsToGURPSOutput(this.data.data.firearmDesign.baseDamage.dice, this.data.data.firearmDesign.baseDamage.adds);
-
-      let baseProfile = { // Construct the base profile
-        "name":           "Baseline",
-        "skill":          this.data.data.firearmDesign.rangedSkill,
-        "skillMod":       this.data.data.firearmDesign.rangedSkillMod,
-        "acc":            this.data.data.firearmDesign.baseAcc,
-        "damageInput":    baseDamageInput,
-        "damageType":     this.data.data.firearmDesign.damageType,
-        "armourDivisor":  1,
-        "range":          this.data.data.firearmDesign.halfRange + " / " + this.data.data.laserDesign.maxRange,
-        "rof":            this.data.data.firearmDesign.outputRoF,
-        "shots":          this.data.data.firearmDesign.shots,
-        "bulk":           this.data.data.firearmDesign.bulk,
-        "rcl":            this.data.data.firearmDesign.rcl,
-        "st":             this.data.data.firearmDesign.st,
-        "malf":           17
-      }
-
-      rangedProfiles.push(baseProfile);
-
+      this.data.data.firearmDesign.baseDamageDice = generalHelpers.diceAndAddsToGURPSOutput(this.data.data.firearmDesign.baseDamageObject.dice, this.data.data.firearmDesign.baseDamageObject.adds);
 
       console.log(rangedProfiles);
     }
@@ -5479,10 +5590,6 @@ export class gurpsItem extends Item {
     else if (id == "firearm-bolt") {
         info = "<table>" +
             "<tr>" +
-            "<td style='width: 50px;'>Single Shot</td>" +
-            "<td><p>Single shot weapons, muzzle loaders, breech loaders, break actions, etc all use this option.</p></td>" + // TODO - Auto select when appropriate
-            "</tr>" +
-            "<tr>" +
             "<td style='width: 50px;'>Closed</td>" +
             "<td><p>Unless it's a machinegun, choose this. And if it is a machine gun, maybe still choose this.</p></td>" +
             "</tr>" +
@@ -5634,25 +5741,46 @@ export class gurpsItem extends Item {
             "<td><p>Like the coffin mags available for the AR-15. Even more compact than the drum.</p></td>" +
             "</tr>" +
             "</table>"
-      }
+    }
     else if (id == "magazine-material") {
         info = "<table>" +
             "<tr>" +
             "<td><p>Lighter materials are... lighter!</p></td>" +
             "</tr>" +
             "</table>"
-      }
+    }
     else if (id == "magazine-capacity") {
-        info = "<table>" +
-            "<tr>" +
-            "<td><p>You can set this number as high as you like. But higher values mean more weight and worse Bulk.</p></td>" +
-            "</tr>" +
-            "</table>"
-      }
+      info = "<table>" +
+          "<tr>" +
+          "<td><p>You can set this number as high as you like. But higher values mean more weight and worse Bulk.</p></td>" +
+          "</tr>" +
+          "</table>"
+    }
+    else if (id == "damage-output") {
+      info = "<table>" +
+          "<tr>" +
+          "<td><p>The base damage of the weapon as designed, while using single solid shot.</p></td>" +
+          "</tr>" +
+          "</table>"
+    }
     else if (id == "fit-to-owner") {
         info = "<table>" +
             "<tr>" +
             "<td><p>For +1 CF, your weapon was designed specifically for you. You get +1 to all skills while using it, exactly as with a Weapon Bond. Does not stack with Weapon Bond.</p></td>" +
+            "</tr>" +
+            "</table>"
+    }
+    else if (id == "acc-output") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>The base ACC before further modifiers. For shotshells, expect this to go down by 1.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "rate-of-fire") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>This is the per-barrel RoF. The multiplier for the barrels is applied afterwards.</p></td>" +
             "</tr>" +
             "</table>"
       }
