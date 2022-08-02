@@ -1122,7 +1122,9 @@ export class gurpsItem extends Item {
           "accuracy": 0, // -2 for cheap, 0 for good, 1 for fine, 2 for very fine. This is a direct mod to ACC
           "reliability": 0, // -1 for cheap, 0 for good, 1 for fine, 2 for very fine. This is a direct mod to Malf
 
-          "yardsPerSecond": 10
+          "yardsPerSecond": 10,
+
+          "ammunition": [],
         }
       }
 
@@ -3621,6 +3623,37 @@ export class gurpsItem extends Item {
     }
   }
 
+  addCustomFirearmProfiles() {
+    // Calculate Ammo Stuff
+    let ammoKeys = Object.keys(this.data.data.firearmDesign.ammunition); // Get the ammo keys
+    if (ammoKeys.length > 0) { // If there are actually keys
+      let rangedProfiles = [];
+      for (let i = 0; i < ammoKeys.length; i++) {
+        if (this.data.data.bowDesign.arrows[ammoKeys[i]].showProfile) {
+          let profile = {
+            "name": this.data.name + " " + this.data.data.firearmDesign.ammunition[ammoKeys[i]].name,
+            "skill": this.data.data.firearmDesign.skill,
+            "skillMod": this.data.data.firearmDesign.skillMod,
+            "acc": this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc,
+            "damageInput": this.data.data.firearmDesign.ammunition[ammoKeys[i]].dice,
+            "damageType": this.data.data.firearmDesign.ammunition[ammoKeys[i]].arrowhead.damageType,
+            "armourDivisor": this.data.data.firearmDesign.ammunition[ammoKeys[i]].arrowhead.ad,
+            "range": this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange + "/" + this.data.data.firearmDesign.ammunition[ammoKeys[i]].range,
+            "rof": "1",
+            "shots": "1",
+            "bulk": this.data.data.firearmDesign.bulk,
+            "rcl": "2",
+            "st": this.data.data.firearmDesign.stOutput,
+            "malf": this.data.data.firearmDesign.malf
+          }
+          rangedProfiles.push(profile);
+        }
+      }
+
+      this.data.data.ranged = rangedProfiles;
+    }
+  }
+
   prepareAttackData() {
     //Check to see if there is an actor yet
     if (this.actor){
@@ -5343,7 +5376,7 @@ export class gurpsItem extends Item {
 
       info += "<tr>" +
           "<td>" +
-          "<p>Check this box to show this projectile as a profile on the combat tab and combat macro.</p>" +
+          "<p>Check this box to show this as a profile on the combat tab and combat macro.</p>" +
           "</td>" +
           "</tr>";
 
@@ -6356,6 +6389,93 @@ export class gurpsItem extends Item {
         info = "<table>" +
             "<tr>" +
             "<td><p>Base cost, Cost Factor from any modifications, and final cost</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "case-type") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>Base cost, Cost Factor from any modifications, and final cost</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "plusp") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>Multiply damage, range, and ST by 1.1, multiply CPS by 1.5</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td><p>Cheap guns, or guns from TL 6 or less, have -1 Malf when firing +P ammo.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "match-grade") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>Match Grade ammo needs a gun with base Acc 4 to be effective, and it grants a +1 bonus to Acc. Double cost per shot.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td><p>Handloaded Match Grade ammo needs a gun with base Acc 2 to be effective, and it grants a +1 bonus to Acc. At Acc 4 and up it grants a +2 bonus. Triple cost per shot.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "subsonic") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>For pistols this gives -1 Hearing and range is multiplied by 0.8</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td><p>For other weapons this gives -2 Hearing, range and damage are multiplied by 0.6</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td><p>Multiply CPS by 1.3</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "silent") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>Makes the weapon silent. Use the 16 yard line on the hearing distance table on HT158.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td><p>Multiply CPS by 10</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "poison") {
+      info = "<table>" +
+          "<tr>" +
+          "<td><p>Makes the weapon silent. Use the 16 yard line on the hearing distance table on HT158.</p></td>" +
+          "</tr>" +
+          "<tr>" +
+          "<td><p>Multiply CPS by 10</p></td>" +
+          "</tr>" +
+          "</table>"
+    }
+    else if (id == "inc") {
+      info = "<table>" +
+          "<tr>" +
+          "<td><p>Adds the incendiary damage modifier, which just adds +1 burning damage.</p></td>" +
+          "</tr>" +
+          "<tr>" +
+          "<td><p>Multiply CPS by 1.5</p></td>" +
+          "</tr>" +
+          "</table>"
+    }
+    else if (id == "tracer") {
+      info = "<table>" +
+          "<tr>" +
+          "<td><p>Adds the incendiary damage modifier, which just adds +1 burning damage. Also gives +1 to skill on subsequent turns following automatic fire.</p></td>" +
+          "</tr>" +
+          "<tr>" +
+          "<td><p>Multiply CPS by 1.5</p></td>" +
+          "</tr>" +
+          "</table>"
+    }
+    else if (id == "firearm-projectile-type") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>See high tech 165.</p></td>" +
             "</tr>" +
             "</table>"
       }

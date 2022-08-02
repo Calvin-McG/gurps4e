@@ -1803,6 +1803,244 @@
                                 </td>
                             </tr>
                         </table>
+
+                        <h2 class="bold" style="text-align: center; margin-top: 20px">Ammunition Designs</h2>
+                        {{#each data.data.firearmDesign.ammunition as |ammo id|}}
+                        <h2 class="bold" style="text-align: center; margin-top: 20px">Ammo {{id}} <a class="deleteAmmoRow" id="ammo{{id}}" title="Delete Row"><i class="fas fa-trash"></i></a></h2>
+                        <table>
+                            <tr class="design-row">
+                                <td style="width: 160px">
+                                    Projectile Name:
+                                </td>
+                                <td>
+                                    <input type="text" name="data.firearmDesign.ammunition.{{id}}.name" value="{{ammo.name}}" data-dtype="String"/>
+                                </td>
+                                <td class="question-container" id="arrow-name">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            {{#unless (or (eq data.data.firearmDesign.action "breech") (eq data.data.firearmDesign.action "muzzle") ) }}
+                            <tr class="design-row">
+                                <td style="width: 160px">
+                                    Casing Type
+                                </td>
+                                <td>
+                                    <select name="data.firearmDesign.ammunition.{{id}}.case">
+                                        {{#select ammo.case}}
+                                        <option value="cased">Cased (TL5)</option>
+                                        <option value="lightCased">Light Cased (TL5)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="case-type">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/unless}}
+
+                            {{#ifCond data.data.tl '>=' 4 }}
+                            <tr class="design-row">
+                                <td style="width: 160px">
+                                    Extra Powerful Ammunition
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.firearmDesign.ammunition.{{id}}.plusp" {{checked ammo.plusp}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="plusp">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/ifCond}}
+
+                            {{#ifCond  data.data.tl '>=' 6 }}
+                            <tr class="design-row">
+                                <td style="width: 160px">
+                                    Match-Grade
+                                </td>
+                                <td>
+                                    <select name="data.firearmDesign.ammunition.{{id}}.case">
+                                        {{#select ammo.case}}
+                                        <option value="1">Standard Grade</option>
+                                        <option value="1.25">Match Grade (TL6)</option>
+                                        <option value="1.5">Handloaded Match Grade (TL6)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="match-grade">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/ifCond}}
+
+                            {{#ifCond data.data.tl '>=' 6 }}
+                            {{#ifCond data.data.firearmDesign.yardsPerSecond '>=' 375.109 }}
+                            <tr class="design-row">
+                                <td style="width: 160px">
+                                    Subsonic Ammunition
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.firearmDesign.ammunition.{{id}}.subsonic" {{checked ammo.subsonic}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="subsonic">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/ifCond}}
+                            {{/ifCond}}
+
+                            {{#ifCond data.data.tl '>=' 6 }}
+                            <tr class="design-row">
+                                <td style="width: 160px">
+                                    Silent Ammunition
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.firearmDesign.ammunition.{{id}}.silent" {{checked ammo.silent}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="silent">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/ifCond}}
+
+                            {{#ifCond data.data.tl '>=' 5 }}
+                            <tr class="design-row">
+                                <td style="width: 160px">
+                                    Poison Ammunition
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.firearmDesign.ammunition.{{id}}.poison" {{checked ammo.poison}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="poison">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/ifCond}}
+
+                            {{#ifCond data.data.tl '>=' 5 }}
+                            <tr class="design-row">
+                                <td style="width: 160px">
+                                    Incendiary Ammunition
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.firearmDesign.ammunition.{{id}}.inc" {{checked ammo.inc}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="inc">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/ifCond}}
+
+                            {{#ifCond data.data.tl '>=' 5 }}
+                            <tr class="design-row">
+                                <td style="width: 160px">
+                                    Tracer Ammunition
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.firearmDesign.ammunition.{{id}}.tracer" {{checked ammo.tracer}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="inc">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/ifCond}}
+
+                            <tr class="design-row">
+                                <td style="width: 160px">
+                                    Projectile Type
+                                </td>
+                                <td>
+                                    <select name="data.firearmDesign.ammunition.{{id}}.projectile">
+                                        {{#select ammo.case}}
+                                        <option value="solid">Solid</option>
+                                        {{#ifCond data.data.tl '>=' 4 }}
+                                        <option value="le">Low Explosive</option>
+                                        <option value="shotshell">Shotshell / Canister</option>
+                                        {{/ifCond}}
+                                        {{#ifCond data.data.tl '>=' 5 }}
+                                        <option value="hp">Hollow Point</option>
+                                        <option value="saple">Semi Armour Piercing Low Explosive</option>
+                                        {{/ifCond}}
+                                        {{#ifCond data.data.tl '>=' 6 }}
+                                        <option value="ap">Armour Piercing</option>
+                                        <option value="aphc">Armour Piercing Hardcore</option>
+                                        <option value="frangible">Frangible</option>
+                                        <option value="apex">Armour Piercing Explosive</option>
+                                        <option value="he">High Explosive</option>
+                                        <option value="saple">Semi Armour Piercing High Explosive</option>
+                                        <option value="saphec">Semi Armour Piercing High Explosive Concussion</option>
+                                        <option value="duplex">Duplex</option>
+                                        <option value="triplex">Triplex</option>
+                                        {{/ifCond}}
+                                        {{#ifCond data.data.tl '>=' 7 }}
+                                        <option value="apds">Armour Piercing Discarding Sabot</option>
+                                        <option value="apfsds">Armour Piercing Fin Stabilized Discarding Sabot</option>
+                                        <option value="baton">Baton</option>
+                                        <option value="bean">Beanbag</option>
+                                        <option value="sapfsds">Semi Armor Piercing Fin Stabilized Discarding Sabot</option>
+                                        <option value="underwater">Underwater Dart</option>
+                                        <option value="aphex">Armour Piercing High Explosive</option>
+                                        <option value="efp">Explosively Formed Projectile</option>
+                                        <option value="heat">High Explosive Antitank</option>
+                                        <option value="hedp">High Explosive Dual Purpose</option>
+                                        <option value="hesh">High Explosive Squash Head</option>
+                                        <option value="mf">Multi Flechette</option>
+                                        <option value="rs">Rubber Shot</option>
+                                        {{/ifCond}}
+                                        {{#ifCond data.data.tl '>=' 8 }}
+                                        <option value="apdu">Armour Piercing Depleted Uranium</option>
+                                        <option value="apdsdu">Armour Piercing Discarding-Sabot Depleted Uranium</option>
+                                        <option value="apfsdsdu">Armour Piercing Fin Stabilized Discarding Sabot Depleted Uranium</option>
+                                        <option value="msheat">Multi-Stage High Explosive Antitank</option>
+                                        <option value="thermobaric">Thermobaric</option>
+                                        {{/ifCond}}
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="firearm-projectile-type">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 160px">
+                                    Show Profile
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.firearmDesign.ammunition.{{id}}.showProfile" {{checked ammo.showProfile}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="bow-show-profile">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        {{/each}}
+
+                        <div>
+                            <a class="addAmmoRow" title="Add Row"><h2 class="bold" style="text-align: center;">Add A New Ammo Type</h2></a>
+                        </div>
                     </div>
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
