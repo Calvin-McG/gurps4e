@@ -101,6 +101,20 @@ export class materialHelpers {
         return selectedMaterial;
     }
 
+    static getExplosiveByCode(code) {
+        const explosives = this.fetchExplosives();
+        let selectedExplosive;
+        if (typeof name != "undefined"){
+            explosives.forEach( explosive => {
+                if (explosive.code.toLowerCase() == code.toLowerCase()) {
+                    selectedExplosive = explosive;
+                }
+            })
+        }
+
+        return selectedExplosive;
+    }
+
     static getAndCalculateArmourMaterialByName(name, essential) {
         let selectedMaterial = this.getArmourMaterialByName(name);
 
@@ -185,6 +199,63 @@ export class materialHelpers {
         }
 
         return pf
+    }
+
+    static fetchExplosives() {
+        const explosives = [
+            {"tl": 3,"name": "Serpentine Powder","ref": 0.3,"costPerLb": 5,"code": "serpentinePowder"},
+            {"tl": 4,"name": "Ammonium Nitrate","ref": 0.4,"costPerLb": 5,"code": "ammoniumNitrate"},
+            {"tl": 4,"name": "Corned Powder","ref": 0.4,"costPerLb": 5,"code": "cornedPowder"},
+            {"tl": 5,"name": "Improved Black Powder","ref": 0.5,"costPerLb": 5,"code": "improvedBlackPowder"},
+            {"tl": 5,"name": "Mercury Fulminate","ref": 0.5,"costPerLb": 5,"code": "mercuryFulminate"},
+            {"tl": 6,"name": "Lead Azide","ref": 0.4,"costPerLb": 5,"code": "leadAzide"},
+            {"tl": 6,"name": "Blasting Gelatin (60%)","ref": 0.8,"costPerLb": 7.5,"code": "blastingGelatin"},
+            {"tl": 6,"name": "Smokeless Powder","ref": 0.8,"costPerLb": 7.5,"code": "smokelessPowder"},
+            {"tl": 6,"name": "Cordite","ref": 0.8,"costPerLb": 7.5,"code": "cordite"},
+            {"tl": 6,"name": "Picric Acid","ref": 0.9,"costPerLb": 8.75,"code": "picricAcid"},
+            {"tl": 6,"name": "Lyddite","ref": 0.9,"costPerLb": 8.75,"code": "lyddite"},
+            {"tl": 6,"name": "TNT","ref": 1,"costPerLb": 10,"code": "tnt"},
+            {"tl": 6,"name": "Amatol 80/20","ref": 1.2,"costPerLb": 10,"code": "amatol"},
+            {"tl": 6,"name": "Dynamite (80%)","ref": 1.2,"costPerLb": 10,"code": "dynamite"},
+            {"tl": 6,"name": "Nitrocellulose","ref": 1.3,"costPerLb": 13,"code": "nitrocellulose"},
+            {"tl": 6,"name": "Guncotton","ref": 1.3,"costPerLb": 13,"code": "guncotton"},
+            {"tl": 6,"name": "Tetryl","ref": 1.3,"costPerLb": 14,"code": "tetryl"},
+            {"tl": 6,"name": "Torpex","ref": 1.3,"costPerLb": 14,"code": "torpex"},
+            {"tl": 6,"name": "Nitroglycerine (NG)","ref": 1.5,"costPerLb": 15,"code": "nitroglycerine"},
+            {"tl": 6,"name": "RDX","ref": 1.6,"costPerLb": 40,"code": "rdx"},
+            {"tl": 6,"name": "Hexogen","ref": 1.6,"costPerLb": 40,"code": "hexogen"},
+            {"tl": 6,"name": "Cyclonite","ref": 1.6,"costPerLb": 40,"code": "cyclonite"},
+            {"tl": 6,"name": "PETN","ref": 1.7,"costPerLb": 40,"code": "petn"},
+            {"tl": 7,"name": "ANFO","ref": 0.5,"costPerLb": 2,"code": "anfo"},
+            {"tl": 7,"name": "Military Dynamite","ref": 0.9,"costPerLb": 10,"code": "militaryDynamite"},
+            {"tl": 7,"name": "Pentolite","ref": 1.3,"costPerLb": 25,"code": "pentolite"},
+            {"tl": 7,"name": "Composition A","ref": 1.4,"costPerLb": 30,"code": "compositionA"},
+            {"tl": 7,"name": "Cyclotol","ref": 1.4,"costPerLb": 30,"code": "cyclotol"},
+            {"tl": 7,"name": "PE1","ref": 1.4,"costPerLb": 30,"code": "pe1"},
+            {"tl": 7,"name": "Composition B","ref": 1.4,"costPerLb": 30,"code": "compositionB"},
+            {"tl": 7,"name": "Composition C","ref": 1.4,"costPerLb": 30,"code": "compositionC"},
+            {"tl": 7,"name": "Composition C4","ref": 1.4,"costPerLb": 30,"code": "compositionC4"},
+            {"tl": 7,"name": "Semtex-H","ref": 1.4,"costPerLb": 30,"code": "semtexH"},
+            {"tl": 7,"name": "HBX","ref": 1.5,"costPerLb": 40,"code": "hbx"},
+            {"tl": 7,"name": "Octol","ref": 1.5,"costPerLb": 40,"code": "octol"},
+            {"tl": 7,"name": "PBXN-5","ref": 1.6,"costPerLb": 50,"code": "pbxn5"},
+            {"tl": 7,"name": "HMX","ref": 1.7,"costPerLb": 60,"code": "hmx"},
+            {"tl": 7,"name": "Octogen","ref": 1.7,"costPerLb": 60,"code": "octogen"},
+            {"tl": 7,"name": "Fuel-Air Explosive","ref": 5,"costPerLb": 120,"code": "fuelAirExplosive"},
+            {"tl": 8,"name": "Liquid Explosive Foam","ref": 1.1,"costPerLb": 10,"code": "liquidExplosiveFoam"},
+            {"tl": 8,"name": "Demex","ref": 1.4,"costPerLb": 40,"code": "demex"},
+            {"tl": 8,"name": "LX14","ref": 1.6,"costPerLb": 50,"code": "lx14"},
+            {"tl": 8,"name": "Thermobaric Composite","ref": 2,"costPerLb": 60,"code": "thermobaricComposite"},
+            {"tl": 8,"name": "CL20","ref": 2.3,"costPerLb": 60,"code": "cl20"},
+            {"tl": 9,"name": "Plastex B","ref": 4,"costPerLb": 20,"code": "plastexB"},
+            {"tl": 9,"name": "Octanitrocubane","ref": 4,"costPerLb": 20,"code": "octanitrocubane"},
+            {"tl": 10,"name": "High-Energy Explosive","ref": 6,"costPerLb": 40,"code": "highEnergyExplosive"},
+            {"tl": 10,"name": "Stabalized Metalic Hydrogen","ref": 6,"costPerLb": 40,"code": "stabalizedMetalicHydrogen"},
+            {"tl": 11,"name": "Plasma Explosive","ref": 10,"costPerLb": 100,"code": "plasmaExplosive"},
+            {"tl": 12,"name": "Plasma Explosive","ref": 20,"costPerLb": 100,"code": "plasmaExplosive"}
+        ]
+
+        return explosives;
     }
 
     static fetchArmourConstructionMethods() {
