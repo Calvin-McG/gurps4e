@@ -190,16 +190,18 @@ export class gurpsItemSheet extends ItemSheet {
         }
 
         let newRow = {
-            "length": 22,
             "plusp": false,
             "match": "0",
             "subsonic": false,
             "silent": false,
             "case": "cased",
             "projectile": "solid",
+            "projectiles": 1,
             "poison": false,
             "inc": false,
             "tracer": false,
+            "maxExplosivePercent": 0,
+            "rofBonus": 0,
         }; // Init the new arrow row
 
         this.item.data.data.firearmDesign.ammunition[newKey] = newRow;

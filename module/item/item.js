@@ -1106,7 +1106,11 @@ export class gurpsItem extends Item {
           "powderFlasks": false,
           "paperCartridges": false,
           "carefulLoading": false,
-          "baseWoundMod": "pi",
+          "baseWoundMod": 2, // 1 is pi-, 2 is pi, 3 is pi+, 4 is pi++
+          "maxSPi": 1,
+          "maxPi": 1,
+          "maxLPi": 1,
+          "maxHPi": 1,
 
           "rof": 3,
           "maxRof": 3,
@@ -1125,6 +1129,7 @@ export class gurpsItem extends Item {
           "yardsPerSecond": 10,
 
           "ammunition": [],
+          "explosives": [],
         }
       }
 
@@ -1165,6 +1170,8 @@ export class gurpsItem extends Item {
       if (typeof this.data.data.firearmDesign.cf == "undefined" || this.data.data.firearmDesign.cf <= 0 || this.data.data.firearmDesign.cf == "") {
         this.data.data.firearmDesign.cf = 1;
       }
+
+      this.data.data.firearmDesign.explosives = game.materialAPI.fetchExplosives();
 
       // The weapon is a muzzle loader, breach loader, or break action and magazine related info will be hidden
       if (this.data.data.firearmDesign.action === "break" || this.data.data.firearmDesign.action === "breech" || this.data.data.firearmDesign.action === "muzzle") {
@@ -1253,24 +1260,24 @@ export class gurpsItem extends Item {
       // Wound modifier calculation
 
       if (this.data.data.firearmDesign.projectileCalibre < 4) {
-        this.data.data.firearmDesign.baseWoundMod = "pi-";
+        this.data.data.firearmDesign.baseWoundMod = 1;
       }
       else if (this.data.data.firearmDesign.projectileCalibre < 8) {
         if (kineticEnergy > 1250 || metresPerSecond > 700) { // If the projectile is moving quickly enough or carrying enough energy, count is as 'pi', otherwise it remains pi-
-          this.data.data.firearmDesign.baseWoundMod = "pi";
+          this.data.data.firearmDesign.baseWoundMod = 2;
         }
         else {
-          this.data.data.firearmDesign.baseWoundMod = "pi-";
+          this.data.data.firearmDesign.baseWoundMod = 1;
         }
       }
       else if (this.data.data.firearmDesign.projectileCalibre < 10) {
-        this.data.data.firearmDesign.baseWoundMod = "pi";
+        this.data.data.firearmDesign.baseWoundMod = 2;
       }
       else if (this.data.data.firearmDesign.projectileCalibre < 15) {
-        this.data.data.firearmDesign.baseWoundMod = "pi+";
+        this.data.data.firearmDesign.baseWoundMod = 3;
       }
       else {
-        this.data.data.firearmDesign.baseWoundMod = "pi++";
+        this.data.data.firearmDesign.baseWoundMod = 4;
       }
 
       // ACC calculation
@@ -1806,6 +1813,336 @@ export class gurpsItem extends Item {
 
       this.data.data.firearmDesign.baseCost = cost;
       this.data.data.firearmDesign.finalCost = this.data.data.firearmDesign.cf * this.data.data.firearmDesign.baseCost;
+
+      // Pre-calculate helpers for ammo related stuff
+      // Shot
+      this.data.data.firearmDesign.maxSPi = Math.floor((this.data.data.firearmDesign.projectileCalibre/5) ** 3);
+      this.data.data.firearmDesign.maxPi = Math.floor((this.data.data.firearmDesign.projectileCalibre/8) ** 3);
+      this.data.data.firearmDesign.maxLPi = Math.floor((this.data.data.firearmDesign.projectileCalibre/10) ** 3);
+      this.data.data.firearmDesign.maxHPi = Math.floor((this.data.data.firearmDesign.projectileCalibre/15) ** 3);
+
+      // Flechettes
+      this.data.data.firearmDesign.maxSPiF = Math.floor(((this.data.data.firearmDesign.projectileCalibre/5) ** 3) / 40);
+      this.data.data.firearmDesign.maxPiF = Math.floor(((this.data.data.firearmDesign.projectileCalibre/8) ** 3) / 40);
+      this.data.data.firearmDesign.maxLPiF = Math.floor(((this.data.data.firearmDesign.projectileCalibre/10) ** 3) / 40);
+      this.data.data.firearmDesign.maxHPiF = Math.floor(((this.data.data.firearmDesign.projectileCalibre/15) ** 3) / 40);
+
+      // Calculate Ammo Stuff
+      if (typeof this.data.data.firearmDesign.ammunition != "undefined") {
+        let ammoKeys = Object.keys(this.data.data.firearmDesign.ammunition); // Get the ammo keys
+        if (ammoKeys.length > 0) { // If there are actually keys
+          for (let i = 0; i < ammoKeys.length; i++) { // Loop through the ammo the user has created and run whatever numbers need to be run.
+            // Input validation for projectile count
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles = Math.floor(Math.abs(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles));
+
+            // Init some things
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].wps = this.data.data.firearmDesign.baseWeightPerShot;
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps = this.data.data.firearmDesign.cps;
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF = 1;
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].malf = this.data.data.firearmDesign.malf;
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc = this.data.data.firearmDesign.baseAcc;
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage = this.data.data.firearmDesign.baseDamage;
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].st = this.data.data.firearmDesign.st;
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange = this.data.data.firearmDesign.halfRange;
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange = this.data.data.firearmDesign.maxRange;
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = this.data.data.firearmDesign.baseWoundMod;
+
+            // Light cased
+            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].case === "lightCased") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].wps *= 0.7;
+            }
+
+            // +P ammo
+            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].plusp) {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.1;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].st *= 1.1;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1.1;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1.1;
+              if (this.data.data.tl <= 6 || this.data.data.firearmDesign.reliability < 0) { // Weapon is low TL or cheap
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].malf -= 1;
+              }
+            }
+
+            // Match ammo
+            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].match !== "1") {
+              if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].match === "1.25") {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+                if (this.data.data.firearmDesign.baseAcc >= 4) {
+                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc = Math.floor(this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc * 1.25);
+                }
+              }
+              else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].match === "1.5") {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
+                if (this.data.data.firearmDesign.baseAcc >= 2) {
+                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc = Math.floor(this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc * 1.5);
+                }
+              }
+            }
+
+            // Subsonic ammo
+            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].subsonic !== "1") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.3;
+              if (this.data.data.firearmDesign.yardsPerSecond >= 375.109) {
+                if (kineticEnergy > 1250 || metresPerSecond > 700) { // If the projectile is moving quickly enough or carrying enough energy, count is as a rifle round, otherwise a pistol round
+                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.6;
+                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 0.6;
+                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 0.6;
+                }
+                else {
+                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 0.8;
+                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 0.8;
+                }
+              }
+            }
+
+            // Silent ammo
+            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].plusp) {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 9;
+            }
+
+            // Poison ammo
+            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].poison) {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0;
+            }
+
+            // Incendiary and tracer ammo
+            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].inc || this.data.data.firearmDesign.ammunition[ammoKeys[i]].tracer) {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage += 1;
+            }
+
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 1;
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = false;
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 0;
+
+            // Projectile Type
+            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "le" ||
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "he") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 15;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "thermobaric") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 25;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 7;
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "saple" ||
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "saphe") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 10;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = true;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "saphec") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 20;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "apex") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = true;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.7;
+              if (this.data.data.firearmDesign.projectileCalibre < 20) {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+              }
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "aphex") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = true;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
+              if (this.data.data.firearmDesign.projectileCalibre < 20) {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+              }
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "heat") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 25;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 10;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "msheat") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 25;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 10;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 7;
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "hedp") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 25;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 10;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = true;
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "hesh") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 95;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "efp") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 50;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = true;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 7;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 4;
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "hp") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod += 1;
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "frangible") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod += 1;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 0.9;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 0.9;
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "ap") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.7;
+              if (this.data.data.firearmDesign.projectileCalibre < 20) {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+              }
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "aphc") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              if (this.data.data.firearmDesign.projectileCalibre < 20) {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+              }
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "apdu") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.2;
+              if (this.data.data.firearmDesign.projectileCalibre < 20) {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+              }
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "apds") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.3;
+              if (this.data.data.firearmDesign.projectileCalibre < 30) {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+              }
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "apdsdu") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1.5;
+              if (this.data.data.firearmDesign.projectileCalibre < 30) {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+              }
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "apfsds") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 2;
+              if (this.data.data.firearmDesign.projectileCalibre < 40) {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+              }
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "apfsdsdu") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 4;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.7;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 2;
+              if (this.data.data.firearmDesign.projectileCalibre < 40) {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+              }
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "sapfsds") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "baton") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 0.2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 0.2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc -= 1;
+              if (this.data.data.firearmDesign.projectileCalibre >= 35) {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "cr dbk";
+              }
+              else {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "cr";
+              }
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "bean") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1/8;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1/8;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc = 0;
+              if (this.data.data.firearmDesign.projectileCalibre >= 15) {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "cr dbk";
+              }
+              else {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "cr";
+              }
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "underwater") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "imp";
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "shotshell" || this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "canister") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= (1 / Math.sqrt(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles));
+              let projectileDiameter = ((this.data.data.firearmDesign.projectileCalibre ** 3) / this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles) ** (1/3)
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange = projectileDiameter * 5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange = projectileDiameter * 100;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "mf") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= (1 / Math.sqrt(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles));
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
+              let projectileDiameter = ((this.data.data.firearmDesign.projectileCalibre ** 3) / this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles) ** (1/3)
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange = projectileDiameter * 50;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange = projectileDiameter * 600;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "rs") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= (1 / Math.sqrt(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles));
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              let projectileDiameter = ((this.data.data.firearmDesign.projectileCalibre ** 3) / this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles) ** (1/3)
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange = projectileDiameter * 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange = projectileDiameter * 10;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "duplex") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.85;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles = 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1/2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1/2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "triplex") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.7;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles = 3;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1/3;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1/3;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
+            }
+
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].rofBonus = generalHelpers.rofToBonus(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles);
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].damageObject = generalHelpers.pointsToDiceAndAdds(this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage);
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].damageDice = generalHelpers.diceAndAddsToGURPSOutput(this.data.data.firearmDesign.ammunition[ammoKeys[i]].damageObject.dice, this.data.data.firearmDesign.ammunition[ammoKeys[i]].damageObject.adds);
+          }
+        }
+      }
 
       // Adding melee profiles
       if (this.data.data.firearmDesign.meleeProfile) { // If the user wants to include a melee profile
@@ -6476,6 +6813,35 @@ export class gurpsItem extends Item {
         info = "<table>" +
             "<tr>" +
             "<td><p>See high tech 165.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "number-of-shots") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>Rather than add a shitload more dropdowns, the projectiles will automatically be as large as they can be, based on the quantity you select.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td><p>You don't need to pick the specific numbers listed for Max Number of Shots, but they are generally the breakpoints you want to aim for. If any of the numbers are zero, then that just means there's not enough space for projectiles of that size.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td><p>In theory, you can set this value even higher than the figure I give as the max for small piercing. Values as high as 3000 or 5000 are even technically allowed. However at that point you're shooting grains of sand at people and it's not going to do much damage. If any.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td><p>My suggestion is to either pick the max value for the wounding type you want, or pick the number that best fits your desired Rof bonus.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "explosive-filler") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>Select the type and quantity of explosive filler you want.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td><p>REF is the Relative Explosive Force, with higher numbers being more explody.</p></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td><p>The slider sets the percentage of the projectile that is made up of explosive filler. You will almost always want to set this to it's maximum value.</p></td>" +
             "</tr>" +
             "</table>"
       }

@@ -1823,6 +1823,7 @@
                             </tr>
 
                             {{#unless (or (eq data.data.firearmDesign.action "breech") (eq data.data.firearmDesign.action "muzzle") ) }}
+                            {{#ifCond ../data.data.tl '>=' 5 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
                                     Casing Type
@@ -1841,9 +1842,10 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{/ifCond}}
                             {{/unless}}
 
-                            {{#ifCond data.data.tl '>=' 4 }}
+                            {{#ifCond ../data.data.tl '>=' 4 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
                                     Extra Powerful Ammunition
@@ -1859,14 +1861,14 @@
                             </tr>
                             {{/ifCond}}
 
-                            {{#ifCond  data.data.tl '>=' 6 }}
+                            {{#ifCond ../data.data.tl '>=' 6 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
                                     Match-Grade
                                 </td>
                                 <td>
-                                    <select name="data.firearmDesign.ammunition.{{id}}.case">
-                                        {{#select ammo.case}}
+                                    <select name="data.firearmDesign.ammunition.{{id}}.match">
+                                        {{#select ammo.match}}
                                         <option value="1">Standard Grade</option>
                                         <option value="1.25">Match Grade (TL6)</option>
                                         <option value="1.5">Handloaded Match Grade (TL6)</option>
@@ -1881,7 +1883,7 @@
                             </tr>
                             {{/ifCond}}
 
-                            {{#ifCond data.data.tl '>=' 6 }}
+                            {{#ifCond ../data.data.tl '>=' 6 }}
                             {{#ifCond data.data.firearmDesign.yardsPerSecond '>=' 375.109 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
@@ -1899,7 +1901,7 @@
                             {{/ifCond}}
                             {{/ifCond}}
 
-                            {{#ifCond data.data.tl '>=' 6 }}
+                            {{#ifCond ../data.data.tl '>=' 6 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
                                     Silent Ammunition
@@ -1915,7 +1917,7 @@
                             </tr>
                             {{/ifCond}}
 
-                            {{#ifCond data.data.tl '>=' 5 }}
+                            {{#ifCond ../data.data.tl '>=' 5 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
                                     Poison Ammunition
@@ -1931,7 +1933,7 @@
                             </tr>
                             {{/ifCond}}
 
-                            {{#ifCond data.data.tl '>=' 5 }}
+                            {{#ifCond ../data.data.tl '>=' 5 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
                                     Incendiary Ammunition
@@ -1947,7 +1949,7 @@
                             </tr>
                             {{/ifCond}}
 
-                            {{#ifCond data.data.tl '>=' 5 }}
+                            {{#ifCond ../data.data.tl '>=' 6 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
                                     Tracer Ammunition
@@ -1955,7 +1957,7 @@
                                 <td>
                                     <input type="checkbox" name="data.firearmDesign.ammunition.{{id}}.tracer" {{checked ammo.tracer}} data-dtype="Boolean"/>
                                 </td>
-                                <td class="question-container" id="inc">
+                                <td class="question-container" id="tracer">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>
@@ -1969,48 +1971,70 @@
                                 </td>
                                 <td>
                                     <select name="data.firearmDesign.ammunition.{{id}}.projectile">
-                                        {{#select ammo.case}}
+                                        {{#select ammo.projectile}}
                                         <option value="solid">Solid</option>
-                                        {{#ifCond data.data.tl '>=' 4 }}
+                                        {{#ifCond ../data.data.tl '>=' 4 }}
                                         <option value="le">Low Explosive</option>
-                                        <option value="shotshell">Shotshell / Canister</option>
+                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 5 }}
+                                        <option value="shotshell">Shotshell</option>
                                         {{/ifCond}}
-                                        {{#ifCond data.data.tl '>=' 5 }}
+                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 20 }}
+                                        <option value="canister">Canister</option>
+                                        {{/ifCond}}
+                                        {{/ifCond}}
+                                        {{#ifCond ../data.data.tl '>=' 5 }}
                                         <option value="hp">Hollow Point</option>
                                         <option value="saple">Semi Armour Piercing Low Explosive</option>
                                         {{/ifCond}}
-                                        {{#ifCond data.data.tl '>=' 6 }}
+                                        {{#ifCond ../data.data.tl '>=' 6 }}
                                         <option value="ap">Armour Piercing</option>
                                         <option value="aphc">Armour Piercing Hardcore</option>
                                         <option value="frangible">Frangible</option>
                                         <option value="apex">Armour Piercing Explosive</option>
                                         <option value="he">High Explosive</option>
-                                        <option value="saple">Semi Armour Piercing High Explosive</option>
+                                        <option value="saphe">Semi Armour Piercing High Explosive</option>
                                         <option value="saphec">Semi Armour Piercing High Explosive Concussion</option>
                                         <option value="duplex">Duplex</option>
                                         <option value="triplex">Triplex</option>
                                         {{/ifCond}}
-                                        {{#ifCond data.data.tl '>=' 7 }}
+                                        {{#ifCond ../data.data.tl '>=' 7 }}
                                         <option value="apds">Armour Piercing Discarding Sabot</option>
                                         <option value="apfsds">Armour Piercing Fin Stabilized Discarding Sabot</option>
+                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 10 }}
                                         <option value="baton">Baton</option>
+                                        {{/ifCond}}
+                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 9 }}
                                         <option value="bean">Beanbag</option>
+                                        {{/ifCond}}
+                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '<=' 10 }}
                                         <option value="sapfsds">Semi Armor Piercing Fin Stabilized Discarding Sabot</option>
+                                        {{/ifCond}}
                                         <option value="underwater">Underwater Dart</option>
-                                        <option value="aphex">Armour Piercing High Explosive</option>
+                                        <option value="aphex">Armour Piercing Hardcore Explosive</option>
+                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 50 }}
                                         <option value="efp">Explosively Formed Projectile</option>
+                                        <option value="hesh">High Explosive Squash Head</option>
+                                        {{/ifCond}}
+                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 20 }}
                                         <option value="heat">High Explosive Antitank</option>
                                         <option value="hedp">High Explosive Dual Purpose</option>
-                                        <option value="hesh">High Explosive Squash Head</option>
+                                        {{/ifCond}}
+                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 10 }}
                                         <option value="mf">Multi Flechette</option>
                                         <option value="rs">Rubber Shot</option>
                                         {{/ifCond}}
-                                        {{#ifCond data.data.tl '>=' 8 }}
+                                        {{#ifCond ../data.data.tl '>=' 8 }}
                                         <option value="apdu">Armour Piercing Depleted Uranium</option>
                                         <option value="apdsdu">Armour Piercing Discarding-Sabot Depleted Uranium</option>
+                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 10 }}
                                         <option value="apfsdsdu">Armour Piercing Fin Stabilized Discarding Sabot Depleted Uranium</option>
+                                        {{/ifCond}}
+                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 50 }}
                                         <option value="msheat">Multi-Stage High Explosive Antitank</option>
+                                        {{/ifCond}}
+                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 20 }}
                                         <option value="thermobaric">Thermobaric</option>
+                                        {{/ifCond}}
                                         {{/ifCond}}
                                         {{/select}}
                                     </select>
@@ -2021,6 +2045,96 @@
                                     </div>
                                 </td>
                             </tr>
+
+                            {{#if (or (eq ammo.projectile "shotshell") (eq ammo.projectile "rs"))  }}
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Number of Shots
+                                </td>
+                                <td>
+                                    <input type="text" name="data.firearmDesign.ammunition.{{id}}.projectiles" value="{{ammo.projectiles}}" data-dtype="Number"/>
+                                    Rate of Fire Bonus: {{ammo.rofBonus}}
+                                </td>
+                                <td class="question-container" id="number-of-shots">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Max Number of Shots
+                                </td>
+                                <td colspan="2">
+                                    pi++: {{../data.data.firearmDesign.maxHPi}} pi+: {{../data.data.firearmDesign.maxLPi}} pi: {{../data.data.firearmDesign.maxPi}} pi-: {{../data.data.firearmDesign.maxSPi}}
+                                </td>
+                            </tr>
+                            {{/if}}
+
+                            {{#if (eq ammo.projectile "mf")  }}
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Number of Shots
+                                </td>
+                                <td>
+                                    <input type="text" name="data.firearmDesign.ammunition.{{id}}.projectiles" value="{{ammo.projectiles}}" data-dtype="Number"/>
+                                    Rate of Fire Bonus: {{ammo.rofBonus}}
+                                </td>
+                                <td class="question-container" id="number-of-shots">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Max Number of Shots
+                                </td>
+                                <td colspan="2">
+                                    pi++: {{../data.data.firearmDesign.maxHPiF}} pi+: {{../data.data.firearmDesign.maxLPiF}} pi: {{../data.data.firearmDesign.maxPiF}} pi-: {{../data.data.firearmDesign.maxSPiF}}
+                                </td>
+                            </tr>
+                            {{/if}}
+
+                            {{#ifCond ammo.maxExplosivePercent '>' 0 }}
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Explosive Filler
+                                </td>
+                                <td>
+                                    <select name="data.firearmDesign.ammunition.{{id}}.explosiveFiller">
+                                        {{#select ammo.explosiveFiller}}
+                                        {{#each ../data.data.firearmDesign.explosives as |explosive id|}}
+                                        {{#ifCond ../../data.data.tl '>=' explosive.tl}}
+                                        <option value="{{explosive.code}}">{{explosive.name}} - REF: {{explosive.ref}}</option>
+                                        {{/ifCond}}
+                                        {{/each}}
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="explosive-filler">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    % Explosive Filler By Mass
+                                </td>
+                                <td colspan="2">
+                                    <input type="range" min="0" max="{{ammo.maxExplosivePercent}}" step="0.5" name="data.firearmDesign.ammunition.{{id}}.explosivePercent" value="{{ammo.explosivePercent}}" data-dtype="Number">
+                                </td>
+                            </tr>
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Explosive Damage and Fragmentation
+                                </td>
+                                <td colspan="2">
+                                    {{ammo.explosiveDamage}} cr and [{{ammo.explosiveDamage}}]
+                                </td>
+                            </tr>
+                            {{/ifCond}}
 
                             <tr class="design-row">
                                 <td style="width: 160px">
