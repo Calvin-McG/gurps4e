@@ -2239,7 +2239,28 @@ export class gurpsItem extends Item {
               }
             }
 
-            // TODO - Handle Follow up explosions, probably as another attack type.
+            // Handle explosive calculation
+            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosivePercent > 0) {
+
+              let explosive = materialHelpers.getExplosiveByCode(this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveFiller);
+
+              let baseExplosiveDamage = 21 * (Math.sqrt((this.data.data.firearmDesign.ammunition[ammoKeys[i]].wps * (this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosivePercent / 100)) * 4 * explosive.ref));
+
+              if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag) {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveDamage = Math.round(baseExplosiveDamage * 0.7);
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamage = Math.round(baseExplosiveDamage * 0.3);
+              }
+              else {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveDamage = Math.round(baseExplosiveDamage);
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamage = 0;
+              }
+
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveDamageObject = generalHelpers.pointsToDiceAndAdds(this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveDamage);
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveDamageDice = generalHelpers.diceAndAddsToGURPSOutput(this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveDamageObject.dice, this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveDamageObject.adds);
+
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamageObject = generalHelpers.pointsToDiceAndAdds(this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamage);
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamageDice = generalHelpers.diceAndAddsToGURPSOutput(this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamageObject.dice, this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamageObject.adds);
+            }
 
             this.data.data.firearmDesign.ammunition[ammoKeys[i]].st = Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].st);
             this.data.data.firearmDesign.ammunition[ammoKeys[i]].range = Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange) + "/" + Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange);
@@ -4106,6 +4127,50 @@ export class gurpsItem extends Item {
             "wps": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].wps * 100) / 100
           }
           rangedProfiles.push(profile);
+
+          if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosivePercent > 0) {
+            let followUpExplosion = {
+              "name": this.data.name + " - " + this.data.data.firearmDesign.ammunition[ammoKeys[i]].name + " - Explosion",
+              "skill": this.data.data.firearmDesign.rangedSkill,
+              "skillMod": skillMod,
+              "acc": this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc,
+              "damageInput": this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveDamageDice,
+              "damageType": "cr ex",
+              "armourDivisor": 1,
+              "range": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange) + "/" + Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange),
+              "rof": rof,
+              "shots": this.data.data.firearmDesign.shots,
+              "bulk": Math.round(this.data.data.firearmDesign.bulk),
+              "rcl": this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl,
+              "st": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].st),
+              "malf": this.data.data.firearmDesign.ammunition[ammoKeys[i]].malf,
+              "cps": Math.round((this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps * this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF) * 100) / 100,
+              "wps": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].wps * 100) / 100
+            }
+            rangedProfiles.push(followUpExplosion);
+          }
+
+          if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag) {
+            let followUpFrag = {
+              "name": this.data.name + " - " + this.data.data.firearmDesign.ammunition[ammoKeys[i]].name + " - Fragments",
+              "skill": this.data.data.firearmDesign.rangedSkill,
+              "skillMod": skillMod,
+              "acc": this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc,
+              "damageInput": this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamageDice,
+              "damageType": "cut",
+              "armourDivisor": 1,
+              "range": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange) + "/" + Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange),
+              "rof": rof,
+              "shots": this.data.data.firearmDesign.shots,
+              "bulk": Math.round(this.data.data.firearmDesign.bulk),
+              "rcl": this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl,
+              "st": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].st),
+              "malf": this.data.data.firearmDesign.ammunition[ammoKeys[i]].malf,
+              "cps": Math.round((this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps * this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF) * 100) / 100,
+              "wps": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].wps * 100) / 100
+            }
+            rangedProfiles.push(followUpFrag);
+          }
         }
       }
 

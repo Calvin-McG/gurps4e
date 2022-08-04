@@ -2132,14 +2132,16 @@
                                     <input type="range" min="0" max="{{ammo.maxExplosivePercent}}" step="0.5" name="data.firearmDesign.ammunition.{{id}}.explosivePercent" value="{{ammo.explosivePercent}}" data-dtype="Number">
                                 </td>
                             </tr>
-                            <tr class="design-row">
-                                <td style="line-height: 27.5px">
-                                    Explosive Damage and Fragmentation
-                                </td>
-                                <td colspan="2">
-                                    {{ammo.explosiveDamage}} cr and [{{ammo.explosiveDamage}}]
-                                </td>
-                            </tr>
+                            {{#ifCond ammo.explosivePercent '>' 0 }}
+                                <tr class="design-row">
+                                    <td style="line-height: 27.5px">
+                                        Explosive Damage and Fragmentation
+                                    </td>
+                                    <td colspan="2">
+                                        {{ammo.explosiveDamage}} cr and [{{ammo.fragDamage}}] or {{ammo.explosiveDamageDice}} cr and [{{ammo.fragDamageDice}}]
+                                    </td>
+                                </tr>
+                            {{/ifCond}}
                             {{/ifCond}}
 
                             <tr class="design-row">
