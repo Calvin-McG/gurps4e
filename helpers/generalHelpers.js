@@ -33,7 +33,6 @@ export class generalHelpers {
 
         diceAndAdds.dice = Math.floor(points/3.5);
         diceAndAdds.adds = Math.floor(3.5*(points/3.5-Math.floor(points/3.5)));
-
         return diceAndAdds;
     }
 
@@ -51,6 +50,6 @@ export class generalHelpers {
         else if (adds < 0) {
             result += "-" + +Math.abs(+adds);
         }
-        return result
+        return result;
     }
 }

@@ -1410,7 +1410,7 @@
                                     {{#if (eq data.data.firearmDesign.cartridgeType "custom")}}
                                         <input type="range" min="0.01" max="1" step="0.01" name="data.firearmDesign.burnRatio" value="{{data.data.firearmDesign.burnRatio}}" data-dtype="Number"> / {{data.data.firearmDesign.burnRatio}} mm / {{mmToIn data.data.firearmDesign.burnRatio 10}} in
                                     {{else}}
-                                    {{round data.data.firearmDesign.burnRatio 100}} / {{round data.data.firearmDesign.burnLength 100}} mm / {{mmToIn data.data.firearmDesign.burnLength 100}} in
+                                    {{round data.data.firearmDesign.burnRatio 100}}% / {{round data.data.firearmDesign.burnLength 100}} mm / {{mmToIn data.data.firearmDesign.burnLength 100}} in
                                     {{/if}}
                                 </td>
                                 <td class="question-container" id="burn-length">

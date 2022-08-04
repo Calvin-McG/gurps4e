@@ -1559,7 +1559,6 @@ export class gurpsItem extends Item {
       }
 
       // Range
-
       let sectionalDensity = (this.data.data.firearmDesign.projectileMass/15.43)/(Math.PI*(this.data.data.firearmDesign.projectileCalibre/2) ** 2); // D37
       let lossCoefficient = 0.000178 * sectionalDensity ** - 1.1213 / Math.pow(this.data.data.firearmDesign.projectileAspectRatio,1/4)*1.65; // D38
 
@@ -1569,7 +1568,6 @@ export class gurpsItem extends Item {
       this.data.data.firearmDesign.maxRange = Math.round((Math.log(13.3926)+Math.log(0.017)-0.52*Math.log(totalAcceleratedKgs/2)+0.157*Math.log(bulletCrossSection))/(-1.04*lossCoefficient) + Math.log(metresPerSecond)/lossCoefficient);
 
       // Malf
-
       this.data.data.firearmDesign.malf = 17;
 
       switch (this.data.data.tl) {
