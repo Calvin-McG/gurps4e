@@ -14,7 +14,7 @@ export class rollHelpers {
 
         html += "</br>";
 
-        if(modifier >= 0){//modifier is zero or positive
+        if(modifier >= 0) { //modifier is zero or positive
             html += "<span class='tooltip'>Rolls a " + skillRoll + " vs " + (+level + +modifier) +
                 "<span class='tooltiptext'>" + level + " + " + modifier + "</span>" +
                 "</span>";
@@ -38,13 +38,13 @@ export class rollHelpers {
         }
         html += "</div>"
 
-        if (skillRoll == 18){//18 is always a crit fail
+        if (skillRoll == 18) { //18 is always a crit fail
             html += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Automatic Crit Fail by " + margin + "</div>"
             crit = true;
             success = false;
         }
-        else if (skillRoll == 17){//17 is a crit fail if effective skill is less than 16, autofail otherwise
-            if (effectiveSkill < 16){//Less than 16, autocrit
+        else if (skillRoll == 17) { //17 is a crit fail if effective skill is less than 16, autofail otherwise
+            if (effectiveSkill < 16) { //Less than 16, autocrit
                 html += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Automatic Crit Fail by " + margin + "</div>"
                 crit = true;
                 success = false;
@@ -55,32 +55,32 @@ export class rollHelpers {
                 success = false;
             }
         }
-        else if (margin <= -10){//Fail by 10 is a crit fail
+        else if (margin <= -10) { //Fail by 10 is a crit fail
             html += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Crit Fail by " + margin + "</div>"
             crit = true;
             success = false;
         }
-        else if (margin < 0){//Fail is a fail
+        else if (margin < 0) { //Fail is a fail
             html += "<div style='font-weight: bold; color: rgb(199, 137, 83);'>Fail by " + margin + "</div>"
             crit = false;
             success = false;
         }
-        else if (skillRoll == 3 || skillRoll == 4){//3 and 4 are always a crit success
+        else if (skillRoll == 3 || skillRoll == 4) { //3 and 4 are always a crit success
             html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Automatic Critical Success by " + margin + "</div>"
             crit = true;
             success = true;
         }
-        else if (skillRoll == 5 && effectiveSkill == 15){//5 is a crit if effective skill is 15
+        else if (skillRoll == 5 && effectiveSkill == 15) { //5 is a crit if effective skill is 15
             html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Critical Success by " + margin + "</div>"
             crit = true;
             success = true;
         }
-        else if (skillRoll == 6 && effectiveSkill == 16){//6 is a crit if effective skill is 16
+        else if (skillRoll == 6 && effectiveSkill == 16) { //6 is a crit if effective skill is 16
             html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Critical Success by " + margin + "</div>"
             crit = true;
             success = true;
         }
-        else if (margin >= 0){//Regular success
+        else if (margin >= 0) { //Regular success
             html += "<div style='font-weight: bold; color: rgb(141, 142, 222)'>Success by " + margin + "</div>"
             crit = false;
             success = true;

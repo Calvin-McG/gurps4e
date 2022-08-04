@@ -2239,6 +2239,8 @@ export class gurpsItem extends Item {
               }
             }
 
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps = Math.round((this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps * this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF) * 100) / 100
+
             // Handle explosive calculation
             if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosivePercent > 0) {
 
@@ -4127,7 +4129,7 @@ export class gurpsItem extends Item {
             "rcl": this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl,
             "st": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].st),
             "malf": this.data.data.firearmDesign.ammunition[ammoKeys[i]].malf,
-            "cps": Math.round((this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps * this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF) * 100) / 100,
+            "cps": this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps,
             "wps": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].wps * 100) / 100
           }
           rangedProfiles.push(profile);
