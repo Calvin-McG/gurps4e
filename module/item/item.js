@@ -1126,6 +1126,8 @@ export class gurpsItem extends Item {
           "stCode": "",
           "bulk": -3,
 
+          "explosivePercent": 0,
+
           "accuracy": 0, // -2 for cheap, 0 for good, 1 for fine, 2 for very fine. This is a direct mod to ACC
           "reliability": 0, // -1 for cheap, 0 for good, 1 for fine, 2 for very fine. This is a direct mod to Malf
 
@@ -1968,6 +1970,14 @@ export class gurpsItem extends Item {
             // Projectile Type
             if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "le" ||
                 this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "he") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 15;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = true;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+            }
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "lec" ||
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "hec") {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 15;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
