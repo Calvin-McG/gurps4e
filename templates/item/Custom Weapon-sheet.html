@@ -2193,7 +2193,7 @@
 
                 <div>
                     <h2 class="bold" style="text-align: center;">Design Results</h2>
-                    <h3 class="bold" style="text-align: center;">Check the boxes to have that row added to your combat tab and the combat macro.</h3>
+                    <h3 class="bold" style="text-align: center;">Too see a row listed here, and on the combat macro, check the "Show Profile" box for the ammo type in question.</h3>
                 </div>
                 <table>
                     <tr>
@@ -2212,8 +2212,7 @@
                         <td>Malf</td>
                     </tr>
                     {{#each data.data.ranged as |ammo id|}}
-                    {{log ammo}}
-                    <tr class="custom-laser-air">
+                    <tr>
                         <td>{{../data.data.tl}}</td>
                         <td>{{../data.name}} - {{ammo.name}}</td>
                         <td>{{ammo.damageInput}} ({{ammo.armourDivisor}}) {{ammo.damageType}}</td>
