@@ -2241,6 +2241,10 @@ export class gurpsItem extends Item {
 
             this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps = Math.round((this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps * this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF) * 100) / 100
 
+            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent == 0) {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosivePercent = 0;
+            }
+
             // Handle explosive calculation
             if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosivePercent > 0) {
 
@@ -2266,6 +2270,10 @@ export class gurpsItem extends Item {
               // Add the cost of the explosives to the cost of the shot
               let explosiveCost = explosive.costPerLb * (this.data.data.firearmDesign.ammunition[ammoKeys[i]].wps * (this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosivePercent / 100));
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps += explosiveCost;
+            }
+            else {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveDamage = 0;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamage = 0;
             }
 
             this.data.data.firearmDesign.ammunition[ammoKeys[i]].st = Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].st);
@@ -4115,7 +4123,7 @@ export class gurpsItem extends Item {
           }
 
           let profile = {
-            "name": this.data.name + " - " + this.data.data.firearmDesign.ammunition[ammoKeys[i]].name,
+            "name": this.data.data.firearmDesign.ammunition[ammoKeys[i]].name,
             "skill": this.data.data.firearmDesign.rangedSkill,
             "skillMod": skillMod,
             "acc": this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc,

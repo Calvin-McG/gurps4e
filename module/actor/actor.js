@@ -2473,22 +2473,85 @@ export class gurpsActor extends Actor {
 			}
 		}
 
-		rollHelpers.skillRoll(level, mod, label, false).then( rollInfo => {
+		rollHelpers.rangedAttackRoll(level, mod, label, false, attack.malf).then( rollInfo => {
 			let messageContent = rollInfo.content;
 			let flags = {}
+			let malfunctionType = "";
+
+			if (rollInfo.malfunction) {
+				malfunctionType = rollHelpers.getMalfunctionType();
+			}
 
 			if (rollInfo.success == false) {
 				messageContent += attacker.name + " misses " + target.name + "</br>";
+				if (rollInfo.malfunction == true) {
+					switch (malfunctionType) {
+						case "mech":
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>" + attacker.name + "'s weapon has a mechanical or electrical issue. It fails to fire, and it will take at least an hour to fix.</div></br>";
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>(If it's a grenade it still goes off, but 1d6 seconds late)</div></br>";
+							break;
+						case "misfire":
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>" + attacker.name + "'s weapon has a misfire. It fails to fire, and it will take three Ready maneuvers and an Armoury+2 or IQ based weapons skill to fix.</div></br>";
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>(If it's a grenade it's a dude and will never explode.)</div></br>";
+							break;
+						case "stoppage":
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>" + attacker.name + "'s weapon has a stoppage. It fires once and then stops working. It will take three Ready maneuvers and an Armoury+0 or IQ based weapons roll at -4 to fix.</div></br>";
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>(If it's a grenade it's a dude and will never explode.)</div></br>";
+							break;
+						case "mechEx":
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>" + attacker.name + "'s weapon has a mechanical or electrical issue. It fails to fire, and it will take at least an hour to fix.</div></br>";
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Additionally, if the weapon is a firearm or grenade from TL3 or TL4, it explodes! The weapon does 1d6+2 cr ex [2d], or if the weapon has a warhead, use that damage instead.</div></br>";
+							break;
+						default:
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>" + attacker.name + "'s weapon has malfunction.</div></br>";
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>(If it's a grenade it's a dude and will never explode.)</div></br>";
+							break;
+					}
+				}
 			}
 			else {
 				let hits;
 				if (attack.type == "ranged") {
 					let rcl = attack.rcl ? attack.rcl : 1;
-					hits = Math.min( ((Math.floor(rollInfo.margin / Math.abs(rcl))) + 1) , rof.rof ); // Get the number of hits based on how many times rcl fits into margin, plus one. Then cap with the number of shots actually fired
+					if (rollInfo.malfunction == true && malfunctionType === "stoppage") {
+						hits = 1; // Stoppages still fire once.
+					}
+					else if (rollInfo.malfunction == true) {
+						hits = 0; // All other malfunction types mean the weapon never fires.
+					}
+					else { // Otherwise it's a normal success
+						hits = Math.min( ((Math.floor(rollInfo.margin / Math.abs(rcl))) + 1) , rof.rof ); // Get the number of hits based on how many times rcl fits into margin, plus one. Then cap with the number of shots actually fired
+					}
 				}
 				else {
 					hits = 1
 				}
+
+				if (rollInfo.malfunction == true) {
+					switch (malfunctionType) {
+						case "mech":
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>" + attacker.name + "'s weapon has a mechanical or electrical issue. It fails to fire, and it will take at least an hour to fix.</div></br>";
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>(If it's a grenade it still goes off, but 1d6 seconds late)</div></br>";
+							break;
+						case "misfire":
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>" + attacker.name + "'s weapon has a misfire. It fails to fire, and it will take three Ready maneuvers and an Armoury+2 or IQ based weapons skill to fix.</div></br>";
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>(If it's a grenade it's a dude and will never explode.)</div></br>";
+							break;
+						case "stoppage":
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>" + attacker.name + "'s weapon has a stoppage. It fires once and then stops working. It will take three Ready maneuvers and an Armoury+0 or IQ based weapons roll at -4 to fix.</div></br>";
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>(If it's a grenade it's a dude and will never explode.)</div></br>";
+							break;
+						case "mechEx":
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>" + attacker.name + "'s weapon has a mechanical or electrical issue. It fails to fire, and it will take at least an hour to fix.</div></br>";
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Additionally, if the weapon is a firearm or grenade from TL3 or TL4, it explodes! The weapon does 1d6+2 cr ex [2d], or if the weapon has a warhead, use that damage instead.</div></br>";
+							break;
+						default:
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>" + attacker.name + "'s weapon has malfunction.</div></br>";
+							messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>(If it's a grenade it's a dude and will never explode.)</div></br>";
+							break;
+					}
+				}
+
 				messageContent += attacker.name + " hits " + target.name + " " + this.numToWords(hits) + "</br></br>"; // Display the number of hits
 
 				let locations = locationArray.slice(0, hits); // Shorten the list of locations to the number of hits.
