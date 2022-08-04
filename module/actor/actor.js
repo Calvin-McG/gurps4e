@@ -1661,6 +1661,10 @@ export class gurpsActor extends Actor {
 				rof.shots = Math.max(split[0], 1);
 				rof.pellets = Math.max(split[1], 1);
 			}
+			else if (typeof attack.rof === "number"){
+				rof.shots = Math.max(attack.rof, 1);
+				rof.pellets = 1;
+			}
 			else {
 				rof.shots = Math.max(attack.rof.trim(), 1);
 				rof.pellets = 1;
