@@ -1368,7 +1368,7 @@ export class gurpsItem extends Item {
 
       let barrelWeight = (Math.PI * (barrelBoreMetres / 2 + barrelDiameter) ** 2 - Math.PI * (barrelBoreMetres / 2) ** 2) * barrelLengthMetres * 7860
 
-      this.data.data.firearmDesign.weightKgs = (receiverWeight + barrelWeight) + (((receiverWeight + barrelWeight) * 0.8) * (this.data.data.firearmDesign.barrels - 1));
+      this.data.data.firearmDesign.weightKgs = ((receiverWeight + barrelWeight) + (((receiverWeight + barrelWeight) * 0.8) * (this.data.data.firearmDesign.barrels - 1))) * this.data.data.firearmDesign.weightTweak;
       this.data.data.firearmDesign.weight = this.data.data.firearmDesign.weightKgs * 2.205;
 
       // Add weight for ammo
@@ -1785,6 +1785,10 @@ export class gurpsItem extends Item {
       cost = cost + ((cost * 0.8) * (this.data.data.firearmDesign.barrels - 1)); // Apply cost for extra barrels
 
       this.data.data.firearmDesign.cf = 1;
+
+      if (this.data.data.firearmDesign.fitToOwner) {
+        this.data.data.firearmDesign.cf += 1;
+      }
 
       switch (this.data.data.firearmDesign.accuracy) {
         case "-2":
@@ -4061,10 +4065,15 @@ export class gurpsItem extends Item {
             rof = this.data.data.firearmDesign.rof;
           }
 
+          let skillMod = this.data.data.firearmDesign.rangedSkillMod
+          if (this.data.data.firearmDesign.fitToOwner) {
+            skillMod += 1;
+          }
+
           let profile = {
             "name": this.data.name + " - " + this.data.data.firearmDesign.ammunition[ammoKeys[i]].name,
             "skill": this.data.data.firearmDesign.rangedSkill,
-            "skillMod": this.data.data.firearmDesign.rangedSkillMod,
+            "skillMod": skillMod,
             "acc": this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc,
             "damageInput": this.data.data.firearmDesign.ammunition[ammoKeys[i]].damageDice,
             "damageType": this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut,
