@@ -1827,6 +1827,8 @@ export class gurpsItem extends Item {
           break;
       }
 
+      this.data.data.firearmDesign.cf = Math.max(this.data.data.firearmDesign.cf, 0.2);
+
       this.data.data.firearmDesign.baseCost = cost;
       this.data.data.firearmDesign.finalCost = this.data.data.firearmDesign.cf * this.data.data.firearmDesign.baseCost;
 
