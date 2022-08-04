@@ -1039,7 +1039,7 @@ export class gurpsItem extends Item {
 
   prepareCustomFirearm() {
     if (this.data.data.tl >= 3) { // TL must be at least 3 to design a custom gun
-      if (typeof this.data.data.firearmDesign == "undefined") { // If the firearmDesign block hasn't yet been created
+      if (typeof this.data.data.firearmDesign == "undefined" || (typeof this.data.data.firearmDesign != "undefined" && !this.data.data.firearmDesign.initComplete)) { // If the firearmDesign block hasn't yet been created
         this.data.data.firearmDesign = { // Create it
           "barrelLength": 100, // Measured in mm
           "barrels": 1, // At least one, whole numbers
@@ -1049,6 +1049,8 @@ export class gurpsItem extends Item {
           "action": "semi", // muzzle/breech/break/bolt/straightPull/lever/pump/revolverSA/revolverDA/semi/auto/burst/highCyclicBurst
           "lock": "centre", // cannon/match/wheel/flint/cap/pin/rim/centre
           "allowTL4BreechLoaders": game.settings.get("gurps4e", "allowTL4BreechLoaders"),
+
+          "initComplete": true,
 
           "projectileCalibre": 10, // Measured in mm
           "projectileMass": 10, // Measured in grains
@@ -1112,7 +1114,7 @@ export class gurpsItem extends Item {
           "maxLPi": 1,
           "maxHPi": 1,
 
-          "rof": 3,
+          "rof": 1,
           "maxRof": 3,
           "halfRange": 10,
           "maxRange": 100,
@@ -1139,19 +1141,19 @@ export class gurpsItem extends Item {
         this.data.data.firearmDesign.barrelLength = 100;
       }
       if (typeof this.data.data.firearmDesign.barrels == "undefined" || this.data.data.firearmDesign.barrels <= 0 || this.data.data.firearmDesign.barrels == "") {
-        this.data.data.firearmDesign.barrels = 100;
+        this.data.data.firearmDesign.barrels = 1;
       }
       if (typeof this.data.data.firearmDesign.projectileCalibre == "undefined" || this.data.data.firearmDesign.projectileCalibre <= 0 || this.data.data.firearmDesign.projectileCalibre == "") {
-        this.data.data.firearmDesign.projectileCalibre = 100;
+        this.data.data.firearmDesign.projectileCalibre = 10;
       }
       if (typeof this.data.data.firearmDesign.projectileMass == "undefined" || this.data.data.firearmDesign.projectileMass <= 0 || this.data.data.firearmDesign.projectileMass == "") {
         this.data.data.firearmDesign.projectileMass = 100;
       }
       if (typeof this.data.data.firearmDesign.projectileAspectRatio == "undefined" || this.data.data.firearmDesign.projectileAspectRatio <= 0 || this.data.data.firearmDesign.projectileAspectRatio == "") {
-        this.data.data.firearmDesign.projectileAspectRatio = 100;
+        this.data.data.firearmDesign.projectileAspectRatio = 1;
       }
       if (typeof this.data.data.firearmDesign.chamberBore == "undefined" || this.data.data.firearmDesign.chamberBore <= 0 || this.data.data.firearmDesign.chamberBore == "") {
-        this.data.data.firearmDesign.chamberBore = 100;
+        this.data.data.firearmDesign.chamberBore = 10;
       }
       if (typeof this.data.data.firearmDesign.caseLength == "undefined" || this.data.data.firearmDesign.caseLength <= 0 || this.data.data.firearmDesign.caseLength == "") {
         this.data.data.firearmDesign.caseLength = 100;
@@ -1160,13 +1162,13 @@ export class gurpsItem extends Item {
         this.data.data.firearmDesign.burnRatio = 0.35;
       }
       if (typeof this.data.data.firearmDesign.chamberPressure == "undefined" || this.data.data.firearmDesign.chamberPressure <= 0 || this.data.data.firearmDesign.chamberPressure == "") {
-        this.data.data.firearmDesign.chamberPressure = 100;
+        this.data.data.firearmDesign.chamberPressure = 15000;
       }
       if (typeof this.data.data.firearmDesign.capacity == "undefined" || this.data.data.firearmDesign.capacity <= 0 || this.data.data.firearmDesign.capacity == "") {
-        this.data.data.firearmDesign.capacity = 100;
+        this.data.data.firearmDesign.capacity = 1;
       }
       if (typeof this.data.data.firearmDesign.weightTweak == "undefined" || this.data.data.firearmDesign.weightTweak <= 0 || this.data.data.firearmDesign.weightTweak == "") {
-        this.data.data.firearmDesign.weightTweak = 100;
+        this.data.data.firearmDesign.weightTweak = 1;
       }
       if (typeof this.data.data.firearmDesign.cf == "undefined" || this.data.data.firearmDesign.cf <= 0 || this.data.data.firearmDesign.cf == "") {
         this.data.data.firearmDesign.cf = 1;
@@ -1179,6 +1181,7 @@ export class gurpsItem extends Item {
         this.data.data.firearmDesign.magazineStyle = "none";
         this.data.data.firearmDesign.magazineMaterial = "steel";
         this.data.data.firearmDesign.capacity = 0;
+        this.data.data.firearmDesign.rof = 1;
       }
 
       // The weapon is not some version of semi or automatic, and open/closed bolt info will be hidden
@@ -1865,7 +1868,11 @@ export class gurpsItem extends Item {
         let ammoKeys = Object.keys(this.data.data.firearmDesign.ammunition); // Get the ammo keys
         if (ammoKeys.length > 0) { // If there are actually keys
           for (let i = 0; i < ammoKeys.length; i++) { // Loop through the ammo the user has created and run whatever numbers need to be run.
+
             // Input validation for projectile count
+            if (typeof this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles == "undefined" || this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles <= 0 || this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles == "") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles = 1;
+            }
             this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles = Math.floor(Math.abs(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles));
 
             // Init some things
