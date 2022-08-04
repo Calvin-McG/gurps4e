@@ -1651,7 +1651,7 @@
                                     Baseline Damage
                                 </td>
                                 <td>
-                                    {{data.data.firearmDesign.baseDamage}} {{this.data.data.firearmDesign.baseWoundMod}}, or {{data.data.firearmDesign.baseDamageDice}} {{this.data.data.firearmDesign.baseWoundMod}}
+                                    {{data.data.firearmDesign.baseDamage}} {{this.data.data.firearmDesign.woundMod}}, or {{data.data.firearmDesign.baseDamageDice}} {{this.data.data.firearmDesign.woundMod}}
                                 </td>
                                 <td class="question-container" id="damage-output">
                                     <div class="question-button">
@@ -1721,7 +1721,7 @@
                                     Baseline ST
                                 </td>
                                 <td>
-                                    {{round data.data.firearmDesign.st 100}} rounded to {{data.data.firearmDesign.stOutput}}
+                                    {{round data.data.firearmDesign.st 100}} rounded to {{data.data.firearmDesign.stOutput}}{{data.data.firearmDesign.stCode}}
                                 </td>
                                 <td class="question-container" id="st-output">
                                     <div class="question-button">
@@ -1972,70 +1972,71 @@
                                 <td>
                                     <select name="data.firearmDesign.ammunition.{{id}}.projectile">
                                         {{#select ammo.projectile}}
-                                        <option value="solid">Solid</option>
-                                        {{#ifCond ../data.data.tl '>=' 4 }}
-                                        <option value="le">Low Explosive</option>
-                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 5 }}
-                                        <option value="shotshell">Shotshell</option>
-                                        {{/ifCond}}
-                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 20 }}
-                                        <option value="canister">Canister</option>
-                                        {{/ifCond}}
-                                        {{/ifCond}}
-                                        {{#ifCond ../data.data.tl '>=' 5 }}
-                                        <option value="hp">Hollow Point</option>
-                                        <option value="saple">Semi Armour Piercing Low Explosive</option>
-                                        {{/ifCond}}
-                                        {{#ifCond ../data.data.tl '>=' 6 }}
-                                        <option value="ap">Armour Piercing</option>
-                                        <option value="aphc">Armour Piercing Hardcore</option>
-                                        <option value="frangible">Frangible</option>
-                                        <option value="apex">Armour Piercing Explosive</option>
-                                        <option value="he">High Explosive</option>
-                                        <option value="saphe">Semi Armour Piercing High Explosive</option>
-                                        <option value="saphec">Semi Armour Piercing High Explosive Concussion</option>
-                                        <option value="duplex">Duplex</option>
-                                        <option value="triplex">Triplex</option>
-                                        {{/ifCond}}
-                                        {{#ifCond ../data.data.tl '>=' 7 }}
-                                        <option value="apds">Armour Piercing Discarding Sabot</option>
-                                        <option value="apfsds">Armour Piercing Fin Stabilized Discarding Sabot</option>
-                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 10 }}
-                                        <option value="baton">Baton</option>
-                                        {{/ifCond}}
-                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 9 }}
-                                        <option value="bean">Beanbag</option>
-                                        {{/ifCond}}
-                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '<=' 10 }}
-                                        <option value="sapfsds">Semi Armor Piercing Fin Stabilized Discarding Sabot</option>
-                                        {{/ifCond}}
-                                        <option value="underwater">Underwater Dart</option>
-                                        <option value="aphex">Armour Piercing Hardcore Explosive</option>
-                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 50 }}
-                                        <option value="efp">Explosively Formed Projectile</option>
-                                        <option value="hesh">High Explosive Squash Head</option>
-                                        {{/ifCond}}
-                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 20 }}
-                                        <option value="heat">High Explosive Antitank</option>
-                                        <option value="hedp">High Explosive Dual Purpose</option>
-                                        {{/ifCond}}
-                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 10 }}
-                                        <option value="mf">Multi Flechette</option>
-                                        <option value="rs">Rubber Shot</option>
-                                        {{/ifCond}}
-                                        {{#ifCond ../data.data.tl '>=' 8 }}
-                                        <option value="apdu">Armour Piercing Depleted Uranium</option>
-                                        <option value="apdsdu">Armour Piercing Discarding-Sabot Depleted Uranium</option>
-                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 10 }}
-                                        <option value="apfsdsdu">Armour Piercing Fin Stabilized Discarding Sabot Depleted Uranium</option>
-                                        {{/ifCond}}
-                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 50 }}
-                                        <option value="msheat">Multi-Stage High Explosive Antitank</option>
-                                        {{/ifCond}}
-                                        {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 20 }}
-                                        <option value="thermobaric">Thermobaric</option>
-                                        {{/ifCond}}
-                                        {{/ifCond}}
+                                            <option value="solid">Solid</option>
+                                            {{#ifCond ../data.data.tl '>=' 4 }}
+                                                <option value="le">Low Explosive</option>
+                                                {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 5 }}
+                                                    <option value="shotshell">Shotshell</option>
+                                                {{/ifCond}}
+                                                {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 20 }}
+                                                    <option value="canister">Canister</option>
+                                                {{/ifCond}}
+                                            {{/ifCond}}
+                                            {{#ifCond ../data.data.tl '>=' 5 }}
+                                                <option value="hp">Hollow Point</option>
+                                                <option value="saple">Semi Armour Piercing Low Explosive</option>
+                                            {{/ifCond}}
+                                            {{#ifCond ../data.data.tl '>=' 6 }}
+                                                <option value="ap">Armour Piercing</option>
+                                                <option value="aphc">Armour Piercing Hardcore</option>
+                                                <option value="frangible">Frangible</option>
+                                                <option value="apex">Armour Piercing Explosive</option>
+                                                <option value="he">High Explosive</option>
+                                                <option value="saphe">Semi Armour Piercing High Explosive</option>
+                                                <option value="saphec">Semi Armour Piercing High Explosive Concussion</option>
+                                                <option value="duplex">Duplex</option>
+                                                <option value="triplex">Triplex</option>
+                                            {{/ifCond}}
+                                            {{#ifCond ../data.data.tl '>=' 7 }}
+                                                <option value="apds">Armour Piercing Discarding Sabot</option>
+                                                <option value="apfsds">Armour Piercing Fin Stabilized Discarding Sabot</option>
+                                                {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 10 }}
+                                                    <option value="baton">Baton</option>
+                                                {{/ifCond}}
+                                                {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 9 }}
+                                                    <option value="bean">Beanbag</option>
+                                                {{/ifCond}}
+                                                {{#ifCond ../data.data.firearmDesign.projectileCalibre '<=' 10 }}
+                                                    <option value="sapfsds">Semi Armor Piercing Fin Stabilized Discarding Sabot</option>
+                                                {{/ifCond}}
+                                                <option value="underwater">Underwater Dart</option>
+                                                <option value="aphex">Armour Piercing Hardcore Explosive</option>
+                                                {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 50 }}
+                                                    <option value="efp">Explosively Formed Projectile</option>
+                                                    <option value="hesh">High Explosive Squash Head</option>
+                                                {{/ifCond}}
+                                                {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 20 }}
+                                                    <option value="heat">High Explosive Antitank</option>
+                                                    <option value="hedp">High Explosive Dual Purpose</option>
+                                                {{/ifCond}}
+                                                {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 10 }}
+                                                    <option value="mf">Multi Flechette</option>
+                                                    <option value="rs">Rubber Shot</option>
+                                                {{/ifCond}}
+                                            {{/ifCond}}
+                                            {{#ifCond ../data.data.tl '>=' 8 }}
+                                                <option value="apdu">Armour Piercing Depleted Uranium</option>
+                                                <option value="apdsdu">Armour Piercing Discarding-Sabot Depleted Uranium</option>
+                                                {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 10 }}
+                                                    <option value="apfsdsdu">Armour Piercing Fin Stabilized Discarding Sabot Depleted Uranium</option>
+                                                {{/ifCond}}
+                                                {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 50 }}
+                                                    <option value="msheat">Multi-Stage High Explosive Antitank</option>
+                                                {{/ifCond}}
+                                                {{#ifCond ../data.data.firearmDesign.projectileCalibre '>=' 20 }}
+                                                    <option value="thermobaric">Thermobaric</option>
+                                                {{/ifCond}}
+                                            {{/ifCond}}
                                         {{/select}}
                                     </select>
                                 </td>
@@ -2049,7 +2050,7 @@
                             {{#if (or (eq ammo.projectile "shotshell") (eq ammo.projectile "rs"))  }}
                             <tr class="design-row">
                                 <td style="line-height: 27.5px">
-                                    Number of Shots
+                                    Number of Projectiles
                                 </td>
                                 <td>
                                     <input type="text" name="data.firearmDesign.ammunition.{{id}}.projectiles" value="{{ammo.projectiles}}" data-dtype="Number"/>
@@ -2104,11 +2105,11 @@
                                 <td>
                                     <select name="data.firearmDesign.ammunition.{{id}}.explosiveFiller">
                                         {{#select ammo.explosiveFiller}}
-                                        {{#each ../data.data.firearmDesign.explosives as |explosive id|}}
-                                        {{#ifCond ../../data.data.tl '>=' explosive.tl}}
-                                        <option value="{{explosive.code}}">{{explosive.name}} - REF: {{explosive.ref}}</option>
-                                        {{/ifCond}}
-                                        {{/each}}
+                                            {{#each ../data.data.firearmDesign.explosives as |explosive id|}}
+                                                {{#ifCond ../../data.data.tl '>=' explosive.tl}}
+                                                    <option value="{{explosive.code}}">{{explosive.name}} - REF: {{explosive.ref}}</option>
+                                                {{/ifCond}}
+                                            {{/each}}
                                         {{/select}}
                                     </select>
                                 </td>
@@ -2135,6 +2136,34 @@
                                 </td>
                             </tr>
                             {{/ifCond}}
+
+                            <tr class="design-row">
+                                <td style="width: 160px">
+                                    Weight Per Shot
+                                </td>
+                                <td>
+                                    {{round ammo.wps 100}}
+                                </td>
+                                <td class="question-container" id="wps">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 160px">
+                                    Cost Per Shot
+                                </td>
+                                <td>
+                                    {{round ammo.cps 100}}
+                                </td>
+                                <td class="question-container" id="cps">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
 
                             <tr class="design-row">
                                 <td style="width: 160px">
@@ -2168,7 +2197,6 @@
                 </div>
                 <table>
                     <tr>
-                        <td>Show</td>
                         <td>TL</td>
                         <td>Weapon</td>
                         <td>Damage</td>
@@ -2180,10 +2208,27 @@
                         <td>ST</td>
                         <td>Bulk</td>
                         <td>Rcl</td>
-                        <td>Cost</td>
                         <td>LC</td>
                         <td>Malf</td>
                     </tr>
+                    {{#each data.data.ranged as |ammo id|}}
+                    {{log ammo}}
+                    <tr class="custom-laser-air">
+                        <td>{{../data.data.tl}}</td>
+                        <td>{{../data.name}} - {{ammo.name}}</td>
+                        <td>{{ammo.damageInput}} ({{ammo.armourDivisor}}) {{ammo.damageType}}</td>
+                        <td>{{ammo.acc}}</td>
+                        <td>{{ammo.range}}</td>
+                        <td>{{../data.data.firearmDesign.loadedWeight}}</td>
+                        <td>{{ammo.rof}}</td>
+                        <td>{{ammo.shots}}</td>
+                        <td>{{ammo.st}}{{../data.data.firearmDesign.stCode}}</td>
+                        <td>{{ammo.bulk}}</td>
+                        <td>{{ammo.rcl}}</td>
+                        <td>{{ammo.lc}}</td>
+                        <td>{{ammo.malf}}</td>
+                    </tr>
+                    {{/each}}
                 </table>
             </div>
         </div>

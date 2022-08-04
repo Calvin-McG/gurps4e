@@ -1121,6 +1121,7 @@ export class gurpsItem extends Item {
           "rcl": 2,
           "st": 10,
           "stOutput": 10,
+          "stCode": "",
           "bulk": -3,
 
           "accuracy": 0, // -2 for cheap, 0 for good, 1 for fine, 2 for very fine. This is a direct mod to ACC
@@ -1230,10 +1231,10 @@ export class gurpsItem extends Item {
       // Actually useful calculations
 
       // Kinetic Energy
-      let kineticEnergy = ( chamberPressurePascals * ( boreCrossSection * burnLengthMeters + fallOffVolume * Math.log( boreCrossSection * acclerationDistance / fallOffVolume + 1) ) ); // D27 or K12 - Measured in joules
+      let kineticEnergy = Math.abs( chamberPressurePascals * ( boreCrossSection * burnLengthMeters + fallOffVolume * Math.log( boreCrossSection * acclerationDistance / fallOffVolume + 1) ) ); // D27 or K12 - Measured in joules
 
       // Velocity
-      let metresPerSecond = Math.sqrt((2* kineticEnergy / totalAcceleratedKgs )); // D25
+      let metresPerSecond = Math.sqrt((2* Math.abs(kineticEnergy) / totalAcceleratedKgs )); // D25
       let feetPerSecond = metresPerSecond * 1000 / (12 * 25.4); // D26
       this.data.data.firearmDesign.yardsPerSecond = Math.floor(feetPerSecond / 3);
 
@@ -1481,12 +1482,17 @@ export class gurpsItem extends Item {
 
       this.data.data.firearmDesign.ammoWeight = loadedRounds * this.data.data.firearmDesign.baseWeightPerShot * magazineWeightMultiplier;
 
-      this.data.data.firearmDesign.loadedWeight = this.data.data.firearmDesign.weight + this.data.data.firearmDesign.ammoWeight;
+      this.data.data.firearmDesign.loadedWeight = Math.floor((this.data.data.firearmDesign.weight + this.data.data.firearmDesign.ammoWeight) * 100) / 100;
       this.data.data.weight = this.data.data.firearmDesign.loadedWeight;
 
       // Shots
       if (this.data.data.firearmDesign.action === "break" || this.data.data.firearmDesign.action === "breech" || this.data.data.firearmDesign.action === "muzzle") { // The weapon is some version of a single shot weapon, so the number of shots is the same as the number of barrels
-        this.data.data.firearmDesign.shots = "1x" + this.data.data.firearmDesign.barrels;
+        if (this.data.data.firearmDesign.barrels > 1){
+          this.data.data.firearmDesign.shots = "1x" + this.data.data.firearmDesign.barrels;
+        }
+        else {
+          this.data.data.firearmDesign.shots = "1";
+        }
       }
       else { // The weapon has a magazine of some sort.
         this.data.data.firearmDesign.shots = this.data.data.firearmDesign.capacity // Base shots is the magazine capacity
@@ -1505,13 +1511,15 @@ export class gurpsItem extends Item {
       if (this.data.data.firearmDesign.configuration === "pistol" || this.data.data.firearmDesign.configuration === "bullpup") {
         bulkConfigLengthModifier = 76;
       }
+
       let bulkLength = (this.data.data.firearmDesign.barrelLength+(this.data.data.firearmDesign.caseLength*2)+bulkConfigLengthModifier)/1000*1.09361*3*12
 
       let bulkConfigMod = 1;
       if (this.data.data.firearmDesign.configuration === "cannon") {
         bulkConfigMod = 6;
         this.data.data.firearmDesign.st = (Math.sqrt(this.data.data.weight) * 2.4);
-        this.data.data.firearmDesign.stOutput = Math.round(this.data.data.firearmDesign.st) + "†";
+        this.data.data.firearmDesign.stOutput = Math.round(this.data.data.firearmDesign.st);
+        this.data.data.firearmDesign.stCode = "†";
       }
       else if (this.data.data.firearmDesign.configuration === "pistol") {
         bulkConfigMod = 2;
@@ -1521,17 +1529,20 @@ export class gurpsItem extends Item {
       else if (this.data.data.firearmDesign.configuration === "bullpup") {
         bulkConfigMod = 3;
         this.data.data.firearmDesign.st = (Math.sqrt(this.data.data.weight) * 2.2);
-        this.data.data.firearmDesign.stOutput = Math.round(this.data.data.firearmDesign.st) + "†";
+        this.data.data.firearmDesign.stOutput = Math.round(this.data.data.firearmDesign.st);
+        this.data.data.firearmDesign.stCode = "†";
       }
       else if (this.data.data.firearmDesign.configuration === "longarm") {
         bulkConfigMod = 4;
         this.data.data.firearmDesign.st = (Math.sqrt(this.data.data.weight) * 2.2);
-        this.data.data.firearmDesign.stOutput = Math.round(this.data.data.firearmDesign.st) + "†";
+        this.data.data.firearmDesign.stOutput = Math.round(this.data.data.firearmDesign.st);
+        this.data.data.firearmDesign.stCode = "†";
       }
       else if (this.data.data.firearmDesign.configuration === "semiportable") {
         bulkConfigMod = 5;
         this.data.data.firearmDesign.st = (Math.sqrt(this.data.data.weight) * 2.2);
-        this.data.data.firearmDesign.stOutput = Math.round(this.data.data.firearmDesign.st) + "†";
+        this.data.data.firearmDesign.stOutput = Math.round(this.data.data.firearmDesign.st);
+        this.data.data.firearmDesign.stCode = "†";
       }
 
       this.data.data.firearmDesign.bulk = 0.1-Math.log10(bulkConfigMod) -Math.log10(this.data.data.weight) - (2*Math.log10(bulkLength))
@@ -1827,6 +1838,24 @@ export class gurpsItem extends Item {
       this.data.data.firearmDesign.maxLPiF = Math.floor(((this.data.data.firearmDesign.projectileCalibre/10) ** 3) / 40);
       this.data.data.firearmDesign.maxHPiF = Math.floor(((this.data.data.firearmDesign.projectileCalibre/15) ** 3) / 40);
 
+      switch (this.data.data.firearmDesign.baseWoundMod) {
+        case 1:
+          this.data.data.firearmDesign.woundMod = "pi-";
+          break;
+        case 2:
+          this.data.data.firearmDesign.woundMod = "pi";
+          break;
+        case 3:
+          this.data.data.firearmDesign.woundMod = "pi+";
+          break;
+        case 4:
+          this.data.data.firearmDesign.woundMod = "pi++";
+          break;
+        default:
+          this.data.data.firearmDesign.woundMod = "pi";
+          break;
+      }
+
       // Calculate Ammo Stuff
       if (typeof this.data.data.firearmDesign.ammunition != "undefined") {
         let ammoKeys = Object.keys(this.data.data.firearmDesign.ammunition); // Get the ammo keys
@@ -1845,7 +1874,9 @@ export class gurpsItem extends Item {
             this.data.data.firearmDesign.ammunition[ammoKeys[i]].st = this.data.data.firearmDesign.st;
             this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange = this.data.data.firearmDesign.halfRange;
             this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange = this.data.data.firearmDesign.maxRange;
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].range = this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange + "/" + this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange;
             this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = this.data.data.firearmDesign.baseWoundMod;
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = 3;
 
             // Light cased
             if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].case === "lightCased") {
@@ -1898,13 +1929,15 @@ export class gurpsItem extends Item {
             }
 
             // Silent ammo
-            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].plusp) {
+            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].silent) {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 9;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
 
             // Poison ammo
             if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].poison) {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
 
             // Incendiary and tracer ammo
@@ -1916,6 +1949,8 @@ export class gurpsItem extends Item {
             this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 1;
             this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = false;
             this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 0;
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "";
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl = this.data.data.firearmDesign.rcl;
 
             // Projectile Type
             if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "le" ||
@@ -1923,21 +1958,25 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 15;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
             else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "thermobaric") {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 25;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 7;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
             else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "saple" ||
                 this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "saphe") {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 10;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = true;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
             else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "saphec") {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 20;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
             else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "apex") {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 5;
@@ -1945,6 +1984,7 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = true;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.7;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
               if (this.data.data.firearmDesign.projectileCalibre < 20) {
                 this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
               }
@@ -1954,6 +1994,7 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = true;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
               if (this.data.data.firearmDesign.projectileCalibre < 20) {
                 this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
               }
@@ -1962,22 +2003,26 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 25;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 10;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
             else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "msheat") {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 25;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 10;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 7;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
             else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "hedp") {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 25;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 10;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = true;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
             else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "hesh") {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 95;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
             else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "efp") {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 50;
@@ -1985,10 +2030,12 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = true;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 7;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 4;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
             else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "hp") {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod += 1;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 3);
             }
             else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "frangible") {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
@@ -1996,11 +2043,13 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.5;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 0.9;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 0.9;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 3);
             }
             else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "ap") {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.5;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.7;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 2);
               if (this.data.data.firearmDesign.projectileCalibre < 20) {
                 this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
               }
@@ -2008,6 +2057,7 @@ export class gurpsItem extends Item {
             else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "aphc") {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 2);
               if (this.data.data.firearmDesign.projectileCalibre < 20) {
                 this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
               }
@@ -2016,6 +2066,7 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
               if (this.data.data.firearmDesign.projectileCalibre < 20) {
                 this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
               }
@@ -2024,6 +2075,7 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.3;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
               if (this.data.data.firearmDesign.projectileCalibre < 30) {
                 this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
               }
@@ -2034,6 +2086,7 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.5;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1.5;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1.5;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
               if (this.data.data.firearmDesign.projectileCalibre < 30) {
                 this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
               }
@@ -2044,6 +2097,7 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.5;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 2;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
               if (this.data.data.firearmDesign.projectileCalibre < 40) {
                 this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
               }
@@ -2054,6 +2108,7 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.7;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 2;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 2;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 2);
               if (this.data.data.firearmDesign.projectileCalibre < 40) {
                 this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
               }
@@ -2064,6 +2119,7 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1.5;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1.5;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 2);
             }
             else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "baton") {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
@@ -2072,6 +2128,7 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 0.2;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 0.2;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc -= 1;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 3);
               if (this.data.data.firearmDesign.projectileCalibre >= 35) {
                 this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "cr dbk";
               }
@@ -2086,6 +2143,7 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1/8;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1/8;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc = 0;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 3);
               if (this.data.data.firearmDesign.projectileCalibre >= 15) {
                 this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "cr dbk";
               }
@@ -2096,6 +2154,7 @@ export class gurpsItem extends Item {
             else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "underwater") {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "imp";
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 2);
             }
             else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "shotshell" || this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "canister") {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= (1 / Math.sqrt(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles));
@@ -2137,11 +2196,39 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
             }
 
+            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut === "") {
+              switch (this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod) {
+                case 1:
+                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "pi-";
+                  break;
+                case 2:
+                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "pi";
+                  break;
+                case 3:
+                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "pi+";
+                  break;
+                case 4:
+                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "pi++";
+                  break;
+                default:
+                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "pi";
+                  break;
+              }
+            }
+
+            // TODO - Handle Follow up explosions, probably as another attack type.
+
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].st = Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].st);
+            this.data.data.firearmDesign.ammunition[ammoKeys[i]].range = Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange) + "/" + Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange);
             this.data.data.firearmDesign.ammunition[ammoKeys[i]].rofBonus = generalHelpers.rofToBonus(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles);
             this.data.data.firearmDesign.ammunition[ammoKeys[i]].damageObject = generalHelpers.pointsToDiceAndAdds(this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage);
             this.data.data.firearmDesign.ammunition[ammoKeys[i]].damageDice = generalHelpers.diceAndAddsToGURPSOutput(this.data.data.firearmDesign.ammunition[ammoKeys[i]].damageObject.dice, this.data.data.firearmDesign.ammunition[ammoKeys[i]].damageObject.adds);
           }
         }
+      }
+
+      if (typeof this.data.data.firearmDesign.ammunition != "undefined") {
+        this.addCustomFirearmProfiles();
       }
 
       // Adding melee profiles
@@ -2153,8 +2240,6 @@ export class gurpsItem extends Item {
       let rangedProfiles = [];
 
       this.data.data.firearmDesign.baseDamageDice = generalHelpers.diceAndAddsToGURPSOutput(this.data.data.firearmDesign.baseDamageObject.dice, this.data.data.firearmDesign.baseDamageObject.adds);
-
-      console.log(rangedProfiles);
     }
   }
 
@@ -3966,22 +4051,33 @@ export class gurpsItem extends Item {
     if (ammoKeys.length > 0) { // If there are actually keys
       let rangedProfiles = [];
       for (let i = 0; i < ammoKeys.length; i++) {
-        if (this.data.data.bowDesign.arrows[ammoKeys[i]].showProfile) {
+        if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].showProfile) {
+
+          let rof = ""
+          if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles > 1 || this.data.data.firearmDesign.barrels > 1) {
+            rof = this.data.data.firearmDesign.rof + "x" + (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles * this.data.data.firearmDesign.barrels);
+          }
+          else {
+            rof = this.data.data.firearmDesign.rof;
+          }
+
           let profile = {
-            "name": this.data.name + " " + this.data.data.firearmDesign.ammunition[ammoKeys[i]].name,
-            "skill": this.data.data.firearmDesign.skill,
-            "skillMod": this.data.data.firearmDesign.skillMod,
+            "name": this.data.name + " - " + this.data.data.firearmDesign.ammunition[ammoKeys[i]].name,
+            "skill": this.data.data.firearmDesign.rangedSkill,
+            "skillMod": this.data.data.firearmDesign.rangedSkillMod,
             "acc": this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc,
-            "damageInput": this.data.data.firearmDesign.ammunition[ammoKeys[i]].dice,
-            "damageType": this.data.data.firearmDesign.ammunition[ammoKeys[i]].arrowhead.damageType,
-            "armourDivisor": this.data.data.firearmDesign.ammunition[ammoKeys[i]].arrowhead.ad,
-            "range": this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange + "/" + this.data.data.firearmDesign.ammunition[ammoKeys[i]].range,
-            "rof": "1",
-            "shots": "1",
-            "bulk": this.data.data.firearmDesign.bulk,
-            "rcl": "2",
-            "st": this.data.data.firearmDesign.stOutput,
-            "malf": this.data.data.firearmDesign.malf
+            "damageInput": this.data.data.firearmDesign.ammunition[ammoKeys[i]].damageDice,
+            "damageType": this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut,
+            "armourDivisor": this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad,
+            "range": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange) + "/" + Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange),
+            "rof": rof,
+            "shots": this.data.data.firearmDesign.shots,
+            "bulk": Math.round(this.data.data.firearmDesign.bulk),
+            "rcl": this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl,
+            "st": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].st),
+            "malf": this.data.data.firearmDesign.ammunition[ammoKeys[i]].malf,
+            "cps": Math.round((this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps * this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF) * 100) / 100,
+            "wps": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].wps * 100) / 100
           }
           rangedProfiles.push(profile);
         }
@@ -4256,19 +4352,19 @@ export class gurpsItem extends Item {
     if (id == "laser-configuration") {
       info = "<table>" +
           "<tr>" +
-          "<td style='width: 50px;'>Pistol</td>" +
+          "<td style='width: 50px; padding-right: 10px;'>Pistol</td>" +
           "<td><p>It's a pistol. Acc is lower, Bulk is lower, and ST is higher compared to a rifle of equal weight.</p></td>" +
           "</tr>" +
           "<tr>" +
-          "<td style='width: 50px;'>Beamer</td>" +
+          "<td style='width: 50px; padding-right: 10px;'>Beamer</td>" +
           "<td><p>Like a TNG phaser. It's the bare minimum laser weapon. Acc is as low as it gets for a laser, but so is Bulk. ST is the same for an equivalent pistol.</p></td>" +
           "</tr>" +
           "<tr>" +
-          "<td style='width: 50px;'>Rifle</td>" +
+          "<td style='width: 50px; padding-right: 10px;'>Rifle</td>" +
           "<td><p>It's a rifle. Acc is higher, but so is Bulk. ST is lower compared to a pistol or beamer of equivalent weight but the weapon requires two hands.</p></td>" +
           "</tr>" +
           "<tr>" +
-          "<td style='width: 50px;'>Cannon</td>" +
+          "<td style='width: 50px; padding-right: 10px;'>Cannon</td>" +
           "<td><p>Like a beamer, this is a weapon with the bare minimum, but built to fit into a turret or weapon mount. Acc is as high as it gets. Bulk isn't any worse than a rifle, but the weapon must be in a mount to use effectively.</p></td>" +
           "</tr>" +
           "</table>"
@@ -6294,23 +6390,23 @@ export class gurpsItem extends Item {
     else if (id == "firearm-configuration") {
         info = "<table>" +
             "<tr>" +
-            "<td style='width: 50px;'>Cannon</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Cannon</td>" +
             "<td><p>Either an actual cannon, or the sort of really early cannon-style firearm that was held underarm on the end of a pole. Acc is lower (frequently 0), Bulk is higher, and ST is higher compared to a rifle of equal weight.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Pistol</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Pistol</td>" +
             "<td><p>It's a pistol. Acc is lower, Bulk is lower, and ST is higher compared to a rifle of equal weight.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Rifle</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Rifle</td>" +
             "<td><p>It's a rifle. Acc is higher, but so is Bulk. ST is lower compared to a pistol or of equivalent weight but the weapon requires two hands.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Semi-Portable Longarm</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Semi-Portable Longarm</td>" +
             "<td><p>It's a thicc rifle. Acc, Bulk, Weight, and ST are all higher. Think Anti-materiel rifle.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Bullpup Longarm</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Bullpup Longarm</td>" +
             "<td><p>Like a rifle, but with the magazine or equivilent behind the grip. Lower bulk, but higher weight.</p></td>" +
             "</tr>" +
             "</table>"
@@ -6336,15 +6432,15 @@ export class gurpsItem extends Item {
     else if (id == "rifling") {
         info = "<table>" +
             "<tr>" +
-            "<td style='width: 50px;'>Muzzle Loaders</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Muzzle Loaders</td>" +
             "<td><p>Increases base reloading time by a fair amount and Acc by 1. This does cost more.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Historical Firearms</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Historical Firearms</td>" +
             "<td><p>Increases Acc by 1. This does cost more.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Modern Firearms</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Modern Firearms</td>" +
             "<td><p>This is treated as the baseline for modern firearms, other than shotguns. Rifled barrels have negative effects on sub-calibre multi-projectile weapons, and fin stabalized weapons.</p></td>" +
             "</tr>" +
             "</table>"
@@ -6352,55 +6448,55 @@ export class gurpsItem extends Item {
     else if (id == "firearm-action") {
         info = "<table>" +
             "<tr>" +
-            "<td style='width: 50px;'>Muzzle Loaders</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Muzzle Loaders</td>" +
             "<td><p>Muskets, etc. They generally take a long time to reload, though various aids exist to speed this up. Reloading time is between 20 and 60 seconds. Rate of fire is 1 per barrel. Loading these in wet conditions all but guarantee they will not fire.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Breech Loaders</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Breech Loaders</td>" +
             "<td><p>A marginal improvement on the musket. Ammo is loaded from the back, which is quicker, and doesn't penalize you if your barrel is rifled. Reloading time is 10 seconds with loose powder, but as few as 3 with cartridges. Rate of fire is 1 per barrel. With loose powder, loading these in wet conditions are an extremely bad idea, but not as bad as the muzzle loader.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Break Action</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Break Action</td>" +
             "<td><p>A marginal improvement on the breach loader. Double barrel 12 gauges are break action weapons. Reloading time is generally 3 seconds, loading shells individually. Rate of fire is 1 per barrel.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Lever Action</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Lever Action</td>" +
             "<td><p>The first kinda-fast gun. Reloading time is generally 2 seconds per round. Rate of fire is 2.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Single Action Revolver</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Single Action Revolver</td>" +
             "<td><p>A revolver where you need to cock the hammer with each shot. Reloading time ranges between 10 seconds and 3 seconds per round depending on the lock type. Rate of fire is 1.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Pump Action</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Pump Action</td>" +
             "<td><p>It's what it sounds like. Can be used on any type of weapon, not just shotguns. Reloading time is 2 seconds per round. Rate of fire is 2.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Bolt Action</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Bolt Action</td>" +
             "<td><p>It's what it sounds like. Reloading time is 3 seconds, or 2 seconds if loading individual rounds. Rate of fire is 1.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Double Action Revolver</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Double Action Revolver</td>" +
             "<td><p>A revolver where pulling the trigger cocks the hammer. Reloading time ranges between 10 seconds and 3 seconds per round depending on the lock type. Rate of fire is 3.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Straight Pull Bolt Action</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Straight Pull Bolt Action</td>" +
             "<td><p>It's a bolt action where the bolt doesn't need to be turned as part of working the action. Slightly speeds things up. Reloading time is 3 seconds, or 2 seconds if loading individual rounds. Rate of fire is 2.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Semi Automatic</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Semi Automatic</td>" +
             "<td><p>Goes bang every time you pull the trigger. Reloading time is 3 seconds, or 2 seconds if loading individual rounds. Rate of fire is 3.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Automatic</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Automatic</td>" +
             "<td><p>Goes bang as long as you pull the trigger. Reloading time is 3 seconds, or 2 seconds if loading individual rounds. Rate of fire usually ranges between 9 and 20. Typically pistols will be 15 to 20, intermediate rifles will be 12-15, and full sized rifles will be 9 to 12. But in theory you can set this to whatever you like.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Automatic with Burst</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Automatic with Burst</td>" +
             "<td><p>Automatic, but you can set the number of shots fired each time you pull the trigger. Without this, it can be hard to control how many shots you fire, particularly at high fire rates.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Automatic with High-Cyclic Burst</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Automatic with High-Cyclic Burst</td>" +
             "<td><p>Seems similar to the other burst option, but it serves a completely different purpose. Weapons firing in high-cyclic burst mode have a Rcl of 1.</p></td>" +
             "</tr>" +
             "</table>"
@@ -6408,35 +6504,35 @@ export class gurpsItem extends Item {
     else if (id == "firearm-lock") {
         info = "<table>" +
             "<tr>" +
-            "<td style='width: 50px;'>Cannonlock</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Cannonlock</td>" +
             "<td><p>Loaded with loose powder or paper cartridges. Requires you to hold a piece of burning match (really a sort of long-burning rope) to a touch hole. It's janky as fuck if you actually need to carry the weapon around, and is really innaccurate. Reloading time is between 20 and 60 seconds. See LT90 for details, but water and wind will really screw with this gun.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Matchlock</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Matchlock</td>" +
             "<td><p>Loaded with loose powder or paper cartridges. Slightly more advanced than the cannonlock. Now the piece of burning match is attached to the gun and pulling the trigger touches the match to the touch hole. Reloading time is between 20 and 60 seconds. If damp, the weapon will only fire on a crit. See LT90 for details, but water and wind will really screw with this gun.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Wheellock</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Wheellock</td>" +
             "<td><p>Loaded with loose powder or paper cartridges. Uses some clockwork bullshit to spin a wheel like you might see on a modern lighter. Does not need to be cocked light a flint lock. In theory this does protect against <i>very</i> specific types of misfires as you can just pull the trigger again to try firing again without needing to cock anything. Reloading time is between 20 and 60 seconds. See LT90 for details, but water and wind will screw with this gun, though not as bad as the cannon or matchlock.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Flintlock</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Flintlock</td>" +
             "<td><p>Loaded with loose powder or paper cartridges. Very simple, pull a trigger, drop the hammer. Reloading time is between 20 and 60 seconds. See LT90 for details, but water and wind will screw with this gun, though not as bad as the cannon or matchlock.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Caplock</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Caplock</td>" +
             "<td><p>Loaded with loose powder or paper cartridges and using separate percussion caps. Place a fresh cap on the percussion nipple as part of the loading process, and pulling the trigger drops the hammer detonating the cap. Reloading time is between 10 and 30 seconds. See LT90 for details, but water and wind will screw with this gun, though only if you load it wet. If you load it dry and take it somewhere wet you're probably fine.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Pinfire</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Pinfire</td>" +
             "<td><p>The first self-contained cartridge. Old fashioned, but not actually any slower to load than modern ammo. There are also no issues due to water.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Rimfire</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Rimfire</td>" +
             "<td><p>Another self-contained cartridge. Old fashioned, but still in use today in the 22LR. There are also no issues due to water.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Centrefire</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Centrefire</td>" +
             "<td><p>Modern ammo.</p></td>" +
             "</tr>" +
             "</table>"
@@ -6453,11 +6549,11 @@ export class gurpsItem extends Item {
     else if (id == "firearm-bolt") {
         info = "<table>" +
             "<tr>" +
-            "<td style='width: 50px;'>Closed</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Closed</td>" +
             "<td><p>Unless it's a machinegun, choose this. And if it is a machine gun, maybe still choose this.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Open</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Open</td>" +
             "<td><p>Cheaper, less accurate, but allows for a higher rate of fire and better cooling. Only really used in SMGs, or machine guns meant for continuous fire.</p></td>" +
             "</tr>" +
             "</table>"
@@ -6547,19 +6643,19 @@ export class gurpsItem extends Item {
     else if (id == "powder-type") {
         info = "<table>" +
             "<tr>" +
-            "<td style='width: 50px;'>Black Powder</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Black Powder</td>" +
             "<td><p>The OG way to shoot a mofo. Semi automatic and automatic weapons are theoretically possible with black powder, but they become fouled <i>very</i> quickly.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Smokeless Powder</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Smokeless Powder</td>" +
             "<td><p>Allows higher pressures and won't foul semiautomatic and automatic weapons.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Electrothermal Chemical</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Electrothermal Chemical</td>" +
             "<td><p>Increases damage and range by 50% over smokeless powder. Double cost. However your weapon also requires electrical power provided by a UT cell. You need to change cells every 10 magazines. A cell for pistols. B cell for SMGs, PDWs, Shotguns, rifles. C cell for heavier weapons. This weight is included in your weapon's final weight.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Electrothermal Kinetic</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Electrothermal Kinetic</td>" +
             "<td><p>Increases damage and range by 100% over smokeless powder. +1 Acc for longarms. Double cost. However your weapon also requires electrical power provided by a UT cell. You need to change cells every 10 magazines. B cell for pistols. C cell for SMGs, PDWs, Shotguns, rifles. D cell for heavier weapons. This weight is included in your weapon's final weight.</p></td>" +
             "</tr>" +
             "</table>"
@@ -6581,31 +6677,31 @@ export class gurpsItem extends Item {
     else if (id == "magazine-style") {
         info = "<table>" +
             "<tr>" +
-            "<td style='width: 50px;'>Notes</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Notes</td>" +
             "<td><p>The magazine style mostly exists to limit the weight and Bulk penalties for larger magainzes.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>None</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>None</td>" +
             "<td><p>There is no magazine. Use this for single shot weapons, breech loaders, and break actions.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Internal</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Internal</td>" +
             "<td><p>All ammo is contained within the gun. Think tube magazines on shotguns, revolvers, or clip-fed rifles and pistols. Has the advantage of being lighter and can often be topped up without needing to dump the remaining ammo.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Standard</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Standard</td>" +
             "<td><p>A standard detachable box magazine.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Extended</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Extended</td>" +
             "<td><p>A standard detachable box magazine. Except longer.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>Drum</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>Drum</td>" +
             "<td><p>Like an extended magazine, but more compact.</p></td>" +
             "</tr>" +
             "<tr>" +
-            "<td style='width: 50px;'>High-Density</td>" +
+            "<td style='width: 50px; padding-right: 10px;'>High-Density</td>" +
             "<td><p>Like the coffin mags available for the AR-15. Even more compact than the drum.</p></td>" +
             "</tr>" +
             "</table>"
@@ -6842,6 +6938,20 @@ export class gurpsItem extends Item {
             "</tr>" +
             "<tr>" +
             "<td><p>The slider sets the percentage of the projectile that is made up of explosive filler. You will almost always want to set this to it's maximum value.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "wps") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>The weight of one round. A single full load is factored into the weight of the weapon, additional rounds will need to be added separately.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "cps") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>The cost of one round. This is not added to the cost of the weapon.</p></td>" +
             "</tr>" +
             "</table>"
       }
