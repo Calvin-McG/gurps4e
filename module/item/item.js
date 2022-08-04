@@ -2231,6 +2231,7 @@ export class gurpsItem extends Item {
         }
       }
 
+      // Loop through ammo designs and add ranged profiles
       if (typeof this.data.data.firearmDesign.ammunition != "undefined") {
         this.addCustomFirearmProfiles();
       }
@@ -2239,9 +2240,6 @@ export class gurpsItem extends Item {
       if (this.data.data.firearmDesign.meleeProfile) { // If the user wants to include a melee profile
         this.addMeleeProfile(this.data.data.firearmDesign.bulk, this.data.data.firearmDesign.cavalierWeapon, this.data.data.firearmDesign.configuration, this.data.data.firearmDesign.meleeSkill, this.data.data.firearmDesign.meleeSkillMod, this.data.data.firearmDesign.st) // Include one
       }
-
-      // Adding ranged profiles
-      let rangedProfiles = [];
 
       this.data.data.firearmDesign.baseDamageDice = generalHelpers.diceAndAddsToGURPSOutput(this.data.data.firearmDesign.baseDamageObject.dice, this.data.data.firearmDesign.baseDamageObject.adds);
     }
@@ -3367,7 +3365,7 @@ export class gurpsItem extends Item {
   }
 
   addMeleeProfile(bulk, cavalier, config, meleeSkill, meleeSkillMod, ST) {
-    let damageMod = Math.abs(bulk)-1;
+    let damageMod = Math.abs(Math.round(bulk))-1;
     let damage = "";
 
     if (cavalier) {
@@ -3396,7 +3394,7 @@ export class gurpsItem extends Item {
       "damageType": "cr",
       "armourDivisor": 1,
       "reach": "C",
-      "st": ST,
+      "st": Math.round(ST),
     };
 
     this.data.data.melee = [newRow];
