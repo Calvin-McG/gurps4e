@@ -2260,6 +2260,10 @@ export class gurpsItem extends Item {
 
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamageObject = generalHelpers.pointsToDiceAndAdds(this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamage);
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamageDice = generalHelpers.diceAndAddsToGURPSOutput(this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamageObject.dice, this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamageObject.adds);
+
+              // Add the cost of the explosives to the cost of the shot
+              let explosiveCost = explosive.costPerLb * (this.data.data.firearmDesign.ammunition[ammoKeys[i]].wps * (this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosivePercent / 100));
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps += explosiveCost;
             }
 
             this.data.data.firearmDesign.ammunition[ammoKeys[i]].st = Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].st);
