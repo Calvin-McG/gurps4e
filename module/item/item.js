@@ -1924,7 +1924,7 @@ export class gurpsItem extends Item {
             }
 
             // Subsonic ammo
-            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].subsonic !== "1") {
+            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].subsonic) {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.3;
               if (this.data.data.firearmDesign.yardsPerSecond >= 375.109) {
                 if (kineticEnergy > 1250 || metresPerSecond > 700) { // If the projectile is moving quickly enough or carrying enough energy, count is as a rifle round, otherwise a pistol round
