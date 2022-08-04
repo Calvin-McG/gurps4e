@@ -3129,8 +3129,11 @@ export class gurpsActor extends Actor {
 
 
 			let drDamageType = damageType.type;
-			if (drDamageType == "tbb") { // For the purposes of DR only, set tbb attacks equivalent to burn since tbb still uses burning DR
+			if (drDamageType === "tbb") { // For the purposes of DR only, set tbb attacks equivalent to burn since tbb still uses burning DR
 				drDamageType = "burn";
+			}
+			else if (drDamageType === "pi-" || drDamageType === "pi+" || drDamageType === "pi++") {
+				drDamageType = "pi";
 			}
 
 			let totalLocationDR = 0;
