@@ -1854,6 +1854,8 @@ export class gurpsItem extends Item {
           break;
       }
 
+      this.data.data.cost = this.data.data.firearmDesign.finalCost;
+
       // Calculate Ammo Stuff
       if (typeof this.data.data.firearmDesign.ammunition != "undefined") {
         let ammoKeys = Object.keys(this.data.data.firearmDesign.ammunition); // Get the ammo keys
