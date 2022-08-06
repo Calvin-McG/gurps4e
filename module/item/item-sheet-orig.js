@@ -1184,7 +1184,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drTox: "",
                     drHardening: 1,
                     flexible: false,
-                    surfaceArea: 5.25 - 5.25/6, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
+                    surfaceArea: (5.25 - 5.25/6) / 2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 vitals: {
                     label: "Vitals",
@@ -1198,7 +1198,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drTox: "",
                     drHardening: 1,
                     flexible: false,
-                    surfaceArea: 5.25/6/2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
+                    surfaceArea: (5.25/6/2) / 2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 spine: {
                     label: "Spine",
@@ -1212,7 +1212,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drTox: "",
                     drHardening: 1,
                     flexible: false,
-                    surfaceArea: 5.25/6/2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
+                    surfaceArea: (5.25/6/2) / 2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 }
             }
         }
@@ -1237,7 +1237,7 @@ export class gurpsItemSheet extends ItemSheet {
                     drTox: "",
                     drHardening: 1,
                     flexible: false,
-                    surfaceArea: 5.25 - 5.25/6, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
+                    surfaceArea: (5.25 - 5.25/6) / 2, // The surface area of this part for a 150lb SM0 humanoid in square feet. It is corrected after for weight/SM
                 },
                 vitals: {
                     label: "Vitals",
