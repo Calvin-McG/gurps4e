@@ -71,7 +71,7 @@ export class gurpsItem extends Item {
     }
 
     this.data.data.cost = Math.round(+this.data.data.cost * 100) / 100;
-    this.data.data.weight = Math.round(+this.data.data.weight * 100) / 100;
+    this.data.data.weight = Math.round(+this.data.data.weight * 100000) / 100000;
     this.data.data.quantity = Math.round(+this.data.data.quantity);
 
     // Calculated total weight and cost
@@ -4064,7 +4064,7 @@ export class gurpsItem extends Item {
     this.data.data.bowDesign.deflection = Math.round(this.data.data.bowDesign.deflection * 1000) / 1000 * 100;
     this.data.data.bowDesign.stockThickness = Math.round(this.data.data.bowDesign.stockThickness * 100) / 100;
     this.data.data.bowDesign.riserThickness = Math.round(this.data.data.bowDesign.riserThickness * 100) / 100;
-    this.data.data.weight = Math.round(this.data.data.weight * 100) / 100;
+    this.data.data.weight = Math.round(this.data.data.weight * 100000) / 100000;
     this.data.data.ttlWeight = this.data.data.weight * this.data.data.quantity;
     this.data.data.cost = Math.round(this.data.data.cost * 100) / 100;
     this.data.data.ttlCost = this.data.data.cost * this.data.data.quantity;
