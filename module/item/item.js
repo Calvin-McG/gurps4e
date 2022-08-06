@@ -2187,7 +2187,24 @@ export class gurpsItem extends Item {
             }
             else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "shotshell" || this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "canister") {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= (1 / Math.sqrt(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles));
-              let projectileDiameter = ((this.data.data.firearmDesign.projectileCalibre ** 3) / this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles) ** (1/3)
+              let projectileDiameter = ((this.data.data.firearmDesign.projectileCalibre ** 3) / this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles) ** (1/3);
+
+              if (projectileDiameter < 5) {
+                this.data.data.firearmDesign.woundMod = 1;
+              }
+              else if (projectileDiameter < 8) {
+                this.data.data.firearmDesign.woundMod = 2;
+              }
+              else if (projectileDiameter < 10) {
+                this.data.data.firearmDesign.woundMod = 2;
+              }
+              else if (projectileDiameter < 15) {
+                this.data.data.firearmDesign.woundMod = 3;
+              }
+              else {
+                this.data.data.firearmDesign.woundMod = 4;
+              }
+
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange = projectileDiameter * 5;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange = projectileDiameter * 100;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
@@ -2196,6 +2213,23 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= (1 / Math.sqrt(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles));
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
               let projectileDiameter = ((this.data.data.firearmDesign.projectileCalibre ** 3) / this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles) ** (1/3)
+
+              if (projectileDiameter < 5) {
+                this.data.data.firearmDesign.woundMod = 1;
+              }
+              else if (projectileDiameter < 8) {
+                this.data.data.firearmDesign.woundMod = 2;
+              }
+              else if (projectileDiameter < 10) {
+                this.data.data.firearmDesign.woundMod = 2;
+              }
+              else if (projectileDiameter < 15) {
+                this.data.data.firearmDesign.woundMod = 3;
+              }
+              else {
+                this.data.data.firearmDesign.woundMod = 4;
+              }
+
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange = projectileDiameter * 50;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange = projectileDiameter * 600;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
@@ -2204,6 +2238,23 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= (1 / Math.sqrt(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles));
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
               let projectileDiameter = ((this.data.data.firearmDesign.projectileCalibre ** 3) / this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles) ** (1/3)
+
+              if (projectileDiameter < 5) {
+                this.data.data.firearmDesign.woundMod = 1;
+              }
+              else if (projectileDiameter < 8) {
+                this.data.data.firearmDesign.woundMod = 2;
+              }
+              else if (projectileDiameter < 10) {
+                this.data.data.firearmDesign.woundMod = 2;
+              }
+              else if (projectileDiameter < 15) {
+                this.data.data.firearmDesign.woundMod = 3;
+              }
+              else {
+                this.data.data.firearmDesign.woundMod = 4;
+              }
+
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange = projectileDiameter * 2;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange = projectileDiameter * 10;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
