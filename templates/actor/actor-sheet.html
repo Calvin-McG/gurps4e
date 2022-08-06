@@ -285,8 +285,8 @@
 												{{data.data.shortNotes}}
 										</td>
 										<td class="item-skill" style="width: 3em;">
-											{{#if (isInt data.level)}}
-												{{#if data.level}}
+											{{#if (isInt data.data.level)}}
+												{{#if data.data.level}}
 													<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.data.level}}"
 															 data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
 													{{data.data.level}}
