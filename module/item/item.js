@@ -3351,7 +3351,7 @@ export class gurpsItem extends Item {
     // For each ranged profile, check if the box is checked and add the ranged profile accordingly.
     if (this.data.data.laserDesign.showAir) {
       let showAir = {
-        "name": this.data.name + " - Air",
+        "name": "Air",
         "skill": this.data.data.laserDesign.rangedSkill,
         "skillMod": this.data.data.laserDesign.rangedSkillMod,
         "acc": this.data.data.laserDesign.outputAcc,
@@ -3371,7 +3371,7 @@ export class gurpsItem extends Item {
     }
     if (this.data.data.laserDesign.showSpace) {
       let showSpace = {
-        "name": this.data.name + " - Space",
+        "name": "Space",
         "skill": this.data.data.laserDesign.rangedSkill,
         "skillMod": this.data.data.laserDesign.rangedSkillMod,
         "acc": this.data.data.laserDesign.outputAccSpace,
@@ -3391,7 +3391,7 @@ export class gurpsItem extends Item {
     }
     if (this.data.data.laserDesign.showWater) {
       let showWater = {
-        "name": this.data.name + " - Water",
+        "name": "Water",
         "skill": this.data.data.laserDesign.rangedSkill,
         "skillMod": this.data.data.laserDesign.rangedSkillMod,
         "acc": this.data.data.laserDesign.outputAccWater,
@@ -3411,7 +3411,7 @@ export class gurpsItem extends Item {
     }
     if (this.data.data.laserDesign.showAirHotshot && this.data.data.hotshotsAndOverheating && !(this.data.data.configuration.toLowerCase().includes("gat"))) { // The user wants to show hotshots, hotshots are allowed, and this isn't a gatling weapon
       let showAirHotshot = {
-        "name": this.data.name + " - Hotshot Air",
+        "name": "Hotshot Air",
         "skill": this.data.data.laserDesign.rangedSkill,
         "skillMod": this.data.data.laserDesign.rangedSkillMod,
         "acc": this.data.data.laserDesign.outputAcc,
@@ -3431,7 +3431,7 @@ export class gurpsItem extends Item {
     }
     if (this.data.data.laserDesign.showSpaceHotshot && this.data.data.hotshotsAndOverheating && !(this.data.data.configuration.toLowerCase().includes("gat"))) { // The user wants to show hotshots, hotshots are allowed, and this isn't a gatling weapon
       let showSpaceHotshot = {
-        "name": this.data.name + " - Space Hotshot",
+        "name": "Space Hotshot",
         "skill": this.data.data.laserDesign.rangedSkill,
         "skillMod": this.data.data.laserDesign.rangedSkillMod,
         "acc": this.data.data.laserDesign.outputAccSpace,
@@ -3451,7 +3451,7 @@ export class gurpsItem extends Item {
     }
     if (this.data.data.laserDesign.showWaterHotshot && this.data.data.hotshotsAndOverheating && !(this.data.data.configuration.toLowerCase().includes("gat"))) { // The user wants to show hotshots, hotshots are allowed, and this isn't a gatling weapon
       let showWaterHotshot = {
-        "name": this.data.name + " - Water Hotshot",
+        "name": "Water Hotshot",
         "skill": this.data.data.laserDesign.rangedSkill,
         "skillMod": this.data.data.laserDesign.rangedSkillMod,
         "acc": this.data.data.laserDesign.outputAccWater,
@@ -4132,7 +4132,7 @@ export class gurpsItem extends Item {
       for (let i = 0; i < arrowKeys.length; i++) {
         if (this.data.data.bowDesign.arrows[arrowKeys[i]].showProfile) {
           let profile = {
-            "name": this.data.name + " " + this.data.data.bowDesign.arrows[arrowKeys[i]].name,
+            "name": this.data.data.bowDesign.arrows[arrowKeys[i]].name,
             "skill": this.data.data.bowDesign.skill,
             "skillMod": this.data.data.bowDesign.skillMod,
             "acc": this.data.data.bowDesign.arrows[arrowKeys[i]].acc,
@@ -4198,7 +4198,7 @@ export class gurpsItem extends Item {
 
           if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosivePercent > 0) {
             let followUpExplosion = {
-              "name": this.data.name + " - " + this.data.data.firearmDesign.ammunition[ammoKeys[i]].name + " - Explosion",
+              "name": this.data.data.firearmDesign.ammunition[ammoKeys[i]].name + " - Explosion",
               "skill": this.data.data.firearmDesign.rangedSkill,
               "skillMod": skillMod,
               "acc": this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc,
@@ -4220,7 +4220,7 @@ export class gurpsItem extends Item {
 
           if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag) {
             let followUpFrag = {
-              "name": this.data.name + " - " + this.data.data.firearmDesign.ammunition[ammoKeys[i]].name + " - Fragments",
+              "name": this.data.data.firearmDesign.ammunition[ammoKeys[i]].name + " - Fragments",
               "skill": this.data.data.firearmDesign.rangedSkill,
               "skillMod": skillMod,
               "acc": this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc,
