@@ -1138,6 +1138,8 @@ export class gurpsItem extends Item {
         }
       }
 
+      this.data.data.lc = 3;
+
       // Input Validation
       if (typeof this.data.data.firearmDesign.barrelLength == "undefined" || this.data.data.firearmDesign.barrelLength <= 0 || this.data.data.firearmDesign.barrelLength == "") {
         this.data.data.firearmDesign.barrelLength = 100;
