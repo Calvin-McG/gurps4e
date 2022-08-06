@@ -1312,9 +1312,6 @@ export class gurpsItem extends Item {
       if (this.data.data.firearmDesign.action === "break" || this.data.data.firearmDesign.action === "bolt" || this.data.data.firearmDesign.action === "straightPull") {
         this.data.data.firearmDesign.baseAcc += 1;
       }
-      else if (this.data.data.firearmDesign.action === "breech" || this.data.data.firearmDesign.action === "muzzle") {
-        this.data.data.firearmDesign.baseAcc -= 1;
-      }
 
       // Rifling ACC
       if (!this.data.data.firearmDesign.rifling) {
