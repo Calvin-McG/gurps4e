@@ -1989,6 +1989,12 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 7;
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
+
+            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "saplec") {
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 10;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+            }
             else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "saple" ||
                 this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "saphe") {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 10;
