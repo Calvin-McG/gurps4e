@@ -61,7 +61,7 @@ export class gurpsActor extends Actor {
 		//Update part specific HP
 		this.partHP();
 
-		//Recalculate encumbrance values, along with effective dodge and move. Do this last so move and dodge is correct.
+		// Recalculate encumbrance values, along with effective dodge and move. Do this last so move and dodge is correct.
 		this.recalcEncValues();
 	}
 
@@ -727,9 +727,14 @@ export class gurpsActor extends Actor {
 		let dodgeMultiplier = 1;
 
 		// Basic 328 - With less than 1/3rd FP remaining your ST is halved, but not for the purposes of HP or damage
-		if (this.data.data.reserves.fp.state.toLowerCase() != "fresh") {
+		if (this.data.data.reserves.fp.state.toLowerCase() !== "fresh" && this.data.data.reserves.fp.state.toLowerCase() !=="tired") {
 			st = st / 2
-			dodgeMultiplier = 0.5;
+			dodgeMultiplier *= 0.5;
+		}
+
+		if (this.data.data.reserves.hp.state.toLowerCase() !== "healthy" && this.data.data.reserves.hp.state.toLowerCase() !== "injured"){
+			st = st / 2
+			dodgeMultiplier *= 0.5;
 		}
 
 		var bl = Math.round(((st * st)/5));
@@ -754,17 +759,17 @@ export class gurpsActor extends Actor {
 		this.data.data.encumbrance.heavy.lbs = bl * 6;
 		this.data.data.encumbrance.xheavy.lbs = bl * 10;
 
-		this.data.data.encumbrance.none.move = move;
-		this.data.data.encumbrance.light.move = Math.max((Math.floor(move * 0.8)), 1);
-		this.data.data.encumbrance.medium.move = Math.max((Math.floor(move * 0.6)), 1);
-		this.data.data.encumbrance.heavy.move = Math.max((Math.floor(move * 0.4)), 1);
-		this.data.data.encumbrance.xheavy.move = Math.max((Math.floor(move * 0.2)), 1);
+		this.data.data.encumbrance.none.move	= Math.ceil((move) * dodgeMultiplier);
+		this.data.data.encumbrance.light.move	= Math.ceil((Math.max((Math.floor(move * 0.8)), 1)) * dodgeMultiplier);
+		this.data.data.encumbrance.medium.move	= Math.ceil((Math.max((Math.floor(move * 0.6)), 1)) * dodgeMultiplier);
+		this.data.data.encumbrance.heavy.move	= Math.ceil((Math.max((Math.floor(move * 0.4)), 1)) * dodgeMultiplier);
+		this.data.data.encumbrance.xheavy.move	= Math.ceil((Math.max((Math.floor(move * 0.2)), 1)) * dodgeMultiplier);
 
-		this.data.data.encumbrance.none.dodge = dodge + dodgeMod;
-		this.data.data.encumbrance.light.dodge = Math.max(dodge + dodgeMod - 1, 1);
-		this.data.data.encumbrance.medium.dodge = Math.max(dodge + dodgeMod - 2, 1);
-		this.data.data.encumbrance.heavy.dodge = Math.max(dodge + dodgeMod - 3, 1);
-		this.data.data.encumbrance.xheavy.dodge = Math.max(dodge + dodgeMod - 4, 1);
+		this.data.data.encumbrance.none.dodge	= Math.ceil((dodge + dodgeMod) * dodgeMultiplier);
+		this.data.data.encumbrance.light.dodge	= Math.ceil((Math.max(dodge + dodgeMod - 1, 1)) * dodgeMultiplier);
+		this.data.data.encumbrance.medium.dodge = Math.ceil((Math.max(dodge + dodgeMod - 2, 1)) * dodgeMultiplier);
+		this.data.data.encumbrance.heavy.dodge	= Math.ceil((Math.max(dodge + dodgeMod - 3, 1)) * dodgeMultiplier);
+		this.data.data.encumbrance.xheavy.dodge	= Math.ceil((Math.max(dodge + dodgeMod - 4, 1)) * dodgeMultiplier);
 
 		// Running loop to total up weight and value for the sheet
 		for (let l = 0; l < this.data.items._source.length; l++){
@@ -799,12 +804,6 @@ export class gurpsActor extends Actor {
 		else {
 			finalDodge = 0;
 		}
-
-		if (this.data.data.reserves.hp.state != "Healthy"){
-			dodgeMultiplier = dodgeMultiplier / 2;
-		}
-
-		finalDodge = Math.ceil(finalDodge * dodgeMultiplier);
 
 		this.data.data.primaryAttributes.dodge.value = finalDodge;
 	}
@@ -1079,74 +1078,56 @@ export class gurpsActor extends Actor {
 					// Handle the calculations for HP
 					let hpMax = this.data.data.reserves.hp.max;
 					let hpValue = this.data.data.reserves.hp.value;
-					let hpState;
+					let hpState = 'Healthy';
 
 					let hpRatio = hpValue / hpMax;
-					// set the limits
-					switch (Math.trunc(hpRatio)) {
-						case 0: {
-							if (hpRatio <= 0) { // collapse
-								hpState = 'Collapse';
-								break;
-							} else if (hpValue < (hpMax / 3)) { // reeling
-								hpState = 'Reeling';
-								break;
-							}
-							// healthy, no break
-						}
-						case 1: { // healthy
-							hpState = 'Healthy';
-							break;
-						}
-						case -1: { // death check at -1
-							hpState = 'Death 1';
-							break;
-						}
-						case -2: { // death check at -2
-							hpState = 'Death 2';
-							break;
-						}
-						case -3: { // death check at -3
-							hpState = 'Death 3';
-							break;
-						}
-						case -4: { // death check at -4
-							hpState = 'Death 4';
-							break;
-						}
-						default: { // dead
-							hpState = 'Dead';
-							break;
-						}
+					if (hpRatio < -5) { // HP is at -5xMax or less
+						hpState = 'Dead';
+					}
+					else if (hpRatio < -4) { // HP is at -4xMax or less
+						hpState = 'Death 4';
+					}
+					else if (hpRatio < -3) { // HP is at -3xMax or less
+						hpState = 'Death 3';
+					}
+					else if (hpRatio < -2) { // HP is at -2xMax or less
+						hpState = 'Death 2';
+					}
+					else if (hpRatio < -1) { // HP is at -1xMax or less
+						hpState = 'Death 1';
+					}
+					else if (hpValue < (hpMax / 3)) { // HP is less than 1/3rd of max.
+						hpState = 'Reeling';
+					}
+					else if (hpValue < hpMax) { // HP is not full, but is higher than 1/3rd of max.
+						hpState = 'Injured';
+					}
+					else { // HP is is not less than max.
+						hpState = 'Healthy';
 					}
 					this.data.data.reserves.hp.state = hpState;
 
 					// Handle the calculations for FP
 					let fpMax = this.data.data.reserves.fp.max;
 					let fpValue = this.data.data.reserves.fp.value;
-					let fpState;
+					let fpState = 'Fresh';
 
 					let fpRatio = fpValue / fpMax;
-					// set the limits
-					switch (Math.trunc(fpRatio)) {
-						case 0: {
-							if (fpRatio <= 0) { // collapse
-								fpState = 'Collapse';
-								break;
-							} else if (fpValue < (fpMax / 3)) { // tired
-								fpState = 'Tired';
-								break;
-							}
-							// fresh, no break
-						}
-						case 1: { // fresh
-							fpState = 'Fresh';
-							break;
-						}
-						default: { // unconscious
-							fpState = 'Unconscious';
-							break;
-						}
+
+					if (fpRatio <= -1) { // fp is at -1xMax or less
+						fpState = 'Unconscious';
+					}
+					else if (fpRatio <= 0) { // fp is at zero or less
+						fpState = 'Collapse';
+					}
+					else if (fpValue < (fpMax / 3)) { // fp is less than 1/3rd of max.
+						fpState = 'Very Tired';
+					}
+					else if (fpValue < fpMax) { // fp is not full, but is higher than 1/3rd of max.
+						fpState = 'Tired';
+					}
+					else { // FP is not less than max
+						fpState = 'Fresh';
 					}
 					// update the actor
 					this.data.data.reserves.fp.state = fpState;
