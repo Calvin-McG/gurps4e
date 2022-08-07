@@ -50,6 +50,9 @@ export class generalHelpers {
         else if (adds < 0) {
             result += "-" + +Math.abs(+adds);
         }
+        else {
+            result = "0";
+        }
         return result;
     }
 }
