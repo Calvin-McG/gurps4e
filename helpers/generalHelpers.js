@@ -38,9 +38,13 @@ export class generalHelpers {
 
     static diceAndAddsToGURPSOutput(dice, adds) {
         let result = "";
-        if (dice > 0){
+        if (dice === 0 && adds === 0) {
+            result = "0";
+        }
+        else if (dice > 0){
             result = dice + "d6";
         }
+
         if (adds > 0 && dice > 0) {
             result += "+" + +adds;
         }
@@ -49,9 +53,6 @@ export class generalHelpers {
         }
         else if (adds < 0) {
             result += "-" + +Math.abs(+adds);
-        }
-        else {
-            result = "0";
         }
         return result;
     }
