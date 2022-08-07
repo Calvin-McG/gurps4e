@@ -3,6 +3,11 @@ export class distanceHelpers {
     static convertToYards(dist, gridUnits) {
         let distance = 0;
 
+        // If there's an s at the end of the string, remove it
+        if (gridUnits.charAt(gridUnits.length - 1).toLowerCase() === "s"){
+            gridUnits = gridUnits.slice(0, -1);
+        }
+
         switch (gridUnits.toLowerCase()) {
             case undefined:
             case 'yard':
