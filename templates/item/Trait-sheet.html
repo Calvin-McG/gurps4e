@@ -421,12 +421,75 @@
                     {{/unless}}
                     {{#each data.data.armour.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
                     <tr class="hit-locations master-location">
-                        <th colspan="11">{{bodyPart.label}}</th>
+                        <th colspan="11">
+                            <div>{{bodyPart.label}}</div>
+                            <div>
+                                <a class="locationDRUp" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="locationDRDown" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                            </div>
+                        </th>
+                    <tr>
+                        <td colspan="3"></td>
+                        <td>
+                            <div class="dr-damage-type-buttons">
+                                <a class="burnDRUp" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="burnDRDown" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="dr-damage-type-buttons">
+                                <a class="corDRUp" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="corDRDown" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="dr-damage-type-buttons">
+                                <a class="crDRUp" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="crDRDown" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="dr-damage-type-buttons">
+                                <a class="cutDRUp" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="cutDRDown" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="dr-damage-type-buttons">
+                                <a class="fatDRUp" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="fatDRDown" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="dr-damage-type-buttons">
+                                <a class="impDRUp" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="impDRDown" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="dr-damage-type-buttons">
+                                <a class="piDRUp" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="piDRDown" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="dr-damage-type-buttons">
+                                <a class="toxDRUp" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="toxDRDown" id="data.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                            </div>
+                        </td>
+                    </tr>
                     </tr>
                     {{#if bodyPart.subLocation}}<!--Check to see if there are sublocations and display them-->
                     {{#each bodyPart.subLocation as |subLocation locationId|}}<!--Loop through the sublocations-->
                     <tr class="hit-locations">
-                        <td class="dr-row">{{subLocation.label}}</td>
+                        <td class="dr-row">
+                            <div>{{subLocation.label}}</div>
+                            <div>
+                                <a class="subLocationDRUp" id="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}" title="Sublocation DR Up"><i class="fas fa-arrow-up"></i></a>
+                                <a class="subLocationDRDown" id="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}" title="Sublocation DR Down"><i class="fas fa-arrow-down"></i></a>
+                            </div>
+                        </td>
                         <td class="dr-row">
                             <input type="checkbox" name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.flexible" {{checked subLocation.flexible}} data-dtype="Boolean" style="width: 100%;"/>
                         </td>

@@ -309,7 +309,7 @@ export class gurpsItemSheet extends ItemSheet {
     }
 
     alterLocationDR(event, mult, type){ // Event passes the event from the original method, and the mult is the positive or negative change desired.
-        let modifier = mult; // This multiplier is applied to the final change to DR.
+        let modifier = +mult; // This multiplier is applied to the final change to DR.
 
         // Each modifier key applies it's own stacking multiplier
         if (event.altKey) {
@@ -327,26 +327,28 @@ export class gurpsItemSheet extends ItemSheet {
         if (locationDRBlock.subLocation) { // The location has sub locations
             let locationKeys = Object.keys(locationDRBlock.subLocation);
             for (let d = 0; d < locationKeys.length; d++) {
-                ((type === "burn"   || typeof type == 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drBurn   += +modifier : 0);
-                ((type === "cor"    || typeof type == 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drCor    += +modifier : 0);
-                ((type === "cr"     || typeof type == 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drCr     += +modifier : 0);
-                ((type === "cut"    || typeof type == 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drCut    += +modifier : 0);
-                ((type === "fat"    || typeof type == 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drFat    += +modifier : 0);
-                ((type === "imp"    || typeof type == 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drImp    += +modifier : 0);
-                ((type === "pi"     || typeof type == 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drPi     += +modifier : 0);
-                ((type === "tox"    || typeof type == 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drTox    += +modifier : 0);
+                // First, check if the type matches, or has not been set at all. If so, get the dr that matches type and location. If that value is NaN, treat it as zero. Then add the modifier to that value, and set the new sum as the new dr value for that type and location.
+                ((type === "burn"   || typeof type == 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drBurn   = (isNaN(parseInt(getProperty(locationDRBlock.subLocation, locationKeys[d]).drBurn)) ? 0 : parseInt(getProperty(locationDRBlock.subLocation, locationKeys[d]).drBurn)) + parseInt(modifier) : 0);
+                ((type === "cor"    || typeof type == 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drCor    = (isNaN(parseInt(getProperty(locationDRBlock.subLocation, locationKeys[d]).drCor )) ? 0 : parseInt(getProperty(locationDRBlock.subLocation, locationKeys[d]).drCor )) + parseInt(modifier) : 0);
+                ((type === "cr"     || typeof type == 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drCr     = (isNaN(parseInt(getProperty(locationDRBlock.subLocation, locationKeys[d]).drCr  )) ? 0 : parseInt(getProperty(locationDRBlock.subLocation, locationKeys[d]).drCr  )) + parseInt(modifier) : 0);
+                ((type === "cut"    || typeof type == 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drCut    = (isNaN(parseInt(getProperty(locationDRBlock.subLocation, locationKeys[d]).drCut )) ? 0 : parseInt(getProperty(locationDRBlock.subLocation, locationKeys[d]).drCut )) + parseInt(modifier) : 0);
+                ((type === "fat"    || typeof type == 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drFat    = (isNaN(parseInt(getProperty(locationDRBlock.subLocation, locationKeys[d]).drFat )) ? 0 : parseInt(getProperty(locationDRBlock.subLocation, locationKeys[d]).drFat )) + parseInt(modifier) : 0);
+                ((type === "imp"    || typeof type == 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drImp    = (isNaN(parseInt(getProperty(locationDRBlock.subLocation, locationKeys[d]).drImp )) ? 0 : parseInt(getProperty(locationDRBlock.subLocation, locationKeys[d]).drImp )) + parseInt(modifier) : 0);
+                ((type === "pi"     || typeof type == 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drPi     = (isNaN(parseInt(getProperty(locationDRBlock.subLocation, locationKeys[d]).drPi  )) ? 0 : parseInt(getProperty(locationDRBlock.subLocation, locationKeys[d]).drPi  )) + parseInt(modifier) : 0);
+                ((type === "tox"    || typeof type == 'undefined') ? getProperty(locationDRBlock.subLocation, locationKeys[d]).drTox    = (isNaN(parseInt(getProperty(locationDRBlock.subLocation, locationKeys[d]).drTox )) ? 0 : parseInt(getProperty(locationDRBlock.subLocation, locationKeys[d]).drTox )) + parseInt(modifier) : 0);
             }
         }
 
         else { // The location has no sub locations
-            ((type === "burn"   || typeof type == 'undefined') ? locationDRBlock.drBurn += +modifier : 0);
-            ((type === "cor"    || typeof type == 'undefined') ? locationDRBlock.drCor  += +modifier : 0);
-            ((type === "cr"     || typeof type == 'undefined') ? locationDRBlock.drCr   += +modifier : 0);
-            ((type === "cut"    || typeof type == 'undefined') ? locationDRBlock.drCut  += +modifier : 0);
-            ((type === "fat"    || typeof type == 'undefined') ? locationDRBlock.drFat  += +modifier : 0);
-            ((type === "imp"    || typeof type == 'undefined') ? locationDRBlock.drImp  += +modifier : 0);
-            ((type === "pi"     || typeof type == 'undefined') ? locationDRBlock.drPi   += +modifier : 0);
-            ((type === "tox"    || typeof type == 'undefined') ? locationDRBlock.drTox  += +modifier : 0);
+            // First, check if the type matches, or has not been set at all. If so, get the dr that matches type and location. If that value is NaN, treat it as zero. Then add the modifier to that value, and set the new sum as the new dr value for that type and location.
+            ((type === "burn"   || typeof type == 'undefined') ? locationDRBlock.drBurn = (isNaN(parseInt(locationDRBlock.drBurn)) ? 0 : parseInt(locationDRBlock.drBurn)) + parseInt(modifier) : 0);
+            ((type === "cor"    || typeof type == 'undefined') ? locationDRBlock.drCor  = (isNaN(parseInt(locationDRBlock.drCor )) ? 0 : parseInt(locationDRBlock.drCor )) + parseInt(modifier) : 0);
+            ((type === "cr"     || typeof type == 'undefined') ? locationDRBlock.drCr   = (isNaN(parseInt(locationDRBlock.drCr  )) ? 0 : parseInt(locationDRBlock.drCr  )) + parseInt(modifier) : 0);
+            ((type === "cut"    || typeof type == 'undefined') ? locationDRBlock.drCut  = (isNaN(parseInt(locationDRBlock.drCut )) ? 0 : parseInt(locationDRBlock.drCut )) + parseInt(modifier) : 0);
+            ((type === "fat"    || typeof type == 'undefined') ? locationDRBlock.drFat  = (isNaN(parseInt(locationDRBlock.drFat )) ? 0 : parseInt(locationDRBlock.drFat )) + parseInt(modifier) : 0);
+            ((type === "imp"    || typeof type == 'undefined') ? locationDRBlock.drImp  = (isNaN(parseInt(locationDRBlock.drImp )) ? 0 : parseInt(locationDRBlock.drImp )) + parseInt(modifier) : 0);
+            ((type === "pi"     || typeof type == 'undefined') ? locationDRBlock.drPi   = (isNaN(parseInt(locationDRBlock.drPi  )) ? 0 : parseInt(locationDRBlock.drPi  )) + parseInt(modifier) : 0);
+            ((type === "tox"    || typeof type == 'undefined') ? locationDRBlock.drTox  = (isNaN(parseInt(locationDRBlock.drTox )) ? 0 : parseInt(locationDRBlock.drTox )) + parseInt(modifier) : 0);
         }
 
         this.item.update({ [event.currentTarget.id]: locationDRBlock });
