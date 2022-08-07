@@ -1844,13 +1844,13 @@ export class gurpsItem extends Item {
 
       // Pre-calculate helpers for ammo related stuff
       // Shot
-      this.data.data.firearmDesign.maxSPi = Math.floor((this.data.data.firearmDesign.projectileCalibre/5) ** 3);
-      this.data.data.firearmDesign.maxPi = Math.floor((this.data.data.firearmDesign.projectileCalibre/8) ** 3);
-      this.data.data.firearmDesign.maxLPi = Math.floor((this.data.data.firearmDesign.projectileCalibre/10) ** 3);
-      this.data.data.firearmDesign.maxHPi = Math.floor((this.data.data.firearmDesign.projectileCalibre/15) ** 3);
+      this.data.data.firearmDesign.maxSPi = Math.floor((this.data.data.firearmDesign.projectileCalibre/4) ** 3); // Gives max number of 4mm balls (pi- or pi depending on velocity) Less than this is always pi-
+      this.data.data.firearmDesign.maxPi = Math.floor((this.data.data.firearmDesign.projectileCalibre/8) ** 3); // Gives max number of 8mm balls  (pi)
+      this.data.data.firearmDesign.maxLPi = Math.floor((this.data.data.firearmDesign.projectileCalibre/10) ** 3); // Gives max number of 10mm balls (pi+)
+      this.data.data.firearmDesign.maxHPi = Math.floor((this.data.data.firearmDesign.projectileCalibre/15) ** 3); // Gives max number of 15mm balls (pi++)
 
       // Flechettes
-      this.data.data.firearmDesign.maxSPiF = Math.floor(((this.data.data.firearmDesign.projectileCalibre/5) ** 3) / 40);
+      this.data.data.firearmDesign.maxSPiF = Math.floor(((this.data.data.firearmDesign.projectileCalibre/4) ** 3) / 40);
       this.data.data.firearmDesign.maxPiF = Math.floor(((this.data.data.firearmDesign.projectileCalibre/8) ** 3) / 40);
       this.data.data.firearmDesign.maxLPiF = Math.floor(((this.data.data.firearmDesign.projectileCalibre/10) ** 3) / 40);
       this.data.data.firearmDesign.maxHPiF = Math.floor(((this.data.data.firearmDesign.projectileCalibre/15) ** 3) / 40);
@@ -2197,20 +2197,26 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= (1 / Math.sqrt(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles));
               let projectileDiameter = ((this.data.data.firearmDesign.projectileCalibre ** 3) / this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles) ** (1/3);
 
-              if (projectileDiameter < 5) {
-                this.data.data.firearmDesign.woundMod = 1;
+              // Wound modifier calculation
+              if (projectileDiameter < 4) {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 1;
               }
               else if (projectileDiameter < 8) {
-                this.data.data.firearmDesign.woundMod = 2;
+                if (this.data.data.firearmDesign.highEnergy) { // If the projectile is moving quickly enough or carrying enough energy, count is as 'pi', otherwise it remains pi-
+                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 2;
+                }
+                else {
+                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 1;
+                }
               }
               else if (projectileDiameter < 10) {
-                this.data.data.firearmDesign.woundMod = 2;
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 2;
               }
               else if (projectileDiameter < 15) {
-                this.data.data.firearmDesign.woundMod = 3;
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 3;
               }
               else {
-                this.data.data.firearmDesign.woundMod = 4;
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 4;
               }
 
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange = projectileDiameter * 5;
@@ -2222,20 +2228,26 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
               let projectileDiameter = ((this.data.data.firearmDesign.projectileCalibre ** 3) / this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles) ** (1/3)
 
-              if (projectileDiameter < 5) {
-                this.data.data.firearmDesign.woundMod = 1;
+              // Wound modifier calculation
+              if (projectileDiameter < 4) {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 1;
               }
               else if (projectileDiameter < 8) {
-                this.data.data.firearmDesign.woundMod = 2;
+                if (this.data.data.firearmDesign.highEnergy) { // If the projectile is moving quickly enough or carrying enough energy, count is as 'pi', otherwise it remains pi-
+                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 2;
+                }
+                else {
+                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 1;
+                }
               }
               else if (projectileDiameter < 10) {
-                this.data.data.firearmDesign.woundMod = 2;
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 2;
               }
               else if (projectileDiameter < 15) {
-                this.data.data.firearmDesign.woundMod = 3;
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 3;
               }
               else {
-                this.data.data.firearmDesign.woundMod = 4;
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 4;
               }
 
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange = projectileDiameter * 50;
@@ -2247,20 +2259,26 @@ export class gurpsItem extends Item {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
               let projectileDiameter = ((this.data.data.firearmDesign.projectileCalibre ** 3) / this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles) ** (1/3)
 
-              if (projectileDiameter < 5) {
-                this.data.data.firearmDesign.woundMod = 1;
+              // Wound modifier calculation
+              if (projectileDiameter < 4) {
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 1;
               }
               else if (projectileDiameter < 8) {
-                this.data.data.firearmDesign.woundMod = 2;
+                if (this.data.data.firearmDesign.highEnergy) { // If the projectile is moving quickly enough or carrying enough energy, count is as 'pi', otherwise it remains pi-
+                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 2;
+                }
+                else {
+                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 1;
+                }
               }
               else if (projectileDiameter < 10) {
-                this.data.data.firearmDesign.woundMod = 2;
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 2;
               }
               else if (projectileDiameter < 15) {
-                this.data.data.firearmDesign.woundMod = 3;
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 3;
               }
               else {
-                this.data.data.firearmDesign.woundMod = 4;
+                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 4;
               }
 
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange = projectileDiameter * 2;
