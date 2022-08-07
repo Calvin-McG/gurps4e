@@ -1825,7 +1825,7 @@
                                 </td>
                             </tr>
 
-                            {{#unless (or (eq data.data.firearmDesign.action "breech") (eq data.data.firearmDesign.action "muzzle") ) }}
+                            {{#unless (and (eq data.data.firearmDesign.action "breech") (eq data.data.firearmDesign.action "muzzle") ) }}
                             {{#ifCond ../data.data.tl '>=' 5 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
