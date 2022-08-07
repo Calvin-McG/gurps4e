@@ -2073,7 +2073,9 @@
                                     Max Number of Shots
                                 </td>
                                 <td colspan="2">
-                                    pi++: {{../data.data.firearmDesign.maxHPi}} pi+: {{../data.data.firearmDesign.maxLPi}} pi: {{../data.data.firearmDesign.maxPi}} pi-: {{../data.data.firearmDesign.maxSPi}}
+                                    pi++: {{../data.data.firearmDesign.maxHPi}}
+                                    pi+: {{../data.data.firearmDesign.maxLPi}}
+                                    pi: {{#if ../data.data.firearmDesign.highEnergy}} {{../data.data.firearmDesign.maxSPi}} {{else}} {{../data.data.firearmDesign.maxPi}} {{/if}}
                                 </td>
                             </tr>
                             {{/if}}
@@ -2098,7 +2100,7 @@
                                     Max Number of Shots
                                 </td>
                                 <td colspan="2">
-                                    pi++: {{../data.data.firearmDesign.maxHPiF}} pi+: {{../data.data.firearmDesign.maxLPiF}} pi: {{../data.data.firearmDesign.maxPiF}} pi-: {{../data.data.firearmDesign.maxSPiF}}
+                                    pi++: {{../data.data.firearmDesign.maxHPiF}} pi+: {{../data.data.firearmDesign.maxLPiF}} pi: {{#if ../data.data.firearmDesign.highEnergy}} {{../data.data.firearmDesign.maxSPiF}} {{else}} {{../data.data.firearmDesign.maxPiF}} {{/if}}
                                 </td>
                             </tr>
                             {{/if}}

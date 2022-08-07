@@ -1125,6 +1125,7 @@ export class gurpsItem extends Item {
           "stOutput": 10,
           "stCode": "",
           "bulk": -3,
+          "highEnergy": false,
 
           "explosivePercent": 0,
 
@@ -1245,6 +1246,14 @@ export class gurpsItem extends Item {
       let feetPerSecond = metresPerSecond * 1000 / (12 * 25.4); // D26
       this.data.data.firearmDesign.yardsPerSecond = Math.floor(feetPerSecond / 3);
 
+      // Decide whether or not this gun counts 4 to 8mm projectiles as pi or pi- (High/Low energy)
+      if (kineticEnergy > 1250 || metresPerSecond > 700) { // The KE is the NATO standard for intermediate cartridges.
+        this.data.data.firearmDesign.highEnergy = true;
+      }
+      else {
+        this.data.data.firearmDesign.highEnergy = false;
+      }
+
       // Damage
       this.data.data.firearmDesign.baseDamage = Math.round(Math.sqrt(( kineticEnergy ** 1.04)/( bulletCrossSection ** 0.314))/13.3926)
       this.data.data.firearmDesign.baseDamageObject = generalHelpers.pointsToDiceAndAdds(this.data.data.firearmDesign.baseDamage);
@@ -1271,7 +1280,7 @@ export class gurpsItem extends Item {
         this.data.data.firearmDesign.baseWoundMod = 1;
       }
       else if (this.data.data.firearmDesign.projectileCalibre < 8) {
-        if (kineticEnergy > 1250 || metresPerSecond > 700) { // If the projectile is moving quickly enough or carrying enough energy, count is as 'pi', otherwise it remains pi-
+        if (this.data.data.firearmDesign.highEnergy) { // If the projectile is moving quickly enough or carrying enough energy, count is as 'pi', otherwise it remains pi-
           this.data.data.firearmDesign.baseWoundMod = 2;
         }
         else {
@@ -1930,7 +1939,7 @@ export class gurpsItem extends Item {
             if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].subsonic) {
               this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.3;
               if (this.data.data.firearmDesign.yardsPerSecond >= 375.109) {
-                if (kineticEnergy > 1250 || metresPerSecond > 700) { // If the projectile is moving quickly enough or carrying enough energy, count is as a rifle round, otherwise a pistol round
+                if (this.data.data.firearmDesign.highEnergy) { // If the projectile is moving quickly enough or carrying enough energy, count is as a rifle round, otherwise a pistol round
                   this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.6;
                   this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 0.6;
                   this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 0.6;
