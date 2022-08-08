@@ -115,6 +115,20 @@ export class materialHelpers {
         return selectedExplosive;
     }
 
+    static getJewelryDesignByCode(code) {
+        const designs = this.fetchJewelryDesigns();
+        let selectedDesign;
+        if (typeof name != "undefined") {
+            designs.forEach( design => {
+                if (design.code.toLowerCase() == code.toLowerCase()) {
+                    selectedDesign = design;
+                }
+            })
+        }
+
+        return selectedDesign;
+    }
+
     static getAndCalculateArmourMaterialByName(name, essential) {
         let selectedMaterial = this.getArmourMaterialByName(name);
 
@@ -342,6 +356,13 @@ export class materialHelpers {
                 "code": "torc",
                 "valueMult": 2.5,
                 "weight": 0.4,
+                "notes": "A solid metal neckpiece, popular in the Celtic world."
+            },
+            {
+                "name": "Gemstone",
+                "code": "gem",
+                "valueMult": 1,
+                "weight": 1,
                 "notes": "A solid metal neckpiece, popular in the Celtic world."
             },
         ]
