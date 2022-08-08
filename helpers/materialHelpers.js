@@ -258,6 +258,569 @@ export class materialHelpers {
         return explosives;
     }
 
+    static fetchTreasureDesigns() {
+        const treasureDesigns = [
+            {
+                "name": "Beads",
+                "code": "beads",
+                "valueMult": 1.5,
+                "weight": 0.3,
+                "notes": "A string set with decorative beads or small plaques."
+            },
+            {
+                "name": "Bracelet",
+                "code": "bracelet",
+                "valueMult": 3.4,
+                "weight": 0.3,
+                "notes": ""
+            },
+            {
+                "name": "Chain",
+                "code": "chain",
+                "valueMult": 20,
+                "weight": 0.03,
+                "notes": ""
+            },
+            {
+                "name": "Comb",
+                "code": "comb",
+                "valueMult": 6,
+                "weight": 0.1,
+                "notes": ""
+            },
+            {
+                "name": "Circlet",
+                "code": "circlet",
+                "valueMult": 2,
+                "weight": 0.5,
+                "notes": ""
+            },
+            {
+                "name": "Tiara",
+                "code": "tiara",
+                "valueMult": 2,
+                "weight": 0.5,
+                "notes": ""
+            },
+            {
+                "name": "Crown",
+                "code": "crown",
+                "valueMult": 2,
+                "weight": 0.5,
+                "notes": ""
+            },
+            {
+                "name": "Fibula",
+                "code": "fibula",
+                "valueMult": 4.3,
+                "weight": 0.2,
+                "notes": "Resembles a large saftey pin. Used as both a fastener and an ornament."
+            },
+            {
+                "name": "Piercing",
+                "code": "piercing",
+                "valueMult": 30,
+                "weight": 0.01,
+                "notes": ""
+            },
+            {
+                "name": "Plug",
+                "code": "plug",
+                "valueMult": 6,
+                "weight": 0.05,
+                "notes": ""
+            },
+            {
+                "name": "Ring",
+                "code": "ring",
+                "valueMult": 4.3,
+                "weight": 0.1,
+                "notes": ""
+            },
+            {
+                "name": "Torc",
+                "code": "torc",
+                "valueMult": 2.5,
+                "weight": 0.4,
+                "notes": "A solid metal neckpiece, popular in the Celtic world."
+            },
+        ]
+
+        return treasureDesigns;
+    }
+
+    static fetchDecorationMethods() {
+        const decorationMethods = [
+            {
+                "name": "Beading",
+                "code": "beading",
+                "description": "Goods can be decorated with a pattern of coloured beads made of clay or shell.", // Displayed to the user when selecting decoration types.
+                "hard": false,
+                "soft": true,
+                "tl": 0,
+                "options": [
+                    {
+                        "name": "None",
+                        "code": "none",
+                        "description": "",
+                        "cf": 0,
+                    },
+                    {
+                        "name": "Light",
+                        "code": "light",
+                        "description": "This object has been lightly beaded along the edges or corners.", // Displayed to the user once the item has been selected.
+                        "cf": 2,
+                    },
+                    {
+                        "name": "Extensive",
+                        "code": "extensive",
+                        "description": "This object has extensive beading across the entire object.",
+                        "cf": 8,
+                    },
+                ]
+            },
+            {
+                "name": "Dye",
+                "code": "dye",
+                "description": "Cloth can be dyed an attractive colour or simply bleached white.",
+                "hard": false,
+                "soft": true,
+                "tl": 0,
+                "options": [
+                    {
+                        "name": "None",
+                        "code": "none",
+                        "description": "",
+                        "cf": 0,
+                    },
+                    {
+                        "name": "Simple",
+                        "code": "simple",
+                        "description": "This item has been dyed black, white, or a shade of grey.",
+                        "cf": 1.5,
+                    },
+                    {
+                        "name": "Common",
+                        "code": "common",
+                        "description": "A more vivid, but common dye has been applied to this item. Examples are dull red from madder or blue-grey from indigo.",
+                        "cf": 6,
+                    },
+                    {
+                        "name": "Expensive",
+                        "code": "expensive",
+                        "description": "An expensive dye, such as red from murex or cochnieal, yellow from saffron, or any other natural but extant dye has been applied to this item.",
+                        "cf": 30,
+                    },
+                ]
+            },
+            {
+                "name": "Embroidery",
+                "code": "embroidery",
+                "description": "Soft goods can have a design stitched into them.",
+                "hard": false,
+                "soft": true,
+                "tl": 0,
+                "options": [
+                    {
+                        "name": "None",
+                        "code": "none",
+                        "description": "",
+                        "cf": 0,
+                    },
+                    {
+                        "name": "Minimal",
+                        "code": "minimal",
+                        "description": "Minimal trim or simple designs have been stitched into the surface of this item.",
+                        "cf": 2,
+                    },
+                    {
+                        "name": "Elaborate",
+                        "code": "elaborate",
+                        "description": "An elaborate design has been stitched into this item and it covers most of it's surface.",
+                        "cf": 6,
+                    },
+                    {
+                        "name": "Minimal Cloth of Silver",
+                        "code": "minimalSilver",
+                        "description": "Minimal trim or simple designs have been stitched into the surface of this item with cloth of silver.",
+                        "cf": 6,
+                        "tl": 2
+                    },
+                    {
+                        "name": "Elaborate Cloth of Silver",
+                        "code": "elaborateSilver",
+                        "description": "An elaborate design has been stitched into this item and it covers most of it's surface with cloth of silver.",
+                        "cf": 18,
+                        "tl": 2
+                    },
+                    {
+                        "name": "Minimal Cloth of Gold",
+                        "code": "minimalGold",
+                        "description": "Minimal trim or simple designs have been stitched into the surface of this item with cloth of gold.",
+                        "cf": 60,
+                        "tl": 2
+                    },
+                    {
+                        "name": "Elaborate Cloth of Gold",
+                        "code": "elaborateGold",
+                        "description": "An elaborate design has been stitched into this item and it covers most of it's surface with cloth of gold.",
+                        "cf": 180,
+                        "tl": 2
+                    },
+                ]
+            },
+            {
+                "name": "Figurative Painting",
+                "code": "figurativePainting",
+                "description": "Any object can have a design painted or printed onto it.",
+                "hard": true,
+                "soft": true,
+                "tl": 0,
+                "options": [
+                    {
+                        "name": "None",
+                        "code": "none",
+                        "description": "",
+                        "cf": 0,
+                    },
+                    {
+                        "name": "Limited Simple",
+                        "code": "limitedSimple",
+                        "description": "Simple decoration on a limited portion of the object, like geometric patterns applied via block-print on only a portion of the item.",
+                        "cf": 2,
+                    },
+                    {
+                        "name": "Limited Complex",
+                        "code": "limitedComplex",
+                        "description": "Complex decoration on a limited portion of the object, like individually painted figures on only a portion of the item.",
+                        "cf": 5,
+                    },
+                    {
+                        "name": "Extensive Simple",
+                        "code": "extensiveSimple",
+                        "description": "Simple decoration on the entire object, like geometric patterns applied via block-print across the surface of the item.",
+                        "cf": 5,
+                    },
+                    {
+                        "name": "Extensive Complex",
+                        "code": "extensiveComplex",
+                        "description": "Complex decoration on the entire object, like a painted or printed scene covering the object.",
+                        "cf": 10,
+                    }
+                ]
+            },
+            {
+                "name": "Fringe, Feather, or Fur Trim",
+                "code": "fringe",
+                "description": "An object has been edged in feathers, fur, or dyed string.",
+                "hard": false,
+                "soft": true,
+                "tl": 0,
+                "options": [
+                    {
+                        "name": "None",
+                        "code": "none",
+                        "description": "",
+                        "cf": 0,
+                    },
+                    {
+                        "name": "Common",
+                        "code": "common",
+                        "description": "This object has common feathers, furs, or a dyed string fringe.",
+                        "cf": 1.5,
+                    },
+                    {
+                        "name": "Rare",
+                        "code": "rare",
+                        "description": "This object has a particularly rare or colourful trim, like peacock feathers, rare dyes, or sable.",
+                        "cf": 4,
+                    },
+                    {
+                        "name": "Common Cloth of Silver",
+                        "code": "commonSilver",
+                        "description": "This object has common feathers, furs, or a dyed string fringe that has been worked into cloth of silver.",
+                        "cf": 4.5,
+                        "tl": 2
+                    },
+                    {
+                        "name": "Rare Cloth of Silver",
+                        "code": "rareSilver",
+                        "description": "This object has a particularly rare or colourful trim, like peacock feathers, rare dyes, or sable that has been worked into cloth of silver.",
+                        "cf": 12,
+                        "tl": 2
+                    },
+                    {
+                        "name": "Common Cloth of Gold",
+                        "code": "commonGold",
+                        "description": "This object has common feathers, furs, or a dyed string fringe that has been worked into cloth of gold.",
+                        "cf": 45,
+                        "tl": 2
+                    },
+                    {
+                        "name": "Rare Cloth of Gold",
+                        "code": "rareGold",
+                        "description": "This object has a particularly rare or colourful trim, like peacock feathers, rare dyes, or sable that has been worked into cloth of gold.",
+                        "cf": 120,
+                        "tl": 2
+                    }
+                ]
+            },
+            {
+                "name": "Inlay",
+                "code": "inlay",
+                "description": "An object can have a design carved or pressed into it, and then these carvings can be filled with materials of contrasting colours.",
+                "hard": true,
+                "soft": false,
+                "tl": 0,
+                "options": [
+                    {
+                        "name": "None",
+                        "code": "none",
+                        "description": "",
+                        "cf": 0,
+                    },
+                    {
+                        "name": "Simple with common materials",
+                        "code": "simpleCommon",
+                        "description": "This object has a simple design carved or pressed into it, and then the carvings have been filled with common materials of contrasting colours.",
+                        "cf": 1.5,
+                    },
+                    {
+                        "name": "Simple with precious materials",
+                        "code": "simplePrecious",
+                        "description": "This object has a simple design carved or pressed into it, and then the carvings have been filled with precious materials of contrasting colours.",
+                        "cf": 1.5,
+                    },
+                    {
+                        "name": "Extensive with common materials",
+                        "code": "extensiveCommon",
+                        "description": "This object has a complex design carved or pressed into it, and then the carvings have been filled with common materials of contrasting colours.",
+                        "cf": 4,
+                    },
+                    {
+                        "name": "Extensive with precious materials",
+                        "code": "extensivePrecious",
+                        "description": "This object has a complex design carved or pressed into it, and then the carvings have been filled with precious materials of contrasting colours.",
+                        "cf": 4,
+                    }
+                ]
+            },
+            {
+                "name": "Relief",
+                "code": "relief",
+                "description": "Hard goods can have a design carved or pressed into it.",
+                "hard": true,
+                "soft": false,
+                "tl": 0,
+                "options": [
+                    {
+                        "name": "None",
+                        "code": "none",
+                        "description": "",
+                        "cf": 0,
+                    },
+                    {
+                        "name": "Simple",
+                        "code": "simple",
+                        "description": "This object has a simple design carved or pressed into it.",
+                        "cf": 1.5,
+                    },
+                    {
+                        "name": "Extensive",
+                        "code": "extensive",
+                        "description": "This object has a complex design carved or pressed into it.",
+                        "cf": 4,
+                    }
+                ]
+            },
+            {
+                "name": "Tapestry Weaving",
+                "code": "tapestryWeaving",
+                "description": "A cloth or wicker object can have a design made of coloured strands integrated into it.",
+                "hard": false,
+                "soft": true,
+                "tl": 0,
+                "options": [
+                    {
+                        "name": "None",
+                        "code": "none",
+                        "description": "",
+                        "cf": 0,
+                    },
+                    {
+                        "name": "Simple",
+                        "code": "simple",
+                        "description": "A simple pattern has been woven into this item.",
+                        "cf": 2,
+                    },
+                    {
+                        "name": "Complex",
+                        "code": "complex",
+                        "description": "A complex pattern has been woven into this item.",
+                        "cf": 5,
+                    },
+                    {
+                        "name": "Figurative",
+                        "code": "figurative",
+                        "description": "A figurative design has been woven into this item.",
+                        "cf": 10,
+                    }
+                ]
+            },
+            {
+                "name": "Tapestry Dye",
+                "code": "tapestryDye",
+                "req": "tapestryWeaving",
+                "description": "The dye used in woven designs may be altered to be more or less expensive.",
+                "hard": false,
+                "soft": true,
+                "tl": 0,
+                "options": [
+                    {
+                        "name": "Simple",
+                        "code": "simple",
+                        "description": "The woven design uses black, white, or shades of grey.",
+                        "cf": 0,
+                    },
+                    {
+                        "name": "Common",
+                        "code": "common",
+                        "description": "The woven design uses a more vivid, but common dye has been applied to this item. Examples are dull red from madder or blue-grey from indigo.",
+                        "cf": 1,
+                    },
+                    {
+                        "name": "Expensive",
+                        "code": "expensive",
+                        "description": "The woven design uses an expensive dye, such as red from murex or cochnieal, yellow from saffron, or any other natural but extant dye.",
+                        "cf": 5,
+                    },
+                ]
+            },
+            {
+                "name": "Gilding",
+                "code": "gilding",
+                "description": "This object has been covered with a thin layer of precious metal leaf.",
+                "hard": true,
+                "soft": false,
+                "tl": 1,
+                "options": [
+                    {
+                        "name": "None",
+                        "code": "none",
+                        "description": "",
+                        "cf": 0,
+                    },
+                    {
+                        "name": "Copper Accents",
+                        "code": "copperAccent",
+                        "description": "This object has copper leaf applied as accents.",
+                        "cf": 1.5,
+                    },
+                    {
+                        "name": "Silver Accents",
+                        "code": "silverAccent",
+                        "description": "This object has silver leaf applied as accents.",
+                        "cf": 2,
+                    },
+                    {
+                        "name": "Gold Accents",
+                        "code": "goldAccent",
+                        "description": "This object has gold leaf applied as accents.",
+                        "cf": 20,
+                    },
+                    {
+                        "name": "Copper",
+                        "code": "copper",
+                        "description": "This object has been covered in copper leaf.",
+                        "cf": 4.5,
+                    },
+                    {
+                        "name": "Silver",
+                        "code": "silver",
+                        "description": "This object has been covered in silver leaf.",
+                        "cf": 6,
+                    },
+                    {
+                        "name": "Gold",
+                        "code": "gold",
+                        "description": "This object has been covered in gold leaf.",
+                        "cf": 60,
+                    },
+                ]
+            },
+            {
+                "name": "Enamel",
+                "code": "enamel",
+                "description": "Metal objects aren't generally painted, but enameled. It's similar to figurative painting.",
+                "hard": true,
+                "soft": false,
+                "tl": 2,
+                "options": [
+                    {
+                        "name": "None",
+                        "code": "none",
+                        "description": "",
+                        "cf": 0,
+                    },
+                    {
+                        "name": "Limited Simple",
+                        "code": "limitedSimple",
+                        "description": "Simple decoration has been enameled on a limited portion of the object, like geometric patterns on only a portion of the item.",
+                        "cf": 2,
+                    },
+                    {
+                        "name": "Limited Complex",
+                        "code": "limitedComplex",
+                        "description": "Complex decoration has been enameled on a limited portion of the object, like individually painted figures on only a portion of the item.",
+                        "cf": 5,
+                    },
+                    {
+                        "name": "Extensive Simple",
+                        "code": "extensiveSimple",
+                        "description": "Simple decoration has been enameled on the entire object, like geometric patterns across the surface of the item.",
+                        "cf": 5,
+                    },
+                    {
+                        "name": "Extensive Complex",
+                        "code": "extensiveComplex",
+                        "description": "Complex decoration has been enameled on the entire object, like a painted or printed scene covering the object.",
+                        "cf": 10,
+                    }
+                ]
+            },
+            {
+                "name": "Etching",
+                "code": "etching",
+                "description": "A metal object can have a design chemically etched into it.",
+                "hard": true,
+                "soft": false,
+                "tl": 2,
+                "options": [
+                    {
+                        "name": "None",
+                        "code": "none",
+                        "description": "",
+                        "cf": 0,
+                    },
+                    {
+                        "name": "Simple",
+                        "code": "simple",
+                        "description": "This object has a simple design chemically etched into it.",
+                        "cf": 1.5,
+                    },
+                    {
+                        "name": "Extensive",
+                        "code": "extensive",
+                        "description": "This object has a complex design chemically etched into it.",
+                        "cf": 4,
+                    }
+                ]
+            },
+        ]
+
+        return decorationMethods;
+    }
+
     static fetchArmourConstructionMethods() {
         const constructionMethods = [
             {
