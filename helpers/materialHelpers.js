@@ -104,7 +104,7 @@ export class materialHelpers {
     static getExplosiveByCode(code) {
         const explosives = this.fetchExplosives();
         let selectedExplosive;
-        if (typeof name != "undefined"){
+        if (typeof code != "undefined"){
             explosives.forEach( explosive => {
                 if (explosive.code.toLowerCase() == code.toLowerCase()) {
                     selectedExplosive = explosive;
@@ -118,7 +118,7 @@ export class materialHelpers {
     static getJewelryDesignByCode(code) {
         const designs = this.fetchJewelryDesigns();
         let selectedDesign;
-        if (typeof name != "undefined") {
+        if (typeof code != "undefined") {
             designs.forEach( design => {
                 if (design.code.toLowerCase() == code.toLowerCase()) {
                     selectedDesign = design;
@@ -127,6 +127,20 @@ export class materialHelpers {
         }
 
         return selectedDesign;
+    }
+
+    static getTreasureMaterialByName(name) {
+        const materials = this.fetchTreasureMaterials();
+        let selectedMaterial;
+        if (typeof name != "undefined") {
+            materials.forEach( material => {
+                if (material.name.toLowerCase() == name.toLowerCase()) {
+                    selectedMaterial = material;
+                }
+            })
+        }
+
+        return selectedMaterial;
     }
 
     static getAndCalculateArmourMaterialByName(name, essential) {
@@ -265,15 +279,721 @@ export class materialHelpers {
             {"tl": 9,"name": "Octanitrocubane","ref": 4,"costPerLb": 20,"code": "octanitrocubane"},
             {"tl": 10,"name": "High-Energy Explosive","ref": 6,"costPerLb": 40,"code": "highEnergyExplosive"},
             {"tl": 10,"name": "Stabalized Metalic Hydrogen","ref": 6,"costPerLb": 40,"code": "stabalizedMetalicHydrogen"},
-            {"tl": 11,"name": "Plasma Explosive","ref": 10,"costPerLb": 100,"code": "plasmaExplosive"},
-            {"tl": 12,"name": "Plasma Explosive","ref": 20,"costPerLb": 100,"code": "plasmaExplosive"}
+            {"tl": 11,"name": "Plasma Explosive - TL 11","ref": 10,"costPerLb": 100,"code": "plasmaExplosive"},
+            {"tl": 12,"name": "Plasma Explosive - TL 12","ref": 20,"costPerLb": 100,"code": "plasmaExplosive"}
         ]
 
         return explosives;
     }
 
+    static fetchTreasureMaterials() {
+        const treasureMaterials = [
+            {
+                "tl": "1",
+                "name": "Generic Soft Metals",
+                "cost": "9.3"
+            },
+            {
+                "tl": "2",
+                "name": "Lead",
+                "cost": "12.5"
+            },
+            {
+                "tl": "2",
+                "name": "Iron, Cheap",
+                "cost": "15"
+            },
+            {
+                "tl": "2",
+                "name": "Iron, Good",
+                "cost": "25"
+            },
+            {
+                "tl": "3",
+                "name": "Steel, Basic",
+                "cost": "50"
+            },
+            {
+                "tl": "1",
+                "name": "Brass (30%)",
+                "cost": "58.79"
+            },
+            {
+                "tl": "1",
+                "name": "Bronze, Cheap",
+                "cost": "60"
+            },
+            {
+                "tl": "1",
+                "name": "Brass (15%)",
+                "cost": "69.395"
+            },
+            {
+                "tl": "1",
+                "name": "White Copper",
+                "cost": "72.1523"
+            },
+            {
+                "tl": "1",
+                "name": "Brass (10%)",
+                "cost": "72.93"
+            },
+            {
+                "tl": "1",
+                "name": "Brass (5%)",
+                "cost": "76.465"
+            },
+            {
+                "tl": "1",
+                "name": "Copper",
+                "cost": "80"
+            },
+            {
+                "tl": "1",
+                "name": "Arsenic Bronze (2%)",
+                "cost": "85.65748"
+            },
+            {
+                "tl": "1",
+                "name": "Bronze (5%)",
+                "cost": "90"
+            },
+            {
+                "tl": "1",
+                "name": "Bronze (10%)",
+                "cost": "100"
+            },
+            {
+                "tl": "1",
+                "name": "Bronze (15%)",
+                "cost": "110"
+            },
+            {
+                "tl": "1",
+                "name": "Magnesium",
+                "cost": "250"
+            },
+            {
+                "tl": "4",
+                "name": "Steel, Hard TL4",
+                "cost": "250"
+            },
+            {
+                "tl": "1",
+                "name": "Tin",
+                "cost": "280"
+            },
+            {
+                "tl": "1",
+                "name": "Arsenic",
+                "cost": "362.874"
+            },
+            {
+                "tl": "1",
+                "name": "Antimony",
+                "cost": "400"
+            },
+            {
+                "tl": "4",
+                "name": "Steel, Duplex TL4",
+                "cost": "450"
+            },
+            {
+                "tl": "1",
+                "name": "Mercury",
+                "cost": "500"
+            },
+            {
+                "tl": "1",
+                "name": "Adamant",
+                "cost": "900"
+            },
+            {
+                "tl": "1",
+                "name": "Silver",
+                "cost": "1000"
+            },
+            {
+                "tl": "1",
+                "name": "Orichalcum",
+                "cost": "3000"
+            },
+            {
+                "tl": "1",
+                "name": "Gold",
+                "cost": "20000"
+            },
+            {
+                "tl": "2",
+                "name": "Liquid Soap",
+                "cost": "20"
+            },
+            {
+                "tl": "2",
+                "name": "Solid Soap",
+                "cost": "27"
+            },
+            {
+                "tl": "0",
+                "name": "Cosmetics (Common) -1",
+                "cost": "32"
+            },
+            {
+                "tl": "0",
+                "name": "Cosmetics (Common) 0",
+                "cost": "64"
+            },
+            {
+                "tl": "0",
+                "name": "Cosmetics (Better) -1",
+                "cost": "64"
+            },
+            {
+                "tl": "0",
+                "name": "Cosmetics (Common) 1",
+                "cost": "128"
+            },
+            {
+                "tl": "0",
+                "name": "Cosmetics (Better) 0",
+                "cost": "128"
+            },
+            {
+                "tl": "0",
+                "name": "Cosmetics (Better) 1",
+                "cost": "256"
+            },
+            {
+                "tl": "0",
+                "name": "Cosmetics (Common) 2",
+                "cost": "320"
+            },
+            {
+                "tl": "0",
+                "name": "Cosmetics (Better) 2",
+                "cost": "640"
+            },
+            {
+                "tl": "0",
+                "name": "Cosmetics (Common) 3",
+                "cost": "1280"
+            },
+            {
+                "tl": "0",
+                "name": "Cosmetics (Better) 3",
+                "cost": "2560"
+            },
+            {
+                "tl": "0",
+                "name": "Cosmetics (Common) 4",
+                "cost": "6400"
+            },
+            {
+                "tl": "0",
+                "name": "Cosmetics (Better) 4",
+                "cost": "12800"
+            },
+            {
+                "tl": "0",
+                "name": "Bulk Tobacco",
+                "cost": "12"
+            },
+            {
+                "tl": "0",
+                "name": "Flavoured Bulk Tobacco",
+                "cost": "36"
+            },
+            {
+                "tl": "0",
+                "name": "Prepared Tobacco",
+                "cost": "40"
+            },
+            {
+                "tl": "0",
+                "name": "Flavoured Prepared Tobacco",
+                "cost": "120"
+            },
+            {
+                "tl": "0",
+                "name": "Incense -1",
+                "cost": "128"
+            },
+            {
+                "tl": "0",
+                "name": "Incense 0",
+                "cost": "256"
+            },
+            {
+                "tl": "0",
+                "name": "Incense 1",
+                "cost": "512"
+            },
+            {
+                "tl": "0",
+                "name": "Incense 2",
+                "cost": "1280"
+            },
+            {
+                "tl": "0",
+                "name": "Perfume -1",
+                "cost": "1280"
+            },
+            {
+                "tl": "0",
+                "name": "Perfume 0",
+                "cost": "2560"
+            },
+            {
+                "tl": "0",
+                "name": "Incense 3",
+                "cost": "5120"
+            },
+            {
+                "tl": "0",
+                "name": "Perfume 1",
+                "cost": "5120"
+            },
+            {
+                "tl": "0",
+                "name": "Perfume 2",
+                "cost": "12800"
+            },
+            {
+                "tl": "0",
+                "name": "Incense 4",
+                "cost": "25600"
+            },
+            {
+                "tl": "0",
+                "name": "Perfume 3",
+                "cost": "51200"
+            },
+            {
+                "tl": "0",
+                "name": "Perfume 4",
+                "cost": "256000"
+            },
+            {
+                "tl": "0",
+                "name": "Animal Oil/Fat (Low Quality)",
+                "cost": "4"
+            },
+            {
+                "tl": "0",
+                "name": "Leather (Clothing Grade)",
+                "cost": "6"
+            },
+            {
+                "tl": "0",
+                "name": "Animal Wax (High Quality)",
+                "cost": "8"
+            },
+            {
+                "tl": "0",
+                "name": "Leather (Armour Grade)",
+                "cost": "10"
+            },
+            {
+                "tl": "0",
+                "name": "Bone",
+                "cost": "12.5"
+            },
+            {
+                "tl": "0",
+                "name": "Horn",
+                "cost": "12.5"
+            },
+            {
+                "tl": "0",
+                "name": "Shell",
+                "cost": "12.5"
+            },
+            {
+                "tl": "0",
+                "name": "Leather of Quality (Clothing)",
+                "cost": "30"
+            },
+            {
+                "tl": "0",
+                "name": "Leather of Quality (Armour)",
+                "cost": "50"
+            },
+            {
+                "tl": "1",
+                "name": "Ink",
+                "cost": "2.5"
+            },
+            {
+                "tl": "0",
+                "name": "Pigment -1",
+                "cost": "15"
+            },
+            {
+                "tl": "0",
+                "name": "Pigment 0",
+                "cost": "30"
+            },
+            {
+                "tl": "1",
+                "name": "Ink stick",
+                "cost": "40"
+            },
+            {
+                "tl": "0",
+                "name": "Pigment 1",
+                "cost": "60"
+            },
+            {
+                "tl": "0",
+                "name": "Pigment 2",
+                "cost": "150"
+            },
+            {
+                "tl": "0",
+                "name": "Pigment 3",
+                "cost": "600"
+            },
+            {
+                "tl": "0",
+                "name": "Pigment 4",
+                "cost": "3000"
+            },
+            {
+                "tl": "1",
+                "name": "Fermented Beverages",
+                "cost": "0.625"
+            },
+            {
+                "tl": "0",
+                "name": "Salt",
+                "cost": "8"
+            },
+            {
+                "tl": "0",
+                "name": "Stonefruit",
+                "cost": "8"
+            },
+            {
+                "tl": "3",
+                "name": "Distilled Beverages",
+                "cost": "16"
+            },
+            {
+                "tl": "0",
+                "name": "Lily",
+                "cost": "16"
+            },
+            {
+                "tl": "0",
+                "name": "Dried stonefruit",
+                "cost": "16"
+            },
+            {
+                "tl": "0",
+                "name": "Ginger",
+                "cost": "24"
+            },
+            {
+                "tl": "0",
+                "name": "Dried and prepared stonefruit",
+                "cost": "24"
+            },
+            {
+                "tl": "0",
+                "name": "Black Salt",
+                "cost": "32"
+            },
+            {
+                "tl": "0",
+                "name": "Red Salt",
+                "cost": "32"
+            },
+            {
+                "tl": "0",
+                "name": "Tea, Chocolate, Coffee",
+                "cost": "36"
+            },
+            {
+                "tl": "0",
+                "name": "Fennel",
+                "cost": "40"
+            },
+            {
+                "tl": "0",
+                "name": "Almonds",
+                "cost": "40"
+            },
+            {
+                "tl": "0",
+                "name": "Dried Almonds",
+                "cost": "80"
+            },
+            {
+                "tl": "0",
+                "name": "Low Spice -1",
+                "cost": "128"
+            },
+            {
+                "tl": "0",
+                "name": "Low Spice 0",
+                "cost": "256"
+            },
+            {
+                "tl": "0",
+                "name": "Low Spice 1",
+                "cost": "512"
+            },
+            {
+                "tl": "0",
+                "name": "High Spice -1",
+                "cost": "960"
+            },
+            {
+                "tl": "0",
+                "name": "Low Spice 2",
+                "cost": "1280"
+            },
+            {
+                "tl": "0",
+                "name": "High Spice 0",
+                "cost": "1920"
+            },
+            {
+                "tl": "0",
+                "name": "High Spice 1",
+                "cost": "3840"
+            },
+            {
+                "tl": "0",
+                "name": "Low Spice 3",
+                "cost": "5120"
+            },
+            {
+                "tl": "0",
+                "name": "High Spice 2",
+                "cost": "9600"
+            },
+            {
+                "tl": "0",
+                "name": "Low Spice 4",
+                "cost": "25600"
+            },
+            {
+                "tl": "0",
+                "name": "High Spice 3",
+                "cost": "38400"
+            },
+            {
+                "tl": "0",
+                "name": "High Spice 4",
+                "cost": "192000"
+            },
+            {
+                "tl": "1",
+                "name": "Misc Vegetation, grass, etc",
+                "cost": "0.25"
+            },
+            {
+                "tl": "0",
+                "name": "Wood (Raw)",
+                "cost": "0.25"
+            },
+            {
+                "tl": "1",
+                "name": "Peat",
+                "cost": "0.6"
+            },
+            {
+                "tl": "0",
+                "name": "Wood (Low Grade, Aged)",
+                "cost": "0.8"
+            },
+            {
+                "tl": "0",
+                "name": "Charcoal, Low Grade",
+                "cost": "1.25"
+            },
+            {
+                "tl": "1",
+                "name": "Wicker",
+                "cost": "1.6"
+            },
+            {
+                "tl": "1",
+                "name": "Charcoal, High Grade",
+                "cost": "2"
+            },
+            {
+                "tl": "1",
+                "name": "Vegetable Oil",
+                "cost": "2"
+            },
+            {
+                "tl": "0",
+                "name": "Wood (High Grade, Aged)",
+                "cost": "5.2"
+            },
+            {
+                "tl": "0",
+                "name": "Pitch",
+                "cost": "8"
+            },
+            {
+                "tl": "0",
+                "name": "Amber",
+                "cost": "65"
+            },
+            {
+                "tl": "0",
+                "name": "Raw Fibre",
+                "cost": "0.2"
+            },
+            {
+                "tl": "0",
+                "name": "Thread/Yarn",
+                "cost": "0.6"
+            },
+            {
+                "tl": "2",
+                "name": "Paper (Low Grade)",
+                "cost": "1.725"
+            },
+            {
+                "tl": "0",
+                "name": "Cloth (Low Grade)",
+                "cost": "2.3"
+            },
+            {
+                "tl": "1",
+                "name": "Silk",
+                "cost": "3"
+            },
+            {
+                "tl": "2",
+                "name": "Paper (Mid Grade)",
+                "cost": "3.9"
+            },
+            {
+                "tl": "0",
+                "name": "Cloth (Mid Grade)",
+                "cost": "5.2"
+            },
+            {
+                "tl": "1",
+                "name": "Silk (Low Grade)",
+                "cost": "11.5"
+            },
+            {
+                "tl": "2",
+                "name": "Paper (High Grade)",
+                "cost": "12"
+            },
+            {
+                "tl": "0",
+                "name": "Cloth (High Grade)",
+                "cost": "16"
+            },
+            {
+                "tl": "1",
+                "name": "Silk (Mid Grade)",
+                "cost": "26"
+            },
+            {
+                "tl": "1",
+                "name": "Silk (High Grade)",
+                "cost": "80"
+            },
+            {
+                "tl": "1",
+                "name": "Raw Clay",
+                "cost": "0.2"
+            },
+            {
+                "tl": "0",
+                "name": "Earth",
+                "cost": "0.23"
+            },
+            {
+                "tl": "0",
+                "name": "Rubble",
+                "cost": "0.25"
+            },
+            {
+                "tl": "0",
+                "name": "Brick",
+                "cost": "0.43"
+            },
+            {
+                "tl": "1",
+                "name": "Shaped Stone",
+                "cost": "0.75"
+            },
+            {
+                "tl": "0",
+                "name": "Earthenware Pottery",
+                "cost": "0.8"
+            },
+            {
+                "tl": "1",
+                "name": "Stoneware Pottery",
+                "cost": "0.8"
+            },
+            {
+                "tl": "4",
+                "name": "Coal",
+                "cost": "2.4"
+            },
+            {
+                "tl": "1",
+                "name": "Porcelain",
+                "cost": "2.5"
+            },
+            {
+                "tl": "1",
+                "name": "Glass",
+                "cost": "4.2"
+            },
+            {
+                "tl": "0",
+                "name": "Flint",
+                "cost": "8"
+            },
+            {
+                "tl": "1",
+                "name": "Stone (Armour Grade)",
+                "cost": "12.5"
+            },
+            {
+                "tl": "1",
+                "name": "Jade",
+                "cost": "62.5"
+            },
+            {
+                "tl": "1",
+                "name": "Jade, Gem Quality",
+                "cost": "125"
+            }
+        ]
+
+        return treasureMaterials;
+    }
+
     static fetchJewelryDesigns() {
         const jewelryDesigns = [
+            {
+                "name": "Mana Source",
+                "code": "mana",
+                "valueMult": 1,
+                "weight": 1,
+                "notes": "Just a piece of the selected material, at a specific size to provide a useful mana source."
+            },
+            {
+                "name": "Coin",
+                "code": "coin",
+                "valueMult": 1,
+                "weight": 0.0125,
+                "notes": "Just a piece of the selected material, forged, stamped, shaped, or cut into a coin or banknote."
+            },
             {
                 "name": "Beads",
                 "code": "beads",
