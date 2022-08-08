@@ -1011,16 +1011,60 @@ export class gurpsItem extends Item {
   }
 
   _prepareCustomJewelryData() {
+    this.validateEquipmentBasics();
+
     if (typeof this.data.data.jewelryDesign == "undefined" || (typeof this.data.data.jewelryDesign != "undefined" && !this.data.data.jewelryDesign.initComplete)) { // If the firearmDesign block hasn't yet been created
       this.data.data.jewelryDesign = { // Create it
         "initComplete": true,
         "style": "beads",
         "styles": [],
+        "material": "beads",
+        "materials": [],
+        "size": 0.3,
+        "value": 100,
+        "selectedStyle": {
+          "name": "Beads",
+          "code": "beads",
+          "valueMult": 1.5,
+          "weight": 0.3,
+          "notes": "A string set with decorative beads or small plaques."
+        },
+          "selectedMaterial": {
+            "name": "Generic Soft Metals",
+            "tl": "1",
+            "cost": "9.3",
+      },
+        "finalCost": 0,
       }
+    }
+    // Input validation
+    if (typeof this.data.data.jewelryDesign.style == "undefined" || this.data.data.jewelryDesign.style == "") {
+      this.data.data.jewelryDesign.style = "beads";
+    }
+    if (typeof this.data.data.jewelryDesign.size == "undefined" || this.data.data.jewelryDesign.size <= 0 || this.data.data.jewelryDesign.size == "") {
+      this.data.data.jewelryDesign.size = 0.3;
+    }
+    if (typeof this.data.data.jewelryDesign.value == "undefined" || this.data.data.jewelryDesign.value <= 0 || this.data.data.jewelryDesign.value == "") {
+      this.data.data.jewelryDesign.value = 100;
     }
 
     this.data.data.jewelryDesign.styles = game.materialAPI.fetchJewelryDesigns();
+    this.data.data.jewelryDesign.materials = game.materialAPI.fetchTreasureMaterials();
     this.data.data.lc = 4;
+    this.data.data.jewelryDesign.selectedStyle = game.materialAPI.getJewelryDesignByCode(this.data.data.jewelryDesign.style);
+    this.data.data.jewelryDesign.selectedMaterial = game.materialAPI.getTreasureMaterialByName(this.data.data.jewelryDesign.material);
+
+    if (this.data.data.jewelryDesign.style === "gem") {
+      this.data.data.jewelryDesign.finalCost = ((this.data.data.jewelryDesign.size ** 2) + (4 * this.data.data.jewelryDesign.size)) * this.data.data.jewelryDesign.value;
+      this.data.data.jewelryDesign.finalWeight = this.data.data.jewelryDesign.size / 2267.96;
+    }
+    else {
+      // Do treasure math
+    }
+
+    // Mana math - TODO Game setting to hide the "mana" design code, and disregard the mana output
+    this.data.data.cost = this.data.data.jewelryDesign.finalCost;
+    this.data.data.weight = this.data.data.jewelryDesign.finalWeight;
   }
 
   _prepareCustomWeaponData() {
@@ -7163,9 +7207,30 @@ export class gurpsItem extends Item {
             "</table>"
       }
     else if (id == "jewelry-style") {
+      info = "<table>" +
+          "<tr>" +
+          "<td><p>This is the base style of jewelry.</p></td>" +
+          "</tr>" +
+          "</table>"
+    }
+    else if (id == "jewelry-material") {
+      info = "<table>" +
+          "<tr>" +
+          "<td><p>Not all of these materials make sense. But the math will work at least.</p></td>" +
+          "</tr>" +
+          "</table>"
+    }
+    else if (id == "jewelry-size") {
         info = "<table>" +
             "<tr>" +
-            "<td><p>This is the base style of jewelry.</p></td>" +
+            "<td><p>You may select any weight you like. The base weight listed here is for a small example of the item.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "gem-value") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>The baseline value is 100, but values between 10 and 1000 are reasonable for gemstones.</p></td>" +
             "</tr>" +
             "</table>"
       }

@@ -75,7 +75,7 @@
             <div class="tab">
                 <div class="design-block">
                     <div style="width: 50%;">
-                        <h2 class="bold" style="text-align: center;">Firearm Options</h2>
+                        <h2 class="bold" style="text-align: center;">Jewelry Design</h2>
                         <input style="display: none;" type="checkbox" name="data.jewelryDesign.initComplete" {{checked data.data.jewelryDesign.initComplete}} data-dtype="Boolean"/>
                         <table>
                             <tr class="design-row">
@@ -97,7 +97,62 @@
                                     </div>
                                 </td>
                             </tr>
+
+                            <tr class="design-row">
+                                <td>Size</td>
+                                <td>
+                                    <input type="number" style="width: unset;" name="data.jewelryDesign.size" value="{{data.data.jewelryDesign.size}}" data-dtype="Number" />
+                                    Base Weight: {{data.data.jewelryDesign.selectedStyle.weight}}
+                                </td>
+                                <td class="question-container" id="jewelry-size">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            {{#if (eq data.data.jewelryDesign.style "gem") }}
+                                <tr class="design-row">
+                                    <td>Value</td>
+                                    <td>
+                                        <input type="number" style="width: unset;" name="data.jewelryDesign.value" value="{{data.data.jewelryDesign.value}}" data-dtype="Number" />
+                                    </td>
+                                    <td class="question-container" id="gem-value">
+                                        <div class="question-button">
+                                            <i class="fas fa-question"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {{else}}
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Material
+                                </td>
+                                <td>
+                                    <select name="data.jewelryDesign.material">
+                                        {{#select data.data.jewelryDesign.material}}
+                                            {{#each data.data.jewelryDesign.materials as |material id|}}
+                                                <option value="{{material.name}}">{{material.name}} - {{material.cost}} $/lb</option>
+                                            {{/each}}
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="jewelry-material">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/if}}
                         </table>
+
+                        {{#unless (eq data.data.jewelryDesign.style "gem") }}
+                        <h2 class="bold" style="text-align: center;">Decoration</h2>
+                        <table>
+
+                        </table>
+                        {{/unless}}
+
                     </div>
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
