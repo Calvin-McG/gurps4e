@@ -293,7 +293,8 @@
       "Trait",
       "Spell",
       "Custom Weapon",
-      "Custom Armour"
+      "Custom Armour",
+      "Custom Jewelry"
     ],
     "templates": {
       "base": {
@@ -474,6 +475,17 @@
         "bodyType": "",
         "layer": 0
       }
+    },
+    "Custom Jewelry": {
+      "templates": [
+        "base",
+        "countable",
+        "subCategory",
+        "weighable",
+        "tl",
+        "lc",
+        "equipStatus"
+      ]
     },
     "Item": {
       "templates": [

@@ -1,0 +1,110 @@
+<form class="{{cssClass}}" autocomplete="off">
+
+    {{!-- Sheet Header --}}
+    <header class="sheet-header">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+        <div class="header-fields">
+            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+            <div class="equipmentDetails" id="equipmentDetails">
+                <div id="qty" class="equipmentStat">
+                    <label class="resource-label">Qty:</label>
+                    <input type="number" name="data.quantity" value="{{data.data.quantity}}" data-dtype="Number"/>
+                </div>
+                <div id="tl" class="equipmentStat">
+                    <label class="resource-label">TL:</label>
+                    <input type="number" name="data.tl" value="{{data.data.tl}}" data-dtype="Number"/>
+                </div>
+                <div id="lc" class="equipmentStat">
+                    <label class="resource-label">LC:</label>
+                    <input type="number" name="data.lc" value="{{data.data.lc}}" data-dtype="Number"/>
+                </div>
+                <div id="equipped" class="flexrow">
+                    <select name="data.equipStatus" class="equipStatusSelect">
+                        {{#select data.data.equipStatus}}
+                        <option value="equipped">Equipped</option>
+                        <option value="carried">Carried</option>
+                        <option value="notCarried">Not Carried</option>
+                        {{/select}}
+                    </select>
+                </div>
+                <div id="subCategory" class="flexrow">
+                    <label class="resource-label" style="flex: 0.5;">Race / Meta Trait / Etc:</label>
+                    <input type="text" style="flex: 1;" name="data.subCategory" value="{{data.data.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
+                </div>
+                <div id="value" class="equipmentStatLong">
+                    <label class="resource-label">Value:</label>
+                    <label class="resource-label">{{round data.data.cost 100}}$</label>
+                    <label class="resource-label"> / {{round data.data.ttlCost 100}}$ total</label>
+                </div>
+                <div id="weight" class="equipmentStatLong">
+                    <label class="resource-label">Weight:</label>
+                    <label class="resource-label">{{round data.data.weight 100}}lbs</label>
+                    <label class="resource-label"> / {{round data.data.ttlWeight 100}}lbs total</label>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div style="padding-top: 2px;">
+        <label class="resource-label" style="width: 32px;">Short Notes:</label>
+        <input type="text" name="data.shortNotes" value="{{data.data.shortNotes}}" style="width: calc(100% - 78px);"/>
+    </div>
+
+    {{!-- Sheet Tab Navigation --}}
+    <nav id="tabselect" class="sheet-tabs tabs" data-group="primary">
+        <div class="header">
+            <a class="item" data-tab="notes">Notes</a>
+        </div>
+        <div class="header">
+            <a class="item" data-tab="design">Design</a>
+        </div>
+    </nav>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+
+        {{!-- Note Tab --}}
+        <div class="tab stats" data-tab="notes" data-group="primary">
+            <h3 class="bold">Detailed Notes</h3>
+            <div class="tab">
+                <textarea rows="8" name="data.notes">{{{data.data.notes}}}</textarea>
+            </div>
+        </div>
+
+        {{!-- Jewelry Design Tab --}}
+        <div class="tab stats" data-tab="design" data-group="primary">
+            <div class="tab">
+                <div class="design-block">
+                    <div style="width: 50%;">
+                        <h2 class="bold" style="text-align: center;">Firearm Options</h2>
+                        <input style="display: none;" type="checkbox" name="data.jewelryDesign.initComplete" {{checked data.data.jewelryDesign.initComplete}} data-dtype="Boolean"/>
+                        <table>
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Style of Jewelry
+                                </td>
+                                <td>
+                                    <select name="data.jewelryDesign.style">
+                                        {{#select data.data.jewelryDesign.style}}
+                                            {{#each data.data.jewelryDesign.styles as |style id|}}
+                                                <option value="{{style.code}}">{{style.name}}</option>
+                                            {{/each}}
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="jewelry-style">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="width: 50%;">
+                        <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
+                        <div class="equipment-info-container">{{{data.data.info}}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>

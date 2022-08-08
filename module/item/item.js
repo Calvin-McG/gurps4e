@@ -52,6 +52,9 @@ export class gurpsItem extends Item {
       case "Custom Armour":
         this._prepareCustomArmourData();
         break;
+      case "Custom Jewelry":
+        this._prepareCustomJewelryData();
+        break;
       default: // not a supported type
         return ui.notifications.error("This type of item is not supported in the system!");
     }
@@ -1005,6 +1008,19 @@ export class gurpsItem extends Item {
         this.data.data.armourDesign.holdout = Math.min(this.data.data.armourDesign.holdout, currentSubPart.holdout);
       }
     }
+  }
+
+  _prepareCustomJewelryData() {
+    if (typeof this.data.data.jewelryDesign == "undefined" || (typeof this.data.data.jewelryDesign != "undefined" && !this.data.data.jewelryDesign.initComplete)) { // If the firearmDesign block hasn't yet been created
+      this.data.data.jewelryDesign = { // Create it
+        "initComplete": true,
+        "style": "beads",
+        "styles": [],
+      }
+    }
+
+    this.data.data.jewelryDesign.styles = game.materialAPI.fetchJewelryDesigns();
+    this.data.data.lc = 4;
   }
 
   _prepareCustomWeaponData() {
@@ -7143,6 +7159,13 @@ export class gurpsItem extends Item {
         info = "<table>" +
             "<tr>" +
             "<td><p>The cost of one round. This is not added to the cost of the weapon.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "jewelry-style") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>This is the base style of jewelry.</p></td>" +
             "</tr>" +
             "</table>"
       }
