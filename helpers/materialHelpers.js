@@ -258,8 +258,8 @@ export class materialHelpers {
         return explosives;
     }
 
-    static fetchTreasureDesigns() {
-        const treasureDesigns = [
+    static fetchJewelryDesigns() {
+        const jewelryDesigns = [
             {
                 "name": "Beads",
                 "code": "beads",
@@ -346,7 +346,7 @@ export class materialHelpers {
             },
         ]
 
-        return treasureDesigns;
+        return jewelryDesigns;
     }
 
     static fetchDecorationMethods() {
