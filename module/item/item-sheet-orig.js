@@ -94,7 +94,7 @@ export class gurpsItemSheet extends ItemSheet {
     }
 
     _saveItem(event) {
-        this.item.update({ ["data"]: this.item.data.data }); // Add the new arrow to the list of melee keys
+        this.item.update({ ["data"]: this.item.data.data });
     }
 
 
