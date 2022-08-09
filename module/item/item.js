@@ -4218,11 +4218,14 @@ export class gurpsItem extends Item {
         if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].showProfile) {
 
           let rof = ""
-          if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles > 1 || this.data.data.firearmDesign.barrels > 1) {
-            rof = this.data.data.firearmDesign.rof + "x" + (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles * this.data.data.firearmDesign.barrels);
+          let shots = parseInt((this.data.data.firearmDesign.rof * this.data.data.firearmDesign.barrels));
+          let pellets = parseInt(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles);
+
+          if (pellets > 1) {
+            rof = shots + "x" + pellets;
           }
           else {
-            rof = this.data.data.firearmDesign.rof;
+            rof = shots;
           }
 
           let skillMod = this.data.data.firearmDesign.rangedSkillMod
