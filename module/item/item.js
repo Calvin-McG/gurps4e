@@ -1020,6 +1020,8 @@ export class gurpsItem extends Item {
         "styles": [],
         "material": "beads",
         "materials": [],
+        "decorations": [],
+        "selectedDecorations": [],
         "size": 0.3,
         "value": 100,
         "selectedStyle": {
@@ -1050,6 +1052,7 @@ export class gurpsItem extends Item {
 
     this.data.data.jewelryDesign.styles = game.materialAPI.fetchJewelryDesigns();
     this.data.data.jewelryDesign.materials = game.materialAPI.fetchTreasureMaterials();
+    this.data.data.jewelryDesign.decorations = game.materialAPI.fetchDecorationMethods();
     this.data.data.lc = 4;
     this.data.data.jewelryDesign.selectedStyle = game.materialAPI.getJewelryDesignByCode(this.data.data.jewelryDesign.style);
     this.data.data.jewelryDesign.selectedMaterial = game.materialAPI.getTreasureMaterialByName(this.data.data.jewelryDesign.material);

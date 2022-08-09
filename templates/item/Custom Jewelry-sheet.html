@@ -149,7 +149,9 @@
                         {{#unless (eq data.data.jewelryDesign.style "gem") }}
                         <h2 class="bold" style="text-align: center;">Decoration</h2>
                         <table>
-
+                            {{#each data.data.jewelryDesign.materials as |material id|}}
+                            <option value="{{material.name}}">{{material.name}} - {{material.cost}} $/lb</option>
+                            {{/each}}
                         </table>
                         {{/unless}}
 
