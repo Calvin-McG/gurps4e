@@ -6446,7 +6446,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-butted-mail") {
+    else if (id == "armour-butted") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6461,7 +6461,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-banded-mail") {
+    else if (id == "armour-banded") {
       info = "<table>";
 
       info += "<tr>" +
