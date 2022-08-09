@@ -4,7 +4,7 @@
     <header class="sheet-header">
         <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
         <div class="header-fields">
-            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+            <h1 class="charname"><input style="width: 87.5%" name="name" type="text" value="{{item.name}}" placeholder="Name"/><a class="saveItem">Save</a></h1>
             <div class="equipmentDetails" id="equipmentDetails">
                 <div id="qty" class="equipmentStat">
                     <label class="resource-label">Qty:</label>
@@ -516,9 +516,6 @@
                         <div>
                             <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
                             <div class="equipment-info-container">{{{data.data.info}}}</div>
-                        </div>
-                        <div>
-                            <a class="saveItem">Save</a>
                         </div>
                     </div>
                     <table>
