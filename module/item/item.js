@@ -70,6 +70,29 @@ export class gurpsItem extends Item {
       this.data.data.quantity = 0;
     }
 
+    // Constrain TL to valid values
+    if (typeof this.data.data.tl === undefined || this.data.data.tl == null || this.data.data.tl === "") { // If it's undefined, blank, or null, set to default.
+      this.data.data.tl = game.settings.get("gurps4e", "campaignTL");
+    }
+
+    //Constrain LC to valid values
+    if (typeof this.data.data.lc === undefined || typeof this.data.data.lc == null) { // Undefined set to 4 (Open)
+      this.data.data.lc = 4;
+    }
+  }
+
+  finalEquipmentCalculation() {
+    // Check for undefined on cost, weight, and quantity
+    if (typeof this.data.data.cost === undefined || typeof this.data.data.cost == null) { // Undefined set to 0
+      this.data.data.cost = 0;
+    }
+    if (typeof this.data.data.weight === undefined || typeof this.data.data.weight == null) { // Undefined set to 0
+      this.data.data.weight = 0;
+    }
+    if (typeof this.data.data.quantity === undefined || typeof this.data.data.quantity == null) { // Undefined set to 0
+      this.data.data.quantity = 0;
+    }
+
     this.data.data.cost = Math.round(+this.data.data.cost * 100) / 100;
     this.data.data.weight = Math.round(+this.data.data.weight * 100000) / 100000;
     this.data.data.quantity = Math.round(+this.data.data.quantity);
@@ -103,6 +126,7 @@ export class gurpsItem extends Item {
 
   _prepareEquipmentData() {
     this.validateEquipmentBasics();
+    this.finalEquipmentCalculation();
   }
 
   _prepareCustomArmourData() {
@@ -456,10 +480,9 @@ export class gurpsItem extends Item {
       if (this.data.data.armourDesign.punch || this.data.data.armourDesign.kick) {
         this.addUnarmedProfiles(this.data.data.armourDesign.punch, this.data.data.armourDesign.kick);
       }
-
-      this.data.data.ttlWeight = this.data.data.weight * this.data.data.quantity;
-      this.data.data.ttlCost = this.data.data.cost * this.data.data.quantity;
     }
+
+    this.finalEquipmentCalculation();
   }
 
   addUnarmedProfiles(punch, kick) {
@@ -1035,6 +1058,8 @@ export class gurpsItem extends Item {
       default: // not a supported type of custom weapon
         return ui.notifications.error("This type of custom weapon is not supported in the system!");
     }
+
+    this.finalEquipmentCalculation();
   }
 
   prepareCustomFirearm() {
