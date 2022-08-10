@@ -158,7 +158,7 @@
                             {{/if}}
                         </table>
 
-                        {{#unless (eq data.data.jewelryDesign.style "gem") }}
+                        {{#unless (or (eq data.data.jewelryDesign.style "gem") (eq data.data.jewelryDesign.style "mana")) }}
                         <h2 class="bold" style="text-align: center;">Decorations</h2>
                         <table>
                             {{#if data.data.jewelryDesign.selectedMaterial.hard}}
