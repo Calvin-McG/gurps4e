@@ -196,7 +196,7 @@ Hooks.once("init", () => {
     hint: "For custom jewelry, include a display showing how much mana the item would be worth.",
     scope: "world",
     config: true,
-    default: true,
+    default: false,
     type: Boolean
   });
 
