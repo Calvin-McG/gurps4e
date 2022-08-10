@@ -1339,9 +1339,13 @@ export class gurpsItem extends Item {
     }
 
     // Final rounding
+    let campaignTL = game.settings.get("gurps4e", "campaignTL");
+    let campaignStartingWealth = economicHelpers.getStartingCashByTL(campaignTL);
+    let sacrificialValue = Math.round(campaignStartingWealth / 250);
+
     this.data.data.jewelryDesign.finalCost = Math.round((this.data.data.jewelryDesign.finalCost * cf) * 100) / 100;
     this.data.data.jewelryDesign.finalWeight = Math.round(this.data.data.jewelryDesign.finalWeight * 100000) / 100000;
-    this.data.data.jewelryDesign.mana = Math.floor(this.data.data.jewelryDesign.finalCost / 8);
+    this.data.data.jewelryDesign.mana = Math.floor(this.data.data.jewelryDesign.finalCost / sacrificialValue);
 
     // Output
     this.data.data.cost = this.data.data.jewelryDesign.finalCost;
