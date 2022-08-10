@@ -1838,3 +1838,17 @@ attribute-senses {
 	padding: 2px 8px;
 	background: rgb(63 255 0);
 }
+
+.jewelry-decoration-name {
+	font-weight: bold;
+	text-decoration: underline;
+	font-size: 14px;
+}
+
+.jewelry-decoration-desc {
+	font-style: italic;
+}
+
+.jewelry-decoration-select {
+	float: right;
+}

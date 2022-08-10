@@ -191,6 +191,15 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  game.settings.register("gurps4e", "manaTreasure", {
+    name: "Include mana on Custom Jewelry",
+    hint: "For custom jewelry, include a display showing how much mana the item would be worth.",
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
   // How to get the user who owns the actor: game.users.get((Object.keys(game.actors.getName("character name goes here").data.permission)[1])).data.name
   // game.settings.register("gurps4e", "bretMode", {
   //   name: "Bret Mode",

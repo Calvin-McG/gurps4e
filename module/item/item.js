@@ -1039,14 +1039,30 @@ export class gurpsItem extends Item {
     if (typeof this.data.data.jewelryDesign == "undefined" || (typeof this.data.data.jewelryDesign != "undefined" && !this.data.data.jewelryDesign.initComplete)) { // If the firearmDesign block hasn't yet been created
       this.data.data.jewelryDesign = { // Create it
         "initComplete": true,
+        "showMana": false,
+        "mana": 0,
         "style": "beads",
         "styles": [],
         "material": "beads",
         "materials": [],
-        "decorations": [],
-        "selectedDecorations": [],
+        "beading": "none",
+        "dye": "none",
+        "embroidery": "none",
+        "figurativePainting": "none",
+        "fringe": "none",
+        "relief": "none",
+        "inlay": "none",
+        "tapestryWeave": "none",
+        "tapestryDye": "none",
+        "gilding": "none",
+        "enamel": "none",
+        "etching": "none",
+        "manaTreasure": false,
+        "rollingDescription": "",
         "size": 0.3,
         "value": 100,
+        "cf": 1,
+        "hideDecorations": false,
         "selectedStyle": {
           "name": "Beads",
           "code": "beads",
@@ -1054,10 +1070,12 @@ export class gurpsItem extends Item {
           "weight": 0.3,
           "notes": "A string set with decorative beads or small plaques."
         },
-          "selectedMaterial": {
-            "name": "Generic Soft Metals",
-            "tl": "1",
-            "cost": "9.3",
+        "selectedMaterial": {
+          "name": "Generic Soft Metals",
+          "tl": "1",
+          "cost": "9.3",
+          "hard": true,
+          "metal": true,
       },
         "finalCost": 0,
       }
@@ -1073,22 +1091,254 @@ export class gurpsItem extends Item {
       this.data.data.jewelryDesign.value = 100;
     }
 
+    this.data.data.jewelryDesign.hideDecorations = false;
+    this.data.data.jewelryDesign.manaTreasure = game.settings.get("gurps4e", "manaTreasure");
+    this.data.data.jewelryDesign.showMana = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
     this.data.data.jewelryDesign.styles = game.materialAPI.fetchJewelryDesigns();
     this.data.data.jewelryDesign.materials = game.materialAPI.fetchTreasureMaterials();
-    this.data.data.jewelryDesign.decorations = game.materialAPI.fetchDecorationMethods();
     this.data.data.lc = 4;
     this.data.data.jewelryDesign.selectedStyle = game.materialAPI.getJewelryDesignByCode(this.data.data.jewelryDesign.style);
     this.data.data.jewelryDesign.selectedMaterial = game.materialAPI.getTreasureMaterialByName(this.data.data.jewelryDesign.material);
 
-    if (this.data.data.jewelryDesign.style === "gem") {
+    let cf = 1;
+    let rollingDescription = "";
+
+    if (this.data.data.jewelryDesign.style === "gem") { // It's a gem
       this.data.data.jewelryDesign.finalCost = ((this.data.data.jewelryDesign.size ** 2) + (4 * this.data.data.jewelryDesign.size)) * this.data.data.jewelryDesign.value;
       this.data.data.jewelryDesign.finalWeight = this.data.data.jewelryDesign.size / 2267.96;
+      this.data.data.jewelryDesign.hideDecorations = true;
     }
-    else {
-      // Do treasure math
+    else { // It's not a gem
+
+      // TODO - Only run dropdown logic for items where it makes sense (hard/soft/metal)
+      if (this.data.data.jewelryDesign.beading !== "none"){
+        if (this.data.data.jewelryDesign.beading === "light"){
+          cf += 2;
+          rollingDescription += "<li>This object has been lightly beaded along the edges or corners.</li>";
+        }
+        else if (this.data.data.jewelryDesign.beading === "extensive"){
+          cf += 8;
+          rollingDescription += "<li>This object has extensive beading across the entire surface.</li>";
+        }
+      }
+
+      if (this.data.data.jewelryDesign.dye !== "none"){
+        if (this.data.data.jewelryDesign.dye === "simple"){
+          cf += 1.5;
+          rollingDescription += "<li>This item has been dyed black, white, or a shade of grey.</li>";
+        }
+        else if (this.data.data.jewelryDesign.dye === "common"){
+          cf += 6;
+          rollingDescription += "<li>A more vivid, but common dye has been applied to this item. Examples are dull red from madder or blue-grey from indigo.</li>";
+        }
+        else if (this.data.data.jewelryDesign.dye === "expensive"){
+          cf += 30;
+          rollingDescription += "<li>An expensive dye, such as red from murex or cochnieal, yellow from saffron, or any other natural but extant dye has been applied to this item.</li>";
+        }
+      }
+
+      if (this.data.data.jewelryDesign.embroidery !== "none"){
+        if (this.data.data.jewelryDesign.embroidery === "minimal"){
+          cf += 2;
+          rollingDescription += "<li>Minimal trim or simple designs have been stitched into the surface of this item.</li>";
+        }
+        else if (this.data.data.jewelryDesign.embroidery === "elaborate"){
+          cf += 6;
+          rollingDescription += "<li>An elaborate design has been stitched into this item and it covers most of it's surface.</li>";
+        }
+        else if (this.data.data.jewelryDesign.embroidery === "minimalSilver"){
+          cf += 6;
+          rollingDescription += "<li>Minimal trim or simple designs have been stitched into the surface of this item with cloth of silver.</li>";
+        }
+        else if (this.data.data.jewelryDesign.embroidery === "elaborateSilver"){
+          cf += 18;
+          rollingDescription += "<li>An elaborate design has been stitched into this item and it covers most of it's surface with cloth of silver.</li>";
+        }
+        else if (this.data.data.jewelryDesign.embroidery === "minimalGold"){
+          cf += 60;
+          rollingDescription += "<li>Minimal trim or simple designs have been stitched into the surface of this item with cloth of gold.</li>";
+        }
+        else if (this.data.data.jewelryDesign.embroidery === "elaborateGold"){
+          cf += 180;
+          rollingDescription += "<li>An elaborate design has been stitched into this item and it covers most of it's surface with cloth of gold.</li>";
+        }
+      }
+
+      if (this.data.data.jewelryDesign.figurativePainting !== "none"){
+        if (this.data.data.jewelryDesign.figurativePainting === "limitedSimple"){
+          cf += 2;
+          rollingDescription += "<li>Simple decoration on a limited portion of the object, like geometric patterns applied via block-print on only a portion of the item.</li>";
+        }
+        else if (this.data.data.jewelryDesign.figurativePainting === "limitedComplex"){
+          cf += 5;
+          rollingDescription += "<li>Complex decoration on a limited portion of the object, like individually painted figures on only a portion of the item.</li>";
+        }
+        else if (this.data.data.jewelryDesign.figurativePainting === "extensiveSimple"){
+          cf += 5;
+          rollingDescription += "<li>Simple decoration on the entire object, like geometric patterns applied via block-print across the surface of the item.</li>";
+        }
+        else if (this.data.data.jewelryDesign.figurativePainting === "extensiveComplex"){
+          cf += 10;
+          rollingDescription += "<li>Complex decoration on the entire object, like a painted or printed scene covering the object.</li>";
+        }
+      }
+
+      if (this.data.data.jewelryDesign.fringe !== "none"){
+        if (this.data.data.jewelryDesign.fringe === "common"){
+          cf += 1.5;
+          rollingDescription += "<li>This object has common feathers, furs, or a dyed string fringe.</li>";
+        }
+        else if (this.data.data.jewelryDesign.fringe === "rare"){
+          cf += 4;
+          rollingDescription += "<li>This object has a particularly rare or colourful trim, like peacock feathers, rare dyes, or sable.</li>";
+        }
+        else if (this.data.data.jewelryDesign.fringe === "commonSilver"){
+          cf += 4.5;
+          rollingDescription += "<li>This object has common feathers, furs, or a dyed string fringe that has been worked into cloth of silver.</li>";
+        }
+        else if (this.data.data.jewelryDesign.fringe === "rareSilver"){
+          cf += 12;
+          rollingDescription += "<li>This object has a particularly rare or colourful trim, like peacock feathers, rare dyes, or sable that has been worked into cloth of silver.</li>";
+        }
+        else if (this.data.data.jewelryDesign.fringe === "commonGold"){
+          cf += 45;
+          rollingDescription += "<li>This object has common feathers, furs, or a dyed string fringe that has been worked into cloth of gold.</li>";
+        }
+        else if (this.data.data.jewelryDesign.fringe === "rareGold"){
+          cf += 120;
+          rollingDescription += "<li>This object has a particularly rare or colourful trim, like peacock feathers, rare dyes, or sable that has been worked into cloth of gold.</li>";
+        }
+      }
+
+      if (this.data.data.jewelryDesign.relief !== "none") {
+        if (this.data.data.jewelryDesign.relief === "simple") {
+          cf += 1.5;
+          rollingDescription += "<li>This object has a simple design carved or pressed into it.</li>";
+        }
+        else if (this.data.data.jewelryDesign.relief === "extensive") {
+          cf += 4;
+          rollingDescription += "<li>This object has a complex design carved or pressed into it.</li>";
+        }
+      }
+
+      if (this.data.data.jewelryDesign.inlay !== "none") {
+        if (this.data.data.jewelryDesign.inlay === "simpleCommon") {
+          cf += 3;
+          rollingDescription += "<li>This object has a simple design carved or pressed into it, and then the carvings have been filled with common materials of contrasting colours.</li>";
+        }
+        else if (this.data.data.jewelryDesign.inlay === "simplePrecious") {
+          cf += 7.5;
+          rollingDescription += "<li>This object has a simple design carved or pressed into it, and then the carvings have been filled with precious materials of contrasting colours.</li>";
+        }
+        else if (this.data.data.jewelryDesign.inlay === "extensiveCommon") {
+          cf += 8;
+          rollingDescription += "<li>This object has a complex design carved or pressed into it, and then the carvings have been filled with common materials of contrasting colours.</li>";
+        }
+        else if (this.data.data.jewelryDesign.inlay === "extensivePrecious") {
+          cf += 20;
+          rollingDescription += "<li>This object has a complex design carved or pressed into it, and then the carvings have been filled with precious materials of contrasting colours.</li>";
+        }
+      }
+
+      if (this.data.data.jewelryDesign.tapestryWeave !== "none") {
+        if (this.data.data.jewelryDesign.tapestryWeave === "simple") {
+          cf += 2;
+          rollingDescription += "<li>A simple pattern has been woven into this item.</li>";
+        }
+        else if (this.data.data.jewelryDesign.tapestryWeave === "complex") {
+          cf += 5;
+          rollingDescription += "<li>A complex pattern has been woven into this item.</li>";
+        }
+        else if (this.data.data.jewelryDesign.tapestryWeave === "figurative") {
+          cf += 10;
+          rollingDescription += "<li>A figurative design has been woven into this item.</li>";
+        }
+      }
+
+      if (this.data.data.jewelryDesign.tapestryWeave !== "none"){
+        if (this.data.data.jewelryDesign.tapestryDye === "simple"){
+          cf += 0;
+          rollingDescription += "<li>This tapestry uses black, white, or grey dye.</li>";
+        }
+        else if (this.data.data.jewelryDesign.tapestryDye === "common"){
+          cf += 1;
+          rollingDescription += "<li>This tapestry uses a more vivid, but common dye. Examples are dull red from madder or blue-grey from indigo.</li>";
+        }
+        else if (this.data.data.jewelryDesign.tapestryDye === "expensive"){
+          cf += 5;
+          rollingDescription += "<li>This tapestry uses an expensive dye, such as red from murex or cochnieal, yellow from saffron, or any other natural but extant dye.</li>";
+        }
+      }
+
+      if (this.data.data.jewelryDesign.gilding !== "none"){
+        if (this.data.data.jewelryDesign.gilding === "copperAccent"){
+          cf += 1.5;
+          rollingDescription += "<li>This object has copper leaf applied as accents.</li>";
+        }
+        else if (this.data.data.jewelryDesign.gilding === "silverAccent"){
+          cf += 2;
+          rollingDescription += "<li>This object has silver leaf applied as accents.</li>";
+        }
+        else if (this.data.data.jewelryDesign.gilding === "goldAccent"){
+          cf += 20;
+          rollingDescription += "<li>This object has gold leaf applied as accents.</li>";
+        }
+        else if (this.data.data.jewelryDesign.gilding === "copper"){
+          cf += 4.5;
+          rollingDescription += "<li>This object has been covered in copper leaf.</li>";
+        }
+        else if (this.data.data.jewelryDesign.gilding === "silver"){
+          cf += 6;
+          rollingDescription += "<li>This object has been covered in silver leaf.</li>";
+        }
+        else if (this.data.data.jewelryDesign.gilding === "gold"){
+          cf += 60;
+          rollingDescription += "<li>This object has been covered in gold leaf.</li>";
+        }
+      }
+
+      if (this.data.data.jewelryDesign.enamel !== "none"){
+        if (this.data.data.jewelryDesign.enamel === "limitedSimple"){
+          cf += 2;
+          rollingDescription += "<li>Simple decoration on a limited portion of the object, like geometric patterns on only a portion of the item.</li>";
+        }
+        else if (this.data.data.jewelryDesign.enamel === "limitedComplex"){
+          cf += 5;
+          rollingDescription += "<li>Complex decoration on a limited portion of the object, like individually painted figures on only a portion of the item.</li>";
+        }
+        else if (this.data.data.jewelryDesign.enamel === "extensiveSimple"){
+          cf += 5;
+          rollingDescription += "<li>Simple decoration on the entire object, like geometric patterns across the surface of the item.</li>";
+        }
+        else if (this.data.data.jewelryDesign.enamel === "extensiveComplex"){
+          cf += 10;
+          rollingDescription += "<li>Complex decoration on the entire object, like a painted or printed scene covering the object.</li>";
+        }
+      }
+
+      if (this.data.data.jewelryDesign.etching !== "none") {
+        if (this.data.data.jewelryDesign.etching === "simple") {
+          cf += 1.5;
+          rollingDescription += "<li>This object has a simple design chemically etched into it.</li>";
+        }
+        else if (this.data.data.jewelryDesign.etching === "extensive") {
+          cf += 4;
+          rollingDescription += "<li>This object has a complex design chemically etched into it.</li>";
+        }
+      }
+
+      this.data.data.jewelryDesign.rollingDescription = rollingDescription;
+      this.data.data.jewelryDesign.finalWeight = this.data.data.jewelryDesign.size;
+
+      this.data.data.jewelryDesign.finalCost = +this.data.data.jewelryDesign.size * +this.data.data.jewelryDesign.selectedStyle.valueMult * parseInt(this.data.data.jewelryDesign.selectedMaterial.cost);
     }
 
-    // Mana math - TODO Game setting to hide the "mana" design code, and disregard the mana output
+    // Final rounding
+    this.data.data.jewelryDesign.finalCost = Math.round((this.data.data.jewelryDesign.finalCost * cf) * 100) / 100;
+    this.data.data.jewelryDesign.finalWeight = Math.round(this.data.data.jewelryDesign.finalWeight * 100000) / 100000;
+    this.data.data.jewelryDesign.mana = Math.floor(this.data.data.jewelryDesign.finalCost / 8);
+
+    // Output
     this.data.data.cost = this.data.data.jewelryDesign.finalCost;
     this.data.data.weight = this.data.data.jewelryDesign.finalWeight;
   }

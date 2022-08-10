@@ -291,687 +291,961 @@ export class materialHelpers {
             {
                 "tl": "1",
                 "name": "Generic Soft Metals",
-                "cost": "9.3"
+                "cost": "9.3",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "2",
                 "name": "Lead",
-                "cost": "12.5"
+                "cost": "12.5",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "2",
                 "name": "Iron, Cheap",
-                "cost": "15"
+                "cost": "15",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "2",
                 "name": "Iron, Good",
-                "cost": "25"
+                "cost": "25",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "3",
                 "name": "Steel, Basic",
-                "cost": "50"
+                "cost": "50",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Brass (30%)",
-                "cost": "58.79"
+                "cost": "58.79",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Bronze, Cheap",
-                "cost": "60"
+                "cost": "60",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Brass (15%)",
-                "cost": "69.395"
+                "cost": "69.395",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "White Copper",
-                "cost": "72.1523"
+                "cost": "72.1523",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Brass (10%)",
-                "cost": "72.93"
+                "cost": "72.93",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Brass (5%)",
-                "cost": "76.465"
+                "cost": "76.465",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Copper",
-                "cost": "80"
+                "cost": "80",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Arsenic Bronze (2%)",
-                "cost": "85.65748"
+                "cost": "85.65748",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Bronze (5%)",
-                "cost": "90"
+                "cost": "90",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Bronze (10%)",
-                "cost": "100"
+                "cost": "100",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Bronze (15%)",
-                "cost": "110"
+                "cost": "110",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Magnesium",
-                "cost": "250"
+                "cost": "250",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "4",
                 "name": "Steel, Hard TL4",
-                "cost": "250"
+                "cost": "250",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Tin",
-                "cost": "280"
+                "cost": "280",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Arsenic",
-                "cost": "362.874"
+                "cost": "362.874",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Antimony",
-                "cost": "400"
+                "cost": "400",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "4",
                 "name": "Steel, Duplex TL4",
-                "cost": "450"
+                "cost": "450",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Mercury",
-                "cost": "500"
+                "cost": "500",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Adamant",
-                "cost": "900"
+                "cost": "900",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Silver",
-                "cost": "1000"
+                "cost": "1000",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Orichalcum",
-                "cost": "3000"
+                "cost": "3000",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "1",
                 "name": "Gold",
-                "cost": "20000"
+                "cost": "20000",
+                "hard": true,
+                "metal": true,
             },
             {
                 "tl": "2",
                 "name": "Liquid Soap",
-                "cost": "20"
+                "cost": "20",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "2",
                 "name": "Solid Soap",
-                "cost": "27"
+                "cost": "27",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Cosmetics (Common) -1",
-                "cost": "32"
+                "cost": "32",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Cosmetics (Common) 0",
-                "cost": "64"
+                "cost": "64",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Cosmetics (Better) -1",
-                "cost": "64"
+                "cost": "64",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Cosmetics (Common) 1",
-                "cost": "128"
+                "cost": "128",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Cosmetics (Better) 0",
-                "cost": "128"
+                "cost": "128",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Cosmetics (Better) 1",
-                "cost": "256"
+                "cost": "256",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Cosmetics (Common) 2",
-                "cost": "320"
+                "cost": "320",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Cosmetics (Better) 2",
-                "cost": "640"
+                "cost": "640",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Cosmetics (Common) 3",
-                "cost": "1280"
+                "cost": "1280",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Cosmetics (Better) 3",
-                "cost": "2560"
+                "cost": "2560",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Cosmetics (Common) 4",
-                "cost": "6400"
+                "cost": "6400",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Cosmetics (Better) 4",
-                "cost": "12800"
+                "cost": "12800",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Bulk Tobacco",
-                "cost": "12"
+                "cost": "12",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Flavoured Bulk Tobacco",
-                "cost": "36"
+                "cost": "36",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Prepared Tobacco",
-                "cost": "40"
+                "cost": "40",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Flavoured Prepared Tobacco",
-                "cost": "120"
+                "cost": "120",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Incense -1",
-                "cost": "128"
+                "cost": "128",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Incense 0",
-                "cost": "256"
+                "cost": "256",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Incense 1",
-                "cost": "512"
+                "cost": "512",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Incense 2",
-                "cost": "1280"
+                "cost": "1280",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Perfume -1",
-                "cost": "1280"
+                "cost": "1280",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Perfume 0",
-                "cost": "2560"
+                "cost": "2560",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Incense 3",
-                "cost": "5120"
+                "cost": "5120",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Perfume 1",
-                "cost": "5120"
+                "cost": "5120",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Perfume 2",
-                "cost": "12800"
+                "cost": "12800",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Incense 4",
-                "cost": "25600"
+                "cost": "25600",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Perfume 3",
-                "cost": "51200"
+                "cost": "51200",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Perfume 4",
-                "cost": "256000"
+                "cost": "256000",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Animal Oil/Fat (Low Quality)",
-                "cost": "4"
+                "cost": "4",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Leather (Clothing Grade)",
-                "cost": "6"
+                "cost": "6",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Animal Wax (High Quality)",
-                "cost": "8"
+                "cost": "8",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Leather (Armour Grade)",
-                "cost": "10"
+                "cost": "10",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Bone",
-                "cost": "12.5"
+                "cost": "12.5",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Horn",
-                "cost": "12.5"
+                "cost": "12.5",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Shell",
-                "cost": "12.5"
+                "cost": "12.5",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Leather of Quality (Clothing)",
-                "cost": "30"
+                "cost": "30",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Leather of Quality (Armour)",
-                "cost": "50"
+                "cost": "50",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Ink",
-                "cost": "2.5"
+                "cost": "2.5",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Pigment -1",
-                "cost": "15"
+                "cost": "15",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Pigment 0",
-                "cost": "30"
+                "cost": "30",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Ink stick",
-                "cost": "40"
+                "cost": "40",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Pigment 1",
-                "cost": "60"
+                "cost": "60",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Pigment 2",
-                "cost": "150"
+                "cost": "150",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Pigment 3",
-                "cost": "600"
+                "cost": "600",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Pigment 4",
-                "cost": "3000"
+                "cost": "3000",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Fermented Beverages",
-                "cost": "0.625"
+                "cost": "0.625",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Salt",
-                "cost": "8"
+                "cost": "8",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Stonefruit",
-                "cost": "8"
+                "cost": "8",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "3",
                 "name": "Distilled Beverages",
-                "cost": "16"
+                "cost": "16",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Lily",
-                "cost": "16"
+                "cost": "16",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Dried stonefruit",
-                "cost": "16"
+                "cost": "16",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Ginger",
-                "cost": "24"
+                "cost": "24",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Dried and prepared stonefruit",
-                "cost": "24"
+                "cost": "24",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Black Salt",
-                "cost": "32"
+                "cost": "32",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Red Salt",
-                "cost": "32"
+                "cost": "32",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Tea, Chocolate, Coffee",
-                "cost": "36"
+                "cost": "36",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Fennel",
-                "cost": "40"
+                "cost": "40",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Almonds",
-                "cost": "40"
+                "cost": "40",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Dried Almonds",
-                "cost": "80"
+                "cost": "80",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Low Spice -1",
-                "cost": "128"
+                "cost": "128",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Low Spice 0",
-                "cost": "256"
+                "cost": "256",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Low Spice 1",
-                "cost": "512"
+                "cost": "512",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "High Spice -1",
-                "cost": "960"
+                "cost": "960",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Low Spice 2",
-                "cost": "1280"
+                "cost": "1280",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "High Spice 0",
-                "cost": "1920"
+                "cost": "1920",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "High Spice 1",
-                "cost": "3840"
+                "cost": "3840",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Low Spice 3",
-                "cost": "5120"
+                "cost": "5120",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "High Spice 2",
-                "cost": "9600"
+                "cost": "9600",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Low Spice 4",
-                "cost": "25600"
+                "cost": "25600",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "High Spice 3",
-                "cost": "38400"
+                "cost": "38400",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "High Spice 4",
-                "cost": "192000"
+                "cost": "192000",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Misc Vegetation, grass, etc",
-                "cost": "0.25"
+                "cost": "0.25",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Wood (Raw)",
-                "cost": "0.25"
+                "cost": "0.25",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Peat",
-                "cost": "0.6"
+                "cost": "0.6",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Wood (Low Grade, Aged)",
-                "cost": "0.8"
+                "cost": "0.8",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Charcoal, Low Grade",
-                "cost": "1.25"
+                "cost": "1.25",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Wicker",
-                "cost": "1.6"
+                "cost": "1.6",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Charcoal, High Grade",
-                "cost": "2"
+                "cost": "2",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Vegetable Oil",
-                "cost": "2"
+                "cost": "2",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Wood (High Grade, Aged)",
-                "cost": "5.2"
+                "cost": "5.2",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Pitch",
-                "cost": "8"
+                "cost": "8",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Amber",
-                "cost": "65"
+                "cost": "65",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Raw Fibre",
-                "cost": "0.2"
+                "cost": "0.2",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Thread/Yarn",
-                "cost": "0.6"
+                "cost": "0.6",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "2",
                 "name": "Paper (Low Grade)",
-                "cost": "1.725"
+                "cost": "1.725",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Cloth (Low Grade)",
-                "cost": "2.3"
+                "cost": "2.3",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Silk",
-                "cost": "3"
+                "cost": "3",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "2",
                 "name": "Paper (Mid Grade)",
-                "cost": "3.9"
+                "cost": "3.9",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Cloth (Mid Grade)",
-                "cost": "5.2"
+                "cost": "5.2",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Silk (Low Grade)",
-                "cost": "11.5"
+                "cost": "11.5",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "2",
                 "name": "Paper (High Grade)",
-                "cost": "12"
+                "cost": "12",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Cloth (High Grade)",
-                "cost": "16"
+                "cost": "16",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Silk (Mid Grade)",
-                "cost": "26"
+                "cost": "26",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Silk (High Grade)",
-                "cost": "80"
+                "cost": "80",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Raw Clay",
-                "cost": "0.2"
+                "cost": "0.2",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Earth",
-                "cost": "0.23"
+                "cost": "0.23",
+                "hard": false,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Rubble",
-                "cost": "0.25"
+                "cost": "0.25",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Brick",
-                "cost": "0.43"
+                "cost": "0.43",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Shaped Stone",
-                "cost": "0.75"
+                "cost": "0.75",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Earthenware Pottery",
-                "cost": "0.8"
+                "cost": "0.8",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Stoneware Pottery",
-                "cost": "0.8"
+                "cost": "0.8",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "4",
                 "name": "Coal",
-                "cost": "2.4"
+                "cost": "2.4",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Porcelain",
-                "cost": "2.5"
+                "cost": "2.5",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Glass",
-                "cost": "4.2"
+                "cost": "4.2",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "0",
                 "name": "Flint",
-                "cost": "8"
+                "cost": "8",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Stone (Armour Grade)",
-                "cost": "12.5"
+                "cost": "12.5",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Jade",
-                "cost": "62.5"
+                "cost": "62.5",
+                "hard": true,
+                "metal": false,
             },
             {
                 "tl": "1",
                 "name": "Jade, Gem Quality",
-                "cost": "125"
+                "cost": "125",
+                "hard": true,
+                "metal": false,
             }
         ]
 
@@ -980,13 +1254,6 @@ export class materialHelpers {
 
     static fetchJewelryDesigns() {
         const jewelryDesigns = [
-            {
-                "name": "Mana Source",
-                "code": "mana",
-                "valueMult": 1,
-                "weight": 1,
-                "notes": "Just a piece of the selected material, at a specific size to provide a useful mana source."
-            },
             {
                 "name": "Coin",
                 "code": "coin",
@@ -1087,479 +1354,19 @@ export class materialHelpers {
             },
         ]
 
+        if (game.settings.get("gurps4e", "manaTreasure")) {
+            let manaSource = {
+                    "name": "Mana Source",
+                    "code": "mana",
+                    "valueMult": 1,
+                    "weight": 1,
+                    "notes": "Just a piece of the selected material, at a specific size to provide a useful mana source."
+                }
+
+            jewelryDesigns.push(manaSource)
+        }
+
         return jewelryDesigns;
-    }
-
-    static fetchDecorationMethods() {
-        const decorationMethods = [
-            {
-                "name": "Beading",
-                "code": "beading",
-                "description": "Goods can be decorated with a pattern of coloured beads made of clay or shell.", // Displayed to the user when selecting decoration types.
-                "hard": false,
-                "soft": true,
-                "tl": 0,
-                "options": [
-                    {
-                        "name": "None",
-                        "code": "none",
-                        "description": "",
-                        "cf": 0,
-                    },
-                    {
-                        "name": "Light",
-                        "code": "light",
-                        "description": "This object has been lightly beaded along the edges or corners.", // Displayed to the user once the item has been selected.
-                        "cf": 2,
-                    },
-                    {
-                        "name": "Extensive",
-                        "code": "extensive",
-                        "description": "This object has extensive beading across the entire object.",
-                        "cf": 8,
-                    },
-                ]
-            },
-            {
-                "name": "Dye",
-                "code": "dye",
-                "description": "Cloth can be dyed an attractive colour or simply bleached white.",
-                "hard": false,
-                "soft": true,
-                "tl": 0,
-                "options": [
-                    {
-                        "name": "None",
-                        "code": "none",
-                        "description": "",
-                        "cf": 0,
-                    },
-                    {
-                        "name": "Simple",
-                        "code": "simple",
-                        "description": "This item has been dyed black, white, or a shade of grey.",
-                        "cf": 1.5,
-                    },
-                    {
-                        "name": "Common",
-                        "code": "common",
-                        "description": "A more vivid, but common dye has been applied to this item. Examples are dull red from madder or blue-grey from indigo.",
-                        "cf": 6,
-                    },
-                    {
-                        "name": "Expensive",
-                        "code": "expensive",
-                        "description": "An expensive dye, such as red from murex or cochnieal, yellow from saffron, or any other natural but extant dye has been applied to this item.",
-                        "cf": 30,
-                    },
-                ]
-            },
-            {
-                "name": "Embroidery",
-                "code": "embroidery",
-                "description": "Soft goods can have a design stitched into them.",
-                "hard": false,
-                "soft": true,
-                "tl": 0,
-                "options": [
-                    {
-                        "name": "None",
-                        "code": "none",
-                        "description": "",
-                        "cf": 0,
-                    },
-                    {
-                        "name": "Minimal",
-                        "code": "minimal",
-                        "description": "Minimal trim or simple designs have been stitched into the surface of this item.",
-                        "cf": 2,
-                    },
-                    {
-                        "name": "Elaborate",
-                        "code": "elaborate",
-                        "description": "An elaborate design has been stitched into this item and it covers most of it's surface.",
-                        "cf": 6,
-                    },
-                    {
-                        "name": "Minimal Cloth of Silver",
-                        "code": "minimalSilver",
-                        "description": "Minimal trim or simple designs have been stitched into the surface of this item with cloth of silver.",
-                        "cf": 6,
-                        "tl": 2
-                    },
-                    {
-                        "name": "Elaborate Cloth of Silver",
-                        "code": "elaborateSilver",
-                        "description": "An elaborate design has been stitched into this item and it covers most of it's surface with cloth of silver.",
-                        "cf": 18,
-                        "tl": 2
-                    },
-                    {
-                        "name": "Minimal Cloth of Gold",
-                        "code": "minimalGold",
-                        "description": "Minimal trim or simple designs have been stitched into the surface of this item with cloth of gold.",
-                        "cf": 60,
-                        "tl": 2
-                    },
-                    {
-                        "name": "Elaborate Cloth of Gold",
-                        "code": "elaborateGold",
-                        "description": "An elaborate design has been stitched into this item and it covers most of it's surface with cloth of gold.",
-                        "cf": 180,
-                        "tl": 2
-                    },
-                ]
-            },
-            {
-                "name": "Figurative Painting",
-                "code": "figurativePainting",
-                "description": "Any object can have a design painted or printed onto it.",
-                "hard": true,
-                "soft": true,
-                "tl": 0,
-                "options": [
-                    {
-                        "name": "None",
-                        "code": "none",
-                        "description": "",
-                        "cf": 0,
-                    },
-                    {
-                        "name": "Limited Simple",
-                        "code": "limitedSimple",
-                        "description": "Simple decoration on a limited portion of the object, like geometric patterns applied via block-print on only a portion of the item.",
-                        "cf": 2,
-                    },
-                    {
-                        "name": "Limited Complex",
-                        "code": "limitedComplex",
-                        "description": "Complex decoration on a limited portion of the object, like individually painted figures on only a portion of the item.",
-                        "cf": 5,
-                    },
-                    {
-                        "name": "Extensive Simple",
-                        "code": "extensiveSimple",
-                        "description": "Simple decoration on the entire object, like geometric patterns applied via block-print across the surface of the item.",
-                        "cf": 5,
-                    },
-                    {
-                        "name": "Extensive Complex",
-                        "code": "extensiveComplex",
-                        "description": "Complex decoration on the entire object, like a painted or printed scene covering the object.",
-                        "cf": 10,
-                    }
-                ]
-            },
-            {
-                "name": "Fringe, Feather, or Fur Trim",
-                "code": "fringe",
-                "description": "An object has been edged in feathers, fur, or dyed string.",
-                "hard": false,
-                "soft": true,
-                "tl": 0,
-                "options": [
-                    {
-                        "name": "None",
-                        "code": "none",
-                        "description": "",
-                        "cf": 0,
-                    },
-                    {
-                        "name": "Common",
-                        "code": "common",
-                        "description": "This object has common feathers, furs, or a dyed string fringe.",
-                        "cf": 1.5,
-                    },
-                    {
-                        "name": "Rare",
-                        "code": "rare",
-                        "description": "This object has a particularly rare or colourful trim, like peacock feathers, rare dyes, or sable.",
-                        "cf": 4,
-                    },
-                    {
-                        "name": "Common Cloth of Silver",
-                        "code": "commonSilver",
-                        "description": "This object has common feathers, furs, or a dyed string fringe that has been worked into cloth of silver.",
-                        "cf": 4.5,
-                        "tl": 2
-                    },
-                    {
-                        "name": "Rare Cloth of Silver",
-                        "code": "rareSilver",
-                        "description": "This object has a particularly rare or colourful trim, like peacock feathers, rare dyes, or sable that has been worked into cloth of silver.",
-                        "cf": 12,
-                        "tl": 2
-                    },
-                    {
-                        "name": "Common Cloth of Gold",
-                        "code": "commonGold",
-                        "description": "This object has common feathers, furs, or a dyed string fringe that has been worked into cloth of gold.",
-                        "cf": 45,
-                        "tl": 2
-                    },
-                    {
-                        "name": "Rare Cloth of Gold",
-                        "code": "rareGold",
-                        "description": "This object has a particularly rare or colourful trim, like peacock feathers, rare dyes, or sable that has been worked into cloth of gold.",
-                        "cf": 120,
-                        "tl": 2
-                    }
-                ]
-            },
-            {
-                "name": "Inlay",
-                "code": "inlay",
-                "description": "An object can have a design carved or pressed into it, and then these carvings can be filled with materials of contrasting colours.",
-                "hard": true,
-                "soft": false,
-                "tl": 0,
-                "options": [
-                    {
-                        "name": "None",
-                        "code": "none",
-                        "description": "",
-                        "cf": 0,
-                    },
-                    {
-                        "name": "Simple with common materials",
-                        "code": "simpleCommon",
-                        "description": "This object has a simple design carved or pressed into it, and then the carvings have been filled with common materials of contrasting colours.",
-                        "cf": 1.5,
-                    },
-                    {
-                        "name": "Simple with precious materials",
-                        "code": "simplePrecious",
-                        "description": "This object has a simple design carved or pressed into it, and then the carvings have been filled with precious materials of contrasting colours.",
-                        "cf": 1.5,
-                    },
-                    {
-                        "name": "Extensive with common materials",
-                        "code": "extensiveCommon",
-                        "description": "This object has a complex design carved or pressed into it, and then the carvings have been filled with common materials of contrasting colours.",
-                        "cf": 4,
-                    },
-                    {
-                        "name": "Extensive with precious materials",
-                        "code": "extensivePrecious",
-                        "description": "This object has a complex design carved or pressed into it, and then the carvings have been filled with precious materials of contrasting colours.",
-                        "cf": 4,
-                    }
-                ]
-            },
-            {
-                "name": "Relief",
-                "code": "relief",
-                "description": "Hard goods can have a design carved or pressed into it.",
-                "hard": true,
-                "soft": false,
-                "tl": 0,
-                "options": [
-                    {
-                        "name": "None",
-                        "code": "none",
-                        "description": "",
-                        "cf": 0,
-                    },
-                    {
-                        "name": "Simple",
-                        "code": "simple",
-                        "description": "This object has a simple design carved or pressed into it.",
-                        "cf": 1.5,
-                    },
-                    {
-                        "name": "Extensive",
-                        "code": "extensive",
-                        "description": "This object has a complex design carved or pressed into it.",
-                        "cf": 4,
-                    }
-                ]
-            },
-            {
-                "name": "Tapestry Weaving",
-                "code": "tapestryWeaving",
-                "description": "A cloth or wicker object can have a design made of coloured strands integrated into it.",
-                "hard": false,
-                "soft": true,
-                "tl": 0,
-                "options": [
-                    {
-                        "name": "None",
-                        "code": "none",
-                        "description": "",
-                        "cf": 0,
-                    },
-                    {
-                        "name": "Simple",
-                        "code": "simple",
-                        "description": "A simple pattern has been woven into this item.",
-                        "cf": 2,
-                    },
-                    {
-                        "name": "Complex",
-                        "code": "complex",
-                        "description": "A complex pattern has been woven into this item.",
-                        "cf": 5,
-                    },
-                    {
-                        "name": "Figurative",
-                        "code": "figurative",
-                        "description": "A figurative design has been woven into this item.",
-                        "cf": 10,
-                    }
-                ]
-            },
-            {
-                "name": "Tapestry Dye",
-                "code": "tapestryDye",
-                "req": "tapestryWeaving",
-                "description": "The dye used in woven designs may be altered to be more or less expensive.",
-                "hard": false,
-                "soft": true,
-                "tl": 0,
-                "options": [
-                    {
-                        "name": "Simple",
-                        "code": "simple",
-                        "description": "The woven design uses black, white, or shades of grey.",
-                        "cf": 0,
-                    },
-                    {
-                        "name": "Common",
-                        "code": "common",
-                        "description": "The woven design uses a more vivid, but common dye has been applied to this item. Examples are dull red from madder or blue-grey from indigo.",
-                        "cf": 1,
-                    },
-                    {
-                        "name": "Expensive",
-                        "code": "expensive",
-                        "description": "The woven design uses an expensive dye, such as red from murex or cochnieal, yellow from saffron, or any other natural but extant dye.",
-                        "cf": 5,
-                    },
-                ]
-            },
-            {
-                "name": "Gilding",
-                "code": "gilding",
-                "description": "This object has been covered with a thin layer of precious metal leaf.",
-                "hard": true,
-                "soft": false,
-                "tl": 1,
-                "options": [
-                    {
-                        "name": "None",
-                        "code": "none",
-                        "description": "",
-                        "cf": 0,
-                    },
-                    {
-                        "name": "Copper Accents",
-                        "code": "copperAccent",
-                        "description": "This object has copper leaf applied as accents.",
-                        "cf": 1.5,
-                    },
-                    {
-                        "name": "Silver Accents",
-                        "code": "silverAccent",
-                        "description": "This object has silver leaf applied as accents.",
-                        "cf": 2,
-                    },
-                    {
-                        "name": "Gold Accents",
-                        "code": "goldAccent",
-                        "description": "This object has gold leaf applied as accents.",
-                        "cf": 20,
-                    },
-                    {
-                        "name": "Copper",
-                        "code": "copper",
-                        "description": "This object has been covered in copper leaf.",
-                        "cf": 4.5,
-                    },
-                    {
-                        "name": "Silver",
-                        "code": "silver",
-                        "description": "This object has been covered in silver leaf.",
-                        "cf": 6,
-                    },
-                    {
-                        "name": "Gold",
-                        "code": "gold",
-                        "description": "This object has been covered in gold leaf.",
-                        "cf": 60,
-                    },
-                ]
-            },
-            {
-                "name": "Enamel",
-                "code": "enamel",
-                "description": "Metal objects aren't generally painted, but enameled. It's similar to figurative painting.",
-                "hard": true,
-                "soft": false,
-                "tl": 2,
-                "options": [
-                    {
-                        "name": "None",
-                        "code": "none",
-                        "description": "",
-                        "cf": 0,
-                    },
-                    {
-                        "name": "Limited Simple",
-                        "code": "limitedSimple",
-                        "description": "Simple decoration has been enameled on a limited portion of the object, like geometric patterns on only a portion of the item.",
-                        "cf": 2,
-                    },
-                    {
-                        "name": "Limited Complex",
-                        "code": "limitedComplex",
-                        "description": "Complex decoration has been enameled on a limited portion of the object, like individually painted figures on only a portion of the item.",
-                        "cf": 5,
-                    },
-                    {
-                        "name": "Extensive Simple",
-                        "code": "extensiveSimple",
-                        "description": "Simple decoration has been enameled on the entire object, like geometric patterns across the surface of the item.",
-                        "cf": 5,
-                    },
-                    {
-                        "name": "Extensive Complex",
-                        "code": "extensiveComplex",
-                        "description": "Complex decoration has been enameled on the entire object, like a painted or printed scene covering the object.",
-                        "cf": 10,
-                    }
-                ]
-            },
-            {
-                "name": "Etching",
-                "code": "etching",
-                "description": "A metal object can have a design chemically etched into it.",
-                "hard": true,
-                "soft": false,
-                "tl": 2,
-                "options": [
-                    {
-                        "name": "None",
-                        "code": "none",
-                        "description": "",
-                        "cf": 0,
-                    },
-                    {
-                        "name": "Simple",
-                        "code": "simple",
-                        "description": "This object has a simple design chemically etched into it.",
-                        "cf": 1.5,
-                    },
-                    {
-                        "name": "Extensive",
-                        "code": "extensive",
-                        "description": "This object has a complex design chemically etched into it.",
-                        "cf": 4,
-                    }
-                ]
-            },
-        ]
-
-        return decorationMethods;
     }
 
     static fetchArmourConstructionMethods() {

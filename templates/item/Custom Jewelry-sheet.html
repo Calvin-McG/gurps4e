@@ -64,8 +64,20 @@
 
         {{!-- Note Tab --}}
         <div class="tab stats" data-tab="notes" data-group="primary">
-            <h3 class="bold">Detailed Notes</h3>
             <div class="tab">
+                {{#unless data.data.jewelryDesign.hideDecorations}}
+                    <h3 class="bold">Decoration Notes</h3>
+                    <ul>
+                        {{{data.data.jewelryDesign.rollingDescription}}}
+                    </ul>
+                {{/unless}}
+                {{#if data.data.jewelryDesign.manaTreasure}}
+                <h3 class="bold">Mana Value</h3>
+                <ul>
+                    {{data.data.jewelryDesign.mana}}
+                </ul>
+                {{/if}}
+                <h3 class="bold">Custom Notes</h3>
                 <textarea rows="8" name="data.notes">{{{data.data.notes}}}</textarea>
             </div>
         </div>
@@ -132,7 +144,7 @@
                                     <select name="data.jewelryDesign.material">
                                         {{#select data.data.jewelryDesign.material}}
                                             {{#each data.data.jewelryDesign.materials as |material id|}}
-                                                <option value="{{material.name}}">{{material.name}} - {{material.cost}} $/lb</option>
+                                                <option value="{{material.name}}">{{material.name}} - {{round material.cost 100}} $/lb</option>
                                             {{/each}}
                                         {{/select}}
                                     </select>
@@ -147,11 +159,224 @@
                         </table>
 
                         {{#unless (eq data.data.jewelryDesign.style "gem") }}
-                        <h2 class="bold" style="text-align: center;">Decoration</h2>
+                        <h2 class="bold" style="text-align: center;">Decorations</h2>
                         <table>
-                            {{#each data.data.jewelryDesign.materials as |material id|}}
-                            <option value="{{material.name}}">{{material.name}} - {{material.cost}} $/lb</option>
-                            {{/each}}
+                            {{#if data.data.jewelryDesign.selectedMaterial.hard}}
+
+                            <tr class="design-row">
+                                <td style="min-width: 150px" colspan="2">
+                                    <span class="jewelry-decoration-name">Relief<br/></span>
+                                    <span class="jewelry-decoration-desc">Hard goods can have a design carved or pressed into it.</span>
+                                </td>
+                                <td>
+                                    <select name="data.jewelryDesign.relief" class="jewelry-decoration-select">
+                                        {{#select data.data.jewelryDesign.relief}}
+                                        <option value="none">None</option>
+                                        <option value="simple">Simple (CF: 1.5)</option>
+                                        <option value="extensive">Extensive (CF: 4)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="min-width: 150px" colspan="2">
+                                    <span class="jewelry-decoration-name">Inlay<br/></span>
+                                    <span class="jewelry-decoration-desc">An object can have a design carved or pressed into it, and then these carvings can be filled with materials of contrasting colours.</span>
+                                </td>
+                                <td>
+                                    <select name="data.jewelryDesign.inlay" class="jewelry-decoration-select">
+                                        {{#select data.data.jewelryDesign.inlay}}
+                                        <option value="none">None</option>
+                                        <option value="simpleCommon">Simple with common materials (CF: 3)</option>
+                                        <option value="simplePrecious">Simple with precious materials (CF: 7.5)</option>
+                                        <option value="extensiveCommon">Extensive with common materials (CF: 8)</option>
+                                        <option value="extensivePrecious">Extensive with precious materials (CF: 20)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="min-width: 150px" colspan="2">
+                                    <span class="jewelry-decoration-name">Gilding<br/></span>
+                                    <span class="jewelry-decoration-desc">This object has been covered with a thin layer of precious metal leaf.</span>
+                                </td>
+                                <td>
+                                    <select name="data.jewelryDesign.gilding" class="jewelry-decoration-select">
+                                        {{#select data.data.jewelryDesign.gilding}}
+                                        <option value="none">None</option>
+                                        <option value="copperAccent">Copper Accents (CF: 1.5)</option>
+                                        <option value="silverAccent">Silver Accents (CF: 2)</option>
+                                        <option value="goldAccent">Gold Accents (CF: 20)</option>
+                                        <option value="copper">Copper (CF: 4.5)</option>
+                                        <option value="silver">Silver (CF: 6)</option>
+                                        <option value="gold">Gold (CF: 60)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                            </tr>
+
+                            {{else}}
+                            <tr class="design-row">
+                                <td style="min-width: 150px" colspan="2">
+                                    <span class="jewelry-decoration-name">Beading<br/></span>
+                                    <span class="jewelry-decoration-desc">Goods can be decorated with a pattern of coloured beads made of clay or shell.</span>
+                                </td>
+                                <td>
+                                    <select name="data.jewelryDesign.beading" class="jewelry-decoration-select">
+                                        {{#select data.data.jewelryDesign.beading}}
+                                        <option value="none">None</option>
+                                        <option value="light">Light (CF: 2)</option>
+                                        <option value="extensive">Extensive (CF: 8)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="design-row">
+                                <td style="min-width: 150px" colspan="2">
+                                    <span class="jewelry-decoration-name">Dye<br/></span>
+                                    <span class="jewelry-decoration-desc">Cloth can be dyed an attractive colour or simply bleached white.</span>
+                                </td>
+                                <td>
+                                    <select name="data.jewelryDesign.dye" class="jewelry-decoration-select">
+                                        {{#select data.data.jewelryDesign.dye}}
+                                        <option value="none">None</option>
+                                        <option value="simple">Simple (CF: 1.5)</option>
+                                        <option value="common">Common  (CF: 6)</option>
+                                        <option value="expensive">Expensive (CF: 30)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="design-row">
+                                <td style="min-width: 150px" colspan="2">
+                                    <span class="jewelry-decoration-name">Embroidery<br/></span>
+                                    <span class="jewelry-decoration-desc">Soft goods can have a design stitched into them.</span>
+                                </td>
+                                <td>
+                                    <select name="data.jewelryDesign.embroidery" class="jewelry-decoration-select">
+                                        {{#select data.data.jewelryDesign.embroidery}}
+                                        <option value="none">None</option>
+                                        <option value="minimal">Minimal (CF: 2)</option>
+                                        <option value="elaborate">Elaborate (CF: 6)</option>
+                                        <option value="minimalSilver">Minimal Cloth of Silver (CF: 6)</option>
+                                        <option value="elaborateSilver">Elaborate Cloth of Silver (CF: 18)</option>
+                                        <option value="minimalGold">Minimal Cloth of Gold (CF: 60)</option>
+                                        <option value="elaborateGold">Elaborate Cloth of Gold (CF: 180)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="min-width: 150px" colspan="2">
+                                    <span class="jewelry-decoration-name">Fringe, Feather, or Fur Trim<br/></span>
+                                    <span class="jewelry-decoration-desc">An object has been edged in feathers, fur, or dyed string.</span>
+                                </td>
+                                <td>
+                                    <select name="data.jewelryDesign.fringe" class="jewelry-decoration-select">
+                                        {{#select data.data.jewelryDesign.fringe}}
+                                        <option value="none">None</option>
+                                        <option value="common">Common (CF: 1.5)</option>
+                                        <option value="rare">Rare (CF: 4)</option>
+                                        <option value="commonSilver">Common Cloth of Silver (CF: 4.5)</option>
+                                        <option value="rareSilver">Rare Cloth of Silver (CF: 12)</option>
+                                        <option value="commonGold">Common Cloth of Gold (CF: 45)</option>
+                                        <option value="rareGold">Rare Cloth of Gold (CF: 120)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="min-width: 150px" colspan="2">
+                                    <span class="jewelry-decoration-name">Tapestry Weaving<br/></span>
+                                    <span class="jewelry-decoration-desc">A cloth or wicker object can have a design made of coloured strands integrated into it.</span>
+                                </td>
+                                <td>
+                                    <select name="data.jewelryDesign.tapestryWeave" class="jewelry-decoration-select">
+                                        {{#select data.data.jewelryDesign.tapestryWeave}}
+                                        <option value="none">None</option>
+                                        <option value="simple">Simple (CF: 2)</option>
+                                        <option value="complex">Complex (CF: 5)</option>
+                                        <option value="figurative">Figurative (CF: 10)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                            </tr>
+
+                            {{#unless (eq data.data.jewelryDesign.tapestryWeave "none") }}
+                            <tr class="design-row">
+                                <td style="min-width: 150px" colspan="2">
+                                    <span class="jewelry-decoration-name">Tapestry Dye<br/></span>
+                                    <span class="jewelry-decoration-desc">The dye used in woven designs may be altered to be more or less expensive.</span>
+                                </td>
+                                <td>
+                                    <select name="data.jewelryDesign.tapestryDye" class="jewelry-decoration-select">
+                                        {{#select data.data.jewelryDesign.tapestryDye}}
+                                        <option value="simple">Simple (CF: 0)</option>
+                                        <option value="common">Common (CF: 1)</option>
+                                        <option value="expensive">Expensive (CF: 5)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                            </tr>
+                            {{/unless}}
+                            {{/if}}
+                            <tr class="design-row">
+                                <td style="min-width: 150px" colspan="2">
+                                    <span class="jewelry-decoration-name">Figurative Painting<br/></span>
+                                    <span class="jewelry-decoration-desc">Any object can have a design painted or printed onto it.</span>
+                                </td>
+                                <td>
+                                    <select name="data.jewelryDesign.figurativePainting" class="jewelry-decoration-select">
+                                        {{#select data.data.jewelryDesign.figurativePainting}}
+                                        <option value="none">None</option>
+                                        <option value="limitedSimple">Limited Simple (CF: 2)</option>
+                                        <option value="limitedComplex">Limited Complex (CF: 5)</option>
+                                        <option value="extensiveSimple">Extensive Simple (CF: 5)</option>
+                                        <option value="extensiveComplex">Extensive Complex (CF: 10)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                            </tr>
+
+                            {{#if data.data.jewelryDesign.selectedMaterial.metal}}
+                            <tr class="design-row">
+                                <td style="min-width: 150px" colspan="2">
+                                    <span class="jewelry-decoration-name">Enamel<br/></span>
+                                    <span class="jewelry-decoration-desc">Metal objects aren't generally painted, but enameled. It's similar to figurative painting.</span>
+                                </td>
+                                <td>
+                                    <select name="data.jewelryDesign.enamel" class="jewelry-decoration-select">
+                                        {{#select data.data.jewelryDesign.enamel}}
+                                        <option value="none">None</option>
+                                        <option value="limitedSimple">Limited Simple (CF: 2)</option>
+                                        <option value="limitedComplex">Limited Complex (CF: 5)</option>
+                                        <option value="extensiveSimple">Extensive Simple (CF: 5)</option>
+                                        <option value="extensiveComplex">Extensive Complex (CF: 10)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="min-width: 150px" colspan="2">
+                                    <span class="jewelry-decoration-name">Etching<br/></span>
+                                    <span class="jewelry-decoration-desc">A metal object can have a design chemically etched into it.</span>
+                                </td>
+                                <td>
+                                    <select name="data.jewelryDesign.etching" class="jewelry-decoration-select">
+                                        {{#select data.data.jewelryDesign.etching}}
+                                        <option value="none">None</option>
+                                        <option value="simple">Simple (CF: 1.5)</option>
+                                        <option value="expensive">Expensive (CF: 4)</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                            </tr>
+                            {{/if}}
                         </table>
                         {{/unless}}
 
