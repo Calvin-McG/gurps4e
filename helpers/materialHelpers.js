@@ -1350,7 +1350,7 @@ export class materialHelpers {
                 "code": "gem",
                 "valueMult": 1,
                 "weight": 1,
-                "notes": "A solid metal neckpiece, popular in the Celtic world."
+                "notes": "A gemstone, which can be anything from a diamond to a piece of quartz."
             },
         ]
 
