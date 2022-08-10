@@ -171,8 +171,8 @@ Hooks.once("init", () => {
   });
 
   game.settings.register("gurps4e", "allowMagicalMaterialsForCustom", {
-    name: "Allow Magical Materials For Custom Weapons and Armour",
-    hint: "Allows Essential Metal, Giant Spider Silk, etc, when creating custom weapons and armour.",
+    name: "Allow Magical Materials For Custom Weapons, Armour, and Jewelry",
+    hint: "Allows Essential Metal, Giant Spider Silk, etc, when creating custom weapons, armour, and jewelry.",
     scope: "world",
     config: true,
     default: false,

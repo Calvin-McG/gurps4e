@@ -1062,6 +1062,8 @@ export class gurpsItem extends Item {
         "size": 0.3,
         "value": 100,
         "cf": 1,
+        "allowMagicalMaterialsForCustom": false,
+        "essential": false,
         "hideDecorations": false,
         "selectedStyle": {
           "name": "Beads",
@@ -1096,6 +1098,7 @@ export class gurpsItem extends Item {
     this.data.data.jewelryDesign.showMana = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
     this.data.data.jewelryDesign.styles = game.materialAPI.fetchJewelryDesigns();
     this.data.data.jewelryDesign.materials = game.materialAPI.fetchTreasureMaterials();
+    this.data.data.jewelryDesign.allowMagicalMaterialsForCustom = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
     this.data.data.lc = 4;
     this.data.data.jewelryDesign.selectedStyle = game.materialAPI.getJewelryDesignByCode(this.data.data.jewelryDesign.style);
     this.data.data.jewelryDesign.selectedMaterial = game.materialAPI.getTreasureMaterialByName(this.data.data.jewelryDesign.material);
@@ -1336,6 +1339,10 @@ export class gurpsItem extends Item {
       this.data.data.jewelryDesign.finalWeight = this.data.data.jewelryDesign.size;
 
       this.data.data.jewelryDesign.finalCost = +this.data.data.jewelryDesign.size * +this.data.data.jewelryDesign.selectedStyle.valueMult * parseInt(this.data.data.jewelryDesign.selectedMaterial.cost);
+
+      if (this.data.data.jewelryDesign.essential) {
+        this.data.data.jewelryDesign.finalCost *= 30;
+      }
     }
 
     // Final rounding
@@ -7521,6 +7528,13 @@ export class gurpsItem extends Item {
         info = "<table>" +
             "<tr>" +
             "<td><p>The baseline value is 100, but values between 10 and 1000 are reasonable for gemstones.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id == "jewelry-material-essential") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>Essential materials are worth thirty times as much.</p></td>" +
             "</tr>" +
             "</table>"
       }

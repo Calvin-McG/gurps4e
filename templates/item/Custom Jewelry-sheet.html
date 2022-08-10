@@ -155,6 +155,22 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{#if data.data.jewelryDesign.allowMagicalMaterialsForCustom}}
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Is the material essential?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="data.jewelryDesign.essential" {{checked data.data.jewelryDesign.essential}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="jewelry-material-essential">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/if}}
+
                             {{/if}}
                         </table>
 
