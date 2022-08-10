@@ -1258,7 +1258,7 @@ export class materialHelpers {
                 "name": "Coin",
                 "code": "coin",
                 "valueMult": 1,
-                "weight": 0.0125,
+                "weight": 0.0055,
                 "notes": "Just a piece of the selected material, forged, stamped, shaped, or cut into a coin or banknote."
             },
             {
