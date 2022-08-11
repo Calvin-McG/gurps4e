@@ -289,6 +289,13 @@ export class materialHelpers {
     static fetchTreasureMaterials() {
         const treasureMaterials = [
             {
+                "tl": "0",
+                "name": "Select Material",
+                "cost": "0",
+                "hard": false,
+                "metal": false,
+            },
+            {
                 "tl": "1",
                 "name": "Generic Soft Metals",
                 "cost": "9.3",
