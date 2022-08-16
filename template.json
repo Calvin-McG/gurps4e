@@ -294,6 +294,7 @@
       "Spell",
       "Custom Weapon",
       "Custom Armour",
+      "Travel Fare",
       "Custom Jewelry"
     ],
     "templates": {
@@ -455,6 +456,17 @@
         "melee",
         "ranged",
         "affliction"
+      ]
+    },
+    "Travel Fare": {
+      "templates": [
+        "base",
+        "countable",
+        "subCategory",
+        "weighable",
+        "tl",
+        "lc",
+        "equipStatus"
       ]
     },
     "Custom Armour": {

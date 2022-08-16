@@ -773,7 +773,7 @@ export class gurpsActor extends Actor {
 
 		// Running loop to total up weight and value for the sheet
 		for (let l = 0; l < this.data.items._source.length; l++){
-			if (this.data.items._source[l].type === "Equipment" || this.data.items._source[l].type === "Custom Weapon" || this.data.items._source[l].type === "Custom Armour"){
+			if (this.data.items._source[l].type === "Equipment" || this.data.items._source[l].type === "Custom Weapon" || this.data.items._source[l].type === "Custom Armour" || this.data.items._source[l].type === "Travel Fare"){
 				carriedWeight = (+this.data.items._source[l].data.weight * +this.data.items._source[l].data.quantity) + +carriedWeight;
 				carriedCost = (+this.data.items._source[l].data.cost * +this.data.items._source[l].data.quantity) + +carriedCost;
 			}
@@ -1569,7 +1569,7 @@ export class gurpsActor extends Actor {
 		let affliction;
 
 		actor.data.items.forEach((item) => {
-			if (item.data.type == "Trait" || item.data.type == "Equipment" || item.data.type == "Spell" || item.data.type == "Custom Weapon" || item.data.type == "Custom Armour"){
+			if (item.data.type == "Trait" || item.data.type == "Equipment" || item.data.type == "Spell" || item.data.type == "Custom Weapon" || item.data.type == "Custom Armour" || item.data.type == "Travel Fare"){
 				if (item.data.data.melee) {
 					let meleeKeys = Object.keys(item.data.data.melee); // Collect all the melee keys
 					for (let m = 0; m < meleeKeys.length; m++){

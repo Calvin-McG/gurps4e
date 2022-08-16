@@ -52,6 +52,9 @@ export class gurpsItem extends Item {
       case "Custom Armour":
         this._prepareCustomArmourData();
         break;
+      case "Travel Fare":
+        this._prepareTravelFare();
+        break;
       case "Custom Jewelry":
         this._prepareCustomJewelryData();
         break;
@@ -128,6 +131,11 @@ export class gurpsItem extends Item {
   }
 
   _prepareEquipmentData() {
+    this.validateEquipmentBasics();
+    this.finalEquipmentCalculation();
+  }
+
+  _prepareTravelFare() {
     this.validateEquipmentBasics();
     this.finalEquipmentCalculation();
   }
