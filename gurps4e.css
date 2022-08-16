@@ -1857,3 +1857,13 @@ attribute-senses {
 .jewelry-decoration-select {
 	float: right;
 }
+
+.settings-list .form-group {
+	border-bottom: #00000099 solid 2px;
+	padding: 1em 0;
+}
+
+.settings-list .form-group label {
+	font-size: large;
+	font-weight: 500;
+}
