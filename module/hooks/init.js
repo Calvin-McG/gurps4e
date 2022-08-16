@@ -3,6 +3,8 @@
  */
 import { macroHelpers } from "../../helpers/macroHelpers.js";
 import { materialHelpers } from "../../helpers/materialHelpers.js";
+import { economicHelpers } from "../../helpers/economicHelpers.js";
+import { vehicleHelpers } from "../../helpers/vehicleHelpers.js";
 
 Hooks.once("init", () => {
 
@@ -21,6 +23,8 @@ Hooks.once("init", () => {
   function hookAPI() {
     game.gurpsAPI = macroHelpers;
     game.materialAPI = materialHelpers;
+    game.economicAPI = economicHelpers;
+    game.vehicleAPI = vehicleHelpers;
   }
 
   game.settings.register("gurps4e", "campaignTL", {
