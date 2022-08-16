@@ -1828,6 +1828,11 @@ attribute-senses {
 	padding: 5px;
 }
 
+.vehicle-catalogue-table td, th {
+	border: 2px solid rgb(255 255 255 / 50%);
+	padding: 5px;
+}
+
 .custom-armour-selected-dr {
 	text-align: center;
 }
