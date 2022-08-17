@@ -4923,7 +4923,7 @@ export class gurpsItem extends Item {
 
   showInfo(id) {
     let info = "";
-    if (id == "laser-configuration") {
+    if (id === "laser-configuration") {
       info = "<table>" +
           "<tr>" +
           "<td style='width: 50px; padding-right: 10px;'>Pistol</td>" +
@@ -4943,7 +4943,7 @@ export class gurpsItem extends Item {
           "</tr>" +
           "</table>"
     }
-    else if (id == "beam-type") {
+    else if (id === "beam-type") {
       info = "<table>" +
           "<tr>" +
           "<td style='width: 160px;'>Laser (TL9)</td>" +
@@ -5000,7 +5000,7 @@ export class gurpsItem extends Item {
       }
       info += "</table>"
     }
-    else if (id == "laser-colour") {
+    else if (id === "laser-colour") {
       info = "<table>" +
           "<tr>" +
           "<td style='width: 100px;'>Infrared</td>" +
@@ -5020,7 +5020,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "omni-blaster") {
+    else if (id === "omni-blaster") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5029,7 +5029,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "focal-array") {
+    else if (id === "focal-array") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5038,7 +5038,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "laser-generator") {
+    else if (id === "laser-generator") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5052,7 +5052,7 @@ export class gurpsItem extends Item {
       }
       info += "</table>"
     }
-    else if (id == "super-science-laser") {
+    else if (id === "super-science-laser") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5063,7 +5063,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "field-jacket") {
+    else if (id === "field-jacket") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5073,7 +5073,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "gravitic-focusing") {
+    else if (id === "gravitic-focusing") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5083,7 +5083,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "ftl-laser") {
+    else if (id === "ftl-laser") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5092,7 +5092,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "laser-damage-dice") {
+    else if (id === "laser-damage-dice") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5102,7 +5102,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "laser-power-system") {
+    else if (id === "laser-power-system") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5164,7 +5164,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "super-science-power-cells") {
+    else if (id === "super-science-power-cells") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5173,7 +5173,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "non-rechargeable-power-cells") {
+    else if (id === "non-rechargeable-power-cells") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5182,7 +5182,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "laser-weight-tweak") {
+    else if (id === "laser-weight-tweak") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5191,7 +5191,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "pulse-laser") {
+    else if (id === "pulse-laser") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5201,7 +5201,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "pulse-beam-laser") {
+    else if (id === "pulse-beam-laser") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5210,7 +5210,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "melee-profile") {
+    else if (id === "melee-profile") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5219,7 +5219,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "cavalier-weapon") {
+    else if (id === "cavalier-weapon") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5228,7 +5228,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "laser-ranged-skill") {
+    else if (id === "laser-ranged-skill") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5237,7 +5237,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "laser-melee-skill") {
+    else if (id === "laser-melee-skill") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5246,7 +5246,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "user-st") {
+    else if (id === "user-st") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5255,7 +5255,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "strong-bow-crossbow-finesse") {
+    else if (id === "strong-bow-crossbow-finesse") {
       info = "<table>";
       if (this.data.data.bowDesign.fixedBonusStrongbow) {
         info += "<tr>" +
@@ -5278,7 +5278,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "strong-bow-crossbow-finesse-effect") {
+    else if (id === "strong-bow-crossbow-finesse-effect") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5289,7 +5289,7 @@ export class gurpsItem extends Item {
           "</tr>";
       info += "</table>"
     }
-    else if (id == "draw-weight") {
+    else if (id === "draw-weight") {
       info = "<table>" +
           "<tr>" +
           "<td>" +
@@ -5433,7 +5433,7 @@ export class gurpsItem extends Item {
           "</tr>"
       info += "</table>"
     }
-    else if (id == "target-draw-length") {
+    else if (id === "target-draw-length") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5520,7 +5520,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "total-bow-length") {
+    else if (id === "total-bow-length") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5570,7 +5570,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "working-bow-length") {
+    else if (id === "working-bow-length") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5590,7 +5590,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "working-material") {
+    else if (id === "working-material") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5654,7 +5654,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "working-material-essential") {
+    else if (id === "working-material-essential") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5667,7 +5667,7 @@ export class gurpsItem extends Item {
       info += "</table>"
 
     }
-    else if (id == "bow-density") {
+    else if (id === "bow-density") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5679,7 +5679,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "bow-tensile-st") {
+    else if (id === "bow-tensile-st") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5691,7 +5691,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "bow-elastic-modulus") {
+    else if (id === "bow-elastic-modulus") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5703,7 +5703,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "bow-max-strain") {
+    else if (id === "bow-max-strain") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5722,7 +5722,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "bow-buckling-constant") {
+    else if (id === "bow-buckling-constant") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5763,7 +5763,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "bow-cost-per-lb" || id == "bow-arrow-cost-per-lb") {
+    else if (id === "bow-cost-per-lb" || id === "bow-arrow-cost-per-lb") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5782,7 +5782,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "bow-shape") {
+    else if (id === "bow-shape") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5801,7 +5801,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "cross-section") {
+    else if (id === "cross-section") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5834,7 +5834,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "bow-type") {
+    else if (id === "bow-type") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5900,7 +5900,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "bow-loops") {
+    else if (id === "bow-loops") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5912,7 +5912,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "limb-thickness") {
+    else if (id === "limb-thickness") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5939,7 +5939,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "riser-material") {
+    else if (id === "riser-material") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5964,7 +5964,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "riser-material-essential") {
+    else if (id === "riser-material-essential") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5977,7 +5977,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "riser-width") {
+    else if (id === "riser-width") {
       info = "<table>";
 
       info += "<tr>" +
@@ -5994,7 +5994,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "allowed-deflection") {
+    else if (id === "allowed-deflection") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6012,7 +6012,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "riser-width") {
+    else if (id === "riser-width") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6029,7 +6029,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "riser-thickness") {
+    else if (id === "riser-thickness") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6040,7 +6040,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "stock-length") {
+    else if (id === "stock-length") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6051,7 +6051,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "bow-skill") {
+    else if (id === "bow-skill") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6062,7 +6062,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "bow-quality") {
+    else if (id === "bow-quality") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6073,7 +6073,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "shaft-length") {
+    else if (id === "shaft-length") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6090,7 +6090,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "shaft-material") {
+    else if (id === "shaft-material") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6101,7 +6101,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "arrow-quality") {
+    else if (id === "arrow-quality") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6112,7 +6112,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "arrow-outer-diameter") {
+    else if (id === "arrow-outer-diameter") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6123,7 +6123,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "arrow-inner-diameter") {
+    else if (id === "arrow-inner-diameter") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6140,7 +6140,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "arrowhead") {
+    else if (id === "arrowhead") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6253,7 +6253,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "shaft-material-essential") {
+    else if (id === "shaft-material-essential") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6271,7 +6271,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "arrowhead-damage-type") {
+    else if (id === "arrowhead-damage-type") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6306,7 +6306,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "arrowhead-ad") {
+    else if (id === "arrowhead-ad") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6317,7 +6317,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "arrowhead-barbed") {
+    else if (id === "arrowhead-barbed") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6328,7 +6328,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "arrowhead-weight") {
+    else if (id === "arrowhead-weight") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6339,7 +6339,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "arrow-stats") {
+    else if (id === "arrow-stats") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6350,7 +6350,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "damage-points") {
+    else if (id === "damage-points") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6361,7 +6361,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "acc-range") {
+    else if (id === "acc-range") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6378,7 +6378,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "bow-show-profile") {
+    else if (id === "bow-show-profile") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6389,7 +6389,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "arrow-name") {
+    else if (id === "arrow-name") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6400,7 +6400,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-location") {
+    else if (id === "armour-location") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6411,7 +6411,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-sub-location") {
+    else if (id === "armour-sub-location") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6429,7 +6429,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-coverage") {
+    else if (id === "armour-coverage") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6440,7 +6440,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-voider") {
+    else if (id === "armour-voider") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6453,7 +6453,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-material") {
+    else if (id === "armour-material") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6464,7 +6464,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-material-essential") {
+    else if (id === "armour-material-essential") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6481,7 +6481,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-construction") {
+    else if (id === "armour-construction") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6504,7 +6504,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-selectedDR") {
+    else if (id === "armour-selectedDR") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6527,7 +6527,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-body-type") {
+    else if (id === "armour-body-type") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6538,7 +6538,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-layer") {
+    else if (id === "armour-layer") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6553,7 +6553,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-input-scaling") {
+    else if (id === "armour-input-scaling") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6564,7 +6564,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-tailor") {
+    else if (id === "armour-tailor") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6595,7 +6595,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-style") {
+    else if (id === "armour-style") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6624,7 +6624,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-holdout-reduction") {
+    else if (id === "armour-holdout-reduction") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6634,7 +6634,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-concealed") {
+    else if (id === "armour-concealed") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6647,7 +6647,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-clothing") {
+    else if (id === "armour-clothing") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6712,7 +6712,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-clothing-status") {
+    else if (id === "armour-clothing-status") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6721,7 +6721,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-undercover-clothing") {
+    else if (id === "armour-undercover-clothing") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6734,7 +6734,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-steel-hardening") {
+    else if (id === "armour-steel-hardening") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6751,7 +6751,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-fluting") {
+    else if (id === "armour-fluting") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6764,7 +6764,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-silk") {
+    else if (id === "armour-silk") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6777,7 +6777,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-paper") {
+    else if (id === "armour-paper") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6790,7 +6790,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-textile-reinforced") {
+    else if (id === "armour-textile-reinforced") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6803,7 +6803,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-textile-reinforced") {
+    else if (id === "armour-textile-reinforced") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6816,7 +6816,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-mountain-scale") {
+    else if (id === "armour-mountain-scale") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6829,7 +6829,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-butted") {
+    else if (id === "armour-butted") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6844,7 +6844,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-banded") {
+    else if (id === "armour-banded") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6857,7 +6857,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-sealed") {
+    else if (id === "armour-sealed") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6874,7 +6874,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-hobnailed") {
+    else if (id === "armour-hobnailed") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6889,7 +6889,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-punch") {
+    else if (id === "armour-punch") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6898,7 +6898,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-punch-skill") {
+    else if (id === "armour-punch-skill") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6907,7 +6907,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-kick") {
+    else if (id === "armour-kick") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6916,7 +6916,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-kick-skill") {
+    else if (id === "armour-kick-skill") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6925,7 +6925,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-don-time") {
+    else if (id === "armour-don-time") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6934,7 +6934,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-status-eq") {
+    else if (id === "armour-status-eq") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6943,7 +6943,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-can-pass-for") {
+    else if (id === "armour-can-pass-for") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6952,7 +6952,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "armour-holdout") {
+    else if (id === "armour-holdout") {
       info = "<table>";
 
       info += "<tr>" +
@@ -6961,7 +6961,7 @@ export class gurpsItem extends Item {
 
       info += "</table>"
     }
-    else if (id == "firearm-configuration") {
+    else if (id === "firearm-configuration") {
         info = "<table>" +
             "<tr>" +
             "<td style='width: 50px; padding-right: 10px;'>Cannon</td>" +
@@ -6985,7 +6985,7 @@ export class gurpsItem extends Item {
             "</tr>" +
             "</table>"
     }
-    else if (id == "barrel-length") {
+    else if (id === "barrel-length") {
         info = "<table>";
 
         info += "<tr>" +
@@ -6994,7 +6994,7 @@ export class gurpsItem extends Item {
 
         info += "</table>"
     }
-    else if (id == "firearm-weight-tweak") {
+    else if (id === "firearm-weight-tweak") {
         info = "<table>" +
             "<tr>" +
             "<td>" +
@@ -7003,7 +7003,7 @@ export class gurpsItem extends Item {
             "</tr>";
         info += "</table>"
     }
-    else if (id == "rifling") {
+    else if (id === "rifling") {
         info = "<table>" +
             "<tr>" +
             "<td style='width: 50px; padding-right: 10px;'>Muzzle Loaders</td>" +
@@ -7019,7 +7019,7 @@ export class gurpsItem extends Item {
             "</tr>" +
             "</table>"
     }
-    else if (id == "firearm-action") {
+    else if (id === "firearm-action") {
         info = "<table>" +
             "<tr>" +
             "<td style='width: 50px; padding-right: 10px;'>Muzzle Loaders</td>" +
@@ -7075,7 +7075,7 @@ export class gurpsItem extends Item {
             "</tr>" +
             "</table>"
     }
-    else if (id == "firearm-lock") {
+    else if (id === "firearm-lock") {
         info = "<table>" +
             "<tr>" +
             "<td style='width: 50px; padding-right: 10px;'>Cannonlock</td>" +
@@ -7111,7 +7111,7 @@ export class gurpsItem extends Item {
             "</tr>" +
             "</table>"
     }
-    else if (id == "firearm-barrels") {
+    else if (id === "firearm-barrels") {
         info = "<table>" +
             "<tr>" +
             "<td>" +
@@ -7120,7 +7120,7 @@ export class gurpsItem extends Item {
             "</tr>";
         info += "</table>"
     }
-    else if (id == "firearm-bolt") {
+    else if (id === "firearm-bolt") {
         info = "<table>" +
             "<tr>" +
             "<td style='width: 50px; padding-right: 10px;'>Closed</td>" +
@@ -7132,7 +7132,7 @@ export class gurpsItem extends Item {
             "</tr>" +
             "</table>"
     }
-    else if (id == "projectile-calibre") {
+    else if (id === "projectile-calibre") {
         info = "<table>" +
             "<tr>" +
             "<td>" +
@@ -7146,7 +7146,7 @@ export class gurpsItem extends Item {
             "</tr>";
         info += "</table>"
     }
-    else if (id == "projectile-aspect") {
+    else if (id === "projectile-aspect") {
         info = "<table>" +
             "<tr>" +
             "<td>" +
@@ -7160,7 +7160,7 @@ export class gurpsItem extends Item {
             "</tr>";
         info += "</table>"
     }
-    else if (id == "projectile-mass") {
+    else if (id === "projectile-mass") {
         info = "<table>" +
             "<tr>" +
             "<td>" +
@@ -7169,7 +7169,7 @@ export class gurpsItem extends Item {
             "</tr>";
         info += "</table>"
     }
-    else if (id == "projectile-density") {
+    else if (id === "projectile-density") {
         info = "<table>" +
             "<tr>" +
             "<td>" +
@@ -7178,7 +7178,7 @@ export class gurpsItem extends Item {
             "</tr>";
         info += "</table>"
       }
-    else if (id == "chamber-bore") {
+    else if (id === "chamber-bore") {
         info = "<table>" +
             "<tr>" +
             "<td>" +
@@ -7187,7 +7187,7 @@ export class gurpsItem extends Item {
             "</tr>";
         info += "</table>"
     }
-    else if (id == "case-length") {
+    else if (id === "case-length") {
         info = "<table>" +
             "<tr>" +
             "<td>" +
@@ -7196,7 +7196,7 @@ export class gurpsItem extends Item {
             "</tr>";
         info += "</table>"
     }
-    else if (id == "cartridge-type") {
+    else if (id === "cartridge-type") {
         info = "<table>" +
             "<tr>" +
             "<td>" +
@@ -7205,7 +7205,7 @@ export class gurpsItem extends Item {
             "</tr>";
         info += "</table>"
     }
-    else if (id == "burn-length") {
+    else if (id === "burn-length") {
         info = "<table>" +
             "<tr>" +
             "<td>" +
@@ -7214,7 +7214,7 @@ export class gurpsItem extends Item {
             "</tr>";
         info += "</table>"
     }
-    else if (id == "powder-type") {
+    else if (id === "powder-type") {
         info = "<table>" +
             "<tr>" +
             "<td style='width: 50px; padding-right: 10px;'>Black Powder</td>" +
@@ -7234,7 +7234,7 @@ export class gurpsItem extends Item {
             "</tr>" +
             "</table>"
     }
-    else if (id == "chamber-pressure") {
+    else if (id === "chamber-pressure") {
         info = "<table>" +
             "<tr>" +
             "<td>" +
@@ -7248,7 +7248,7 @@ export class gurpsItem extends Item {
             "</tr>";
         info += "</table>"
     }
-    else if (id == "magazine-style") {
+    else if (id === "magazine-style") {
         info = "<table>" +
             "<tr>" +
             "<td style='width: 50px; padding-right: 10px;'>Notes</td>" +
@@ -7280,133 +7280,133 @@ export class gurpsItem extends Item {
             "</tr>" +
             "</table>"
     }
-    else if (id == "magazine-material") {
+    else if (id === "magazine-material") {
         info = "<table>" +
             "<tr>" +
             "<td><p>Lighter materials are... lighter!</p></td>" +
             "</tr>" +
             "</table>"
     }
-    else if (id == "magazine-capacity") {
+    else if (id === "magazine-capacity") {
       info = "<table>" +
           "<tr>" +
           "<td><p>You can set this number as high as you like. But higher values mean more weight and worse Bulk.</p></td>" +
           "</tr>" +
           "</table>"
     }
-    else if (id == "damage-output") {
+    else if (id === "damage-output") {
       info = "<table>" +
           "<tr>" +
           "<td><p>The base damage of the weapon as designed, while using single solid shot.</p></td>" +
           "</tr>" +
           "</table>"
     }
-    else if (id == "fit-to-owner") {
+    else if (id === "fit-to-owner") {
         info = "<table>" +
             "<tr>" +
             "<td><p>For +1 CF, your weapon was designed specifically for you. You get +1 to all skills while using it, exactly as with a Weapon Bond. Does not stack with Weapon Bond.</p></td>" +
             "</tr>" +
             "</table>"
     }
-    else if (id == "acc-output") {
+    else if (id === "acc-output") {
       info = "<table>" +
           "<tr>" +
           "<td><p>The base ACC before further modifiers. For shotshells, expect this to go down by 1.</p></td>" +
           "</tr>" +
           "</table>"
     }
-    else if (id == "bulk-output") {
+    else if (id === "bulk-output") {
       info = "<table>" +
           "<tr>" +
           "<td><p>Bulk is obviously a whole number. This is mostly showing the decimals so you've got an idea of how close or far you are to the next value.</p></td>" +
           "</tr>" +
           "</table>"
     }
-    else if (id == "weight-output") {
+    else if (id === "weight-output") {
       info = "<table>" +
           "<tr>" +
           "<td><p>Output of various weight breakdowns.</p></td>" +
           "</tr>" +
           "</table>"
     }
-    else if (id == "rate-of-fire") {
+    else if (id === "rate-of-fire") {
         info = "<table>" +
             "<tr>" +
             "<td><p>This is the per-barrel RoF. The multiplier for the barrels is applied afterwards.</p></td>" +
             "</tr>" +
             "</table>"
       }
-    else if (id == "st-output") {
+    else if (id === "st-output") {
         info = "<table>" +
             "<tr>" +
             "<td><p>ST is obviously a whole number. This is mostly showing the decimals so you've got an idea of how close or far you are to the next value.</p></td>" +
             "</tr>" +
             "</table>"
       }
-    else if (id == "rcl-output") {
+    else if (id === "rcl-output") {
         info = "<table>" +
             "<tr>" +
             "<td><p>Rcl is obviously a whole number. This is mostly showing the decimals so you've got an idea of how close or far you are to the next value. The minimum Rcl is 2, unless the weapon is a laser or shotgun.</p></td>" +
             "</tr>" +
             "</table>"
       }
-    else if (id == "range-output") {
+    else if (id === "range-output") {
         info = "<table>" +
             "<tr>" +
             "<td><p>Half damage and max range, along with velocity. Velocity is only really relevant for specific option rules at extreme range.</p></td>" +
             "</tr>" +
             "</table>"
       }
-    else if (id == "firearm-accuracy") {
+    else if (id === "firearm-accuracy") {
         info = "<table>" +
             "<tr>" +
             "<td><p>Some higher quality options are only available if the weapon's base ACC is sufficient. See HT79, but improving the weapon from Good to Fine or Very Fine can be done after the fact.</p></td>" +
             "</tr>" +
             "</table>"
       }
-    else if (id == "firearm-reliability") {
+    else if (id === "firearm-reliability") {
         info = "<table>" +
             "<tr>" +
             "<td><p>Improving Malf beyond 17 results in a Malf of 17+, which requires two successive crit fails to malfunction. See HT79, but improving the weapon from Good to Fine or Very Fine can be done after the fact.</p></td>" +
             "</tr>" +
             "</table>"
       }
-    else if (id == "shots-output") {
+    else if (id === "shots-output") {
         info = "<table>" +
             "<tr>" +
             "<td><p>Shots and time to reload.</p></td>" +
             "</tr>" +
             "</table>"
       }
-    else if (id == "malf-output") {
+    else if (id === "malf-output") {
         info = "<table>" +
             "<tr>" +
             "<td><p>Rolling this number or higher means the weapon malfunctions. (It might still fire, which might still count as a hit). 17+ means that two successive malfunctions must be rolled for the gun to malfunction.</p></td>" +
             "</tr>" +
             "</table>"
       }
-    else if (id == "cps-output") {
+    else if (id === "cps-output") {
         info = "<table>" +
             "<tr>" +
             "<td><p>Base cost per shot, before any modifiers for ammo</p></td>" +
             "</tr>" +
             "</table>"
       }
-    else if (id == "cost-output") {
+    else if (id === "cost-output") {
         info = "<table>" +
             "<tr>" +
             "<td><p>Base cost, Cost Factor from any modifications, and final cost</p></td>" +
             "</tr>" +
             "</table>"
       }
-    else if (id == "case-type") {
+    else if (id === "case-type") {
         info = "<table>" +
             "<tr>" +
             "<td><p>Base cost, Cost Factor from any modifications, and final cost</p></td>" +
             "</tr>" +
             "</table>"
       }
-    else if (id == "plusp") {
+    else if (id === "plusp") {
         info = "<table>" +
             "<tr>" +
             "<td><p>Multiply damage, range, and ST by 1.1, multiply CPS by 1.5</p></td>" +
@@ -7416,7 +7416,7 @@ export class gurpsItem extends Item {
             "</tr>" +
             "</table>"
       }
-    else if (id == "match-grade") {
+    else if (id === "match-grade") {
         info = "<table>" +
             "<tr>" +
             "<td><p>Match Grade ammo needs a gun with base Acc 4 to be effective, and it grants a +1 bonus to Acc. Double cost per shot.</p></td>" +
@@ -7426,7 +7426,7 @@ export class gurpsItem extends Item {
             "</tr>" +
             "</table>"
       }
-    else if (id == "subsonic") {
+    else if (id === "subsonic") {
         info = "<table>" +
             "<tr>" +
             "<td><p>For pistols this gives -1 Hearing and range is multiplied by 0.8</p></td>" +
@@ -7439,7 +7439,7 @@ export class gurpsItem extends Item {
             "</tr>" +
             "</table>"
       }
-    else if (id == "silent") {
+    else if (id === "silent") {
         info = "<table>" +
             "<tr>" +
             "<td><p>Makes the weapon silent. Use the 16 yard line on the hearing distance table on HT158.</p></td>" +
@@ -7449,7 +7449,7 @@ export class gurpsItem extends Item {
             "</tr>" +
             "</table>"
       }
-    else if (id == "poison") {
+    else if (id === "poison") {
       info = "<table>" +
           "<tr>" +
           "<td><p>Makes the weapon silent. Use the 16 yard line on the hearing distance table on HT158.</p></td>" +
@@ -7459,7 +7459,7 @@ export class gurpsItem extends Item {
           "</tr>" +
           "</table>"
     }
-    else if (id == "inc") {
+    else if (id === "inc") {
       info = "<table>" +
           "<tr>" +
           "<td><p>Adds the incendiary damage modifier, which just adds +1 burning damage.</p></td>" +
@@ -7469,7 +7469,7 @@ export class gurpsItem extends Item {
           "</tr>" +
           "</table>"
     }
-    else if (id == "tracer") {
+    else if (id === "tracer") {
       info = "<table>" +
           "<tr>" +
           "<td><p>Adds the incendiary damage modifier, which just adds +1 burning damage. Also gives +1 to skill on subsequent turns following automatic fire.</p></td>" +
@@ -7479,14 +7479,14 @@ export class gurpsItem extends Item {
           "</tr>" +
           "</table>"
     }
-    else if (id == "firearm-projectile-type") {
+    else if (id === "firearm-projectile-type") {
         info = "<table>" +
             "<tr>" +
             "<td><p>See high tech 165.</p></td>" +
             "</tr>" +
             "</table>"
       }
-    else if (id == "number-of-shots") {
+    else if (id === "number-of-shots") {
         info = "<table>" +
             "<tr>" +
             "<td><p>Rather than add a shitload more dropdowns, the projectiles will automatically be as large as they can be, based on the quantity you select.</p></td>" +
@@ -7502,7 +7502,7 @@ export class gurpsItem extends Item {
             "</tr>" +
             "</table>"
       }
-    else if (id == "explosive-filler") {
+    else if (id === "explosive-filler") {
         info = "<table>" +
             "<tr>" +
             "<td><p>Select the type and quantity of explosive filler you want.</p></td>" +
@@ -7515,52 +7515,80 @@ export class gurpsItem extends Item {
             "</tr>" +
             "</table>"
       }
-    else if (id == "wps") {
+    else if (id === "wps") {
         info = "<table>" +
             "<tr>" +
             "<td><p>The weight of one round. A single full load is factored into the weight of the weapon, additional rounds will need to be added separately.</p></td>" +
             "</tr>" +
             "</table>"
       }
-    else if (id == "cps") {
+    else if (id === "cps") {
         info = "<table>" +
             "<tr>" +
             "<td><p>The cost of one round. This is not added to the cost of the weapon.</p></td>" +
             "</tr>" +
             "</table>"
       }
-    else if (id == "jewelry-style") {
+    else if (id === "jewelry-style") {
       info = "<table>" +
           "<tr>" +
           "<td><p>This is the base style of jewelry.</p></td>" +
           "</tr>" +
           "</table>"
     }
-    else if (id == "jewelry-material") {
+    else if (id === "jewelry-material") {
       info = "<table>" +
           "<tr>" +
           "<td><p>Not all of these materials make sense. But the math will work at least.</p></td>" +
           "</tr>" +
           "</table>"
     }
-    else if (id == "jewelry-size") {
+    else if (id === "jewelry-size") {
         info = "<table>" +
             "<tr>" +
             "<td><p>You may select any weight you like. The base weight listed here is for a small example of the item.</p></td>" +
             "</tr>" +
             "</table>"
       }
-    else if (id == "gem-value") {
+    else if (id === "gem-value") {
         info = "<table>" +
             "<tr>" +
             "<td><p>The baseline value is 100, but values between 10 and 1000 are reasonable for gemstones.</p></td>" +
             "</tr>" +
             "</table>"
       }
-    else if (id == "jewelry-material-essential") {
+    else if (id === "jewelry-material-essential") {
         info = "<table>" +
             "<tr>" +
             "<td><p>Essential materials are worth thirty times as much.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id === "travel-method") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>This setting is mostly to filter down the list of vehicles so it's easier to make a choice.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id === "fare-tl-range") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>This setting controls how low of a TL you're willing to choose from when selecting a vehicle. Setting this to zero only shows vehicles of the item's TL. Setting this to it's maximum value shows you all vehicles from your TL to TL 0.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id === "travel-distance") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>Select the type and number of units. Units are arranged in order of size.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id === "travel-vehicle") {
+        info = "<table>" +
+            "<tr>" +
+            "<td><p>Select the type of vehicle you'd like to travel on.</p></td>" +
             "</tr>" +
             "</table>"
       }
