@@ -73,7 +73,15 @@ Hooks.once('init', async function() {
     }
   });
 
-  //
+  Handlebars.registerHelper('validVehicle', function (tlVehicle, tlItem, tlRange, air, naval, ground, selectedMethod, options) {
+      if (((selectedMethod === "ground" && ground) || (selectedMethod === "naval" && naval) || (selectedMethod === "air" && air)) && tlVehicle <= tlItem && tlVehicle >= (tlItem - tlRange)) {
+        return options.fn(this);
+      }
+      else {
+        return options.inverse(this);
+      }
+  });
+
   Handlebars.registerHelper('showVoider', function (bodyPart, subLocation, options) {
     if (bodyPart.subLocation) { // There are sublocations
       if (bodyPart.subLocation.thigh) {  // There is a thigh

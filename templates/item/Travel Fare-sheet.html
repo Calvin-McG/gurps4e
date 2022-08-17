@@ -164,7 +164,9 @@
                                     <select name="data.travelFare.vehicle">
                                         {{#select data.data.travelFare.vehicle}}
                                             {{#each data.data.travelFare.vehicles as |vehicle id|}}
-                                                <option value="{{vehicle.code}}">{{vehicle.name}}</option>
+                                                {{#validVehicle vehicle.tl ../data.data.tl ../data.data.travelFare.tlRange vehicle.air vehicle.naval vehicle.ground ../data.data.travelFare.method}}
+                                                        <option value="{{vehicle.code}}">{{vehicle.name}}</option>
+                                                {{/validVehicle}}
                                             {{/each}}
                                         {{/select}}
                                     </select>
