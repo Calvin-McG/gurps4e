@@ -7616,7 +7616,7 @@ export class gurpsItem extends Item {
     else if (id === "travel-vehicle") {
         info = "<table>" +
             "<tr>" +
-            "<td><p>Select the type of vehicle you'd like to travel on.</p></td>" +
+            "<td><p>Select the type of vehicle you'd like to travel on. For more detailed stats, check the vehicle catalogue.</p></td>" +
             "</tr>" +
             "</table>"
       }
