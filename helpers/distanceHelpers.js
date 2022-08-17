@@ -109,6 +109,122 @@ export class distanceHelpers {
         return distance;
     }
 
+    // Provides a list of units that are useable by the system
+    static listUnits() {
+        // Mult is the number of yards in one example of the unit.
+        // IE: Multiply the number of units by this multiplier to get the number of yards.
+        let units = [
+            {
+                "name": "league",
+                "names": "leagues",
+                "mult": 1760 * 3,
+            },
+            {
+                "name": "fathom",
+                "names": "fathoms",
+                "mult": 1760 * 2,
+            },
+            {
+                "name": "nautical mile",
+                "names": "nautical miles",
+                "mult": 1760 * 1.151,
+            },
+            {
+                "name": "mile",
+                "names": "miles",
+                "mult": 1760,
+            },
+            {
+                "name": "kilometre",
+                "names": "kilometres",
+                "mult": 0.0009144,
+            },
+            {
+                "name": "cable",
+                "names": "cables",
+                "mult": 240,
+            },
+            {
+                "name": "furlong",
+                "names": "furlongs",
+                "mult": 110,
+            },
+            {
+                "name": "rope",
+                "names": "ropes",
+                "mult": 60,
+            },
+            {
+                "name": "shackle",
+                "names": "shackles",
+                "mult": 30,
+            },
+            {
+                "name": "grade",
+                "names": "grades",
+                "mult": 15,
+            },
+            {
+                "name": "step",
+                "names": "steps",
+                "mult": 15,
+            },
+            {
+                "name": "chain",
+                "names": "chains",
+                "mult": 11,
+            },
+            {
+                "name": "pace",
+                "names": "paces",
+                "mult": 7.5,
+            },
+            {
+                "name": "rod",
+                "names": "rods",
+                "mult": 5.5,
+            },
+            {
+                "name": "metre",
+                "names": "metres",
+                "mult": 1 / 0.9144,
+            },
+            {
+                "name": "yard",
+                "names": "yards",
+                "mult": 1,
+            },
+            {
+                "name": "span",
+                "names": "spans",
+                "mult": 0.75,
+            },
+            {
+                "name": "link",
+                "names": "links",
+                "mult": (33 / 50),
+            },
+            {
+                "name": "foot",
+                "names": "feet",
+                "mult": 1 / 3,
+            },
+            {
+                "name": "inch",
+                "names": "inchs",
+                "mult": 1 / 36,
+            },
+            {
+                "name": "centimetre",
+                "names": "centimetres",
+                "mult": 1 / 91.44,
+            },
+
+        ]
+
+        return units;
+    }
+
     // This method returns the normal distance penalty based on the Size/Speed/Range table
     static distancePenalty(distance){
         return Math.min(Math.floor(2 - (6 * Math.log10(distance))),0);
