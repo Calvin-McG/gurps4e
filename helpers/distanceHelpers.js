@@ -109,6 +109,19 @@ export class distanceHelpers {
         return distance;
     }
 
+    static getUnitByName(name) {
+        const units = this.listUnits();
+        if (typeof name != "undefined"){
+            units.forEach( unit => {
+                if (unit.name.toLowerCase() == name.toLowerCase()) {
+                    return unit;
+                }
+            })
+        }
+
+        return undefined;
+    }
+
     // Provides a list of units that are useable by the system
     static listUnits() {
         // Mult is the number of yards in one example of the unit.
