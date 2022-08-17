@@ -5,6 +5,7 @@ import { distanceHelpers } from "../../helpers/distanceHelpers.js";
 import { economicHelpers } from "../../helpers/economicHelpers.js";
 import { actorHelpers } from "../../helpers/actorHelpers.js";
 import { generalHelpers } from "../../helpers/generalHelpers.js";
+import { vehicleHelpers } from "../../helpers/vehicleHelpers.js";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -137,7 +138,34 @@ export class gurpsItem extends Item {
 
   _prepareTravelFare() {
     this.validateEquipmentBasics();
+
+    if (typeof this.data.data.travelFare == "undefined") {
+      this.data.data.travelFare = {
+        "method": "ground",
+        "tlRange": 0,
+        "unit": "mile",
+        "units": [],
+        "vehicle": {},
+        "vehicles": [],
+        "distance": 1,
+        "initComplete": false,
+      }
+    }
+
+    this.data.data.travelFare.units = distanceHelpers.listUnits();
+    this.data.data.travelFare.vehicles = vehicleHelpers.fetchVehicles();
+    this.data.data.travelFare.vehicleCatalogue = vehicleHelpers.fetchVehicleCatalogue(this.data.data.travelFare.method, this.data.data.tl, this.data.data.travelFare.tlRange);
+
+    if (typeof this.data.data.travelFare.tlRange == "undefined" || this.data.data.travelFare.tlRange < 0) {
+      this.data.data.travelFare.tlRange = 0;
+    }
+    else if (this.data.data.travelFare.tlRange > this.data.data.tl){
+      this.data.data.travelFare.tlRange = this.data.data.tl;
+    }
+
     this.finalEquipmentCalculation();
+
+    this.data.data.travelFare.initComplete = true;
   }
 
   _prepareCustomArmourData() {

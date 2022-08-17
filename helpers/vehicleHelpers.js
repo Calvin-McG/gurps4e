@@ -2,16 +2,13 @@ export class vehicleHelpers {
 
     static getVehicleByCode(code) {
         const vehicles = this.fetchVehicles();
-        let selectedVehicle;
         if (typeof code != "undefined") {
             vehicles.forEach( vehicle => {
-                if (vehicle.code.toLowerCase() == code.toLowerCase()) {
-                    selectedVehicle = vehicle;
+                if (vehicle.code.toLowerCase() === code.toLowerCase()) {
+                    return vehicle;
                 }
             })
         }
-
-        return selectedVehicle;
     }
 
     static fetchVehicles() {

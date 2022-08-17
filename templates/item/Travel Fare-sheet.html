@@ -52,6 +52,12 @@
         <div class="header">
             <a class="item" data-tab="notes">Notes</a>
         </div>
+        <div class="header">
+            <a class="item" data-tab="itinerary">Itinerary</a>
+        </div>
+        <div class="header">
+            <a class="item" data-tab="catalogue">Vehicle Catalogue</a>
+        </div>
     </nav>
 
     {{!-- Sheet Body --}}
@@ -62,6 +68,121 @@
             <h3 class="bold">Detailed Notes</h3>
             <div class="tab">
                 <textarea rows="8" name="data.notes">{{{data.data.notes}}}</textarea>
+            </div>
+        </div>
+
+        {{!-- Vehicle Catalogue Tab --}}
+        <div class="tab stats" data-tab="catalogue" data-group="primary">
+            <h3 class="bold">Vehicle Catalogue</h3>
+            <div class="tab">
+                {{{data.data.travelFare.vehicleCatalogue}}}
+            </div>
+        </div>
+
+        {{!-- Itinerary Tab --}}
+        <div class="tab stats" data-tab="itinerary" data-group="primary">
+            <h1 class="bold" style="text-align: center;">Itinerary</h1>
+            <div class="tab">
+                <div class="design-block">
+                    <div style="width: 50%;">
+                        <h2 class="bold" style="text-align: center;">Travel Options</h2>
+                        <input style="display: none;" type="checkbox" name="data.travelFare.initComplete" {{checked data.data.travelFare.initComplete}} data-dtype="Boolean"/>
+                        <table>
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Travel Method
+                                </td>
+                                <td>
+                                    <select name="data.travelFare.method">
+                                        {{#select data.data.travelFare.method}}
+                                        <option value="ground">Ground</option>
+                                        <option value="naval">Water</option>
+                                        <option value="air">Air</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="travel-method">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    TL Range: {{data.data.travelFare.tlRange}}
+                                </td>
+                                <td>
+                                    <input type="range" min="0" max="{{data.data.tl}}" step="1" name="data.travelFare.tlRange" value="{{data.data.travelFare.tlRange}}" data-dtype="Number">
+                                </td>
+                                <td class="question-container" id="fare-tl-range">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Distance
+                                </td>
+                                <td>
+                                    <input style="width: 25%" type="number" name="data.travelFare.distance" value="{{data.data.travelFare.distance}}" data-dtype="Number"/>
+                                    <select style="width: 70%" name="data.travelFare.unit">
+                                        {{#select data.data.travelFare.unit}}
+                                            {{#each data.data.travelFare.units as |unit id|}}
+                                                {{#ifCond ../data.data.travelFare.distance '>' 1 }}
+                                                    {{#if (and (eq unit.name "mile") (eq ../data.data.travelFare.initComplete false)) }}
+                                                        <option value="{{unit.name}}" selected>{{unit.names}}</option>
+                                                    {{else}}
+                                                        <option value="{{unit.name}}">{{unit.names}}</option>
+                                                    {{/if}}
+                                                {{/ifCond}}
+                                                {{#ifCond ../data.data.travelFare.distance '<=' 1 }}
+                                                    {{#if (and (eq unit.name "mile") (eq ../data.data.travelFare.initComplete false)) }}
+                                                        <option value="{{unit.name}}" selected>{{unit.name}}</option>
+                                                    {{else}}
+                                                        <option value="{{unit.name}}">{{unit.name}}</option>
+                                                    {{/if}}
+                                                {{/ifCond}}
+                                            {{/each}}
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="travel-distance">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Vehicle
+                                </td>
+                                <td>
+                                    <select name="data.travelFare.vehicle">
+                                        {{#select data.data.travelFare.vehicle}}
+                                            {{#each data.data.travelFare.vehicles as |vehicle id|}}
+                                                <option value="{{vehicle.code}}">{{vehicle.name}}</option>
+                                            {{/each}}
+                                        {{/select}}
+                                    </select>
+                                </td>
+                                <td class="question-container" id="travel-vehicle">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div style="width: 50%;">
+                        <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
+                        <div class="equipment-info-container">{{{data.data.info}}}</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
