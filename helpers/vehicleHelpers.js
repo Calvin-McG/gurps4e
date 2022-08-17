@@ -1422,16 +1422,20 @@ export class vehicleHelpers {
         return vehicles;
     }
 
-    static showVehicleCatalogue(type, tl) {
+    static fetchVehicleCatalogue(type, tl, tlRange) {
         let vehicles = this.fetchVehicles();
-        let buttons = {};
         let htmlContent = "<div>"
+        if (typeof tlRange !== "number") {
+            tlRange = tl; // If range is not set, get everything of this TL and below.
+        }
+
         htmlContent += "<table class='vehicle-catalogue-table'>"
 
         if (type.toLowerCase() === "naval") {
             htmlContent += "<tr>" +
                 "<td style='text-align: center;'>TL</td>" +
                 "<td style='text-align: center;'>Vehicle</td>" +
+                "<td style='text-align: center;'>Skill</td>" +
                 "<td style='text-align: center;'>ST/HP</td>" +
                 "<td style='text-align: center;'>Hnd/SR</td>" +
                 "<td style='text-align: center;'>HT</td>" +
@@ -1453,11 +1457,12 @@ export class vehicleHelpers {
                 "</tr>"
 
             vehicles.forEach( vehicle => {
-                if (vehicle.naval && tl >= vehicle.tl) {
+                if (vehicle.naval && vehicle.tl <= tl && vehicle.tl >= (tl - tlRange)) {
 
                     htmlContent += "<tr>" +
                         "<td style='text-align: right;'>" + vehicle.tl + "</td>" +
                         "<td style='text-align: center;'>" + vehicle.name + "</td>" +
+                        "<td style='text-align: center;'>" + vehicle.skill + "</td>" +
                         "<td style='text-align: center;'>" + vehicle.st + "/" + vehicle.hp + "</td>" +
                         "<td style='text-align: center;'>" + vehicle.hnd + "/" + vehicle.sr + "</td>" +
                         "<td style='text-align: right;'>" + vehicle.ht + "</td>" +
@@ -1484,6 +1489,7 @@ export class vehicleHelpers {
             htmlContent += "<tr>" +
                 "<td style='text-align: center;'>TL</td>" +
                 "<td style='text-align: center;'>Vehicle</td>" +
+                "<td style='text-align: center;'>Skill</td>" +
                 "<td style='text-align: center;'>ST/HP</td>" +
                 "<td style='text-align: center;'>Hnd/SR</td>" +
                 "<td style='text-align: center;'>HT</td>" +
@@ -1505,10 +1511,11 @@ export class vehicleHelpers {
                 "</tr>"
 
             vehicles.forEach( vehicle => {
-                if (vehicle.ground && tl >= vehicle.tl) {
+                if (vehicle.ground && vehicle.tl <= tl && vehicle.tl >= (tl - tlRange)) {
                     htmlContent += "<tr>" +
                         "<td style='text-align: right;'>" + vehicle.tl + "</td>" +
                         "<td style='text-align: center;'>" + vehicle.name + "</td>" +
+                        "<td style='text-align: center;'>" + vehicle.skill + "</td>" +
                         "<td style='text-align: center;'>" + vehicle.st + "/" + vehicle.hp + "</td>" +
                         "<td style='text-align: center;'>" + vehicle.hnd + "/" + vehicle.sr + "</td>" +
                         "<td style='text-align: right;'>" + vehicle.ht + "</td>" +
@@ -1535,6 +1542,7 @@ export class vehicleHelpers {
             htmlContent += "<tr>" +
                 "<td style='text-align: center;'>TL</td>" +
                 "<td style='text-align: center;'>Vehicle</td>" +
+                "<td style='text-align: center;'>Skill</td>" +
                 "<td style='text-align: center;'>ST/HP</td>" +
                 "<td style='text-align: center;'>Hnd/SR</td>" +
                 "<td style='text-align: center;'>HT</td>" +
@@ -1554,10 +1562,11 @@ export class vehicleHelpers {
                 "</tr>"
 
             vehicles.forEach( vehicle => {
-                if (vehicle.air && tl >= vehicle.tl) {
+                if (vehicle.air && vehicle.tl <= tl && vehicle.tl >= (tl - tlRange)) {
                     htmlContent += "<tr>" +
                         "<td style='text-align: right;'>" + vehicle.tl + "</td>" +
                         "<td style='text-align: center;'>" + vehicle.name + "</td>" +
+                        "<td style='text-align: center;'>" + vehicle.skill + "</td>" +
                         "<td style='text-align: center;'>" + vehicle.st + "/" + vehicle.hp + "</td>" +
                         "<td style='text-align: center;'>" + vehicle.hnd + "/" + vehicle.sr + "</td>" +
                         "<td style='text-align: right;'>" + vehicle.ht + "</td>" +
@@ -1581,6 +1590,13 @@ export class vehicleHelpers {
 
         htmlContent += "</table>"
         htmlContent += "</div>"
+
+        return htmlContent;
+    }
+
+    static showVehicleCatalogue(type, tl, tlRange) {
+        let buttons = {};
+        let htmlContent = this.fetchVehicleCatalogue(type, tl, tlRange);
 
         buttons.cancel = {
             icon: '<i class="fas fa-times"></i>',
