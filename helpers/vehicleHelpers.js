@@ -6,8 +6,6 @@ export class vehicleHelpers {
         if (typeof code != "undefined") {
             vehicles.forEach( vehicle => {
                 if (vehicle.code.toLowerCase() === code.toLowerCase()) {
-                    console.log("Returning vehicle")
-                    console.log(vehicle);
                     result = vehicle;
                 }
             })
@@ -1457,7 +1455,7 @@ export class vehicleHelpers {
                 "<td style='text-align: center;'>Range</td>" +
                 "<td style='text-align: center;'>Cost</td>" +
                 "<td style='text-align: center;'>Locations</td>" +
-                "<td style='text-align: center;'>Draft</td>" +
+                "<td style='text-align: center;'>Draft (ft)</td>" +
                 "</tr>"
 
             vehicles.forEach( vehicle => {
