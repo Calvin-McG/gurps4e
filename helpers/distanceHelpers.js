@@ -111,15 +111,16 @@ export class distanceHelpers {
 
     static getUnitByName(name) {
         const units = this.listUnits();
+        let result;
         if (typeof name != "undefined"){
             units.forEach( unit => {
                 if (unit.name.toLowerCase() == name.toLowerCase()) {
-                    return unit;
+                    result = unit;
                 }
             })
         }
 
-        return undefined;
+        return result;
     }
 
     // Provides a list of units that are useable by the system
