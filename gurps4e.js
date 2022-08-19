@@ -73,15 +73,15 @@ Hooks.once('init', async function() {
     }
   });
 
-  Handlebars.registerHelper('validVehicle', function (tlVehicle, tlItem, tlRange, air, naval, ground, selectedMethod, tlMod, options) {
+  Handlebars.registerHelper('validVehicle', function (tlItem, tlRange, selectedMethod, vehicle, options) {
     let tlPlus = game.settings.get("gurps4e", "allowTLPlusVehicles");
     let superScience = game.settings.get("gurps4e", "allowSuperScienceVehicles");
-      if (((selectedMethod === "ground" && ground) || (selectedMethod === "naval" && naval) || (selectedMethod === "air" && air)) && tlVehicle <= tlItem && tlVehicle >= (tlItem - tlRange)) {
-        if (typeof tlMod === "string") { // The vehicle is either ^ or +1
-          if (tlMod.includes("+") && tlPlus) { // It's a TL+ vehicle and that setting is on
+      if (((selectedMethod === "ground" && vehicle.ground) || (selectedMethod === "naval" && vehicle.naval) || (selectedMethod === "air" && vehicle.air)) && vehicle.tl <= tlItem && vehicle.tl >= (tlItem - tlRange)) {
+        if (typeof vehicle.tlMod === "string" && vehicle.tlMod.length > 0) { // There is a tlMod string and it's not empty.
+          if (vehicle.tlMod.includes("+") && tlPlus) { // It's a TL+ vehicle and that setting is on
             return options.fn(this);
           }
-          else if (tlMod.includes("^") && superScience) { // It's a superscience vehicle and that setting is on
+          else if (vehicle.tlMod.includes("^") && superScience) { // It's a superscience vehicle and that setting is on
             return options.fn(this);
           }
           else {

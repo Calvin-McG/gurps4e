@@ -165,7 +165,7 @@
                                     <select name="data.travelFare.vehicleCode">
                                         {{#select data.data.travelFare.vehicleCode}}
                                             {{#each data.data.travelFare.vehicles as |vehicle id|}}
-                                                {{#validVehicle vehicle.tl ../data.data.tl ../data.data.travelFare.tlRange vehicle.air vehicle.naval vehicle.ground ../data.data.travelFare.method vehicle.tlMod}}
+                                                {{#validVehicle ../data.data.tl ../data.data.travelFare.tlRange ../data.data.travelFare.method vehicle}}
                                                         <option value="{{vehicle.code}}">{{vehicle.name}}</option>
                                                 {{/validVehicle}}
                                             {{/each}}
@@ -204,7 +204,7 @@
                                     Travel Costs
                                 </td>
                                 <td>
-                                    {{{data.data.travelFare.travelCosts}}}
+                                    {{{data.data.travelFare.travelCost}}}
                                 </td>
                                 <td class="question-container" id="travel-costs">
                                     <div class="question-button">
