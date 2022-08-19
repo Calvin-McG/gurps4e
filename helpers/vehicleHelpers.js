@@ -1,5 +1,21 @@
 export class vehicleHelpers {
 
+    static getVehicleRunningCosts(vehicleCost, crewSize, journeyLength, travellingHours){
+        let costs = {
+            "maintenance": 0,
+            "crewPay": 0,
+            "provisionsCost": 0,
+            "provisionsWeight": 0,
+        }
+
+        costs.maintenance = 0.0006 * vehicleCost* (journeyLength / travellingHours);
+        costs.crewPay = 17.16 * (journeyLength / travellingHours) * parseInt(crewSize);
+        costs.provisionsCost = 6 * (journeyLength / travellingHours) * parseInt(crewSize);; // 2$ and 0.5lbs each, three a day per crewman.
+        costs.provisionsWeight = 5.5 * (journeyLength / travellingHours) * parseInt(crewSize);; // Weight of provisions counts against cargo capacity, and includes 4 extra pounds per crewman for water.
+
+        return costs;
+    }
+
     static getVehicleByCode(code) {
         const vehicles = this.fetchVehicles();
         let result;
