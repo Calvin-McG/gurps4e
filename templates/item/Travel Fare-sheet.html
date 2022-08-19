@@ -161,10 +161,10 @@
                                     Vehicle
                                 </td>
                                 <td>
-                                    <select name="data.travelFare.vehicle">
-                                        {{#select data.data.travelFare.vehicle}}
+                                    <select name="data.travelFare.vehicleCode">
+                                        {{#select data.data.travelFare.vehicleCode}}
                                             {{#each data.data.travelFare.vehicles as |vehicle id|}}
-                                                {{#validVehicle vehicle.tl ../data.data.tl ../data.data.travelFare.tlRange vehicle.air vehicle.naval vehicle.ground ../data.data.travelFare.method}}
+                                                {{#validVehicle vehicle.tl ../data.data.tl ../data.data.travelFare.tlRange vehicle.air vehicle.naval vehicle.ground ../data.data.travelFare.method vehicle.tlMod}}
                                                         <option value="{{vehicle.code}}">{{vehicle.name}}</option>
                                                 {{/validVehicle}}
                                             {{/each}}
@@ -172,6 +172,40 @@
                                     </select>
                                 </td>
                                 <td class="question-container" id="travel-vehicle">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table>
+                            <tr class="design-row">
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Travel Time
+                                </td>
+                                <td>
+                                    {{{data.data.travelFare.travelTime}}}
+                                </td>
+                                <td class="question-container" id="travel-time">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table>
+                            <tr class="design-row">
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Travel Costs
+                                </td>
+                                <td>
+                                    {{{data.data.travelFare.travelCosts}}}
+                                </td>
+                                <td class="question-container" id="travel-costs">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>

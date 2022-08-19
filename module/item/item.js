@@ -145,10 +145,13 @@ export class gurpsItem extends Item {
         "tlRange": 0,
         "unit": "mile",
         "units": [],
+        "vehicleCode": "",
         "vehicle": {},
         "vehicles": [],
         "distance": 1,
         "initComplete": false,
+        "travelTime": "",
+        "travelCost": "",
       }
     }
 
@@ -161,6 +164,112 @@ export class gurpsItem extends Item {
     }
     else if (this.data.data.travelFare.tlRange > this.data.data.tl){
       this.data.data.travelFare.tlRange = this.data.data.tl;
+    }
+
+    let distanceInYards = distanceHelpers.convertToYards(this.data.data.travelFare.distance, this.data.data.travelFare.unit);
+    let distanceInMiles = distanceInYards / 1760;
+
+    this.data.data.travelFare.vehicle = vehicleHelpers.getVehicleByCode(this.data.data.travelFare.vehicleCode);
+    // Travel Time Calculation
+    if (typeof this.data.data.travelFare.vehicle !== "undefined") {
+      let travellingHours = 24;
+      if (this.data.data.travelFare.vehicle.naval) {
+        let downwindTime = "";
+
+        let downwindHoursDecimal = 0;
+        let downwindDays = 0;
+        let downwindHours = 0;
+        let downwindMinutes = 0;
+
+        downwindHoursDecimal = (distanceInMiles / (this.data.data.travelFare.vehicle.moveDownwind * 2));
+        downwindDays = Math.floor(downwindHoursDecimal / travellingHours);
+        downwindHours = Math.floor(downwindHoursDecimal - (downwindDays * travellingHours));
+        downwindMinutes = Math.floor((downwindHoursDecimal - Math.floor(downwindHoursDecimal)) * 60);
+        downwindTime = downwindDays + " days, " + downwindHours + " hours, " + downwindMinutes + " minutes.";
+
+        if (this.data.data.travelFare.vehicle.skill.toLowerCase().includes("sail")) {
+          let upwindTime = "";
+          let upwindHoursDecimal = 0;
+          let upwindDays = 0;
+          let upwindHours = 0;
+          let upwindMinutes = 0;
+
+          upwindHoursDecimal = (distanceInMiles / (this.data.data.travelFare.vehicle.moveUpwind * 2));
+          upwindDays = Math.floor(upwindHoursDecimal / travellingHours);
+          upwindHours = Math.floor(upwindHoursDecimal - (upwindDays * travellingHours));
+          upwindMinutes = Math.floor((upwindHoursDecimal - Math.floor(upwindHoursDecimal)) * 60);
+          upwindTime = upwindDays + " days, " + upwindHours + " hours, " + upwindMinutes + " minutes.";
+
+          this.data.data.travelFare.travelTime = "Travelling with the wind: " + downwindTime;
+          this.data.data.travelFare.travelTime += "<br/>Travelling against the wind: " + upwindTime;
+        }
+        else {
+          this.data.data.travelFare.travelTime = downwindTime;
+        }
+      }
+      else if (this.data.data.travelFare.vehicle.ground) {
+        travellingHours = 8;
+        let roadTime = "";
+
+        let roadHoursDecimal = 0;
+        let roadDays = 0;
+        let roadHours = 0;
+        let roadMinutes = 0;
+
+        roadHoursDecimal = (distanceInMiles / (this.data.data.travelFare.vehicle.moveRoad * 2));
+        roadDays = Math.floor(roadHoursDecimal / travellingHours);
+        roadHours = Math.floor(roadHoursDecimal - (roadDays * travellingHours));
+        roadMinutes = Math.floor((roadHoursDecimal - Math.floor(roadHoursDecimal)) * 60);
+        roadTime = "Travelling by road: " + roadDays + " days, " + roadHours + " hours, " + roadMinutes + " minutes.";
+
+        let goodTime = "";
+
+        let goodHoursDecimal = 0;
+        let goodDays = 0;
+        let goodHours = 0;
+        let goodMinutes = 0;
+
+        goodHoursDecimal = (distanceInMiles / (this.data.data.travelFare.vehicle.moveGood * 2));
+        goodDays = Math.floor(goodHoursDecimal / travellingHours);
+        goodHours = Math.floor(goodHoursDecimal - (goodDays * travellingHours));
+        goodMinutes = Math.floor((goodHoursDecimal - Math.floor(goodHoursDecimal)) * 60);
+        goodTime = "Travelling on good terrain: " + goodDays + " days, " + goodHours + " hours, " + goodMinutes + " minutes.";
+
+        let averageTime = "";
+
+        let averageHoursDecimal = 0;
+        let averageDays = 0;
+        let averageHours = 0;
+        let averageMinutes = 0;
+
+        averageHoursDecimal = (distanceInMiles / (this.data.data.travelFare.vehicle.moveAverage * 2));
+        averageDays = Math.floor(averageHoursDecimal / travellingHours);
+        averageHours = Math.floor(averageHoursDecimal - (averageDays * travellingHours));
+        averageMinutes = Math.floor((averageHoursDecimal - Math.floor(averageHoursDecimal)) * 60);
+        averageTime = "Travelling on average terrain: " + averageDays + " days, " + averageHours + " hours, " + averageMinutes + " minutes.";
+
+        this.data.data.travelFare.travelTime = roadTime + "<br/>" + goodTime + "<br/>" + averageTime;
+      }
+      else if (this.data.data.travelFare.vehicle.air) {
+        travellingHours = 24;
+        let airTime = "";
+
+        let airHoursDecimal = 0;
+        let airDays = 0;
+        let airHours = 0;
+        let airMinutes = 0;
+
+        airHoursDecimal = (distanceInMiles / (this.data.data.travelFare.vehicle.moveGood * 2));
+        airDays = Math.floor(airHoursDecimal / travellingHours);
+        airHours = Math.floor(airHoursDecimal - (airDays * travellingHours));
+        airMinutes = Math.floor((airHoursDecimal - Math.floor(airHoursDecimal)) * 60);
+        airTime = airDays + " days, " + airHours + " hours, " + airMinutes + " minutes.";
+
+        this.data.data.travelFare.travelTime = airTime;
+      }
+    }
+    else {
+      this.data.data.travelFare.travelTime = "";
     }
 
     this.finalEquipmentCalculation();
@@ -7617,6 +7726,16 @@ export class gurpsItem extends Item {
         info = "<table>" +
             "<tr>" +
             "<td><p>Select the type of vehicle you'd like to travel on. For more detailed stats, check the vehicle catalogue.</p></td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id === "travel-time") {
+        info = "<table>" +
+            "<tr>" +
+            "<td>" +
+            "<p>This is the travel time, broken down by terrain type or wind direction if applicable.</p>" +
+            "<p>It also accounts for the fact that only air and naval vessels travel 24 hours a day.</p>" +
+            "</td>" +
             "</tr>" +
             "</table>"
       }
