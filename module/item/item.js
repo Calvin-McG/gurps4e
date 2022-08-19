@@ -3161,13 +3161,13 @@ export class gurpsItem extends Item {
         }
 
         if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 3;
-        }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
           this.data.data.laserDesign.outputAcc = 6;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
+        else if (this.data.data.laserDesign.configuration == "rifle") {
           this.data.data.laserDesign.outputAcc = 12;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 3;
         }
         else if (this.data.data.laserDesign.configuration == "cannon") {
           this.data.data.laserDesign.outputAcc = 18;
@@ -3196,13 +3196,13 @@ export class gurpsItem extends Item {
         this.data.data.laserDesign.damageType = "cr dbk";
 
         if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 3;
-        }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
           this.data.data.laserDesign.outputAcc = 6;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
+        else if (this.data.data.laserDesign.configuration == "rifle") {
           this.data.data.laserDesign.outputAcc = 12;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 3;
         }
         else if (this.data.data.laserDesign.configuration == "cannon") {
           this.data.data.laserDesign.outputAcc = 18;
@@ -3231,13 +3231,13 @@ export class gurpsItem extends Item {
         this.data.data.laserDesign.damageType = "tbb sur";
 
         if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 3;
-        }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
           this.data.data.laserDesign.outputAcc = 5;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
+        else if (this.data.data.laserDesign.configuration == "rifle") {
           this.data.data.laserDesign.outputAcc = 10;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 3;
         }
         else if (this.data.data.laserDesign.configuration == "cannon") {
           this.data.data.laserDesign.outputAcc = 15;
@@ -3266,13 +3266,13 @@ export class gurpsItem extends Item {
         this.data.data.laserDesign.damageType = "tbb rad sur";
 
         if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 3;
-        }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
           this.data.data.laserDesign.outputAcc = 5;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
+        else if (this.data.data.laserDesign.configuration == "rifle") {
           this.data.data.laserDesign.outputAcc = 10;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 3;
         }
         else if (this.data.data.laserDesign.configuration == "cannon") {
           this.data.data.laserDesign.outputAcc = 15;
@@ -3301,13 +3301,13 @@ export class gurpsItem extends Item {
         this.data.data.laserDesign.damageType = "tbb";
 
         if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 3;
-        }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
           this.data.data.laserDesign.outputAcc = 6;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
+        else if (this.data.data.laserDesign.configuration == "rifle") {
           this.data.data.laserDesign.outputAcc = 12;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 3;
         }
         else if (this.data.data.laserDesign.configuration == "cannon") {
           this.data.data.laserDesign.outputAcc = 18;
@@ -3343,13 +3343,13 @@ export class gurpsItem extends Item {
         }
 
         if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 3;
-        }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
           this.data.data.laserDesign.outputAcc = 6;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
+        else if (this.data.data.laserDesign.configuration == "rifle") {
           this.data.data.laserDesign.outputAcc = 12;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 3;
         }
         else if (this.data.data.laserDesign.configuration == "cannon") {
           this.data.data.laserDesign.outputAcc = 18;
@@ -3378,13 +3378,13 @@ export class gurpsItem extends Item {
         this.data.data.laserDesign.damageType = "cr";
 
         if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 3;
-        }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
           this.data.data.laserDesign.outputAcc = 6;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
+        else if (this.data.data.laserDesign.configuration == "rifle") {
           this.data.data.laserDesign.outputAcc = 12;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 3;
         }
         else if (this.data.data.laserDesign.configuration == "cannon") {
           this.data.data.laserDesign.outputAcc = 18;
@@ -3413,13 +3413,13 @@ export class gurpsItem extends Item {
         this.data.data.laserDesign.damageType = "cr ex rad sur";
 
         if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 3;
-        }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
           this.data.data.laserDesign.outputAcc = 5;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
+        else if (this.data.data.laserDesign.configuration == "rifle") {
           this.data.data.laserDesign.outputAcc = 10;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 3;
         }
         else if (this.data.data.laserDesign.configuration == "cannon") {
           this.data.data.laserDesign.outputAcc = 15;
@@ -3455,13 +3455,13 @@ export class gurpsItem extends Item {
         }
 
         if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 3;
-        }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
           this.data.data.laserDesign.outputAcc = 6;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
+        else if (this.data.data.laserDesign.configuration == "rifle") {
           this.data.data.laserDesign.outputAcc = 12;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 3;
         }
         else if (this.data.data.laserDesign.configuration == "cannon") {
           this.data.data.laserDesign.outputAcc = 18;
