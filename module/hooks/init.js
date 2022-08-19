@@ -127,6 +127,25 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  game.settings.register("gurps4e", "allowSuperScienceVehicles", {
+    name: "Allow Super Science Vehicles",
+    hint: "Allows super science vehicles to appear in the travel options.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
+
+  game.settings.register("gurps4e", "allowTLPlusVehicles", {
+    name: "Allow Divergent TL vehicles",
+    hint: "Allows divergent TL vehicles to appear in the travel options (Such as TL3+1).",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
   game.settings.register("gurps4e", "fixedBonusStrongbow", {
     name: "Fixed bonus for Strongbow and Crossbow Finesse",
     hint: "By default Strongbow and Crossbow Finesse directly increase the user's effective ST. " +
