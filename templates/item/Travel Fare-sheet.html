@@ -33,7 +33,8 @@
                 </div>
                 <div id="value" class="equipmentStatLong">
                     <label class="resource-label">Value:</label>
-                    <label class="resource-label"> {{data.data.cost}} / {{data.data.ttlCost}}$ total</label>
+                    <input type="number" name="data.cost" value="{{data.data.cost}}" data-dtype="Number"/>
+                    <label class="resource-label"> / {{data.data.ttlCost}}$ total</label>
                 </div>
                 <div id="weight" class="equipmentStatLong">
                     <label class="resource-label">Weight:</label>
