@@ -1,5 +1,6 @@
 export class vehicleHelpers {
 
+    // This method uses the rules from Pyramid 3/95 page 18
     static getVehicleRunningCosts(vehicleCost, crewSize, journeyLength, travellingHours){
         let costs = {
             "maintenance": 0,
@@ -10,8 +11,8 @@ export class vehicleHelpers {
 
         costs.maintenance = 0.0006 * vehicleCost* (journeyLength / travellingHours);
         costs.crewPay = 17.16 * (journeyLength / travellingHours) * parseInt(crewSize);
-        costs.provisionsCost = 6 * (journeyLength / travellingHours) * parseInt(crewSize);; // 2$ and 0.5lbs each, three a day per crewman.
-        costs.provisionsWeight = 5.5 * (journeyLength / travellingHours) * parseInt(crewSize);; // Weight of provisions counts against cargo capacity, and includes 4 extra pounds per crewman for water.
+        costs.provisionsCost = 6 * (journeyLength / travellingHours) * parseInt(crewSize); // 2$ and 0.5lbs each, three a day per crewman.
+        costs.provisionsWeight = 5.5 * (journeyLength / travellingHours) * parseInt(crewSize); // Weight of provisions counts against cargo capacity, and includes 4 extra pounds per crewman for water.
 
         return costs;
     }
@@ -1147,7 +1148,10 @@ export class vehicleHelpers {
                 "air": false,
                 "naval": false,
                 "sail": false,
-                "ground": true
+                "ground": true,
+                "animal": "canine",
+                "animals": 14,
+                "graze": false,
             },
             {
                 "tl": "1",
@@ -1215,7 +1219,10 @@ export class vehicleHelpers {
                 "air": false,
                 "naval": false,
                 "sail": false,
-                "ground": true
+                "ground": true,
+                "animal": "equine",
+                "animals": 4,
+                "graze": true,
             },
             {
                 "tl": "1",
@@ -1249,7 +1256,10 @@ export class vehicleHelpers {
                 "air": false,
                 "naval": false,
                 "sail": false,
-                "ground": true
+                "ground": true,
+                "animal": "equine",
+                "animals": 2,
+                "graze": true,
             },
             {
                 "tl": "1",
@@ -1283,7 +1293,10 @@ export class vehicleHelpers {
                 "air": false,
                 "naval": false,
                 "sail": false,
-                "ground": true
+                "ground": true,
+                "animal": "bovine",
+                "animals": 2,
+                "graze": true,
             },
             {
                 "tl": "1",
@@ -1317,7 +1330,10 @@ export class vehicleHelpers {
                 "air": false,
                 "naval": false,
                 "sail": false,
-                "ground": true
+                "ground": true,
+                "animal": "equine",
+                "animals": 1,
+                "graze": true,
             },
             {
                 "tl": "2",
@@ -1351,7 +1367,10 @@ export class vehicleHelpers {
                 "air": false,
                 "naval": false,
                 "sail": false,
-                "ground": true
+                "ground": true,
+                "animal": "equine",
+                "animals": 2,
+                "graze": true,
             },
             {
                 "tl": "3",
@@ -1385,7 +1404,10 @@ export class vehicleHelpers {
                 "air": false,
                 "naval": false,
                 "sail": false,
-                "ground": true
+                "ground": true,
+                "animal": "equine",
+                "animals": 2,
+                "graze": true,
             },
             {
                 "tl": "3",
@@ -1419,7 +1441,10 @@ export class vehicleHelpers {
                 "air": false,
                 "naval": false,
                 "sail": false,
-                "ground": true
+                "ground": true,
+                "animal": "equine",
+                "animals": 4,
+                "graze": true,
             },
             {
                 "tl": "4",
@@ -1453,7 +1478,10 @@ export class vehicleHelpers {
                 "air": false,
                 "naval": false,
                 "sail": false,
-                "ground": true
+                "ground": true,
+                "animal": "equine",
+                "animals": 2,
+                "graze": true,
             },
             {
                 "tl": "4",
@@ -1487,7 +1515,10 @@ export class vehicleHelpers {
                 "air": false,
                 "naval": false,
                 "sail": false,
-                "ground": true
+                "ground": true,
+                "animal": "equine",
+                "animals": 4,
+                "graze": true,
             },
             {
                 "tl": "4",
@@ -1521,7 +1552,10 @@ export class vehicleHelpers {
                 "air": false,
                 "naval": false,
                 "sail": false,
-                "ground": true
+                "ground": true,
+                "animal": "equine",
+                "animals": 1,
+                "graze": true,
             },
             {
                 "tl": "2",
@@ -2329,7 +2363,7 @@ export class vehicleHelpers {
                 "stall": "0",
                 "air": false,
                 "naval": false,
-                "sail": false,
+                "sail": true,
                 "ground": true
             },
             {
@@ -2364,7 +2398,7 @@ export class vehicleHelpers {
                 "stall": "0",
                 "air": false,
                 "naval": false,
-                "sail": false,
+                "sail": true,
                 "ground": true
             },
             {
@@ -2399,7 +2433,7 @@ export class vehicleHelpers {
                 "stall": "0",
                 "air": false,
                 "naval": false,
-                "sail": false,
+                "sail": true,
                 "ground": true
             },
             {
@@ -2434,7 +2468,7 @@ export class vehicleHelpers {
                 "stall": "0",
                 "air": false,
                 "naval": false,
-                "sail": false,
+                "sail": true,
                 "ground": true
             },
             {
@@ -2469,7 +2503,7 @@ export class vehicleHelpers {
                 "stall": "0",
                 "air": false,
                 "naval": false,
-                "sail": false,
+                "sail": true,
                 "ground": true
             },
             {

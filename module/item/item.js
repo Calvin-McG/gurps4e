@@ -152,6 +152,7 @@ export class gurpsItem extends Item {
         "initComplete": false,
         "travelTime": "",
         "travelCost": "",
+        "travellingHours": 8,
       }
     }
 
@@ -170,9 +171,41 @@ export class gurpsItem extends Item {
     let distanceInMiles = distanceInYards / 1760;
 
     this.data.data.travelFare.vehicle = vehicleHelpers.getVehicleByCode(this.data.data.travelFare.vehicleCode);
-    // Travel Time Calculation
+
     if (typeof this.data.data.travelFare.vehicle !== "undefined") {
-      let travellingHours = 24;
+
+      // Validation for travelling hours
+      if (typeof this.data.data.travelFare.travellingHours == "undefined" || this.data.data.travelFare.travellingHours <= 0) { // Traveling hours is undefined or negative/zero. Set it to the default.
+        if (this.data.data.travelFare.vehicle.naval) { // Vehicle is naval or air, default is 24
+          this.data.data.travelFare.travellingHours = 24;
+        }
+        else { // Vehicle is ground, default is 8
+          this.data.data.travelFare.travellingHours = 8;
+        }
+      }
+      else if (this.data.data.travelFare.travellingHours > 24){ // Travelling hours is more than 24, set it to 24
+        this.data.data.travelFare.travellingHours = 24;
+      }
+      else if (typeof this.data.data.travelFare.vehicle.animal !== "undefined"){ // The vehicle requires animals to draw it
+        if (this.data.data.travelFare.travellingHours > 8 && this.data.data.travelFare.travellingHours <= 9.3) { // The vehicle is in it's rest period, push the selected hours out of that period.
+          if (this.data.data.travelFare.travellingHours > 8.65) { // The travel time is in the bottom half of the rest period
+            this.data.data.travelFare.travellingHours = 8; // Move it to before the rest period
+          }
+          else { // The travel time is in the upper half of the rest period.
+            this.data.data.travelFare.travellingHours = 9.4; // Move it to after the rest period
+          }
+        }
+      }
+
+      let travellingHoursMinusRest = this.data.data.travelFare.travellingHours;
+
+      if (this.data.data.travelFare.vehicle.animals > 0 && this.data.data.travelFare.travellingHours >= 9.3) { // There are animals involved and the trip is long enough to require a rest.
+        travellingHoursMinusRest -= 1.3; // Remove the rest hours from the effective travelling hours.
+      }
+
+      // Travel Time Calculation
+      let cargoSpacePounds = this.data.data.travelFare.vehicle.load * 2000;
+
       if (this.data.data.travelFare.vehicle.naval) {
         let downwindTime = "";
 
@@ -182,12 +215,15 @@ export class gurpsItem extends Item {
         let downwindMinutes = 0;
 
         downwindHoursDecimal = (distanceInMiles / (this.data.data.travelFare.vehicle.moveDownwind * 2));
-        downwindDays = Math.floor(downwindHoursDecimal / travellingHours);
-        downwindHours = Math.floor(downwindHoursDecimal - (downwindDays * travellingHours));
+        downwindDays = Math.floor(downwindHoursDecimal / travellingHoursMinusRest);
+        downwindHours = Math.floor(downwindHoursDecimal - (downwindDays * travellingHoursMinusRest));
         downwindMinutes = Math.floor((downwindHoursDecimal - Math.floor(downwindHoursDecimal)) * 60);
         downwindTime = downwindDays + " days, " + downwindHours + " hours, " + downwindMinutes + " minutes.";
 
-        if (this.data.data.travelFare.vehicle.skill.toLowerCase().includes("sail")) {
+        // TODO - Use the new vehicleRunningCosts method
+        let downwindVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.data.data.travelFare.vehicle.cost, this.data.data.travelFare.vehicle.crew, downwindHoursDecimal, travellingHoursMinusRest);
+
+        if (this.data.data.travelFare.vehicle.sail) {
           let upwindTime = "";
           let upwindHoursDecimal = 0;
           let upwindDays = 0;
@@ -195,32 +231,78 @@ export class gurpsItem extends Item {
           let upwindMinutes = 0;
 
           upwindHoursDecimal = (distanceInMiles / (this.data.data.travelFare.vehicle.moveUpwind * 2));
-          upwindDays = Math.floor(upwindHoursDecimal / travellingHours);
-          upwindHours = Math.floor(upwindHoursDecimal - (upwindDays * travellingHours));
+          upwindDays = Math.floor(upwindHoursDecimal / travellingHoursMinusRest);
+          upwindHours = Math.floor(upwindHoursDecimal - (upwindDays * travellingHoursMinusRest));
           upwindMinutes = Math.floor((upwindHoursDecimal - Math.floor(upwindHoursDecimal)) * 60);
           upwindTime = upwindDays + " days, " + upwindHours + " hours, " + upwindMinutes + " minutes.";
 
           this.data.data.travelFare.travelTime = "Travelling with the wind: " + downwindTime;
           this.data.data.travelFare.travelTime += "<br/>Travelling against the wind: " + upwindTime;
+
+          let upwindVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.data.data.travelFare.vehicle.cost, this.data.data.travelFare.vehicle.crew, upwindHoursDecimal, travellingHoursMinusRest);
+
+          this.data.data.travelFare.travelCost = "<table>" +
+              "<tr><th colspan='2'>Travelling with the wind</th></tr>" +
+              "<tr><td>Maintenance Costs</td><td>"  + Math.floor(downwindVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
+              "<tr><td>Crew Salaries</td><td>"      + Math.floor(downwindVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
+              "<tr><td>Provisions Cost</td><td>"    + Math.floor(downwindVehicleRunningCosts.provisionsCost * 100) / 100 + " $</td></tr>" +
+              "<tr><td style='font-weight: bold'>Total Running Costs</td><td style='font-weight: bold'>" + Math.floor((downwindVehicleRunningCosts.maintenance + downwindVehicleRunningCosts.crewPay + downwindVehicleRunningCosts.provisionsCost) * 100) / 100 + " $</td></tr>" +
+              "<tr><td>Provisions Weight</td><td>"  + Math.floor(downwindVehicleRunningCosts.provisionsWeight * 100) / 100 + " lbs</td></tr>" +
+              "<tr><td>Free Cargo Space</td><td>"   + Math.floor((cargoSpacePounds - downwindVehicleRunningCosts.provisionsWeight) * 100) / 100 + " lbs</td></tr>" +
+              "</table>";
+
+          this.data.data.travelFare.travelCost += "<table>" +
+              "<tr><th colspan='2'>Travelling against the wind</th></tr>" +
+              "<tr><td>Maintenance Costs</td><td>"  + Math.floor(upwindVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
+              "<tr><td>Crew Salaries</td><td>"      + Math.floor(upwindVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
+              "<tr><td>Provisions Cost</td><td>"    + Math.floor(upwindVehicleRunningCosts.provisionsCost * 100) / 100 + " $</td></tr>" +
+              "<tr><td style='font-weight: bold'>Total Running Costs</td><td style='font-weight: bold'>" + Math.floor((upwindVehicleRunningCosts.maintenance + upwindVehicleRunningCosts.crewPay + upwindVehicleRunningCosts.provisionsCost) * 100) / 100 + " $</td></tr>" +
+              "<tr><td>Provisions Weight</td><td>"  + Math.floor(upwindVehicleRunningCosts.provisionsWeight * 100) / 100 + " lbs</td></tr>" +
+              "<tr><td>Free Cargo Space</td><td>"   + Math.floor((cargoSpacePounds - upwindVehicleRunningCosts.provisionsWeight) * 100) / 100 + " lbs</td></tr>" +
+              "<tr><td></td><td></td></tr>" +
+              "</table>";
+
         }
         else {
           this.data.data.travelFare.travelTime = downwindTime;
+
+          this.data.data.travelFare.travelCost = "<table>" +
+              "<tr><td>Maintenance Costs</td><td>"  + Math.floor(downwindVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
+              "<tr><td>Crew Salaries</td><td>"      + Math.floor(downwindVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
+              "<tr><td>Provisions Cost</td><td>"    + Math.floor(downwindVehicleRunningCosts.provisionsCost * 100) / 100 + " $</td></tr>" +
+              "<tr><td style='font-weight: bold'>Total Running Costs</td><td style='font-weight: bold'>" + Math.floor((downwindVehicleRunningCosts.maintenance + downwindVehicleRunningCosts.crewPay + downwindVehicleRunningCosts.provisionsCost) * 100) / 100 + " $</td></tr>" +
+              "<tr><td>Provisions Weight</td><td>"  + Math.floor(downwindVehicleRunningCosts.provisionsWeight * 100) / 100 + " lbs</td></tr>" +
+              "<tr><td>Free Cargo Space</td><td>"   + Math.floor((cargoSpacePounds - downwindVehicleRunningCosts.provisionsWeight) * 100) / 100 + " lbs</td></tr>" +
+              "</table>";
         }
       }
       else if (this.data.data.travelFare.vehicle.ground) {
-        travellingHours = 8;
         let roadTime = "";
 
         let roadHoursDecimal = 0;
         let roadDays = 0;
         let roadHours = 0;
         let roadMinutes = 0;
+        this.data.data.travelFare.travelCost = "";
 
         roadHoursDecimal = (distanceInMiles / (this.data.data.travelFare.vehicle.moveRoad * 2));
-        roadDays = Math.floor(roadHoursDecimal / travellingHours);
-        roadHours = Math.floor(roadHoursDecimal - (roadDays * travellingHours));
+        roadDays = Math.floor(roadHoursDecimal / travellingHoursMinusRest);
+        roadHours = Math.floor(roadHoursDecimal - (roadDays * travellingHoursMinusRest));
         roadMinutes = Math.floor((roadHoursDecimal - Math.floor(roadHoursDecimal)) * 60);
         roadTime = "Travelling by road: " + roadDays + " days, " + roadHours + " hours, " + roadMinutes + " minutes.";
+
+        let roadVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.data.data.travelFare.vehicle.cost, this.data.data.travelFare.vehicle.crew, roadHoursDecimal, travellingHoursMinusRest);
+
+        this.data.data.travelFare.travelCost += "<table>" +
+            "<tr><th colspan='2'>Travelling by road</th></tr>" +
+            "<tr><td>Maintenance Costs</td><td>"  + Math.floor(roadVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
+            "<tr><td>Crew Salaries</td><td>"      + Math.floor(roadVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
+            "<tr><td>Provisions Cost</td><td>"    + Math.floor(roadVehicleRunningCosts.provisionsCost * 100) / 100 + " $</td></tr>" +
+            "<tr><td style='font-weight: bold'>Total Running Costs</td><td style='font-weight: bold'>" + Math.floor((roadVehicleRunningCosts.maintenance + roadVehicleRunningCosts.crewPay + roadVehicleRunningCosts.provisionsCost) * 100) / 100 + " $</td></tr>" +
+            "<tr><td>Provisions Weight</td><td>"  + Math.floor(roadVehicleRunningCosts.provisionsWeight * 100) / 100 + " lbs</td></tr>" +
+            "<tr><td>Free Cargo Space</td><td>"   + Math.floor((cargoSpacePounds - roadVehicleRunningCosts.provisionsWeight) * 100) / 100 + " lbs</td></tr>" +
+            "<tr><td></td><td></td></tr>" +
+            "</table>";
 
         let goodTime = "";
 
@@ -230,10 +312,23 @@ export class gurpsItem extends Item {
         let goodMinutes = 0;
 
         goodHoursDecimal = (distanceInMiles / (this.data.data.travelFare.vehicle.moveGood * 2));
-        goodDays = Math.floor(goodHoursDecimal / travellingHours);
-        goodHours = Math.floor(goodHoursDecimal - (goodDays * travellingHours));
+        goodDays = Math.floor(goodHoursDecimal / travellingHoursMinusRest);
+        goodHours = Math.floor(goodHoursDecimal - (goodDays * travellingHoursMinusRest));
         goodMinutes = Math.floor((goodHoursDecimal - Math.floor(goodHoursDecimal)) * 60);
         goodTime = "Travelling on good terrain: " + goodDays + " days, " + goodHours + " hours, " + goodMinutes + " minutes.";
+
+        let goodVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.data.data.travelFare.vehicle.cost, this.data.data.travelFare.vehicle.crew, goodHoursDecimal, travellingHoursMinusRest);
+
+        this.data.data.travelFare.travelCost += "<table>" +
+            "<tr><th colspan='2'>Travelling on good terrain</th></tr>" +
+            "<tr><td>Maintenance Costs</td><td>"  + Math.floor(goodVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
+            "<tr><td>Crew Salaries</td><td>"      + Math.floor(goodVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
+            "<tr><td>Provisions Cost</td><td>"    + Math.floor(goodVehicleRunningCosts.provisionsCost * 100) / 100 + " $</td></tr>" +
+            "<tr><td style='font-weight: bold'>Total Running Costs</td><td style='font-weight: bold'>" + Math.floor((goodVehicleRunningCosts.maintenance + goodVehicleRunningCosts.crewPay + goodVehicleRunningCosts.provisionsCost) * 100) / 100 + " $</td></tr>" +
+            "<tr><td>Provisions Weight</td><td>"  + Math.floor(goodVehicleRunningCosts.provisionsWeight * 100) / 100 + " lbs</td></tr>" +
+            "<tr><td>Free Cargo Space</td><td>"   + Math.floor((cargoSpacePounds - goodVehicleRunningCosts.provisionsWeight) * 100) / 100 + " lbs</td></tr>" +
+            "<tr><td></td><td></td></tr>" +
+            "</table>";
 
         let averageTime = "";
 
@@ -243,15 +338,28 @@ export class gurpsItem extends Item {
         let averageMinutes = 0;
 
         averageHoursDecimal = (distanceInMiles / (this.data.data.travelFare.vehicle.moveAverage * 2));
-        averageDays = Math.floor(averageHoursDecimal / travellingHours);
-        averageHours = Math.floor(averageHoursDecimal - (averageDays * travellingHours));
+        averageDays = Math.floor(averageHoursDecimal / travellingHoursMinusRest);
+        averageHours = Math.floor(averageHoursDecimal - (averageDays * travellingHoursMinusRest));
         averageMinutes = Math.floor((averageHoursDecimal - Math.floor(averageHoursDecimal)) * 60);
         averageTime = "Travelling on average terrain: " + averageDays + " days, " + averageHours + " hours, " + averageMinutes + " minutes.";
 
+        let averageVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.data.data.travelFare.vehicle.cost, this.data.data.travelFare.vehicle.crew, averageHoursDecimal, travellingHoursMinusRest);
+
+        this.data.data.travelFare.travelCost += "<table>" +
+            "<tr><th colspan='2'>Travelling on good terrain</th></tr>" +
+            "<tr><td>Maintenance Costs</td><td>"  + Math.floor(averageVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
+            "<tr><td>Crew Salaries</td><td>"      + Math.floor(averageVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
+            "<tr><td>Provisions Cost</td><td>"    + Math.floor(averageVehicleRunningCosts.provisionsCost * 100) / 100 + " $</td></tr>" +
+            "<tr><td style='font-weight: bold'>Total Running Costs</td><td style='font-weight: bold'>" + Math.floor((averageVehicleRunningCosts.maintenance + averageVehicleRunningCosts.crewPay + averageVehicleRunningCosts.provisionsCost) * 100) / 100 + " $</td></tr>" +
+            "<tr><td>Provisions Weight</td><td>"  + Math.floor(averageVehicleRunningCosts.provisionsWeight * 100) / 100 + " lbs</td></tr>" +
+            "<tr><td>Free Cargo Space</td><td>"   + Math.floor((cargoSpacePounds - averageVehicleRunningCosts.provisionsWeight) * 100) / 100 + " lbs</td></tr>" +
+            "<tr><td></td><td></td></tr>" +
+            "</table>";
+
         this.data.data.travelFare.travelTime = roadTime + "<br/>" + goodTime + "<br/>" + averageTime;
+
       }
       else if (this.data.data.travelFare.vehicle.air) {
-        travellingHours = 24;
         let airTime = "";
 
         let airHoursDecimal = 0;
@@ -260,10 +368,23 @@ export class gurpsItem extends Item {
         let airMinutes = 0;
 
         airHoursDecimal = (distanceInMiles / (this.data.data.travelFare.vehicle.moveGood * 2));
-        airDays = Math.floor(airHoursDecimal / travellingHours);
-        airHours = Math.floor(airHoursDecimal - (airDays * travellingHours));
+        airDays = Math.floor(airHoursDecimal / travellingHoursMinusRest);
+        airHours = Math.floor(airHoursDecimal - (airDays * travellingHoursMinusRest));
         airMinutes = Math.floor((airHoursDecimal - Math.floor(airHoursDecimal)) * 60);
         airTime = airDays + " days, " + airHours + " hours, " + airMinutes + " minutes.";
+
+        let airVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.data.data.travelFare.vehicle.cost, this.data.data.travelFare.vehicle.crew, airHoursDecimal, travellingHoursMinusRest);
+
+        this.data.data.travelFare.travelCost += "<table>" +
+            "<tr><th colspan='2'>Travelling by road</th></tr>" +
+            "<tr><td>Maintenance Costs</td><td>"  + Math.floor(airVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
+            "<tr><td>Crew Salaries</td><td>"      + Math.floor(airVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
+            "<tr><td>Provisions Cost</td><td>"    + Math.floor(airVehicleRunningCosts.provisionsCost * 100) / 100 + " $</td></tr>" +
+            "<tr><td style='font-weight: bold'>Total Running Costs</td><td style='font-weight: bold'>" + Math.floor((airVehicleRunningCosts.maintenance + airVehicleRunningCosts.crewPay + airVehicleRunningCosts.provisionsCost) * 100) / 100 + " $</td></tr>" +
+            "<tr><td>Provisions Weight</td><td>"  + Math.floor(airVehicleRunningCosts.provisionsWeight * 100) / 100 + " lbs</td></tr>" +
+            "<tr><td>Free Cargo Space</td><td>"   + Math.floor((cargoSpacePounds - airVehicleRunningCosts.provisionsWeight) * 100) / 100 + " lbs</td></tr>" +
+            "<tr><td></td><td></td></tr>" +
+            "</table>";
 
         this.data.data.travelFare.travelTime = airTime;
       }
@@ -7735,6 +7856,26 @@ export class gurpsItem extends Item {
             "<td>" +
             "<p>This is the travel time, broken down by terrain type or wind direction if applicable.</p>" +
             "<p>It also accounts for the fact that only air and naval vessels travel 24 hours a day.</p>" +
+            "</td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id === "travel-hours") {
+        info = "<table>" +
+            "<tr>" +
+            "<td>" +
+            "<p>The number of hours per day you're underway. For naval or air vessels this should be 24 hours a day.</p>" +
+            "<p>For ground vehicles this should be 8 hours a day, but you can push it as high as 16 hours a day</p>" +
+            "<p>Vehicles drawn by draft animals need to stop for 1.3 hours after each 8 hour leg to rest. This is factored into the calculation, and is why you might not be able to enter values between 8 and 9.3</p>" +
+            "</td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id === "travel-costs") {
+        info = "<table>" +
+            "<tr>" +
+            "<td>" +
+            "<p>An itemized lists of costs, including the impact of your provisions on the remaining cargo space in the ship.</p>" +
             "</td>" +
             "</tr>" +
             "</table>"
