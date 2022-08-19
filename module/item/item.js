@@ -3021,7 +3021,7 @@ export class gurpsItem extends Item {
   }
 
   prepareCustomLaser() {
-    if (this.data.data.tl >= 9) { // TL must be at least 9 to be able to design a custom laser
+    if (this.data.data.tl >= 8) { // TL must be at least 9 to be able to design a custom laser
       if (typeof this.data.data.laserDesign == "undefined") { // If the laserDesign block hasn't yet been created
         this.data.data.laserDesign = { // Create it
           "configuration": "", // Beamer/Pistol/Rifle/Cannon
@@ -3086,17 +3086,19 @@ export class gurpsItem extends Item {
           "showAirHotshot": false,
           "showSpaceHotshot": false,
           "showWaterHotshot": false,
+          "chemicalShots": 1,
+          "chemicalCost": 1,
         }
       }
 
       // Input Validation
-      if (typeof this.data.data.laserDesign.powerCellQty == "undefined" || this.data.data.laserDesign.powerCellQty <= 0 || this.data.data.laserDesign.powerCellQty == "") { // If the cell quantity is blank or negative
+      if (typeof this.data.data.laserDesign.powerCellQty == "undefined" || this.data.data.laserDesign.powerCellQty <= 0 || this.data.data.laserDesign.powerCellQty === "") { // If the cell quantity is blank or negative
         this.data.data.laserDesign.powerCellQty = 1; // Set to 1
       }
-      if (typeof this.data.data.laserDesign.damageDice == "undefined" || this.data.data.laserDesign.damageDice <= 0 || this.data.data.laserDesign.damageDice == "") { // If the damage dice is blank or negative
+      if (typeof this.data.data.laserDesign.damageDice == "undefined" || this.data.data.laserDesign.damageDice <= 0 || this.data.data.laserDesign.damageDice === "") { // If the damage dice is blank or negative
         this.data.data.laserDesign.damageDice = 1; // Set to 1
       }
-      if (this.data.data.laserDesign.graviticFocus == "undefined" || this.data.data.laserDesign.graviticFocus == "") { // If the damage dice is blank or negative
+      if (typeof this.data.data.laserDesign.graviticFocus == "undefined" || this.data.data.laserDesign.graviticFocus === "") { // If the damage dice is blank or negative
         this.data.data.laserDesign.graviticFocus = "0"; // Set to zero
       }
       if (this.data.data.laserDesign.ftl) {
@@ -3104,6 +3106,9 @@ export class gurpsItem extends Item {
       }
       if (!this.data.data.laserDesign.pulseLaser) {
         this.data.data.laserDesign.pulseBeamLaser = false;
+      }
+      if (typeof this.data.data.laserDesign.chemicalShots == "undefined" || this.data.data.laserDesign.chemicalShots <= 0 || this.data.data.laserDesign.chemicalShots === "") { // If the cell quantity is blank or negative
+        this.data.data.laserDesign.chemicalShots = 1; // Set to 1
       }
 
       this.data.data.laserDesign.damageDice = this.data.data.laserDesign.damageDiceInput / 2**(parseInt(this.data.data.laserDesign.graviticFocus));
@@ -3147,7 +3152,36 @@ export class gurpsItem extends Item {
       let bc = 0;
       let baseShots = 0;
       let lc = 4;
-      if (this.data.data.laserDesign.beamType == "laser") {
+      if (this.data.data.laserDesign.beamType == "chemicalLaser") {
+        lc = 3;
+        bc = 500;
+
+        if (this.data.data.laserDesign.pulseLaser) {
+          this.data.data.laserDesign.damageType = "cr ex";
+          this.data.data.laserDesign.armourDivisor = 0.5;
+        }
+        else {
+          this.data.data.laserDesign.damageType = "burn";
+          this.data.data.laserDesign.armourDivisor = 1;
+        }
+
+        if (this.data.data.laserDesign.configuration == "pistol") {
+          this.data.data.laserDesign.outputAcc = 6;
+        }
+        else if (this.data.data.laserDesign.configuration == "rifle") {
+          this.data.data.laserDesign.outputAcc = 12;
+        }
+        else if (this.data.data.laserDesign.configuration == "beamer") {
+          this.data.data.laserDesign.outputAcc = 3;
+        }
+        else if (this.data.data.laserDesign.configuration == "cannon") {
+          this.data.data.laserDesign.outputAcc = 18;
+        }
+
+        rb = 120;
+        e = 1/3.7;
+      }
+      else if (this.data.data.laserDesign.beamType == "laser") {
         lc = 3;
         bc = 500;
 
@@ -3508,36 +3542,71 @@ export class gurpsItem extends Item {
       // Weight modifier and rate of fire for generator
       let g = 1;
       let gc = 1;
-      if (this.data.data.laserDesign.generator == "single") {
-        gc = 1;
-        g = 1;
-        this.data.data.laserDesign.outputRoF = 1;
+      if (this.data.data.laserDesign.beamType == "chemicalLaser") { // Chemical lasers use light as the baseline for "g" and "gc"
+        if (this.data.data.laserDesign.generator == "single") {
+          gc = 0.5;
+          g = 0.8;
+          this.data.data.laserDesign.outputRoF = 1;
+        }
+        if (this.data.data.laserDesign.generator == "semi") {
+          gc = 0.5;
+          g = 1;
+          this.data.data.laserDesign.outputRoF = 3;
+        }
+        if (this.data.data.laserDesign.generator == "light") {
+          gc = 1;
+          g = 1;
+          this.data.data.laserDesign.outputRoF = 10;
+        }
+        else if (this.data.data.laserDesign.generator == "heavy") {
+          gc = 1;
+          g = 1.6;
+          this.data.data.laserDesign.outputRoF = 20;
+        }
+        else if (this.data.data.laserDesign.generator == "lightGat") {
+          gc = 1.25;
+          g = 1.6;
+          this.data.data.laserDesign.outputRoF = 10;
+        }
+        else if (this.data.data.laserDesign.generator == "heavyGat") {
+          gc = 1.25;
+          g = 1.6;
+          this.data.data.laserDesign.outputRoF = 20;
+        }
       }
-      if (this.data.data.laserDesign.generator == "semi") {
-        gc = 1;
-        g = 1.25;
-        this.data.data.laserDesign.outputRoF = 3;
+      else {
+        if (this.data.data.laserDesign.generator == "single") {
+          gc = 1;
+          g = 1;
+          this.data.data.laserDesign.outputRoF = 1;
+        }
+        if (this.data.data.laserDesign.generator == "semi") {
+          gc = 1;
+          g = 1.25;
+          this.data.data.laserDesign.outputRoF = 3;
+        }
+        if (this.data.data.laserDesign.generator == "light") {
+          gc = 2;
+          g = 1.25;
+          this.data.data.laserDesign.outputRoF = 10;
+        }
+        else if (this.data.data.laserDesign.generator == "heavy") {
+          gc = 2;
+          g = 2;
+          this.data.data.laserDesign.outputRoF = 20;
+        }
+        else if (this.data.data.laserDesign.generator == "lightGat") {
+          gc = 2.5;
+          g = 2;
+          this.data.data.laserDesign.outputRoF = 10;
+        }
+        else if (this.data.data.laserDesign.generator == "heavyGat") {
+          gc = 2.5;
+          g = 2;
+          this.data.data.laserDesign.outputRoF = 20;
+        }
       }
-      if (this.data.data.laserDesign.generator == "light") {
-        gc = 2;
-        g = 1.25;
-        this.data.data.laserDesign.outputRoF = 10;
-      }
-      else if (this.data.data.laserDesign.generator == "heavy") {
-        gc = 2;
-        g = 2;
-        this.data.data.laserDesign.outputRoF = 20;
-      }
-      else if (this.data.data.laserDesign.generator == "lightGat") {
-        gc = 2.5;
-        g = 2;
-        this.data.data.laserDesign.outputRoF = 10;
-      }
-      else if (this.data.data.laserDesign.generator == "heavyGat") {
-        gc = 2.5;
-        g = 2;
-        this.data.data.laserDesign.outputRoF = 20;
-      }
+
 
       if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "bg") {
         this.data.data.laserDesign.outputRoF = Math.max(this.data.data.laserDesign.outputRoF / 2, 1);
@@ -3707,7 +3776,17 @@ export class gurpsItem extends Item {
         }
       }
 
-      if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "ir") {
+      if (this.data.data.laserDesign.beamType == "chemicalLaser") {
+        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+          this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+        }
+        else {
+          this.data.data.laserDesign.halfRangeWater = 0;
+        }
+        this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+        this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+      }
+      else if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "ir") {
         if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
           this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
         }
@@ -3796,7 +3875,17 @@ export class gurpsItem extends Item {
       }
 
       // Max Range
-      if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "ir") {
+      if (this.data.data.laserDesign.beamType == "chemicalLaser") {
+        this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
+        this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
+        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+          this.data.data.laserDesign.maxRangeWater = this.data.data.laserDesign.halfRange * 3;
+        }
+        else {
+          this.data.data.laserDesign.maxRangeWater = 1;
+        }
+      }
+      else if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "ir") {
         this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
         this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
         if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
@@ -3884,7 +3973,14 @@ export class gurpsItem extends Item {
 
       // Shots
       let reloadTime = 3;
-      if (this.data.data.laserDesign.powerCell == "A") {
+      if (this.data.data.laserDesign.beamType == "chemicalLaser") {
+        let kw = ((this.data.data.laserDesign.damageDice * 1.84) ** 3); // The wattage of the laser
+        this.data.data.laserDesign.powerCellWeight = (this.data.data.laserDesign.chemicalShots * kw ) / 160;
+        this.data.data.laserDesign.powerCellQty = 1;
+        this.data.data.laserDesign.chemicalCost = this.data.data.laserDesign.powerCellWeight * 20;
+        this.data.data.laserDesign.powerCellWeight = Math.floor(this.data.data.laserDesign.powerCellWeight * 100) / 100;
+      }
+      else if (this.data.data.laserDesign.powerCell == "A") {
         baseShots = +baseShots * 0.01;
         this.data.data.laserDesign.powerCellWeight = 0.005;
       }
@@ -3912,8 +4008,6 @@ export class gurpsItem extends Item {
         this.data.data.laserDesign.powerCellWeight = 200;
       }
 
-      reloadTime = reloadTime * this.data.data.laserDesign.powerCellQty;
-
       if (this.data.data.laserDesign.superScienceCells) {
         baseShots = +baseShots * 5;
       }
@@ -3921,9 +4015,15 @@ export class gurpsItem extends Item {
         baseShots = +baseShots * 2;
       }
 
-      baseShots = +baseShots * this.data.data.laserDesign.powerCellQty;
-
-      this.data.data.laserDesign.shots = Math.floor(+baseShots / this.data.data.laserDesign.damageDiceInput ** 3);
+      if (this.data.data.laserDesign.beamType == "chemicalLaser") {
+        reloadTime = 3;
+        this.data.data.laserDesign.shots = Math.floor(this.data.data.laserDesign.chemicalShots)
+      }
+      else {
+        reloadTime = reloadTime * this.data.data.laserDesign.powerCellQty;
+        baseShots = +baseShots * this.data.data.laserDesign.powerCellQty;
+        this.data.data.laserDesign.shots = Math.floor(+baseShots / this.data.data.laserDesign.damageDiceInput ** 3);
+      }
 
       if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "bg") {
         this.data.data.laserDesign.shots = this.data.data.laserDesign.shots / 2;
@@ -3942,7 +4042,12 @@ export class gurpsItem extends Item {
       this.data.data.ttlWeight = this.data.data.weight * this.data.data.quantity;
 
       // Calculate the output weight
-      this.data.data.laserDesign.outputWeight = this.data.data.laserDesign.loadedWeight + "/" + this.data.data.laserDesign.powerCellQty + this.data.data.laserDesign.powerCell;
+      if (this.data.data.laserDesign.beamType == "chemicalLaser") {
+        this.data.data.laserDesign.outputWeight = this.data.data.laserDesign.loadedWeight + "/" + this.data.data.laserDesign.powerCellWeight;
+      }
+      else {
+        this.data.data.laserDesign.outputWeight = this.data.data.laserDesign.loadedWeight + "/" + this.data.data.laserDesign.powerCellQty + this.data.data.laserDesign.powerCell;
+      }
 
       // Calculate ST and Bulk
       if (this.data.data.laserDesign.configuration == "pistol") {
@@ -7876,6 +7981,15 @@ export class gurpsItem extends Item {
             "<tr>" +
             "<td>" +
             "<p>An itemized lists of costs, including the impact of your provisions on the remaining cargo space in the ship.</p>" +
+            "</td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id === "chemcial-laser-shots") {
+        info = "<table>" +
+            "<tr>" +
+            "<td>" +
+            "<p>The number of shots in one tank of chemicals. Increases the cost and weight.</p>" +
             "</td>" +
             "</tr>" +
             "</table>"

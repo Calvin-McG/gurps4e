@@ -44,7 +44,7 @@
                             {{#ifCond data.data.tl '>=' 3 }}
                                 <option value="firearm">Firearm</option>
                             {{/ifCond}}
-                            {{#ifCond data.data.tl '>=' 9 }}
+                            {{#ifCond data.data.tl '>=' 8 }}
                                 <option value="laser">Laser Weapon</option>
                             {{/ifCond}}
                         {{/select}}
@@ -2278,7 +2278,12 @@
                                 <td>
                                     <select name="data.laserDesign.beamType">
                                         {{#select data.data.laserDesign.beamType}}
+                                        {{#ifCond  data.data.tl '>=' 8 }}
+                                        <option value="chemicalLaser">Chemical Laser (TL8)</option>
+                                        {{/ifCond}}
+                                        {{#ifCond  data.data.tl '>=' 9 }}
                                         <option value="laser">Laser (TL9)</option>
+                                        {{/ifCond}}
                                         {{#if data.data.laserDesign.allowSuperScienceCustomLasers}}
                                         {{#ifCond  data.data.tl '>=' 10 }}
                                         <option value="forceBeam">Force Beam (TL 10^)</option>
@@ -2511,6 +2516,28 @@
                                 </td>
                             </tr>
 
+                            {{#if (eq data.data.laserDesign.beamType "chemicalLaser")}}
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Shots:
+                                </td>
+                                <td style="line-height: 27.5px">
+                                    <input type="number" name="data.laserDesign.chemicalShots" value="{{data.data.laserDesign.chemicalShots}}" data-dtype="Number"/>
+                                </td>
+                                <td class="question-container" id="chemcial-laser-shots">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td colspan="3" style="line-height: 27.5px">
+                                    This number of shots weighs {{round this.data.data.laserDesign.powerCellWeight 100}} lbs and costs
+                                    {{round this.data.data.laserDesign.chemicalCost 100}}$
+                                </td>
+                            </tr>
+                            {{else}}
                             <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Power System:
@@ -2554,7 +2581,7 @@
                                     Non-Rechargeable Power Cells
                                 </td>
                                 <td style="line-height: 27.5px">
-                                <input type="checkbox" name="data.laserDesign.nonRechargeableCells" {{checked data.data.laserDesign.nonRechargeableCells}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="data.laserDesign.nonRechargeableCells" {{checked data.data.laserDesign.nonRechargeableCells}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="non-rechargeable-power-cells">
                                     <div class="question-button">
@@ -2562,6 +2589,7 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{/if}}
                         </table>
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Tweaks</h2>
                         <table>
@@ -2668,19 +2696,6 @@
                             </tr>
                             {{/if}}
                         </table>
-
-                        <h2 class="bold" style="text-align: center; margin-top: 20px">Damage Output</h2>
-                        <table>
-                            <tr class="design-row">
-                                <td style="line-height: 27.5px" colspan="2">
-                                </td>
-                                <td class="question-container" id="bow-damage-output">
-                                    <div class="question-button">
-                                        <i class="fas fa-question"></i>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
                     </div>
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
@@ -2714,7 +2729,7 @@
                         <td><input type="checkbox" name="data.laserDesign.showAir" {{checked data.data.laserDesign.showAir}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Air</td>
-                        <td>{{data.data.laserDesign.outputDamage}} ({{this.data.data.laserDesign.armourDivisor}}) this.data.data.laserDesign.damageType</td>
+                        <td>{{data.data.laserDesign.outputDamage}} ({{this.data.data.laserDesign.armourDivisor}}) {{this.data.data.laserDesign.damageType}}</td>
                         <td>{{data.data.laserDesign.outputAcc}}</td>
                         <td>{{data.data.laserDesign.outputRange}}</td>
                         <td>{{data.data.laserDesign.outputWeight}}</td>
@@ -2731,7 +2746,8 @@
                         <td><input type="checkbox" name="data.laserDesign.showSpace" {{checked data.data.laserDesign.showSpace}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Space</td>
-                        <td>{{data.data.laserDesign.outputDamage}} ({{this.data.data.laserDesign.armourDivisorSpace}}) this.data.data.laserDesign.damageType</td>
+                        <td>{{data.data.laserDesign.outputDamage}} ({{this.data.data.laserDesign.armourDivisorSpace}})
+                            {{this.data.data.laserDesign.damageType}}</td>
                         <td>{{data.data.laserDesign.outputAccSpace}}</td>
                         <td>{{data.data.laserDesign.outputRangeSpace}}</td>
                         <td>{{data.data.laserDesign.outputWeight}}</td>
@@ -2748,7 +2764,8 @@
                         <td><input type="checkbox" name="data.laserDesign.showWater" {{checked data.data.laserDesign.showWater}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Underwater</td>
-                        <td>{{data.data.laserDesign.outputDamage}} ({{this.data.data.laserDesign.armourDivisorWater}}) this.data.data.laserDesign.damageType</td>
+                        <td>{{data.data.laserDesign.outputDamage}} ({{this.data.data.laserDesign.armourDivisorWater}})
+                            {{this.data.data.laserDesign.damageType}}</td>
                         <td>{{data.data.laserDesign.outputAccWater}}</td>
                         <td>{{data.data.laserDesign.outputRangeWater}}</td>
                         <td>{{data.data.laserDesign.outputWeight}}</td>
@@ -2767,7 +2784,8 @@
                         <td><input type="checkbox" name="data.laserDesign.showAirHotshot" {{checked data.data.laserDesign.showAirHotshot}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Hotshot Air</td>
-                        <td>{{data.data.laserDesign.outputDamageHotshots}} ({{this.data.data.laserDesign.armourDivisor}}) this.data.data.laserDesign.damageType</td>
+                        <td>{{data.data.laserDesign.outputDamageHotshots}} ({{this.data.data.laserDesign.armourDivisor}})
+                            {{this.data.data.laserDesign.damageType}}</td>
                         <td>{{data.data.laserDesign.outputAcc}}</td>
                         <td>{{data.data.laserDesign.outputRange}}</td>
                         <td>{{data.data.laserDesign.outputWeight}}</td>
@@ -2784,7 +2802,8 @@
                         <td><input type="checkbox" name="data.laserDesign.showSpaceHotshot" {{checked data.data.laserDesign.showSpaceHotshot}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Hotshot Space</td>
-                        <td>{{data.data.laserDesign.outputDamageHotshots}} ({{this.data.data.laserDesign.armourDivisorSpace}}) this.data.data.laserDesign.damageTypeSpace</td>
+                        <td>{{data.data.laserDesign.outputDamageHotshots}} ({{this.data.data.laserDesign.armourDivisorSpace}})
+                            {{this.data.data.laserDesign.damageTypeSpace}}</td>
                         <td>{{data.data.laserDesign.outputAccSpace}}</td>
                         <td>{{data.data.laserDesign.outputRangeSpace}}</td>
                         <td>{{data.data.laserDesign.outputWeight}}</td>
@@ -2801,7 +2820,8 @@
                         <td><input type="checkbox" name="data.laserDesign.showWaterHotshot" {{checked data.data.laserDesign.showWaterHotshot}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{data.data.tl}}</td>
                         <td>{{item.name}} - Hotshot Underwater</td>
-                        <td>{{data.data.laserDesign.outputDamageHotshots}} ({{this.data.data.laserDesign.armourDivisorWater}}) this.data.data.laserDesign.damageTypeWater</td>
+                        <td>{{data.data.laserDesign.outputDamageHotshots}} ({{this.data.data.laserDesign.armourDivisorWater}})
+                            {{this.data.data.laserDesign.damageTypeWater}}</td>
                         <td>{{data.data.laserDesign.outputAccWater}}</td>
                         <td>{{data.data.laserDesign.outputRangeWater}}</td>
                         <td>{{data.data.laserDesign.outputWeight}}</td>
