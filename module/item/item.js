@@ -4746,14 +4746,6 @@ export class gurpsItem extends Item {
     // Bow Bulk
     this.data.data.bowDesign.bulk = Math.round(9 - 9 * Math.log10(l + r + this.data.data.bowDesign.stockLength));
 
-    let accFactor = 0
-    if (this.data.data.bowDesign.type == "footbow") {
-      accFactor = -1
-    }
-    else if (this.data.data.bowDesign.type == "xbow") {
-      accFactor = 1
-    }
-
     if (this.data.data.bowDesign.type == "bow") {
       this.data.data.bowDesign.st = Math.ceil(Math.sqrt(this.data.data.bowDesign.drawWeight*2));
     }
@@ -4766,6 +4758,14 @@ export class gurpsItem extends Item {
       let arrowKeys = Object.keys(this.data.data.bowDesign.arrows); // Get the arrow keys
       if (arrowKeys.length > 0) { // If there are actually keys
         for (let i = 0; i < arrowKeys.length; i++){
+          let accFactor = 0
+          if (this.data.data.bowDesign.type === "footbow") {
+            accFactor = -1
+          }
+          else if (this.data.data.bowDesign.type === "xbow") {
+            accFactor = 1
+          }
+
           if (typeof this.data.data.bowDesign.arrows[arrowKeys[i]].material.name != "undefined") {
             this.data.data.bowDesign.arrows[arrowKeys[i]].material = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.arrows[arrowKeys[i]].material.name);
 
