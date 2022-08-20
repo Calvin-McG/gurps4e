@@ -5692,7 +5692,7 @@ export class gurpsItem extends Item {
           "<td>1 sec</td>" +
           "<td>3 secs</td>" +
           "<td>2 secs</td>" +
-          "<td>" + (this.data.data.bowDesign.userBL*2) + "lbs</td>" +
+          "<td>" + Math.floor(this.data.data.bowDesign.userBL*2*100)/100 + "lbs</td>" +
           "</tr>"
 
       if (this.data.data.bowDesign.type == "bow") {
@@ -5701,7 +5701,7 @@ export class gurpsItem extends Item {
             "<td>2 secs</td>" +
             "<td>4 secs</td>" +
             "<td>3 secs</td>" +
-            "<td>" + (this.data.data.bowDesign.userBL*2.5) + "lbs</td>" +
+            "<td>" + Math.floor(this.data.data.bowDesign.userBL*2.5*100)/100 + "lbs</td>" +
             "</tr>"
       }
       else if (this.data.data.bowDesign.type == "footbow" || this.data.data.bowDesign.type == "xbow") {
@@ -5710,21 +5710,21 @@ export class gurpsItem extends Item {
             "<td>2 secs</td>" +
             "<td>4 secs</td>" +
             "<td>3 secs</td>" +
-            "<td>" + (this.data.data.bowDesign.userBL*4) + "lbs</td>" +
+            "<td>" + Math.floor(this.data.data.bowDesign.userBL*4*100)/100 + "lbs</td>" +
             "</tr>"
         info += "<tr class='bow-hand'>" +
             "<td>This is the highest weight you are capable of drawing by hand in three rounds.</td>" +
             "<td>3 secs</td>" +
             "<td>5 secs</td>" +
             "<td>4 secs</td>" +
-            "<td>" + (this.data.data.bowDesign.userBL*6) + "lbs</td>" +
+            "<td>" + Math.floor(this.data.data.bowDesign.userBL*6*100)/100 + "lbs</td>" +
             "</tr>"
         info += "<tr class='bow-hand'>" +
             "<td>This is the highest weight you are capable of drawing by hand.</td>" +
             "<td>4 secs</td>" +
             "<td>6 secs</td>" +
             "<td>5 secs</td>" +
-            "<td>" + (this.data.data.bowDesign.userBL*8) + "lbs</td>" +
+            "<td>" + Math.floor(this.data.data.bowDesign.userBL*8*100)/100 + "lbs</td>" +
             "</tr>"
 
         if (this.data.data.bowDesign.type == "xbow") {
@@ -5733,14 +5733,14 @@ export class gurpsItem extends Item {
               "<td>1 secs</td>" +
               "<td>3 secs</td>" +
               "<td>2 secs</td>" +
-              "<td>" + (this.data.data.bowDesign.userBL*4) + "lbs</td>" +
+              "<td>" + Math.floor(this.data.data.bowDesign.userBL*4*100)/100 + "lbs</td>" +
               "</tr>"
           info += "<tr class='bow-hook'>" +
               "<td>This is the highest weight you are capable of drawing with a belt hook in two rounds (Or by hand in four rounds)</td>" +
               "<td>2 secs</td>" +
               "<td>4 secs</td>" +
               "<td>3 secs</td>" +
-              "<td>" + (this.data.data.bowDesign.userBL*8) + "lbs</td>" +
+              "<td>" + Math.floor(this.data.data.bowDesign.userBL*8*100)/100 + "lbs</td>" +
               "</tr>"
 
           if (this.data.data.tl >= 3) {
@@ -5749,40 +5749,40 @@ export class gurpsItem extends Item {
                 "<td>7 secs</td>" +
                 "<td>9 secs</td>" +
                 "<td>8 secs</td>" +
-                "<td>" + (this.data.data.bowDesign.userBL*5*2) + "lbs</td>" +
+                "<td>" + Math.floor(this.data.data.bowDesign.userBL*5*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-mech'>" +
                 "<td>8 secs</td>" +
                 "<td>10 secs</td>" +
                 "<td>9 secs</td>" +
-                "<td>" + (this.data.data.bowDesign.userBL*6*2) + "lbs</td>" +
+                "<td>" + Math.floor(this.data.data.bowDesign.userBL*6*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-mech'>" +
                 "<td>9 secs</td>" +
                 "<td>11 secs</td>" +
                 "<td>10 secs</td>" +
-                "<td>" + (this.data.data.bowDesign.userBL*7*2) + "lbs</td>" +
+                "<td>" + Math.floor(this.data.data.bowDesign.userBL*7*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-mech'>" +
                 "<td>This is the draw limit with a goat's foot.</td>" +
                 "<td>10 secs</td>" +
                 "<td>12 secs</td>" +
                 "<td>11 secs</td>" +
-                "<td>" + (this.data.data.bowDesign.userBL*8*2) + "lbs</td>" +
+                "<td>" + Math.floor(this.data.data.bowDesign.userBL*8*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-wind'>" +
                 "<td>With a windlass you can draw a bow of pretty much any weight. It just takes a long fucking time. This is as fast as it gets, and it only gets slower.</td>" +
                 "<td>8 secs</td>" +
                 "<td>10 secs</td>" +
                 "<td>9 secs</td>" +
-                "<td>" + (this.data.data.bowDesign.userBL*8*2) + "lbs</td>" +
+                "<td>" + Math.floor(this.data.data.bowDesign.userBL*8*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-wind'>" +
                 "<td>Windlasses also get heavier the higher the draw weight multiplier gets.</td>" +
                 "<td>12 secs</td>" +
                 "<td>14 secs</td>" +
                 "<td>13 secs</td>" +
-                "<td>" + (this.data.data.bowDesign.userBL*8*3) + "lbs</td>" +
+                "<td>" + Math.floor(this.data.data.bowDesign.userBL*8*3*100)/100 + "lbs</td>" +
                 "</tr>"
 
             if (this.data.data.tl >= 4) {
@@ -5791,7 +5791,7 @@ export class gurpsItem extends Item {
                   "<td>24 secs</td>" +
                   "<td>26 secs</td>" +
                   "<td>25 secs</td>" +
-                  "<td>" + (this.data.data.bowDesign.userBL * 8 * 3) + "lbs</td>" +
+                  "<td>" + Math.floor(this.data.data.bowDesign.userBL * 8 * 3*100)/100 + "lbs</td>" +
                   "</tr>"
             }
           }
