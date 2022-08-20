@@ -3776,25 +3776,27 @@ export class gurpsItem extends Item {
         }
       }
 
-      if (this.data.data.laserDesign.beamType == "chemicalLaser") {
+      if ((this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "ir") || this.data.data.laserDesign.beamType == "chemicalLaser") {
         if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
-          this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+          if (this.data.data.laserDesign.halfRange >= 100) {
+            this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+          }
+          else {
+            this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange);
+          }
         }
         else {
           this.data.data.laserDesign.halfRangeWater = 0;
         }
-        this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-        this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-      }
-      else if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "ir") {
-        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
-          this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+
+        if (this.data.data.laserDesign.halfRange >= 100) {
+          this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+          this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
         }
         else {
-          this.data.data.laserDesign.halfRangeWater = 0;
+          this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange);
+          this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange);
         }
-        this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-        this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
       }
       else if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "bg") {
         this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange * 2 / 10) * 10;
