@@ -4448,6 +4448,11 @@ export class gurpsItem extends Item {
       this.data.data.bowDesign.workingPercentage = 0;
     }
 
+    // Stock length must be zero or more
+    if(typeof this.data.data.bowDesign.stockLength === "undefined" || this.data.data.bowDesign.stockLength < 0) {
+      this.data.data.bowDesign.stockLength = 0;
+    }
+
     // Cross section must not be zero or negative
     if (!(this.data.data.bowDesign.crossSection > 0)) {
       this.data.data.bowDesign.crossSection = 1;
