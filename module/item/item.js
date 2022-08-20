@@ -4347,7 +4347,7 @@ export class gurpsItem extends Item {
         "a": 0,
         "densityLbsCuIn": 0,
         "elasticModulusPsi": 0,
-        "name": "",
+        "name": "Horn",
         "tensileStPsi": 0,
         "tl": 0,
         "maxStrain": 0,
@@ -4361,7 +4361,7 @@ export class gurpsItem extends Item {
         "a": 0,
         "densityLbsCuIn": 0,
         "elasticModulusPsi": 0,
-        "name": "",
+        "name": "Sinew",
         "tensileStPsi": 0,
         "tl": 0,
         "maxStrain": 0,
@@ -4388,7 +4388,7 @@ export class gurpsItem extends Item {
         "a": 0,
         "densityLbsCuIn": 0,
         "elasticModulusPsi": 0,
-        "name": "",
+        "name": "Wood - White Pine",
         "tensileStPsi": 0,
         "tl": 0,
         "maxStrain": 0,
@@ -4402,7 +4402,7 @@ export class gurpsItem extends Item {
         "a": 0,
         "densityLbsCuIn": 0,
         "elasticModulusPsi": 0,
-        "name": "",
+        "name": "Wood - White Pine",
         "tensileStPsi": 0,
         "tl": 0,
         "maxStrain": 0,
@@ -4416,7 +4416,7 @@ export class gurpsItem extends Item {
         "a": 0,
         "densityLbsCuIn": 0,
         "elasticModulusPsi": 0,
-        "name": "",
+        "name": "Wood - Red Pine",
         "tensileStPsi": 0,
         "tl": 0,
         "maxStrain": 0,
@@ -4430,7 +4430,7 @@ export class gurpsItem extends Item {
         "a": 0,
         "densityLbsCuIn": 0,
         "elasticModulusPsi": 0,
-        "name": "",
+        "name": "Wood - Red Pine",
         "tensileStPsi": 0,
         "tl": 0,
         "maxStrain": 0,
@@ -4630,7 +4630,7 @@ export class gurpsItem extends Item {
         "arrowCostPerLb": (this.data.data.bowDesign.riserMaterialOne.arrowCostPerLb + this.data.data.bowDesign.riserMaterialTwo.arrowCostPerLb) / 2,
       }
     }
-    if (typeof this.data.data.bowDesign.stockMaterialOne != "undefined" && typeof this.data.data.bowDesign.stockMaterialTwo != "undefined") {
+    if (typeof this.data.data.bowDesign.stockMaterialOne !== "undefined" && typeof this.data.data.bowDesign.stockMaterialTwo !== "undefined") {
       this.data.data.bowDesign.stockMaterialAvg = { // Create it
         "a": (this.data.data.bowDesign.stockMaterialOne.a + this.data.data.bowDesign.stockMaterialTwo.a) / 2,
         "densityLbsCuIn": (this.data.data.bowDesign.stockMaterialOne.densityLbsCuIn + this.data.data.bowDesign.stockMaterialTwo.densityLbsCuIn) / 2,
@@ -4859,7 +4859,7 @@ export class gurpsItem extends Item {
       }
     }
 
-    if (typeof this.data.data.bowDesign.workingMaterialAvg != "undefined" && typeof this.data.data.bowDesign.riserMaterialAvg != "undefined" && typeof this.data.data.bowDesign.stockMaterialAvg.bowCostPerLb != "undefined") {
+    if (typeof this.data.data.bowDesign.workingMaterialAvg != "undefined" && typeof this.data.data.bowDesign.riserMaterialAvg != "undefined" && typeof this.data.data.bowDesign.stockMaterialAvg != "undefined") {
       this.data.data.cost = limbsWeight * this.data.data.bowDesign.workingMaterialAvg.bowCostPerLb + riserWeight * this.data.data.bowDesign.riserMaterialAvg.bowCostPerLb + stockWeight * this.data.data.bowDesign.stockMaterialAvg.bowCostPerLb
 
       if (this.data.data.bowDesign.quality == "fine") {
@@ -5827,7 +5827,7 @@ export class gurpsItem extends Item {
       if (this.data.data.bowDesign.type == "bow") {
         info += "<tr>" +
             "<td>" +
-            "<p>The basic formula for draw length is your height in inches, minus 15, and then divided by two.</p>. " +
+            "<p>The basic formula for draw length is your height in inches, minus 15, and then divided by two.</p>" +
             "</p>" +
             "</td>" +
             "</tr>";
