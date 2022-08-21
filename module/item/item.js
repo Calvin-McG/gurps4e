@@ -4517,18 +4517,20 @@ export class gurpsItem extends Item {
 
     if (this.data.data.bowDesign.strongBowCrossbowFinesse) { // If the perk is set
       if (this.actor) { // If there's an actor we will need to fetch the finesse effect from the sheet
-        let skillLevel = 0;
-        let attrLevel = 0;
-        let relativeBonus = 0;
-        for (let i = 0; i < this.actor.data.items._source.length; i++) { // Loop through the list of the actor's items
-          if (this.actor.data.items._source[i].type === "Rollable") { // Make sure it's a skill
-            if (this.actor.data.items._source[i].name.toLowerCase() == this.data.data.bowDesign.skill.toLowerCase()) { // And make sure it matches the skill name they've given
-              skillLevel = skillHelpers.computeSkillLevel(this.actor, this.actor.data.items._source[i].data); // Get the skill level.
-              attrLevel = skillHelpers.getBaseAttrValue(this.actor.data.items._source[i].data.baseAttr, this.actor); // Get the attribute level
-              relativeBonus = skillLevel - attrLevel;
-              relativeBonus = Math.max(relativeBonus, 0); // Make the bonus at least zero.
-              relativeBonus = Math.min(relativeBonus, 2); // Make the bonus no more than two
-              this.data.data.bowDesign.strongBowCrossbowFinesseEffect = relativeBonus;
+        if (this.actor.data) {
+          let skillLevel = 0;
+          let attrLevel = 0;
+          let relativeBonus = 0;
+          for (let i = 0; i < this.actor.data.items._source.length; i++) { // Loop through the list of the actor's items
+            if (this.actor.data.items._source[i].type === "Rollable") { // Make sure it's a skill
+              if (this.actor.data.items._source[i].name.toLowerCase() == this.data.data.bowDesign.skill.toLowerCase()) { // And make sure it matches the skill name they've given
+                skillLevel = skillHelpers.computeSkillLevel(this.actor, this.actor.data.items._source[i].data); // Get the skill level.
+                attrLevel = skillHelpers.getBaseAttrValue(this.actor.data.items._source[i].data.baseAttr, this.actor); // Get the attribute level
+                relativeBonus = skillLevel - attrLevel;
+                relativeBonus = Math.max(relativeBonus, 0); // Make the bonus at least zero.
+                relativeBonus = Math.min(relativeBonus, 2); // Make the bonus no more than two
+                this.data.data.bowDesign.strongBowCrossbowFinesseEffect = relativeBonus;
+              }
             }
           }
         }
@@ -5639,10 +5641,8 @@ export class gurpsItem extends Item {
       }
       info += "<tr>" +
           "<td>" +
-          "<p>If this weapon is on an actor it will search the traits in an attempt to find one with a name exactly matching the one given here. " +
-          "Once I add leveled perks and traits it'll check the level directly." +
-          "But for now, if it finds one it will automatically set the value based on the number of points (one or two). " +
-          "If it doesn't find anything you can always set the value yourself." +
+          "<p>If this weapon is on an actor it will search the traits in an attempt to find a perk with a name exactly matching the one given here. " +
+          "It will then attempt to fetch your relative bonus from the selected skill and apply the appropriate strongbow bonus." +
           "</p>" +
           "</td>" +
           "</tr>";
