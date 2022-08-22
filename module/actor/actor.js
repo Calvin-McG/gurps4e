@@ -690,7 +690,7 @@ export class gurpsActor extends Actor {
             if (this.data.items._source[i].type === "Trait"){
                 traitPoints = traitPoints += this.data.items._source[i].data.points;
 				advantagePoints = this.data.items._source[i].data.category.toLowerCase() === "advantage" ? advantagePoints += this.data.items._source[i].data.points : advantagePoints;
-                disadvantagePoints = this.data.items._source[i].data.category.toLowerCase() === "disadvantage" ? disadvantagePoints += this.data.items._source[i].data.points : disadvantagePoints;
+                disadvantagePoints = this.data.items._source[i].data.category.toLowerCase() === "disadv" ? disadvantagePoints += this.data.items._source[i].data.points : disadvantagePoints;
 				quirkPoints = this.data.items._source[i].data.category.toLowerCase() === "quirk" ? quirkPoints += this.data.items._source[i].data.points : quirkPoints;
 				perkPoints = this.data.items._source[i].data.category.toLowerCase() === "perk" ? perkPoints += this.data.items._source[i].data.points : perkPoints;
             }
