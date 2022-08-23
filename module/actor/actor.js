@@ -2542,6 +2542,9 @@ export class gurpsActor extends Actor {
 
 				messageContent += target.name + " is struck in the...</br>";
 				for (let m = 0; m < locations.length; m++){
+					console.log((locations[m].id))
+					console.log((locations[m].id).split("."))
+					console.log((locations[m].id).split(".")[0])
 					let firstLocation = getProperty(target.actor.data.data.bodyType.body, (locations[m].id).split(".")[0]);
 					let firstLabel = firstLocation ? firstLocation.label : "";
 					let secondLabel = locations[m].label
