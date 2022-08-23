@@ -2275,10 +2275,6 @@ export class gurpsActor extends Actor {
 
 		console.log(torsoPartsIndex, torsoParts.length, torsoPartsIndex >= torsoParts.length)
 
-		if (torsoPartsIndex >= torsoParts.length){
-			torsoPartsIndex = torsoParts.length - 1;
-		}
-
 		return getProperty(targetBody.body, torsoParts[torsoPartsIndex]);
 	}
 
@@ -2554,6 +2550,8 @@ export class gurpsActor extends Actor {
 
 				messageContent += target.name + " is struck in the...</br>";
 				for (let m = 0; m < locations.length; m++){
+					console.log((locations))
+					console.log((locations[m]))
 					console.log((locations[m].id))
 					console.log((locations[m].id).split("."))
 					console.log((locations[m].id).split(".")[0])
