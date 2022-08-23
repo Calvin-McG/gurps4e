@@ -2271,6 +2271,8 @@ export class gurpsActor extends Actor {
 
 		let torsoPartsIndex = Math.floor(Math.random() * (torsoParts.length)); // Generate a random number between 0 and the max index
 
+		console.log(torsoParts);
+
 		console.log(torsoPartsIndex, torsoParts.length, torsoPartsIndex >= torsoParts.length)
 
 		if (torsoPartsIndex >= torsoParts.length){
