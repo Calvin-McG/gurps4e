@@ -2261,23 +2261,17 @@ export class gurpsActor extends Actor {
 	randomTorsoLocation(target){
 		let targetBody = target.actor.data.data.bodyType;
 		let bodyParts = Object.keys(targetBody.body);
-		console.log(targetBody.body)
-		console.log(bodyParts)
 		let torsoParts = [];
 
 		for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
 			if (bodyParts[i].toLowerCase().includes("chest") || bodyParts[i].toLowerCase().includes("abdomen")){ // If it's part of the torso, add it to the array to be searched
-				if (!(bodyParts[i] === "upperchest")) {
+				if (!(bodyParts[i] === "upperchest")) { // Hotfix for issue where upperchest would sometimes incorrectly get added as a body part
 					torsoParts.push(bodyParts[i])
 				}
 			}
 		}
 
 		let torsoPartsIndex = Math.floor(Math.random() * (torsoParts.length)); // Generate a random number between 0 and the max index
-
-		console.log(torsoParts);
-
-		console.log(torsoPartsIndex, torsoParts.length, torsoPartsIndex >= torsoParts.length)
 
 		return getProperty(targetBody.body, torsoParts[torsoPartsIndex]);
 	}
