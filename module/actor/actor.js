@@ -1336,14 +1336,10 @@ export class gurpsActor extends Actor {
 			targetTokenActor = targetToken.document.actor;
 		}
 
-		console.log(targetTokenActor.data.data.vision)
-
 		let leftFrontBound	= (0 - (targetTokenActor.data.data.vision.front / 2)); // Get all the bounds for front and side arcs
 		let rightFrontBound = (0 + (targetTokenActor.data.data.vision.front / 2));
 		let leftSideBound	= (0 - (targetTokenActor.data.data.vision.side / 2));
 		let rightSideBound	= (0 + (targetTokenActor.data.data.vision.side / 2));
-
-		console.log(leftFrontBound, rightFrontBound, leftSideBound, rightSideBound);
 
 		let facing;
 		let position;
@@ -2553,11 +2549,6 @@ export class gurpsActor extends Actor {
 
 				messageContent += target.name + " is struck in the...</br>";
 				for (let m = 0; m < locations.length; m++){
-					console.log((locations))
-					console.log((locations[m]))
-					console.log((locations[m].id))
-					console.log((locations[m].id).split("."))
-					console.log((locations[m].id).split(".")[0])
 					let firstLocation = getProperty(target.actor.data.data.bodyType.body, (locations[m].id).split(".")[0]);
 					let firstLabel = firstLocation ? firstLocation.label : "";
 					let secondLabel = locations[m].label
