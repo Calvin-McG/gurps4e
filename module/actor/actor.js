@@ -2266,7 +2266,7 @@ export class gurpsActor extends Actor {
 		let torsoParts = [];
 
 		for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
-			if (bodyParts[i].toLowerCase().includes("chest") || bodyParts[i].toLowerCase().includes("abdomen")){ // If it's part of the torso, add it to the array to be searched
+			if (bodyParts[i].toLowerCase().includes("chest") || bodyParts[i].toLowerCase().includes("abdomen") && !bodyParts[i].includes("upperchest")){ // If it's part of the torso, add it to the array to be searched
 				torsoParts.push(bodyParts[i])
 			}
 		}

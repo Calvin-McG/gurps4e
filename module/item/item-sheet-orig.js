@@ -645,7 +645,7 @@ export class gurpsItemSheet extends ItemSheet {
             bodyObj.armRight = this.addArm("Right Upper Thorax Arm");
             bodyObj.lowerArmLeft = this.addArm("Left Lower Thorax Arm");
             bodyObj.lowerArmRight = this.addArm("Right Lower Thorax Arm");
-            bodyObj.upperchest = this.addChest("Upper Thorax");
+            bodyObj.upperChest = this.addChest("Upper Thorax");
             bodyObj.lowerChest = this.addChest("Mid Thorax");
             bodyObj.abdomen = this.addAbdomen("Lower Thorax");
             bodyObj.handLeft = this.addExtremity("Left Upper Thorax Hand", "Hand", "Wrist", "Palm");
@@ -663,7 +663,7 @@ export class gurpsItemSheet extends ItemSheet {
             bodyObj.armRight = this.addArm("Right Upper Thorax Arm");
             bodyObj.lowerArmLeft = this.addArm("Left Lower Thorax Arm");
             bodyObj.lowerArmRight = this.addArm("Right Lower Thorax Arm");
-            bodyObj.upperchest = this.addChest("Upper Thorax");
+            bodyObj.upperChest = this.addChest("Upper Thorax");
             bodyObj.lowerChest = this.addChest("Mid Thorax");
             bodyObj.abdomen = this.addAbdomen("Lower Thorax");
             bodyObj.handLeft = this.addExtremity("Left Upper Thorax Hand", "Hand", "Wrist", "Palm");
