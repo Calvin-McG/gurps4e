@@ -1331,12 +1331,17 @@ export class gurpsActor extends Actor {
 			attackerTokenActor = attackerToken.document.actor;
 		}
 
-		console.log(attackerTokenActor.data.data.vision)
+		let targetTokenActor = targetToken.actor;
+		if (!targetTokenActor){
+			targetTokenActor = targetToken.document.actor;
+		}
 
-		let leftFrontBound = (0 - (attackerTokenActor.data.data.vision.front / 2)); // Get all the bounds for front and side arcs
-		let rightFrontBound = (0 + (attackerTokenActor.data.data.vision.front / 2));
-		let leftSideBound = (0 - (attackerTokenActor.data.data.vision.side / 2));
-		let rightSideBound = (0 + (attackerTokenActor.data.data.vision.side / 2));
+		console.log(targetTokenActor.data.data.vision)
+
+		let leftFrontBound	= (0 - (targetTokenActor.data.data.vision.front / 2)); // Get all the bounds for front and side arcs
+		let rightFrontBound = (0 + (targetTokenActor.data.data.vision.front / 2));
+		let leftSideBound	= (0 - (targetTokenActor.data.data.vision.side / 2));
+		let rightSideBound	= (0 + (targetTokenActor.data.data.vision.side / 2));
 
 		console.log(leftFrontBound, rightFrontBound, leftSideBound, rightSideBound);
 
@@ -2709,11 +2714,11 @@ export class gurpsActor extends Actor {
 			"<div>" +
 			"<div style='text-align: center; font-weight: bold'>General Modifiers</div>"
 
-		if (facing[0] == 0) { // Attacker is in the target's side or rear hexes, warn them
+		if (facing[0] === 0) { // Attacker is in the target's side or rear hexes, warn them
 			activeDefenceModalContent += "" +
 				"<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>The attacker is in one of your side hexes. You have a -2 penalty to defend.</div>"
 		}
-		else if (facing[0] == -1) { // Attacker is in the target's side or rear hexes, warn them
+		else if (facing[0] === -1) { // Attacker is in the target's side or rear hexes, warn them
 			activeDefenceModalContent += "" +
 				"<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>The attacker is in one of your rear hexes. If you can defend, you have a -2 penalty to do so.</div>"
 		}
