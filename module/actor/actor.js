@@ -1305,7 +1305,7 @@ export class gurpsActor extends Actor {
 	// As in, the attacker is in front, in side, in rear of the target (For active defence purposes, depends on target's vision (Peripheral, 360, tunnel, etc)
 	// As in, the attacker is ahead or behind the target (In physical space, has nothing to do with anyone's traits.
 	getFacing(attackerToken, targetToken){
-		let relativePosition = (Math.atan2(-(targetToken.x - attackerToken.x), (targetToken.y - attackerToken.y)) * 180 / Math.PI); // Takes the atan of the two sets of points after they have been rotated clockwise 90 degrees. This puts the 0 point towards the direction of facing with 180/-180 directly behind
+		let relativePosition = (Math.atan2(-(targetToken.x - attackerToken.x), (targetToken.y - attackerToken.y)) * 180 / Math.PI) + 180; // Takes the atan of the two sets of points after they have been rotated clockwise 90 degrees. This puts the 0 point towards the direction of facing with 180/-180 directly behind
 
 		let targetFacing;
 		if (targetToken.rotation > 180){ // Correct for facing angles of greater than 180 degrees. Valid range for this macro is -180 to 0 to 180. Not 0 to 360
@@ -3229,6 +3229,10 @@ export class gurpsActor extends Actor {
 			if (actualDamage > 0) { // Damage has penetrated DR.
 				actualDamage = Math.floor(actualDamage);
 				html += "<label>" + actualDamage + " damage gets through</label>";
+
+				if (damageType.noWounding) {
+					actualDamage = 0;
+				}
 
 				// If the attack is capable of knockback, do knockback
 				if (damageType.type === "cr") { // Only cr attacks do knockback while penetrating DR
