@@ -1331,10 +1331,14 @@ export class gurpsActor extends Actor {
 			attackerTokenActor = attackerToken.document.actor;
 		}
 
+		console.log(attackerTokenActor.data.data.vision)
+
 		let leftFrontBound = (0 - (attackerTokenActor.data.data.vision.front / 2)); // Get all the bounds for front and side arcs
 		let rightFrontBound = (0 + (attackerTokenActor.data.data.vision.front / 2));
 		let leftSideBound = (0 - (attackerTokenActor.data.data.vision.side / 2));
 		let rightSideBound = (0 + (attackerTokenActor.data.data.vision.side / 2));
+
+		console.log(leftFrontBound, rightFrontBound, leftSideBound, rightSideBound);
 
 		let facing;
 		let position;
