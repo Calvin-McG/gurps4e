@@ -8,7 +8,7 @@ export class skillHelpers {
             let defaults = item.defaults;
             let difficulty = item.difficulty;
             let baseAttr = item.baseAttr;
-            let baseSkill = item.baseSkill;
+            let baseSkill = item.baseSkill.toUpperCase();
             let minLevel = item.minLevel;
             let maxLevel = item.maxLevel;
             let dabblerPoints = item.dabblerPoints;
@@ -94,17 +94,37 @@ export class skillHelpers {
 
             else { // It's a technique
                 // Loop through all the skills on the sheet, find the one they picked and set that as the base
-                for (let i = 0; i < actor.data.items._source.length; i++){
-                    if (actor.data.items._source[i].type === "Rollable"){
-                        if (actor.data.items._source[i].data.category === "skill"){
-                            if (baseSkill === actor.data.items._source[i].name){
-                                base = this.computeSkillLevelWithoutDefaults(actor, actor.data.items._source[i].data)
-
-                                this.data.data.baseSkillLevel = base;
+                // Check attributes first, add any results to the array of attribute defaults
+                if (baseSkill === 'ST' || baseSkill=== 'STRENGTH') {
+                    base = st;
+                }
+                else if (baseSkill === 'DX' || baseSkill === 'DEXTERITY') {
+                    base = dx;
+                }
+                else if (baseSkill === 'IQ' || baseSkill === 'INTELLIGENCE') {
+                    base = iq;
+                }
+                else if (baseSkill === 'HT' || baseSkill === 'HEALTH') {
+                    base = ht;
+                }
+                else if (baseSkill === 'PER' || baseSkill === 'PERCEPTION') {
+                    base = per;
+                }
+                else if (baseSkill === 'WILL') {
+                    base = will;
+                }
+                else {
+                    for (let i = 0; i < actor.data.items._source.length; i++){
+                        if (actor.data.items._source[i].type === "Rollable"){
+                            if (actor.data.items._source[i].data.category === "skill"){
+                                if (baseSkill === actor.data.items._source[i].name.toUpperCase()){
+                                    base = this.computeSkillLevelWithoutDefaults(actor, actor.data.items._source[i].data)
+                                }
                             }
                         }
                     }
                 }
+                item.baseSkillLevel = base;
 
                 //Modify Base Skill with Base Penalty
                 level = base + minLevel;
