@@ -2261,6 +2261,8 @@ export class gurpsActor extends Actor {
 	randomTorsoLocation(target){
 		let targetBody = target.actor.data.data.bodyType;
 		let bodyParts = Object.keys(targetBody.body);
+		console.log(targetBody.body)
+		console.log(bodyParts)
 		let torsoParts = [];
 
 		for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
