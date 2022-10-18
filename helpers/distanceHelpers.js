@@ -136,7 +136,7 @@ export class distanceHelpers {
             {
                 "name": "fathom",
                 "names": "fathoms",
-                "mult": 1760 * 2,
+                "mult": 2,
             },
             {
                 "name": "nautical mile",
