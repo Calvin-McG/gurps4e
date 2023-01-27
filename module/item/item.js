@@ -487,21 +487,19 @@ export class gurpsItem extends Item {
       // Check if there is an actor to fetch stats from
       this.system.armourDesign.getSizeFromActor = false;
       if (this.actor) { // If there's an actor
-        if (this.actor.data) {
-          if (this.actor.system) {
-            this.system.armourDesign.getSizeFromActor = true;
-            if (this.system.armourDesign.scalingMethodForCustomArmour == "weight") { // Scaling using the rules from Pyramid 3-52:16
-              this.system.armourDesign.scalingMultiplier = (this.actor.system.bio.weight.value / 150) ** (2/3);
-            }
-            else if (this.system.armourDesign.scalingMethodForCustomArmour == "sm") { // Scaling using the rules from LTC2:21
-              this.system.armourDesign.scalingMultiplier = ((distanceHelpers.sizeToDistance(this.actor.system.bio.sm.value) / 10) ** 2);
-            }
-            else if (this.system.armourDesign.scalingMethodForCustomArmour == "height") { // Scaling based off the rules from LTC2:21, but gradually scaled based on height.
-              this.system.armourDesign.scalingMultiplier = (((5 / 36 * this.actor.system.bio.height.value) / 10)  ** 2);
-            }
-            else {
-              this.system.armourDesign.scalingMultiplier = 1;
-            }
+        if (this.actor.system) {
+          this.system.armourDesign.getSizeFromActor = true;
+          if (this.system.armourDesign.scalingMethodForCustomArmour == "weight") { // Scaling using the rules from Pyramid 3-52:16
+            this.system.armourDesign.scalingMultiplier = (this.actor.system.bio.weight.value / 150) ** (2/3);
+          }
+          else if (this.system.armourDesign.scalingMethodForCustomArmour == "sm") { // Scaling using the rules from LTC2:21
+            this.system.armourDesign.scalingMultiplier = ((distanceHelpers.sizeToDistance(this.actor.system.bio.sm.value) / 10) ** 2);
+          }
+          else if (this.system.armourDesign.scalingMethodForCustomArmour == "height") { // Scaling based off the rules from LTC2:21, but gradually scaled based on height.
+            this.system.armourDesign.scalingMultiplier = (((5 / 36 * this.actor.system.bio.height.value) / 10)  ** 2);
+          }
+          else {
+            this.system.armourDesign.scalingMultiplier = 1;
           }
         }
       }
@@ -760,10 +758,8 @@ export class gurpsItem extends Item {
   addUnarmedProfiles(punch, kick) {
     let unarmedST = 10;
     if (this.actor) { // If there's an actor
-      if (this.actor.data) {
-        if (this.actor.system) {
-          unarmedST = actorHelpers.fetchStat(this.actor, "st");
-        }
+      if (this.actor.system) {
+        unarmedST = actorHelpers.fetchStat(this.actor, "st");
       }
     }
 
@@ -4491,27 +4487,25 @@ export class gurpsItem extends Item {
     this.system.bowDesign.userSTFromActor = false; // Reset whether we're getting the ST from the actor.
     this.system.bowDesign.strongBowCrossbowFinesseFromActor = false; // Reset whether we're getting the perk from the user.
     if (this.actor) { // If there's an actor
-      if (this.actor.data) {
-        if (this.actor.system) {
-          let smDiscount = attributeHelpers.calcSMDiscount(this.actor.system.bio.sm);
-          let st = attributeHelpers.calcStOrHt(this.actor.system.primaryAttributes.strength, smDiscount);
-          let lifting = attributeHelpers.calcLiftingSt(st, this.actor.system.primaryAttributes.lifting, smDiscount)
+      if (this.actor.system) {
+        let smDiscount = attributeHelpers.calcSMDiscount(this.actor.system.bio.sm);
+        let st = attributeHelpers.calcStOrHt(this.actor.system.primaryAttributes.strength, smDiscount);
+        let lifting = attributeHelpers.calcLiftingSt(st, this.actor.system.primaryAttributes.lifting, smDiscount)
 
-          this.system.bowDesign.userST = lifting; // Get lifting ST from the user
-          this.system.bowDesign.userSTFromActor = true; // Flag that we're getting the ST from the user
+        this.system.bowDesign.userST = lifting; // Get lifting ST from the user
+        this.system.bowDesign.userSTFromActor = true; // Flag that we're getting the ST from the user
 
-          for (let i = 0; i < this.actor.system.items._source.length; i++) { // Loop through the list of the actor's items
-            if (this.actor.system.items._source[i].type === "Trait") { // Make sure it's a trait
-              if ((this.actor.system.items._source[i].name.toLowerCase() == "strongbow" || // Check if they have strongbow
-                  this.actor.system.items._source[i].name.toLowerCase() == "strong bow") &&
-                  (this.system.bowDesign.type == "bow" || this.system.bowDesign.type == "footbow")) { // And make sure this is a bow
-                this.system.bowDesign.strongBowCrossbowFinesseFromActor = true; // Flag that the perk is coming from the actor.
-                this.system.bowDesign.strongBowCrossbowFinesse = true; // Set the status of the perk
-              }
-              else if ((this.actor.system.items._source[i].name.toLowerCase() == "crossbow finesse") && (this.system.bowDesign.type == "xbow")) {
-                this.system.bowDesign.strongBowCrossbowFinesseFromActor = true; // Flag that the perk is coming from the actor.
-                this.system.bowDesign.strongBowCrossbowFinesse = true; // Set the status of the perk
-              }
+        for (let i = 0; i < this.actor.items._source.length; i++) { // Loop through the list of the actor's items
+          if (this.actor.items._source[i].type === "Trait") { // Make sure it's a trait
+            if ((this.actor.items._source[i].name.toLowerCase() == "strongbow" || // Check if they have strongbow
+                this.actor.items._source[i].name.toLowerCase() == "strong bow") &&
+                (this.system.bowDesign.type == "bow" || this.system.bowDesign.type == "footbow")) { // And make sure this is a bow
+              this.system.bowDesign.strongBowCrossbowFinesseFromActor = true; // Flag that the perk is coming from the actor.
+              this.system.bowDesign.strongBowCrossbowFinesse = true; // Set the status of the perk
+            }
+            else if ((this.actor.items._source[i].name.toLowerCase() == "crossbow finesse") && (this.system.bowDesign.type == "xbow")) {
+              this.system.bowDesign.strongBowCrossbowFinesseFromActor = true; // Flag that the perk is coming from the actor.
+              this.system.bowDesign.strongBowCrossbowFinesse = true; // Set the status of the perk
             }
           }
         }
@@ -4520,15 +4514,15 @@ export class gurpsItem extends Item {
 
     if (this.system.bowDesign.strongBowCrossbowFinesse) { // If the perk is set
       if (this.actor) { // If there's an actor we will need to fetch the finesse effect from the sheet
-        if (this.actor.data) {
+        if (this.actor.system) {
           let skillLevel = 0;
           let attrLevel = 0;
           let relativeBonus = 0;
-          for (let i = 0; i < this.actor.system.items._source.length; i++) { // Loop through the list of the actor's items
-            if (this.actor.system.items._source[i].type === "Rollable") { // Make sure it's a skill
-              if (this.actor.system.items._source[i].name.toLowerCase() == this.system.bowDesign.skill.toLowerCase()) { // And make sure it matches the skill name they've given
-                skillLevel = skillHelpers.computeSkillLevel(this.actor, this.actor.system.items._source[i].data); // Get the skill level.
-                attrLevel = skillHelpers.getBaseAttrValue(this.actor.system.items._source[i].system.baseAttr, this.actor); // Get the attribute level
+          for (let i = 0; i < this.actor.items._source.length; i++) { // Loop through the list of the actor's items
+            if (this.actor.items._source[i].type === "Rollable") { // Make sure it's a skill
+              if (this.actor.items._source[i].name.toLowerCase() == this.system.bowDesign.skill.toLowerCase()) { // And make sure it matches the skill name they've given
+                skillLevel = skillHelpers.computeSkillLevel(this.actor, this.actor.items._source[i].data); // Get the skill level.
+                attrLevel = skillHelpers.getBaseAttrValue(this.actor.items._source[i].system.baseAttr, this.actor); // Get the attribute level
                 relativeBonus = skillLevel - attrLevel;
                 relativeBonus = Math.max(relativeBonus, 0); // Make the bonus at least zero.
                 relativeBonus = Math.min(relativeBonus, 2); // Make the bonus no more than two
@@ -5040,7 +5034,7 @@ export class gurpsItem extends Item {
     //Check to see if there is an actor yet
     console.log(this);
     if (this.actor){
-      if (this.actor.data) {
+      if (this.actor.system) {
         let damage;
         //Do logic stuff for melee profiles
         if (this.system.melee) {
@@ -5055,12 +5049,16 @@ export class gurpsItem extends Item {
 
                 if (this.system.melee[meleeKeys[k]].skill.toLowerCase() == "dx") {
                   level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity);
-                } else {
+                }
+                else if (this.system.melee[meleeKeys[k]].skill.toLowerCase() == "iq") {
+                  level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.intelligence);
+                }
+                else {
                   //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-                  for (let i = 0; i < this.actor.system.items._source.length; i++) {
-                    if (this.actor.system.items._source[i].type === "Rollable") {
-                      if (this.system.melee[meleeKeys[k]].skill === this.actor.system.items._source[i].name) {
-                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.system.items._source[i].data);
+                  for (let i = 0; i < this.actor.items._source.length; i++) {
+                    if (this.actor.items._source[i].type === "Rollable") {
+                      if (this.system.melee[meleeKeys[k]].skill === this.actor.items._source[i].name) {
+                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items._source[i].data);
                       }
                     }
                   }
@@ -5124,10 +5122,10 @@ export class gurpsItem extends Item {
                   level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity);
                 } else {
                   //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-                  for (let i = 0; i < this.actor.system.items._source.length; i++) {
-                    if (this.actor.system.items._source[i].type === "Rollable") {
-                      if (this.system.ranged[rangedKeys[k]].skill === this.actor.system.items._source[i].name) {
-                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.system.items._source[i].data);
+                  for (let i = 0; i < this.actor.items._source.length; i++) {
+                    if (this.actor.items._source[i].type === "Rollable") {
+                      if (this.system.ranged[rangedKeys[k]].skill === this.actor.items._source[i].name) {
+                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items._source[i].data);
                       }
                     }
                   }
@@ -5168,24 +5166,35 @@ export class gurpsItem extends Item {
           }
         }
 
+        console.log(this)
+        console.log(this.system)
+        console.log(this.system.affliction)
         if (this.system.affliction) {
           let afflictionKeys = Object.keys(this.system.affliction);
+          console.log(afflictionKeys)
           if (afflictionKeys.length) { // Check to see if there are any affliction profiles
             for (let k = 0; k < afflictionKeys.length; k++) {
+              console.log(this.system.affliction[afflictionKeys[k]])
               if (this.system.affliction[afflictionKeys[k]].name) { // Check to see if name is filled in. Otherwise don't bother.
-
+                console.log(this.system.affliction[afflictionKeys[k]].name)
                 damage = this.damageParseSwThr(this.system.affliction[afflictionKeys[k]].damageInput); // Update damage value
 
 
                 if (this.system.type == "Spell") {
                   this.system.affliction[afflictionKeys[k]].level = this.system.level;
                 }
+                else if (this.system.affliction[afflictionKeys[k]].skill.toLowerCase() == "dx") {
+                  this.system.affliction[afflictionKeys[k]].level = +attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity) + +this.system.affliction[afflictionKeys[k]].skillMod;
+                }
+                else if (this.system.affliction[afflictionKeys[k]].skill.toLowerCase() == "iq") {
+                  this.system.affliction[afflictionKeys[k]].level = +attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.intelligence) + +this.system.affliction[afflictionKeys[k]].skillMod;
+                }
                 else {
                   // Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-                  for (let i = 0; i < this.actor.system.items._source.length; i++) {
-                    if (this.actor.system.items._source[i].type === "Rollable") {
-                      if (this.system.affliction[afflictionKeys[k]].skill === this.actor.system.items._source[i].name) {
-                        this.system.affliction[afflictionKeys[k]].level = +skillHelpers.computeSkillLevel(this.actor, this.actor.system.items._source[i].data) + +this.system.affliction[afflictionKeys[k]].skillMod;;
+                  for (let i = 0; i < this.actor.items._source.length; i++) {
+                    if (this.actor.items._source[i].type === "Rollable") {
+                      if (this.system.affliction[afflictionKeys[k]].skill === this.actor.items._source[i].name) {
+                        this.system.affliction[afflictionKeys[k]].level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items._source[i].system) + +this.system.affliction[afflictionKeys[k]].skillMod;
                       }
                     }
                   }
@@ -5253,31 +5262,29 @@ export class gurpsItem extends Item {
 
   _prepareSpellData() {
     if (this.actor) {
-      if (this.actor.data) {
-        if (this.actor.system) {
-          if (this.actor.system.magic) {
+      if (this.actor.system) {
+        if (this.actor.system.magic) {
 
-            // Calculate the total magical attribute
-            let totalMagicAttribute = 0;
-            let points = this.system.points;
-            let mod = this.system.mod;
-            let attributeMod = this.actor.system.magic.attributeMod;
-            let difficulty = this.system.difficulty;
-            let magery = this.actor.system.magic.magery;
-            let attribute = this.actor.system.magic.attribute;
+          // Calculate the total magical attribute
+          let totalMagicAttribute = 0;
+          let points = this.system.points;
+          let mod = this.system.mod;
+          let attributeMod = this.actor.system.magic.attributeMod;
+          let difficulty = this.system.difficulty;
+          let magery = this.actor.system.magic.magery;
+          let attribute = this.actor.system.magic.attribute;
 
-            let level = skillHelpers.computeSpellLevel(this.actor, points, mod, attributeMod, difficulty, magery, attribute)
+          let level = skillHelpers.computeSpellLevel(this.actor, points, mod, attributeMod, difficulty, magery, attribute)
 
-            if (attribute != "") { // Attribute is not blank
-              totalMagicAttribute += this.getBaseAttrValue(attribute)
-            }
-
-            totalMagicAttribute += attributeMod ? attributeMod : 0;
-            totalMagicAttribute += magery ? magery : 0;
-            this.system.magicalAbility = totalMagicAttribute;
-
-            this.system.level = level;
+          if (attribute != "") { // Attribute is not blank
+            totalMagicAttribute += this.getBaseAttrValue(attribute)
           }
+
+          totalMagicAttribute += attributeMod ? attributeMod : 0;
+          totalMagicAttribute += magery ? magery : 0;
+          this.system.magicalAbility = totalMagicAttribute;
+
+          this.system.level = level;
         }
       }
     }

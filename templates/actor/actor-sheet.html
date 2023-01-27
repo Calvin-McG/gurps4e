@@ -271,10 +271,10 @@
 							</td>
 						</tr>
 						{{/unless}}
-						{{#each ../actor.system.items as |item id|}}
+						{{#each ../items as |item id|}}
 							{{#if (eq type "Trait") }}
 								{{#if (eq item.system.subCategory category)}}
-									<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item.id}}">
+									<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item._id}}">
 										<td class="item-image" style="width: 24px; padding: 0 2px">
 											<img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
 										</td>
@@ -282,20 +282,20 @@
 												{{item.name}}
 										</td>
 										<td class="item-notes">
-												{{actor.system.shortNotes}}
+												{{item.system.shortNotes}}
 										</td>
 										<td class="item-skill" style="width: 3em;">
-											{{#if (isInt actor.system.level)}}
-												{{#if actor.system.level}}
-													<label for="actor.system.level" class="fa fa-dice-six rollable" data-level="{{actor.system.level}}"
+											{{#if (isInt item.system.level)}}
+												{{#if item.system.level}}
+													<label for="item.system.level" class="fa fa-dice-six rollable" data-level="{{item.system.level}}"
 															 data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
-													{{actor.system.level}}
+													{{item.system.level}}
 												{{/if}}
 											{{/if}}
 										</td>
 										<td class="item-points" style="width: 4em;">
 											<div class="item-notes">
-												{{actor.system.points}}
+												{{item.system.points}}
 											</div>
 										</td>
 
@@ -330,10 +330,10 @@
 							</td>
 						</tr>
 						{{/unless}}
-						{{#each ../actor.system.items as |item id|}}
+						{{#each ../items as |item id|}}
 							{{#if (eq type "Rollable")}}
 								{{#if (eq item.system.subCategory category)}}
-									<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item.id}}">
+									<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item._id}}">
 										<td class="item-image" style="width: 24px; padding: 0 2px">
 											<img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
 										</td>
@@ -341,15 +341,15 @@
 											{{item.name}}
 										</td>
 										<td class="item-notes">
-											{{actor.system.shortNotes}}
+											{{item.system.shortNotes}}
 										</td>
 										<td class="item-points" style="width: 4em;">
-											{{actor.system.points}}
+											{{item.system.points}}
 										</td>
 										<td class="item-skill" style="width: 3em;">
 											<label for="actor.system.level" class="fa fa-dice-six rollable" data-level="{{actor.system.level}}"
 												   data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
-											{{actor.system.level}}
+											{{item.system.level}}
 										</td>
 										<td class="item-controls" style="width: 30px;">
 											<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
@@ -484,7 +484,7 @@
 						<td>Reach</td>
 						<td>ST</td>
 					</tr>
-					{{#each actor.system.items as |item id|}}
+					{{#each actor.items as |item id|}}
 					{{#each item.system.melee as |melee mid|}}
 					<tr>
 						<td>{{item.name}}</td>
@@ -533,7 +533,7 @@
 						<td>Rcl</td>
 						<td>ST</td>
 					</tr>
-					{{#each actor.system.items as |item id|}}
+					{{#each actor.items as |item id|}}
 					{{#each item.system.ranged as |ranged rid|}}
 					<tr>
 						<td>{{item.name}}</td>
@@ -562,20 +562,20 @@
 				<table class="items-list">
 					<tr class="bold">
 						<td>Affliction</td>
-						<td>Attack Name</td>
+						<td>Attack</td>
 						<td>Level</td>
 						<td>Damage</td>
 						<td>Resistance Roll</td>
 						<td>Rule Of</td>
 					</tr>
-					{{#each actor.system.items as |item id|}}
+					{{#each actor.items as |item id|}}
 					{{#each item.system.affliction as |affliction mid|}}
 					<tr>
 						<td>{{item.name}}</td>
 						<td>{{affliction.name}}</td>
 						<td>
-							{{item.system.level}}
-							<label class="fa fa-dice-six rollable" data-level="{{item.system.level}}"
+							{{affliction.level}}
+							<label class="fa fa-dice-six rollable" data-level="{{affliction.level}}"
 								   data-label="Casts &lt;b&gt;{{item.name}} {{affliction.name}}&lt;/b&gt;" data-type="skill"></label>
 						</td>
 						<td>
@@ -616,14 +616,14 @@
 						</tr>
 						{{/unless}}
 
-						{{#each ../actor.system.items as |item id|}}
+						{{#each ../items as |item id|}}
 							{{#if (or (eq type "Equipment") (eq type "Custom Weapon") (eq type "Custom Armour") (eq type "Travel Fare") (eq type "Custom Jewelry")) }}
 								{{#if (eq item.system.subCategory category)}}
-									<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item.id}}">
+									<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item._id}}">
 										<td class="item-image" style="width: 24px; padding: 0 2px">
 											<img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
 										</td>
-										<td class="item-name"><span>{{item.system.name}}</span></td>
+										<td class="item-name"><span>{{item.name}}</span></td>
 										<td class="item-notes"><span>{{item.system.shortNotes}}</span></td>
 										<td style="width: 1em;"><span>{{item.system.tl}}</span></td>
 										<td style="width: 1em;"><span>{{item.system.lc}}</span></td>
@@ -2885,7 +2885,7 @@
 									</td>
 								</tr>
 							{{/unless}}
-							{{#each ../actor.system.items as |item id|}}
+							{{#each ../items as |item id|}}
 								{{#if (eq type "Spell")}}
 									{{#if (eq item.system.subCategory category)}}
 										<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item.id}}">
