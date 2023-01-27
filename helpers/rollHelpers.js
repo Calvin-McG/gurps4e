@@ -92,7 +92,7 @@ export class rollHelpers {
         }
 
         if (chat){
-            ChatMessage.create({ content: html, user: game.user.data.document.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+            ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
         }
         else {
             return {
@@ -213,7 +213,7 @@ export class rollHelpers {
         }
 
         if (chat){
-            ChatMessage.create({ content: html, user: game.user.data.document.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+            ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
         }
         else {
             return {

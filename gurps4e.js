@@ -41,9 +41,9 @@ Hooks.once('init', async function() {
   });
 
   // This helper introduces conditional operators. It is used like this:
-  // {{#ifCond  data.data.tl '>=' 9 }}
+  // {{#ifCond  system.tl '>=' 9 }}
   //  <div class="header">
-  //   <a class="item" data-tab="melee">Design Laser</a>
+  //   <a class="item" system-tab="melee">Design Laser</a>
   //  </div>
   // {{/ifCond}}
   Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {

@@ -22,7 +22,7 @@ export class gurpsItemSheet extends ItemSheet {
     // Alternatively, you could use the following return statement to do a
     // unique item sheet by type, like `weapon-sheet.html`.
 
-    return `${path}/${this.item.data.type}-sheet.html`;
+    return `${path}/${this.item.type}-sheet.html`;
   }
 
   /* -------------------------------------------- */
@@ -94,16 +94,16 @@ export class gurpsItemSheet extends ItemSheet {
     }
 
     _saveItem(event) {
-        this.item.update({ ["data"]: this.item.data.data });
+        this.item.update({ ["system"]: this.item.system });
     }
 
 
     _onAddArrowRow(event) {
         // If there's no arrow container, add one
-        if(typeof this.item.data.data.bowDesign.arrows == "undefined") {
-            this.item.data.data.bowDesign.arrows = [];
+        if(typeof this.item.system.bowDesign.arrows == "undefined") {
+            this.item.system.bowDesign.arrows = [];
         }
-        let keys = Object.keys(this.item.data.data.bowDesign.arrows); // Get the existing set of arrow keys
+        let keys = Object.keys(this.item.system.bowDesign.arrows); // Get the existing set of arrow keys
         let newKey = 0; // Init the new key
         if (keys.length){ // The list of keys is not empty
             newKey = (+keys[keys.length-1] + +1); // Add the new one in at the end
@@ -138,9 +138,9 @@ export class gurpsItemSheet extends ItemSheet {
             },
         }; // Init the new arrow row
 
-        this.item.data.data.bowDesign.arrows[newKey] = newRow;
+        this.item.system.bowDesign.arrows[newKey] = newRow;
 
-        this.item.update({ ["data"]: this.item.data.data }); // Add the new arrow to the list of melee keys
+        this.item.update({ ["system"]: this.item.system }); // Add the new arrow to the list of melee keys
     }
 
     _onDeleteArrowRow(event) {
@@ -153,7 +153,7 @@ export class gurpsItemSheet extends ItemSheet {
                     label: "Delete",
                     callback: () => {
                         let id = event.currentTarget.id.substring(6);
-                        this.item.update({ ["data.bowDesign.arrows.-=" + id] : null});
+                        this.item.update({ ["system.bowDesign.arrows.-=" + id] : null});
                     }
                 },
                 cancel: {
@@ -177,10 +177,10 @@ export class gurpsItemSheet extends ItemSheet {
 
     _onAddAmmoRow(event) {
         // If there's no arrow container, add one
-        if(typeof this.item.data.data.firearmDesign.ammunition == "undefined") {
-            this.item.data.data.firearmDesign.ammunition = [];
+        if(typeof this.item.system.firearmDesign.ammunition == "undefined") {
+            this.item.system.firearmDesign.ammunition = [];
         }
-        let keys = Object.keys(this.item.data.data.firearmDesign.ammunition); // Get the existing set of ammo
+        let keys = Object.keys(this.item.system.firearmDesign.ammunition); // Get the existing set of ammo
         let newKey = 0; // Init the new key
         if (keys.length){ // The list of keys is not empty
             newKey = (+keys[keys.length-1] + +1); // Add the new one in at the end
@@ -204,9 +204,9 @@ export class gurpsItemSheet extends ItemSheet {
             "rofBonus": 0,
         }; // Init the new arrow row
 
-        this.item.data.data.firearmDesign.ammunition[newKey] = newRow;
+        this.item.system.firearmDesign.ammunition[newKey] = newRow;
 
-        this.item.update({ ["data"]: this.item.data.data }); // Add the new arrow to the list of melee keys
+        this.item.update({ ["system"]: this.item.system }); // Add the new arrow to the list of melee keys
     }
 
     _onDeleteAmmoRow(event) {
@@ -219,7 +219,7 @@ export class gurpsItemSheet extends ItemSheet {
                     label: "Delete",
                     callback: () => {
                         let id = event.currentTarget.id.substring(4);
-                        this.item.update({ ["data.firearmDesign.ammunition.-=" + id] : null});
+                        this.item.update({ ["system.firearmDesign.ammunition.-=" + id] : null});
                     }
                 },
                 cancel: {
@@ -322,7 +322,7 @@ export class gurpsItemSheet extends ItemSheet {
             modifier = +modifier * +5;
         }
 
-        let locationDRBlock = getProperty(this.object.data,event.currentTarget.id);
+        let locationDRBlock = getProperty(this,event.currentTarget.id);
 
         if (locationDRBlock.subLocation) { // The location has sub locations
             let locationKeys = Object.keys(locationDRBlock.subLocation);
@@ -351,17 +351,20 @@ export class gurpsItemSheet extends ItemSheet {
             ((type === "tox"    || typeof type == 'undefined') ? locationDRBlock.drTox  = (isNaN(parseInt(locationDRBlock.drTox )) ? 0 : parseInt(locationDRBlock.drTox )) + parseInt(modifier) : 0);
         }
 
-        this.item.update({ [event.currentTarget.id]: locationDRBlock });
+        this.item.update({ [event.currentTarget.id.substring(5)]: locationDRBlock });
     }
 
     _onAddRow(event) {
         // If there's no melee container, add one
-        if(typeof this.item.data.data.melee == "undefined") {
-            this.item.data.data.melee = {
+        console.log(this)
+        console.log(this.item)
+        console.log(this.item.system)
+        if(typeof this.item.system.melee == "undefined") {
+            this.item.system.melee = {
                 "melee": []
             }
         }
-        let keys = Object.keys(this.item.data.data.melee); // Get the existing set of melee keys
+        let keys = Object.keys(this.item.system.melee); // Get the existing set of melee keys
         let newKey = 0; // Init the new key
         if (keys.length){ // The list of keys is not empty
             newKey = (+keys[keys.length-1] + +1); // Add the new one in at the end
@@ -372,15 +375,16 @@ export class gurpsItemSheet extends ItemSheet {
 
         let newRow = { "name": "" }; // Init the new melee row
 
-        this.item.update({ ["data.melee." + newKey]: newRow }); // Add the new row to the list of melee keys
+        this.item.update({ ["system.melee." + newKey]: newRow }); // Add the new row to the list of melee keys
+        console.log(this.item);
     }
     _onAddRangedRow(event) {
-        if (typeof this.item.data.data.ranged == "undefined") {
-            this.item.data.data.ranged = {
+        if (typeof this.item.system.ranged == "undefined") {
+            this.item.system.ranged = {
                 "ranged": []
             }
         }
-        let keys = Object.keys(this.item.data.data.ranged);
+        let keys = Object.keys(this.item.system.ranged);
         let newKey = 0;
         if (keys.length){//Array is not empty
             newKey = (+keys[keys.length-1] + +1);
@@ -390,15 +394,15 @@ export class gurpsItemSheet extends ItemSheet {
         }
 
         let newRow = { "name": "" };
-        this.item.update({ ["data.ranged." + newKey]: newRow });
+        this.item.update({ ["system.ranged." + newKey]: newRow });
     }
     _onAddAfflictionRow(event) {
-        if (typeof this.item.data.data.affliction == "undefined") {
-            this.item.data.data.affliction = {
+        if (typeof this.item.system.affliction == "undefined") {
+            this.item.system.affliction = {
                 "0" : []
             }
         }
-        let keys = Object.keys(this.item.data.data.affliction);
+        let keys = Object.keys(this.item.system.affliction);
         let newKey = 0;
         if (keys.length){//Array is not empty
             newKey = (+keys[keys.length-1] + +1);
@@ -413,17 +417,17 @@ export class gurpsItemSheet extends ItemSheet {
             "resistanceRollPenalty": 0,
             "ruleOf": 16
         };
-        this.item.update({ ["data.affliction." + newKey]: newRow });
+        this.item.update({ ["system.affliction." + newKey]: newRow });
     }
     _onAddDefaultRow(event) {
-        let keys = Object.keys(this.item.data.data.defaults);
+        let keys = Object.keys(this.item.system.defaults);
         let newKey = 0;
         if (keys.length){//Array is not empty
             newKey = (+keys[keys.length-1] + +1);
         }
 
         let newRow = { "skill": "" };
-        this.item.update({ ["data.defaults." + newKey]: newRow });
+        this.item.update({ ["system.defaults." + newKey]: newRow });
     }
 
     _onDeleteRow(event) {
@@ -436,7 +440,7 @@ export class gurpsItemSheet extends ItemSheet {
                     label: "Delete",
                     callback: () => {
                         let id = event.currentTarget.id.substring(6);
-                        this.item.update({ ["data.melee.-=" + id] : null});
+                        this.item.update({ ["system.melee.-=" + id] : null});
                     }
                 },
                 cancel: {
@@ -468,7 +472,7 @@ export class gurpsItemSheet extends ItemSheet {
                     label: "Delete",
                     callback: () => {
                         let id = event.currentTarget.id.substring(6);
-                        this.item.update({ ["data.ranged.-=" + id] : null});
+                        this.item.update({ ["system.ranged.-=" + id] : null});
                     }
                 },
                 cancel: {
@@ -500,7 +504,7 @@ export class gurpsItemSheet extends ItemSheet {
                     label: "Delete",
                     callback: () => {
                         let id = event.currentTarget.id.substring(10);
-                        this.item.update({ ["data.affliction.-=" + id] : null});
+                        this.item.update({ ["system.affliction.-=" + id] : null});
                     }
                 },
                 cancel: {
@@ -532,7 +536,7 @@ export class gurpsItemSheet extends ItemSheet {
                     label: "Delete",
                     callback: () => {
                         let id = event.currentTarget.id.substring(7);
-                        this.item.update({ ["data.defaults.-=" + id] : null});
+                        this.item.update({ ["system.defaults.-=" + id] : null});
                     }
                 },
                 cancel: {
@@ -559,7 +563,7 @@ export class gurpsItemSheet extends ItemSheet {
         let bodyType = event.target.value;
 
         if(bodyType == ""){
-            this.item.update({ "data.armour.bodyType.-=body" : null}).then( item => {// Remove the old body
+            this.item.update({ "system.armour.bodyType.-=body" : null}).then( item => {// Remove the old body
             });
             return
         }
@@ -804,7 +808,7 @@ export class gurpsItemSheet extends ItemSheet {
             bodyObj.neck = this.addNeck();
         }
 
-        this.item.update({ "data.armour.bodyType.body" : bodyObj }) // Add the new body
+        this.item.update({ "system.armour.bodyType.body" : bodyObj }) // Add the new body
     }
 
     addSkull() {

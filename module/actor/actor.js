@@ -25,9 +25,10 @@ export class gurpsActor extends Actor {
 	// }
 
 	/**
-	 * Augment the basic actor data with additional dynamic data.
+	 * Augment the basic actor data with additional dynamic system.
 	 */
 	prepareData() {
+		console.log("Actor is updating.")
 		super.prepareData();
 
 		this.checkUndefined();
@@ -63,10 +64,11 @@ export class gurpsActor extends Actor {
 
 		// Recalculate encumbrance values, along with effective dodge and move. Do this last so move and dodge is correct.
 		this.recalcEncValues();
+		console.log("Actor is done updating.")
 	}
 
 	checkUndefined(){
-		if (typeof this.data.data.senses == 'undefined'){ // If senses do not yet exist, create a basic object for them
+		if (typeof this.system.senses == 'undefined'){ // If senses do not yet exist, create a basic object for them
 			let senses = {
 				vis: {
 					id: "vis",
@@ -106,133 +108,133 @@ export class gurpsActor extends Actor {
 				}
 			}
 
-			this.data.data.senses = senses;
+			this.system.senses = senses;
 		}
 
-		if (this.data.data.bio.sm) {
-			this.data.data.bio.sm.value = Math.floor(this.data.data.bio.sm.value); // Remove decimal places from SM.
+		if (this.system.bio.sm) {
+			this.system.bio.sm.value = Math.floor(this.system.bio.sm.value); // Remove decimal places from SM.
 		}
 
-		if (this.data.data.bio.height.value) {
-			if (this.data.data.bio.height.value <= 0) {
-				this.data.data.bio.height.value = 1;
+		if (this.system.bio.height.value) {
+			if (this.system.bio.height.value <= 0) {
+				this.system.bio.height.value = 1;
 			}
 		}
 
-		if (this.data.data.bio.weight.value) {
-			if (this.data.data.bio.weight.value <= 0) {
-				this.data.data.bio.weight.value = 1;
+		if (this.system.bio.weight.value) {
+			if (this.system.bio.weight.value <= 0) {
+				this.system.bio.weight.value = 1;
 			}
 		}
 
-		if (this.data.data.senses.vis) {
-			this.data.data.senses.vis = {
+		if (this.system.senses.vis) {
+			this.system.senses.vis = {
 				id: "vis",
 				abbr: "Vision",
-				value: this.data.data.senses.vis.value,
-				mod: this.data.data.senses.vis.mod
+				value: 	this.system.senses.vis.value,
+				mod: 	this.system.senses.vis.mod
 			}
 		}
-		if (this.data.data.senses.hear) {
-			this.data.data.senses.hear = {
+		if (this.system.senses.hear) {
+			this.system.senses.hear = {
 				id: "hear",
 				abbr: "Hearing",
-				value: this.data.data.senses.hear.value,
-				mod: this.data.data.senses.hear.mod
+				value: 	this.system.senses.hear.value,
+				mod: 	this.system.senses.hear.mod
 			}
 		}
-		if (this.data.data.senses.smell) {
-			this.data.data.senses.smell = {
+		if (this.system.senses.smell) {
+			this.system.senses.smell = {
 				id: "smell",
 				abbr: "Smell & Taste",
-				value: this.data.data.senses.smell.value,
-				mod: this.data.data.senses.smell.mod
+				value: 	this.system.senses.smell.value,
+				mod: 	this.system.senses.smell.mod
 			}
 		}
-		if (this.data.data.senses.touch) {
-			this.data.data.senses.touch = {
+		if (this.system.senses.touch) {
+			this.system.senses.touch = {
 				id: "touch",
 				abbr: "Touch",
-				value: this.data.data.senses.touch.value,
-				mod: this.data.data.senses.touch.mod
+				value: 	this.system.senses.touch.value,
+				mod: 	this.system.senses.touch.mod
 			}
 		}
-		if (this.data.data.senses.extra1) {
-			this.data.data.senses.extra1 = {
+		if (this.system.senses.extra1) {
+			this.system.senses.extra1 = {
 				id: "extra1",
-				abbr: this.data.data.senses.extra1.abbr ? this.data.data.senses.extra1.abbr : "",
-				value: this.data.data.senses.extra1.value ? this.data.data.senses.extra1.value : 0,
-				mod: this.data.data.senses.extra1.mod ? this.data.data.senses.extra1.mod : 0
+				abbr: 	this.system.senses.extra1.abbr ?	this.system.senses.extra1.abbr : "",
+				value: 	this.system.senses.extra1.value ?	this.system.senses.extra1.value : 0,
+				mod: 	this.system.senses.extra1.mod ?		this.system.senses.extra1.mod : 0
 			}
 		}
-		if (this.data.data.senses.extra2) {
-			this.data.data.senses.extra2 = {
+		if (this.system.senses.extra2) {
+			this.system.senses.extra2 = {
 				id: "extra2",
-				abbr: this.data.data.senses.extra2.abbr ? this.data.data.senses.extra2.abbr : "",
-				value: this.data.data.senses.extra2.value ? this.data.data.senses.extra2.value : 0,
-				mod: this.data.data.senses.extra2.mod ? this.data.data.senses.extra2.mod : 0
+				abbr:	this.system.senses.extra2.abbr ? 	this.system.senses.extra2.abbr : "",
+				value:	this.system.senses.extra2.value ? 	this.system.senses.extra2.value : 0,
+				mod:	this.system.senses.extra2.mod ? 		this.system.senses.extra2.mod : 0
 			}
 		}
 
 		// Check for enhanced defences
-		if (typeof this.data.data.enhanced == 'undefined'){ // If enhanced defences do not yet exist, create a basic object for them
+		if (typeof this.system.enhanced == 'undefined'){ // If enhanced defences do not yet exist, create a basic object for them
 			let enhanced = {
 				parry: 0,
 				block: 0,
 				dodge: 0
 			}
 
-			this.data.data.enhanced = enhanced;
+			this.system.enhanced = enhanced;
 		}
 		else { // Check each individual value and set it to 0 if it's blank or undefined.
-			if (typeof this.data.data.enhanced.parry == 'undefined' || this.data.data.enhanced.parry === "") {
-				this.data.data.enhanced.parry = 0;
+			if (typeof this.system.enhanced.parry == 'undefined' || this.system.enhanced.parry === "") {
+				this.system.enhanced.parry = 0;
 			}
-			if (typeof this.data.data.enhanced.block == 'undefined' || this.data.data.enhanced.block === "") {
-				this.data.data.enhanced.block = 0;
+			if (typeof this.system.enhanced.block == 'undefined' || this.system.enhanced.block === "") {
+				this.system.enhanced.block = 0;
 			}
-			if (typeof this.data.data.enhanced.dodge == 'undefined' || this.data.data.enhanced.dodge === "") {
-				this.data.data.enhanced.dodge = 0;
+			if (typeof this.system.enhanced.dodge == 'undefined' || this.system.enhanced.dodge === "") {
+				this.system.enhanced.dodge = 0;
 			}
 		}
 
 		// Check for vision cones
-		if (typeof this.data.data.vision == 'undefined') {
+		if (typeof this.system.vision == 'undefined') {
 			let vision = {
 				front: 180,
 				side: 240
 			}
-			this.data.data.vision = vision;
+			this.system.vision = vision;
 		}
 		else {
-			if (typeof this.data.data.vision.front == 'undefined' || this.data.data.vision.front === "") {
-				this.data.data.enhanced.parry = 180;
+			if (typeof this.system.vision.front == 'undefined' || this.system.vision.front === "") {
+				this.system.enhanced.parry = 180;
 			}
-			if (typeof this.data.data.vision.side == 'undefined' || this.data.data.vision.side === "") {
-				this.data.data.enhanced.block = 240;
+			if (typeof this.system.vision.side == 'undefined' || this.system.vision.side === "") {
+				this.system.enhanced.block = 240;
 			}
 		}
 
 		// Check for flags
-		if (typeof this.data.data.flag == 'undefined') {
+		if (typeof this.system.flag == 'undefined') {
 			let flag = {
 				combatReflexes: false,
 				showSenses: false
 			}
-			this.data.data.flag = flag;
+			this.system.flag = flag;
 		}
 		else {
-			if (typeof this.data.data.flag.combatReflexes == 'undefined' || this.data.data.flag.combatReflexes === "") {
-				this.data.data.flag.combatReflexes = false;
+			if (typeof this.system.flag.combatReflexes == 'undefined' || this.system.flag.combatReflexes === "") {
+				this.system.flag.combatReflexes = false;
 			}
-			if (typeof this.data.data.flag.showSenses == 'undefined' || this.data.data.flag.showSenses === "") {
-				this.data.data.flag.showSenses = false;
+			if (typeof this.system.flag.showSenses == 'undefined' || this.system.flag.showSenses === "") {
+				this.system.flag.showSenses = false;
 			}
 		}
 
 		// Check for injury tolerance block
-		if (typeof this.data.data.injuryTolerances == 'undefined') { // If there is not an injury tolerance block, add one.
-			this.data.data.injuryTolerances = {
+		if (typeof this.system.injuryTolerances == 'undefined') { // If there is not an injury tolerance block, add one.
+			this.system.injuryTolerances = {
 				damageReduction: 1,
 				diffuse: false,
 				highPainThreshold: false,
@@ -245,16 +247,16 @@ export class gurpsActor extends Actor {
 			}
 		}
 		else { // If there is an injury tolerance block, make sure damage reduction exists.
-			if (typeof this.data.data.injuryTolerances.damageReduction == 'undefined' ||
-				this.data.data.injuryTolerances.damageReduction == "" ||
-				this.data.data.injuryTolerances.damageReduction == null) {
-				this.data.data.injuryTolerances.damageReduction = 1;
+			if (typeof this.system.injuryTolerances.damageReduction == 'undefined' ||
+				this.system.injuryTolerances.damageReduction == "" ||
+				this.system.injuryTolerances.damageReduction == null) {
+				this.system.injuryTolerances.damageReduction = 1;
 			}
 		}
 
 		// Check for body mods block
-		if (typeof this.data.data.bodyModifiers == 'undefined') { // If there is not a body modifier block, add one.
-			this.data.data.bodyModifiers = {
+		if (typeof this.system.bodyModifiers == 'undefined') { // If there is not a body modifier block, add one.
+			this.system.bodyModifiers = {
 				bornBiter: 0,
 				noBrain: false,
 				noEyes: false,
@@ -265,417 +267,415 @@ export class gurpsActor extends Actor {
 			}
 		}
 		else { // If there is an injury tolerance block, make sure bornBiter exists.
-			if (typeof this.data.data.bodyModifiers.bornBiter == 'undefined' || this.data.data.bodyModifiers.bornBiter == "" || this.data.data.bodyModifiers.bornBiter == null) { // bornBiter is blank, null, or undefined
-				this.data.data.bodyModifiers.bornBiter = 0; // Set to default value
+			if (typeof this.system.bodyModifiers.bornBiter == 'undefined' || this.system.bodyModifiers.bornBiter == "" || this.system.bodyModifiers.bornBiter == null) { // bornBiter is blank, null, or undefined
+				this.system.bodyModifiers.bornBiter = 0; // Set to default value
 			}
 			else { // bornBiter is not blank, null, or undefined
-				if (this.data.data.bodyModifiers.bornBiter < 0) { // bornBiter is less than zero (an invalid value)
-					this.data.data.bodyModifiers.bornBiter = 0; // Set it to zero
+				if (this.system.bodyModifiers.bornBiter < 0) { // bornBiter is less than zero (an invalid value)
+					this.system.bodyModifiers.bornBiter = 0; // Set it to zero
 				}
 			}
 		}
 
-		if (this.data.data.bio.sm.value == "" || this.data.data.bio.sm.value == null || typeof this.data.data.bio.sm.value == "undefined") {
-			this.data.data.bio.sm.value = 0;
+		if (this.system.bio.sm.value == "" || this.system.bio.sm.value == null || typeof this.system.bio.sm.value == "undefined") {
+			this.system.bio.sm.value = 0;
 		}
 
-		if (this.data.data.bio.tl.value === "" || this.data.data.bio.tl.value == null || typeof this.data.data.bio.tl.value == "undefined" || this.data.data.bio.tl.value > 12 || this.data.data.bio.tl.value < 0) {
-			this.data.data.bio.tl.value = game.settings.get("gurps4e", "campaignTL");
+		if (this.system.bio.tl.value === "" || this.system.bio.tl.value == null || typeof this.system.bio.tl.value == "undefined" || this.system.bio.tl.value > 12 || this.system.bio.tl.value < 0) {
+			this.system.bio.tl.value = game.settings.get("gurps4e", "campaignTL");
 		}
 		else {
-			this.data.data.bio.tl.value = Math.floor(this.data.data.bio.tl.value);
+			this.system.bio.tl.value = Math.floor(this.system.bio.tl.value);
 		}
 	}
 
 	bodyTypeUpdate(){
-		if (this.data){
-			if (this.data.data){
-				if (this.data.data.bodyType){
-					let bodyType = this.data.data.bodyType.name;
-					let actorData = this.data.data;
-					let bodyObj = {};
+		if (this.system){
+			if (this.system.bodyType){
+				let bodyType = this.system.bodyType.name;
+				let actorData = this.system;
+				let bodyObj = {};
 
-					if(bodyType == ""){ // If the body is blank, default to humanoid
-						bodyType = "humanoid";
-					}
-
-					// Spoders and squids have a brain instead of a skull. Everyone else has a skull
-					if (bodyType == "arachnoid" || bodyType == "octopod"){
-						if (!(this.data.data.bodyModifiers.noHead || this.data.data.bodyModifiers.noBrain)) { // The user has set neither noHead nor noBrain
-							bodyObj.brain = actorHelpers.addBrain(actorData,"brain");
-						}
-					}
-					else {
-						if (!this.data.data.bodyModifiers.noHead) { // User has not set noHead
-							bodyObj.skull = actorHelpers.addSkull(actorData,"skull", !this.data.data.bodyModifiers.noBrain);
-						}
-					}
-
-					let eyeL = true;
-					let eyeR = true;
-					if (this.data.data.bodyModifiers.noEyeL) { // The user has set noLeft eye
-						eyeL = false;
-					}
-					if (this.data.data.bodyModifiers.noEyeR) { // The user has set noEyes
-						eyeR = false;
-					}
-					if (this.data.data.bodyModifiers.noEyes) { // The user has set noEyes
-						eyeL = false;
-						eyeR = false;
-					}
-
-					if (!this.data.data.bodyModifiers.noHead) { // The user has not set noHead
-						if (this.data.data.bodyModifiers.myrmidonHead) { // The user has set the myrmidon flag, which removes the ears and enlarges the eyes
-							bodyObj.face = actorHelpers.addFace(actorData, "face", false, eyeL, eyeR, this.data.data.bodyModifiers.bornBiter, true);
-						}
-						else { // The user is using a standard head
-							bodyObj.face = actorHelpers.addFace(actorData, "face", true, eyeL, eyeR, this.data.data.bodyModifiers.bornBiter, false);
-						}
-					}
-
-					if (!this.data.data.bodyModifiers.noNeck) { // The user has not set noNeck
-						bodyObj.neck = actorHelpers.addNeck(actorData,"neck");
-					}
-
-					let vitals = true;
-					if (this.data.data.bodyModifiers.noVitals) { // The user has no vitals
-						vitals = false;
-					}
-
-					//The following body parts are specific to said body types
-					if (bodyType == "humanoid"){
-						bodyObj.legLeft 	= actorHelpers.addLeg(		actorData, 	"Left Leg"		,"legLeft");
-						bodyObj.legRight 	= actorHelpers.addLeg(		actorData, 	"Right Leg"	,"legRight");
-						bodyObj.armLeft 	= actorHelpers.addArm(		actorData, 	"Left Arm"		,"armLeft");
-						bodyObj.armRight 	= actorHelpers.addArm(		actorData, 	"Right Arm"	,"armRight");
-						bodyObj.upperChest 	= actorHelpers.addChest(	actorData,	"Upper Chest"	,"upperChest", vitals);
-						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,	"Lower Chest"	,"lowerChest", vitals);
-						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,	"Abdomen"		,"abdomen", vitals);
-						bodyObj.handLeft 	= actorHelpers.addExtremity(actorData,	"Left Hand"	,"handLeft", "Hand", "Wrist", "Palm");
-						bodyObj.handRight 	= actorHelpers.addExtremity(actorData,	"Right Hand"	,"handRight", "Hand", "Wrist", "Palm");
-						bodyObj.footLeft 	= actorHelpers.addExtremity(actorData,	"Left Foot"	,"footLeft", "Foot", "Ankle", "Sole");
-						bodyObj.footRight 	= actorHelpers.addExtremity(actorData,	"Right Foot"	,"footRight", "Foot", "Ankle", "Sole");
-					}
-					if (bodyType == "wingedHumanoid"){
-						bodyObj.legLeft 	= actorHelpers.addLeg(		actorData, 		"Left Leg"		,"legLeft");
-						bodyObj.legRight 	= actorHelpers.addLeg(		actorData, 		"Right Leg"	,"legRight");
-						bodyObj.armLeft 	= actorHelpers.addArm(		actorData, 		"Left Arm"		,"armLeft");
-						bodyObj.armRight 	= actorHelpers.addArm(		actorData, 		"Right Arm"	,"armRight");
-						bodyObj.upperChest 	= actorHelpers.addChest(	actorData,		"Upper Chest"	,"upperChest", vitals);
-						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,		"Lower Chest"	,"lowerChest", vitals);
-						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,	"Abdomen"		,"abdomen", vitals);
-						bodyObj.handLeft 	= actorHelpers.addExtremity(actorData,	"Left Hand"	,"handLeft", "Hand", "Wrist", "Palm");
-						bodyObj.handRight 	= actorHelpers.addExtremity(actorData,	"Right Hand"	,"handRight", "Hand", "Wrist", "Palm");
-						bodyObj.footLeft 	= actorHelpers.addExtremity(actorData,	"Left Foot"	,"footLeft", "Foot", "Ankle", "Sole");
-						bodyObj.footRight 	= actorHelpers.addExtremity(actorData,	"Right Foot"	,"footRight", "Foot", "Ankle", "Sole");
-						bodyObj.wingLeft 	= actorHelpers.addArm(		actorData, "Left Wing", "wingLeft");
-						bodyObj.wingRight 	= actorHelpers.addArm(		actorData, "Right Wing", "wingRight");
-					}
-					else if (bodyType == "quadruped"){
-						bodyObj.hindlegLeft 	= actorHelpers.addLeg(		actorData, "Left Hind Leg", "hindlegLeft");
-						bodyObj.hindlegRight 	= actorHelpers.addLeg(		actorData, "Right Hind Leg", "hindlegRight");
-						bodyObj.legLeft 		= actorHelpers.addLeg(		actorData, "Left Foreleg", "legLeft");
-						bodyObj.legRight 		= actorHelpers.addLeg(		actorData, "Right Foreleg", "legRight");
-						bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
-						bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
-						bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
-						bodyObj.footLeft 		= actorHelpers.addExtremity(actorData,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
-						bodyObj.footRight 		= actorHelpers.addExtremity(actorData,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
-						bodyObj.hindFootLeft 	= actorHelpers.addExtremity(actorData,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
-						bodyObj.hindFootRight 	= actorHelpers.addExtremity(actorData,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
-					}
-					else if (bodyType == "wingedQuadruped"){
-						bodyObj.hindlegLeft 	= actorHelpers.addLeg(		actorData, "Left Hind Leg", "hindlegLeft");
-						bodyObj.hindlegRight 	= actorHelpers.addLeg(		actorData, "Right Hind Leg", "hindlegRight");
-						bodyObj.legLeft 		= actorHelpers.addLeg(		actorData, "Left Foreleg", "legLeft");
-						bodyObj.legRight 		= actorHelpers.addLeg(		actorData, "Right Foreleg", "legRight");
-						bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
-						bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
-						bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
-						bodyObj.footLeft 		= actorHelpers.addExtremity(actorData,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
-						bodyObj.footRight 		= actorHelpers.addExtremity(actorData,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
-						bodyObj.hindFootLeft 	= actorHelpers.addExtremity(actorData,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
-						bodyObj.hindFootRight 	= actorHelpers.addExtremity(actorData,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
-						bodyObj.wingLeft 		= actorHelpers.addArm(		actorData, "Left Wing", "wingLeft");
-						bodyObj.wingRight 		= actorHelpers.addArm(		actorData, "Right Wing", "wingRight");
-					}
-					else if (bodyType == "hexapod"){
-						bodyObj.legLeft 		= actorHelpers.addLeg(		actorData, 		"Left Leg"		,"legLeft");
-						bodyObj.legRight 		= actorHelpers.addLeg(		actorData, 		"Right Leg"	,"legRight");
-						bodyObj.armLeft 		= actorHelpers.addArm(		actorData, "Left Upper Thorax Arm", "armLeft");
-						bodyObj.armRight 		= actorHelpers.addArm(		actorData, "Right Upper Thorax Arm", "armRight");
-						bodyObj.lowerArmLeft 	= actorHelpers.addArm(		actorData, "Left Lower Thorax Arm", "lowerArmLeft");
-						bodyObj.lowerArmRight 	= actorHelpers.addArm(		actorData, "Right Lower Thorax Arm", "lowerArmRight");
-						bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Thorax", "upperChest", vitals);
-						bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Mid Thorax", "lowerChest", vitals);
-						bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Lower Thorax", "abdomen", vitals);
-						bodyObj.handLeft 		= actorHelpers.addExtremity(actorData,"Left Upper Thorax Hand", "handLeft", "Hand", "Wrist", "Palm");
-						bodyObj.handRight 		= actorHelpers.addExtremity(actorData,"Right Upper Thorax Hand", "handRight", "Hand", "Wrist", "Palm");
-						bodyObj.lowerHandLeft 	= actorHelpers.addExtremity(actorData,"Left Lower Thorax Hand", "lowerHandLeft", "Hand", "Wrist", "Palm");
-						bodyObj.lowerHandRight 	= actorHelpers.addExtremity(actorData,"Right Lower Thorax Hand", "lowerHandRight", "Hand", "Wrist", "Palm");
-						bodyObj.footLeft 		= actorHelpers.addExtremity(actorData,"Left Foot", "footLeft", "Foot", "Ankle", "Sole");
-						bodyObj.footRight 		= actorHelpers.addExtremity(actorData,"Right Foot", "footRight", "Foot", "Ankle", "Sole");
-					}
-					else if (bodyType == "wingedHexapod"){
-						bodyObj.legLeft 		= actorHelpers.addLeg(		actorData, 		"Left Leg"		,"legLeft");
-						bodyObj.legRight 		= actorHelpers.addLeg(		actorData, 		"Right Leg"	,"legRight");
-						bodyObj.armLeft 		= actorHelpers.addArm(		actorData, "Left Upper Thorax Arm", "armLeft");
-						bodyObj.armRight 		= actorHelpers.addArm(		actorData, "Right Upper Thorax Arm", "armRight");
-						bodyObj.lowerArmLeft 	= actorHelpers.addArm(		actorData, "Left Lower Thorax Arm", "lowerArmLeft");
-						bodyObj.lowerArmRight 	= actorHelpers.addArm(		actorData, "Right Lower Thorax Arm", "lowerArmRight");
-						bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Thorax", "upperChest", vitals);
-						bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Mid Thorax", "lowerChest", vitals);
-						bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Lower Thorax", "abdomen", vitals);
-						bodyObj.handLeft 		= actorHelpers.addExtremity(actorData,"Left Upper Thorax Hand", "handLeft", "Hand", "Wrist", "Palm");
-						bodyObj.handRight 		= actorHelpers.addExtremity(actorData,"Right Upper Thorax Hand", "handRight", "Hand", "Wrist", "Palm");
-						bodyObj.lowerHandLeft 	= actorHelpers.addExtremity(actorData,"Left Lower Thorax Hand", "lowerHandLeft", "Hand", "Wrist", "Palm");
-						bodyObj.lowerHandRight 	= actorHelpers.addExtremity(actorData,"Right Lower Thorax Hand", "lowerHandRight", "Hand", "Wrist", "Palm");
-						bodyObj.footLeft 		= actorHelpers.addExtremity(actorData,"Left Foot", "footLeft", "Foot", "Ankle", "Sole");
-						bodyObj.footRight 		= actorHelpers.addExtremity(actorData,"Right Foot", "footRight", "Foot", "Ankle", "Sole");
-						bodyObj.wingLeft 		= actorHelpers.addArm(		actorData, "Left Wing", "wingLeft");
-						bodyObj.wingRight 		= actorHelpers.addArm(		actorData, "Right Wing", "wingRight");
-					}
-					else if (bodyType == "centaur"){
-						bodyObj.hindlegLeft 	= actorHelpers.addLeg(				actorData, "Left Hind Leg", "hindlegLeft");
-						bodyObj.hindlegRight 	= actorHelpers.addLeg(				actorData, "Right Hind Leg", "hindlegRight");
-						bodyObj.legLeft 		= actorHelpers.addLeg(				actorData, "Left Foreleg", "legLeft");
-						bodyObj.legRight 		= actorHelpers.addLeg(				actorData, "Right Foreleg", "legRight");
-						bodyObj.armLeft 		= actorHelpers.addArm(				actorData, "Left Arm", "armLeft");
-						bodyObj.armRight 		= actorHelpers.addArm(				actorData, "Right Arm", "armRight");
-						bodyObj.upperChest 		= actorHelpers.addChest(			actorData,"Humanoid Upper Chest", "upperChest", vitals);
-						bodyObj.lowerChest 		= actorHelpers.addChest(			actorData,"Humanoid Lower Chest", "lowerChest", vitals);
-						bodyObj.chestAnimal 	= actorHelpers.addChest(			actorData,"Animal Chest", "chestAnimal", vitals);
-						bodyObj.abdomen 		= actorHelpers.addCentaurAbdomen(	actorData,"Humanoid Abdomen", "abdomen", vitals);
-						bodyObj.animalAbdomen 	= actorHelpers.addAbdomen(			actorData,"Animal Abdomen", "animalAbdomen", vitals);
-						bodyObj.footLeft 		= actorHelpers.addExtremity(		actorData,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
-						bodyObj.footRight 		= actorHelpers.addExtremity(		actorData,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
-						bodyObj.handLeft 		= actorHelpers.addExtremity(		actorData,"Left Hand", "handLeft", "Hand", "Wrist", "Palm");
-						bodyObj.handRight 		= actorHelpers.addExtremity(		actorData,"Right Hand", "handRight", "Hand", "Wrist", "Palm");
-						bodyObj.hindFootLeft 	= actorHelpers.addExtremity(		actorData,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
-						bodyObj.hindFootRight 	= actorHelpers.addExtremity(		actorData,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
-					}
-					else if (bodyType == "avian"){
-						bodyObj.legLeft 	= actorHelpers.addLeg(		actorData, "Left Leg", "legLeft");
-						bodyObj.legRight 	= actorHelpers.addLeg(		actorData, "Right Leg", "legRight");
-						bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
-						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,"Lower Chest","lowerChest", vitals);
-						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,"Abdomen","abdomen", vitals);
-						bodyObj.handLeft 	= actorHelpers.addExtremity(actorData,"Left Hand", "handLeft", "Hand", "Wrist", "Palm");
-						bodyObj.handRight 	= actorHelpers.addExtremity(actorData,"Right Hand", "handRight", "Hand", "Wrist", "Palm");
-						bodyObj.footLeft 	= actorHelpers.addExtremity(actorData,"Left Foot", "footLeft", "Foot", "Ankle", "Sole");
-						bodyObj.footRight 	= actorHelpers.addExtremity(actorData,"Right Foot", "footRight", "Foot", "Ankle", "Sole");
-						bodyObj.tail 		= actorHelpers.addTail(		actorData, "tail");
-						bodyObj.wingLeft 	= actorHelpers.addArm(		actorData, "Left Wing", "wingLeft");
-						bodyObj.wingRight 	= actorHelpers.addArm(		actorData, "Right Wing", "wingRight");
-					}
-					else if (bodyType == "vermiform"){
-						bodyObj.upperChest 	= actorHelpers.addChest(	actorData, "upperChest","Upper Chest", vitals);
-						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData, "lowerChest","Lower Chest", vitals);
-						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData, "abdomen","Abdomen", vitals);
-					}
-					else if (bodyType == "lamia"){
-						bodyObj.armLeft 	= actorHelpers.addArm(		actorData, "Left Arm", "armLeft");
-						bodyObj.armRight 	= actorHelpers.addArm(		actorData, "Right Arm", "armRight");
-						bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
-						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
-						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
-						bodyObj.tail 		= actorHelpers.addTail(		actorData, "tail");
-						bodyObj.handLeft 	= actorHelpers.addExtremity(actorData,"Left Hand", "handLeft", "Hand", "Wrist", "Palm");
-						bodyObj.handRight 	= actorHelpers.addExtremity(actorData,"Right Hand", "handRight", "Hand", "Wrist", "Palm");
-					}
-					else if (bodyType == "wingedLamia"){
-						bodyObj.armLeft 	= actorHelpers.addArm(		actorData, "Left Arm", "armLeft");
-						bodyObj.armRight 	= actorHelpers.addArm(		actorData, "Right Arm", "armRight");
-						bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
-						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
-						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
-						bodyObj.tail 		= actorHelpers.addTail(		actorData, "tail");
-						bodyObj.handLeft 	= actorHelpers.addExtremity(actorData,"Left Hand", "handLeft", "Hand", "Wrist", "Palm");
-						bodyObj.handRight 	= actorHelpers.addExtremity(actorData,"Right Hand", "handRight", "Hand", "Wrist", "Palm");
-						bodyObj.wingLeft 	= actorHelpers.addArm(		actorData, "Left Wing", "wingLeft");
-						bodyObj.wingRight 	= actorHelpers.addArm(		actorData, "Right Wing", "wingRight");
-					}
-					else if (bodyType == "octopod"){
-						bodyObj.upperChest 		= actorHelpers.addInvertebrateChest(actorData,"Upper Chest", "upperChest", vitals);
-						bodyObj.lowerChest 		= actorHelpers.addInvertebrateChest(actorData,"Lower Chest", "lowerChest", vitals);
-						bodyObj.abdomen 		= actorHelpers.addAbdomen(			actorData,"Abdomen", "abdomen", vitals);
-						bodyObj.tentacleLeft1 	= actorHelpers.addArm(				actorData, "Left Tentacle 1", "tentacleLeft1");
-						bodyObj.tentacleLeft2 	= actorHelpers.addArm(				actorData, "Left Tentacle 2", "tentacleLeft2");
-						bodyObj.tentacleLeft3 	= actorHelpers.addArm(				actorData, "Left Tentacle 3", "tentacleLeft3");
-						bodyObj.tentacleLeft4 	= actorHelpers.addArm(				actorData, "Left Tentacle 4", "tentacleLeft4");
-						bodyObj.tentacleRight1 	= actorHelpers.addArm(				actorData, "Right Tentacle 1", "tentacleRight1");
-						bodyObj.tentacleRight2 	= actorHelpers.addArm(				actorData, "Right Tentacle 2", "tentacleRight2");
-						bodyObj.tentacleRight3 	= actorHelpers.addArm(				actorData, "Right Tentacle 3", "tentacleRight3");
-						bodyObj.tentacleRight4 	= actorHelpers.addArm(				actorData, "Right Tentacle 4", "tentacleRight4");
-					}
-					else if (bodyType == "cancroid"){
-						bodyObj.hindlegLeft 	= actorHelpers.addLeg(		actorData, "Left Hind Leg", "hindlegLeft");
-						bodyObj.hindlegRight 	= actorHelpers.addLeg(		actorData, "Right Hind Leg", "hindlegRight");
-						bodyObj.legLeft 		= actorHelpers.addLeg(		actorData, "Left Foreleg", "legLeft");
-						bodyObj.legRight 		= actorHelpers.addLeg(		actorData, "Right Foreleg", "legRight");
-						bodyObj.armLeft 		= actorHelpers.addArm(		actorData, "Left Arm", "armLeft");
-						bodyObj.armRight 		= actorHelpers.addArm(		actorData, "Right Arm", "armRight");
-						bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
-						bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
-						bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
-						bodyObj.footLeft 		= actorHelpers.addExtremity(actorData,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
-						bodyObj.footRight 		= actorHelpers.addExtremity(actorData,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
-						bodyObj.handLeft 		= actorHelpers.addExtremity(actorData,"Left Claw", "handLeft", "Hand", "Wrist", "Palm");
-						bodyObj.handRight 		= actorHelpers.addExtremity(actorData,"Right Claw", "handRight", "Hand", "Wrist", "Palm");
-						bodyObj.hindFootLeft 	= actorHelpers.addExtremity(actorData,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
-						bodyObj.hindFootRight 	= actorHelpers.addExtremity(actorData,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
-					}
-					else if (bodyType == "ichthyoid"){
-						bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
-						bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
-						bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
-						bodyObj.tail 		= actorHelpers.addTail(		actorData, "tail");
-						bodyObj.fin1 		= actorHelpers.addExtremity(actorData,"Dorsal Fin", "fin1", "Fin", "Joint");
-						bodyObj.fin2 		= actorHelpers.addExtremity(actorData,"Left Fin", "fin2", "Fin", "Joint");
-						bodyObj.fin3 		= actorHelpers.addExtremity(actorData,"Right Fin", "fin3", "Fin", "Joint");
-					}
-					else if (bodyType == "arachnoid"){
-						bodyObj.hindlegLeft 		= actorHelpers.addLeg(		actorData, "Left Hind Leg", "hindlegLeft");
-						bodyObj.hindlegRight 		= actorHelpers.addLeg(		actorData, "Right Hind Leg", "hindlegRight");
-						bodyObj.hindmidlegLeft 		= actorHelpers.addLeg(		actorData, "Left Mid Hind Leg", "hindmidlegLeft");
-						bodyObj.hindmidlegRight 	= actorHelpers.addLeg(		actorData, "Right Mid Hind Leg", "hindmidlegRight");
-						bodyObj.foremidlegLeft 		= actorHelpers.addLeg(		actorData, "Left Mid Foreleg", "foremidlegLeft");
-						bodyObj.foremidlegRight 	= actorHelpers.addLeg(		actorData, "Right Mid Foreleg", "foremidlegRight");
-						bodyObj.legLeft 			= actorHelpers.addLeg(		actorData, "Left Foreleg", "legLeft");
-						bodyObj.legRight 			= actorHelpers.addLeg(		actorData, "Right Foreleg", "legRight");
-						bodyObj.upperChest 			= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
-						bodyObj.lowerChest 			= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
-						bodyObj.abdomen 			= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
-						bodyObj.footLeft 			= actorHelpers.addExtremity(actorData,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
-						bodyObj.footRight 			= actorHelpers.addExtremity(actorData,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
-						bodyObj.foremidFootLeft 	= actorHelpers.addExtremity(actorData,"Left Mid Fore Foot", "foremidFootLeft", "Foot", "Ankle", "Sole");
-						bodyObj.foremidFootRight 	= actorHelpers.addExtremity(actorData,"Right Mid Fore Foot", "foremidFootRight", "Foot", "Ankle", "Sole");
-						bodyObj.hindmidFootLeft 	= actorHelpers.addExtremity(actorData,"Left Mid Hind Foot", "hindmidFootLeft", "Foot", "Ankle", "Sole");
-						bodyObj.hindmidFootRight 	= actorHelpers.addExtremity(actorData,"Right Mid Hind Foot", "hindmidFootRight", "Foot", "Ankle", "Sole");
-						bodyObj.hindFootLeft 		= actorHelpers.addExtremity(actorData,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
-						bodyObj.hindFootRight 		= actorHelpers.addExtremity(actorData,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
-					}
-
-					let bodyParts = Object.keys(bodyObj);
-					let totalWeightFront = 0;
-					let totalWeightBack = 0;
-
-					for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
-						let part = getProperty(bodyObj, bodyParts[i]) // Get the current part
-						if (typeof part.weightFront != "undefined"){ // Check to see if weightFront is defined
-							totalWeightFront += +part.weightFront; // Add the front and rear weights
-							totalWeightBack += +part.weightBack;
-						}
-						else { // If the actor's weighting is not defined with the new front/back setup
-							if (typeof part.weight != "undefined"){ // Check to see if the old part.weight is still defined
-								totalWeightFront += +part.weight; // Use that to set the front and back weights instead
-								totalWeightBack += +part.weight;
-							}
-							console.error(this.data.name + " needs to refresh their body type"); // Print an error to console
-						}
-					}
-					this.data.data.bodyType.body = bodyObj; // Set the body to the new body type that was just assembled.
-					this.data.data.bodyType.totalWeightFront = totalWeightFront // Set the weight to the weight of all the assembled parts
-					this.data.data.bodyType.totalWeightBack = totalWeightBack // Set the weight to the weight of all the assembled parts
+				if(bodyType == ""){ // If the body is blank, default to humanoid
+					bodyType = "humanoid";
 				}
+
+				// Spoders and squids have a brain instead of a skull. Everyone else has a skull
+				if (bodyType == "arachnoid" || bodyType == "octopod"){
+					if (!(this.system.bodyModifiers.noHead || this.system.bodyModifiers.noBrain)) { // The user has set neither noHead nor noBrain
+						bodyObj.brain = actorHelpers.addBrain(actorData,"brain");
+					}
+				}
+				else {
+					if (!this.system.bodyModifiers.noHead) { // User has not set noHead
+						bodyObj.skull = actorHelpers.addSkull(actorData,"skull", !this.system.bodyModifiers.noBrain);
+					}
+				}
+
+				let eyeL = true;
+				let eyeR = true;
+				if (this.system.bodyModifiers.noEyeL) { // The user has set noLeft eye
+					eyeL = false;
+				}
+				if (this.system.bodyModifiers.noEyeR) { // The user has set noEyes
+					eyeR = false;
+				}
+				if (this.system.bodyModifiers.noEyes) { // The user has set noEyes
+					eyeL = false;
+					eyeR = false;
+				}
+
+				if (!this.system.bodyModifiers.noHead) { // The user has not set noHead
+					if (this.system.bodyModifiers.myrmidonHead) { // The user has set the myrmidon flag, which removes the ears and enlarges the eyes
+						bodyObj.face = actorHelpers.addFace(actorData, "face", false, eyeL, eyeR, this.system.bodyModifiers.bornBiter, true);
+					}
+					else { // The user is using a standard head
+						bodyObj.face = actorHelpers.addFace(actorData, "face", true, eyeL, eyeR, this.system.bodyModifiers.bornBiter, false);
+					}
+				}
+
+				if (!this.system.bodyModifiers.noNeck) { // The user has not set noNeck
+					bodyObj.neck = actorHelpers.addNeck(actorData,"neck");
+				}
+
+				let vitals = true;
+				if (this.system.bodyModifiers.noVitals) { // The user has no vitals
+					vitals = false;
+				}
+
+				//The following body parts are specific to said body types
+				if (bodyType == "humanoid"){
+					bodyObj.legLeft 	= actorHelpers.addLeg(		actorData, 	"Left Leg"		,"legLeft");
+					bodyObj.legRight 	= actorHelpers.addLeg(		actorData, 	"Right Leg"	,"legRight");
+					bodyObj.armLeft 	= actorHelpers.addArm(		actorData, 	"Left Arm"		,"armLeft");
+					bodyObj.armRight 	= actorHelpers.addArm(		actorData, 	"Right Arm"	,"armRight");
+					bodyObj.upperChest 	= actorHelpers.addChest(	actorData,	"Upper Chest"	,"upperChest", vitals);
+					bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,	"Lower Chest"	,"lowerChest", vitals);
+					bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,	"Abdomen"		,"abdomen", vitals);
+					bodyObj.handLeft 	= actorHelpers.addExtremity(actorData,	"Left Hand"	,"handLeft", "Hand", "Wrist", "Palm");
+					bodyObj.handRight 	= actorHelpers.addExtremity(actorData,	"Right Hand"	,"handRight", "Hand", "Wrist", "Palm");
+					bodyObj.footLeft 	= actorHelpers.addExtremity(actorData,	"Left Foot"	,"footLeft", "Foot", "Ankle", "Sole");
+					bodyObj.footRight 	= actorHelpers.addExtremity(actorData,	"Right Foot"	,"footRight", "Foot", "Ankle", "Sole");
+				}
+				if (bodyType == "wingedHumanoid"){
+					bodyObj.legLeft 	= actorHelpers.addLeg(		actorData, 		"Left Leg"		,"legLeft");
+					bodyObj.legRight 	= actorHelpers.addLeg(		actorData, 		"Right Leg"	,"legRight");
+					bodyObj.armLeft 	= actorHelpers.addArm(		actorData, 		"Left Arm"		,"armLeft");
+					bodyObj.armRight 	= actorHelpers.addArm(		actorData, 		"Right Arm"	,"armRight");
+					bodyObj.upperChest 	= actorHelpers.addChest(	actorData,		"Upper Chest"	,"upperChest", vitals);
+					bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,		"Lower Chest"	,"lowerChest", vitals);
+					bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,	"Abdomen"		,"abdomen", vitals);
+					bodyObj.handLeft 	= actorHelpers.addExtremity(actorData,	"Left Hand"	,"handLeft", "Hand", "Wrist", "Palm");
+					bodyObj.handRight 	= actorHelpers.addExtremity(actorData,	"Right Hand"	,"handRight", "Hand", "Wrist", "Palm");
+					bodyObj.footLeft 	= actorHelpers.addExtremity(actorData,	"Left Foot"	,"footLeft", "Foot", "Ankle", "Sole");
+					bodyObj.footRight 	= actorHelpers.addExtremity(actorData,	"Right Foot"	,"footRight", "Foot", "Ankle", "Sole");
+					bodyObj.wingLeft 	= actorHelpers.addArm(		actorData, "Left Wing", "wingLeft");
+					bodyObj.wingRight 	= actorHelpers.addArm(		actorData, "Right Wing", "wingRight");
+				}
+				else if (bodyType == "quadruped"){
+					bodyObj.hindlegLeft 	= actorHelpers.addLeg(		actorData, "Left Hind Leg", "hindlegLeft");
+					bodyObj.hindlegRight 	= actorHelpers.addLeg(		actorData, "Right Hind Leg", "hindlegRight");
+					bodyObj.legLeft 		= actorHelpers.addLeg(		actorData, "Left Foreleg", "legLeft");
+					bodyObj.legRight 		= actorHelpers.addLeg(		actorData, "Right Foreleg", "legRight");
+					bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
+					bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
+					bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
+					bodyObj.footLeft 		= actorHelpers.addExtremity(actorData,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
+					bodyObj.footRight 		= actorHelpers.addExtremity(actorData,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
+					bodyObj.hindFootLeft 	= actorHelpers.addExtremity(actorData,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
+					bodyObj.hindFootRight 	= actorHelpers.addExtremity(actorData,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
+				}
+				else if (bodyType == "wingedQuadruped"){
+					bodyObj.hindlegLeft 	= actorHelpers.addLeg(		actorData, "Left Hind Leg", "hindlegLeft");
+					bodyObj.hindlegRight 	= actorHelpers.addLeg(		actorData, "Right Hind Leg", "hindlegRight");
+					bodyObj.legLeft 		= actorHelpers.addLeg(		actorData, "Left Foreleg", "legLeft");
+					bodyObj.legRight 		= actorHelpers.addLeg(		actorData, "Right Foreleg", "legRight");
+					bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
+					bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
+					bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
+					bodyObj.footLeft 		= actorHelpers.addExtremity(actorData,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
+					bodyObj.footRight 		= actorHelpers.addExtremity(actorData,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
+					bodyObj.hindFootLeft 	= actorHelpers.addExtremity(actorData,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
+					bodyObj.hindFootRight 	= actorHelpers.addExtremity(actorData,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
+					bodyObj.wingLeft 		= actorHelpers.addArm(		actorData, "Left Wing", "wingLeft");
+					bodyObj.wingRight 		= actorHelpers.addArm(		actorData, "Right Wing", "wingRight");
+				}
+				else if (bodyType == "hexapod"){
+					bodyObj.legLeft 		= actorHelpers.addLeg(		actorData, 		"Left Leg"		,"legLeft");
+					bodyObj.legRight 		= actorHelpers.addLeg(		actorData, 		"Right Leg"	,"legRight");
+					bodyObj.armLeft 		= actorHelpers.addArm(		actorData, "Left Upper Thorax Arm", "armLeft");
+					bodyObj.armRight 		= actorHelpers.addArm(		actorData, "Right Upper Thorax Arm", "armRight");
+					bodyObj.lowerArmLeft 	= actorHelpers.addArm(		actorData, "Left Lower Thorax Arm", "lowerArmLeft");
+					bodyObj.lowerArmRight 	= actorHelpers.addArm(		actorData, "Right Lower Thorax Arm", "lowerArmRight");
+					bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Thorax", "upperChest", vitals);
+					bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Mid Thorax", "lowerChest", vitals);
+					bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Lower Thorax", "abdomen", vitals);
+					bodyObj.handLeft 		= actorHelpers.addExtremity(actorData,"Left Upper Thorax Hand", "handLeft", "Hand", "Wrist", "Palm");
+					bodyObj.handRight 		= actorHelpers.addExtremity(actorData,"Right Upper Thorax Hand", "handRight", "Hand", "Wrist", "Palm");
+					bodyObj.lowerHandLeft 	= actorHelpers.addExtremity(actorData,"Left Lower Thorax Hand", "lowerHandLeft", "Hand", "Wrist", "Palm");
+					bodyObj.lowerHandRight 	= actorHelpers.addExtremity(actorData,"Right Lower Thorax Hand", "lowerHandRight", "Hand", "Wrist", "Palm");
+					bodyObj.footLeft 		= actorHelpers.addExtremity(actorData,"Left Foot", "footLeft", "Foot", "Ankle", "Sole");
+					bodyObj.footRight 		= actorHelpers.addExtremity(actorData,"Right Foot", "footRight", "Foot", "Ankle", "Sole");
+				}
+				else if (bodyType == "wingedHexapod"){
+					bodyObj.legLeft 		= actorHelpers.addLeg(		actorData, 		"Left Leg"		,"legLeft");
+					bodyObj.legRight 		= actorHelpers.addLeg(		actorData, 		"Right Leg"	,"legRight");
+					bodyObj.armLeft 		= actorHelpers.addArm(		actorData, "Left Upper Thorax Arm", "armLeft");
+					bodyObj.armRight 		= actorHelpers.addArm(		actorData, "Right Upper Thorax Arm", "armRight");
+					bodyObj.lowerArmLeft 	= actorHelpers.addArm(		actorData, "Left Lower Thorax Arm", "lowerArmLeft");
+					bodyObj.lowerArmRight 	= actorHelpers.addArm(		actorData, "Right Lower Thorax Arm", "lowerArmRight");
+					bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Thorax", "upperChest", vitals);
+					bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Mid Thorax", "lowerChest", vitals);
+					bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Lower Thorax", "abdomen", vitals);
+					bodyObj.handLeft 		= actorHelpers.addExtremity(actorData,"Left Upper Thorax Hand", "handLeft", "Hand", "Wrist", "Palm");
+					bodyObj.handRight 		= actorHelpers.addExtremity(actorData,"Right Upper Thorax Hand", "handRight", "Hand", "Wrist", "Palm");
+					bodyObj.lowerHandLeft 	= actorHelpers.addExtremity(actorData,"Left Lower Thorax Hand", "lowerHandLeft", "Hand", "Wrist", "Palm");
+					bodyObj.lowerHandRight 	= actorHelpers.addExtremity(actorData,"Right Lower Thorax Hand", "lowerHandRight", "Hand", "Wrist", "Palm");
+					bodyObj.footLeft 		= actorHelpers.addExtremity(actorData,"Left Foot", "footLeft", "Foot", "Ankle", "Sole");
+					bodyObj.footRight 		= actorHelpers.addExtremity(actorData,"Right Foot", "footRight", "Foot", "Ankle", "Sole");
+					bodyObj.wingLeft 		= actorHelpers.addArm(		actorData, "Left Wing", "wingLeft");
+					bodyObj.wingRight 		= actorHelpers.addArm(		actorData, "Right Wing", "wingRight");
+				}
+				else if (bodyType == "centaur"){
+					bodyObj.hindlegLeft 	= actorHelpers.addLeg(				actorData, "Left Hind Leg", "hindlegLeft");
+					bodyObj.hindlegRight 	= actorHelpers.addLeg(				actorData, "Right Hind Leg", "hindlegRight");
+					bodyObj.legLeft 		= actorHelpers.addLeg(				actorData, "Left Foreleg", "legLeft");
+					bodyObj.legRight 		= actorHelpers.addLeg(				actorData, "Right Foreleg", "legRight");
+					bodyObj.armLeft 		= actorHelpers.addArm(				actorData, "Left Arm", "armLeft");
+					bodyObj.armRight 		= actorHelpers.addArm(				actorData, "Right Arm", "armRight");
+					bodyObj.upperChest 		= actorHelpers.addChest(			actorData,"Humanoid Upper Chest", "upperChest", vitals);
+					bodyObj.lowerChest 		= actorHelpers.addChest(			actorData,"Humanoid Lower Chest", "lowerChest", vitals);
+					bodyObj.chestAnimal 	= actorHelpers.addChest(			actorData,"Animal Chest", "chestAnimal", vitals);
+					bodyObj.abdomen 		= actorHelpers.addCentaurAbdomen(	actorData,"Humanoid Abdomen", "abdomen", vitals);
+					bodyObj.animalAbdomen 	= actorHelpers.addAbdomen(			actorData,"Animal Abdomen", "animalAbdomen", vitals);
+					bodyObj.footLeft 		= actorHelpers.addExtremity(		actorData,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
+					bodyObj.footRight 		= actorHelpers.addExtremity(		actorData,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
+					bodyObj.handLeft 		= actorHelpers.addExtremity(		actorData,"Left Hand", "handLeft", "Hand", "Wrist", "Palm");
+					bodyObj.handRight 		= actorHelpers.addExtremity(		actorData,"Right Hand", "handRight", "Hand", "Wrist", "Palm");
+					bodyObj.hindFootLeft 	= actorHelpers.addExtremity(		actorData,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
+					bodyObj.hindFootRight 	= actorHelpers.addExtremity(		actorData,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
+				}
+				else if (bodyType == "avian"){
+					bodyObj.legLeft 	= actorHelpers.addLeg(		actorData, "Left Leg", "legLeft");
+					bodyObj.legRight 	= actorHelpers.addLeg(		actorData, "Right Leg", "legRight");
+					bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
+					bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,"Lower Chest","lowerChest", vitals);
+					bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,"Abdomen","abdomen", vitals);
+					bodyObj.handLeft 	= actorHelpers.addExtremity(actorData,"Left Hand", "handLeft", "Hand", "Wrist", "Palm");
+					bodyObj.handRight 	= actorHelpers.addExtremity(actorData,"Right Hand", "handRight", "Hand", "Wrist", "Palm");
+					bodyObj.footLeft 	= actorHelpers.addExtremity(actorData,"Left Foot", "footLeft", "Foot", "Ankle", "Sole");
+					bodyObj.footRight 	= actorHelpers.addExtremity(actorData,"Right Foot", "footRight", "Foot", "Ankle", "Sole");
+					bodyObj.tail 		= actorHelpers.addTail(		actorData, "tail");
+					bodyObj.wingLeft 	= actorHelpers.addArm(		actorData, "Left Wing", "wingLeft");
+					bodyObj.wingRight 	= actorHelpers.addArm(		actorData, "Right Wing", "wingRight");
+				}
+				else if (bodyType == "vermiform"){
+					bodyObj.upperChest 	= actorHelpers.addChest(	actorData, "upperChest","Upper Chest", vitals);
+					bodyObj.lowerChest 	= actorHelpers.addChest(	actorData, "lowerChest","Lower Chest", vitals);
+					bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData, "abdomen","Abdomen", vitals);
+				}
+				else if (bodyType == "lamia"){
+					bodyObj.armLeft 	= actorHelpers.addArm(		actorData, "Left Arm", "armLeft");
+					bodyObj.armRight 	= actorHelpers.addArm(		actorData, "Right Arm", "armRight");
+					bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
+					bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
+					bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
+					bodyObj.tail 		= actorHelpers.addTail(		actorData, "tail");
+					bodyObj.handLeft 	= actorHelpers.addExtremity(actorData,"Left Hand", "handLeft", "Hand", "Wrist", "Palm");
+					bodyObj.handRight 	= actorHelpers.addExtremity(actorData,"Right Hand", "handRight", "Hand", "Wrist", "Palm");
+				}
+				else if (bodyType == "wingedLamia"){
+					bodyObj.armLeft 	= actorHelpers.addArm(		actorData, "Left Arm", "armLeft");
+					bodyObj.armRight 	= actorHelpers.addArm(		actorData, "Right Arm", "armRight");
+					bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
+					bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
+					bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
+					bodyObj.tail 		= actorHelpers.addTail(		actorData, "tail");
+					bodyObj.handLeft 	= actorHelpers.addExtremity(actorData,"Left Hand", "handLeft", "Hand", "Wrist", "Palm");
+					bodyObj.handRight 	= actorHelpers.addExtremity(actorData,"Right Hand", "handRight", "Hand", "Wrist", "Palm");
+					bodyObj.wingLeft 	= actorHelpers.addArm(		actorData, "Left Wing", "wingLeft");
+					bodyObj.wingRight 	= actorHelpers.addArm(		actorData, "Right Wing", "wingRight");
+				}
+				else if (bodyType == "octopod"){
+					bodyObj.upperChest 		= actorHelpers.addInvertebrateChest(actorData,"Upper Chest", "upperChest", vitals);
+					bodyObj.lowerChest 		= actorHelpers.addInvertebrateChest(actorData,"Lower Chest", "lowerChest", vitals);
+					bodyObj.abdomen 		= actorHelpers.addAbdomen(			actorData,"Abdomen", "abdomen", vitals);
+					bodyObj.tentacleLeft1 	= actorHelpers.addArm(				actorData, "Left Tentacle 1", "tentacleLeft1");
+					bodyObj.tentacleLeft2 	= actorHelpers.addArm(				actorData, "Left Tentacle 2", "tentacleLeft2");
+					bodyObj.tentacleLeft3 	= actorHelpers.addArm(				actorData, "Left Tentacle 3", "tentacleLeft3");
+					bodyObj.tentacleLeft4 	= actorHelpers.addArm(				actorData, "Left Tentacle 4", "tentacleLeft4");
+					bodyObj.tentacleRight1 	= actorHelpers.addArm(				actorData, "Right Tentacle 1", "tentacleRight1");
+					bodyObj.tentacleRight2 	= actorHelpers.addArm(				actorData, "Right Tentacle 2", "tentacleRight2");
+					bodyObj.tentacleRight3 	= actorHelpers.addArm(				actorData, "Right Tentacle 3", "tentacleRight3");
+					bodyObj.tentacleRight4 	= actorHelpers.addArm(				actorData, "Right Tentacle 4", "tentacleRight4");
+				}
+				else if (bodyType == "cancroid"){
+					bodyObj.hindlegLeft 	= actorHelpers.addLeg(		actorData, "Left Hind Leg", "hindlegLeft");
+					bodyObj.hindlegRight 	= actorHelpers.addLeg(		actorData, "Right Hind Leg", "hindlegRight");
+					bodyObj.legLeft 		= actorHelpers.addLeg(		actorData, "Left Foreleg", "legLeft");
+					bodyObj.legRight 		= actorHelpers.addLeg(		actorData, "Right Foreleg", "legRight");
+					bodyObj.armLeft 		= actorHelpers.addArm(		actorData, "Left Arm", "armLeft");
+					bodyObj.armRight 		= actorHelpers.addArm(		actorData, "Right Arm", "armRight");
+					bodyObj.upperChest 		= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
+					bodyObj.lowerChest 		= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
+					bodyObj.abdomen 		= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
+					bodyObj.footLeft 		= actorHelpers.addExtremity(actorData,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
+					bodyObj.footRight 		= actorHelpers.addExtremity(actorData,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
+					bodyObj.handLeft 		= actorHelpers.addExtremity(actorData,"Left Claw", "handLeft", "Hand", "Wrist", "Palm");
+					bodyObj.handRight 		= actorHelpers.addExtremity(actorData,"Right Claw", "handRight", "Hand", "Wrist", "Palm");
+					bodyObj.hindFootLeft 	= actorHelpers.addExtremity(actorData,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
+					bodyObj.hindFootRight 	= actorHelpers.addExtremity(actorData,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
+				}
+				else if (bodyType == "ichthyoid"){
+					bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
+					bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
+					bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
+					bodyObj.tail 		= actorHelpers.addTail(		actorData, "tail");
+					bodyObj.fin1 		= actorHelpers.addExtremity(actorData,"Dorsal Fin", "fin1", "Fin", "Joint");
+					bodyObj.fin2 		= actorHelpers.addExtremity(actorData,"Left Fin", "fin2", "Fin", "Joint");
+					bodyObj.fin3 		= actorHelpers.addExtremity(actorData,"Right Fin", "fin3", "Fin", "Joint");
+				}
+				else if (bodyType == "arachnoid"){
+					bodyObj.hindlegLeft 		= actorHelpers.addLeg(		actorData, "Left Hind Leg", "hindlegLeft");
+					bodyObj.hindlegRight 		= actorHelpers.addLeg(		actorData, "Right Hind Leg", "hindlegRight");
+					bodyObj.hindmidlegLeft 		= actorHelpers.addLeg(		actorData, "Left Mid Hind Leg", "hindmidlegLeft");
+					bodyObj.hindmidlegRight 	= actorHelpers.addLeg(		actorData, "Right Mid Hind Leg", "hindmidlegRight");
+					bodyObj.foremidlegLeft 		= actorHelpers.addLeg(		actorData, "Left Mid Foreleg", "foremidlegLeft");
+					bodyObj.foremidlegRight 	= actorHelpers.addLeg(		actorData, "Right Mid Foreleg", "foremidlegRight");
+					bodyObj.legLeft 			= actorHelpers.addLeg(		actorData, "Left Foreleg", "legLeft");
+					bodyObj.legRight 			= actorHelpers.addLeg(		actorData, "Right Foreleg", "legRight");
+					bodyObj.upperChest 			= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
+					bodyObj.lowerChest 			= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
+					bodyObj.abdomen 			= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
+					bodyObj.footLeft 			= actorHelpers.addExtremity(actorData,"Left Fore Foot", "footLeft", "Foot", "Ankle", "Sole");
+					bodyObj.footRight 			= actorHelpers.addExtremity(actorData,"Right Fore Foot", "footRight", "Foot", "Ankle", "Sole");
+					bodyObj.foremidFootLeft 	= actorHelpers.addExtremity(actorData,"Left Mid Fore Foot", "foremidFootLeft", "Foot", "Ankle", "Sole");
+					bodyObj.foremidFootRight 	= actorHelpers.addExtremity(actorData,"Right Mid Fore Foot", "foremidFootRight", "Foot", "Ankle", "Sole");
+					bodyObj.hindmidFootLeft 	= actorHelpers.addExtremity(actorData,"Left Mid Hind Foot", "hindmidFootLeft", "Foot", "Ankle", "Sole");
+					bodyObj.hindmidFootRight 	= actorHelpers.addExtremity(actorData,"Right Mid Hind Foot", "hindmidFootRight", "Foot", "Ankle", "Sole");
+					bodyObj.hindFootLeft 		= actorHelpers.addExtremity(actorData,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
+					bodyObj.hindFootRight 		= actorHelpers.addExtremity(actorData,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
+				}
+
+				let bodyParts = Object.keys(bodyObj);
+				let totalWeightFront = 0;
+				let totalWeightBack = 0;
+
+				for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
+					let part = getProperty(bodyObj, bodyParts[i]) // Get the current part
+					if (typeof part.weightFront != "undefined"){ // Check to see if weightFront is defined
+						totalWeightFront += +part.weightFront; // Add the front and rear weights
+						totalWeightBack += +part.weightBack;
+					}
+					else { // If the actor's weighting is not defined with the new front/back setup
+						if (typeof part.weight != "undefined"){ // Check to see if the old part.weight is still defined
+							totalWeightFront += +part.weight; // Use that to set the front and back weights instead
+							totalWeightBack += +part.weight;
+						}
+						console.error(this.system.name + " needs to refresh their body type"); // Print an error to console
+					}
+				}
+				this.system.bodyType.body = bodyObj; // Set the body to the new body type that was just assembled.
+				this.system.bodyType.totalWeightFront = totalWeightFront // Set the weight to the weight of all the assembled parts
+				this.system.bodyType.totalWeightBack = totalWeightBack // Set the weight to the weight of all the assembled parts
 			}
 		}
 	}
 
 	recalcAtrValues(){
-		let smDiscount = attributeHelpers.calcSMDiscount(this.data.data.bio.sm);
+		let smDiscount = attributeHelpers.calcSMDiscount(this.system.bio.sm);
 
 		//ST
-		let st = attributeHelpers.calcStOrHt(this.data.data.primaryAttributes.strength, smDiscount);
-		this.data.data.primaryAttributes.strength.value = st;
+		let st = attributeHelpers.calcStOrHt(this.system.primaryAttributes.strength, smDiscount);
+		this.system.primaryAttributes.strength.value = st;
 
 		//DX
-		let dx = attributeHelpers.calcDxOrIq(this.data.data.primaryAttributes.dexterity);
-		this.data.data.primaryAttributes.dexterity.value = dx;
+		let dx = attributeHelpers.calcDxOrIq(this.system.primaryAttributes.dexterity);
+		this.system.primaryAttributes.dexterity.value = dx;
 
 		//IQ
-		let iq = attributeHelpers.calcDxOrIq(this.data.data.primaryAttributes.intelligence);
-		this.data.data.primaryAttributes.intelligence.value = iq;
+		let iq = attributeHelpers.calcDxOrIq(this.system.primaryAttributes.intelligence);
+		this.system.primaryAttributes.intelligence.value = iq;
 
 		//HT
-		let ht = attributeHelpers.calcStOrHt(this.data.data.primaryAttributes.health, 1);
-		this.data.data.primaryAttributes.health.value = ht;
+		let ht = attributeHelpers.calcStOrHt(this.system.primaryAttributes.health, 1);
+		this.system.primaryAttributes.health.value = ht;
 
 		//Per
-		let per = attributeHelpers.calcPerOrWill(iq, this.data.data.primaryAttributes.perception);
-		this.data.data.primaryAttributes.perception.value = per;
+		let per = attributeHelpers.calcPerOrWill(iq, this.system.primaryAttributes.perception);
+		this.system.primaryAttributes.perception.value = per;
 
 		//Will
-		let will = attributeHelpers.calcPerOrWill(iq, this.data.data.primaryAttributes.will);
-		this.data.data.primaryAttributes.will.value = will;
+		let will = attributeHelpers.calcPerOrWill(iq, this.system.primaryAttributes.will);
+		this.system.primaryAttributes.will.value = will;
 
 		//Fright
-		let fr = attributeHelpers.calcFright(will, this.data.data.primaryAttributes.fright);
-		this.data.data.primaryAttributes.fright.value = fr;
+		let fr = attributeHelpers.calcFright(will, this.system.primaryAttributes.fright);
+		this.system.primaryAttributes.fright.value = fr;
 
 		//Speed
-		let speed = attributeHelpers.calcSpeed(dx, ht, this.data.data.primaryAttributes.speed);
-		this.data.data.primaryAttributes.speed.value = speed;
+		let speed = attributeHelpers.calcSpeed(dx, ht, this.system.primaryAttributes.speed);
+		this.system.primaryAttributes.speed.value = speed;
 
 		//Move
-		let move = attributeHelpers.calcMove(speed, this.data.data.primaryAttributes.move);
-		this.data.data.primaryAttributes.move.value = move;
+		let move = attributeHelpers.calcMove(speed, this.system.primaryAttributes.move);
+		this.system.primaryAttributes.move.value = move;
 
 		//Dodge
-		let dodge = attributeHelpers.calcDodge(speed, this.data.data.primaryAttributes.dodge);
-		this.data.data.primaryAttributes.dodge.value = dodge;
+		let dodge = attributeHelpers.calcDodge(speed, this.system.primaryAttributes.dodge);
+		this.system.primaryAttributes.dodge.value = dodge;
 
 		//Lifting ST
-		let lst = attributeHelpers.calcLiftingSt(st, this.data.data.primaryAttributes.lifting, smDiscount)
-		this.data.data.primaryAttributes.lifting.value = lst;
+		let lst = attributeHelpers.calcLiftingSt(st, this.system.primaryAttributes.lifting, smDiscount)
+		this.system.primaryAttributes.lifting.value = lst;
 
 		//Striking ST
-		let sst = attributeHelpers.calcStrikingSt(st, this.data.data.primaryAttributes.striking, smDiscount);
-		this.data.data.primaryAttributes.striking.value = sst;
+		let sst = attributeHelpers.calcStrikingSt(st, this.system.primaryAttributes.striking, smDiscount);
+		this.system.primaryAttributes.striking.value = sst;
 
 		//Knockback
 		let kb = {
 			id: "kb",
 			abbr: "Knockback",
-			value: st + ((typeof this.data.data.primaryAttributes.knockback === 'undefined') ? 0 : this.data.data.primaryAttributes.knockback.mod) - 2,
-			mod: (typeof this.data.data.primaryAttributes.knockback === 'undefined') ? 0 : this.data.data.primaryAttributes.knockback.mod
+			value: st + ((typeof this.system.primaryAttributes.knockback === 'undefined') ? 0 : this.system.primaryAttributes.knockback.mod) - 2,
+			mod: (typeof this.system.primaryAttributes.knockback === 'undefined') ? 0 : this.system.primaryAttributes.knockback.mod
 		}
-		this.data.data.primaryAttributes.knockback = kb;
+		this.system.primaryAttributes.knockback = kb;
 
 		//Swing and Thrust
-		this.data.data.baseDamage.thrust = attributeHelpers.strikingStrengthToThrust(sst);
-		this.data.data.baseDamage.swing = attributeHelpers.strikingStrengthToSwing(sst);
+		this.system.baseDamage.thrust = attributeHelpers.strikingStrengthToThrust(sst);
+		this.system.baseDamage.swing = attributeHelpers.strikingStrengthToSwing(sst);
 
 		//HT Subdue
-		let hts = attributeHelpers.calcHealthSubdue(ht, this.data.data.primaryAttributes.subdue);
-		this.data.data.primaryAttributes.subdue.value = hts;
+		let hts = attributeHelpers.calcHealthSubdue(ht, this.system.primaryAttributes.subdue);
+		this.system.primaryAttributes.subdue.value = hts;
 
 		//HT Kill
-		var htk = attributeHelpers.calcHealthKill(ht, this.data.data.primaryAttributes.death);
-		this.data.data.primaryAttributes.death.value = htk;
+		var htk = attributeHelpers.calcHealthKill(ht, this.system.primaryAttributes.death);
+		this.system.primaryAttributes.death.value = htk;
 
 		//HP
-		var hp = attributeHelpers.calcHP(st, this.data.data.reserves.hp, smDiscount);
-		this.data.data.reserves.hp.max = hp;
+		var hp = attributeHelpers.calcHP(st, this.system.reserves.hp, smDiscount);
+		this.system.reserves.hp.max = hp;
 
 		//FP
-		var fp = attributeHelpers.calcFP(ht, this.data.data.reserves.fp);
-		this.data.data.reserves.fp.max = fp;
+		var fp = attributeHelpers.calcFP(ht, this.system.reserves.fp);
+		this.system.reserves.fp.max = fp;
 
 		//ER
-		var er = attributeHelpers.calcER(this.data.data.reserves.er);
-		this.data.data.reserves.er.max = er;
+		var er = attributeHelpers.calcER(this.system.reserves.er);
+		this.system.reserves.er.max = er;
 	}
 
 	recalcSenses() {
-		let per = this.data.data.primaryAttributes.perception.value;
+		let per = this.system.primaryAttributes.perception.value;
 
-		this.data.data.senses.vis.value    = per + this.data.data.senses.vis.mod;
-		this.data.data.senses.hear.value   = per + this.data.data.senses.hear.mod;
-		this.data.data.senses.smell.value  = per + this.data.data.senses.smell.mod;
-		this.data.data.senses.touch.value  = per + this.data.data.senses.touch.mod;
-		this.data.data.senses.extra1.value = per + this.data.data.senses.extra1.mod;
-		this.data.data.senses.extra2.value = per + this.data.data.senses.extra2.mod;
+		this.system.senses.vis.value    = per + this.system.senses.vis.mod;
+		this.system.senses.hear.value   = per + this.system.senses.hear.mod;
+		this.system.senses.smell.value  = per + this.system.senses.smell.mod;
+		this.system.senses.touch.value  = per + this.system.senses.touch.mod;
+		this.system.senses.extra1.value = per + this.system.senses.extra1.mod;
+		this.system.senses.extra2.value = per + this.system.senses.extra2.mod;
 	}
 
 	recalcTraitPoints() {
@@ -686,99 +686,101 @@ export class gurpsActor extends Actor {
 		let perkPoints = +0;
 
 		// Iterate through the list of traits. Advantages and Disadvantages
-        for (let i = 0; i < this.data.items._source.length; i++){
-            if (this.data.items._source[i].type === "Trait"){
-                traitPoints = traitPoints += this.data.items._source[i].data.points;
-				advantagePoints = this.data.items._source[i].data.category.toLowerCase() === "advantage" ? advantagePoints += this.data.items._source[i].data.points : advantagePoints;
-                disadvantagePoints = this.data.items._source[i].data.category.toLowerCase() === "disadv" ? disadvantagePoints += this.data.items._source[i].data.points : disadvantagePoints;
-				quirkPoints = this.data.items._source[i].data.category.toLowerCase() === "quirk" ? quirkPoints += this.data.items._source[i].data.points : quirkPoints;
-				perkPoints = this.data.items._source[i].data.category.toLowerCase() === "perk" ? perkPoints += this.data.items._source[i].data.points : perkPoints;
+		console.log(this);
+		console.log(this.system);
+        for (let i = 0; i < this.items._source.length; i++){
+            if (this.items._source[i].type === "Trait"){
+                traitPoints = traitPoints += this.items._source[i].system.points;
+				advantagePoints = this.items._source[i].system.category.toLowerCase() === "advantage" ? advantagePoints += this.items._source[i].system.points : advantagePoints;
+                disadvantagePoints = this.items._source[i].system.category.toLowerCase() === "disadv" ? disadvantagePoints += this.items._source[i].system.points : disadvantagePoints;
+				quirkPoints = this.items._source[i].system.category.toLowerCase() === "quirk" ? quirkPoints += this.items._source[i].system.points : quirkPoints;
+				perkPoints = this.items._source[i].system.category.toLowerCase() === "perk" ? perkPoints += this.items._source[i].system.points : perkPoints;
             }
         }
-		this.data.data.points.traits = traitPoints;
-		this.data.data.points.advantages = advantagePoints;
-		this.data.data.points.disadvantages = disadvantagePoints;
-		this.data.data.points.quirks = quirkPoints;
-		this.data.data.points.perks = perkPoints;
+		this.system.points.traits = traitPoints;
+		this.system.points.advantages = advantagePoints;
+		this.system.points.disadvantages = disadvantagePoints;
+		this.system.points.quirks = quirkPoints;
+		this.system.points.perks = perkPoints;
 	}
 
     recalcSkillPoints() {
         var skillPoints = +0;
         //Iterate through the list of skills. Advantages and Disadvantages
-        for (let i = 0; i < this.data.items._source.length; i++){
-            if (this.data.items._source[i].type === "Rollable"){
-                skillPoints = skillPoints += this.data.items._source[i].data.points
+        for (let i = 0; i < this.items._source.length; i++){
+            if (this.items._source[i].type === "Rollable"){
+                skillPoints = skillPoints += this.items._source[i].system.points
             }
         }
-		this.data.data.points.skills = skillPoints;
+		this.system.points.skills = skillPoints;
     }
 
 	recalcSpellPoints() {
 		var spellPoints = +0;
 		//Iterate through the list of skills. Advantages and Disadvantages
-		for (let i = 0; i < this.data.items.length; i++){
-			if (this.data.items._source[i].type === "Spell"){
-				spellPoints = spellPoints += this.data.items._source[i].data.points
+		for (let i = 0; i < this.items.length; i++){
+			if (this.items._source[i].type === "Spell"){
+				spellPoints = spellPoints += this.items._source[i].system.points
 			}
 		}
-		this.data.data.points.spells = spellPoints;
+		this.system.points.spells = spellPoints;
 	}
 
 	recalcEncValues(){
-		var st = this.data.data.primaryAttributes.lifting.value;
+		var st = this.system.primaryAttributes.lifting.value;
 
 		let dodgeMultiplier = 1;
 
 		// Basic 328 - With less than 1/3rd FP remaining your ST is halved, but not for the purposes of HP or damage
-		if (this.data.data.reserves.fp.state.toLowerCase() !== "fresh" && this.data.data.reserves.fp.state.toLowerCase() !=="tired") {
+		if (this.system.reserves.fp.state.toLowerCase() !== "fresh" && this.system.reserves.fp.state.toLowerCase() !=="tired") {
 			st = st / 2
 			dodgeMultiplier *= 0.5;
 		}
 
-		if (this.data.data.reserves.hp.state.toLowerCase() !== "healthy" && this.data.data.reserves.hp.state.toLowerCase() !== "injured"){
+		if (this.system.reserves.hp.state.toLowerCase() !== "healthy" && this.system.reserves.hp.state.toLowerCase() !== "injured"){
 			st = st / 2
 			dodgeMultiplier *= 0.5;
 		}
 
 		var bl = Math.round(((st * st)/5));
-		var move = this.data.data.primaryAttributes.move.value;
-		var dodge = this.data.data.primaryAttributes.dodge.value;
+		var move = this.system.primaryAttributes.move.value;
+		var dodge = this.system.primaryAttributes.dodge.value;
 		let dodgeMod = 0;
 		var carriedWeight = 0;
 		var carriedCost = 0;
 		let finalDodge = 0;
 
-		if (this.data.data.enhanced.dodge){
-			dodgeMod = this.data.data.enhanced.dodge;
+		if (this.system.enhanced.dodge){
+			dodgeMod = this.system.enhanced.dodge;
 		}
 
-		if (this.data.data.flag.combatReflexes){
+		if (this.system.flag.combatReflexes){
 			dodgeMod = dodgeMod + 1;
 		}
 
-		this.data.data.encumbrance.none.lbs = bl;
-		this.data.data.encumbrance.light.lbs = bl * 2;
-		this.data.data.encumbrance.medium.lbs = bl * 3;
-		this.data.data.encumbrance.heavy.lbs = bl * 6;
-		this.data.data.encumbrance.xheavy.lbs = bl * 10;
+		this.system.encumbrance.none.lbs = bl;
+		this.system.encumbrance.light.lbs = bl * 2;
+		this.system.encumbrance.medium.lbs = bl * 3;
+		this.system.encumbrance.heavy.lbs = bl * 6;
+		this.system.encumbrance.xheavy.lbs = bl * 10;
 
-		this.data.data.encumbrance.none.move	= Math.ceil((move) * dodgeMultiplier);
-		this.data.data.encumbrance.light.move	= Math.ceil((Math.max((Math.floor(move * 0.8)), 1)) * dodgeMultiplier);
-		this.data.data.encumbrance.medium.move	= Math.ceil((Math.max((Math.floor(move * 0.6)), 1)) * dodgeMultiplier);
-		this.data.data.encumbrance.heavy.move	= Math.ceil((Math.max((Math.floor(move * 0.4)), 1)) * dodgeMultiplier);
-		this.data.data.encumbrance.xheavy.move	= Math.ceil((Math.max((Math.floor(move * 0.2)), 1)) * dodgeMultiplier);
+		this.system.encumbrance.none.move	= Math.ceil((move) * dodgeMultiplier);
+		this.system.encumbrance.light.move	= Math.ceil((Math.max((Math.floor(move * 0.8)), 1)) * dodgeMultiplier);
+		this.system.encumbrance.medium.move	= Math.ceil((Math.max((Math.floor(move * 0.6)), 1)) * dodgeMultiplier);
+		this.system.encumbrance.heavy.move	= Math.ceil((Math.max((Math.floor(move * 0.4)), 1)) * dodgeMultiplier);
+		this.system.encumbrance.xheavy.move	= Math.ceil((Math.max((Math.floor(move * 0.2)), 1)) * dodgeMultiplier);
 
-		this.data.data.encumbrance.none.dodge	= Math.ceil((dodge + dodgeMod) * dodgeMultiplier);
-		this.data.data.encumbrance.light.dodge	= Math.ceil((Math.max(dodge + dodgeMod - 1, 1)) * dodgeMultiplier);
-		this.data.data.encumbrance.medium.dodge = Math.ceil((Math.max(dodge + dodgeMod - 2, 1)) * dodgeMultiplier);
-		this.data.data.encumbrance.heavy.dodge	= Math.ceil((Math.max(dodge + dodgeMod - 3, 1)) * dodgeMultiplier);
-		this.data.data.encumbrance.xheavy.dodge	= Math.ceil((Math.max(dodge + dodgeMod - 4, 1)) * dodgeMultiplier);
+		this.system.encumbrance.none.dodge	= Math.ceil((dodge + dodgeMod) * dodgeMultiplier);
+		this.system.encumbrance.light.dodge	= Math.ceil((Math.max(dodge + dodgeMod - 1, 1)) * dodgeMultiplier);
+		this.system.encumbrance.medium.dodge = Math.ceil((Math.max(dodge + dodgeMod - 2, 1)) * dodgeMultiplier);
+		this.system.encumbrance.heavy.dodge	= Math.ceil((Math.max(dodge + dodgeMod - 3, 1)) * dodgeMultiplier);
+		this.system.encumbrance.xheavy.dodge	= Math.ceil((Math.max(dodge + dodgeMod - 4, 1)) * dodgeMultiplier);
 
 		// Running loop to total up weight and value for the sheet
-		for (let l = 0; l < this.data.items._source.length; l++){
-			if (this.data.items._source[l].type === "Equipment" || this.data.items._source[l].type === "Custom Weapon" || this.data.items._source[l].type === "Custom Armour" || this.data.items._source[l].type === "Travel Fare"){
-				carriedWeight = (+this.data.items._source[l].data.weight * +this.data.items._source[l].data.quantity) + +carriedWeight;
-				carriedCost = (+this.data.items._source[l].data.cost * +this.data.items._source[l].data.quantity) + +carriedCost;
+		for (let l = 0; l < this.items._source.length; l++){
+			if (this.items._source[l].type === "Equipment" || this.items._source[l].type === "Custom Weapon" || this.items._source[l].type === "Custom Armour" || this.items._source[l].type === "Travel Fare"){
+				carriedWeight = (+this.items._source[l].system.weight * +this.items._source[l].system.quantity) + +carriedWeight;
+				carriedCost = (+this.items._source[l].system.cost * +this.items._source[l].system.quantity) + +carriedCost;
 			}
 		}
 
@@ -786,97 +788,98 @@ export class gurpsActor extends Actor {
 		carriedCost = Math.round(carriedCost * 100) / 100;
 
 		// Assign total weight and cost
-		this.data.data.bio.carriedWeight = carriedWeight;
-		this.data.data.bio.carriedValue = carriedCost
+		this.system.bio.carriedWeight = carriedWeight;
+		this.system.bio.carriedValue = carriedCost
 
-		if (carriedWeight <= this.data.data.encumbrance.none.lbs) {
-			finalDodge = this.data.data.encumbrance.none.dodge;
+		if (carriedWeight <= this.system.encumbrance.none.lbs) {
+			finalDodge = this.system.encumbrance.none.dodge;
 		}
-		else if (carriedWeight <= this.data.data.encumbrance.light.lbs){
-			finalDodge = this.data.data.encumbrance.light.dodge;
+		else if (carriedWeight <= this.system.encumbrance.light.lbs){
+			finalDodge = this.system.encumbrance.light.dodge;
 		}
-		else if (carriedWeight <= this.data.data.encumbrance.medium.lbs){
-			finalDodge = this.data.data.encumbrance.medium.dodge;
+		else if (carriedWeight <= this.system.encumbrance.medium.lbs){
+			finalDodge = this.system.encumbrance.medium.dodge;
 		}
-		else if (carriedWeight <= this.data.data.encumbrance.heavy.lbs){
-			finalDodge = this.data.data.encumbrance.heavy.dodge;
+		else if (carriedWeight <= this.system.encumbrance.heavy.lbs){
+			finalDodge = this.system.encumbrance.heavy.dodge;
 		}
-		else if (carriedWeight <= this.data.data.encumbrance.xheavy.lbs){
-			finalDodge = this.data.data.encumbrance.xheavy.dodge;
+		else if (carriedWeight <= this.system.encumbrance.xheavy.lbs){
+			finalDodge = this.system.encumbrance.xheavy.dodge;
 		}
 		else {
 			finalDodge = 0;
 		}
 
-		this.data.data.primaryAttributes.dodge.value = finalDodge;
+		this.system.primaryAttributes.dodge.value = finalDodge;
 	}
 
 	setTotalPoints(unspent) {
-		let total = +this.data.data.points.attributes + +this.data.data.points.traits + +this.data.data.points.skills + +unspent;
-		this.update({ ['data.points.total']: total });
+		let total = +this.system.points.attributes + +this.system.points.traits + +this.system.points.skills + +unspent;
+		this.update({ ['system.points.total']: total });
 	}
 
 	recalcAtrPoints(){
+		console.log(this.system);
 		//Update point totals
-		let attributePoints = +this.data.data.primaryAttributes.strength.points +
-			+this.data.data.primaryAttributes.dexterity.points +
-			+this.data.data.primaryAttributes.intelligence.points +
-			+this.data.data.primaryAttributes.health.points +
-			+this.data.data.primaryAttributes.perception.points +
-			+this.data.data.primaryAttributes.will.points +
-			+this.data.data.primaryAttributes.fright.points +
-			+this.data.data.primaryAttributes.speed.points +
-			+this.data.data.primaryAttributes.move.points +
-			+this.data.data.primaryAttributes.dodge.points +
-			+this.data.data.reserves.hp.points +
-			+this.data.data.reserves.fp.points +
-			+this.data.data.reserves.er.points +
-			+this.data.data.bio.tl.points;
-		this.data.data.points.attributes = attributePoints;
+		let attributePoints = +this.system.primaryAttributes.strength.points +
+			+this.system.primaryAttributes.dexterity.points +
+			+this.system.primaryAttributes.intelligence.points +
+			+this.system.primaryAttributes.health.points +
+			+this.system.primaryAttributes.perception.points +
+			+this.system.primaryAttributes.will.points +
+			+this.system.primaryAttributes.fright.points +
+			+this.system.primaryAttributes.speed.points +
+			+this.system.primaryAttributes.move.points +
+			+this.system.primaryAttributes.dodge.points +
+			+this.system.reserves.hp.points +
+			+this.system.reserves.fp.points +
+			+this.system.reserves.er.points +
+			+this.system.bio.tl.points;
+		this.system.points.attributes = attributePoints;
 	}
 
 	recalcPointTotals() {
 		let unspent;
 		let spent;
-		spent = +this.data.data.points.attributes + +this.data.data.points.traits + +this.data.data.points.skills + +this.data.data.points.spells;
+		spent = +this.system.points.attributes + +this.system.points.traits + +this.system.points.skills + +this.system.points.spells;
 
-		unspent = +this.data.data.points.total - +spent;
+		unspent = +this.system.points.total - +spent;
 
-		this.data.data.points.unspent = unspent;
+		this.system.points.unspent = unspent;
 	}
 
 	setupCategories() {
-		this.data.traitCategories = [];
-		this.data.equipmentCategories = [];
-		this.data.rollableCategories = [];
-		this.data.spellCategories = [];
+		this.system.traitCategories = [];
+		this.system.equipmentCategories = [];
+		this.system.rollableCategories = [];
+		this.system.spellCategories = [];
 
-		this.data.traitCategories.push("");
-		this.data.equipmentCategories.push("");
-		this.data.rollableCategories.push("");
-		this.data.spellCategories.push("");
+		this.system.traitCategories.push("");
+		this.system.equipmentCategories.push("");
+		this.system.rollableCategories.push("");
+		this.system.spellCategories.push("");
 
-		for (let w = 0; w < this.data.items._source.length; w++) {
-			if(this.data.items._source[w].data.subCategory){
-				if(this.data.items._source[w].data.subCategory.trim() != ""){//If subcategory is not blank
-					if(this.data.items._source[w].type == "Trait"){
-						if(!this.data.traitCategories.includes(this.data.items._source[w].data.subCategory.trim())){//Make sure the trait array doesn't already contain the category.
-							this.data.traitCategories.push(this.data.items._source[w].data.subCategory.trim())
+		for (let w = 0; w < this.items._source.length; w++) {
+			if(this.items._source[w].system.subCategory){
+				if(this.items._source[w].system.subCategory.trim() != ""){//If subcategory is not blank
+					if(this.items._source[w].type == "Trait"){
+						if(!this.system.traitCategories.includes(this.items._source[w].system.subCategory.trim())){//Make sure the trait array doesn't already contain the category.
+							this.system.traitCategories.push(this.items._source[w].system.subCategory.trim())
 						}
 					}
-					else if (this.data.items._source[w].type == "Rollable"){
-						if (!this.data.rollableCategories.includes(this.data.items._source[w].data.subCategory.trim())) {//Make sure the rollable array doesn't already contain the category.
-							this.data.rollableCategories.push(this.data.items._source[w].data.subCategory.trim())
+					else if (this.items._source[w].type == "Rollable"){
+						if (!this.system.rollableCategories.includes(this.items._source[w].system.subCategory.trim())) {//Make sure the rollable array doesn't already contain the category.
+							this.system.rollableCategories.push(this.items._source[w].system.subCategory.trim())
 						}
 					}
-					else if (this.data.items._source[w].type == "Spell"){
-						if (!this.data.spellCategories.includes(this.data.items._source[w].data.subCategory.trim())) {//Make sure the spell array doesn't already contain the category.
-							this.data.spellCategories.push(this.data.items._source[w].data.subCategory.trim())
+					else if (this.items._source[w].type == "Spell"){
+						if (!this.system.spellCategories.includes(this.items._source[w].system.subCategory.trim())) {//Make sure the spell array doesn't already contain the category.
+							this.system.spellCategories.push(this.items._source[w].system.subCategory.trim())
 						}
 					}
-					else if (this.data.items._source[w].type == "Equipment"){
-						if (!this.data.equipmentCategories.includes(this.data.items._source[w].data.subCategory.trim())) {//Make sure the item array doesn't already contain the category.
-							this.data.equipmentCategories.push(this.data.items._source[w].data.subCategory.trim())
+					else if (this.items._source[w].type == "Equipment"){
+						if (!this.system.equipmentCategories.includes(this.items._source[w].system.subCategory.trim())) {//Make sure the item array doesn't already contain the category.
+							this.system.equipmentCategories.push(this.items._source[w].system.subCategory.trim())
 						}
 					}
 				}
@@ -885,78 +888,76 @@ export class gurpsActor extends Actor {
 	}
 
 	storeArmour(){
-		if (this.data) {
-			if (this.data.data) {
-				if (this.data.data.bodyType) {
-					if (this.data.data.bodyType.name.length > 0){
-						// Create a function for filtering out armour
-						function filterArmour(item){
-							if (((item.type == "Equipment" || item.type == "Custom Armour") && item.data.equipStatus == "equipped") || item.type == "Trait"){ // Check to see if it is a piece of equipment, custom armour, or a trait
-								if (item.data.armour){ // Check to see if data has the armour child object - This should really only be an issue when updating from a version that did not include this data structure.
-									if (item.data.armour.bodyType){ // Check to see if the item has armour
-										if (item.data.armour.bodyType.name){
-											if (item.data.armour.bodyType.name.length > 0){ // Check to see if a body type has been set
-												return true;
-											}
+		if (this.system) {
+			if (this.system.bodyType) {
+				if (this.system.bodyType.name.length > 0){
+					// Create a function for filtering out armour
+					function filterArmour(item){
+						if (((item.type == "Equipment" || item.type == "Custom Armour") && item.system.equipStatus == "equipped") || item.type == "Trait"){ // Check to see if it is a piece of equipment, custom armour, or a trait
+							if (item.system.armour){ // Check to see if data has the armour child object - This should really only be an issue when updating from a version that did not include this data structure.
+								if (item.system.armour.bodyType){ // Check to see if the item has armour
+									if (item.system.armour.bodyType.name){
+										if (item.system.armour.bodyType.name.length > 0){ // Check to see if a body type has been set
+											return true;
 										}
 									}
 								}
 							}
-							return false;
+						}
+						return false;
+					}
+
+					// Create function for sorting armour by layer
+					function sortArmourByLayer(a,b){
+						if (a.system.armour.layer < b.system.armour.layer){
+							return -1
+						}
+						if (a.system.armour.layer > b.system.armour.layer){
+							return 1
+						}
+						return 0
+					}
+
+					let armour = [{
+						flexible: {},
+						hardness: {},
+						burn: {},
+						cor: {},
+						cr: {},
+						cut: {},
+						fat: {},
+						imp: {},
+						pi: {},
+						tox: {},
+					}];
+
+					armour[0] = this.getArmour(this.system.bodyType.body, this.system.bodyType.body, 0); // Get the armour inherent in the body
+					this.system.bodyType.drTypesOne = getProperty(armour[0], this.system.bodyType.damageTypeOne.toLowerCase());
+					this.system.bodyType.drTypesTwo = getProperty(armour[0], this.system.bodyType.damageTypeTwo.toLowerCase());
+
+					let items = this.items._source.filter(filterArmour); // Get the character's items and filter out anything that isn't armour
+					items = items.sort(sortArmourByLayer); // Take the above list and sort by layer. Index 0 is lowest, index infinity is highest.
+
+					for (let l = 0; l < items.length; l++){ // Loop through the characters items and apply any relevant DR.
+						armour[l+1] = this.getArmour(items[l].system.armour.bodyType.body, this.system.bodyType.body, l+1);
+						let damageTypeOneObject;
+						let damageTypeTwoObject;
+
+						if (this.system.bodyType.damageTypeOne.length > 0) { // If they've selected a type for display
+							damageTypeOneObject = getProperty(armour[l+1], this.system.bodyType.damageTypeOne.toLowerCase()); // Set the DR
+						}
+						if (this.system.bodyType.damageTypeTwo.length > 0) { // If they've selected a second type for display
+							damageTypeTwoObject = getProperty(armour[l+1], this.system.bodyType.damageTypeTwo.toLowerCase()); // Set the DR
 						}
 
-						// Create function for sorting armour by layer
-						function sortArmourByLayer(a,b){
-							if (a.data.armour.layer < b.data.armour.layer){
-								return -1
-							}
-							if (a.data.armour.layer > b.data.armour.layer){
-								return 1
-							}
-							return 0
-						}
-
-						let armour = [{
-							flexible: {},
-							hardness: {},
-							burn: {},
-							cor: {},
-							cr: {},
-							cut: {},
-							fat: {},
-							imp: {},
-							pi: {},
-							tox: {},
-						}];
-
-						armour[0] = this.getArmour(this.data.data.bodyType.body, this.data.data.bodyType.body, 0); // Get the armour inherent in the body
-						this.data.data.bodyType.drTypesOne = getProperty(armour[0], this.data.data.bodyType.damageTypeOne.toLowerCase());
-						this.data.data.bodyType.drTypesTwo = getProperty(armour[0], this.data.data.bodyType.damageTypeTwo.toLowerCase());
-
-						let items = this.data.items._source.filter(filterArmour); // Get the character's items and filter out anything that isn't armour
-						items = items.sort(sortArmourByLayer); // Take the above list and sort by layer. Index 0 is lowest, index infinity is highest.
-
-						for (let l = 0; l < items.length; l++){ // Loop through the characters items and apply any relevant DR.
-							armour[l+1] = this.getArmour(items[l].data.armour.bodyType.body, this.data.data.bodyType.body, l+1);
-							let damageTypeOneObject;
-							let damageTypeTwoObject;
-
-							if (this.data.data.bodyType.damageTypeOne.length > 0) { // If they've selected a type for display
-								damageTypeOneObject = getProperty(armour[l+1], this.data.data.bodyType.damageTypeOne.toLowerCase()); // Set the DR
-							}
-							if (this.data.data.bodyType.damageTypeTwo.length > 0) { // If they've selected a second type for display
-								damageTypeTwoObject = getProperty(armour[l+1], this.data.data.bodyType.damageTypeTwo.toLowerCase()); // Set the DR
-							}
-
-							if (this.data.data.bodyType.damageTypeOne.length > 0) {
-								let bodyParts = Object.keys(damageTypeOneObject);
-								for (let q = 0; q < bodyParts.length; q++) {
-									if (this.data.data.bodyType.damageTypeOne.length > 0) { // If they've selected a type for display
-										this.data.data.bodyType.drTypesOne[bodyParts[q]] += damageTypeOneObject[bodyParts[q]]
-									}
-									if (this.data.data.bodyType.damageTypeTwo.length > 0 && this.data.data.bodyType.damageTypeOne !== this.data.data.bodyType.damageTypeTwo ) { // If they've selected a second type for display
-										this.data.data.bodyType.drTypesTwo[bodyParts[q]] += damageTypeTwoObject[bodyParts[q]]
-									}
+						if (this.system.bodyType.damageTypeOne.length > 0) {
+							let bodyParts = Object.keys(damageTypeOneObject);
+							for (let q = 0; q < bodyParts.length; q++) {
+								if (this.system.bodyType.damageTypeOne.length > 0) { // If they've selected a type for display
+									this.system.bodyType.drTypesOne[bodyParts[q]] += damageTypeOneObject[bodyParts[q]]
+								}
+								if (this.system.bodyType.damageTypeTwo.length > 0 && this.system.bodyType.damageTypeOne !== this.system.bodyType.damageTypeTwo ) { // If they've selected a second type for display
+									this.system.bodyType.drTypesTwo[bodyParts[q]] += damageTypeTwoObject[bodyParts[q]]
 								}
 							}
 						}
@@ -1074,135 +1075,131 @@ export class gurpsActor extends Actor {
 	}
 
 	bodyReserves() {
-		if (this.data) {
-			if (this.data.data) {
-				if (this.data.data.reserves) { // Make sure reserves exist
+		if (this.system) {
+			if (this.system.reserves) { // Make sure reserves exist
 
-					// Handle the calculations for HP
-					let hpMax = this.data.data.reserves.hp.max;
-					let hpValue = this.data.data.reserves.hp.value;
-					let hpState = 'Healthy';
+				// Handle the calculations for HP
+				let hpMax = this.system.reserves.hp.max;
+				let hpValue = this.system.reserves.hp.value;
+				let hpState = 'Healthy';
 
-					let hpRatio = hpValue / hpMax;
-					if (hpRatio < -5) { // HP is at -5xMax or less
-						hpState = 'Dead';
-					}
-					else if (hpRatio < -4) { // HP is at -4xMax or less
-						hpState = 'Death 4';
-					}
-					else if (hpRatio < -3) { // HP is at -3xMax or less
-						hpState = 'Death 3';
-					}
-					else if (hpRatio < -2) { // HP is at -2xMax or less
-						hpState = 'Death 2';
-					}
-					else if (hpRatio < -1) { // HP is at -1xMax or less
-						hpState = 'Death 1';
-					}
-					else if (hpValue < (hpMax / 3)) { // HP is less than 1/3rd of max.
-						hpState = 'Reeling';
-					}
-					else if (hpValue < hpMax) { // HP is not full, but is higher than 1/3rd of max.
-						hpState = 'Injured';
-					}
-					else { // HP is is not less than max.
-						hpState = 'Healthy';
-					}
-					this.data.data.reserves.hp.state = hpState;
-
-					// Handle the calculations for FP
-					let fpMax = this.data.data.reserves.fp.max;
-					let fpValue = this.data.data.reserves.fp.value;
-					let fpState = 'Fresh';
-
-					let fpRatio = fpValue / fpMax;
-
-					if (fpRatio <= -1) { // fp is at -1xMax or less
-						fpState = 'Unconscious';
-					}
-					else if (fpRatio <= 0) { // fp is at zero or less
-						fpState = 'Collapse';
-					}
-					else if (fpValue < (fpMax / 3)) { // fp is less than 1/3rd of max.
-						fpState = 'Very Tired';
-					}
-					else if (fpValue < fpMax) { // fp is not full, but is higher than 1/3rd of max.
-						fpState = 'Tired';
-					}
-					else { // FP is not less than max
-						fpState = 'Fresh';
-					}
-					// update the actor
-					this.data.data.reserves.fp.state = fpState;
+				let hpRatio = hpValue / hpMax;
+				if (hpRatio < -5) { // HP is at -5xMax or less
+					hpState = 'Dead';
 				}
+				else if (hpRatio < -4) { // HP is at -4xMax or less
+					hpState = 'Death 4';
+				}
+				else if (hpRatio < -3) { // HP is at -3xMax or less
+					hpState = 'Death 3';
+				}
+				else if (hpRatio < -2) { // HP is at -2xMax or less
+					hpState = 'Death 2';
+				}
+				else if (hpRatio < -1) { // HP is at -1xMax or less
+					hpState = 'Death 1';
+				}
+				else if (hpValue < (hpMax / 3)) { // HP is less than 1/3rd of max.
+					hpState = 'Reeling';
+				}
+				else if (hpValue < hpMax) { // HP is not full, but is higher than 1/3rd of max.
+					hpState = 'Injured';
+				}
+				else { // HP is is not less than max.
+					hpState = 'Healthy';
+				}
+				this.system.reserves.hp.state = hpState;
+
+				// Handle the calculations for FP
+				let fpMax = this.system.reserves.fp.max;
+				let fpValue = this.system.reserves.fp.value;
+				let fpState = 'Fresh';
+
+				let fpRatio = fpValue / fpMax;
+
+				if (fpRatio <= -1) { // fp is at -1xMax or less
+					fpState = 'Unconscious';
+				}
+				else if (fpRatio <= 0) { // fp is at zero or less
+					fpState = 'Collapse';
+				}
+				else if (fpValue < (fpMax / 3)) { // fp is less than 1/3rd of max.
+					fpState = 'Very Tired';
+				}
+				else if (fpValue < fpMax) { // fp is not full, but is higher than 1/3rd of max.
+					fpState = 'Tired';
+				}
+				else { // FP is not less than max
+					fpState = 'Fresh';
+				}
+				// update the actor
+				this.system.reserves.fp.state = fpState;
 			}
 		}
 	}
 
 	partHP() {
-		if (this.data) {
-			if (this.data.data) {
-				if (this.data.data.bodyType) {
-					if (this.data.data.bodyType.body) {
-						let bodyParts = Object.keys(this.data.data.bodyType.body);
+		if (this.system) {
+			if (this.system.bodyType) {
+				if (this.system.bodyType.body) {
+					let bodyParts = Object.keys(this.system.bodyType.body);
 
-						for (let i = 0; i < bodyParts.length; i++){
-							let currentPart = getProperty(this.data.data.bodyType.body, bodyParts[i]);
+					for (let i = 0; i < bodyParts.length; i++){
+						let currentPart = getProperty(this.system.bodyType.body, bodyParts[i]);
 
-							if (currentPart.hp){//Part has hp info
-								let hp = currentPart.hp.value;
-								let state = "Fine";
+						if (currentPart.hp){//Part has hp info
+							let hp = currentPart.hp.value;
+							let state = "Fine";
 
-								if(hp <= (currentPart.hp.max * -1)){ // If part HP is at or below a full negative multiple
-									if (this.data.data.injuryTolerances.unbreakableBones) {
-										state = "Crippled";
-									}
-									else {
-										state = "Destroyed";
-									}
+							if(hp <= (currentPart.hp.max * -1)){ // If part HP is at or below a full negative multiple
+								if (this.system.injuryTolerances.unbreakableBones) {
+									state = "Crippled";
 								}
-								else if(hp <= 0){ // If part HP is at or below a 0
-									if (this.data.data.injuryTolerances.unbreakableBones) {
-										state = "Injured";
-									}
-									else {
-										state = "Crippled";
-									}
+								else {
+									state = "Destroyed";
 								}
-								else if (hp < currentPart.hp.max){ // If part HP is below max
+							}
+							else if(hp <= 0){ // If part HP is at or below a 0
+								if (this.system.injuryTolerances.unbreakableBones) {
 									state = "Injured";
 								}
-								else { // Part is not damaged
-									state = "Fine";
+								else {
+									state = "Crippled";
 								}
-
-								setProperty(this.data.data.bodyType.body, bodyParts[i] + ".hp.state",state);
+							}
+							else if (hp < currentPart.hp.max){ // If part HP is below max
+								state = "Injured";
+							}
+							else { // Part is not damaged
+								state = "Fine";
 							}
 
-							if (getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation")){//Part has sub parts
-								let subParts = Object.keys(getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation"));
+							setProperty(this.system.bodyType.body, bodyParts[i] + ".hp.state",state);
+						}
 
-								for (let n = 0; n < subParts.length; n++){
-									let currentSubPart = getProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n]);
-									if (currentSubPart.hp){//Part has hp info
-										let hp = currentSubPart.hp.value;
-										let state = "Fine";
+						if (getProperty(this.system.bodyType.body, bodyParts[i] + ".subLocation")){//Part has sub parts
+							let subParts = Object.keys(getProperty(this.system.bodyType.body, bodyParts[i] + ".subLocation"));
 
-										if(hp <= (currentSubPart.hp.max * -1)){ // If part HP is at or below a full negative multiple
-											state = "Destroyed";
-										}
-										else if(hp <= 0){ // If part HP is at or below a 0
-											state = "Crippled";
-										}
-										else if (hp < currentSubPart.hp.max){ // If part HP is below max
-											state = "Injured";
-										}
-										else { // Part is not damaged
-											state = "Fine";
-										}
+							for (let n = 0; n < subParts.length; n++){
+								let currentSubPart = getProperty(this.system.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n]);
+								if (currentSubPart.hp){//Part has hp info
+									let hp = currentSubPart.hp.value;
+									let state = "Fine";
 
-										setProperty(this.data.data.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n] + ".hp.state",state);
+									if(hp <= (currentSubPart.hp.max * -1)){ // If part HP is at or below a full negative multiple
+										state = "Destroyed";
 									}
+									else if(hp <= 0){ // If part HP is at or below a 0
+										state = "Crippled";
+									}
+									else if (hp < currentSubPart.hp.max){ // If part HP is below max
+										state = "Injured";
+									}
+									else { // Part is not damaged
+										state = "Fine";
+									}
+
+									setProperty(this.system.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n] + ".hp.state",state);
 								}
 							}
 						}
@@ -1213,18 +1210,16 @@ export class gurpsActor extends Actor {
 	}
 
 	updateMagic() {
-		if (this.data) {
-			if (this.data.data) {
-				if (this.data.data.magic) { // Character has the magic block
-					// Calculate the total magical attribute
-					let totalMagicAttribute = 0;
-					if (this.data.data.magic.attribute != "") { // Attribute is not blank
-						totalMagicAttribute += skillHelpers.getBaseAttrValue(this.data.data.magic.attribute, this)
-					}
-					totalMagicAttribute += this.data.data.magic.attributeMod ? this.data.data.magic.attributeMod : 0;
-					totalMagicAttribute += this.data.data.magic.magery ? this.data.data.magic.magery : 0;
-					this.data.data.magic.totalMagicAttribute = totalMagicAttribute;
+		if (this.system) {
+			if (this.system.magic) { // Character has the magic block
+				// Calculate the total magical attribute
+				let totalMagicAttribute = 0;
+				if (this.system.magic.attribute != "") { // Attribute is not blank
+					totalMagicAttribute += skillHelpers.getBaseAttrValue(this.system.magic.attribute, this)
 				}
+				totalMagicAttribute += this.system.magic.attributeMod ? this.system.magic.attributeMod : 0;
+				totalMagicAttribute += this.system.magic.magery ? this.system.magic.magery : 0;
+				this.system.magic.totalMagicAttribute = totalMagicAttribute;
 			}
 		}
 	}
@@ -1243,20 +1238,20 @@ export class gurpsActor extends Actor {
 		console.log(targetToken)
 
 		console.log(selfToken._validPosition)
-		console.log(selfToken.data.rotation)
+		console.log(selfToken.system.rotation)
 
 		console.log(targetToken._validPosition)
-		console.log(targetToken.data.rotation)
+		console.log(targetToken.system.rotation)
 
 		let relativePosition = (Math.atan2(-(targetToken._validPosition.x - selfToken._validPosition.x), (targetToken._validPosition.y - selfToken._validPosition.y)) * 180 / Math.PI); // Takes the atan of the two sets of points after they have been rotated clockwise 90 degrees. This puts the 0 point towards the direction of facing with 180/-180 directly behind
 		console.log(relativePosition);
 
 		let targetFacing;
-		if (targetToken.data.rotation > 180){ // Correct for facing angles of greater than 180 degrees. Valid range for this macro is -180 to 0 to 180. Not 0 to 360
-			targetFacing = targetToken.data.rotation - 360;
+		if (targetToken.system.rotation > 180){ // Correct for facing angles of greater than 180 degrees. Valid range for this macro is -180 to 0 to 180. Not 0 to 360
+			targetFacing = targetToken.system.rotation - 360;
 		}
 		else {
-			targetFacing = targetToken.data.rotation
+			targetFacing = targetToken.system.rotation
 		}
 
 		let relativeAngle = relativePosition - targetFacing; // Get the relative angle between the two tokens, corrected for the target's facing
@@ -1271,10 +1266,10 @@ export class gurpsActor extends Actor {
 
 		console.log(relativeAngle)
 
-		let leftFrontBound = (0 - (selfToken.actor.data.data.vision.front / 2)); // Get all the bounds for front and side arcs
-		let rightFrontBound = (0 + (selfToken.actor.data.data.vision.front / 2));
-		let leftSideBound = (0 - (selfToken.actor.data.data.vision.side / 2));
-		let rightSideBound = (0 + (selfToken.actor.data.data.vision.side / 2));
+		let leftFrontBound = (0 - (selfToken.actor.system.vision.front / 2)); // Get all the bounds for front and side arcs
+		let rightFrontBound = (0 + (selfToken.actor.system.vision.front / 2));
+		let leftSideBound = (0 - (selfToken.actor.system.vision.side / 2));
+		let rightSideBound = (0 + (selfToken.actor.system.vision.side / 2));
 
 		console.log(leftFrontBound + " - " + rightFrontBound)
 		console.log(leftSideBound + " - " + rightSideBound)
@@ -1336,10 +1331,10 @@ export class gurpsActor extends Actor {
 			targetTokenActor = targetToken.document.actor;
 		}
 
-		let leftFrontBound	= (0 - (targetTokenActor.data.data.vision.front / 2)); // Get all the bounds for front and side arcs
-		let rightFrontBound = (0 + (targetTokenActor.data.data.vision.front / 2));
-		let leftSideBound	= (0 - (targetTokenActor.data.data.vision.side / 2));
-		let rightSideBound	= (0 + (targetTokenActor.data.data.vision.side / 2));
+		let leftFrontBound	= (0 - (targetTokenActor.system.vision.front / 2)); // Get all the bounds for front and side arcs
+		let rightFrontBound = (0 + (targetTokenActor.system.vision.front / 2));
+		let leftSideBound	= (0 - (targetTokenActor.system.vision.side / 2));
+		let rightSideBound	= (0 + (targetTokenActor.system.vision.side / 2));
 
 		let facing;
 		let position;
@@ -1576,31 +1571,31 @@ export class gurpsActor extends Actor {
 		let ranged;
 		let affliction;
 
-		actor.data.items.forEach((item) => {
-			if (item.data.type == "Trait" || item.data.type == "Equipment" || item.data.type == "Spell" || item.data.type == "Custom Weapon" || item.data.type == "Custom Armour" || item.data.type == "Travel Fare"){
-				if (item.data.data.melee) {
-					let meleeKeys = Object.keys(item.data.data.melee); // Collect all the melee keys
+		actor.system.items.forEach((item) => {
+			if (item.system.type == "Trait" || item.system.type == "Equipment" || item.system.type == "Spell" || item.system.type == "Custom Weapon" || item.system.type == "Custom Armour" || item.system.type == "Travel Fare"){
+				if (item.system.melee) {
+					let meleeKeys = Object.keys(item.system.melee); // Collect all the melee keys
 					for (let m = 0; m < meleeKeys.length; m++){
-						melee = getProperty(item.data.data.melee, meleeKeys[m]);
+						melee = getProperty(item.system.melee, meleeKeys[m]);
 						melee.weapon = item.name
 						meleeAttacks.push(melee);
 					}
 				}
 
-				if (item.data.data.ranged) {
-					let rangedKeys = Object.keys(item.data.data.ranged); // Collect all the ranged keys
+				if (item.system.ranged) {
+					let rangedKeys = Object.keys(item.system.ranged); // Collect all the ranged keys
 					for (let r = 0; r < rangedKeys.length; r++){
-						ranged = getProperty(item.data.data.ranged, rangedKeys[r]);
+						ranged = getProperty(item.system.ranged, rangedKeys[r]);
 						ranged.weapon = item.name
 
 						rangedAttacks.push(ranged);
 					}
 				}
 
-				if (item.data.data.affliction) {
-					let afflictionKeys = Object.keys(item.data.data.affliction); // Collect all the affliction keys
+				if (item.system.affliction) {
+					let afflictionKeys = Object.keys(item.system.affliction); // Collect all the affliction keys
 					for (let a = 0; a < afflictionKeys.length; a++){
-						affliction = getProperty(item.data.data.affliction, afflictionKeys[a]);
+						affliction = getProperty(item.system.affliction, afflictionKeys[a]);
 						affliction.weapon = item.name;
 						affliction.type = "affliction";
 
@@ -1614,13 +1609,13 @@ export class gurpsActor extends Actor {
 	}
 
 	attackOnTarget(attacker, attack, target) {
-		let bodyParts = Object.keys(target.actor.data.data.bodyType.body); // Collect all the bodypart names
+		let bodyParts = Object.keys(target.actor.system.bodyType.body); // Collect all the bodypart names
 		let relativePosition = this.getFacing(attacker, target); // Method returns [facing,position]
 
 		let locationSelector = "<table>" +
 			"<tr><td>Location</td><td><select name='hitLocation' id='hitLocation'>"
 		for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
-			let part = getProperty(target.actor.data.data.bodyType.body, bodyParts[i])
+			let part = getProperty(target.actor.system.bodyType.body, bodyParts[i])
 			let penalty;
 			if (relativePosition[1] > 0){ // If the attacker is in front of the target
 				penalty = part.penaltyFront;
@@ -1761,9 +1756,9 @@ export class gurpsActor extends Actor {
 	}
 
 	afflictionOnTarget(attacker, attack, target) {
-		let staffLength = game.scenes.get(target.scene.id).tokens.get(attacker.id).actor.data.data.magic.staff; // Get the length of the player's staff
+		let staffLength = game.scenes.get(target.scene.id).tokens.get(attacker.id).actor.system.magic.staff; // Get the length of the player's staff
 		let distanceRaw = Math.round(canvas.grid.measureDistance(attacker, target)); // Get the raw distance between target and attacker
-		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.data.gridUnits); // Convert the raw distance to the distance in yards
+		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.grid.units); // Convert the raw distance to the distance in yards
 		let modifiedDistanceYards = Math.max(distanceYards - staffLength, 0); // Reduce the distance in yards by the length of the staff
 		let distancePenalty = 0;
 
@@ -1786,7 +1781,7 @@ export class gurpsActor extends Actor {
 		let totalModifier = distancePenalty;
 
 		let modModalContent =  "<table>";
-		modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.data.gridUnits + ")</td><td>" + distancePenalty + "</td></tr>"; // Display the distance penalty
+		modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td></tr>"; // Display the distance penalty
 
 		let odds = rollHelpers.levelToOdds(+attack.level + +totalModifier)
 
@@ -1834,17 +1829,17 @@ export class gurpsActor extends Actor {
 	// On success it provides buttons for the defender to choose from
 	// On a failure it simply reports failure
 	reportAfflictionResult(target, attacker, attack, totalModifiers) {
-		let label = attacker.data.name + " casts " + attack.weapon + " " + attack.name + " on " + target.data.name + "."; // Label for the roll
+		let label = attacker.system.name + " casts " + attack.weapon + " " + attack.name + " on " + target.system.name + "."; // Label for the roll
 
 		rollHelpers.skillRoll(attack.level, totalModifiers, label, false).then( rollInfo => { // Make the roll
 			let messageContent = rollInfo.content; // Begin message content with the result from the skill roll
 			let flags = {} // Init flags which will be used to pass data between chat messages
 
 			if (rollInfo.success == false) { // If they failed, report failure and stop
-				messageContent += attacker.data.name + "'s spell fails</br>";
+				messageContent += attacker.system.name + "'s spell fails</br>";
 			}
 			else { // If they succeed
-				messageContent += attacker.data.name + "'s spell succeeds</br>"; // Inform the players
+				messageContent += attacker.system.name + "'s spell succeeds</br>"; // Inform the players
 
 				// Build the response options based on the resistance type of the attack
 				if (attack.resistanceType == "contest") { // If they've selected quick contest, only show the quick contest and no defence buttons
@@ -1875,19 +1870,19 @@ export class gurpsActor extends Actor {
 				}
 			}
 			// Everything is assembled, send the message
-			ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type, flags: flags});
+			ChatMessage.create({ content: messageContent, user: game.user.system.document.id, type: rollInfo.type, flags: flags});
 		})
 	}
 
 	noResistanceRoll(event) {
 		event.preventDefault();
-		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
+		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).system.flags;
 		this.applyAffliction(flags);
 	}
 
 	// This is run when a defender clicks the "Quick Contest" button after being the target of an affliction
 	quickContest(event) {
-		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags; // Get the flags which hold all the actual data
+		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).system.flags; // Get the flags which hold all the actual data
 		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor; // Fetch the target using the appropriate methods
 		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;// Fetch the attacker using the appropriate methods
 		let attack 			= flags.attack; // Fetch the attack from the flags
@@ -1941,7 +1936,7 @@ export class gurpsActor extends Actor {
 
 	// This method takes the modifier from the defender and uses it to determine the results of the quick contest
 	reportQuickContestResult(target, attacker, attack, flags, mod) {
-		let label = target.data.name + " attempts to resist the " + attack.weapon + " " + attack.name + " cast by " + attacker.name + "."; // Setup the label that heads the chat message
+		let label = target.system.name + " attempts to resist the " + attack.weapon + " " + attack.name + " cast by " + attacker.name + "."; // Setup the label that heads the chat message
 		let resistanceLevel = +actorHelpers.fetchStat(target, attack.resistanceRoll); // Fetch the resistance level based on the attack's target attribute
 		let effectiveResistanceLevel = resistanceLevel + +mod + +attack.resistanceRollPenalty; // Figure out the effective level based on the above, the modifier from the attack, and the modifier provided by the user
 		let margin = flags.margin; // Get the margin from the flags
@@ -1958,15 +1953,15 @@ export class gurpsActor extends Actor {
 			messageContent += attacker.name + " has an effective margin of success of <span style='font-weight: bold'>" + margin + "</span> after modifiers and the Rule of <span style='font-weight: bold'>" + attack.ruleOf + "</span><br><br>"; // Inform the user of the attacker's effective margin of success and mention the Rule of X
 
 			if (rollInfo.success == false) { // Target failed the roll entirely
-				messageContent += "<span style='font-weight: bold; color: rgb(199, 137, 83);'>" + target.data.name + " fails to resist</span></br>"; // Tell everyone
+				messageContent += "<span style='font-weight: bold; color: rgb(199, 137, 83);'>" + target.system.name + " fails to resist</span></br>"; // Tell everyone
 				this.applyAffliction(flags); // Call the method that applies the affliction effects
 			}
 			else if (rollInfo.margin < margin) { // Target succeeded, but by less than the attacker did
-				messageContent += "<span style='font-weight: bold; color: rgb(199, 137, 83)'>" + target.data.name + " succeeds by <span style='font-weight: bold'>" + rollInfo.margin + "</span> but fails to resist</span></br>"; // Tell everyone
+				messageContent += "<span style='font-weight: bold; color: rgb(199, 137, 83)'>" + target.system.name + " succeeds by <span style='font-weight: bold'>" + rollInfo.margin + "</span> but fails to resist</span></br>"; // Tell everyone
 				this.applyAffliction(flags); // Call the method that applies the affliction effects
 			}
 			else if (rollInfo.margin >= margin) { // Target succeeded, tieing or beating the attacker
-				messageContent +=  "<span style='font-weight: bold; color: rgb(141, 142, 222)'>" + target.data.name + " succeeds by <span style='font-weight: bold'>" + rollInfo.margin + "</span> and resists successfully</span></br>"; // Tell everyone
+				messageContent +=  "<span style='font-weight: bold; color: rgb(141, 142, 222)'>" + target.system.name + " succeeds by <span style='font-weight: bold'>" + rollInfo.margin + "</span> and resists successfully</span></br>"; // Tell everyone
 			}
 			else { // None of the above caught the result
 				messageContent += "Some weird shit has happened.</br>" + // Let the users know that some weird shit has happened but nothing has changed on the target of the affliction
@@ -1979,13 +1974,13 @@ export class gurpsActor extends Actor {
 				messageContent += "<span style='font-style: italic;'>Important note, criticals have no impact on success/failure of quick contests beyond resulting in a very good or very bad margin of success.</span>"; // Inform the players of this fact
 			}
 
-			ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type}); // Send the actual message
+			ChatMessage.create({ content: messageContent, user: game.user.system.document.id, type: rollInfo.type}); // Send the actual message
 		});
 	}
 
 	// This is run when a defender clicks the "Quick Contest" button after being the target of an affliction
 	attemptResistanceRoll(event) {
-		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags; // Get the flags which hold all the actual data
+		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).system.flags; // Get the flags which hold all the actual data
 		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor; // Fetch the target using the appropriate methods
 		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;// Fetch the attacker using the appropriate methods
 		let attack 			= flags.attack; // Fetch the attack from the flags
@@ -2040,7 +2035,7 @@ export class gurpsActor extends Actor {
 
 	// This method takes the modifier from the defender and uses it to determine the results of the resistance roll
 	reportResistanceRollResult(target, attacker, attack, flags, mod) {
-		let label = target.data.name + " attempts to resist the " + attack.weapon + " " + attack.name + " cast by " + attacker.name + "."; // Setup the label that heads the chat message
+		let label = target.system.name + " attempts to resist the " + attack.weapon + " " + attack.name + " cast by " + attacker.name + "."; // Setup the label that heads the chat message
 		let resistanceLevel = +actorHelpers.fetchStat(target, attack.resistanceRoll); // Fetch the resistance level based on the attack's target attribute
 		let effectiveResistanceLevel = resistanceLevel + +mod + +attack.resistanceRollPenalty; // Figure out the effective level based on the above, the modifier from the attack, and the modifier provided by the user
 
@@ -2049,11 +2044,11 @@ export class gurpsActor extends Actor {
 			messageContent += "<br>"
 
 			if (rollInfo.success == false) { // Target failed the roll
-				messageContent += "<span style='font-weight: bold; color: rgb(199, 137, 83);'>" + target.data.name + " fails to resist</span></br>"; // Tell everyone
+				messageContent += "<span style='font-weight: bold; color: rgb(199, 137, 83);'>" + target.system.name + " fails to resist</span></br>"; // Tell everyone
 				this.applyAffliction(flags); // Call the method that applies the affliction effects
 			}
 			else if (rollInfo.success == true) { // Target succeeded
-				messageContent += "<span style='font-weight: bold; color: rgb(141, 142, 222)'>" + target.data.name + " resists</span></br>"; // Tell everyone
+				messageContent += "<span style='font-weight: bold; color: rgb(141, 142, 222)'>" + target.system.name + " resists</span></br>"; // Tell everyone
 				this.applyAffliction(flags); // Call the method that applies the affliction effects
 			}
 			else { // None of the above caught the result
@@ -2063,7 +2058,7 @@ export class gurpsActor extends Actor {
 				console.error(target, attacker, attack, flags, mod, resistanceLevel, effectiveResistanceLevel, margin, ruleOfLimiter) // Print the error to console
 			}
 
-			ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type}); // Send the actual message
+			ChatMessage.create({ content: messageContent, user: game.user.system.document.id, type: rollInfo.type}); // Send the actual message
 		});
 	}
 
@@ -2073,10 +2068,10 @@ export class gurpsActor extends Actor {
 		let attack 			= flags.attack;
 
 		if (attack.damage == 0 || attack.damage == "") {
-			let html = "<div>Damage for " + attacker.data.name + "'s " + attack.weapon + " " + attack.name + " against " + target.data.name + "</div>";
+			let html = "<div>Damage for " + attacker.system.name + "'s " + attack.weapon + " " + attack.name + " against " + target.system.name + "</div>";
 			html += "<hr>" + attack.desc + "<br>"
 			html += "<hr>";
-			ChatMessage.create({ content: html, user: game.user.data.document.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+			ChatMessage.create({ content: html, user: game.user.system.document.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
 		}
 		else {
 			let locationsHit = ['upperChest.subLocation.chest'];
@@ -2120,7 +2115,7 @@ export class gurpsActor extends Actor {
 		let locations = [];
 		let penalty;
 		for (let i = 0; i < rof.rof; i++) { // Find a different hit location for each shot
-			let generalLocation = getProperty(target.actor.data.data.bodyType.body, locationHit); // Get specific hit location
+			let generalLocation = getProperty(target.actor.system.bodyType.body, locationHit); // Get specific hit location
 
 			if (generalLocation.subLocation){ // Check to see if there are sub locations
 				let specificLocation = this.randomComplexHitLocation(generalLocation, relativePosition); // Get the sub location
@@ -2143,15 +2138,15 @@ export class gurpsActor extends Actor {
 
 	selectedComplexHitLocation(target, attacker, attack, locationHit, relativePosition, rof) { // Select specific hit location and then the complex hit location
 		// Open a new dialog to specify sub location
-		let location = getProperty(target.actor.data.data.bodyType.body, locationHit)
+		let location = getProperty(target.actor.system.bodyType.body, locationHit)
 
 		if (location.subLocation){ // Make sure there are even complex hit locations to choose
-			let bodyParts = Object.keys(getProperty(target.actor.data.data.bodyType.body, locationHit + ".subLocation")); // Collect all the bodypart names
+			let bodyParts = Object.keys(getProperty(target.actor.system.bodyType.body, locationHit + ".subLocation")); // Collect all the bodypart names
 
 			let complexLocationSelector = ""
 			complexLocationSelector += "<select name='complexHitLocation' id='complexHitLocation'>"
 			for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
-				let part = getProperty(target.actor.data.data.bodyType.body, locationHit + ".subLocation." + bodyParts[i])
+				let part = getProperty(target.actor.system.bodyType.body, locationHit + ".subLocation." + bodyParts[i])
 
 				let penalty;
 				if (relativePosition[1] > 0){ // If the attacker is in front of the target
@@ -2178,7 +2173,7 @@ export class gurpsActor extends Actor {
 							// The user has selected a hit location without specifying sub location. Choose the sub location randomly.
 							let elements = document.getElementsByName('complexHitLocation');
 							if(elements[0].value){
-								let location = getProperty(target.actor.data.data.bodyType.body, elements[0].value)
+								let location = getProperty(target.actor.system.bodyType.body, elements[0].value)
 								let locations = [];
 								for (let i = 0; i < rof.rof; i++) {
 									locations[i] = location;
@@ -2229,7 +2224,7 @@ export class gurpsActor extends Actor {
 	}
 
 	randomHitLocation(target, relativePosition){
-		let targetBody = target.actor.data.data.bodyType;
+		let targetBody = target.actor.system.bodyType;
 		let bodyParts = Object.keys(targetBody.body);
 
 		let roll;
@@ -2260,7 +2255,7 @@ export class gurpsActor extends Actor {
 	}
 
 	randomTorsoLocation(target){
-		let targetBody = target.actor.data.data.bodyType;
+		let targetBody = target.actor.system.bodyType;
 		let bodyParts = Object.keys(targetBody.body);
 		let torsoParts = [];
 
@@ -2312,15 +2307,15 @@ export class gurpsActor extends Actor {
 		if (actor) { // Make sure all the data is present
 			if (actor.token){ // If this is a token
 				if (actor.token.data){ // Make sure the data structure exists
-					if (actor.token.data.data){
-						if (actor.token.data.data.bio){
-							if (actor.token.data.data.bio.sm){
-								if (actor.token.data.data.bio.sm.value){
-									if (actor.token.data.data.bio.sm.value == "" || actor.token.data.data.bio.sm.value == null || typeof actor.token.data.data.bio.sm.value == "undefined") { // SM is blank, null, or undefined
+					if (actor.token.system){
+						if (actor.token.system.bio){
+							if (actor.token.system.bio.sm){
+								if (actor.token.system.bio.sm.value){
+									if (actor.token.system.bio.sm.value == "" || actor.token.system.bio.sm.value == null || typeof actor.token.system.bio.sm.value == "undefined") { // SM is blank, null, or undefined
 										sm = 0; // Default zero
 									}
 									else { // SM is not blank, null, or undefined
-										sm = actor.token.data.data.bio.sm.value; // Set SM equal to the actor's SM value
+										sm = actor.token.system.bio.sm.value; // Set SM equal to the actor's SM value
 									}
 								}
 							}
@@ -2329,15 +2324,15 @@ export class gurpsActor extends Actor {
 				}
 			}
 			else if (actor.data) { // If this is not a token
-				if (actor.data.data) { // Make sure the data structure exists
-					if (actor.data.data.bio) {
-						if (actor.data.data.bio.sm) {
-							if (actor.data.data.bio.sm.value) {
-								if (actor.data.data.bio.sm.value == "" || actor.data.data.bio.sm.value == null || typeof actor.data.data.bio.sm.value == "undefined") { // SM is blank, null, or undefined
+				if (actor.system) { // Make sure the data structure exists
+					if (actor.system.bio) {
+						if (actor.system.bio.sm) {
+							if (actor.system.bio.sm.value) {
+								if (actor.system.bio.sm.value == "" || actor.system.bio.sm.value == null || typeof actor.system.bio.sm.value == "undefined") { // SM is blank, null, or undefined
 									sm = 0; // Default zero
 								}
 								else { // SM is not blank, null, or undefined
-									sm = actor.data.data.bio.sm.value; // Set SM equal to the actor's SM value
+									sm = actor.system.bio.sm.value; // Set SM equal to the actor's SM value
 								}
 							}
 						}
@@ -2350,7 +2345,7 @@ export class gurpsActor extends Actor {
 
 	attackModifiers(target, attacker, attack, relativePosition, rof, location, locationPenalty) {
 		let distanceRaw = Math.round(canvas.grid.measureDistance(attacker, target));
-		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.data.gridUnits);
+		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.grid.units);
 		let distancePenalty = distanceHelpers.distancePenalty(distanceYards);
 
 		let rofBonus = generalHelpers.rofToBonus(rof.rof);
@@ -2373,7 +2368,7 @@ export class gurpsActor extends Actor {
 			}
 
 			totalModifier = (distancePenalty + locationPenalty + rofBonus + sizeModModifier); // Total up the modifiers
-			modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.data.gridUnits + ")</td><td>" + distancePenalty + "</td></tr>" + // Display the ranged specific modifiers
+			modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td></tr>" + // Display the ranged specific modifiers
 								"<tr><td>RoF Bonus:</td><td>" + rofBonus + "</td></tr>";
 		}
 		else if (attack.type === "melee") {
@@ -2549,7 +2544,7 @@ export class gurpsActor extends Actor {
 
 				messageContent += target.name + " is struck in the...</br>";
 				for (let m = 0; m < locations.length; m++){
-					let firstLocation = getProperty(target.actor.data.data.bodyType.body, (locations[m].id).split(".")[0]);
+					let firstLocation = getProperty(target.actor.system.bodyType.body, (locations[m].id).split(".")[0]);
 					let firstLabel = firstLocation ? firstLocation.label : "";
 					let secondLabel = locations[m].label
 					let locationLabel;
@@ -2586,7 +2581,7 @@ export class gurpsActor extends Actor {
 			}
 
 			// Everything is assembled, send the message
-			ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type, flags: flags});
+			ChatMessage.create({ content: messageContent, user: game.user.system.document.id, type: rollInfo.type, flags: flags});
 		})
 	}
 
@@ -2623,7 +2618,7 @@ export class gurpsActor extends Actor {
 			locationIDs[c] = checkedBoxes[c].id;
 		}
 
-		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
+		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).system.flags;
 
 		let targetToken = game.scenes.get(flags.scene).tokens.get(flags.target);
 		let attackerToken = game.scenes.get(flags.scene).tokens.get(flags.attacker);
@@ -2638,20 +2633,20 @@ export class gurpsActor extends Actor {
 
 		let dodge = {
 			name: "Dodge",
-			level: target.data.data.primaryAttributes.dodge.value
+			level: target.system.primaryAttributes.dodge.value
 		}
 
 		dodges.push(dodge);
 
-		if (target.data.items) {
-			target.data.items.forEach((item) => {
-				if (item.data.data.melee) {
-					let keys = Object.keys(item.data.data.melee)
+		if (target.system.items) {
+			target.system.items.forEach((item) => {
+				if (item.system.melee) {
+					let keys = Object.keys(item.system.melee)
 					for (let b = 0; b < keys.length; b++){ // Loop through the melee profiles
-						let profile = getProperty(item.data.data.melee, keys[b])
+						let profile = getProperty(item.system.melee, keys[b])
 						if (Number.isInteger(profile.parry)){
 							let parry = {
-								name: item.data.name,
+								name: item.system.name,
 								level: profile.parry
 							}
 							parries.push(parry)
@@ -2659,40 +2654,40 @@ export class gurpsActor extends Actor {
 
 						if (Number.isInteger(profile.block)){
 							let block = {
-								name: item.data.name,
+								name: item.system.name,
 								level: profile.block
 							}
 							blocks.push(block)
 						}
 					}
 				}
-				if (item.data.type == "Spell"){
-					if (item.data.data.spellClass == "Blocking"){
-						if (item.data.data.defenceType == "Dodge") {
+				if (item.system.type == "Spell"){
+					if (item.system.spellClass == "Blocking"){
+						if (item.system.defenceType == "Dodge") {
 							let dodge = {
-								name: item.data.name,
-								level: item.data.data.level
+								name: item.system.name,
+								level: item.system.level
 							}
 							dodges.push(dodge);
 						}
-						else if (item.data.data.defenceType == "Parry") {
+						else if (item.system.defenceType == "Parry") {
 							let parry = {
-								name: item.data.name,
-								level: item.data.data.level
+								name: item.system.name,
+								level: item.system.level
 							}
 							parries.push(parry)
 						}
-						else if (item.data.data.defenceType == "Block") {
+						else if (item.system.defenceType == "Block") {
 							let block = {
-								name: item.data.name,
-								level: item.data.data.level
+								name: item.system.name,
+								level: item.system.level
 							}
 							blocks.push(block)
 						}
-						else if (item.data.data.defenceType == "Magic") {
+						else if (item.system.defenceType == "Magic") {
 							let magic = {
-								name: item.data.name,
-								level: item.data.data.level
+								name: item.system.name,
+								level: item.system.level
 							}
 							magical.push(magic)
 						}
@@ -2873,7 +2868,7 @@ export class gurpsActor extends Actor {
 			locationIDs[c] = checkedBoxes[c].id;
 		}
 
-		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).data.flags;
+		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).system.flags;
 
 		this.applyDamage(flags, locationIDs);
 	}
@@ -2931,7 +2926,7 @@ export class gurpsActor extends Actor {
 			totalModifier = mod;
 		}
 
-		label += target.data.name + " attempts a ";
+		label += target.system.name + " attempts a ";
 
 		if (options.feverishDefence) {
 			label += "feverish ";
@@ -3002,43 +2997,43 @@ export class gurpsActor extends Actor {
 			let attacksThrough;
 
 			if (attacksStopped >= locationIDs.length){ // Stopped as many or more attacks as there actually are
-				additionalMessageContent += target.data.name + " stopped all of the attacks.";
+				additionalMessageContent += target.system.name + " stopped all of the attacks.";
 				let messageContent = rollInfo.content + additionalMessageContent;
 
 				// Send the message, no further rolls necessary.
-				ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type});
+				ChatMessage.create({ content: messageContent, user: game.user.system.document.id, type: rollInfo.type});
 			}
 			else if (attacksStopped <= 0){ // Stopped zero or fewer attacks
-				additionalMessageContent += target.data.name + " does not stop any attacks.</br></br>";
+				additionalMessageContent += target.system.name + " does not stop any attacks.</br></br>";
 				additionalMessageContent += locationIDs.length + " attack" + (locationIDs.length > 1 ? "s " : " ") + "get" + (locationIDs.length === 1 ? "s" : "") + " through.";
 				let messageContent = rollInfo.content + additionalMessageContent;
 
 				// Send the message then prepare for damage rolls
-				ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type});
+				ChatMessage.create({ content: messageContent, user: game.user.system.document.id, type: rollInfo.type});
 
 				locationsHit = locationIDs; // All attacks get through
 				this.applyDamage(flags, locationsHit).then();
 			}
 			else if (attacksStopped === 1){ // Stopped one attack, but not all
 				attacksThrough = locationIDs.length - 1;
-				additionalMessageContent += target.data.name + " stopped one attack.</br></br>";
+				additionalMessageContent += target.system.name + " stopped one attack.</br></br>";
 				additionalMessageContent += attacksThrough + " attack" + (attacksThrough > 1 ? "s " : " ") + "get" + (attacksThrough === 1 ? "s" : "") + " through.";
 				let messageContent = rollInfo.content + additionalMessageContent;
 
 				// Send the message then prepare for damage rolls
-				ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type});
+				ChatMessage.create({ content: messageContent, user: game.user.system.document.id, type: rollInfo.type});
 
 				locationsHit = locationIDs.slice(0, locationIDs.length - 1); // Remove the last hit in the array
 				this.applyDamage(flags, locationsHit).then();
 			}
 			else if (attacksStopped > 1){ // Stopped more than one attack, but not all
 				attacksThrough = locationIDs.length - attacksStopped;
-				additionalMessageContent += target.data.name + " stopped " + attacksStopped + " attacks.</br></br>";
+				additionalMessageContent += target.system.name + " stopped " + attacksStopped + " attacks.</br></br>";
 				additionalMessageContent += attacksThrough + " attack" + (attacksThrough > 1 ? "s " : " ") + "get" + (attacksThrough === 1 ? "s" : "") + " through.";
 				let messageContent = rollInfo.content + additionalMessageContent;
 
 				// Send the message then prepare for damage rolls
-				ChatMessage.create({ content: messageContent, user: game.user.data.document.id, type: rollInfo.type});
+				ChatMessage.create({ content: messageContent, user: game.user.system.document.id, type: rollInfo.type});
 
 				locationsHit = locationIDs.slice(0, locationIDs.length - attacksStopped); // Remove the last hits in the array
 				this.applyDamage(flags, locationsHit).then();
@@ -3050,7 +3045,7 @@ export class gurpsActor extends Actor {
 		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor;
 		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;
 		let attack 			= flags.attack;
-		let targetST 		= target.data.data.primaryAttributes.knockback.value;
+		let targetST 		= target.system.primaryAttributes.knockback.value;
 		let totalKnockback 	= 0;
 		let totalInjury 	= 0;
 		let totalFatInj 	= 0;
@@ -3077,15 +3072,15 @@ export class gurpsActor extends Actor {
 			}
 		}
 
-		if (target.data.data.injuryTolerances){
-			if (target.data.data.injuryTolerances.damageReduction){
-				damageReduction = target.data.data.injuryTolerances.damageReduction; // Set the target's damage reduction
+		if (target.system.injuryTolerances){
+			if (target.system.injuryTolerances.damageReduction){
+				damageReduction = target.system.injuryTolerances.damageReduction; // Set the target's damage reduction
 			}
 		}
 
 		let damageType = this.extractDamageType(attack);
 
-		let html = "<div>Damage for " + attacker.data.name + "'s " + attack.weapon + " " + attack.name + " against " + target.data.name + "</div>";
+		let html = "<div>Damage for " + attacker.system.name + "'s " + attack.weapon + " " + attack.name + " against " + target.system.name + "</div>";
 
 		if (additionalMessage) {
 			html += "<hr>" + additionalMessage + "<br>"
@@ -3093,7 +3088,7 @@ export class gurpsActor extends Actor {
 
 		for (let i = 0; i < locationsHit.length; i++){
 			let bluntTrauma = 0;
-			let location = getProperty(target.data.data.bodyType.body, locationsHit[i]);
+			let location = getProperty(target.system.bodyType.body, locationsHit[i]);
 
 			// If the attack is not explosive, roll damage for the attack
 			let roll = new Roll(attack.damage);
@@ -3101,8 +3096,8 @@ export class gurpsActor extends Actor {
 			let adds = 0;
 
 			// Build the location label
-			let firstLocation = getProperty(target.data.data.bodyType.body, locationsHit[i].split(".")[0]);
-			let secondLocation = getProperty(target.data.data.bodyType.body, locationsHit[i]);
+			let firstLocation = getProperty(target.system.bodyType.body, locationsHit[i].split(".")[0]);
+			let secondLocation = getProperty(target.system.bodyType.body, locationsHit[i]);
 			let firstLabel = firstLocation ? firstLocation.label : "";
 			let secondLabel = secondLocation? secondLocation.label: "";
 			let locationLabel;
@@ -3254,7 +3249,7 @@ export class gurpsActor extends Actor {
 				let actualWounding;
 				if (location.id.toLowerCase().includes("sublocation")){ // This is a sub location, check the parent for an HP value
 					let subLocation = location.id.split(".")[0]
-					let parentLocation = getProperty(target.data.data.bodyType.body, subLocation);
+					let parentLocation = getProperty(target.system.bodyType.body, subLocation);
 					if (damageType.woundModId.toString().toLowerCase().includes("dam")) { // Check for untyped damage
 						actualWounding = Math.floor( (actualDamage / damageReduction) );
 					}
@@ -3267,7 +3262,7 @@ export class gurpsActor extends Actor {
 						}
 					}
 
-					if (target.data.data.injuryTolerances.diffuse) { // Target is diffuse
+					if (target.system.injuryTolerances.diffuse) { // Target is diffuse
 						if (damageType.woundModId.toString().toLowerCase().includes("imp") || damageType.woundModId.toString().toLowerCase().includes("pi")) { // Attack is imp or pi
 							actualWounding = Math.min(actualWounding, 1); // Imp/pi attacks vs diffuse targets are capped at 1 wounding
 						}
@@ -3280,15 +3275,15 @@ export class gurpsActor extends Actor {
 						woundCap = parentLocation.hp.value; // Damage is capped to however much HP is left in the limb
 						parentLocation.hp.value -= actualWounding;
 						parentLocation.hp.value = Math.max(parentLocation.hp.value, -parentLocation.hp.max) // Value should be the higher of it's actual value and full negative HP.
-						target.data.data.bodyType.body[subLocation].hp.value = parentLocation.hp.value;
-						//await target.update({ ['data.bodyType.body.' + subLocation + ".hp.value"]: parentLocation.hp.value });
+						target.system.bodyType.body[subLocation].hp.value = parentLocation.hp.value;
+						//await target.update({ ['system.bodyType.body.' + subLocation + ".hp.value"]: parentLocation.hp.value });
 					}
 					if (location.hp){ // Apply damage to the child location if it tracks HP
 						location.hp.value -= actualWounding;
 						location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
 						const splitLocation = location.id.split(".");
-						target.data.data.bodyType.body[splitLocation[0]][splitLocation[1]][splitLocation[2]].hp.value = location.hp.value;
-						//await target.update({ ['data.bodyType.body.' + location.id + ".hp.value"]: location.hp.value });
+						target.system.bodyType.body[splitLocation[0]][splitLocation[1]][splitLocation[2]].hp.value = location.hp.value;
+						//await target.update({ ['system.bodyType.body.' + location.id + ".hp.value"]: location.hp.value });
 					}
 				}
 				else {
@@ -3299,7 +3294,7 @@ export class gurpsActor extends Actor {
 						actualWounding = Math.floor(((actualDamage * getProperty(location, damageType.woundModId)) / damageReduction) );
 					}
 
-					if (target.data.data.injuryTolerances.diffuse) { // Target is diffuse
+					if (target.system.injuryTolerances.diffuse) { // Target is diffuse
 						if (damageType.woundModId.toString().toLowerCase().includes("imp") || damageType.woundModId.toString().toLowerCase().includes("pi")) { // Attack is imp or pi
 							actualWounding = Math.min(actualWounding, 1); // Imp/pi attacks vs diffuse targets are capped at 1 wounding
 						}
@@ -3344,20 +3339,20 @@ export class gurpsActor extends Actor {
 					let woundCap;
 					if (location.id.toLowerCase().includes("sublocation")){ // This is a sub location, check the parent for an HP value
 						let subLocation = location.id.split(".")[0]
-						let parentLocation = getProperty(target.data.data.bodyType.body, subLocation);
+						let parentLocation = getProperty(target.system.bodyType.body, subLocation);
 						if (parentLocation.hp){ // Apply damage to the parent location if it tracks HP
 							woundCap = parentLocation.hp.value; // Damage is capped to however much HP is left in the limb
 							parentLocation.hp.value -= bluntInjury;
 							parentLocation.hp.value = Math.max(parentLocation.hp.value, -parentLocation.hp.max) // Value should be the higher of it's actual value and full negative HP.
-							target.data.data.bodyType.body[subLocation].hp.value = parentLocation.hp.value;
-							//await target.update({ ['data.bodyType.body.' + subLocation + ".hp.value"]: parentLocation.hp.value });
+							target.system.bodyType.body[subLocation].hp.value = parentLocation.hp.value;
+							//await target.update({ ['system.bodyType.body.' + subLocation + ".hp.value"]: parentLocation.hp.value });
 						}
 						if (location.hp){ // Apply damage to the child location if it tracks HP
 							location.hp.value -= bluntInjury;
 							location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
 							const splitLocation = location.id.split(".");
-							target.data.data.bodyType.body[splitLocation[0]][splitLocation[1]][splitLocation[2]].hp.value = location.hp.value;
-							//await target.update({ ['data.bodyType.body.' + location.id + ".hp.value"]: location.hp.value });
+							target.system.bodyType.body[splitLocation[0]][splitLocation[1]][splitLocation[2]].hp.value = location.hp.value;
+							//await target.update({ ['system.bodyType.body.' + location.id + ".hp.value"]: location.hp.value });
 						}
 					}
 					else {
@@ -3400,22 +3395,22 @@ export class gurpsActor extends Actor {
 
 		totalKnockback = Math.floor(totalKnockback);
 		if (totalKnockback > 0) { // Display total knockback
-			html += "<hr><div>" + target.data.name + " is knocked back " + totalKnockback + " yards and must roll at -" + (totalKnockback - 1) + " to avoid falling down.</div>";
+			html += "<hr><div>" + target.system.name + " is knocked back " + totalKnockback + " yards and must roll at -" + (totalKnockback - 1) + " to avoid falling down.</div>";
 		}
 
 		if (totalInjury > 0){
-			let newHP = target.data.data.reserves.hp.value - Math.floor(totalInjury);
-			target.data.data.reserves.hp.value = newHP;
-			//await target.update({ 'data.reserves.hp.value': newHP });
+			let newHP = target.system.reserves.hp.value - Math.floor(totalInjury);
+			target.system.reserves.hp.value = newHP;
+			//await target.update({ 'system.reserves.hp.value': newHP });
 		}
 		if (totalFatInj > 0){
-			let newFP = target.data.data.reserves.fp.value - Math.floor(totalFatInj);
-			target.data.data.reserves.fp.value = newFP;
-			//await target.update({ 'data.reserves.fp.value': newFP });
+			let newFP = target.system.reserves.fp.value - Math.floor(totalFatInj);
+			target.system.reserves.fp.value = newFP;
+			//await target.update({ 'system.reserves.fp.value': newFP });
 		}
 
-		target.update({ 'data': target.data.data });
-		ChatMessage.create({ content: html, user: game.user.data.document.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+		target.update({ 'data': target.system });
+		ChatMessage.create({ content: html, user: game.user.system.document.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
 	}
 
 	extractDamageType(attack) {
@@ -3528,22 +3523,22 @@ export class gurpsActor extends Actor {
 	async resetDamage() {
 		let reserves = {
 			er: {
-				value: this.data.data.reserves.er.max
+				value: this.system.reserves.er.max
 			},
 			hp: {
-				value: this.data.data.reserves.hp.max
+				value: this.system.reserves.hp.max
 			},
 			fp: {
-				value: this.data.data.reserves.fp.max
+				value: this.system.reserves.fp.max
 			}
 		}
 
-		this.data.data.reserves = reserves
+		this.system.reserves = reserves
 
-		let keys = Object.keys(this.data.data.bodyType.body);
+		let keys = Object.keys(this.system.bodyType.body);
 
 		for (let k = 0; k < keys.length; k++) {
-			let location = getProperty(this.data.data.bodyType.body, keys[k]);
+			let location = getProperty(this.system.bodyType.body, keys[k]);
 
 			if (location.hp){ // Check to see if the location tracks HP
 				location.hp.value = location.hp.max; // Reset HP
@@ -3559,6 +3554,6 @@ export class gurpsActor extends Actor {
 			}
 		}
 
-		this.update({ 'data': this.data.data });
+		this.update({ 'data': this.system });
 	}
 }

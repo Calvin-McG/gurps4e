@@ -173,7 +173,7 @@ export class gurpsActorSheet extends ActorSheet {
 
 				html += "<div>Total Damage: " + damageRoll.total + "</div>";
 
-				ChatMessage.create({ content: html, user: game.user.data.document.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+				ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
 			})
 		}
 

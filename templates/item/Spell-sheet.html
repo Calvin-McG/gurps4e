@@ -22,8 +22,8 @@
                         </span>
                     </td>
                     <td>
-                        <select name="data.spellClass">
-                            {{#select data.data.spellClass}}
+                        <select name="system.spellClass">
+                            {{#select system.spellClass}}
                             <option value="Regular">Regular</option>
                             <option value="Missile">Missile</option>
                             <option value="Melee">Melee</option>
@@ -34,7 +34,7 @@
                         </select>
                     </td>
                 </tr>
-                {{#if (eq data.data.spellClass "Blocking") }}
+                {{#if (eq system.spellClass "Blocking") }}
                 <tr>
                     <td class="tooltip">
                         Defence Type
@@ -44,8 +44,8 @@
                         </span>
                     </td>
                     <td>
-                        <select name="data.defenceType">
-                            {{#select data.data.defenceType}}
+                        <select name="system.defenceType">
+                            {{#select system.defenceType}}
                             <option value="Magic">Magic</option>
                             <option value="Parry">Parry</option>
                             <option value="Block">Block</option>
@@ -64,8 +64,8 @@
                         </span>
                     </td>
                     <td>
-                        <select name="data.defenceQty">
-                            {{#select data.data.defenceQty}}
+                        <select name="system.defenceQty">
+                            {{#select system.defenceQty}}
                             <option value="All">All</option>
                             <option value="Single">Single</option>
                             <option value="Regular">Regular</option>
@@ -77,8 +77,8 @@
                 <tr>
                     <td>Difficulty</td>
                     <td>
-                        <select name="data.difficulty">
-                            {{#select data.data.difficulty}}
+                        <select name="system.difficulty">
+                            {{#select system.difficulty}}
                             <option value="A">Average</option>
                             <option value="H">Hard</option>
                             <option value="VH">Very Hard</option>
@@ -94,7 +94,7 @@
                             Your base magical ability. IQ plus Magery, IQ plus Clerical Investment, whatever the value is for your specific form of magic.
                         </span>
                     </td>
-                    <td>{{data.data.magicalAbility}}</td>
+                    <td>{{system.magicalAbility}}</td>
                 </tr>
                 <tr>
                     <td class="tooltip">
@@ -103,27 +103,27 @@
                             A spell specific modifier. This is not your Magery or Clerical Investment.
                         </span>
                     </td>
-                    <td><input type="text" name="data.mod" value="{{data.data.mod}}" data-dtype="Number"/></td>
+                    <td><input type="text" name="system.mod" value="{{system.mod}}" data-dtype="Number"/></td>
                 </tr>
                 <tr>
                     <td>Level</td>
-                    <td>{{data.data.level}}</td>
+                    <td>{{system.level}}</td>
                 </tr>
                 <tr>
                     <td>Points</td>
-                    <td><input type="text" name="data.points" value="{{data.data.points}}" data-dtype="Number"/></td>
+                    <td><input type="text" name="system.points" value="{{system.points}}" data-dtype="Number"/></td>
                 </tr>
                 <tr id="subCategory">
                     <td>Category</td>
-                    <td><input type="text" name="data.subCategory" value="{{data.data.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/></td>
+                    <td><input type="text" name="system.subCategory" value="{{system.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/></td>
                 </tr>
                 <tr id="college">
                     <td>College</td>
-                    <td><input type="text" name="data.college" value="{{data.data.college}}" placeholder="This costs ten times as much for characters in the USA"/></td>
+                    <td><input type="text" name="system.college" value="{{system.college}}" placeholder="This costs ten times as much for characters in the USA"/></td>
                 </tr>
                 <tr>
                     <td>Notes</td>
-                    <td><input type="text" name="data.shortNotes" value="{{data.data.shortNotes}}"/></td>
+                    <td><input type="text" name="system.shortNotes" value="{{system.shortNotes}}"/></td>
                 </tr>
             </table>
         </div>
@@ -134,17 +134,17 @@
         <div class="header">
             <a class="item" data-tab="notes">Notes</a>
         </div>
-        {{#if  (eq data.data.spellClass "Melee") }}
+        {{#if  (eq system.spellClass "Melee") }}
         <div class="header">
             <a class="item" data-tab="melee">Melee</a>
         </div>
         {{/if}}
-        {{#if  (or (eq data.data.spellClass "Missile") (eq data.data.spellClass "Area")) }}
+        {{#if  (or (eq system.spellClass "Missile") (eq system.spellClass "Area")) }}
         <div class="header">
             <a class="item" data-tab="ranged">Ranged</a>
         </div>
         {{/if}}
-        {{#unless  (or (eq data.data.spellClass "Blocking") (eq data.data.spellClass "Information")) }}
+        {{#unless  (or (eq system.spellClass "Blocking") (eq system.spellClass "Information")) }}
         <div class="header">
             <a class="item" data-tab="affliction">Affliction</a>
         </div>
@@ -158,7 +158,7 @@
         <div class="tab stats" data-tab="notes" data-group="primary">
             <h3 class="bold">Detailed Notes</h3>
             <div class="tab">
-                <textarea rows="8" name="data.notes">{{{data.data.notes}}}</textarea>
+                <textarea rows="8" name="system.notes">{{{system.notes}}}</textarea>
             </div>
         </div>
 
@@ -180,25 +180,25 @@
                         <td class="resource-label">ST</td>
                         <td class="resource-label"></td>
                     </tr>
-                    {{#each data.data.melee as |melee id|}}
+                    {{#each system.melee as |melee id|}}
                     <tr class="equipment-entry">
-                        <td><input type="text" name="data.melee.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="system.melee.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
                         <td class="resource-label">{{melee.level}}</td>
                         <td class="equipmentInputInput">
-                            <input type="text" name="data.melee.{{id}}.skill" value="{{melee.skill}}" title="{{melee.skill}}" style="text-align:left;" />/
-                            <input type="text" name="data.melee.{{id}}.skillMod" value="{{melee.skillMod}}" data-dtype="Number"/>
+                            <input type="text" name="system.melee.{{id}}.skill" value="{{melee.skill}}" title="{{melee.skill}}" style="text-align:left;" />/
+                            <input type="text" name="system.melee.{{id}}.skillMod" value="{{melee.skillMod}}" data-dtype="Number"/>
                         </td>
                         <td>
-                            <input type="text" name="data.melee.{{id}}.parryMod" value="{{melee.parryMod}}" style="width: 50%"/>
-                            <input type="text" name="data.melee.{{id}}.parryType" value="{{melee.parryType}}" style="width: 20%"/>
+                            <input type="text" name="system.melee.{{id}}.parryMod" value="{{melee.parryMod}}" style="width: 50%"/>
+                            <input type="text" name="system.melee.{{id}}.parryType" value="{{melee.parryType}}" style="width: 20%"/>
                         </td>
                         <td>
-                            <input type="text" name="data.melee.{{id}}.blockMod" value="{{melee.blockMod}}"/>
+                            <input type="text" name="system.melee.{{id}}.blockMod" value="{{melee.blockMod}}"/>
                         </td>
-                        <td><input type="text" name="data.melee.{{id}}.damageInput" value="{{melee.damageInput}}" title="{{melee.damageInput}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="system.melee.{{id}}.damageInput" value="{{melee.damageInput}}" title="{{melee.damageInput}}" style="text-align:left;" /></td>
                         <td>
                             <span class="tooltip">
-                                <input type="text" name="data.melee.{{id}}.damageType" value="{{melee.damageType}}" title="{{melee.damageType}}" style="text-align:left;" />
+                                <input type="text" name="system.melee.{{id}}.damageType" value="{{melee.damageType}}" title="{{melee.damageType}}" style="text-align:left;" />
                                 <span class="tooltiptext" style="margin-left: -100px">
                                     <div>
                                         <span style="text-decoration: underline">Valid entries are:</span><br>
@@ -226,7 +226,7 @@
                         </td>
                         <td>
                             <span class="tooltip">
-                                <input type="text" name="data.melee.{{id}}.armourDivisor" value="{{melee.armourDivisor}}" title="{{melee.armourDivisor}}" style="text-align:left;" />
+                                <input type="text" name="system.melee.{{id}}.armourDivisor" value="{{melee.armourDivisor}}" title="{{melee.armourDivisor}}" style="text-align:left;" />
                                 <span class="tooltiptext" style="margin-left: -100px">
                                     <div>
                                         Default is 1<br>
@@ -237,8 +237,8 @@
                                 </span>
                             </span>
                         </td>
-                        <td><input type="text" name="data.melee.{{id}}.reach" value="{{melee.reach}}" title="{{melee.reach}}" style="text-align:left;" /></td>
-                        <td><input type="text" name="data.melee.{{id}}.st" value="{{melee.st}}"/></td>
+                        <td><input type="text" name="system.melee.{{id}}.reach" value="{{melee.reach}}" title="{{melee.reach}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="system.melee.{{id}}.st" value="{{melee.st}}"/></td>
                         <td><a class="attack-delete" id="meleee{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
                     </tr>
                     {{/each}}
@@ -267,19 +267,19 @@
                         <td class="resource-label">ST</td>
                         <td class="resource-label"></td>
                     </tr>
-                    {{#each data.data.ranged as |ranged id|}}
+                    {{#each system.ranged as |ranged id|}}
                     <tr class="equipment-entry">
-                        <td><input type="text" name="data.ranged.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="system.ranged.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
                         <td class="resource-label">{{ranged.level}}</td>
                         <td class="equipmentInputInput">
-                            <input type="text" name="data.ranged.{{id}}.skill" value="{{ranged.skill}}" title="{{ranged.skill}}" style="text-align:left;" />/
-                            <input type="text" name="data.ranged.{{id}}.skillMod" value="{{ranged.skillMod}}" data-dtype="Number"/>
+                            <input type="text" name="system.ranged.{{id}}.skill" value="{{ranged.skill}}" title="{{ranged.skill}}" style="text-align:left;" />/
+                            <input type="text" name="system.ranged.{{id}}.skillMod" value="{{ranged.skillMod}}" data-dtype="Number"/>
                         </td>
-                        <td><input type="text" name="data.ranged.{{id}}.acc" value="{{ranged.acc}}" data-dtype="Number"/></td>
-                        <td><input type="text" name="data.ranged.{{id}}.damageInput" value="{{ranged.damageInput}}" title="{{ranged.damageInput}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="system.ranged.{{id}}.acc" value="{{ranged.acc}}" data-dtype="Number"/></td>
+                        <td><input type="text" name="system.ranged.{{id}}.damageInput" value="{{ranged.damageInput}}" title="{{ranged.damageInput}}" style="text-align:left;" /></td>
                         <td>
                             <span class="tooltip">
-                                <input type="text" name="data.ranged.{{id}}.damageType" value="{{ranged.damageType}}" title="{{ranged.damageType}}" style="text-align:left;" />
+                                <input type="text" name="system.ranged.{{id}}.damageType" value="{{ranged.damageType}}" title="{{ranged.damageType}}" style="text-align:left;" />
                                 <span class="tooltiptext" style="margin-left: -100px">
                                     <div>
                                         <span style="text-decoration: underline">Valid entries are:</span><br>
@@ -307,7 +307,7 @@
                         </td>
                         <td>
                             <span class="tooltip">
-                                <input type="text" name="data.ranged.{{id}}.armourDivisor" value="{{ranged.armourDivisor}}" title="{{ranged.armourDivisor}}" style="text-align:left;" />
+                                <input type="text" name="system.ranged.{{id}}.armourDivisor" value="{{ranged.armourDivisor}}" title="{{ranged.armourDivisor}}" style="text-align:left;" />
                                 <span class="tooltiptext" style="margin-left: -100px">
                                     <div>
                                         Default is 1<br>
@@ -318,12 +318,12 @@
                                 </span>
                             </span>
                         </td>
-                        <td><input type="text" name="data.ranged.{{id}}.range" value="{{ranged.range}}" title="{{ranged.range}}" style="text-align:left;" /></td>
-                        <td><input type="text" name="data.ranged.{{id}}.rof" value="{{ranged.rof}}" title="{{ranged.rof}}" style="text-align:left;" /></td>
-                        <td><input type="text" name="data.ranged.{{id}}.shots" value="{{ranged.shots}}" title="{{ranged.shots}}" style="text-align:left;" /></td>
-                        <td><input type="text" name="data.ranged.{{id}}.bulk" value="{{ranged.bulk}}" title="{{ranged.bulk}}" style="text-align:left;" /></td>
-                        <td><input type="text" name="data.ranged.{{id}}.rcl" value="{{ranged.rcl}}" title="{{ranged.rcl}}" style="text-align:left;" /></td>
-                        <td><input type="text" name="data.ranged.{{id}}.st" value="{{ranged.st}}"/></td>
+                        <td><input type="text" name="system.ranged.{{id}}.range" value="{{ranged.range}}" title="{{ranged.range}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="system.ranged.{{id}}.rof" value="{{ranged.rof}}" title="{{ranged.rof}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="system.ranged.{{id}}.shots" value="{{ranged.shots}}" title="{{ranged.shots}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="system.ranged.{{id}}.bulk" value="{{ranged.bulk}}" title="{{ranged.bulk}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="system.ranged.{{id}}.rcl" value="{{ranged.rcl}}" title="{{ranged.rcl}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="system.ranged.{{id}}.st" value="{{ranged.st}}"/></td>
                         <td><a class="ranged-delete" id="ranged{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
                     </tr>
                     {{/each}}
@@ -358,13 +358,13 @@
                         </td>
                         <td class="resource-label"></td>
                     </tr>
-                    {{#each data.data.affliction as |affliction id|}}
+                    {{#each system.affliction as |affliction id|}}
                     <tr class="equipment-entry">
-                        <td><input type="text" name="data.affliction.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left; width: 85px;" /></td>
-                        <td><input type="text" name="data.affliction.{{id}}.damageInput" value="{{affliction.damageInput}}" title="{{affliction.damageInput}}" style="text-align:left; width: 40px;" /></td>
+                        <td><input type="text" name="system.affliction.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left; width: 85px;" /></td>
+                        <td><input type="text" name="system.affliction.{{id}}.damageInput" value="{{affliction.damageInput}}" title="{{affliction.damageInput}}" style="text-align:left; width: 40px;" /></td>
                         <td>
                             <span class="tooltip">
-                                <input type="text" name="data.affliction.{{id}}.damageType" value="{{affliction.damageType}}" title="{{affliction.damageType}}" style="text-align:left; width: 40px;" />
+                                <input type="text" name="system.affliction.{{id}}.damageType" value="{{affliction.damageType}}" title="{{affliction.damageType}}" style="text-align:left; width: 40px;" />
                                 <span class="tooltiptext" style="margin-left: -100px">
                                     <div>
                                         <span style="text-decoration: underline">Valid entries are:</span><br>
@@ -394,7 +394,7 @@
                         </td>
                         <td>
                             <span class="tooltip">
-                                <input type="text" name="data.affliction.{{id}}.armourDivisor" value="{{affliction.armourDivisor}}" title="{{affliction.armourDivisor}}" style="text-align:left; width: 40px;" />
+                                <input type="text" name="system.affliction.{{id}}.armourDivisor" value="{{affliction.armourDivisor}}" title="{{affliction.armourDivisor}}" style="text-align:left; width: 40px;" />
                                 <span class="tooltiptext" style="margin-left: -100px">
                                     <div>
                                         Default is 1<br>
@@ -405,9 +405,9 @@
                                 </span>
                             </span>
                         </td>
-                        <td><input type="text" name="data.affliction.{{id}}.desc" value="{{desc}}" title="{{desc}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="system.affliction.{{id}}.desc" value="{{desc}}" title="{{desc}}" style="text-align:left;" /></td>
                         <td class="resource-label">
-                            <select name="data.affliction.{{id}}.rangePenalties">
+                            <select name="system.affliction.{{id}}.rangePenalties">
                                 {{#select affliction.rangePenalties}}
                                 <option value="">Make a Selection</option>
                                 <option value="regular">Regular (-1/yard)</option>
@@ -418,7 +418,7 @@
                             </select>
                         </td>
                         <td style="display: flex; width: 240px" >
-                            <select name="data.affliction.{{id}}.resistanceType">
+                            <select name="system.affliction.{{id}}.resistanceType">
                                 {{#select affliction.resistanceType}}
                                 <option value="">Make a Selection</option>
                                 <option value="contest">Quick Contest</option>
@@ -426,7 +426,7 @@
                                 <option value="irresistible">Irresistible</option>
                                 {{/select}}
                             </select>
-                            <select name="data.affliction.{{id}}.resistanceRoll" class="resistanceRoll">
+                            <select name="system.affliction.{{id}}.resistanceRoll" class="resistanceRoll">
                                 {{#select affliction.resistanceRoll}}
                                     <option value="">None</option>
                                     <option value="Strength">ST</option>
@@ -438,9 +438,9 @@
                                     <option value="Fright">Fright</option>
                                 {{/select}}
                             </select>
-                            <input type="text" placeholder="-0" name="data.affliction.{{id}}.resistanceRollPenalty" value="{{affliction.resistanceRollPenalty}}" title="{{affliction.resistanceRollPenalty}}" style="text-align:left; width: 40px; margin: unset" />
+                            <input type="text" placeholder="-0" name="system.affliction.{{id}}.resistanceRollPenalty" value="{{affliction.resistanceRollPenalty}}" title="{{affliction.resistanceRollPenalty}}" style="text-align:left; width: 40px; margin: unset" />
                         </td>
-                        <td><input type="text" name="data.affliction.{{id}}.ruleOf" value="{{affliction.ruleOf}}" title="{{affliction.ruleOf}}" style="text-align:left; width: 40px;" /></td>
+                        <td><input type="text" name="system.affliction.{{id}}.ruleOf" value="{{affliction.ruleOf}}" title="{{affliction.ruleOf}}" style="text-align:left; width: 40px;" /></td>
                         <td><a class="affliction-delete" id="affliction{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
                     </tr>
                     {{/each}}
