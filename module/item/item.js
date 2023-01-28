@@ -4521,7 +4521,7 @@ export class gurpsItem extends Item {
           for (let i = 0; i < this.actor.items._source.length; i++) { // Loop through the list of the actor's items
             if (this.actor.items._source[i].type === "Rollable") { // Make sure it's a skill
               if (this.actor.items._source[i].name.toLowerCase() == this.system.bowDesign.skill.toLowerCase()) { // And make sure it matches the skill name they've given
-                skillLevel = skillHelpers.computeSkillLevel(this.actor, this.actor.items._source[i].data); // Get the skill level.
+                skillLevel = skillHelpers.computeSkillLevel(this.actor, this.actor.items._source[i].system); // Get the skill level.
                 attrLevel = skillHelpers.getBaseAttrValue(this.actor.items._source[i].system.baseAttr, this.actor); // Get the attribute level
                 relativeBonus = skillLevel - attrLevel;
                 relativeBonus = Math.max(relativeBonus, 0); // Make the bonus at least zero.
@@ -5057,7 +5057,7 @@ export class gurpsItem extends Item {
                   for (let i = 0; i < this.actor.items._source.length; i++) {
                     if (this.actor.items._source[i].type === "Rollable") {
                       if (this.system.melee[meleeKeys[k]].skill === this.actor.items._source[i].name) {
-                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items._source[i].data);
+                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items._source[i].system);
                       }
                     }
                   }
@@ -5124,7 +5124,7 @@ export class gurpsItem extends Item {
                   for (let i = 0; i < this.actor.items._source.length; i++) {
                     if (this.actor.items._source[i].type === "Rollable") {
                       if (this.system.ranged[rangedKeys[k]].skill === this.actor.items._source[i].name) {
-                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items._source[i].data);
+                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items._source[i].system);
                       }
                     }
                   }
@@ -5165,17 +5165,11 @@ export class gurpsItem extends Item {
           }
         }
 
-        console.log(this)
-        console.log(this.system)
-        console.log(this.system.affliction)
         if (this.system.affliction) {
           let afflictionKeys = Object.keys(this.system.affliction);
-          console.log(afflictionKeys)
           if (afflictionKeys.length) { // Check to see if there are any affliction profiles
             for (let k = 0; k < afflictionKeys.length; k++) {
-              console.log(this.system.affliction[afflictionKeys[k]])
               if (this.system.affliction[afflictionKeys[k]].name) { // Check to see if name is filled in. Otherwise don't bother.
-                console.log(this.system.affliction[afflictionKeys[k]].name)
                 damage = this.damageParseSwThr(this.system.affliction[afflictionKeys[k]].damageInput); // Update damage value
 
 
