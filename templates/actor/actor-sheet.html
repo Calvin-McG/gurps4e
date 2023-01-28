@@ -2835,7 +2835,7 @@
 				</div>
 			</div>
 
-			{{!-- Magic Tab --}}
+			{{!-- Vanilla Magic Tab --}}
 			<div id="magic" class="tab magic" data-tab="magic" data-group="primary">
 				<div style="display: flex; flex-direction: column;">
 					<table>
@@ -2850,7 +2850,7 @@
 						</tr>
 						<tr>
 							<td style="width: 20%">
-								<input type="number" name="system.magic.mageryName" value="{{actor.system.magic.mageryName}}" placeholder="Magery" style="width: auto"/>
+								<input type="text" name="system.magic.mageryName" value="{{actor.system.magic.mageryName}}" placeholder="Magery" style="width: auto"/>
 							</td>
 							<td>
 								<input type="number" name="system.magic.magery" value="{{actor.system.magic.magery}}" placeholder="0" />
@@ -2890,19 +2890,20 @@
 							{{#unless (eq category "")}}
 								<tr class="item item-header trait-category-header">
 									<td colspan="6">
-										<a class="accordion" id="s-accordion-clickable-{{category}}">{{category}}</a>
+										<a class="accordion bold" id="s-accordion-clickable-{{category}}">{{category}}</a>
 									</td>
 								</tr>
 							{{/unless}}
 							{{#each ../items as |item id|}}
 								{{#if (eq type "Spell")}}
 									{{#if (eq item.system.subCategory category)}}
-										<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item.id}}">
+						{{log item}}
+										<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item._id}}">
 											<td class="item-image" style="width: 24px; padding: 0 2px">
 												<img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
 											</td>
 											<td class="item-name" style="width: 9em;">
-												{{item.system.name}}
+												{{item.name}}
 											</td>
 											<td class="item-notes">
 												{{item.system.shortNotes}}
@@ -2914,7 +2915,7 @@
 												{{item.system.points}}
 											</td>
 											<td class="item-skill" style="width: 3em;">
-												<label for="actor.system.level" class="fa fa-dice-six rollable" data-level="{{actor.system.level}}"
+												<label for="actor.system.level" class="fa fa-dice-six rollable" data-level="{{item.system.level}}"
 													   data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
 												{{item.system.level}}
 											</td>

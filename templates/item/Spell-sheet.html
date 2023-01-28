@@ -23,7 +23,7 @@
                     </td>
                     <td>
                         <select name="system.spellClass">
-                            {{#select system.spellClass}}
+                            {{#select item.system.spellClass}}
                             <option value="Regular">Regular</option>
                             <option value="Missile">Missile</option>
                             <option value="Melee">Melee</option>
@@ -34,7 +34,7 @@
                         </select>
                     </td>
                 </tr>
-                {{#if (eq system.spellClass "Blocking") }}
+                {{#if (eq item.system.spellClass "Blocking") }}
                 <tr>
                     <td class="tooltip">
                         Defence Type
@@ -45,7 +45,7 @@
                     </td>
                     <td>
                         <select name="system.defenceType">
-                            {{#select system.defenceType}}
+                            {{#select item.system.defenceType}}
                             <option value="Magic">Magic</option>
                             <option value="Parry">Parry</option>
                             <option value="Block">Block</option>
@@ -65,7 +65,7 @@
                     </td>
                     <td>
                         <select name="system.defenceQty">
-                            {{#select system.defenceQty}}
+                            {{#select item.system.defenceQty}}
                             <option value="All">All</option>
                             <option value="Single">Single</option>
                             <option value="Regular">Regular</option>
@@ -78,7 +78,7 @@
                     <td>Difficulty</td>
                     <td>
                         <select name="system.difficulty">
-                            {{#select system.difficulty}}
+                            {{#select item.system.difficulty}}
                             <option value="A">Average</option>
                             <option value="H">Hard</option>
                             <option value="VH">Very Hard</option>
@@ -94,7 +94,7 @@
                             Your base magical ability. IQ plus Magery, IQ plus Clerical Investment, whatever the value is for your specific form of magic.
                         </span>
                     </td>
-                    <td>{{system.magicalAbility}}</td>
+                    <td>{{item.system.magicalAbility}}</td>
                 </tr>
                 <tr>
                     <td class="tooltip">
@@ -103,27 +103,27 @@
                             A spell specific modifier. This is not your Magery or Clerical Investment.
                         </span>
                     </td>
-                    <td><input type="text" name="system.mod" value="{{system.mod}}" data-dtype="Number"/></td>
+                    <td><input type="text" name="system.mod" value="{{item.system.mod}}" data-dtype="Number"/></td>
                 </tr>
                 <tr>
                     <td>Level</td>
-                    <td>{{system.level}}</td>
+                    <td>{{item.system.level}}</td>
                 </tr>
                 <tr>
                     <td>Points</td>
-                    <td><input type="text" name="system.points" value="{{system.points}}" data-dtype="Number"/></td>
+                    <td><input type="text" name="system.points" value="{{item.system.points}}" data-dtype="Number"/></td>
                 </tr>
                 <tr id="subCategory">
                     <td>Category</td>
-                    <td><input type="text" name="system.subCategory" value="{{system.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/></td>
+                    <td><input type="text" name="system.subCategory" value="{{item.system.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/></td>
                 </tr>
                 <tr id="college">
                     <td>College</td>
-                    <td><input type="text" name="system.college" value="{{system.college}}" placeholder="This costs ten times as much for characters in the USA"/></td>
+                    <td><input type="text" name="system.college" value="{{item.system.college}}" placeholder="This costs ten times as much for characters in the USA"/></td>
                 </tr>
                 <tr>
                     <td>Notes</td>
-                    <td><input type="text" name="system.shortNotes" value="{{system.shortNotes}}"/></td>
+                    <td><input type="text" name="system.shortNotes" value="{{item.system.shortNotes}}"/></td>
                 </tr>
             </table>
         </div>
@@ -134,17 +134,17 @@
         <div class="header">
             <a class="item" data-tab="notes">Notes</a>
         </div>
-        {{#if  (eq system.spellClass "Melee") }}
+        {{#if  (eq item.system.spellClass "Melee") }}
         <div class="header">
             <a class="item" data-tab="melee">Melee</a>
         </div>
         {{/if}}
-        {{#if  (or (eq system.spellClass "Missile") (eq system.spellClass "Area")) }}
+        {{#if  (or (eq item.system.spellClass "Missile") (eq item.system.spellClass "Area")) }}
         <div class="header">
             <a class="item" data-tab="ranged">Ranged</a>
         </div>
         {{/if}}
-        {{#unless  (or (eq system.spellClass "Blocking") (eq system.spellClass "Information")) }}
+        {{#unless  (or (eq item.system.spellClass "Blocking") (eq item.system.spellClass "Information")) }}
         <div class="header">
             <a class="item" data-tab="affliction">Affliction</a>
         </div>
@@ -158,7 +158,7 @@
         <div class="tab stats" data-tab="notes" data-group="primary">
             <h3 class="bold">Detailed Notes</h3>
             <div class="tab">
-                <textarea rows="8" name="system.notes">{{{system.notes}}}</textarea>
+                <textarea rows="8" name="system.notes">{{{item.system.notes}}}</textarea>
             </div>
         </div>
 
@@ -168,6 +168,7 @@
             <div class="tab">
                 <table>
                     <tr class="equipment-header">
+                        <td class="resource-label">ID</td>
                         <td class="resource-label">Name</td>
                         <td class="resource-label">Level</td>
                         <td class="resource-label">Skill Name / Mod</td>
@@ -180,8 +181,9 @@
                         <td class="resource-label">ST</td>
                         <td class="resource-label"></td>
                     </tr>
-                    {{#each system.melee as |melee id|}}
+                    {{#each item.system.melee as |melee id|}}
                     <tr class="equipment-entry">
+                        <td class="resource-label">{{id}}</td>
                         <td><input type="text" name="system.melee.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
                         <td class="resource-label">{{melee.level}}</td>
                         <td class="equipmentInputInput">
@@ -197,45 +199,45 @@
                         </td>
                         <td><input type="text" name="system.melee.{{id}}.damageInput" value="{{melee.damageInput}}" title="{{melee.damageInput}}" style="text-align:left;" /></td>
                         <td>
-                            <span class="tooltip">
-                                <input type="text" name="system.melee.{{id}}.damageType" value="{{melee.damageType}}" title="{{melee.damageType}}" style="text-align:left;" />
-                                <span class="tooltiptext" style="margin-left: -100px">
-                                    <div>
-                                        <span style="text-decoration: underline">Valid entries are:</span><br>
-                                        burn: Burning<br>
-                                        cor: Corrosion<br>
-                                        cr: Crushing<br>
-                                        cut: Cutting<br>
-                                        fat: Fatigue<br>
-                                        imp: Impaling<br>
-                                        pi-: Small Piercing<br>
-                                        pi: Piercing<br>
-                                        pi+: Large Piercing<br>
-                                        pi++: Huge Piercing<br>
-                                        tox: Toxic<br>
-                                        tbb: Tight Beam Burning<br>
-                                        dam: Untyped<br>
-                                        <span style="text-decoration: underline">Valid modifiers are:</span><br>
-                                        ex: Explosive<br>
-                                        dbk: Double Knockback<br>
-                                        dbt: Double Blunt Trauma<br>
-                                        nw: No Wounding<br>
-                                    </div>
-                                </span>
+                        <span class="tooltip">
+                            <input type="text" name="system.melee.{{id}}.damageType" value="{{melee.damageType}}" title="{{melee.damageType}}" style="text-align:left;" />
+                            <span class="tooltiptext" style="margin-left: -100px">
+                                <div>
+                                    <span style="text-decoration: underline">Valid entries are:</span><br>
+                                    burn: Burning<br>
+                                    cor: Corrosion<br>
+                                    cr: Crushing<br>
+                                    cut: Cutting<br>
+                                    fat: Fatigue<br>
+                                    imp: Impaling<br>
+                                    pi-: Small Piercing<br>
+                                    pi: Piercing<br>
+                                    pi+: Large Piercing<br>
+                                    pi++: Huge Piercing<br>
+                                    tox: Toxic<br>
+                                    tbb: Tight Beam Burning<br>
+                                    dam: Untyped<br>
+                                    <span style="text-decoration: underline">Valid modifiers are:</span><br>
+                                    ex: Explosive<br>
+                                    dbk: Double Knockback<br>
+                                    dbt: Double Blunt Trauma<br>
+                                    nw: No Wounding<br>
+                                </div>
                             </span>
+                        </span>
                         </td>
                         <td>
-                            <span class="tooltip">
-                                <input type="text" name="system.melee.{{id}}.armourDivisor" value="{{melee.armourDivisor}}" title="{{melee.armourDivisor}}" style="text-align:left;" />
-                                <span class="tooltiptext" style="margin-left: -100px">
-                                    <div>
-                                        Default is 1<br>
-                                        0 makes effective armour infinite<br>
-                                        Using the words 'ignore' or 'cosmic' allows the attack to ignore armour<br>
-                                        Setting this to 'I' will also ignore armour
-                                    </div>
-                                </span>
+                        <span class="tooltip">
+                            <input type="text" name="system.melee.{{id}}.armourDivisor" value="{{melee.armourDivisor}}" title="{{melee.armourDivisor}}" style="text-align:left;" />
+                            <span class="tooltiptext" style="margin-left: -100px">
+                                <div>
+                                    Default is 1<br>
+                                    0 makes effective armour infinite<br>
+                                    Using the words 'ignore' or 'cosmic' allows the attack to ignore armour<br>
+                                    Setting this to 'I' will also ignore armour
+                                </div>
                             </span>
+                        </span>
                         </td>
                         <td><input type="text" name="system.melee.{{id}}.reach" value="{{melee.reach}}" title="{{melee.reach}}" style="text-align:left;" /></td>
                         <td><input type="text" name="system.melee.{{id}}.st" value="{{melee.st}}"/></td>
@@ -252,6 +254,7 @@
             <div class="tab">
                 <table>
                     <tr class="equipment-header">
+                        <td class="resource-label">ID</td>
                         <td class="resource-label">Name</td>
                         <td class="resource-label">Level</td>
                         <td class="resource-label">Skill Name / Mod</td>
@@ -265,10 +268,12 @@
                         <td class="resource-label">Bulk</td>
                         <td class="resource-label">Rcl</td>
                         <td class="resource-label">ST</td>
+                        <td class="resource-label">Malf</td>
                         <td class="resource-label"></td>
                     </tr>
-                    {{#each system.ranged as |ranged id|}}
+                    {{#each item.system.ranged as |ranged id|}}
                     <tr class="equipment-entry">
+                        <td class="resource-label">{{id}}</td>
                         <td><input type="text" name="system.ranged.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
                         <td class="resource-label">{{ranged.level}}</td>
                         <td class="equipmentInputInput">
@@ -324,6 +329,7 @@
                         <td><input type="text" name="system.ranged.{{id}}.bulk" value="{{ranged.bulk}}" title="{{ranged.bulk}}" style="text-align:left;" /></td>
                         <td><input type="text" name="system.ranged.{{id}}.rcl" value="{{ranged.rcl}}" title="{{ranged.rcl}}" style="text-align:left;" /></td>
                         <td><input type="text" name="system.ranged.{{id}}.st" value="{{ranged.st}}"/></td>
+                        <td><input type="text" name="system.ranged.{{id}}.malf" value="{{ranged.malf}}"/></td>
                         <td><a class="ranged-delete" id="ranged{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
                     </tr>
                     {{/each}}
@@ -338,6 +344,8 @@
                 <table>
                     <tr class="equipment-header">
                         <td class="resource-label">Name</td>
+                        <td class="resource-label">Level</td>
+                        <td class="resource-label">Skill Name / Mod</td>
                         <td class="resource-label">Damage</td>
                         <td class="resource-label">Type</td>
                         <td class="resource-label">Divisor</td>
@@ -358,9 +366,14 @@
                         </td>
                         <td class="resource-label"></td>
                     </tr>
-                    {{#each system.affliction as |affliction id|}}
+                    {{#each item.system.affliction as |affliction id|}}
                     <tr class="equipment-entry">
-                        <td><input type="text" name="system.affliction.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left; width: 85px;" /></td>
+                        <td><input type="text" name="system.affliction.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
+                        <td class="resource-label">{{affliction.level}}</td>
+                        <td class="equipmentInputInput">
+                            <input type="text" name="system.affliction.{{id}}.skill" value="{{affliction.skill}}" title="{{affliction.skill}}" style="text-align:left;" />/
+                            <input type="text" name="system.affliction.{{id}}.skillMod" value="{{affliction.skillMod}}" data-dtype="Number"/>
+                        </td>
                         <td><input type="text" name="system.affliction.{{id}}.damageInput" value="{{affliction.damageInput}}" title="{{affliction.damageInput}}" style="text-align:left; width: 40px;" /></td>
                         <td>
                             <span class="tooltip">
@@ -428,14 +441,14 @@
                             </select>
                             <select name="system.affliction.{{id}}.resistanceRoll" class="resistanceRoll">
                                 {{#select affliction.resistanceRoll}}
-                                    <option value="">None</option>
-                                    <option value="Strength">ST</option>
-                                    <option value="Dexterity">DX</option>
-                                    <option value="Intelligence">IQ</option>
-                                    <option value="Health">HT</option>
-                                    <option value="Will">Will</option>
-                                    <option value="Perception">Per</option>
-                                    <option value="Fright">Fright</option>
+                                <option value="">None</option>
+                                <option value="Strength">ST</option>
+                                <option value="Dexterity">DX</option>
+                                <option value="Intelligence">IQ</option>
+                                <option value="Health">HT</option>
+                                <option value="Will">Will</option>
+                                <option value="Perception">Per</option>
+                                <option value="Fright">Fright</option>
                                 {{/select}}
                             </select>
                             <input type="text" placeholder="-0" name="system.affliction.{{id}}.resistanceRollPenalty" value="{{affliction.resistanceRollPenalty}}" title="{{affliction.resistanceRollPenalty}}" style="text-align:left; width: 40px; margin: unset" />
@@ -447,6 +460,5 @@
                 </table>
             </div>
         </div>
-
     </section>
 </form>
