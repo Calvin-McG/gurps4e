@@ -61,9 +61,9 @@
 
         {{!-- Note Tab --}}
         <div class="tab stats" data-tab="notes" data-group="primary">
+            <h3 class="bold">Detailed Notes</h3>
             <div class="tab">
-                <h3 class="bold">Detailed Notes</h3>
-                <textarea rows="8" name="system.notes">{{{system.notes}}}</textarea>
+                <textarea rows="8" name="system.notes">{{{item.system.notes}}}</textarea>
             </div>
         </div>
 
@@ -73,6 +73,7 @@
             <div class="tab">
                 <table>
                     <tr class="equipment-header">
+                        <td class="resource-label">ID</td>
                         <td class="resource-label">Name</td>
                         <td class="resource-label">Level</td>
                         <td class="resource-label">Skill Name / Mod</td>
@@ -85,8 +86,9 @@
                         <td class="resource-label">ST</td>
                         <td class="resource-label"></td>
                     </tr>
-                    {{#each system.melee as |melee id|}}
+                    {{#each item.system.melee as |melee id|}}
                     <tr class="equipment-entry">
+                        <td class="resource-label">{{id}}</td>
                         <td><input type="text" name="system.melee.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
                         <td class="resource-label">{{melee.level}}</td>
                         <td class="equipmentInputInput">
@@ -102,45 +104,45 @@
                         </td>
                         <td><input type="text" name="system.melee.{{id}}.damageInput" value="{{melee.damageInput}}" title="{{melee.damageInput}}" style="text-align:left;" /></td>
                         <td>
-                            <span class="tooltip">
-                                <input type="text" name="system.melee.{{id}}.damageType" value="{{melee.damageType}}" title="{{melee.damageType}}" style="text-align:left;" />
-                                <span class="tooltiptext" style="margin-left: -100px">
-                                    <div>
-                                        <span style="text-decoration: underline">Valid entries are:</span><br>
-                                        burn: Burning<br>
-                                        cor: Corrosion<br>
-                                        cr: Crushing<br>
-                                        cut: Cutting<br>
-                                        fat: Fatigue<br>
-                                        imp: Impaling<br>
-                                        pi-: Small Piercing<br>
-                                        pi: Piercing<br>
-                                        pi+: Large Piercing<br>
-                                        pi++: Huge Piercing<br>
-                                        tox: Toxic<br>
-                                        tbb: Tight Beam Burning<br>
-                                        dam: Untyped<br>
-                                        <span style="text-decoration: underline">Valid modifiers are:</span><br>
-                                        ex: Explosive<br>
-                                        dbk: Double Knockback<br>
-                                        dbt: Double Blunt Trauma<br>
-                                        nw: No Wounding<br>
-                                    </div>
-                                </span>
+                        <span class="tooltip">
+                            <input type="text" name="system.melee.{{id}}.damageType" value="{{melee.damageType}}" title="{{melee.damageType}}" style="text-align:left;" />
+                            <span class="tooltiptext" style="margin-left: -100px">
+                                <div>
+                                    <span style="text-decoration: underline">Valid entries are:</span><br>
+                                    burn: Burning<br>
+                                    cor: Corrosion<br>
+                                    cr: Crushing<br>
+                                    cut: Cutting<br>
+                                    fat: Fatigue<br>
+                                    imp: Impaling<br>
+                                    pi-: Small Piercing<br>
+                                    pi: Piercing<br>
+                                    pi+: Large Piercing<br>
+                                    pi++: Huge Piercing<br>
+                                    tox: Toxic<br>
+                                    tbb: Tight Beam Burning<br>
+                                    dam: Untyped<br>
+                                    <span style="text-decoration: underline">Valid modifiers are:</span><br>
+                                    ex: Explosive<br>
+                                    dbk: Double Knockback<br>
+                                    dbt: Double Blunt Trauma<br>
+                                    nw: No Wounding<br>
+                                </div>
                             </span>
+                        </span>
                         </td>
                         <td>
-                            <span class="tooltip">
-                                <input type="text" name="system.melee.{{id}}.armourDivisor" value="{{melee.armourDivisor}}" title="{{melee.armourDivisor}}" style="text-align:left;" />
-                                <span class="tooltiptext" style="margin-left: -100px">
-                                    <div>
-                                        Default is 1<br>
-                                        0 makes effective armour infinite<br>
-                                        Using the words 'ignore' or 'cosmic' allows the attack to ignore armour<br>
-                                        Setting this to 'I' will also ignore armour
-                                    </div>
-                                </span>
+                        <span class="tooltip">
+                            <input type="text" name="system.melee.{{id}}.armourDivisor" value="{{melee.armourDivisor}}" title="{{melee.armourDivisor}}" style="text-align:left;" />
+                            <span class="tooltiptext" style="margin-left: -100px">
+                                <div>
+                                    Default is 1<br>
+                                    0 makes effective armour infinite<br>
+                                    Using the words 'ignore' or 'cosmic' allows the attack to ignore armour<br>
+                                    Setting this to 'I' will also ignore armour
+                                </div>
                             </span>
+                        </span>
                         </td>
                         <td><input type="text" name="system.melee.{{id}}.reach" value="{{melee.reach}}" title="{{melee.reach}}" style="text-align:left;" /></td>
                         <td><input type="text" name="system.melee.{{id}}.st" value="{{melee.st}}"/></td>
@@ -157,6 +159,7 @@
             <div class="tab">
                 <table>
                     <tr class="equipment-header">
+                        <td class="resource-label">ID</td>
                         <td class="resource-label">Name</td>
                         <td class="resource-label">Level</td>
                         <td class="resource-label">Skill Name / Mod</td>
@@ -170,10 +173,12 @@
                         <td class="resource-label">Bulk</td>
                         <td class="resource-label">Rcl</td>
                         <td class="resource-label">ST</td>
+                        <td class="resource-label">Malf</td>
                         <td class="resource-label"></td>
                     </tr>
-                    {{#each system.ranged as |ranged id|}}
+                    {{#each item.system.ranged as |ranged id|}}
                     <tr class="equipment-entry">
+                        <td class="resource-label">{{id}}</td>
                         <td><input type="text" name="system.ranged.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
                         <td class="resource-label">{{ranged.level}}</td>
                         <td class="equipmentInputInput">
@@ -229,6 +234,7 @@
                         <td><input type="text" name="system.ranged.{{id}}.bulk" value="{{ranged.bulk}}" title="{{ranged.bulk}}" style="text-align:left;" /></td>
                         <td><input type="text" name="system.ranged.{{id}}.rcl" value="{{ranged.rcl}}" title="{{ranged.rcl}}" style="text-align:left;" /></td>
                         <td><input type="text" name="system.ranged.{{id}}.st" value="{{ranged.st}}"/></td>
+                        <td><input type="text" name="system.ranged.{{id}}.malf" value="{{ranged.malf}}"/></td>
                         <td><a class="ranged-delete" id="ranged{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
                     </tr>
                     {{/each}}
@@ -265,12 +271,12 @@
                         </td>
                         <td class="resource-label"></td>
                     </tr>
-                    {{#each system.affliction as |affliction id|}}
+                    {{#each item.system.affliction as |affliction id|}}
                     <tr class="equipment-entry">
                         <td><input type="text" name="system.affliction.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
-                        <td class="resource-label">{{ranged.level}}</td>
+                        <td class="resource-label">{{affliction.level}}</td>
                         <td class="equipmentInputInput">
-                            <input type="text" name="system.affliction.{{id}}.skill" value="{{affliction.skill}}" title="{{ranged.skill}}" style="text-align:left;" />/
+                            <input type="text" name="system.affliction.{{id}}.skill" value="{{affliction.skill}}" title="{{affliction.skill}}" style="text-align:left;" />/
                             <input type="text" name="system.affliction.{{id}}.skillMod" value="{{affliction.skillMod}}" data-dtype="Number"/>
                         </td>
                         <td><input type="text" name="system.affliction.{{id}}.damageInput" value="{{affliction.damageInput}}" title="{{affliction.damageInput}}" style="text-align:left; width: 40px;" /></td>
@@ -366,7 +372,7 @@
                 <span>
                     <label>Body Type:</label>
                     <select name="system.armour.bodyType.name" class="bodyType">
-                        {{#select system.armour.bodyType.name}}
+                        {{#select item.system.armour.bodyType.name}}
                         <option value="">Make a Selection</option>
                         <option value="humanoid">Humanoid</option>
                         <option value="wingedHumanoid">Winged Humanoid</option>
@@ -386,12 +392,12 @@
                         {{/select}}
                     </select>
                 </span>
-                {{#if (eq system.armour.bodyType.name "") }}
+                {{#if (eq item.system.armour.bodyType.name "") }}
                 <br>Please only set body type if this equipment applies DR. Otherwise the formula that adds up armour will check this for DR values. With enough items on your sheet it will eventually degrade performance.
                 {{else}}
                 <span class="tooltip">
                     <label>Layer:</label>
-                    <input type="number" style="width: unset;" name="system.armour.layer" value="{{system.armour.layer}}" data-dtype="Number" />
+                    <input type="number" style="width: unset;" name="system.armour.layer" value="{{item.system.armour.layer}}" data-dtype="Number" />
                     <span class="tooltiptext">
                         <div>
                             Higher layer numbers are placed above lower layer numbers.<br>
@@ -404,7 +410,7 @@
                 </span>
                 {{/if}}
                 <table class="dr-entry-table">
-                    {{#unless (eq system.armour.bodyType.name "") }}
+                    {{#unless (eq item.system.armour.bodyType.name "") }}
                     <tr class="hit-locations">
                         <td class="dr-header"></td>
                         <td class="dr-header">Flex</td>
@@ -419,63 +425,63 @@
                         <td class="dr-damage-types">Tox</td>
                     </tr>
                     {{/unless}}
-                    {{#each system.armour.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
+                    {{#each item.system.armour.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
                     <tr class="hit-locations master-location">
                         <th colspan="11">
                             <div>{{bodyPart.label}}</div>
                             <div>
-                                <a class="locationDRUp" id="system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
-                                <a class="locationDRDown" id="system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                                <a class="locationDRUp" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="locationDRDown" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
                             </div>
                         </th>
                     <tr>
                         <td colspan="3"></td>
                         <td>
                             <div class="dr-damage-type-buttons">
-                                <a class="burnDRUp" id="system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
-                                <a class="burnDRDown" id="system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                                <a class="burnDRUp" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="burnDRDown" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
                             </div>
                         </td>
                         <td>
                             <div class="dr-damage-type-buttons">
-                                <a class="corDRUp" id="system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
-                                <a class="corDRDown" id="system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                                <a class="corDRUp" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="corDRDown" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
                             </div>
                         </td>
                         <td>
                             <div class="dr-damage-type-buttons">
-                                <a class="crDRUp" id="system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
-                                <a class="crDRDown" id="system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                                <a class="crDRUp" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="crDRDown" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
                             </div>
                         </td>
                         <td>
                             <div class="dr-damage-type-buttons">
-                                <a class="cutDRUp" id="system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
-                                <a class="cutDRDown" id="system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                                <a class="cutDRUp" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="cutDRDown" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
                             </div>
                         </td>
                         <td>
                             <div class="dr-damage-type-buttons">
-                                <a class="fatDRUp" id="system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
-                                <a class="fatDRDown" id="system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                                <a class="fatDRUp" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="fatDRDown" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
                             </div>
                         </td>
                         <td>
                             <div class="dr-damage-type-buttons">
-                                <a class="impDRUp" id="system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
-                                <a class="impDRDown" id="system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                                <a class="impDRUp" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="impDRDown" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
                             </div>
                         </td>
                         <td>
                             <div class="dr-damage-type-buttons">
-                                <a class="piDRUp" id="system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
-                                <a class="piDRDown" id="system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                                <a class="piDRUp" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="piDRDown" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
                             </div>
                         </td>
                         <td>
                             <div class="dr-damage-type-buttons">
-                                <a class="toxDRUp" id="system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
-                                <a class="toxDRDown" id="system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                                <a class="toxDRUp" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="toxDRDown" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
                             </div>
                         </td>
                     </tr>
@@ -486,8 +492,8 @@
                         <td class="dr-row">
                             <div>{{subLocation.label}}</div>
                             <div>
-                                <a class="subLocationDRUp" id="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}" title="Sublocation DR Up"><i class="fas fa-arrow-up"></i></a>
-                                <a class="subLocationDRDown" id="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}" title="Sublocation DR Down"><i class="fas fa-arrow-down"></i></a>
+                                <a class="subLocationDRUp" id="item.system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}" title="Sublocation DR Up"><i class="fas fa-arrow-up"></i></a>
+                                <a class="subLocationDRDown" id="item.system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}" title="Sublocation DR Down"><i class="fas fa-arrow-down"></i></a>
                             </div>
                         </td>
                         <td class="dr-row">
