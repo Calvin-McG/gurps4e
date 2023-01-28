@@ -5032,7 +5032,6 @@ export class gurpsItem extends Item {
 
   prepareAttackData() {
     //Check to see if there is an actor yet
-    console.log(this);
     if (this.actor){
       if (this.actor.system) {
         let damage;

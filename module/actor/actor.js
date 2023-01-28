@@ -686,8 +686,6 @@ export class gurpsActor extends Actor {
 		let perkPoints = +0;
 
 		// Iterate through the list of traits. Advantages and Disadvantages
-		console.log(this);
-		console.log(this.system);
         for (let i = 0; i < this.items._source.length; i++){
             if (this.items._source[i].type === "Trait"){
                 traitPoints = traitPoints += this.items._source[i].system.points;
@@ -819,7 +817,6 @@ export class gurpsActor extends Actor {
 	}
 
 	recalcAtrPoints(){
-		console.log(this.system);
 		//Update point totals
 		let attributePoints = +this.system.primaryAttributes.strength.points +
 			+this.system.primaryAttributes.dexterity.points +

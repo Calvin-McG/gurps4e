@@ -356,9 +356,6 @@ export class gurpsItemSheet extends ItemSheet {
 
     _onAddRow(event) {
         // If there's no melee container, add one
-        console.log(this)
-        console.log(this.item)
-        console.log(this.item.system)
         if(typeof this.item.system.melee == "undefined") {
             this.item.system.melee = {
                 "melee": []
@@ -376,7 +373,6 @@ export class gurpsItemSheet extends ItemSheet {
         let newRow = { "name": "" }; // Init the new melee row
 
         this.item.update({ ["system.melee." + newKey]: newRow }); // Add the new row to the list of melee keys
-        console.log(this.item);
     }
     _onAddRangedRow(event) {
         if (typeof this.item.system.ranged == "undefined") {
