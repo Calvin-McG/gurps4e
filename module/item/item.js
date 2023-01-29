@@ -34,9 +34,6 @@ export class gurpsItem extends Item {
   prepareData() {
     super.prepareData();
 
-    console.log(this)
-    console.log(this.system)
-
     switch (this.type) {
       case "Equipment":
         this._prepareEquipmentData();
@@ -4803,13 +4800,20 @@ export class gurpsItem extends Item {
               arrowCF = 1;
             }
 
+            if (game.settings.get("gurps4e", "simpleEssentialMaterials")) { // If the game is using simple essential materials
+              if (this.system.bowDesign.arrows[arrowKeys[i]].materialEssential) { // And the arrow is essential
+                // Simple essential arrows are no better so they don't automatically cost more as an arrow.
+                arrowCF += 29; // So apply the appropriate cost modifier
+              }
+            }
+
             let shaftCost = (this.system.bowDesign.arrows[arrowKeys[i]].material.arrowCostPerLb * shaftWeight)
 
             if (this.system.bowDesign.arrows[arrowKeys[i]].material.tl > 4 && this.system.bowDesign.arrows[arrowKeys[i]].innerDiameter > 0) { // Material is synthetic and the arrow is hollow.
               shaftCost = shaftCost * (arrowCF + 4);
             }
 
-            // Calculate arrohead cost
+            // Calculate arrowhead cost
             let arrowHeadCost = 50 * this.system.bowDesign.arrows[arrowKeys[i]].arrowhead.weight;
             // Apply AD CF
             if (this.system.bowDesign.arrows[arrowKeys[i]].arrowhead.ad == "0.5") {
