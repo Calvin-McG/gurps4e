@@ -3,8 +3,8 @@
   "title": "GURPS4E",
   "description": "A GURPS4E system that automates as much as possible",
   "version": "4.0.0",
-  "minimumCoreVersion": "9",
-  "compatibleCoreVersion": "9",
+  "minimumCoreVersion": "10",
+  "compatibleCoreVersion": "10",
   "templateVersion": 2,
   "author": "Calvin",
   "esmodules": [
