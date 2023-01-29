@@ -1863,7 +1863,7 @@ export class gurpsActor extends Actor {
 					scene: target.scene.id,
 					attack: attack,
 					margin: rollInfo.margin,
-					effectiveSkill: (+attack.level + +mod)
+					effectiveSkill: (+attack.level + +totalModifiers)
 				}
 			}
 			// Everything is assembled, send the message
@@ -1937,11 +1937,15 @@ export class gurpsActor extends Actor {
 		let resistanceLevel = +actorHelpers.fetchStat(target, attack.resistanceRoll); // Fetch the resistance level based on the attack's target attribute
 		let effectiveResistanceLevel = resistanceLevel + +mod + +attack.resistanceRollPenalty; // Figure out the effective level based on the above, the modifier from the attack, and the modifier provided by the user
 		let margin = flags.margin; // Get the margin from the flags
+		let effectiveSkill = flags.effectiveSkill;
 
 		let ruleOfLimiter = Math.max(+attack.ruleOf, +effectiveResistanceLevel) // Limiter is the higher of Rule of 16/13/X and the target's resistance roll.
 
-		if (attack.level > ruleOfLimiter) { // The attacker's skill was higher than Rule of 16/13/X, correct for that.
-			margin = margin - (attack.level - ruleOfLimiter); // Subtract the difference between the skill level and Rule Of from the margin of success to determine the effective margin
+		if (margin >= 0) { // If it was a success, check for Rule of 16/13/X
+			if (effectiveSkill > ruleOfLimiter) { // The attacker's skill was higher than Rule of 16/13/X, correct for that.
+				margin = margin - (effectiveSkill - ruleOfLimiter); // Subtract the difference between the skill level and Rule Of from the margin of success to determine the effective margin
+				margin = Math.max(margin, 0); // Even if rule of 16/13/X drops it down, the effective margin will always be at least zero
+			}
 		}
 
 		rollHelpers.skillRoll(resistanceLevel, (+mod + +attack.resistanceRollPenalty), label, false).then( rollInfo => { // Make the defender's roll
