@@ -1296,7 +1296,7 @@ export class gurpsActor extends Actor {
 	// Facing is returned as 1/0/-1 (Front/Side/Rear) and position as 1/-1 (Ahead/Behind)
 	// As in, the attacker is in front, in side, in rear of the target (For active defence purposes, depends on target's vision (Peripheral, 360, tunnel, etc)
 	// As in, the attacker is ahead or behind the target (In physical space, has nothing to do with anyone's traits.
-	getFacing(attackerToken, targetToken){
+	getFacing(attackerToken, targetToken){ // !IMPORTANT. This method works. But tokens look out their bottom most of the time. Don't fuck with this, check token rotation and vision settings.
 		let relativePosition = (Math.atan2(-(targetToken.x - attackerToken.x), (targetToken.y - attackerToken.y)) * 180 / Math.PI) + 180; // Takes the atan of the two sets of points after they have been rotated clockwise 90 degrees. This puts the 0 point towards the direction of facing with 180/-180 directly behind
 
 		let targetFacing;
