@@ -1568,8 +1568,8 @@ export class gurpsActor extends Actor {
 		let ranged;
 		let affliction;
 
-		actor.system.items.forEach((item) => {
-			if (item.system.type == "Trait" || item.system.type == "Equipment" || item.system.type == "Spell" || item.system.type == "Custom Weapon" || item.system.type == "Custom Armour" || item.system.type == "Travel Fare"){
+		actor.items.forEach((item) => {
+			if (item.type == "Trait" || item.type == "Equipment" || item.type == "Spell" || item.type == "Custom Weapon" || item.type == "Custom Armour" || item.type == "Travel Fare"){
 				if (item.system.melee) {
 					let meleeKeys = Object.keys(item.system.melee); // Collect all the melee keys
 					for (let m = 0; m < meleeKeys.length; m++){
@@ -1826,17 +1826,17 @@ export class gurpsActor extends Actor {
 	// On success it provides buttons for the defender to choose from
 	// On a failure it simply reports failure
 	reportAfflictionResult(target, attacker, attack, totalModifiers) {
-		let label = attacker.system.name + " casts " + attack.weapon + " " + attack.name + " on " + target.system.name + "."; // Label for the roll
+		let label = attacker.name + " casts " + attack.weapon + " " + attack.name + " on " + target.name + "."; // Label for the roll
 
 		rollHelpers.skillRoll(attack.level, totalModifiers, label, false).then( rollInfo => { // Make the roll
 			let messageContent = rollInfo.content; // Begin message content with the result from the skill roll
 			let flags = {} // Init flags which will be used to pass data between chat messages
 
 			if (rollInfo.success == false) { // If they failed, report failure and stop
-				messageContent += attacker.system.name + "'s spell fails</br>";
+				messageContent += attacker.name + "'s spell fails</br>";
 			}
 			else { // If they succeed
-				messageContent += attacker.system.name + "'s spell succeeds</br>"; // Inform the players
+				messageContent += attacker.name + "'s spell succeeds</br>"; // Inform the players
 
 				// Build the response options based on the resistance type of the attack
 				if (attack.resistanceType == "contest") { // If they've selected quick contest, only show the quick contest and no defence buttons
@@ -1867,19 +1867,19 @@ export class gurpsActor extends Actor {
 				}
 			}
 			// Everything is assembled, send the message
-			ChatMessage.create({ content: messageContent, user: game.user.system.document.id, type: rollInfo.type, flags: flags});
+			ChatMessage.create({ content: messageContent, user: game.user.id, type: rollInfo.type, flags: flags});
 		})
 	}
 
 	noResistanceRoll(event) {
 		event.preventDefault();
-		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).system.flags;
+		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).flags;
 		this.applyAffliction(flags);
 	}
 
 	// This is run when a defender clicks the "Quick Contest" button after being the target of an affliction
 	quickContest(event) {
-		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).system.flags; // Get the flags which hold all the actual data
+		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).flags; // Get the flags which hold all the actual data
 		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor; // Fetch the target using the appropriate methods
 		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;// Fetch the attacker using the appropriate methods
 		let attack 			= flags.attack; // Fetch the attack from the flags
@@ -1933,7 +1933,7 @@ export class gurpsActor extends Actor {
 
 	// This method takes the modifier from the defender and uses it to determine the results of the quick contest
 	reportQuickContestResult(target, attacker, attack, flags, mod) {
-		let label = target.system.name + " attempts to resist the " + attack.weapon + " " + attack.name + " cast by " + attacker.name + "."; // Setup the label that heads the chat message
+		let label = target.name + " attempts to resist the " + attack.weapon + " " + attack.name + " cast by " + attacker.name + "."; // Setup the label that heads the chat message
 		let resistanceLevel = +actorHelpers.fetchStat(target, attack.resistanceRoll); // Fetch the resistance level based on the attack's target attribute
 		let effectiveResistanceLevel = resistanceLevel + +mod + +attack.resistanceRollPenalty; // Figure out the effective level based on the above, the modifier from the attack, and the modifier provided by the user
 		let margin = flags.margin; // Get the margin from the flags
@@ -1954,15 +1954,15 @@ export class gurpsActor extends Actor {
 			messageContent += attacker.name + " has an effective margin of success of <span style='font-weight: bold'>" + margin + "</span> after modifiers and the Rule of <span style='font-weight: bold'>" + attack.ruleOf + "</span><br><br>"; // Inform the user of the attacker's effective margin of success and mention the Rule of X
 
 			if (rollInfo.success == false) { // Target failed the roll entirely
-				messageContent += "<span style='font-weight: bold; color: rgb(199, 137, 83);'>" + target.system.name + " fails to resist</span></br>"; // Tell everyone
+				messageContent += "<span style='font-weight: bold; color: rgb(199, 137, 83);'>" + target.name + " fails to resist</span></br>"; // Tell everyone
 				this.applyAffliction(flags); // Call the method that applies the affliction effects
 			}
 			else if (rollInfo.margin < margin) { // Target succeeded, but by less than the attacker did
-				messageContent += "<span style='font-weight: bold; color: rgb(199, 137, 83)'>" + target.system.name + " succeeds by <span style='font-weight: bold'>" + rollInfo.margin + "</span> but fails to resist</span></br>"; // Tell everyone
+				messageContent += "<span style='font-weight: bold; color: rgb(199, 137, 83)'>" + target.name + " succeeds by <span style='font-weight: bold'>" + rollInfo.margin + "</span> but fails to resist</span></br>"; // Tell everyone
 				this.applyAffliction(flags); // Call the method that applies the affliction effects
 			}
 			else if (rollInfo.margin >= margin) { // Target succeeded, tieing or beating the attacker
-				messageContent +=  "<span style='font-weight: bold; color: rgb(141, 142, 222)'>" + target.system.name + " succeeds by <span style='font-weight: bold'>" + rollInfo.margin + "</span> and resists successfully</span></br>"; // Tell everyone
+				messageContent +=  "<span style='font-weight: bold; color: rgb(141, 142, 222)'>" + target.name + " succeeds by <span style='font-weight: bold'>" + rollInfo.margin + "</span> and resists successfully</span></br>"; // Tell everyone
 			}
 			else { // None of the above caught the result
 				messageContent += "Some weird shit has happened.</br>" + // Let the users know that some weird shit has happened but nothing has changed on the target of the affliction
@@ -1975,13 +1975,13 @@ export class gurpsActor extends Actor {
 				messageContent += "<span style='font-style: italic;'>Important note, criticals have no impact on success/failure of quick contests beyond resulting in a very good or very bad margin of success.</span>"; // Inform the players of this fact
 			}
 
-			ChatMessage.create({ content: messageContent, user: game.user.system.document.id, type: rollInfo.type}); // Send the actual message
+			ChatMessage.create({ content: messageContent, user: game.user.id, type: rollInfo.type}); // Send the actual message
 		});
 	}
 
 	// This is run when a defender clicks the "Quick Contest" button after being the target of an affliction
 	attemptResistanceRoll(event) {
-		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).system.flags; // Get the flags which hold all the actual data
+		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).flags; // Get the flags which hold all the actual data
 		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor; // Fetch the target using the appropriate methods
 		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;// Fetch the attacker using the appropriate methods
 		let attack 			= flags.attack; // Fetch the attack from the flags
@@ -2036,7 +2036,7 @@ export class gurpsActor extends Actor {
 
 	// This method takes the modifier from the defender and uses it to determine the results of the resistance roll
 	reportResistanceRollResult(target, attacker, attack, flags, mod) {
-		let label = target.system.name + " attempts to resist the " + attack.weapon + " " + attack.name + " cast by " + attacker.name + "."; // Setup the label that heads the chat message
+		let label = target.name + " attempts to resist the " + attack.weapon + " " + attack.name + " cast by " + attacker.name + "."; // Setup the label that heads the chat message
 		let resistanceLevel = +actorHelpers.fetchStat(target, attack.resistanceRoll); // Fetch the resistance level based on the attack's target attribute
 		let effectiveResistanceLevel = resistanceLevel + +mod + +attack.resistanceRollPenalty; // Figure out the effective level based on the above, the modifier from the attack, and the modifier provided by the user
 
@@ -2045,11 +2045,11 @@ export class gurpsActor extends Actor {
 			messageContent += "<br>"
 
 			if (rollInfo.success == false) { // Target failed the roll
-				messageContent += "<span style='font-weight: bold; color: rgb(199, 137, 83);'>" + target.system.name + " fails to resist</span></br>"; // Tell everyone
+				messageContent += "<span style='font-weight: bold; color: rgb(199, 137, 83);'>" + target.name + " fails to resist</span></br>"; // Tell everyone
 				this.applyAffliction(flags); // Call the method that applies the affliction effects
 			}
 			else if (rollInfo.success == true) { // Target succeeded
-				messageContent += "<span style='font-weight: bold; color: rgb(141, 142, 222)'>" + target.system.name + " resists</span></br>"; // Tell everyone
+				messageContent += "<span style='font-weight: bold; color: rgb(141, 142, 222)'>" + target.name + " resists</span></br>"; // Tell everyone
 				this.applyAffliction(flags); // Call the method that applies the affliction effects
 			}
 			else { // None of the above caught the result
@@ -2059,7 +2059,7 @@ export class gurpsActor extends Actor {
 				console.error(target, attacker, attack, flags, mod, resistanceLevel, effectiveResistanceLevel, margin, ruleOfLimiter) // Print the error to console
 			}
 
-			ChatMessage.create({ content: messageContent, user: game.user.system.document.id, type: rollInfo.type}); // Send the actual message
+			ChatMessage.create({ content: messageContent, user: game.user.id, type: rollInfo.type}); // Send the actual message
 		});
 	}
 
@@ -2069,10 +2069,10 @@ export class gurpsActor extends Actor {
 		let attack 			= flags.attack;
 
 		if (attack.damage == 0 || attack.damage == "") {
-			let html = "<div>Damage for " + attacker.system.name + "'s " + attack.weapon + " " + attack.name + " against " + target.system.name + "</div>";
+			let html = "<div>Damage for " + attacker.name + "'s " + attack.weapon + " " + attack.name + " against " + target.name + "</div>";
 			html += "<hr>" + attack.desc + "<br>"
 			html += "<hr>";
-			ChatMessage.create({ content: html, user: game.user.system.document.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+			ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
 		}
 		else {
 			let locationsHit = ['upperChest.subLocation.chest'];
@@ -2307,16 +2307,16 @@ export class gurpsActor extends Actor {
 		let sm = 0;
 		if (actor) { // Make sure all the data is present
 			if (actor.token){ // If this is a token
-				if (actor.token.data){ // Make sure the data structure exists
-					if (actor.token.system){
-						if (actor.token.system.bio){
-							if (actor.token.system.bio.sm){
-								if (actor.token.system.bio.sm.value){
-									if (actor.token.system.bio.sm.value == "" || actor.token.system.bio.sm.value == null || typeof actor.token.system.bio.sm.value == "undefined") { // SM is blank, null, or undefined
+				if (actor.token.actor){ // Make sure the data structure exists
+					if (actor.token.actor.system){
+						if (actor.token.actor.system.bio){
+							if (actor.token.actor.system.bio.sm){
+								if (actor.token.actor.system.bio.sm.value){
+									if (actor.token.actor.system.bio.sm.value == "" || actor.token.actor.system.bio.sm.value == null || typeof actor.token.actor.system.bio.sm.value == "undefined") { // SM is blank, null, or undefined
 										sm = 0; // Default zero
 									}
 									else { // SM is not blank, null, or undefined
-										sm = actor.token.system.bio.sm.value; // Set SM equal to the actor's SM value
+										sm = actor.token.actor.system.bio.sm.value; // Set SM equal to the actor's SM value
 									}
 								}
 							}
@@ -2582,7 +2582,7 @@ export class gurpsActor extends Actor {
 			}
 
 			// Everything is assembled, send the message
-			ChatMessage.create({ content: messageContent, user: game.user.system.document.id, type: rollInfo.type, flags: flags});
+			ChatMessage.create({ content: messageContent, user: game.user.id, type: rollInfo.type, flags: flags});
 		})
 	}
 
@@ -2619,12 +2619,12 @@ export class gurpsActor extends Actor {
 			locationIDs[c] = checkedBoxes[c].id;
 		}
 
-		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).system.flags;
+		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).flags;
 
 		let targetToken = game.scenes.get(flags.scene).tokens.get(flags.target);
 		let attackerToken = game.scenes.get(flags.scene).tokens.get(flags.attacker);
 
-		let facing = this.getFacing(attackerToken.data, targetToken.data);
+		let facing = this.getFacing(attackerToken, targetToken);
 		let target = targetToken.actor;
 
 		let dodges = [];
@@ -2869,7 +2869,7 @@ export class gurpsActor extends Actor {
 			locationIDs[c] = checkedBoxes[c].id;
 		}
 
-		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).system.flags;
+		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).flags;
 
 		this.applyDamage(flags, locationIDs);
 	}
@@ -2927,7 +2927,7 @@ export class gurpsActor extends Actor {
 			totalModifier = mod;
 		}
 
-		label += target.system.name + " attempts a ";
+		label += target.name + " attempts a ";
 
 		if (options.feverishDefence) {
 			label += "feverish ";
@@ -2998,43 +2998,43 @@ export class gurpsActor extends Actor {
 			let attacksThrough;
 
 			if (attacksStopped >= locationIDs.length){ // Stopped as many or more attacks as there actually are
-				additionalMessageContent += target.system.name + " stopped all of the attacks.";
+				additionalMessageContent += target.name + " stopped all of the attacks.";
 				let messageContent = rollInfo.content + additionalMessageContent;
 
 				// Send the message, no further rolls necessary.
-				ChatMessage.create({ content: messageContent, user: game.user.system.document.id, type: rollInfo.type});
+				ChatMessage.create({ content: messageContent, user: game.user.id, type: rollInfo.type});
 			}
 			else if (attacksStopped <= 0){ // Stopped zero or fewer attacks
-				additionalMessageContent += target.system.name + " does not stop any attacks.</br></br>";
+				additionalMessageContent += target.name + " does not stop any attacks.</br></br>";
 				additionalMessageContent += locationIDs.length + " attack" + (locationIDs.length > 1 ? "s " : " ") + "get" + (locationIDs.length === 1 ? "s" : "") + " through.";
 				let messageContent = rollInfo.content + additionalMessageContent;
 
 				// Send the message then prepare for damage rolls
-				ChatMessage.create({ content: messageContent, user: game.user.system.document.id, type: rollInfo.type});
+				ChatMessage.create({ content: messageContent, user: game.user.id, type: rollInfo.type});
 
 				locationsHit = locationIDs; // All attacks get through
 				this.applyDamage(flags, locationsHit).then();
 			}
 			else if (attacksStopped === 1){ // Stopped one attack, but not all
 				attacksThrough = locationIDs.length - 1;
-				additionalMessageContent += target.system.name + " stopped one attack.</br></br>";
+				additionalMessageContent += target.name + " stopped one attack.</br></br>";
 				additionalMessageContent += attacksThrough + " attack" + (attacksThrough > 1 ? "s " : " ") + "get" + (attacksThrough === 1 ? "s" : "") + " through.";
 				let messageContent = rollInfo.content + additionalMessageContent;
 
 				// Send the message then prepare for damage rolls
-				ChatMessage.create({ content: messageContent, user: game.user.system.document.id, type: rollInfo.type});
+				ChatMessage.create({ content: messageContent, user: game.user.id, type: rollInfo.type});
 
 				locationsHit = locationIDs.slice(0, locationIDs.length - 1); // Remove the last hit in the array
 				this.applyDamage(flags, locationsHit).then();
 			}
 			else if (attacksStopped > 1){ // Stopped more than one attack, but not all
 				attacksThrough = locationIDs.length - attacksStopped;
-				additionalMessageContent += target.system.name + " stopped " + attacksStopped + " attacks.</br></br>";
+				additionalMessageContent += target.name + " stopped " + attacksStopped + " attacks.</br></br>";
 				additionalMessageContent += attacksThrough + " attack" + (attacksThrough > 1 ? "s " : " ") + "get" + (attacksThrough === 1 ? "s" : "") + " through.";
 				let messageContent = rollInfo.content + additionalMessageContent;
 
 				// Send the message then prepare for damage rolls
-				ChatMessage.create({ content: messageContent, user: game.user.system.document.id, type: rollInfo.type});
+				ChatMessage.create({ content: messageContent, user: game.user.id, type: rollInfo.type});
 
 				locationsHit = locationIDs.slice(0, locationIDs.length - attacksStopped); // Remove the last hits in the array
 				this.applyDamage(flags, locationsHit).then();
@@ -3081,7 +3081,7 @@ export class gurpsActor extends Actor {
 
 		let damageType = this.extractDamageType(attack);
 
-		let html = "<div>Damage for " + attacker.system.name + "'s " + attack.weapon + " " + attack.name + " against " + target.system.name + "</div>";
+		let html = "<div>Damage for " + attacker.name + "'s " + attack.weapon + " " + attack.name + " against " + target.name + "</div>";
 
 		if (additionalMessage) {
 			html += "<hr>" + additionalMessage + "<br>"
@@ -3396,7 +3396,7 @@ export class gurpsActor extends Actor {
 
 		totalKnockback = Math.floor(totalKnockback);
 		if (totalKnockback > 0) { // Display total knockback
-			html += "<hr><div>" + target.system.name + " is knocked back " + totalKnockback + " yards and must roll at -" + (totalKnockback - 1) + " to avoid falling down.</div>";
+			html += "<hr><div>" + target.name + " is knocked back " + totalKnockback + " yards and must roll at -" + (totalKnockback - 1) + " to avoid falling down.</div>";
 		}
 
 		if (totalInjury > 0){
@@ -3411,7 +3411,7 @@ export class gurpsActor extends Actor {
 		}
 
 		target.update({ 'data': target.system });
-		ChatMessage.create({ content: html, user: game.user.system.document.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+		ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
 	}
 
 	extractDamageType(attack) {
