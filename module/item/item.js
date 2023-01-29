@@ -1637,6 +1637,8 @@ export class gurpsItem extends Item {
     // Output
     this.system.cost = this.system.jewelryDesign.finalCost;
     this.system.weight = this.system.jewelryDesign.finalWeight;
+
+    this.finalEquipmentCalculation();
   }
 
   _prepareCustomWeaponData() {
