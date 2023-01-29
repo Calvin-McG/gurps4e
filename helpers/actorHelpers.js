@@ -1593,26 +1593,26 @@ export class actorHelpers {
     static fetchStat(actor, stat) { // Actor should be the actor object, stat should be the string name of the stat in question.
 
         if (stat.toLowerCase() == "strength" || stat.toLowerCase() == "st") {
-            let smDiscount = attributeHelpers.calcSMDiscount(actor.data.data.bio.sm)
-            return attributeHelpers.calcStOrHt(actor.data.data.primaryAttributes.strength, smDiscount);
+            let smDiscount = attributeHelpers.calcSMDiscount(actor.system.bio.sm)
+            return attributeHelpers.calcStOrHt(actor.system.primaryAttributes.strength, smDiscount);
         }
         else if (stat.toLowerCase() == "dexterity" || stat.toLowerCase() == "dx") {
-            return attributeHelpers.calcDxOrIq(actor.data.data.primaryAttributes.dexterity);
+            return attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.dexterity);
         }
         else if (stat.toLowerCase() == "intelligence" || stat.toLowerCase() == "iq") {
-            return attributeHelpers.calcDxOrIq(actor.data.data.primaryAttributes.intelligence);
+            return attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.intelligence);
         }
         else if (stat.toLowerCase() == "health" || stat.toLowerCase() == "ht") {
-            return attributeHelpers.calcStOrHt(actor.data.data.primaryAttributes.health);
+            return attributeHelpers.calcStOrHt(actor.system.primaryAttributes.health);
         }
         else if (stat.toLowerCase() == "will") {
-            return attributeHelpers.calcPerOrWill(actor.data.data.primaryAttributes.will);
+            return attributeHelpers.calcPerOrWill(actor.system.primaryAttributes.will);
         }
         else if (stat.toLowerCase() == "perception" || stat.toLowerCase() == "per") {
-            return attributeHelpers.calcPerOrWill(actor.data.data.primaryAttributes.perception);
+            return attributeHelpers.calcPerOrWill(actor.system.primaryAttributes.perception);
         }
         else if (stat.toLowerCase() == "fright" || stat.toLowerCase() == "fr") {
-            return attributeHelpers.calcFright(actor.data.data.primaryAttributes.fright);
+            return attributeHelpers.calcFright(actor.system.primaryAttributes.fright);
         }
         else {
             console.error("actorHelpers.fetchStat found an incorrect stat name");

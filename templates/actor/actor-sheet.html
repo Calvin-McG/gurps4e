@@ -1,5 +1,4 @@
 <form class="{{cssClass}} flexcol" autocomplete="off">
-
 	<div id="sheet">
 
 		{{!-- Sheet Header --}}
@@ -15,8 +14,8 @@
 				<div id="racegender">
 					<div>
 						<div class="bold label right">
-							<input type="text" name="data.bio.race.value"
-								value="{{data.data.bio.race.value}}" placeholder="Race" />
+							<input type="text" name="system.bio.race.value"
+								value="{{actor.system.bio.race.value}}" placeholder="Race" />
 						</div>
 					</div>
                     <div>
@@ -25,42 +24,42 @@
 								Height:
 							</div>
 							<div style="width: 48%">
-								<input type="number" name="data.bio.height.value" value="{{data.data.bio.height.value}}" placeholder="60"/>
+								<input type="number" name="system.bio.height.value" value="{{actor.system.bio.height.value}}" placeholder="60"/>
 							</div>
-							<div style="line-height: 15px; padding-left: 1em;"> - {{inchesToFtIn data.data.bio.height.value}}</div>
+							<div style="line-height: 15px; padding-left: 1em;"> - {{inchesToFtIn actor.system.bio.height.value}}</div>
                         </div>
                     </div>
                     <div>
                         <div class="bold label right">
 							<span>SM:</span>
-                            <input type="number" name="data.bio.sm.value"
-                                   value="{{data.data.bio.sm.value}}" placeholder="Size Mod"
+                            <input type="number" name="system.bio.sm.value"
+                                   value="{{actor.system.bio.sm.value}}" placeholder="Size Mod"
 								   style="width: 80%;" data-dtype="Number"/>
                         </div>
                     </div>
                     <div>
                         <div class="bold label right">
-                            <input type="text" name="data.bio.gender.value"
-                                   value="{{data.data.bio.gender.value}}" placeholder="Gender" />
+                            <input type="text" name="system.bio.gender.value"
+                                   value="{{actor.system.bio.gender.value}}" placeholder="Gender" />
                         </div>
                     </div>
                     <div>
                         <div class="bold label right" style="text-align: left">
 							<span>Weight:</span>
-                            <input type="number" name="data.bio.weight.value" style="width: 35%"
-                                   value="{{data.data.bio.weight.value}}" placeholder="Weight" data-dtype="Number"/>
+                            <input type="number" name="system.bio.weight.value" style="width: 35%"
+                                   value="{{actor.system.bio.weight.value}}" placeholder="Weight" data-dtype="Number"/>
 							<span>lbs</span>
                         </div>
                     </div>
                     <div>
                         <div class="bold label right">
 							<span>TL:</span>
-                            <input type="number" name="data.bio.tl.value"
-                                   value="{{data.data.bio.tl.value}}" placeholder="TL"
+                            <input type="number" name="system.bio.tl.value"
+                                   value="{{actor.system.bio.tl.value}}" placeholder="TL"
                                    style="width: 40%;" data-dtype="Number"/>
 							<span>Pts:</span>
-                            <input type="number" name="data.bio.tl.points"
-                                   value="{{data.data.bio.tl.points}}" placeholder="points"
+                            <input type="number" name="system.bio.tl.points"
+                                   value="{{actor.system.bio.tl.points}}" placeholder="points"
                                    style="width: 40%;" data-dtype="Number"/>
                         </div>
                     </div>
@@ -75,61 +74,62 @@
 						<label class="title">Pts</label>
 					</div>
 					<div class="reserves">
-						<label>{{data.data.reserves.hp.abbr}}</label>
-						<input type="text" name="data.reserves.hp.value" class="atrVal" value="{{data.data.reserves.hp.value}}" data-dtype="Number"/>
-						<input type="text" name="data.reserves.hp.max" class="atrVal" value="{{data.data.reserves.hp.max}}" data-dtype="Number" disabled />
-						<input type="text" name="data.reserves.hp.mod" class="atrMod" value="{{data.data.reserves.hp.mod}}" data-dtype="Number" />
-						<input type="text" name="data.reserves.hp.points" class="atrPoints" value="{{data.data.reserves.hp.points}}" data-dtype="Number" />
+						<label>{{actor.system.reserves.hp.abbr}}</label>
+						<input type="text" name="system.reserves.hp.value" class="atrVal" value="{{actor.system.reserves.hp.value}}" data-dtype="Number"/>
+						<input type="text" name="system.reserves.hp.max" class="atrVal" value="{{actor.system.reserves.hp.max}}" data-dtype="Number" disabled />
+						<input type="text" name="system.reserves.hp.mod" class="atrMod" value="{{actor.system.reserves.hp.mod}}" data-dtype="Number" />
+						<input type="text" name="system.reserves.hp.points" class="atrPoints" value="{{actor.system.reserves.hp.points}}" data-dtype="Number" />
 
-						<label>{{data.data.reserves.fp.abbr}}</label>
-						<input type="text" name="data.reserves.fp.value" class="atrVal" value="{{data.data.reserves.fp.value}}" data-dtype="Number"/>
-						<input type="text" name="data.reserves.fp.max" class="atrVal" value="{{data.data.reserves.fp.max}}" data-dtype="Number" disabled />
-						<input type="text" name="data.reserves.fp.mod" class="atrMod" value="{{data.data.reserves.fp.mod}}" data-dtype="Number" />
-						<input type="text" name="data.reserves.fp.points" class="atrPoints" value="{{data.data.reserves.fp.points}}" data-dtype="Number" />
+						<label>{{actor.system.reserves.fp.abbr}}</label>
+						<input type="text" name="system.reserves.fp.value" class="atrVal" value="{{actor.system.reserves.fp.value}}" data-dtype="Number"/>
+						<input type="text" name="system.reserves.fp.max" class="atrVal" value="{{actor.system.reserves.fp.max}}" data-dtype="Number" disabled />
+						<input type="text" name="system.reserves.fp.mod" class="atrMod" value="{{actor.system.reserves.fp.mod}}" data-dtype="Number" />
+						<input type="text" name="system.reserves.fp.points" class="atrPoints" value="{{actor.system.reserves.fp.points}}" data-dtype="Number" />
 
-						<label>{{data.data.reserves.er.abbr}}</label>
-						<input type="text" name="data.reserves.er.value" class="atrVal" value="{{data.data.reserves.er.value}}" data-dtype="Number"/>
-						<input type="text" name="data.reserves.er.max" class="atrVal" value="{{data.data.reserves.er.max}}" data-dtype="Number" disabled />
-						<input type="text" name="data.reserves.er.mod" class="atrMod" value="{{data.data.reserves.er.mod}}" data-dtype="Number" />
-						<input type="text" name="data.reserves.er.points" class="atrPoints" value="{{data.data.reserves.er.points}}" data-dtype="Number" />
+						<label>{{actor.system.reserves.er.abbr}}</label>
+						<input type="text" name="system.reserves.er.value" class="atrVal" value="{{actor.system.reserves.er.value}}" data-dtype="Number"/>
+						<input type="text" name="system.reserves.er.max" class="atrVal" value="{{actor.system.reserves.er.max}}" data-dtype="Number" disabled />
+						<input type="text" name="system.reserves.er.mod" class="atrMod" value="{{actor.system.reserves.er.mod}}" data-dtype="Number" />
+						<input type="text" name="system.reserves.er.points" class="atrPoints" value="{{actor.system.reserves.er.points}}" data-dtype="Number" />
 					</div>
 				</div>
 
 				<div id="pointTotals">
+
 					<table style="margin: unset">
 						<tr>
 							<td class="">Total:</td>
-							<td class="pointTotal">{{numberFormat data.data.points.total decimals=0}}</td>
+							<td class="pointTotal">{{numberFormat actor.system.points.total decimals=0}}</td>
 						</tr>
 						<tr>
 							<td class="">Attributes:</td>
-							<td class="pointTotal">{{numberFormat data.data.points.attributes decimals=0}}</td>
+							<td class="pointTotal">{{numberFormat actor.system.points.attributes decimals=0}}</td>
 						</tr>
 						<tr>
 							<td class="tooltip">
 								Traits:
 								<span class="tooltiptext" style="margin-left: -130px; bottom:0 !important;">
-									Advantages: {{numberFormat data.data.points.advantages decimals=0}}<br>
-									Disadvantages: {{numberFormat data.data.points.disadvantages decimals=0}}<br>
-									Perks: {{numberFormat data.data.points.perks decimals=0}}<br>
-									Quirks: {{numberFormat data.data.points.quirks decimals=0}}
+									Advantages: {{numberFormat actor.system.points.advantages decimals=0}}<br>
+									Disadvantages: {{numberFormat actor.system.points.disadvantages decimals=0}}<br>
+									Perks: {{numberFormat actor.system.points.perks decimals=0}}<br>
+									Quirks: {{numberFormat actor.system.points.quirks decimals=0}}
 								</span>
 							</td>
-							<td class="pointTotal">{{numberFormat data.data.points.traits decimals=0}}</td>
+							<td class="pointTotal">{{numberFormat actor.system.points.traits decimals=0}}</td>
 						</tr>
 						<tr>
 							<td class="">Skills:</td>
-							<td class="pointTotal">{{numberFormat data.data.points.skills decimals=0}}</td>
+							<td class="pointTotal">{{numberFormat actor.system.points.skills decimals=0}}</td>
 						</tr>
-						{{#if data.points.spells}}
+						{{#if actor.system.points.spells}}
 						<tr>
 							<td class="">Spells:</td>
-							<td class="pointTotal">{{numberFormat data.data.points.spells decimals=0}}</td>
+							<td class="pointTotal">{{numberFormat actor.system.points.spells decimals=0}}</td>
 						</tr>
 						{{/if}}
 						<tr>
 							<td class="">Unspent:</td>
-							<td><input type="text" name="data.points.unspent" class="pointTotal unspentEntry" value="{{data.data.points.unspent}}" data-dtype="Number"/></td>
+							<td><input type="text" name="system.points.unspent" class="pointTotal unspentEntry" value="{{actor.system.points.unspent}}" data-dtype="Number"/></td>
 						</tr>
 					</table>
 				</div>
@@ -193,19 +193,19 @@
                             <label class="title">Mod</label>
                             <label class="title">Pts</label>
                         </div>
-						{{#each data.data.primaryAttributes as |attr id|}}
+						{{#each actor.system.primaryAttributes as |attr id|}}
 							<div class="primary-attribute" id="{{attr.id}}">
 									<label style="font-weight: bold">{{attr.abbr}}</label>
-									<input type="number" name="data.primaryAttributes.{{id}}.value" class="atrVal" value="{{attr.value}}"
+									<input type="number" name="system.primaryAttributes.{{id}}.value" class="atrVal" value="{{attr.value}}"
 										data-dtype="Number" disabled />
-									<input type="number" name="data.primaryAttributes.{{id}}.mod" class="atrMod" value="{{attr.mod}}"
+									<input type="number" name="system.primaryAttributes.{{id}}.mod" class="atrMod" value="{{attr.mod}}"
 												 data-dtype="Number" />
 								{{#unless (eq attr.abbr "Knockback")}}
-									<input type="number" name="data.primaryAttributes.{{id}}.points" class="atrPoints" value="{{attr.points}}"
+									<input type="number" name="system.primaryAttributes.{{id}}.points" class="atrPoints" value="{{attr.points}}"
 												 data-dtype="Number" />
 								{{/unless}}
 								{{#unless (or (eq attr.abbr "Speed") (eq attr.abbr "Move") )}}
-								<label for="data.primaryAttributes.{{id}}.value" class="fa fa-dice-six rollable"
+								<label for="system.primaryAttributes.{{id}}.value" class="fa fa-dice-six rollable"
 											 data-level="{{attr.value}}" data-label="Makes a &lt;b&gt;{{attr.abbr}}&lt;/b&gt; check."
 											 data-type="skill"></label>
 								{{/unless}}
@@ -214,29 +214,29 @@
 						<div id="senses">
 							<div style="text-align: center; border-bottom: 2px solid rgba(0, 0, 255, 0.1); margin-bottom: 5px;">
 								<label for="showSenses" style="font-weight: bold; font-size: x-large; display: block;">
-									{{#if (eq data.data.flag.showSenses true) }}
+									{{#if actor.system.flag.showSenses }}
 										<i class="fas fa-angle-up"></i>
 									{{else}}
 										<i class="fas fa-angle-down"></i>
 									{{/if}}
 								</label>
-								<input style="display: none" id="showSenses" type="checkbox" name="data.flag.showSenses" {{checked data.data.flag.showSenses}} data-dtype="Boolean"/>
+								<input style="display: none" id="showSenses" type="checkbox" name="system.flag.showSenses" {{checked system.flag.showSenses}} data-dtype="Boolean"/>
 							</div>
-							{{#unless (eq data.data.flag.showSenses true) }}
-								{{#each data.data.senses as |sense id|}}
+							{{#unless actor.system.flag.showSenses }}
+								{{#each actor.system.senses as |sense id|}}
 									<div class="attribute-senses" id="{{sense.id}}">
 										{{#if sense.id}}
 											{{#if (or (eq sense.id "extra1") (eq sense.id "extra2")) }}
-												<input type="text" name="data.senses.{{id}}.abbr" class="senseVal" value="{{sense.abbr}}" style="text-align: left;"/>
+												<input type="text" name="system.senses.{{id}}.abbr" class="senseVal" value="{{sense.abbr}}" style="text-align: left;"/>
 											{{else}}
 												<label style="font-weight: bold" class="senseVal">{{sense.abbr}}</label>
 											{{/if}}
 										{{/if}}
-										<input type="text" name="data.senses.{{id}}.value" class="atrVal" value="{{sense.value}}"
+										<input type="text" name="system.senses.{{id}}.value" class="atrVal" value="{{sense.value}}"
 											   data-dtype="Number" disabled />
-										<input type="text" name="data.senses.{{id}}.mod" class="senseMod" value="{{sense.mod}}"
+										<input type="text" name="system.senses.{{id}}.mod" class="senseMod" value="{{sense.mod}}"
 											   data-dtype="Number" />
-										<label for="data.senses.{{id}}.value" class="fa fa-dice-six rollable"
+										<label for="system.senses.{{id}}.value" class="fa fa-dice-six rollable"
 											   data-level="{{sense.value}}" data-label="Makes a &lt;b&gt;{{sense.abbr}}&lt;/b&gt; check."
 											   data-type="skill"></label>
 									</div>
@@ -248,7 +248,7 @@
 
 				<div id="biography">
 					<p>Notes</p>
-					<textarea rows="13" name="data.biography">{{{data.data.biography}}}</textarea>
+					<textarea rows="13" name="system.biography">{{{actor.system.biography}}}</textarea>
 				</div>
 			</div>
 
@@ -263,7 +263,7 @@
 							<td class="item-points">Points</td>
 							<td class="item-controls"></td>
 					</tr>
-					{{#each actor.data.traitCategories as |category cat|}}
+					{{#each actor.system.traitCategories as |category cat|}}
 						{{#unless (eq category "")}}
 						<tr class="item item-header trait-category-header">
 							<td colspan="6">
@@ -271,10 +271,10 @@
 							</td>
 						</tr>
 						{{/unless}}
-						{{#each ../actor.data.items as |item id|}}
+						{{#each ../items as |item id|}}
 							{{#if (eq type "Trait") }}
-								{{#if (eq item.data.data.subCategory category)}}
-									<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item.id}}">
+								{{#if (eq item.system.subCategory category)}}
+									<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item._id}}">
 										<td class="item-image" style="width: 24px; padding: 0 2px">
 											<img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
 										</td>
@@ -282,20 +282,20 @@
 												{{item.name}}
 										</td>
 										<td class="item-notes">
-												{{data.data.shortNotes}}
+												{{item.system.shortNotes}}
 										</td>
 										<td class="item-skill" style="width: 3em;">
-											{{#if (isInt data.data.level)}}
-												{{#if data.data.level}}
-													<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.data.level}}"
+											{{#if (isInt item.system.level)}}
+												{{#if item.system.level}}
+													<label for="item.system.level" class="fa fa-dice-six rollable" data-level="{{item.system.level}}"
 															 data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
-													{{data.data.level}}
+													{{item.system.level}}
 												{{/if}}
 											{{/if}}
 										</td>
 										<td class="item-points" style="width: 4em;">
 											<div class="item-notes">
-												{{data.data.points}}
+												{{item.system.points}}
 											</div>
 										</td>
 
@@ -322,7 +322,7 @@
 						<td class="item-rolls">Skill</td>
 						<td class="item-controls"></td>
 					</tr>
-					{{#each actor.data.rollableCategories as |category cat|}}
+					{{#each actor.system.rollableCategories as |category cat|}}
 						{{#unless (eq category "")}}
 						<tr class="item item-header trait-category-header">
 							<td colspan="6">
@@ -330,10 +330,10 @@
 							</td>
 						</tr>
 						{{/unless}}
-						{{#each ../actor.data.items as |item id|}}
+						{{#each ../items as |item id|}}
 							{{#if (eq type "Rollable")}}
-								{{#if (eq item.data.data.subCategory category)}}
-									<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item.id}}">
+								{{#if (eq item.system.subCategory category)}}
+									<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item._id}}">
 										<td class="item-image" style="width: 24px; padding: 0 2px">
 											<img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
 										</td>
@@ -341,15 +341,15 @@
 											{{item.name}}
 										</td>
 										<td class="item-notes">
-											{{data.data.shortNotes}}
+											{{item.system.shortNotes}}
 										</td>
 										<td class="item-points" style="width: 4em;">
-											{{data.data.points}}
+											{{item.system.points}}
 										</td>
 										<td class="item-skill" style="width: 3em;">
-											<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.data.level}}"
+											<label for="actor.system.level" class="fa fa-dice-six rollable" data-level="{{actor.system.level}}"
 												   data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
-											{{data.data.level}}
+											{{item.system.level}}
 										</td>
 										<td class="item-controls" style="width: 30px;">
 											<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
@@ -370,7 +370,7 @@
 						<tr class="enc-header">
 							<td>Level</td><td>Max Load</td><td>Move</td><td>Dodge</td>
 						</tr>
-						{{#each data.data.encumbrance as |enc id|}}
+						{{#each actor.system.encumbrance as |enc id|}}
 						<tr class="enc-entry">
 							<td>{{enc.title}}</td>
 							<td>{{enc.lbs}}</td>
@@ -388,8 +388,8 @@
 								<span class="bold">Swing:</span>
 							</td>
 							<td style="width: 15%">
-								{{data.data.baseDamage.swing}}
-								<label class="fa fa-dice-six rollable" data-level="{{data.data.baseDamage.swing}}"
+								{{actor.system.baseDamage.swing}}
+								<label class="fa fa-dice-six rollable" data-level="{{actor.system.baseDamage.swing}}"
 								   data-label="Makes a &lt;b&gt;Swing&lt;/b&gt; Damage roll." data-type="damage"></label>
 							</td>
 							<td>
@@ -397,7 +397,7 @@
 							</td>
 							<td>
 								<div class="tooltip">
-									<input type="number" name="data.vision.front" class="atrPoints" value="{{data.data.vision.front}}"
+									<input type="number" name="system.vision.front" class="atrPoints" value="{{actor.system.vision.front}}"
 										   data-dtype="Number" />
 									<span class="tooltiptext">
 											<span style="text-decoration: underline">DO NOT FUCK WITH</span><br>
@@ -414,7 +414,7 @@
 								<span class="bold">Enhanced Parry</span>
 							</td>
 							<td>
-								<input type="number" name="data.enhanced.parry" class="atrPoints" value="{{data.data.enhanced.parry}}"
+								<input type="number" name="system.enhanced.parry" class="atrPoints" value="{{actor.system.enhanced.parry}}"
 									   data-dtype="Number" />
 							</td>
 						</tr>
@@ -423,8 +423,8 @@
 								<span class="bold">Thrust:</span>
 							</td>
 							<td style="width: 15%">
-								{{data.data.baseDamage.thrust}}
-								<label class="fa fa-dice-six rollable" data-level="{{data.data.baseDamage.thrust}}"
+								{{actor.system.baseDamage.thrust}}
+								<label class="fa fa-dice-six rollable" data-level="{{actor.system.baseDamage.thrust}}"
 								   data-label="Makes a &lt;b&gt;Thrust&lt;/b&gt; Damage roll." data-type="damage"></label>
 							</td>
 							<td>
@@ -432,7 +432,7 @@
 							</td>
 							<td>
 								<div class="tooltip">
-									<input type="number" name="data.vision.side" class="atrPoints" value="{{data.data.vision.side}}"
+									<input type="number" name="system.vision.side" class="atrPoints" value="{{actor.system.vision.side}}"
 										   data-dtype="Number" />
 									<span class="tooltiptext">
 											<span style="text-decoration: underline">DO NOT FUCK WITH</span><br>
@@ -449,7 +449,7 @@
 								<span class="bold">Enhanced Block</span>
 							</td>
 							<td>
-								<input type="number" name="data.enhanced.block" class="atrPoints" value="{{data.data.enhanced.block}}"
+								<input type="number" name="system.enhanced.block" class="atrPoints" value="{{actor.system.enhanced.block}}"
 									   data-dtype="Number" />
 							</td>
 						</tr>
@@ -458,7 +458,7 @@
 								<span class="bold">Combat Reflexes:</span>
 							</td>
 							<td>
-								<input type="checkbox" name="data.flag.combatReflexes" {{checked data.data.flag.combatReflexes}} data-dtype="Boolean"/>
+								<input type="checkbox" name="system.flag.combatReflexes" {{checked actor.system.flag.combatReflexes}} data-dtype="Boolean"/>
 							</td>
 							<td colspan="2">
 
@@ -467,7 +467,7 @@
 								<span class="bold">Enhanced Dodge</span>
 							</td>
 							<td>
-								<input type="number" name="data.enhanced.dodge" class="atrPoints" value="{{data.data.enhanced.dodge}}"
+								<input type="number" name="system.enhanced.dodge" class="atrPoints" value="{{actor.system.enhanced.dodge}}"
 									   data-dtype="Number" />
 							</td>
 						</tr>
@@ -475,8 +475,11 @@
 				</div>
 				<table class="items-list">
 					<tr class="bold">
-						<td>Item</td>
-						<td>Attack</td>
+						<th colspan="8" class="combat-tab-attack-header">Melee Attacks</th>
+					</tr>
+					<tr class="bold">
+						<td>Source</td>
+						<td>Attack Name</td>
 						<td>Skill</td>
 						<td>Parry</td>
 						<td>Block</td>
@@ -484,8 +487,8 @@
 						<td>Reach</td>
 						<td>ST</td>
 					</tr>
-					{{#each actor.data.items as |item id|}}
-					{{#each item.data.data.melee as |melee mid|}}
+					{{#each actor.items as |item id|}}
+					{{#each item.system.melee as |melee mid|}}
 					<tr>
 						<td>{{item.name}}</td>
 						<td>{{melee.name}}</td>
@@ -521,8 +524,11 @@
 				</table>
 				<table class="items-list">
 					<tr class="bold">
-						<td>Item</td>
-						<td>Attack</td>
+						<th colspan="11" class="combat-tab-attack-header">Ranged Attacks</th>
+					</tr>
+					<tr class="bold">
+						<td>Source</td>
+						<td>Attack Name</td>
 						<td>Skill</td>
 						<td>Acc</td>
 						<td>Damage</td>
@@ -533,8 +539,8 @@
 						<td>Rcl</td>
 						<td>ST</td>
 					</tr>
-					{{#each actor.data.items as |item id|}}
-					{{#each item.data.data.ranged as |ranged rid|}}
+					{{#each actor.items as |item id|}}
+					{{#each item.system.ranged as |ranged rid|}}
 					<tr>
 						<td>{{item.name}}</td>
 						<td>{{ranged.name}}</td>
@@ -561,21 +567,24 @@
 				</table>
 				<table class="items-list">
 					<tr class="bold">
-						<td>Affliction</td>
-						<td>Attack Name</td>
+						<th colspan="8" class="combat-tab-attack-header">Afflictions</th>
+					</tr>
+					<tr class="bold">
+						<td>Source</td>
+						<td>Affliction Name</td>
 						<td>Level</td>
 						<td>Damage</td>
 						<td>Resistance Roll</td>
 						<td>Rule Of</td>
 					</tr>
-					{{#each actor.data.items as |item id|}}
-					{{#each item.data.data.affliction as |affliction mid|}}
+					{{#each actor.items as |item id|}}
+					{{#each item.system.affliction as |affliction mid|}}
 					<tr>
 						<td>{{item.name}}</td>
 						<td>{{affliction.name}}</td>
 						<td>
-							{{item.data.data.level}}
-							<label class="fa fa-dice-six rollable" data-level="{{item.data.data.level}}"
+							{{affliction.level}}
+							<label class="fa fa-dice-six rollable" data-level="{{affliction.level}}"
 								   data-label="Casts &lt;b&gt;{{item.name}} {{affliction.name}}&lt;/b&gt;" data-type="skill"></label>
 						</td>
 						<td>
@@ -607,7 +616,7 @@
 						<td class="item-title">Status</td>
 						<td class="item-controls"></td>
 					</tr>
-					{{#each actor.data.equipmentCategories as |category cat|}}
+					{{#each actor.system.equipmentCategories as |category cat|}}
 						{{#unless (eq category "")}}
 						<tr class="item item-header trait-category-header">
 							<td colspan="10">
@@ -616,21 +625,21 @@
 						</tr>
 						{{/unless}}
 
-						{{#each ../actor.data.items as |item id|}}
+						{{#each ../items as |item id|}}
 							{{#if (or (eq type "Equipment") (eq type "Custom Weapon") (eq type "Custom Armour") (eq type "Travel Fare") (eq type "Custom Jewelry")) }}
-								{{#if (eq item.data.data.subCategory category)}}
-									<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item.id}}">
+								{{#if (eq item.system.subCategory category)}}
+									<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item._id}}">
 										<td class="item-image" style="width: 24px; padding: 0 2px">
 											<img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
 										</td>
-										<td class="item-name"><span>{{item.data.name}}</span></td>
-										<td class="item-notes"><span>{{item.data.data.shortNotes}}</span></td>
-										<td style="width: 1em;"><span>{{item.data.data.tl}}</span></td>
-										<td style="width: 1em;"><span>{{item.data.data.lc}}</span></td>
-										<td style="width: 1.5em;"><span>{{item.data.data.quantity}}</span></td>
-										<td style="text-align: center;"><span>{{round item.data.data.ttlCost 100}}</span></td>
-										<td style="text-align: center;"><span>{{round item.data.data.ttlWeight 100}}</span></td>
-										<td style="width: 62px;"><span>{{item.data.data.equipStatus}}</span></td>
+										<td class="item-name"><span>{{item.name}}</span></td>
+										<td class="item-notes"><span>{{item.system.shortNotes}}</span></td>
+										<td style="width: 1em;"><span>{{item.system.tl}}</span></td>
+										<td style="width: 1em;"><span>{{item.system.lc}}</span></td>
+										<td style="width: 1.5em;"><span>{{item.system.quantity}}</span></td>
+										<td style="text-align: center;"><span>{{round item.system.ttlCost 100}}</span></td>
+										<td style="text-align: center;"><span>{{round item.system.ttlWeight 100}}</span></td>
+										<td style="width: 62px;"><span>{{item.system.equipStatus}}</span></td>
 										<td class="item-controls" style="width: 30px;">
 											<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
 											<a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -647,8 +656,8 @@
 						<td><span></span></td>
 						<td><span></span></td>
 						<td><span class="bold">Totals:</span></td>
-						<td style="text-align: center;"><span>{{round actor.data.data.bio.carriedValue 100}}</span></td>
-						<td style="text-align: center;"><span>{{round actor.data.data.bio.carriedWeight 100}}</span></td>
+						<td style="text-align: center;"><span>{{round actor.system.bio.carriedValue 100}}</span></td>
+						<td style="text-align: center;"><span>{{round actor.system.bio.carriedWeight 100}}</span></td>
 						<td><span></span></td>
 						<td class="item-controls"></td>
 					</tr>
@@ -659,13 +668,13 @@
 			{{!-- Armour Display Tab --}}
 			<div id="armour-display" class="tab armour-display" data-tab="armour-display" data-group="primary">
 				<div style="display: flex">
-					{{#if (or (eq actor.data.data.bodyType.name "octopod") (eq actor.data.data.bodyType.name "humanoid") (eq actor.data.data.bodyType.name "wingedHumanoid") (eq actor.data.data.bodyType.name "hexapod") (eq actor.data.data.bodyType.name "wingedHexapod") (eq actor.data.data.bodyType.name "centaur") (eq actor.data.data.bodyType.name "avian"))}}
+					{{#if (or (eq actor.system.bodyType.name "octopod") (eq actor.system.bodyType.name "humanoid") (eq actor.system.bodyType.name "wingedHumanoid") (eq actor.system.bodyType.name "hexapod") (eq actor.system.bodyType.name "wingedHexapod") (eq actor.system.bodyType.name "centaur") (eq actor.system.bodyType.name "avian"))}}
 						<div class="hitLocations">
-							{{#unless actor.data.data.bodyModifiers.noHead}}
-									{{#if (eq actor.data.data.bodyType.name "octopod")}}
-										{{#unless actor.data.data.bodyModifiers.noBrain}}
+							{{#unless actor.system.bodyModifiers.noHead}}
+									{{#if (eq actor.system.bodyType.name "octopod")}}
+										{{#unless actor.system.bodyModifiers.noBrain}}
 										<div class="tooltip location-skull">
-											{{data.data.bodyType.drTypesOne.brain}} / {{data.data.bodyType.drTypesTwo.brain}}
+											{{actor.system.bodyType.drTypesOne.brain}} / {{actor.system.bodyType.drTypesTwo.brain}}
 											<span class="tooltiptext">
 												<span style="text-decoration: underline">Brain -7 (-5 from the back)</span><br>
 												4x injury except tox<br>
@@ -677,7 +686,7 @@
 										{{/unless}}
 										{{else}}
 										<div class="tooltip location-skull">
-											{{data.data.bodyType.drTypesOne.skull}} / {{data.data.bodyType.drTypesTwo.skull}}
+											{{actor.system.bodyType.drTypesOne.skull}} / {{actor.system.bodyType.drTypesTwo.skull}}
 											<span class="tooltiptext">
 												<span style="text-decoration: underline">Skull -7 (-5 from the back)</span><br>
 												4x injury except tox<br>
@@ -687,9 +696,9 @@
 											</span>
 										</div>
 									{{/if}}
-								{{#unless actor.data.data.bodyModifiers.myrmidonHead}}
+								{{#unless actor.system.bodyModifiers.myrmidonHead}}
 								<div class="tooltip location-ear-left">
-									{{data.data.bodyType.drTypesOne.faceears}} / {{data.data.bodyType.drTypesTwo.faceears}}
+									{{actor.system.bodyType.drTypesOne.faceears}} / {{actor.system.bodyType.drTypesTwo.faceears}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Face -5 (-7 from the back)</span><br>
@@ -699,13 +708,13 @@
 										</div>
 										<div>
 											<span style="text-decoration: underline">Ear -7</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.face.subLocation.ears.hp.value}} / {{data.data.bodyType.body.face.subLocation.ears.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.face.subLocation.ears.hp.value}} / {{actor.system.bodyType.body.face.subLocation.ears.hp.max}} HP</span><br>
 											Cutting attacks sever the ear on a major wound, but there is no -5<br>
 										</div>
 									</span>
 								</div>
 								<div class="tooltip location-ear-right">
-									{{data.data.bodyType.drTypesOne.faceears}} / {{data.data.bodyType.drTypesTwo.faceears}}
+									{{actor.system.bodyType.drTypesOne.faceears}} / {{actor.system.bodyType.drTypesTwo.faceears}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Face -5 (-7 from the back)</span><br>
@@ -715,27 +724,27 @@
 										</div>
 										<div>
 											<span style="text-decoration: underline">Ear -7</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.face.subLocation.ears.hp.value}} / {{data.data.bodyType.body.face.subLocation.ears.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.face.subLocation.ears.hp.value}} / {{actor.system.bodyType.body.face.subLocation.ears.hp.max}} HP</span><br>
 											Cutting attacks sever the ear on a major wound, but there is no -5<br>
 										</div>
 									</span>
 								</div>
 								{{/unless}}
-								{{#unless actor.data.data.bodyModifiers.noEyes}}
-									{{#unless actor.data.data.bodyModifiers.noEyeL}}
+								{{#unless actor.system.bodyModifiers.noEyes}}
+									{{#unless actor.system.bodyModifiers.noEyeL}}
 											<div class="tooltip location-eye-left">
-												{{data.data.bodyType.drTypesOne.faceeyeLeft}} / {{data.data.bodyType.drTypesTwo.faceeyeLeft}}
+												{{actor.system.bodyType.drTypesOne.faceeyeLeft}} / {{actor.system.bodyType.drTypesTwo.faceeyeLeft}}
 												<span class="tooltiptext">
 													<div style="border-bottom: 2px white solid">
 														<span style="text-decoration: underline">Face -5 (-7 from the back)</span><br>
 													</div>
 													<div>
-														{{#if actor.data.data.bodyModifiers.myrmidonHead}}
+														{{#if actor.system.bodyModifiers.myrmidonHead}}
 														<span style="text-decoration: underline">Eye -6 (-7 when armoured)</span><br>
 														{{else}}
 														<span style="text-decoration: underline">Eye -9 (-10 when armoured)</span><br>
 														{{/if}}
-														<span style="color: #ff4848">{{data.data.bodyType.body.face.subLocation.eyeLeft.hp.value}} / {{data.data.bodyType.body.face.subLocation.eyeLeft.hp.max}} HP</span><br>
+														<span style="color: #ff4848">{{actor.system.bodyType.body.face.subLocation.eyeLeft.hp.value}} / {{actor.system.bodyType.body.face.subLocation.eyeLeft.hp.max}} HP</span><br>
 														Any injury causing shock requires stun/knockdown<br>
 														Major wound causes a roll @ -10<br>
 														(Except for tox)<br>
@@ -743,20 +752,20 @@
 												</span>
 											</div>
 									{{/unless}}
-									{{#unless actor.data.data.bodyModifiers.noEyeR}}
+									{{#unless actor.system.bodyModifiers.noEyeR}}
 											<div class="tooltip location-eye-right">
-												{{data.data.bodyType.drTypesOne.faceeyeRight}} / {{data.data.bodyType.drTypesTwo.faceeyeRight}}
+												{{actor.system.bodyType.drTypesOne.faceeyeRight}} / {{actor.system.bodyType.drTypesTwo.faceeyeRight}}
 												<span class="tooltiptext">
 													<div style="border-bottom: 2px white solid">
 														<span style="text-decoration: underline">Face -5 (-7 from the back)</span><br>
 													</div>
 													<div>
-														{{#if actor.data.data.bodyModifiers.myrmidonHead}}
+														{{#if actor.system.bodyModifiers.myrmidonHead}}
 														<span style="text-decoration: underline">Eye -6 (-7 when armoured)</span><br>
 														{{else}}
 														<span style="text-decoration: underline">Eye -9 (-10 when armoured)</span><br>
 														{{/if}}
-														<span style="color: #ff4848">{{data.data.bodyType.body.face.subLocation.eyeRight.hp.value}} / {{data.data.bodyType.body.face.subLocation.eyeRight.hp.max}} HP</span><br>
+														<span style="color: #ff4848">{{actor.system.bodyType.body.face.subLocation.eyeRight.hp.value}} / {{actor.system.bodyType.body.face.subLocation.eyeRight.hp.max}} HP</span><br>
 														Any injury causing shock requires stun/knockdown<br>
 														Major wound causes a roll @ -10<br>
 														(Except for tox)<br>
@@ -766,7 +775,7 @@
 									{{/unless}}
 								{{/unless}}
 								<div class="tooltip location-cheek-left">
-									{{data.data.bodyType.drTypesOne.facecheek}} / {{data.data.bodyType.drTypesTwo.facecheek}}
+									{{actor.system.bodyType.drTypesOne.facecheek}} / {{actor.system.bodyType.drTypesTwo.facecheek}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Face -5 (-7 from the back)</span><br>
@@ -780,7 +789,7 @@
 									</span>
 								</div>
 								<div class="tooltip location-cheek-right">
-									{{data.data.bodyType.drTypesOne.facecheek}} / {{data.data.bodyType.drTypesTwo.facecheek}}
+									{{actor.system.bodyType.drTypesOne.facecheek}} / {{actor.system.bodyType.drTypesTwo.facecheek}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Face -5 (-7 from the back)</span><br>
@@ -807,7 +816,7 @@
 									</span>
 								</div>
 								<div class="tooltip location-nose">
-									{{data.data.bodyType.drTypesOne.facenose}} / {{data.data.bodyType.drTypesTwo.facenose}}
+									{{actor.system.bodyType.drTypesOne.facenose}} / {{actor.system.bodyType.drTypesTwo.facenose}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Face -5 (-7 from the back)</span><br>
@@ -817,13 +826,13 @@
 										</div>
 										<div>
 											<span style="text-decoration: underline">Nose -7</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.face.subLocation.nose.hp.value}} / {{data.data.bodyType.body.face.subLocation.nose.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.face.subLocation.nose.hp.value}} / {{actor.system.bodyType.body.face.subLocation.nose.hp.max}} HP</span><br>
 											pi, imp, tbb count as a skull hit<br>
 										</div>
 									</span>
 								</div>
 								<div class="tooltip location-jaw">
-									{{data.data.bodyType.drTypesOne.facejaw}} / {{data.data.bodyType.drTypesTwo.facejaw}}
+									{{actor.system.bodyType.drTypesOne.facejaw}} / {{actor.system.bodyType.drTypesTwo.facejaw}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Face -5 (-7 from the back)</span><br>
@@ -837,9 +846,9 @@
 									</span>
 								</div>
 							{{/unless}}
-							{{#unless actor.data.data.bodyModifiers.noNeck}}
+							{{#unless actor.system.bodyModifiers.noNeck}}
 							<div class="tooltip location-neck">
-								{{data.data.bodyType.drTypesOne.neckneck}} / {{data.data.bodyType.drTypesTwo.neckneck}}
+								{{actor.system.bodyType.drTypesOne.neckneck}} / {{actor.system.bodyType.drTypesTwo.neckneck}}
 								<span class="tooltiptext">
 									<div style="border-bottom: 2px white solid">
 										<span style="text-decoration: underline">Neck -5</span><br>
@@ -857,13 +866,13 @@
 								</span>
 							</div>
 							{{/unless}}
-							{{#if (or (eq actor.data.data.bodyType.name "wingedHumanoid") (eq actor.data.data.bodyType.name "wingedHexapod"))}}
+							{{#if (or (eq actor.system.bodyType.name "wingedHumanoid") (eq actor.system.bodyType.name "wingedHexapod"))}}
 								<div class="tooltip location-wing-shoulder-left">
-									{{data.data.bodyType.drTypesOne.wingLeftshoulder}} / {{data.data.bodyType.drTypesTwo.wingLeftshoulder}}
+									{{actor.system.bodyType.drTypesOne.wingLeftshoulder}} / {{actor.system.bodyType.drTypesTwo.wingLeftshoulder}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Wing -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.wingLeft.hp.value}} / {{data.data.bodyType.body.wingLeft.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.wingLeft.hp.value}} / {{actor.system.bodyType.body.wingLeft.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -878,11 +887,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-wing-shoulder-right">
-									{{data.data.bodyType.drTypesOne.wingRightshoulder}} / {{data.data.bodyType.drTypesTwo.wingRightshoulder}}
+									{{actor.system.bodyType.drTypesOne.wingRightshoulder}} / {{actor.system.bodyType.drTypesTwo.wingRightshoulder}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Wing -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.wingRight.hp.value}} / {{data.data.bodyType.body.wingRight.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.wingRight.hp.value}} / {{actor.system.bodyType.body.wingRight.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -897,11 +906,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-upper-wing-left">
-									{{data.data.bodyType.drTypesOne.wingLeftupperArm}} / {{data.data.bodyType.drTypesTwo.wingLeftupperArm}}
+									{{actor.system.bodyType.drTypesOne.wingLeftupperArm}} / {{actor.system.bodyType.drTypesTwo.wingLeftupperArm}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Wing -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.wingLeft.hp.value}} / {{data.data.bodyType.body.wingLeft.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.wingLeft.hp.value}} / {{actor.system.bodyType.body.wingLeft.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -910,11 +919,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-upper-wing-right">
-									{{data.data.bodyType.drTypesOne.wingRightupperArm}} / {{data.data.bodyType.drTypesTwo.wingRightupperArm}}
+									{{actor.system.bodyType.drTypesOne.wingRightupperArm}} / {{actor.system.bodyType.drTypesTwo.wingRightupperArm}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Wing -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.wingRight.hp.value}} / {{data.data.bodyType.body.wingRight.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.wingRight.hp.value}} / {{actor.system.bodyType.body.wingRight.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -923,43 +932,43 @@
 									</span>
 								</div>
 								<div class="tooltip location-wing-elbow-left">
-									{{data.data.bodyType.drTypesOne.wingLeftelbow}} / {{data.data.bodyType.drTypesTwo.wingLeftelbow}}
+									{{actor.system.bodyType.drTypesOne.wingLeftelbow}} / {{actor.system.bodyType.drTypesTwo.wingLeftelbow}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Wing -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.wingLeft.hp.value}} / {{data.data.bodyType.body.wingLeft.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.wingLeft.hp.value}} / {{actor.system.bodyType.body.wingLeft.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
 											<span style="text-decoration: underline">Left Elbow -5</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.wingLeft.subLocation.elbow.hp.value}} / {{data.data.bodyType.body.wingLeft.subLocation.elbow.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.wingLeft.subLocation.elbow.hp.value}} / {{actor.system.bodyType.body.wingLeft.subLocation.elbow.hp.max}} HP</span><br>
 											Applies only to cr, cut, pi, tbb<br>
 											Crippled joints recover at -2<br>
 										</div>
 									</span>
 								</div>
 								<div class="tooltip location-wing-elbow-right">
-									{{data.data.bodyType.drTypesOne.wingRightelbow}} / {{data.data.bodyType.drTypesTwo.wingRightelbow}}
+									{{actor.system.bodyType.drTypesOne.wingRightelbow}} / {{actor.system.bodyType.drTypesTwo.wingRightelbow}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Wing -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.wingRight.hp.value}} / {{data.data.bodyType.body.wingRight.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.wingRight.hp.value}} / {{actor.system.bodyType.body.wingRight.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
 											<span style="text-decoration: underline">Right Elbow -5</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.wingRight.subLocation.elbow.hp.value}} / {{data.data.bodyType.body.wingRight.subLocation.elbow.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.wingRight.subLocation.elbow.hp.value}} / {{actor.system.bodyType.body.wingRight.subLocation.elbow.hp.max}} HP</span><br>
 											Applies only to cr, cut, pi, tbb<br>
 											Crippled joints recover at -2<br>
 										</div>
 									</span>
 								</div>
 								<div class="tooltip location-forewing-left">
-									{{data.data.bodyType.drTypesOne.wingLeftforearm}} / {{data.data.bodyType.drTypesTwo.wingLeftforearm}}
+									{{actor.system.bodyType.drTypesOne.wingLeftforearm}} / {{actor.system.bodyType.drTypesTwo.wingLeftforearm}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Wing -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.wingLeft.hp.value}} / {{data.data.bodyType.body.wingLeft.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.wingLeft.hp.value}} / {{actor.system.bodyType.body.wingLeft.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -968,11 +977,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-forewing-right">
-									{{data.data.bodyType.drTypesOne.wingRightforearm}} / {{data.data.bodyType.drTypesTwo.wingRightforearm}}
+									{{actor.system.bodyType.drTypesOne.wingRightforearm}} / {{actor.system.bodyType.drTypesTwo.wingRightforearm}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Wing -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.wingRight.hp.value}} / {{data.data.bodyType.body.wingRight.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.wingRight.hp.value}} / {{actor.system.bodyType.body.wingRight.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -981,13 +990,13 @@
 									</span>
 								</div>
 							{{/if}}
-							{{#if (or (eq actor.data.data.bodyType.name "octopod"))}}
+							{{#if (or (eq actor.system.bodyType.name "octopod"))}}
 							<div class="tooltip location-tentacle1-shoulder-left">
-								{{data.data.bodyType.drTypesOne.tentacleLeft1shoulder}} / {{data.data.bodyType.drTypesTwo.tentacleLeft1shoulder}}
+								{{actor.system.bodyType.drTypesOne.tentacleLeft1shoulder}} / {{actor.system.bodyType.drTypesTwo.tentacleLeft1shoulder}}
 								<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Tentacle 1 -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.tentacleLeft1.hp.value}} / {{data.data.bodyType.body.tentacleLeft1.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleLeft1.hp.value}} / {{actor.system.bodyType.body.tentacleLeft1.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1002,11 +1011,11 @@
 									</span>
 							</div>
 							<div class="tooltip location-tentacle1-shoulder-right">
-								{{data.data.bodyType.drTypesOne.tentacleRight1shoulder}} / {{data.data.bodyType.drTypesTwo.tentacleRight1shoulder}}
+								{{actor.system.bodyType.drTypesOne.tentacleRight1shoulder}} / {{actor.system.bodyType.drTypesTwo.tentacleRight1shoulder}}
 								<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Tentacle 1 -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.tentacleRight1.hp.value}} / {{data.data.bodyType.body.tentacleRight1.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleRight1.hp.value}} / {{actor.system.bodyType.body.tentacleRight1.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1021,11 +1030,11 @@
 									</span>
 							</div>
 							<div class="tooltip location-upper-tentacle1-left">
-								{{data.data.bodyType.drTypesOne.tentacleLeft1upperArm}} / {{data.data.bodyType.drTypesTwo.tentacleLeft1upperArm}}
+								{{actor.system.bodyType.drTypesOne.tentacleLeft1upperArm}} / {{actor.system.bodyType.drTypesTwo.tentacleLeft1upperArm}}
 								<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Tentacle 1 -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.tentacleLeft1.hp.value}} / {{data.data.bodyType.body.tentacleLeft1.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleLeft1.hp.value}} / {{actor.system.bodyType.body.tentacleLeft1.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1034,11 +1043,11 @@
 									</span>
 							</div>
 							<div class="tooltip location-upper-tentacle1-right">
-								{{data.data.bodyType.drTypesOne.tentacleRight1upperArm}} / {{data.data.bodyType.drTypesTwo.tentacleRight1upperArm}}
+								{{actor.system.bodyType.drTypesOne.tentacleRight1upperArm}} / {{actor.system.bodyType.drTypesTwo.tentacleRight1upperArm}}
 								<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Tentacle 1 -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.tentacleRight1.hp.value}} / {{data.data.bodyType.body.tentacleRight1.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleRight1.hp.value}} / {{actor.system.bodyType.body.tentacleRight1.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1047,11 +1056,11 @@
 									</span>
 							</div>
 							<div class="tooltip location-tentacle1-mid-left">
-								{{data.data.bodyType.drTypesOne.tentacleLeft1elbow}} / {{data.data.bodyType.drTypesTwo.tentacleLeft1elbow}}
+								{{actor.system.bodyType.drTypesOne.tentacleLeft1elbow}} / {{actor.system.bodyType.drTypesTwo.tentacleLeft1elbow}}
 								<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Tentacle 1 -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.tentacleLeft1.hp.value}} / {{data.data.bodyType.body.tentacleLeft1.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleLeft1.hp.value}} / {{actor.system.bodyType.body.tentacleLeft1.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1060,11 +1069,11 @@
 									</span>
 							</div>
 							<div class="tooltip location-tentacle1-mid-right">
-								{{data.data.bodyType.drTypesOne.tentacleRight1elbow}} / {{data.data.bodyType.drTypesTwo.tentacleRight1elbow}}
+								{{actor.system.bodyType.drTypesOne.tentacleRight1elbow}} / {{actor.system.bodyType.drTypesTwo.tentacleRight1elbow}}
 								<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Tentacle 1 -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.tentacleRight1.hp.value}} / {{data.data.bodyType.body.tentacleRight1.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleRight1.hp.value}} / {{actor.system.bodyType.body.tentacleRight1.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1073,11 +1082,11 @@
 									</span>
 							</div>
 							<div class="tooltip location-foretentacle1-left">
-								{{data.data.bodyType.drTypesOne.tentacleLeft1forearm}} / {{data.data.bodyType.drTypesTwo.tentacleLeft1forearm}}
+								{{actor.system.bodyType.drTypesOne.tentacleLeft1forearm}} / {{actor.system.bodyType.drTypesTwo.tentacleLeft1forearm}}
 								<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Tentacle 1 -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.tentacleLeft1.hp.value}} / {{data.data.bodyType.body.tentacleLeft1.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleLeft1.hp.value}} / {{actor.system.bodyType.body.tentacleLeft1.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1086,11 +1095,11 @@
 									</span>
 							</div>
 							<div class="tooltip location-foretentacle1-right">
-								{{data.data.bodyType.drTypesOne.tentacleRight1forearm}} / {{data.data.bodyType.drTypesTwo.tentacleRight1forearm}}
+								{{actor.system.bodyType.drTypesOne.tentacleRight1forearm}} / {{actor.system.bodyType.drTypesTwo.tentacleRight1forearm}}
 								<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Tentacle 1 -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.tentacleRight1.hp.value}} / {{data.data.bodyType.body.tentacleRight1.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleRight1.hp.value}} / {{actor.system.bodyType.body.tentacleRight1.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1099,13 +1108,13 @@
 									</span>
 							</div>
 							{{/if}}
-							{{#if (or (eq actor.data.data.bodyType.name "octopod"))}}
+							{{#if (or (eq actor.system.bodyType.name "octopod"))}}
 								<div class="tooltip location-tentacle2-shoulder-left">
-									{{data.data.bodyType.drTypesOne.tentacleLeft2shoulder}} / {{data.data.bodyType.drTypesTwo.tentacleLeft2shoulder}}
+									{{actor.system.bodyType.drTypesOne.tentacleLeft2shoulder}} / {{actor.system.bodyType.drTypesTwo.tentacleLeft2shoulder}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Left Tentacle 2 -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.tentacleLeft2.hp.value}} / {{data.data.bodyType.body.tentacleLeft2.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleLeft2.hp.value}} / {{actor.system.bodyType.body.tentacleLeft2.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -1120,11 +1129,11 @@
 										</span>
 								</div>
 								<div class="tooltip location-tentacle2-shoulder-right">
-									{{data.data.bodyType.drTypesOne.tentacleRight2shoulder}} / {{data.data.bodyType.drTypesTwo.tentacleRight2shoulder}}
+									{{actor.system.bodyType.drTypesOne.tentacleRight2shoulder}} / {{actor.system.bodyType.drTypesTwo.tentacleRight2shoulder}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Right Tentacle 2 -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.tentacleRight2.hp.value}} / {{data.data.bodyType.body.tentacleRight2.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleRight2.hp.value}} / {{actor.system.bodyType.body.tentacleRight2.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -1139,11 +1148,11 @@
 										</span>
 								</div>
 								<div class="tooltip location-tentacle2-upper-arm-left">
-									{{data.data.bodyType.drTypesOne.tentacleLeft2upperArm}} / {{data.data.bodyType.drTypesTwo.tentacleLeft2upperArm}}
+									{{actor.system.bodyType.drTypesOne.tentacleLeft2upperArm}} / {{actor.system.bodyType.drTypesTwo.tentacleLeft2upperArm}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Left Tentacle 2 -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.tentacleLeft2.hp.value}} / {{data.data.bodyType.body.tentacleLeft2.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleLeft2.hp.value}} / {{actor.system.bodyType.body.tentacleLeft2.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -1152,11 +1161,11 @@
 										</span>
 								</div>
 								<div class="tooltip location-tentacle2-upper-arm-right">
-									{{data.data.bodyType.drTypesOne.tentacleRight2upperArm}} / {{data.data.bodyType.drTypesTwo.tentacleRight2upperArm}}
+									{{actor.system.bodyType.drTypesOne.tentacleRight2upperArm}} / {{actor.system.bodyType.drTypesTwo.tentacleRight2upperArm}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Right Tentacle 2 -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.tentacleRight2.hp.value}} / {{data.data.bodyType.body.tentacleRight2.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleRight2.hp.value}} / {{actor.system.bodyType.body.tentacleRight2.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -1165,11 +1174,11 @@
 										</span>
 								</div>
 								<div class="tooltip location-tentacle2-elbow-left">
-									{{data.data.bodyType.drTypesOne.tentacleLeft2elbow}} / {{data.data.bodyType.drTypesTwo.tentacleLeft2elbow}}
+									{{actor.system.bodyType.drTypesOne.tentacleLeft2elbow}} / {{actor.system.bodyType.drTypesTwo.tentacleLeft2elbow}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Left Tentacle 2 -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.tentacleLeft2.hp.value}} / {{data.data.bodyType.body.tentacleLeft2.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleLeft2.hp.value}} / {{actor.system.bodyType.body.tentacleLeft2.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -1178,11 +1187,11 @@
 										</span>
 								</div>
 								<div class="tooltip location-tentacle2-elbow-right">
-									{{data.data.bodyType.drTypesOne.tentacleRight2elbow}} / {{data.data.bodyType.drTypesTwo.tentacleRight2elbow}}
+									{{actor.system.bodyType.drTypesOne.tentacleRight2elbow}} / {{actor.system.bodyType.drTypesTwo.tentacleRight2elbow}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Right Tentacle 2 -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.tentacleRight2.hp.value}} / {{data.data.bodyType.body.tentacleRight2.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleRight2.hp.value}} / {{actor.system.bodyType.body.tentacleRight2.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -1191,11 +1200,11 @@
 										</span>
 								</div>
 								<div class="tooltip location-tentacle2-forearm-left">
-									{{data.data.bodyType.drTypesOne.tentacleLeft2forearm}} / {{data.data.bodyType.drTypesTwo.tentacleLeft2forearm}}
+									{{actor.system.bodyType.drTypesOne.tentacleLeft2forearm}} / {{actor.system.bodyType.drTypesTwo.tentacleLeft2forearm}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Left Tentacle 2 -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.tentacleLeft2.hp.value}} / {{data.data.bodyType.body.tentacleLeft2.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleLeft2.hp.value}} / {{actor.system.bodyType.body.tentacleLeft2.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -1204,11 +1213,11 @@
 										</span>
 								</div>
 								<div class="tooltip location-tentacle2-forearm-right">
-									{{data.data.bodyType.drTypesOne.tentacleRight2forearm}} / {{data.data.bodyType.drTypesTwo.tentacleRight2forearm}}
+									{{actor.system.bodyType.drTypesOne.tentacleRight2forearm}} / {{actor.system.bodyType.drTypesTwo.tentacleRight2forearm}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Righ Tentacle 2 -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.tentacleRight2.hp.value}} / {{data.data.bodyType.body.tentacleRight2.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleRight2.hp.value}} / {{actor.system.bodyType.body.tentacleRight2.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -1218,11 +1227,11 @@
 								</div>
 							{{else}}
 								<div class="tooltip location-shoulder-left">
-									{{data.data.bodyType.drTypesOne.armLeftshoulder}} / {{data.data.bodyType.drTypesTwo.armLeftshoulder}}
+									{{actor.system.bodyType.drTypesOne.armLeftshoulder}} / {{actor.system.bodyType.drTypesTwo.armLeftshoulder}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Arm -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.armLeft.hp.value}} / {{data.data.bodyType.body.armLeft.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.armLeft.hp.value}} / {{actor.system.bodyType.body.armLeft.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1237,11 +1246,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-shoulder-right">
-									{{data.data.bodyType.drTypesOne.armRightshoulder}} / {{data.data.bodyType.drTypesTwo.armRightshoulder}}
+									{{actor.system.bodyType.drTypesOne.armRightshoulder}} / {{actor.system.bodyType.drTypesTwo.armRightshoulder}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Arm -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.armRight.hp.value}} / {{data.data.bodyType.body.armRight.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.armRight.hp.value}} / {{actor.system.bodyType.body.armRight.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1256,11 +1265,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-upper-arm-left">
-									{{data.data.bodyType.drTypesOne.armLeftupperArm}} / {{data.data.bodyType.drTypesTwo.armLeftupperArm}}
+									{{actor.system.bodyType.drTypesOne.armLeftupperArm}} / {{actor.system.bodyType.drTypesTwo.armLeftupperArm}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Arm -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.armLeft.hp.value}} / {{data.data.bodyType.body.armLeft.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.armLeft.hp.value}} / {{actor.system.bodyType.body.armLeft.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1269,11 +1278,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-upper-arm-right">
-									{{data.data.bodyType.drTypesOne.armRightupperArm}} / {{data.data.bodyType.drTypesTwo.armRightupperArm}}
+									{{actor.system.bodyType.drTypesOne.armRightupperArm}} / {{actor.system.bodyType.drTypesTwo.armRightupperArm}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Arm -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.armRight.hp.value}} / {{data.data.bodyType.body.armRight.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.armRight.hp.value}} / {{actor.system.bodyType.body.armRight.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1282,43 +1291,43 @@
 									</span>
 								</div>
 								<div class="tooltip location-elbow-left">
-									{{data.data.bodyType.drTypesOne.armLeftelbow}} / {{data.data.bodyType.drTypesTwo.armLeftelbow}}
+									{{actor.system.bodyType.drTypesOne.armLeftelbow}} / {{actor.system.bodyType.drTypesTwo.armLeftelbow}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Arm -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.armLeft.hp.value}} / {{data.data.bodyType.body.armLeft.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.armLeft.hp.value}} / {{actor.system.bodyType.body.armLeft.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
 											<span style="text-decoration: underline">Left Elbow -5</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.armLeft.subLocation.elbow.hp.value}} / {{data.data.bodyType.body.armLeft.subLocation.elbow.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.armLeft.subLocation.elbow.hp.value}} / {{actor.system.bodyType.body.armLeft.subLocation.elbow.hp.max}} HP</span><br>
 											Applies only to cr, cut, pi, tbb<br>
 											Crippled joints recover at -2<br>
 										</div>
 									</span>
 								</div>
 								<div class="tooltip location-elbow-right">
-									{{data.data.bodyType.drTypesOne.armRightelbow}} / {{data.data.bodyType.drTypesTwo.armRightelbow}}
+									{{actor.system.bodyType.drTypesOne.armRightelbow}} / {{actor.system.bodyType.drTypesTwo.armRightelbow}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Arm -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.armRight.hp.value}} / {{data.data.bodyType.body.armRight.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.armRight.hp.value}} / {{actor.system.bodyType.body.armRight.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
 											<span style="text-decoration: underline">Right Elbow -5</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.armRight.subLocation.elbow.hp.value}} / {{data.data.bodyType.body.armRight.subLocation.elbow.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.armRight.subLocation.elbow.hp.value}} / {{actor.system.bodyType.body.armRight.subLocation.elbow.hp.max}} HP</span><br>
 											Applies only to cr, cut, pi, tbb<br>
 											Crippled joints recover at -2<br>
 										</div>
 									</span>
 								</div>
 								<div class="tooltip location-forearm-left">
-									{{data.data.bodyType.drTypesOne.armLeftforearm}} / {{data.data.bodyType.drTypesTwo.armLeftforearm}}
+									{{actor.system.bodyType.drTypesOne.armLeftforearm}} / {{actor.system.bodyType.drTypesTwo.armLeftforearm}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Arm -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.armLeft.hp.value}} / {{data.data.bodyType.body.armLeft.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.armLeft.hp.value}} / {{actor.system.bodyType.body.armLeft.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1327,11 +1336,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-forearm-right">
-									{{data.data.bodyType.drTypesOne.armRightforearm}} / {{data.data.bodyType.drTypesTwo.armRightforearm}}
+									{{actor.system.bodyType.drTypesOne.armRightforearm}} / {{actor.system.bodyType.drTypesTwo.armRightforearm}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Arm -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.armRight.hp.value}} / {{data.data.bodyType.body.armRight.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.armRight.hp.value}} / {{actor.system.bodyType.body.armRight.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1340,63 +1349,63 @@
 									</span>
 								</div>
 								<div class="tooltip location-wrist-left">
-									{{data.data.bodyType.drTypesOne.handLeftjoint}} / {{data.data.bodyType.drTypesTwo.handLeftjoint}}
+									{{actor.system.bodyType.drTypesOne.handLeftjoint}} / {{actor.system.bodyType.drTypesTwo.handLeftjoint}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Hand -4</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.handLeft.hp.value}} / {{data.data.bodyType.body.handLeft.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.handLeft.hp.value}} / {{actor.system.bodyType.body.handLeft.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
 											<span style="text-decoration: underline">Left Wrist -7</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.handLeft.subLocation.joint.hp.value}} / {{data.data.bodyType.body.handLeft.subLocation.joint.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.handLeft.subLocation.joint.hp.value}} / {{actor.system.bodyType.body.handLeft.subLocation.joint.hp.max}} HP</span><br>
 											Applies only to cr, cut, pi, tbb<br>
 											Crippled joints recover at -2<br>
 										</div>
 									</span>
 								</div>
 								<div class="tooltip location-wrist-right">
-									{{data.data.bodyType.drTypesOne.handRightjoint}} / {{data.data.bodyType.drTypesTwo.handRightjoint}}
+									{{actor.system.bodyType.drTypesOne.handRightjoint}} / {{actor.system.bodyType.drTypesTwo.handRightjoint}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Hand -4</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.handRight.hp.value}} / {{data.data.bodyType.body.handRight.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.handRight.hp.value}} / {{actor.system.bodyType.body.handRight.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
 											<span style="text-decoration: underline">Right Wrist -7</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.handRight.subLocation.joint.hp.value}} / {{data.data.bodyType.body.handRight.subLocation.joint.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.handRight.subLocation.joint.hp.value}} / {{actor.system.bodyType.body.handRight.subLocation.joint.hp.max}} HP</span><br>
 											Applies only to cr, cut, pi, tbb<br>
 											Crippled joints recover at -2<br>
 										</div>
 									</span>
 								</div>
 								<div class="tooltip location-hand-left">
-									{{data.data.bodyType.drTypesOne.handLeftextremity}} / {{data.data.bodyType.drTypesTwo.handLeftextremity}}
+									{{actor.system.bodyType.drTypesOne.handLeftextremity}} / {{actor.system.bodyType.drTypesTwo.handLeftextremity}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Hand -4</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.handLeft.hp.value}} / {{data.data.bodyType.body.handLeft.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.handLeft.hp.value}} / {{actor.system.bodyType.body.handLeft.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 									</span>
 								</div>
 								<div class="tooltip location-hand-right">
-									{{data.data.bodyType.drTypesOne.handRightextremity}} / {{data.data.bodyType.drTypesTwo.handRightextremity}}
+									{{actor.system.bodyType.drTypesOne.handRightextremity}} / {{actor.system.bodyType.drTypesTwo.handRightextremity}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Hand -4</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.handRight.hp.value}} / {{data.data.bodyType.body.handRight.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.handRight.hp.value}} / {{actor.system.bodyType.body.handRight.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 									</span>
 								</div>
 								<div class="tooltip location-palm-left">
-									{{data.data.bodyType.drTypesOne.handLeftextremity}} / {{data.data.bodyType.drTypesTwo.handLeftextremity}}
+									{{actor.system.bodyType.drTypesOne.handLeftextremity}} / {{actor.system.bodyType.drTypesTwo.handLeftextremity}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Left Hand -4</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.handLeft.hp.value}} / {{data.data.bodyType.body.handLeft.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.handLeft.hp.value}} / {{actor.system.bodyType.body.handLeft.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -1406,11 +1415,11 @@
 										</span>
 								</div>
 								<div class="tooltip location-palm-right">
-									{{data.data.bodyType.drTypesOne.handRightextremity}} / {{data.data.bodyType.drTypesTwo.handRightextremity}}
+									{{actor.system.bodyType.drTypesOne.handRightextremity}} / {{actor.system.bodyType.drTypesTwo.handRightextremity}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Right Hand -4</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.handRight.hp.value}} / {{data.data.bodyType.body.handRight.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.handRight.hp.value}} / {{actor.system.bodyType.body.handRight.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -1421,13 +1430,13 @@
 								</div>
 							{{/if}}
 
-							{{#if (eq actor.data.data.bodyType.name "octopod")}}
+							{{#if (eq actor.system.bodyType.name "octopod")}}
 								<div class="tooltip location-tentacle3-shoulder-left">
-									{{data.data.bodyType.drTypesOne.tentacleLeft3shoulder}} / {{data.data.bodyType.drTypesTwo.tentacleLeft3shoulder}}
+									{{actor.system.bodyType.drTypesOne.tentacleLeft3shoulder}} / {{actor.system.bodyType.drTypesTwo.tentacleLeft3shoulder}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Tentacle 3 -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.tentacleLeft3.hp.value}} / {{data.data.bodyType.body.tentacleLeft3.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleLeft3.hp.value}} / {{actor.system.bodyType.body.tentacleLeft3.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1442,11 +1451,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-tentacle3-shoulder-right">
-									{{data.data.bodyType.drTypesOne.tentacleRight3shoulder}} / {{data.data.bodyType.drTypesTwo.tentacleRight3shoulder}}
+									{{actor.system.bodyType.drTypesOne.tentacleRight3shoulder}} / {{actor.system.bodyType.drTypesTwo.tentacleRight3shoulder}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Tentacle 3 -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.tentacleRight3.hp.value}} / {{data.data.bodyType.body.tentacleRight3.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleRight3.hp.value}} / {{actor.system.bodyType.body.tentacleRight3.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1461,11 +1470,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-tentacle3-upper-arm-left">
-									{{data.data.bodyType.drTypesOne.tentacleLeft3upperArm}} / {{data.data.bodyType.drTypesTwo.tentacleLeft3upperArm}}
+									{{actor.system.bodyType.drTypesOne.tentacleLeft3upperArm}} / {{actor.system.bodyType.drTypesTwo.tentacleLeft3upperArm}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Tentacle 3 -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.tentacleLeft3.hp.value}} / {{data.data.bodyType.body.tentacleLeft3.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleLeft3.hp.value}} / {{actor.system.bodyType.body.tentacleLeft3.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1474,11 +1483,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-tentacle3-upper-arm-right">
-									{{data.data.bodyType.drTypesOne.tentacleRight3upperArm}} / {{data.data.bodyType.drTypesTwo.tentacleRight3upperArm}}
+									{{actor.system.bodyType.drTypesOne.tentacleRight3upperArm}} / {{actor.system.bodyType.drTypesTwo.tentacleRight3upperArm}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Tentacle 3 -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.tentacleRight3.hp.value}} / {{data.data.bodyType.body.tentacleRight3.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleRight3.hp.value}} / {{actor.system.bodyType.body.tentacleRight3.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1487,11 +1496,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-tentacle3-elbow-left">
-									{{data.data.bodyType.drTypesOne.tentacleLeft3elbow}} / {{data.data.bodyType.drTypesTwo.tentacleLeft3elbow}}
+									{{actor.system.bodyType.drTypesOne.tentacleLeft3elbow}} / {{actor.system.bodyType.drTypesTwo.tentacleLeft3elbow}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Tentacle 3 -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.tentacleLeft3.hp.value}} / {{data.data.bodyType.body.tentacleLeft3.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleLeft3.hp.value}} / {{actor.system.bodyType.body.tentacleLeft3.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1500,11 +1509,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-tentacle3-elbow-right">
-									{{data.data.bodyType.drTypesOne.tentacleRight3elbow}} / {{data.data.bodyType.drTypesTwo.tentacleRight3elbow}}
+									{{actor.system.bodyType.drTypesOne.tentacleRight3elbow}} / {{actor.system.bodyType.drTypesTwo.tentacleRight3elbow}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Tentacle 3 -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.tentacleRight3.hp.value}} / {{data.data.bodyType.body.tentacleRight3.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleRight3.hp.value}} / {{actor.system.bodyType.body.tentacleRight3.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1513,11 +1522,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-tentacle3-forearm-left">
-									{{data.data.bodyType.drTypesOne.tentacleLeft3forearm}} / {{data.data.bodyType.drTypesTwo.tentacleLeft3forearm}}
+									{{actor.system.bodyType.drTypesOne.tentacleLeft3forearm}} / {{actor.system.bodyType.drTypesTwo.tentacleLeft3forearm}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Tentacle 3 -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.tentacleLeft3.hp.value}} / {{data.data.bodyType.body.tentacleLeft3.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleLeft3.hp.value}} / {{actor.system.bodyType.body.tentacleLeft3.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1526,11 +1535,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-tentacle3-forearm-right">
-									{{data.data.bodyType.drTypesOne.tentacleRight3forearm}} / {{data.data.bodyType.drTypesTwo.tentacleRight3forearm}}
+									{{actor.system.bodyType.drTypesOne.tentacleRight3forearm}} / {{actor.system.bodyType.drTypesTwo.tentacleRight3forearm}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Tentacle 3 -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.tentacleRight3.hp.value}} / {{data.data.bodyType.body.tentacleRight3.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleRight3.hp.value}} / {{actor.system.bodyType.body.tentacleRight3.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1540,13 +1549,13 @@
 								</div>
 							{{/if}}
 
-							{{#if (or (eq actor.data.data.bodyType.name "hexapod") (eq actor.data.data.bodyType.name "wingedHexapod"))}}
+							{{#if (or (eq actor.system.bodyType.name "hexapod") (eq actor.system.bodyType.name "wingedHexapod"))}}
 								<div class="tooltip location-lower-shoulder-left">
-									{{data.data.bodyType.drTypesOne.lowerArmLeftshoulder}} / {{data.data.bodyType.drTypesTwo.lowerArmLeftshoulder}}
+									{{actor.system.bodyType.drTypesOne.lowerArmLeftshoulder}} / {{actor.system.bodyType.drTypesTwo.lowerArmLeftshoulder}}
 									<span class="tooltiptext">
 									<div style="border-bottom: 2px white solid">
 										<span style="text-decoration: underline">Left Lower Arm -2</span><br>
-										<span style="color: #ff4848">{{data.data.bodyType.body.lowerArmLeft.hp.value}} / {{data.data.bodyType.body.lowerArmLeft.hp.max}} HP</span><br>
+										<span style="color: #ff4848">{{actor.system.bodyType.body.lowerArmLeft.hp.value}} / {{actor.system.bodyType.body.lowerArmLeft.hp.max}} HP</span><br>
 										pi/imp attacks cap at 1x<br>
 									</div>
 									<div>
@@ -1561,11 +1570,11 @@
 								</span>
 								</div>
 								<div class="tooltip location-lower-shoulder-right">
-									{{data.data.bodyType.drTypesOne.lowerArmRightshoulder}} / {{data.data.bodyType.drTypesTwo.lowerArmRightshoulder}}
+									{{actor.system.bodyType.drTypesOne.lowerArmRightshoulder}} / {{actor.system.bodyType.drTypesTwo.lowerArmRightshoulder}}
 									<span class="tooltiptext">
 									<div style="border-bottom: 2px white solid">
 										<span style="text-decoration: underline">Right Lower Arm -2</span><br>
-										<span style="color: #ff4848">{{data.data.bodyType.body.lowerArmRight.hp.value}} / {{data.data.bodyType.body.lowerArmRight.hp.max}} HP</span><br>
+										<span style="color: #ff4848">{{actor.system.bodyType.body.lowerArmRight.hp.value}} / {{actor.system.bodyType.body.lowerArmRight.hp.max}} HP</span><br>
 										pi/imp attacks cap at 1x<br>
 									</div>
 									<div>
@@ -1580,11 +1589,11 @@
 								</span>
 								</div>
 								<div class="tooltip location-lower-upper-arm-left">
-									{{data.data.bodyType.drTypesOne.lowerArmLeftupperArm}} / {{data.data.bodyType.drTypesTwo.lowerArmLeftupperArm}}
+									{{actor.system.bodyType.drTypesOne.lowerArmLeftupperArm}} / {{actor.system.bodyType.drTypesTwo.lowerArmLeftupperArm}}
 									<span class="tooltiptext">
 									<div style="border-bottom: 2px white solid">
 										<span style="text-decoration: underline">Left Lower Arm -2</span><br>
-										<span style="color: #ff4848">{{data.data.bodyType.body.lowerArmLeft.hp.value}} / {{data.data.bodyType.body.lowerArmLeft.hp.max}} HP</span><br>
+										<span style="color: #ff4848">{{actor.system.bodyType.body.lowerArmLeft.hp.value}} / {{actor.system.bodyType.body.lowerArmLeft.hp.max}} HP</span><br>
 										pi/imp attacks cap at 1x<br>
 									</div>
 									<div>
@@ -1593,11 +1602,11 @@
 								</span>
 								</div>
 								<div class="tooltip location-lower-upper-arm-right">
-									{{data.data.bodyType.drTypesOne.lowerArmRightupperArm}} / {{data.data.bodyType.drTypesTwo.lowerArmRightupperArm}}
+									{{actor.system.bodyType.drTypesOne.lowerArmRightupperArm}} / {{actor.system.bodyType.drTypesTwo.lowerArmRightupperArm}}
 									<span class="tooltiptext">
 									<div style="border-bottom: 2px white solid">
 										<span style="text-decoration: underline">Right Lower Arm -2</span><br>
-										<span style="color: #ff4848">{{data.data.bodyType.body.lowerArmRight.hp.value}} / {{data.data.bodyType.body.lowerArmRight.hp.max}} HP</span><br>
+										<span style="color: #ff4848">{{actor.system.bodyType.body.lowerArmRight.hp.value}} / {{actor.system.bodyType.body.lowerArmRight.hp.max}} HP</span><br>
 										pi/imp attacks cap at 1x<br>
 									</div>
 									<div>
@@ -1606,43 +1615,43 @@
 								</span>
 								</div>
 								<div class="tooltip location-lower-elbow-left">
-									{{data.data.bodyType.drTypesOne.lowerArmLeftelbow}} / {{data.data.bodyType.drTypesTwo.lowerArmLeftelbow}}
+									{{actor.system.bodyType.drTypesOne.lowerArmLeftelbow}} / {{actor.system.bodyType.drTypesTwo.lowerArmLeftelbow}}
 									<span class="tooltiptext">
 									<div style="border-bottom: 2px white solid">
 										<span style="text-decoration: underline">Left Lower Arm -2</span><br>
-										<span style="color: #ff4848">{{data.data.bodyType.body.lowerArmLeft.hp.value}} / {{data.data.bodyType.body.lowerArmLeft.hp.max}} HP</span><br>
+										<span style="color: #ff4848">{{actor.system.bodyType.body.lowerArmLeft.hp.value}} / {{actor.system.bodyType.body.lowerArmLeft.hp.max}} HP</span><br>
 										pi/imp attacks cap at 1x<br>
 									</div>
 									<div>
 										<span style="text-decoration: underline">Left Elbow -5</span><br>
-										<span style="color: #ff4848">{{data.data.bodyType.body.lowerArmLeft.subLocation.elbow.hp.value}} / {{data.data.bodyType.body.lowerArmLeft.subLocation.elbow.hp.max}} HP</span><br>
+										<span style="color: #ff4848">{{actor.system.bodyType.body.lowerArmLeft.subLocation.elbow.hp.value}} / {{actor.system.bodyType.body.lowerArmLeft.subLocation.elbow.hp.max}} HP</span><br>
 										Applies only to cr, cut, pi, tbb<br>
 										Crippled joints recover at -2<br>
 									</div>
 								</span>
 								</div>
 								<div class="tooltip location-lower-elbow-right">
-									{{data.data.bodyType.drTypesOne.lowerArmRightelbow}} / {{data.data.bodyType.drTypesTwo.lowerArmRightelbow}}
+									{{actor.system.bodyType.drTypesOne.lowerArmRightelbow}} / {{actor.system.bodyType.drTypesTwo.lowerArmRightelbow}}
 									<span class="tooltiptext">
 									<div style="border-bottom: 2px white solid">
 										<span style="text-decoration: underline">Right Lower Arm -2</span><br>
-										<span style="color: #ff4848">{{data.data.bodyType.body.lowerArmRight.hp.value}} / {{data.data.bodyType.body.lowerArmRight.hp.max}} HP</span><br>
+										<span style="color: #ff4848">{{actor.system.bodyType.body.lowerArmRight.hp.value}} / {{actor.system.bodyType.body.lowerArmRight.hp.max}} HP</span><br>
 										pi/imp attacks cap at 1x<br>
 									</div>
 									<div>
 										<span style="text-decoration: underline">Right Elbow -5</span><br>
-										<span style="color: #ff4848">{{data.data.bodyType.body.lowerArmRight.subLocation.elbow.hp.value}} / {{data.data.bodyType.body.lowerArmRight.subLocation.elbow.hp.max}} HP</span><br>
+										<span style="color: #ff4848">{{actor.system.bodyType.body.lowerArmRight.subLocation.elbow.hp.value}} / {{actor.system.bodyType.body.lowerArmRight.subLocation.elbow.hp.max}} HP</span><br>
 										Applies only to cr, cut, pi, tbb<br>
 										Crippled joints recover at -2<br>
 									</div>
 								</span>
 								</div>
 								<div class="tooltip location-lower-forearm-left">
-									{{data.data.bodyType.drTypesOne.lowerArmLeftforearm}} / {{data.data.bodyType.drTypesTwo.lowerArmLeftforearm}}
+									{{actor.system.bodyType.drTypesOne.lowerArmLeftforearm}} / {{actor.system.bodyType.drTypesTwo.lowerArmLeftforearm}}
 									<span class="tooltiptext">
 									<div style="border-bottom: 2px white solid">
 										<span style="text-decoration: underline">Left Lower Arm -2</span><br>
-										<span style="color: #ff4848">{{data.data.bodyType.body.lowerArmLeft.hp.value}} / {{data.data.bodyType.body.lowerArmLeft.hp.max}} HP</span><br>
+										<span style="color: #ff4848">{{actor.system.bodyType.body.lowerArmLeft.hp.value}} / {{actor.system.bodyType.body.lowerArmLeft.hp.max}} HP</span><br>
 										pi/imp attacks cap at 1x<br>
 									</div>
 									<div>
@@ -1651,11 +1660,11 @@
 								</span>
 								</div>
 								<div class="tooltip location-lower-forearm-right">
-									{{data.data.bodyType.drTypesOne.lowerArmRightforearm}} / {{data.data.bodyType.drTypesTwo.lowerArmRightforearm}}
+									{{actor.system.bodyType.drTypesOne.lowerArmRightforearm}} / {{actor.system.bodyType.drTypesTwo.lowerArmRightforearm}}
 									<span class="tooltiptext">
 									<div style="border-bottom: 2px white solid">
 										<span style="text-decoration: underline">Right Lower Arm -2</span><br>
-										<span style="color: #ff4848">{{data.data.bodyType.body.lowerArmRight.hp.value}} / {{data.data.bodyType.body.lowerArmRight.hp.max}} HP</span><br>
+										<span style="color: #ff4848">{{actor.system.bodyType.body.lowerArmRight.hp.value}} / {{actor.system.bodyType.body.lowerArmRight.hp.max}} HP</span><br>
 										pi/imp attacks cap at 1x<br>
 									</div>
 									<div>
@@ -1664,63 +1673,63 @@
 								</span>
 								</div>
 								<div class="tooltip location-lower-wrist-left">
-									{{data.data.bodyType.drTypesOne.lowerHandLeftjoint}} / {{data.data.bodyType.drTypesTwo.lowerHandLeftjoint}}
+									{{actor.system.bodyType.drTypesOne.lowerHandLeftjoint}} / {{actor.system.bodyType.drTypesTwo.lowerHandLeftjoint}}
 									<span class="tooltiptext">
 									<div style="border-bottom: 2px white solid">
 										<span style="text-decoration: underline">Left Lower Wrist -7</span><br>
-										<span style="color: #ff4848">{{data.data.bodyType.body.lowerHandLeft.hp.value}} / {{data.data.bodyType.body.lowerHandLeft.hp.max}} HP</span><br>
+										<span style="color: #ff4848">{{actor.system.bodyType.body.lowerHandLeft.hp.value}} / {{actor.system.bodyType.body.lowerHandLeft.hp.max}} HP</span><br>
 										pi/imp attacks cap at 1x<br>
 									</div>
 									<div>
 										<span style="text-decoration: underline">Left Lower Wrist -7</span><br>
-										<span style="color: #ff4848">{{data.data.bodyType.body.lowerHandLeft.subLocation.joint.hp.value}} / {{data.data.bodyType.body.lowerHandLeft.subLocation.joint.hp.max}} HP</span><br>
+										<span style="color: #ff4848">{{actor.system.bodyType.body.lowerHandLeft.subLocation.joint.hp.value}} / {{actor.system.bodyType.body.lowerHandLeft.subLocation.joint.hp.max}} HP</span><br>
 										Applies only to cr, cut, pi, tbb<br>
 										Crippled joints recover at -2<br>
 									</div>
 								</span>
 								</div>
 								<div class="tooltip location-lower-wrist-right">
-									{{data.data.bodyType.drTypesOne.lowerHandRightjoint}} / {{data.data.bodyType.drTypesTwo.lowerHandRightjoint}}
+									{{actor.system.bodyType.drTypesOne.lowerHandRightjoint}} / {{actor.system.bodyType.drTypesTwo.lowerHandRightjoint}}
 									<span class="tooltiptext">
 									<div style="border-bottom: 2px white solid">
 										<span style="text-decoration: underline">Right Lower Wrist -7</span><br>
-										<span style="color: #ff4848">{{data.data.bodyType.body.lowerHandRight.hp.value}} / {{data.data.bodyType.body.lowerHandRight.hp.max}} HP</span><br>
+										<span style="color: #ff4848">{{actor.system.bodyType.body.lowerHandRight.hp.value}} / {{actor.system.bodyType.body.lowerHandRight.hp.max}} HP</span><br>
 										pi/imp attacks cap at 1x<br>
 									</div>
 									<div>
 										<span style="text-decoration: underline">Right Lower Wrist -7</span><br>
-										<span style="color: #ff4848">{{data.data.bodyType.body.lowerHandRight.subLocation.joint.hp.value}} / {{data.data.bodyType.body.lowerHandRight.subLocation.joint.hp.max}} HP</span><br>
+										<span style="color: #ff4848">{{actor.system.bodyType.body.lowerHandRight.subLocation.joint.hp.value}} / {{actor.system.bodyType.body.lowerHandRight.subLocation.joint.hp.max}} HP</span><br>
 										Applies only to cr, cut, pi, tbb<br>
 										Crippled joints recover at -2<br>
 									</div>
 								</span>
 								</div>
 								<div class="tooltip location-lower-hand-left">
-									{{data.data.bodyType.drTypesOne.lowerHandLeftextremity}} / {{data.data.bodyType.drTypesTwo.lowerHandLeftextremity}}
+									{{actor.system.bodyType.drTypesOne.lowerHandLeftextremity}} / {{actor.system.bodyType.drTypesTwo.lowerHandLeftextremity}}
 									<span class="tooltiptext">
 									<div style="border-bottom: 2px white solid">
 										<span style="text-decoration: underline">Left Lower Wrist -7</span><br>
-										<span style="color: #ff4848">{{data.data.bodyType.body.lowerHandLeft.hp.value}} / {{data.data.bodyType.body.lowerHandLeft.hp.max}} HP</span><br>
+										<span style="color: #ff4848">{{actor.system.bodyType.body.lowerHandLeft.hp.value}} / {{actor.system.bodyType.body.lowerHandLeft.hp.max}} HP</span><br>
 										pi/imp attacks cap at 1x<br>
 									</div>
 								</span>
 								</div>
 								<div class="tooltip location-lower-hand-right">
-									{{data.data.bodyType.drTypesOne.lowerHandRightextremity}} / {{data.data.bodyType.drTypesTwo.lowerHandRightextremity}}
+									{{actor.system.bodyType.drTypesOne.lowerHandRightextremity}} / {{actor.system.bodyType.drTypesTwo.lowerHandRightextremity}}
 									<span class="tooltiptext">
 									<div style="border-bottom: 2px white solid">
 										<span style="text-decoration: underline">Right Lower Wrist -7</span><br>
-										<span style="color: #ff4848">{{data.data.bodyType.body.lowerHandRight.hp.value}} / {{data.data.bodyType.body.lowerHandRight.hp.max}} HP</span><br>
+										<span style="color: #ff4848">{{actor.system.bodyType.body.lowerHandRight.hp.value}} / {{actor.system.bodyType.body.lowerHandRight.hp.max}} HP</span><br>
 										pi/imp attacks cap at 1x<br>
 									</div>
 								</span>
 								</div>
 								<div class="tooltip location-lower-palm-left">
-									{{data.data.bodyType.drTypesOne.lowerHandLeftextremity}} / {{data.data.bodyType.drTypesTwo.lowerHandLeftextremity}}
+									{{actor.system.bodyType.drTypesOne.lowerHandLeftextremity}} / {{actor.system.bodyType.drTypesTwo.lowerHandLeftextremity}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Lower Wrist -7</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.lowerHandLeft.hp.value}} / {{data.data.bodyType.body.lowerHandLeft.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.lowerHandLeft.hp.value}} / {{actor.system.bodyType.body.lowerHandLeft.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1730,11 +1739,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-lower-palm-right">
-									{{data.data.bodyType.drTypesOne.lowerHandRightextremity}} / {{data.data.bodyType.drTypesTwo.lowerHandRightextremity}}
+									{{actor.system.bodyType.drTypesOne.lowerHandRightextremity}} / {{actor.system.bodyType.drTypesTwo.lowerHandRightextremity}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Lower Wrist -7</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.lowerHandRight.hp.value}} / {{data.data.bodyType.body.lowerHandRight.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.lowerHandRight.hp.value}} / {{actor.system.bodyType.body.lowerHandRight.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -1746,8 +1755,8 @@
 							{{/if}}
 
 							<div class="tooltip location-torso">
-								{{data.data.bodyType.drTypesOne.upperChestchest}} / {{data.data.bodyType.drTypesTwo.upperChestchest}}<br>
-								{{data.data.bodyType.drTypesOne.lowerChestchest}} / {{data.data.bodyType.drTypesTwo.lowerChestchest}}
+								{{actor.system.bodyType.drTypesOne.upperChestchest}} / {{actor.system.bodyType.drTypesTwo.upperChestchest}}<br>
+								{{actor.system.bodyType.drTypesOne.lowerChestchest}} / {{actor.system.bodyType.drTypesTwo.lowerChestchest}}
 								<span class="tooltiptext">
 								<div style="border-bottom: 2px white solid">
 									<span style="text-decoration: underline">Chest -0</span><br>
@@ -1758,10 +1767,10 @@
 								</div>
 							</span>
 							</div>
-							{{#unless actor.data.data.bodyModifiers.noVitals}}
+							{{#unless actor.system.bodyModifiers.noVitals}}
 								<div class="tooltip location-torso-vitals">
-									{{data.data.bodyType.drTypesOne.upperChestvitals}} / {{data.data.bodyType.drTypesTwo.upperChestvitals}}<br>
-									{{data.data.bodyType.drTypesOne.lowerChestvitals}} / {{data.data.bodyType.drTypesTwo.lowerChestvitals}}
+									{{actor.system.bodyType.drTypesOne.upperChestvitals}} / {{actor.system.bodyType.drTypesTwo.upperChestvitals}}<br>
+									{{actor.system.bodyType.drTypesOne.lowerChestvitals}} / {{actor.system.bodyType.drTypesTwo.lowerChestvitals}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Chest -0</span><br>
@@ -1782,10 +1791,10 @@
 									</span>
 								</div>
 							{{/unless}}
-							{{#unless (eq actor.data.data.bodyType.name "octopod")}}
+							{{#unless (eq actor.system.bodyType.name "octopod")}}
 								<div class="tooltip location-torso-spine">
-									{{data.data.bodyType.drTypesOne.upperChestspine}} / {{data.data.bodyType.drTypesTwo.upperChestspine}}<br>
-									{{data.data.bodyType.drTypesOne.lowerChestspine}} / {{data.data.bodyType.drTypesTwo.lowerChestspine}}
+									{{actor.system.bodyType.drTypesOne.upperChestspine}} / {{actor.system.bodyType.drTypesTwo.upperChestspine}}<br>
+									{{actor.system.bodyType.drTypesOne.lowerChestspine}} / {{actor.system.bodyType.drTypesTwo.lowerChestspine}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Chest -0</span><br>
@@ -1796,7 +1805,7 @@
 										</div>
 										<div>
 											<span style="text-decoration: underline">Spine -8</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.upperChest.subLocation.spine.hp.value}} / {{data.data.bodyType.body.upperChest.subLocation.spine.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.upperChest.subLocation.spine.hp.value}} / {{actor.system.bodyType.body.upperChest.subLocation.spine.hp.max}} HP</span><br>
 											The following applies even with HPT<br>
 											Shock forces a knockdown roll<br>
 											Major wound knockdown is @ -5<br>
@@ -1805,9 +1814,9 @@
 									</span>
 								</div>
 							{{/unless}}
-							{{#unless actor.data.data.bodyModifiers.noVitals}}
+							{{#unless actor.system.bodyModifiers.noVitals}}
 								<div class="tooltip location-abdomen-vitals">
-									{{data.data.bodyType.drTypesOne.abdomenvitals}} / {{data.data.bodyType.drTypesTwo.abdomenvitals}}
+									{{actor.system.bodyType.drTypesOne.abdomenvitals}} / {{actor.system.bodyType.drTypesTwo.abdomenvitals}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Abdomen -1</span><br>
@@ -1827,7 +1836,7 @@
 								</div>
 							{{/unless}}
 							<div class="tooltip location-digestive" style="padding-left: 75px; padding-top: 30px;">
-								{{data.data.bodyType.drTypesOne.abdomendigestiveTract}} / {{data.data.bodyType.drTypesTwo.abdomendigestiveTract}}
+								{{actor.system.bodyType.drTypesOne.abdomendigestiveTract}} / {{actor.system.bodyType.drTypesTwo.abdomendigestiveTract}}
 								<span class="tooltiptext">
 									<div style="border-bottom: 2px white solid">
 										<span style="text-decoration: underline">Abdomen -1</span><br>
@@ -1842,14 +1851,14 @@
 							</div>
 
 							<div class="tooltip location-pelvis">
-								{{data.data.bodyType.drTypesOne.abdomenpelvis}} / {{data.data.bodyType.drTypesTwo.abdomenpelvis}}
+								{{actor.system.bodyType.drTypesOne.abdomenpelvis}} / {{actor.system.bodyType.drTypesTwo.abdomenpelvis}}
 								<span class="tooltiptext">
 									<div style="border-bottom: 2px white solid">
 										<span style="text-decoration: underline">Abdomen -1</span><br>
 										Injury capped at 2xHP<br>
 										(1xHP if using bleeding)<br>
 									</div>
-									{{#unless (eq actor.data.data.bodyType.name "octopod")}}
+									{{#unless (eq actor.system.bodyType.name "octopod")}}
 										<div>
 											<span style="text-decoration: underline">Pelvis -3</span><br>
 											On a major wound: Lame (Missing Legs) until healed<br>
@@ -1857,9 +1866,9 @@
 									{{/unless}}
 								</span>
 							</div>
-							{{#if (eq actor.data.data.bodyType.name "centaur")}}
+							{{#if (eq actor.system.bodyType.name "centaur")}}
 								<div class="tooltip location-animal-chest">
-									{{data.data.bodyType.drTypesOne.chestAnimalchest}} / {{data.data.bodyType.drTypesTwo.chestAnimalchest}}
+									{{actor.system.bodyType.drTypesOne.chestAnimalchest}} / {{actor.system.bodyType.drTypesTwo.chestAnimalchest}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Animal Chest -0</span><br>
@@ -1868,9 +1877,9 @@
 										</div>
 									</span>
 								</div>
-								{{#unless actor.data.data.bodyModifiers.noVitals}}
+								{{#unless actor.system.bodyModifiers.noVitals}}
 									<div class="tooltip location-animal-chest-vitals">
-										{{data.data.bodyType.drTypesOne.chestAnimalvitals}} / {{data.data.bodyType.drTypesTwo.chestAnimalvitals}}
+										{{actor.system.bodyType.drTypesOne.chestAnimalvitals}} / {{actor.system.bodyType.drTypesTwo.chestAnimalvitals}}
 										<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Animal Chest -0</span><br>
@@ -1892,7 +1901,7 @@
 									</div>
 								{{/unless}}
 								<div class="tooltip location-animal-chest-spine">
-									{{data.data.bodyType.drTypesOne.chestAnimalspine}} / {{data.data.bodyType.drTypesTwo.chestAnimalspine}}
+									{{actor.system.bodyType.drTypesOne.chestAnimalspine}} / {{actor.system.bodyType.drTypesTwo.chestAnimalspine}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Animal Chest -0</span><br>
@@ -1903,7 +1912,7 @@
 											</div>
 											<div>
 												<span style="text-decoration: underline">Spine -8</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.upperChest.subLocation.spine.hp.value}} / {{data.data.bodyType.body.upperChest.subLocation.spine.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.upperChest.subLocation.spine.hp.value}} / {{actor.system.bodyType.body.upperChest.subLocation.spine.hp.max}} HP</span><br>
 												The following applies even with HPT<br>
 												Shock forces a knockdown roll<br>
 												Major wound knockdown is @ -5<br>
@@ -1911,9 +1920,9 @@
 											</div>
 										</span>
 								</div>
-								{{#unless actor.data.data.bodyModifiers.noVitals}}
+								{{#unless actor.system.bodyModifiers.noVitals}}
 									<div class="tooltip location-animal-abdomen-vitals">
-										{{data.data.bodyType.drTypesOne.animalAbdomenvitals}} / {{data.data.bodyType.drTypesTwo.animalAbdomenvitals}}
+										{{actor.system.bodyType.drTypesOne.animalAbdomenvitals}} / {{actor.system.bodyType.drTypesTwo.animalAbdomenvitals}}
 										<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Animal Abdomen -1</span><br>
@@ -1933,7 +1942,7 @@
 									</div>
 								{{/unless}}
 								<div class="tooltip location-animal-abdomen-digestive">
-									{{data.data.bodyType.drTypesOne.animalAbdomendigestiveTract}} / {{data.data.bodyType.drTypesTwo.animalAbdomendigestiveTract}}
+									{{actor.system.bodyType.drTypesOne.animalAbdomendigestiveTract}} / {{actor.system.bodyType.drTypesTwo.animalAbdomendigestiveTract}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Animal Abdomen -1</span><br>
@@ -1948,14 +1957,14 @@
 								</div>
 
 								<div class="tooltip location-animal-abdomen-pelvis">
-									{{data.data.bodyType.drTypesOne.animalAbdomenpelvis}} / {{data.data.bodyType.drTypesTwo.animalAbdomenpelvis}}
+									{{actor.system.bodyType.drTypesOne.animalAbdomenpelvis}} / {{actor.system.bodyType.drTypesTwo.animalAbdomenpelvis}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Animal Abdomen -1</span><br>
 											Injury capped at 2xHP<br>
 											(1xHP if using bleeding)<br>
 										</div>
-										{{#unless (eq actor.data.data.bodyType.name "octopod")}}
+										{{#unless (eq actor.system.bodyType.name "octopod")}}
 											<div>
 												<span style="text-decoration: underline">Pelvis -3</span><br>
 												On a major wound: Lame (Missing Legs) until healed<br>
@@ -1965,7 +1974,7 @@
 								</div>
 
 								<div class="tooltip location-animal-abdomen-groin">
-									{{data.data.bodyType.drTypesOne.animalAbdomenvitals}} / {{data.data.bodyType.drTypesTwo.animalAbdomenvitals}}
+									{{actor.system.bodyType.drTypesOne.animalAbdomenvitals}} / {{actor.system.bodyType.drTypesTwo.animalAbdomenvitals}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Animal Abdomen -1</span><br>
@@ -1982,11 +1991,11 @@
 								</div>
 
 								<div class="tooltip location-hind-thigh-left">
-									{{data.data.bodyType.drTypesOne.hindlegLeftthigh}} / {{data.data.bodyType.drTypesTwo.hindlegLeftthigh}}
+									{{actor.system.bodyType.drTypesOne.hindlegLeftthigh}} / {{actor.system.bodyType.drTypesTwo.hindlegLeftthigh}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Left Hind Leg -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.hindlegLeft.hp.value}} / {{data.data.bodyType.body.hindlegLeft.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.hindlegLeft.hp.value}} / {{actor.system.bodyType.body.hindlegLeft.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -1995,11 +2004,11 @@
 										</span>
 								</div>
 								<div class="tooltip location-hind-thigh-right">
-									{{data.data.bodyType.drTypesOne.hindlegRightthigh}} / {{data.data.bodyType.drTypesTwo.hindlegRightthigh}}
+									{{actor.system.bodyType.drTypesOne.hindlegRightthigh}} / {{actor.system.bodyType.drTypesTwo.hindlegRightthigh}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Right Hind Leg -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.hindlegRight.hp.value}} / {{data.data.bodyType.body.hindlegRight.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.hindlegRight.hp.value}} / {{actor.system.bodyType.body.hindlegRight.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -2008,11 +2017,11 @@
 										</span>
 								</div>
 								<div class="tooltip location-hind-thigh-artery-left">
-									{{data.data.bodyType.drTypesOne.hindlegLeftartery}} / {{data.data.bodyType.drTypesTwo.hindlegLeftartery}}
+									{{actor.system.bodyType.drTypesOne.hindlegLeftartery}} / {{actor.system.bodyType.drTypesTwo.hindlegLeftartery}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Left Hind Leg -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.hindlegLeft.hp.value}} / {{data.data.bodyType.body.hindlegLeft.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.hindlegLeft.hp.value}} / {{actor.system.bodyType.body.hindlegLeft.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -2027,11 +2036,11 @@
 										</span>
 								</div>
 								<div class="tooltip location-hind-thigh-artery-right">
-									{{data.data.bodyType.drTypesOne.hindlegRightartery}} / {{data.data.bodyType.drTypesTwo.hindlegRightartery}}
+									{{actor.system.bodyType.drTypesOne.hindlegRightartery}} / {{actor.system.bodyType.drTypesTwo.hindlegRightartery}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Right Hind Leg -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.hindlegRight.hp.value}} / {{data.data.bodyType.body.hindlegRight.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.hindlegRight.hp.value}} / {{actor.system.bodyType.body.hindlegRight.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -2046,43 +2055,43 @@
 										</span>
 								</div>
 								<div class="tooltip location-hind-knee-left">
-									{{data.data.bodyType.drTypesOne.hindlegLeftknee}} / {{data.data.bodyType.drTypesTwo.hindlegLeftknee}}
+									{{actor.system.bodyType.drTypesOne.hindlegLeftknee}} / {{actor.system.bodyType.drTypesTwo.hindlegLeftknee}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Left Hind Leg -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.hindlegLeft.hp.value}} / {{data.data.bodyType.body.hindlegLeft.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.hindlegLeft.hp.value}} / {{actor.system.bodyType.body.hindlegLeft.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
 												<span style="text-decoration: underline">Left Knee -5</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.hindlegLeft.subLocation.knee.hp.value}} / {{data.data.bodyType.body.hindlegLeft.subLocation.knee.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.hindlegLeft.subLocation.knee.hp.value}} / {{actor.system.bodyType.body.hindlegLeft.subLocation.knee.hp.max}} HP</span><br>
 												Applies only to cr, cut, pi, tbb<br>
 												Crippled joints recover at -2<br>
 											</div>
 										</span>
 								</div>
 								<div class="tooltip location-hind-knee-right">
-									{{data.data.bodyType.drTypesOne.hindlegRightknee}} / {{data.data.bodyType.drTypesTwo.hindlegRightknee}}
+									{{actor.system.bodyType.drTypesOne.hindlegRightknee}} / {{actor.system.bodyType.drTypesTwo.hindlegRightknee}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Right Hind Leg -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.hindlegRight.hp.value}} / {{data.data.bodyType.body.hindlegRight.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.hindlegRight.hp.value}} / {{actor.system.bodyType.body.hindlegRight.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
 												<span style="text-decoration: underline">Right Knee -5</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.hindlegRight.subLocation.knee.hp.value}} / {{data.data.bodyType.body.hindlegRight.subLocation.knee.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.hindlegRight.subLocation.knee.hp.value}} / {{actor.system.bodyType.body.hindlegRight.subLocation.knee.hp.max}} HP</span><br>
 												Applies only to cr, cut, pi, tbb<br>
 												Crippled joints recover at -2<br>
 											</div>
 										</span>
 								</div>
 								<div class="tooltip location-hind-shin-left">
-									{{data.data.bodyType.drTypesOne.hindlegLeftshin}} / {{data.data.bodyType.drTypesTwo.hindlegLeftshin}}
+									{{actor.system.bodyType.drTypesOne.hindlegLeftshin}} / {{actor.system.bodyType.drTypesTwo.hindlegLeftshin}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Left Hind Leg -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.hindlegLeft.hp.value}} / {{data.data.bodyType.body.hindlegLeft.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.hindlegLeft.hp.value}} / {{actor.system.bodyType.body.hindlegLeft.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -2091,11 +2100,11 @@
 										</span>
 								</div>
 								<div class="tooltip location-hind-shin-right">
-									{{data.data.bodyType.drTypesOne.hindlegRightshin}} / {{data.data.bodyType.drTypesTwo.hindlegRightshin}}
+									{{actor.system.bodyType.drTypesOne.hindlegRightshin}} / {{actor.system.bodyType.drTypesTwo.hindlegRightshin}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Right Hind Leg -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.hindlegRight.hp.value}} / {{data.data.bodyType.body.hindlegRight.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.hindlegRight.hp.value}} / {{actor.system.bodyType.body.hindlegRight.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -2104,63 +2113,63 @@
 										</span>
 								</div>
 								<div class="tooltip location-hind-ankle-left">
-									{{data.data.bodyType.drTypesOne.hindFootLeftjoint}} / {{data.data.bodyType.drTypesTwo.hindFootLeftjoint}}
+									{{actor.system.bodyType.drTypesOne.hindFootLeftjoint}} / {{actor.system.bodyType.drTypesTwo.hindFootLeftjoint}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Left Hind Foot -4</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.hindFootLeft.hp.value}} / {{data.data.bodyType.body.hindFootLeft.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.hindFootLeft.hp.value}} / {{actor.system.bodyType.body.hindFootLeft.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
 												<span style="text-decoration: underline">Left Ankle -7</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.hindFootLeft.subLocation.joint.hp.value}} / {{data.data.bodyType.body.hindFootLeft.subLocation.joint.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.hindFootLeft.subLocation.joint.hp.value}} / {{actor.system.bodyType.body.hindFootLeft.subLocation.joint.hp.max}} HP</span><br>
 												Applies only to cr, cut, pi, tbb<br>
 												Crippled joints recover at -2<br>
 											</div>
 										</span>
 								</div>
 								<div class="tooltip location-hind-ankle-right">
-									{{data.data.bodyType.drTypesOne.hindFootRightjoint}} / {{data.data.bodyType.drTypesTwo.hindFootRightjoint}}
+									{{actor.system.bodyType.drTypesOne.hindFootRightjoint}} / {{actor.system.bodyType.drTypesTwo.hindFootRightjoint}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Right Hind Foot -4</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.hindFootRight.hp.value}} / {{data.data.bodyType.body.hindFootRight.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.hindFootRight.hp.value}} / {{actor.system.bodyType.body.hindFootRight.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
 												<span style="text-decoration: underline">Right Ankle -7</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.hindFootRight.subLocation.joint.hp.value}} / {{data.data.bodyType.body.hindFootRight.subLocation.joint.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.hindFootRight.subLocation.joint.hp.value}} / {{actor.system.bodyType.body.hindFootRight.subLocation.joint.hp.max}} HP</span><br>
 												Applies only to cr, cut, pi, tbb<br>
 												Crippled joints recover at -2<br>
 											</div>
 										</span>
 								</div>
 							<div class="tooltip location-hind-foot-left">
-								{{data.data.bodyType.drTypesOne.hindFootLeftextremity}} / {{data.data.bodyType.drTypesTwo.hindFootLeftextremity}}
+								{{actor.system.bodyType.drTypesOne.hindFootLeftextremity}} / {{actor.system.bodyType.drTypesTwo.hindFootLeftextremity}}
 								<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Left Hind Foot -4</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.hindFootLeft.hp.value}} / {{data.data.bodyType.body.hindFootLeft.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.hindFootLeft.hp.value}} / {{actor.system.bodyType.body.hindFootLeft.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 										</span>
 							</div>
 							<div class="tooltip location-hind-foot-right">
-								{{data.data.bodyType.drTypesOne.hindFootRightextremity}} / {{data.data.bodyType.drTypesTwo.hindFootRightextremity}}
+								{{actor.system.bodyType.drTypesOne.hindFootRightextremity}} / {{actor.system.bodyType.drTypesTwo.hindFootRightextremity}}
 								<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Right Hind Foot -4</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.hindFootRight.hp.value}} / {{data.data.bodyType.body.hindFootRight.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.hindFootRight.hp.value}} / {{actor.system.bodyType.body.hindFootRight.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 										</span>
 							</div>
 							<div class="tooltip location-hind-sole-left">
-								{{data.data.bodyType.drTypesOne.hindFootLeftextremity}} / {{data.data.bodyType.drTypesTwo.hindFootLeftextremity}}
+								{{actor.system.bodyType.drTypesOne.hindFootLeftextremity}} / {{actor.system.bodyType.drTypesTwo.hindFootLeftextremity}}
 								<span class="tooltiptext">
 													<div style="border-bottom: 2px white solid">
 														<span style="text-decoration: underline">Left Hind Foot -4</span><br>
-														<span style="color: #ff4848">{{data.data.bodyType.body.hindFootLeft.hp.value}} / {{data.data.bodyType.body.hindFootLeft.hp.max}} HP</span><br>
+														<span style="color: #ff4848">{{actor.system.bodyType.body.hindFootLeft.hp.value}} / {{actor.system.bodyType.body.hindFootLeft.hp.max}} HP</span><br>
 														pi/imp attacks cap at 1x<br>
 													</div>
 													<div>
@@ -2169,11 +2178,11 @@
 												</span>
 							</div>
 							<div class="tooltip location-hind-sole-right">
-								{{data.data.bodyType.drTypesOne.hindFootRightextremity}} / {{data.data.bodyType.drTypesTwo.hindFootRightextremity}}
+								{{actor.system.bodyType.drTypesOne.hindFootRightextremity}} / {{actor.system.bodyType.drTypesTwo.hindFootRightextremity}}
 								<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Hind Foot -4</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.hindFootRight.hp.value}} / {{data.data.bodyType.body.hindFootRight.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.hindFootRight.hp.value}} / {{actor.system.bodyType.body.hindFootRight.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -2183,7 +2192,7 @@
 							</div>
 							{{else}}
 								<div class="tooltip location-groin">
-									{{data.data.bodyType.drTypesOne.abdomengroin}} / {{data.data.bodyType.drTypesTwo.abdomengroin}}
+									{{actor.system.bodyType.drTypesOne.abdomengroin}} / {{actor.system.bodyType.drTypesTwo.abdomengroin}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Abdomen -1</span><br>
@@ -2199,9 +2208,9 @@
 									</span>
 								</div>
 							{{/if}}
-							{{#if (eq actor.data.data.bodyType.name "avian")}}
+							{{#if (eq actor.system.bodyType.name "avian")}}
 								<div class="tooltip location-tail-shoulder">
-									{{data.data.bodyType.drTypesOne.tailshoulder}} / {{data.data.bodyType.drTypesTwo.tailshoulder}}
+									{{actor.system.bodyType.drTypesOne.tailshoulder}} / {{actor.system.bodyType.drTypesTwo.tailshoulder}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Tail -2</span><br>
@@ -2217,7 +2226,7 @@
 									</span>
 								</div>
 								<div class="tooltip location-tail-forearm">
-									{{data.data.bodyType.drTypesOne.tailforearm}} / {{data.data.bodyType.drTypesTwo.tailforearm}}
+									{{actor.system.bodyType.drTypesOne.tailforearm}} / {{actor.system.bodyType.drTypesTwo.tailforearm}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Tail -2</span><br>
@@ -2230,13 +2239,13 @@
 									</span>
 								</div>
 							{{/if}}
-							{{#if (eq actor.data.data.bodyType.name "octopod")}}
+							{{#if (eq actor.system.bodyType.name "octopod")}}
 								<div class="tooltip location-tentacle4-thigh-left">
-									{{data.data.bodyType.drTypesOne.tentacleLeft4shoulder}} / {{data.data.bodyType.drTypesTwo.tentacleLeft4shoulder}}
+									{{actor.system.bodyType.drTypesOne.tentacleLeft4shoulder}} / {{actor.system.bodyType.drTypesTwo.tentacleLeft4shoulder}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Left Tentacle 4 -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.tentacleLeft4.hp.value}} / {{data.data.bodyType.body.tentacleLeft4.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleLeft4.hp.value}} / {{actor.system.bodyType.body.tentacleLeft4.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -2251,11 +2260,11 @@
 										</span>
 								</div>
 								<div class="tooltip location-tentacle4-thigh-right">
-									{{data.data.bodyType.drTypesOne.tentacleRight4shoulder}} / {{data.data.bodyType.drTypesTwo.tentacleRight4shoulder}}
+									{{actor.system.bodyType.drTypesOne.tentacleRight4shoulder}} / {{actor.system.bodyType.drTypesTwo.tentacleRight4shoulder}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Right Tentacle 4 -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.tentacleRight4.hp.value}} / {{data.data.bodyType.body.tentacleRight4.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleRight4.hp.value}} / {{actor.system.bodyType.body.tentacleRight4.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -2270,11 +2279,11 @@
 										</span>
 								</div>
 								<div class="tooltip location-tentacle4-knee-left">
-									{{data.data.bodyType.drTypesOne.tentacleLeft4upperArm}} / {{data.data.bodyType.drTypesTwo.tentacleLeft4upperArm}}
+									{{actor.system.bodyType.drTypesOne.tentacleLeft4upperArm}} / {{actor.system.bodyType.drTypesTwo.tentacleLeft4upperArm}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Left Tentacle 4 -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.tentacleLeft4.hp.value}} / {{data.data.bodyType.body.tentacleLeft4.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleLeft4.hp.value}} / {{actor.system.bodyType.body.tentacleLeft4.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -2283,11 +2292,11 @@
 										</span>
 								</div>
 							<div class="tooltip location-tentacle4-knee-right">
-								{{data.data.bodyType.drTypesOne.tentacleRight4upperArm}} / {{data.data.bodyType.drTypesTwo.tentacleRight4upperArm}}
+								{{actor.system.bodyType.drTypesOne.tentacleRight4upperArm}} / {{actor.system.bodyType.drTypesTwo.tentacleRight4upperArm}}
 								<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Right Tentacle 4 -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.tentacleRight4.hp.value}} / {{data.data.bodyType.body.tentacleRight4.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleRight4.hp.value}} / {{actor.system.bodyType.body.tentacleRight4.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -2296,11 +2305,11 @@
 										</span>
 							</div>
 							<div class="tooltip location-tentacle4-shin-left">
-								{{data.data.bodyType.drTypesOne.tentacleLeft4elbow}} / {{data.data.bodyType.drTypesTwo.tentacleLeft4elbow}}
+								{{actor.system.bodyType.drTypesOne.tentacleLeft4elbow}} / {{actor.system.bodyType.drTypesTwo.tentacleLeft4elbow}}
 								<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Left Tentacle 4 -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.tentacleLeft4.hp.value}} / {{data.data.bodyType.body.tentacleLeft4.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleLeft4.hp.value}} / {{actor.system.bodyType.body.tentacleLeft4.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -2309,11 +2318,11 @@
 										</span>
 							</div>
 							<div class="tooltip location-tentacle4-shin-right">
-								{{data.data.bodyType.drTypesOne.tentacleRight4elbow}} / {{data.data.bodyType.drTypesTwo.tentacleRight4elbow}}
+								{{actor.system.bodyType.drTypesOne.tentacleRight4elbow}} / {{actor.system.bodyType.drTypesTwo.tentacleRight4elbow}}
 								<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Right Tentacle 4 -2</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.tentacleRight4.hp.value}} / {{data.data.bodyType.body.tentacleRight4.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleRight4.hp.value}} / {{actor.system.bodyType.body.tentacleRight4.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -2322,11 +2331,11 @@
 										</span>
 							</div>
 							<div class="tooltip location-tentacle4-tip-left">
-								{{data.data.bodyType.drTypesOne.tentacleLeft4elbow}} / {{data.data.bodyType.drTypesTwo.tentacleLeft4elbow}}
+								{{actor.system.bodyType.drTypesOne.tentacleLeft4elbow}} / {{actor.system.bodyType.drTypesTwo.tentacleLeft4elbow}}
 								<span class="tooltiptext">
 												<div style="border-bottom: 2px white solid">
 													<span style="text-decoration: underline">Left Tentacle 4 -2</span><br>
-													<span style="color: #ff4848">{{data.data.bodyType.body.tentacleLeft4.hp.value}} / {{data.data.bodyType.body.tentacleLeft4.hp.max}} HP</span><br>
+													<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleLeft4.hp.value}} / {{actor.system.bodyType.body.tentacleLeft4.hp.max}} HP</span><br>
 													pi/imp attacks cap at 1x<br>
 												</div>
 												<div>
@@ -2335,11 +2344,11 @@
 											</span>
 							</div>
 							<div class="tooltip location-tentacle4-tip-right">
-								{{data.data.bodyType.drTypesOne.tentacleRight4elbow}} / {{data.data.bodyType.drTypesTwo.tentacleRight4elbow}}
+								{{actor.system.bodyType.drTypesOne.tentacleRight4elbow}} / {{actor.system.bodyType.drTypesTwo.tentacleRight4elbow}}
 								<span class="tooltiptext">
 												<div style="border-bottom: 2px white solid">
 													<span style="text-decoration: underline">Right Tentacle 4 -2</span><br>
-													<span style="color: #ff4848">{{data.data.bodyType.body.tentacleRight4.hp.value}} / {{data.data.bodyType.body.tentacleRight4.hp.max}} HP</span><br>
+													<span style="color: #ff4848">{{actor.system.bodyType.body.tentacleRight4.hp.value}} / {{actor.system.bodyType.body.tentacleRight4.hp.max}} HP</span><br>
 													pi/imp attacks cap at 1x<br>
 												</div>
 												<div>
@@ -2349,11 +2358,11 @@
 							</div>
 							{{else}}
 								<div class="tooltip location-thigh-left">
-									{{data.data.bodyType.drTypesOne.legLeftthigh}} / {{data.data.bodyType.drTypesTwo.legLeftthigh}}
+									{{actor.system.bodyType.drTypesOne.legLeftthigh}} / {{actor.system.bodyType.drTypesTwo.legLeftthigh}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Leg -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.legLeft.hp.value}} / {{data.data.bodyType.body.legLeft.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.legLeft.hp.value}} / {{actor.system.bodyType.body.legLeft.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -2362,11 +2371,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-thigh-right">
-									{{data.data.bodyType.drTypesOne.legRightthigh}} / {{data.data.bodyType.drTypesTwo.legRightthigh}}
+									{{actor.system.bodyType.drTypesOne.legRightthigh}} / {{actor.system.bodyType.drTypesTwo.legRightthigh}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Leg -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.legRight.hp.value}} / {{data.data.bodyType.body.legRight.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.legRight.hp.value}} / {{actor.system.bodyType.body.legRight.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -2375,11 +2384,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-thigh-artery-left">
-									{{data.data.bodyType.drTypesOne.legLeftartery}} / {{data.data.bodyType.drTypesTwo.legLeftartery}}
+									{{actor.system.bodyType.drTypesOne.legLeftartery}} / {{actor.system.bodyType.drTypesTwo.legLeftartery}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Leg -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.legLeft.hp.value}} / {{data.data.bodyType.body.legLeft.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.legLeft.hp.value}} / {{actor.system.bodyType.body.legLeft.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -2394,11 +2403,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-thigh-artery-right">
-									{{data.data.bodyType.drTypesOne.legRightartery}} / {{data.data.bodyType.drTypesTwo.legRightartery}}
+									{{actor.system.bodyType.drTypesOne.legRightartery}} / {{actor.system.bodyType.drTypesTwo.legRightartery}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Leg -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.legRight.hp.value}} / {{data.data.bodyType.body.legRight.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.legRight.hp.value}} / {{actor.system.bodyType.body.legRight.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -2413,43 +2422,43 @@
 									</span>
 								</div>
 								<div class="tooltip location-knee-left">
-									{{data.data.bodyType.drTypesOne.legLeftknee}} / {{data.data.bodyType.drTypesTwo.legLeftknee}}
+									{{actor.system.bodyType.drTypesOne.legLeftknee}} / {{actor.system.bodyType.drTypesTwo.legLeftknee}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Leg -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.legLeft.hp.value}} / {{data.data.bodyType.body.legLeft.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.legLeft.hp.value}} / {{actor.system.bodyType.body.legLeft.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
 											<span style="text-decoration: underline">Left Knee -5</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.legLeft.subLocation.knee.hp.value}} / {{data.data.bodyType.body.legLeft.subLocation.knee.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.legLeft.subLocation.knee.hp.value}} / {{actor.system.bodyType.body.legLeft.subLocation.knee.hp.max}} HP</span><br>
 											Applies only to cr, cut, pi, tbb<br>
 											Crippled joints recover at -2<br>
 										</div>
 									</span>
 								</div>
 								<div class="tooltip location-knee-right">
-									{{data.data.bodyType.drTypesOne.legRightknee}} / {{data.data.bodyType.drTypesTwo.legRightknee}}
+									{{actor.system.bodyType.drTypesOne.legRightknee}} / {{actor.system.bodyType.drTypesTwo.legRightknee}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Leg -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.legRight.hp.value}} / {{data.data.bodyType.body.legRight.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.legRight.hp.value}} / {{actor.system.bodyType.body.legRight.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
 											<span style="text-decoration: underline">Right Knee -5</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.legRight.subLocation.knee.hp.value}} / {{data.data.bodyType.body.legRight.subLocation.knee.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.legRight.subLocation.knee.hp.value}} / {{actor.system.bodyType.body.legRight.subLocation.knee.hp.max}} HP</span><br>
 											Applies only to cr, cut, pi, tbb<br>
 											Crippled joints recover at -2<br>
 										</div>
 									</span>
 								</div>
 								<div class="tooltip location-shin-left">
-									{{data.data.bodyType.drTypesOne.legLeftshin}} / {{data.data.bodyType.drTypesTwo.legLeftshin}}
+									{{actor.system.bodyType.drTypesOne.legLeftshin}} / {{actor.system.bodyType.drTypesTwo.legLeftshin}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Leg -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.legLeft.hp.value}} / {{data.data.bodyType.body.legLeft.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.legLeft.hp.value}} / {{actor.system.bodyType.body.legLeft.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -2458,11 +2467,11 @@
 									</span>
 								</div>
 								<div class="tooltip location-shin-right">
-									{{data.data.bodyType.drTypesOne.legRightshin}} / {{data.data.bodyType.drTypesTwo.legRightshin}}
+									{{actor.system.bodyType.drTypesOne.legRightshin}} / {{actor.system.bodyType.drTypesTwo.legRightshin}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Leg -2</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.legRight.hp.value}} / {{data.data.bodyType.body.legRight.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.legRight.hp.value}} / {{actor.system.bodyType.body.legRight.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
@@ -2471,63 +2480,63 @@
 									</span>
 								</div>
 								<div class="tooltip location-ankle-left">
-									{{data.data.bodyType.drTypesOne.footLeftjoint}} / {{data.data.bodyType.drTypesTwo.footLeftjoint}}
+									{{actor.system.bodyType.drTypesOne.footLeftjoint}} / {{actor.system.bodyType.drTypesTwo.footLeftjoint}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Foot -4</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.footLeft.hp.value}} / {{data.data.bodyType.body.footLeft.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.footLeft.hp.value}} / {{actor.system.bodyType.body.footLeft.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
 											<span style="text-decoration: underline">Left Ankle -7</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.footLeft.subLocation.joint.hp.value}} / {{data.data.bodyType.body.footLeft.subLocation.joint.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.footLeft.subLocation.joint.hp.value}} / {{actor.system.bodyType.body.footLeft.subLocation.joint.hp.max}} HP</span><br>
 											Applies only to cr, cut, pi, tbb<br>
 											Crippled joints recover at -2<br>
 										</div>
 									</span>
 								</div>
 								<div class="tooltip location-ankle-right">
-									{{data.data.bodyType.drTypesOne.footRightjoint}} / {{data.data.bodyType.drTypesTwo.footRightjoint}}
+									{{actor.system.bodyType.drTypesOne.footRightjoint}} / {{actor.system.bodyType.drTypesTwo.footRightjoint}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Foot -4</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.footRight.hp.value}} / {{data.data.bodyType.body.footRight.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.footRight.hp.value}} / {{actor.system.bodyType.body.footRight.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 										<div>
 											<span style="text-decoration: underline">Right Ankle -7</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.footRight.subLocation.joint.hp.value}} / {{data.data.bodyType.body.footRight.subLocation.joint.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.footRight.subLocation.joint.hp.value}} / {{actor.system.bodyType.body.footRight.subLocation.joint.hp.max}} HP</span><br>
 											Applies only to cr, cut, pi, tbb<br>
 											Crippled joints recover at -2<br>
 										</div>
 									</span>
 								</div>
 								<div class="tooltip location-foot-left">
-									{{data.data.bodyType.drTypesOne.footLeftextremity}} / {{data.data.bodyType.drTypesTwo.footLeftextremity}}
+									{{actor.system.bodyType.drTypesOne.footLeftextremity}} / {{actor.system.bodyType.drTypesTwo.footLeftextremity}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Left Foot -4</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.footLeft.hp.value}} / {{data.data.bodyType.body.footLeft.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.footLeft.hp.value}} / {{actor.system.bodyType.body.footLeft.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 									</span>
 								</div>
 								<div class="tooltip location-foot-right">
-									{{data.data.bodyType.drTypesOne.footRightextremity}} / {{data.data.bodyType.drTypesTwo.footRightextremity}}
+									{{actor.system.bodyType.drTypesOne.footRightextremity}} / {{actor.system.bodyType.drTypesTwo.footRightextremity}}
 									<span class="tooltiptext">
 										<div style="border-bottom: 2px white solid">
 											<span style="text-decoration: underline">Right Foot -4</span><br>
-											<span style="color: #ff4848">{{data.data.bodyType.body.footRight.hp.value}} / {{data.data.bodyType.body.footRight.hp.max}} HP</span><br>
+											<span style="color: #ff4848">{{actor.system.bodyType.body.footRight.hp.value}} / {{actor.system.bodyType.body.footRight.hp.max}} HP</span><br>
 											pi/imp attacks cap at 1x<br>
 										</div>
 									</span>
 								</div>
 								<div class="tooltip location-sole-left">
-									{{data.data.bodyType.drTypesOne.footLeftextremity}} / {{data.data.bodyType.drTypesTwo.footLeftextremity}}
+									{{actor.system.bodyType.drTypesOne.footLeftextremity}} / {{actor.system.bodyType.drTypesTwo.footLeftextremity}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Left Foot -4</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.footLeft.hp.value}} / {{data.data.bodyType.body.footLeft.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.footLeft.hp.value}} / {{actor.system.bodyType.body.footLeft.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -2536,11 +2545,11 @@
 										</span>
 								</div>
 								<div class="tooltip location-sole-right">
-									{{data.data.bodyType.drTypesOne.footRightextremity}} / {{data.data.bodyType.drTypesTwo.footRightextremity}}
+									{{actor.system.bodyType.drTypesOne.footRightextremity}} / {{actor.system.bodyType.drTypesTwo.footRightextremity}}
 									<span class="tooltiptext">
 											<div style="border-bottom: 2px white solid">
 												<span style="text-decoration: underline">Right Foot -4</span><br>
-												<span style="color: #ff4848">{{data.data.bodyType.body.footRight.hp.value}} / {{data.data.bodyType.body.footRight.hp.max}} HP</span><br>
+												<span style="color: #ff4848">{{actor.system.bodyType.body.footRight.hp.value}} / {{actor.system.bodyType.body.footRight.hp.max}} HP</span><br>
 												pi/imp attacks cap at 1x<br>
 											</div>
 											<div>
@@ -2554,8 +2563,8 @@
 					<div class="hit-location-options">
 						<div>
 							<label>Damage Type One:</label>
-							<select name="data.bodyType.damageTypeOne">
-								{{#select data.data.bodyType.damageTypeOne}}
+							<select name="system.bodyType.damageTypeOne">
+								{{#select actor.system.bodyType.damageTypeOne}}
 									<option value="Burn">Burning</option>
 									<option value="Cor">Corrosion</option>
 									<option value="Cr">Crushing</option>
@@ -2569,8 +2578,8 @@
 						</div>
 						<div>
 							<label>Damage Type Two:</label>
-							<select name="data.bodyType.damageTypeTwo">
-								{{#select data.data.bodyType.damageTypeTwo}}
+							<select name="system.bodyType.damageTypeTwo">
+								{{#select actor.system.bodyType.damageTypeTwo}}
 									<option value="Burn">Burning</option>
 									<option value="Cor">Corrosion</option>
 									<option value="Cr">Crushing</option>
@@ -2599,8 +2608,8 @@
 											</div>
 										</span>
 									</td>
-									<td>{{data.data.bodyType.drTypesOne.armLeftarmpit}} / {{data.data.bodyType.drTypesTwo.armLeftarmpit}} -
-										{{data.data.bodyType.drTypesOne.armRightarmpit}} / {{data.data.bodyType.drTypesTwo.armRightarmpit}}</td>
+									<td>{{actor.system.bodyType.drTypesOne.armLeftarmpit}} / {{actor.system.bodyType.drTypesTwo.armLeftarmpit}} -
+										{{actor.system.bodyType.drTypesOne.armRightarmpit}} / {{actor.system.bodyType.drTypesTwo.armRightarmpit}}</td>
 								</tr>
 								<tr>
 									<td class="tooltip">
@@ -2612,8 +2621,8 @@
 											</div>
 										</span>
 									</td>
-									<td>{{data.data.bodyType.drTypesOne.armLeftelbow}} / {{data.data.bodyType.drTypesTwo.armLeftelbow}} -
-										{{data.data.bodyType.drTypesOne.armRightelbow}} / {{data.data.bodyType.drTypesTwo.armRightelbow}}</td>
+									<td>{{actor.system.bodyType.drTypesOne.armLeftelbow}} / {{actor.system.bodyType.drTypesTwo.armLeftelbow}} -
+										{{actor.system.bodyType.drTypesOne.armRightelbow}} / {{actor.system.bodyType.drTypesTwo.armRightelbow}}</td>
 								</tr>
 								<tr>
 									<td class="tooltip">
@@ -2625,8 +2634,8 @@
 											</div>
 										</span>
 									</td>
-									<td>{{data.data.bodyType.drTypesOne.legLeftinsideThigh}} / {{data.data.bodyType.drTypesTwo.legLeftinsideThigh}} -
-										{{data.data.bodyType.drTypesOne.legRightinsideThigh}} / {{data.data.bodyType.drTypesTwo.legRightinsideThigh}}</td>
+									<td>{{actor.system.bodyType.drTypesOne.legLeftinsideThigh}} / {{actor.system.bodyType.drTypesTwo.legLeftinsideThigh}} -
+										{{actor.system.bodyType.drTypesOne.legRightinsideThigh}} / {{actor.system.bodyType.drTypesTwo.legRightinsideThigh}}</td>
 								</tr>
 								<tr>
 									<td class="tooltip">
@@ -2638,8 +2647,8 @@
 											</div>
 										</span>
 									</td>
-									<td>{{data.data.bodyType.drTypesOne.legLeftbackOfKnee}} / {{data.data.bodyType.drTypesTwo.legLeftbackOfKnee}} -
-										{{data.data.bodyType.drTypesOne.legRightbackOfKnee}} / {{data.data.bodyType.drTypesTwo.legRightbackOfKnee}}</td>
+									<td>{{actor.system.bodyType.drTypesOne.legLeftbackOfKnee}} / {{actor.system.bodyType.drTypesTwo.legLeftbackOfKnee}} -
+										{{actor.system.bodyType.drTypesOne.legRightbackOfKnee}} / {{actor.system.bodyType.drTypesTwo.legRightbackOfKnee}}</td>
 								</tr>
 							</table>
 						</div>
@@ -2651,8 +2660,8 @@
 			<div id="body-type" class="tab body-type" data-tab="body-type" data-group="primary">
 				<div>
 					<label>Body Type:</label>
-					<select name="data.bodyType.name" class="bodyType">
-						{{#select data.data.bodyType.name}}
+					<select name="system.bodyType.name" class="bodyType">
+						{{#select actor.system.bodyType.name}}
 						<option value="humanoid">Humanoid</option>
 						<option value="wingedHumanoid">Winged Humanoid</option>
 						<option value="quadruped">Quadruped</option>
@@ -2672,7 +2681,7 @@
 					</select>
 				</div>
 				<div style="display: flex">
-					{{#if data.data.bodyType.name}}
+					{{#if actor.system.bodyType.name}}
 					<div>
 						<table class="dr-entry-table" style="width: unset">
 							<tr class="hit-locations">
@@ -2681,13 +2690,13 @@
 								<td class="dr-header">State</td>
 								<td class="dr-header">Penalty</td>
 							</tr>
-							{{#each actor.data.data.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
+							{{#each actor.system.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
 								{{#if bodyPart.label}}<!--Make sure there's a label before displaying the row-->
 									<tr class="hit-locations master-location">
 										<th colspan="1">{{bodyPart.label}}</th>
 										{{#if bodyPart.hp}}
 											<th class="dr-row">
-												<input type="number" class="partHP" id="data.bodyType.body.{{partId}}.hp" name="data.bodyType.body.{{partId}}.hp.value" value="{{bodyPart.hp.value}}" data-dtype="Number" style="width: 50px;"/>
+												<input type="number" class="partHP" id="actor.system.bodyType.body.{{partId}}.hp" name="system.bodyType.body.{{partId}}.hp.value" value="{{bodyPart.hp.value}}" data-dtype="Number" style="width: 50px;"/>
 												<span style="width: 45%;">/{{bodyPart.hp.max}}</span></th>
 											<th class="dr-row">{{bodyPart.hp.state}}</th>
 										{{else}}
@@ -2704,7 +2713,7 @@
 												<td class="dr-row">{{subLocation.label}}</td>
 												{{#if subLocation.hp}}
 													<td class="dr-row">
-														<input type="number" class="partHP" id="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.hp" name="data.bodyType.body.{{partId}}.subLocation.{{locationId}}.hp.value" value="{{subLocation.hp.value}}" data-dtype="Number" style="width: 50px;"/>
+														<input type="number" class="partHP" id="actor.system.bodyType.body.{{partId}}.subLocation.{{locationId}}.hp" name="system.bodyType.body.{{partId}}.subLocation.{{locationId}}.hp.value" value="{{subLocation.hp.value}}" data-dtype="Number" style="width: 50px;"/>
 														<span style="width: 45%;">/{{subLocation.hp.max}}</span></td>
 													<td class="dr-row">{{subLocation.hp.state}}</td>
 												{{else}}
@@ -2735,36 +2744,36 @@
 							<tr>
 								<td>Born Biter</td>
 								<td>
-									<input type="number" id="data.bodyModifiers.bornBiter" name="data.bodyModifiers.bornBiter" value="{{data.data.bodyModifiers.bornBiter}}" data-dtype="Number" style="width: 25px"/>
+									<input type="number" id="actor.system.bodyModifiers.bornBiter" name="system.bodyModifiers.bornBiter" value="{{actor.system.bodyModifiers.bornBiter}}" data-dtype="Number" style="width: 25px"/>
 								</td>
 							</tr>
 							<tr>
 								<td class="injuryTolerancesLabel">No Vitals:</td>
-								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.bodyModifiers.noVitals" {{checked data.data.bodyModifiers.noVitals}} data-dtype="Boolean"/></td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="system.bodyModifiers.noVitals" {{checked actor.system.bodyModifiers.noVitals}} data-dtype="Boolean"/></td>
 							</tr>
 							<tr>
 								<td class="injuryTolerancesLabel">No Neck:</td>
-								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.bodyModifiers.noNeck" {{checked data.data.bodyModifiers.noNeck}} data-dtype="Boolean"/></td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="system.bodyModifiers.noNeck" {{checked actor.system.bodyModifiers.noNeck}} data-dtype="Boolean"/></td>
 							</tr>
 							<tr>
 								<td class="injuryTolerancesLabel">No Head:</td>
-								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.bodyModifiers.noHead" {{checked data.data.bodyModifiers.noHead}} data-dtype="Boolean"/></td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="system.bodyModifiers.noHead" {{checked actor.system.bodyModifiers.noHead}} data-dtype="Boolean"/></td>
 							</tr>
 							<tr>
 								<td class="injuryTolerancesLabel">No Eyes:</td>
-								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.bodyModifiers.noEyes" {{checked data.data.bodyModifiers.noEyes}} data-dtype="Boolean"/></td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="system.bodyModifiers.noEyes" {{checked actor.system.bodyModifiers.noEyes}} data-dtype="Boolean"/></td>
 							</tr>
 							<tr>
 								<td class="injuryTolerancesLabel">No Left Eye:</td>
-								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.bodyModifiers.noEyeL" {{checked data.data.bodyModifiers.noEyeL}} data-dtype="Boolean"/></td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="system.bodyModifiers.noEyeL" {{checked actor.system.bodyModifiers.noEyeL}} data-dtype="Boolean"/></td>
 							</tr>
 							<tr>
 								<td class="injuryTolerancesLabel">No Right Eye:</td>
-								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.bodyModifiers.noEyeR" {{checked data.data.bodyModifiers.noEyeR}} data-dtype="Boolean"/></td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="system.bodyModifiers.noEyeR" {{checked actor.system.bodyModifiers.noEyeR}} data-dtype="Boolean"/></td>
 							</tr>
 							<tr>
 								<td class="injuryTolerancesLabel">No Brain:</td>
-								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.bodyModifiers.noBrain" {{checked data.data.bodyModifiers.noBrain}} data-dtype="Boolean"/></td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="system.bodyModifiers.noBrain" {{checked actor.system.bodyModifiers.noBrain}} data-dtype="Boolean"/></td>
 							</tr>
 							<tr>
 								<td class="injuryTolerancesLabel tooltip">
@@ -2773,7 +2782,7 @@
 									Myrmidon have no ears and larger eyes
 									</span>
 								</td>
-								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.bodyModifiers.myrmidonHead" {{checked data.data.bodyModifiers.myrmidonHead}} data-dtype="Boolean"/></td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="system.bodyModifiers.myrmidonHead" {{checked actor.system.bodyModifiers.myrmidonHead}} data-dtype="Boolean"/></td>
 							</tr>
 						</table>
 						<table class="injuryTolerancesTable">
@@ -2782,19 +2791,19 @@
 							</tr>
 							<tr>
 								<td>Damage Reduction:</td>
-								<td><input type="number" id="data.injuryTolerances.damageReduction" name="data.injuryTolerances.damageReduction" value="{{data.data.injuryTolerances.damageReduction}}" data-dtype="Number" style="width: 25px"/></td>
+								<td><input type="number" id="actor.system.injuryTolerances.damageReduction" name="system.injuryTolerances.damageReduction" value="{{actor.system.injuryTolerances.damageReduction}}" data-dtype="Number" style="width: 25px"/></td>
 							</tr>
 							<tr>
 								<td>Supernatural Durability:</td>
-								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.supernaturalDurability" {{checked data.data.injuryTolerances.supernaturalDurability}} data-dtype="Boolean"/></td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="system.injuryTolerances.supernaturalDurability" {{checked actor.system.injuryTolerances.supernaturalDurability}} data-dtype="Boolean"/></td>
 							</tr>
 							<tr>
 								<td>Low Pain Threshold:</td>
-								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.lowPainThreshold" {{checked data.data.injuryTolerances.lowPainThreshold}} data-dtype="Boolean"/></td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="system.injuryTolerances.lowPainThreshold" {{checked actor.system.injuryTolerances.lowPainThreshold}} data-dtype="Boolean"/></td>
 							</tr>
 							<tr>
 								<td>High Pain Threshold:</td>
-								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.highPainThreshold" {{checked data.data.injuryTolerances.highPainThreshold}} data-dtype="Boolean"/></td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="system.injuryTolerances.highPainThreshold" {{checked actor.system.injuryTolerances.highPainThreshold}} data-dtype="Boolean"/></td>
 							</tr>
 						</table>
 						<table class="injuryTolerancesTable">
@@ -2803,30 +2812,30 @@
 							</tr>
 							<tr>
 								<td class="injuryTolerancesLabel">Diffuse:</td>
-								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.diffuse" {{checked data.data.injuryTolerances.diffuse}} data-dtype="Boolean"/></td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="system.injuryTolerances.diffuse" {{checked actor.system.injuryTolerances.diffuse}} data-dtype="Boolean"/></td>
 							</tr>
 							<tr>
 								<td class="injuryTolerancesLabel">Homogenous:</td>
-								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.homogenous" {{checked data.data.injuryTolerances.homogenous}} data-dtype="Boolean"/></td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="system.injuryTolerances.homogenous" {{checked actor.system.injuryTolerances.homogenous}} data-dtype="Boolean"/></td>
 							</tr>
 							<tr>
 								<td class="injuryTolerancesLabel">Unliving:</td>
-								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.unliving" {{checked data.data.injuryTolerances.unliving}} data-dtype="Boolean"/></td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="system.injuryTolerances.unliving" {{checked actor.system.injuryTolerances.unliving}} data-dtype="Boolean"/></td>
 							</tr>
 							<tr>
 								<td class="injuryTolerancesLabel">Unbreakable Bones:</td>
-								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.unbreakableBones" {{checked data.data.injuryTolerances.unbreakableBones}} data-dtype="Boolean"/></td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="system.injuryTolerances.unbreakableBones" {{checked actor.system.injuryTolerances.unbreakableBones}} data-dtype="Boolean"/></td>
 							</tr>
 							<tr>
 								<td class="injuryTolerancesLabel">No Blood:</td>
-								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="data.injuryTolerances.noBlood" {{checked data.data.injuryTolerances.noBlood}} data-dtype="Boolean"/></td>
+								<td  class="injuryTolerancesCheckTd"><input type="checkbox" name="system.injuryTolerances.noBlood" {{checked actor.system.injuryTolerances.noBlood}} data-dtype="Boolean"/></td>
 							</tr>
 						</table>
 					</div>
 				</div>
 			</div>
 
-			{{!-- Magic Tab --}}
+			{{!-- Vanilla Magic Tab --}}
 			<div id="magic" class="tab magic" data-tab="magic" data-group="primary">
 				<div style="display: flex; flex-direction: column;">
 					<table>
@@ -2835,16 +2844,16 @@
 								Magic Attribute
 							</td>
 							<td style="display: flex;">
-								<span><input type="text" name="data.magic.attribute" value="{{data.data.magic.attribute}}" placeholder="Intelligence" /></span>
-								<span><input type="number" name="data.magic.attributeMod" value="{{data.data.magic.attributeMod}}" placeholder="0" style="width: 25px"/></span>
+								<span><input type="text" name="system.magic.attribute" value="{{actor.system.magic.attribute}}" placeholder="Intelligence" /></span>
+								<span><input type="number" name="system.magic.attributeMod" value="{{actor.system.magic.attributeMod}}" placeholder="0" style="width: 25px"/></span>
 							</td>
 						</tr>
 						<tr>
 							<td style="width: 20%">
-								<input type="number" name="data.magic.mageryName" value="{{data.data.magic.mageryName}}" placeholder="Magery" style="width: auto"/>
+								<input type="text" name="system.magic.mageryName" value="{{actor.system.magic.mageryName}}" placeholder="Magery" style="width: auto"/>
 							</td>
 							<td>
-								<input type="number" name="data.magic.magery" value="{{data.data.magic.magery}}" placeholder="0" />
+								<input type="number" name="system.magic.magery" value="{{actor.system.magic.magery}}" placeholder="0" />
 							</td>
 						</tr>
 						<tr>
@@ -2852,7 +2861,7 @@
 								Total Ability
 							</td>
 							<td>
-								{{data.data.magic.totalMagicAttribute}}
+								{{actor.system.magic.totalMagicAttribute}}
 							</td>
 						</tr>
 						<tr>
@@ -2863,7 +2872,7 @@
 								</span>
 							</td>
 							<td>
-								<input type="number" name="data.magic.staff" value="{{data.data.magic.staff}}" placeholder="0" />
+								<input type="number" name="system.magic.staff" value="{{actor.system.magic.staff}}" placeholder="0" />
 							</td>
 						</tr>
 					</table>
@@ -2877,37 +2886,37 @@
 							<td class="item-rolls">Level</td>
 							<td class="item-controls"></td>
 						</tr>
-						{{#each actor.data.spellCategories as |category cat|}}
+						{{#each actor.system.spellCategories as |category cat|}}
 							{{#unless (eq category "")}}
 								<tr class="item item-header trait-category-header">
 									<td colspan="6">
-										<a class="accordion" id="s-accordion-clickable-{{category}}">{{category}}</a>
+										<a class="accordion bold" id="s-accordion-clickable-{{category}}">{{category}}</a>
 									</td>
 								</tr>
 							{{/unless}}
-							{{#each ../actor.data.items as |item id|}}
+							{{#each ../items as |item id|}}
 								{{#if (eq type "Spell")}}
-									{{#if (eq item.data.data.subCategory category)}}
-										<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item.id}}">
+									{{#if (eq item.system.subCategory category)}}
+										<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item._id}}">
 											<td class="item-image" style="width: 24px; padding: 0 2px">
 												<img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
 											</td>
 											<td class="item-name" style="width: 9em;">
-												{{item.data.name}}
+												{{item.name}}
 											</td>
 											<td class="item-notes">
-												{{item.data.data.shortNotes}}
+												{{item.system.shortNotes}}
 											</td>
 											<td class="item-college">
-												{{item.data.data.college}}
+												{{item.system.college}}
 											</td>
 											<td class="item-points">
-												{{item.data.data.points}}
+												{{item.system.points}}
 											</td>
 											<td class="item-skill" style="width: 3em;">
-												<label for="data.level" class="fa fa-dice-six rollable" data-level="{{data.data.level}}"
+												<label for="actor.system.level" class="fa fa-dice-six rollable" data-level="{{item.system.level}}"
 													   data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
-												{{item.data.data.level}}
+												{{item.system.level}}
 											</td>
 											<td class="item-controls" style="width: 30px;">
 												<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>

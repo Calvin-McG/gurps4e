@@ -3,7 +3,7 @@ import { attributeHelpers } from "./attributeHelpers.js";
 export class skillHelpers {
     static computeSkillLevel(actor, item) {
         let level = 0;
-        if (actor.data) { // Make sure there's an actor before computing skill level
+        if (actor.system) { // Make sure there's an actor before computing skill level
             let category = item.category;
             let defaults = item.defaults;
             let difficulty = item.difficulty;
@@ -19,13 +19,13 @@ export class skillHelpers {
             let skillDefaultArray = [];
             let attrDefaultArray = [];
             let dabblerBonus = Math.min(dabblerPoints, 3) // If they have four points in dabbler, the bonus is only +3
-            let smDiscount = attributeHelpers.calcSMDiscount(actor.data.data.bio.sm);
-            let st = attributeHelpers.calcStOrHt(actor.data.data.primaryAttributes.strength, smDiscount)
-            let dx = attributeHelpers.calcDxOrIq(actor.data.data.primaryAttributes.dexterity);
-            let iq = attributeHelpers.calcDxOrIq(actor.data.data.primaryAttributes.intelligence);
-            let ht = attributeHelpers.calcStOrHt(actor.data.data.primaryAttributes.health, 1);
-            let per = attributeHelpers.calcPerOrWill(iq, actor.data.data.primaryAttributes.perception);
-            let will = attributeHelpers.calcPerOrWill(iq, actor.data.data.primaryAttributes.will);
+            let smDiscount = attributeHelpers.calcSMDiscount(actor.system.bio.sm);
+            let st = attributeHelpers.calcStOrHt(actor.system.primaryAttributes.strength, smDiscount)
+            let dx = attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.dexterity);
+            let iq = attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.intelligence);
+            let ht = attributeHelpers.calcStOrHt(actor.system.primaryAttributes.health, 1);
+            let per = attributeHelpers.calcPerOrWill(iq, actor.system.primaryAttributes.perception);
+            let will = attributeHelpers.calcPerOrWill(iq, actor.system.primaryAttributes.will);
 
             if (category === 'skill') { // It's a skill
                 // Figure out defaults
@@ -52,12 +52,12 @@ export class skillHelpers {
                     }
                     // Then check other skills, add any results to the array of skill defaults
                     else {
-                        for (let i = 0; i < actor.data.items._source.length; i++) { // Loop through the list of items
-                            if (actor.data.items._source[i].type === "Rollable") { // Make sure it's a Rollable
-                                if (actor.data.items._source[i].data.category === "skill") { // Make sure it's a skill and not a technique
-                                    if (actor.data.items._source[i].data.points > 0) { // Make sure it has more than 0 points
-                                        if (defaults[q].skill === actor.data.items._source[i].name) { // Make sure it matches the name
-                                            let defaultLevel = this.computeSkillLevelWithoutDefaults(actor, actor.data.items._source[i].data.difficulty, actor.data.items._source[i].data.baseAttr, actor.data.items._source[i].data.points, actor.data.items._source[i].data.mod)
+                        for (let i = 0; i < actor.system.items._source.length; i++) { // Loop through the list of items
+                            if (actor.system.items._source[i].type === "Rollable") { // Make sure it's a Rollable
+                                if (actor.system.items._source[i].system.category === "skill") { // Make sure it's a skill and not a technique
+                                    if (actor.system.items._source[i].system.points > 0) { // Make sure it has more than 0 points
+                                        if (defaults[q].skill === actor.system.items._source[i].name) { // Make sure it matches the name
+                                            let defaultLevel = this.computeSkillLevelWithoutDefaults(actor, actor.system.items._source[i].system.difficulty, actor.system.items._source[i].system.baseAttr, actor.system.items._source[i].system.points, actor.system.items._source[i].system.mod)
                                             skillDefaultArray.push(+defaultLevel + +defaults[q].mod);
                                         }
                                     }
@@ -114,11 +114,11 @@ export class skillHelpers {
                     base = will;
                 }
                 else {
-                    for (let i = 0; i < actor.data.items._source.length; i++){
-                        if (actor.data.items._source[i].type === "Rollable"){
-                            if (actor.data.items._source[i].data.category === "skill"){
-                                if (baseSkill === actor.data.items._source[i].name.toUpperCase()){
-                                    base = this.computeSkillLevelWithoutDefaults(actor, actor.data.items._source[i].data)
+                    for (let i = 0; i < actor.system.items._source.length; i++){
+                        if (actor.system.items._source[i].type === "Rollable"){
+                            if (actor.system.items._source[i].system.category === "skill"){
+                                if (baseSkill === actor.system.items._source[i].name.toUpperCase()){
+                                    base = this.computeSkillLevelWithoutDefaults(actor, actor.system.items._source[i].system)
                                 }
                             }
                         }
@@ -148,7 +148,7 @@ export class skillHelpers {
 
     static computeSkillLevelWithoutDefaults(actor, difficulty, baseAttr, points, mod) {
         let level = 0;
-        if (actor.data) { // Make sure there's an actor before computing skill level
+        if (actor.system) { // Make sure there's an actor before computing skill level
             let base = this.getBaseAttrValue(baseAttr, actor) // Get the base value of the relevant attribute
             // Compute skill value based on points spent on the skill
             level = base + this.pointsToBonus(points, difficulty) + mod;
@@ -165,7 +165,7 @@ export class skillHelpers {
         }
         totalMagicAttribute += attributeMod ? attributeMod : 0;
         totalMagicAttribute += magery ? magery : 0;
-        actor.data.data.magicalAbility = totalMagicAttribute;
+        actor.system.magicalAbility = totalMagicAttribute;
 
         if (points <= 0 || (difficulty == "W" && points < 3)) { // They haven't spent any points, or have spent too few points to make a difference for a Wildcard skill. Display default, after account for dabbler
             level = mod;
@@ -181,23 +181,23 @@ export class skillHelpers {
     static getBaseAttrValue(baseAttr, actor) {
         let base = 0;
         if (baseAttr.toUpperCase() == 'ST' || baseAttr.toUpperCase() == 'STRENGTH'){
-            let smDiscount = attributeHelpers.calcSMDiscount(actor.data.data.bio.sm)
-            base = attributeHelpers.calcStOrHt(actor.data.data.primaryAttributes.strength, smDiscount);
+            let smDiscount = attributeHelpers.calcSMDiscount(actor.system.bio.sm)
+            base = attributeHelpers.calcStOrHt(actor.system.primaryAttributes.strength, smDiscount);
         }
         else if (baseAttr.toUpperCase() == 'DX' || baseAttr.toUpperCase() == 'DEXTERITY') {
-            base = attributeHelpers.calcDxOrIq(actor.data.data.primaryAttributes.dexterity);
+            base = attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.dexterity);
         }
         else if (baseAttr.toUpperCase() == 'IQ' || baseAttr.toUpperCase() == 'INTELLIGENCE') {
-            base = attributeHelpers.calcDxOrIq(actor.data.data.primaryAttributes.intelligence);
+            base = attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.intelligence);
         }
         else if (baseAttr.toUpperCase() == 'HT' || baseAttr.toUpperCase() == 'HEALTH') {
-            base = attributeHelpers.calcStOrHt(actor.data.data.primaryAttributes.health, 1);
+            base = attributeHelpers.calcStOrHt(actor.system.primaryAttributes.health, 1);
         }
         else if (baseAttr.toUpperCase() == 'PER' || baseAttr.toUpperCase() == 'PERCEPTION') {
-            base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(actor.data.data.primaryAttributes.intelligence), actor.data.data.primaryAttributes.perception);
+            base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.intelligence), actor.system.primaryAttributes.perception);
         }
         else if (baseAttr.toUpperCase() == 'WILL') {
-            base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(actor.data.data.primaryAttributes.intelligence), actor.data.data.primaryAttributes.will);
+            base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.intelligence), actor.system.primaryAttributes.will);
         }
         return base;
     }

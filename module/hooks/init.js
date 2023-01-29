@@ -206,8 +206,8 @@ Hooks.once("init", () => {
     name: "Simple Essential Materials for Bows, Crossbows, and Footbows",
     hint: "Essential materials are supposed to be three times as strong. This option makes that the case. Tensile strength is 3x it's base value and that's it. " +
         "With this option off, tensile strength is 9x it's base value and elastic modulus is 3x it's base value. This results in a max strain that is three times the value of the base material. " +
-        "Simple means that bows made with essential materials are better without actually needing to be designed specifically to take advantage of the new material. " +
-        "Complex means that bows made with essential materials are better and have even greater potential, but must be specifically designed to take advantage of the new material.",
+        "Simple means that bows made with essential materials are better without actually needing to be designed specifically to take advantage of the new material. Arrows are also no different than normal when made of essential materials. " +
+        "Complex means that bows made with essential materials are better and have even greater potential, but must be specifically designed to take advantage of the new material. Essential arrows also have different stats when set to Complex.",
     scope: "world",
     config: true,
     default: true,
@@ -216,7 +216,7 @@ Hooks.once("init", () => {
 
   game.settings.register("gurps4e", "manaTreasure", {
     name: "Include mana on Custom Jewelry",
-    hint: "For custom jewelry, include a display showing how much mana the item would be worth.",
+    hint: "For custom jewelry, include a display showing how much mana the item would be worth when using inanimate sacrifice from Thaumatology 55.",
     scope: "world",
     config: true,
     default: false,
@@ -235,7 +235,7 @@ Hooks.once("init", () => {
 
   game.settings.register("gurps4e", "allowTL4BreechLoaders", {
     name: "Allow Breech Loaders at TL4",
-    hint: "Breech loaders are technically TL4, rather than TL5. Though the players should generally need to invent it as a same-TL invention for it to be available this early.",
+    hint: "Breech loaders are technically TL4, rather than TL5. Though the players should generally need to invent it as a same-TL invention for it to be available unless you are in late TL4.",
     scope: "world",
     config: true,
     default: false,
@@ -251,23 +251,23 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  game.settings.register("gurps4e", "armourAsDice", {
-    name: "Armour As Dice - WIP",
-    hint: "Pyramid 3/34. DR converts to dice at 1d per 3.5. These dice are subtracted from the the attack, then the remainder is rolled. Makes guns behave better in HT and UT, is less appropriate for fantasy games with melee weapons and muscle powered ranged weapons.",
-    scope: "world",
-    config: true,
-    default: false,
-    type: Boolean
-  });
+  // game.settings.register("gurps4e", "armourAsDice", {
+  //   name: "Armour As Dice - WIP",
+  //   hint: "Pyramid 3/34. DR converts to dice at 1d per 3.5. These dice are subtracted from the the attack, then the remainder is rolled. Makes guns behave better in HT and UT, is less appropriate for fantasy games with melee weapons and muscle powered ranged weapons.",
+  //   scope: "world",
+  //   config: true,
+  //   default: false,
+  //   type: Boolean
+  // });
 
-  game.settings.register("gurps4e", "bleeding", {
-    name: "Use Bleeding Rules - WIP",
-    hint: "",
-    scope: "world",
-    config: true,
-    default: false,
-    type: Boolean
-  });
+  // game.settings.register("gurps4e", "bleeding", {
+  //   name: "Use Bleeding Rules - WIP",
+  //   hint: "",
+  //   scope: "world",
+  //   config: true,
+  //   default: false,
+  //   type: Boolean
+  // });
 
   // Pre-load templates
   loadTemplates([

@@ -314,6 +314,11 @@
 	margin-left: 5px;
 }
 
+.combat-tab-attack-header {
+	font-size: larger;
+	text-decoration: underline;
+}
+
 .combat-table td {
 	padding: 2px;
 }

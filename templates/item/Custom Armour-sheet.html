@@ -8,19 +8,19 @@
             <div class="equipmentDetails" id="equipmentDetails">
                 <div id="qty" class="equipmentStat">
                     <label class="resource-label">Qty:</label>
-                    <input type="number" name="data.quantity" value="{{data.data.quantity}}" data-dtype="Number"/>
+                    <input type="number" name="system.quantity" value="{{system.quantity}}" data-dtype="Number"/>
                 </div>
                 <div id="tl" class="equipmentStat">
                     <label class="resource-label">TL:</label>
-                    <input type="number" name="data.tl" value="{{data.data.tl}}" data-dtype="Number"/>
+                    <input type="number" name="system.tl" value="{{system.tl}}" data-dtype="Number"/>
                 </div>
                 <div id="lc" class="equipmentStat">
                     <label class="resource-label">LC:</label>
-                    {{data.data.lc}}
+                    {{system.lc}}
                 </div>
                 <div id="equipped" class="flexrow">
-                    <select name="data.equipStatus" class="equipStatusSelect">
-                        {{#select data.data.equipStatus}}
+                    <select name="system.equipStatus" class="equipStatusSelect">
+                        {{#select item.system.equipStatus}}
                         <option value="equipped">Equipped</option>
                         <option value="carried">Carried</option>
                         <option value="notCarried">Not Carried</option>
@@ -29,24 +29,24 @@
                 </div>
                 <div id="subCategory" class="flexrow">
                     <label class="resource-label" style="flex: 0.5;">Race / Meta Trait / Etc:</label>
-                    <input type="text" style="flex: 1;" name="data.subCategory" value="{{data.data.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
+                    <input type="text" style="flex: 1;" name="system.subCategory" value="{{system.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
                 </div>
                 <div id="value" class="equipmentStatLong">
                     <label class="resource-label">Value:</label>
-                    <label class="resource-label">{{round data.data.cost 100}}$</label>
-                    <label class="resource-label"> / {{round data.data.ttlCost 100}}$ total</label>
+                    <label class="resource-label">{{round system.cost 100}}$</label>
+                    <label class="resource-label"> / {{round system.ttlCost 100}}$ total</label>
                 </div>
                 <div id="weight" class="equipmentStatLong">
                     <label class="resource-label">Weight:</label>
-                    <label class="resource-label">{{round data.data.weight 100}}lbs</label>
-                    <label class="resource-label"> / {{round data.data.ttlWeight 100}}lbs total</label>
+                    <label class="resource-label">{{round system.weight 100}}lbs</label>
+                    <label class="resource-label"> / {{round system.ttlWeight 100}}lbs total</label>
                 </div>
             </div>
         </div>
     </header>
     <div style="padding-top: 2px;">
         <label class="resource-label" style="width: 32px;">Short Notes:</label>
-        <input type="text" name="data.shortNotes" value="{{data.data.shortNotes}}" style="width: calc(100% - 78px);"/>
+        <input type="text" name="system.shortNotes" value="{{system.shortNotes}}" style="width: calc(100% - 78px);"/>
     </div>
 
     {{!-- Sheet Tab Navigation --}}
@@ -57,7 +57,7 @@
         <div class="header">
             <a class="item" data-tab="setup">Setup</a>
         </div>
-        {{#unless (eq data.data.armour.bodyType.name "") }}
+        {{#unless (eq system.armour.bodyType.name "") }}
         <div class="header">
             <a class="item" data-tab="design">Design</a>
         </div>
@@ -77,7 +77,7 @@
         <div class="tab stats" data-tab="notes" data-group="primary">
             <h3 class="bold">Detailed Notes</h3>
             <div class="tab">
-                <textarea rows="8" name="data.notes">{{{data.data.notes}}}</textarea>
+                <textarea rows="8" name="system.notes">{{{system.notes}}}</textarea>
             </div>
         </div>
 
@@ -91,8 +91,8 @@
                             <tr class="design-row">
                                 <td>Body Type</td>
                                 <td>
-                                    <select name="data.armour.bodyType.name" class="bodyType">
-                                        {{#select data.data.armour.bodyType.name}}
+                                    <select name="system.armour.bodyType.name" class="bodyType">
+                                        {{#select item.system.armour.bodyType.name}}
                                         <option value="">Make a Selection</option>
                                         <option value="humanoid">Humanoid</option>
                                         <option value="wingedHumanoid">Winged Humanoid</option>
@@ -122,7 +122,7 @@
                             <tr class="design-row">
                                 <td>Layer</td>
                                 <td>
-                                    <input type="number" style="width: unset;" name="data.armour.layer" value="{{data.data.armour.layer}}" data-dtype="Number" />
+                                    <input type="number" style="width: unset;" name="system.armour.layer" value="{{system.armour.layer}}" data-dtype="Number" />
                                 </td>
                                 <td class="question-container" id="armour-layer">
                                     <div class="question-button">
@@ -131,14 +131,14 @@
                                 </td>
                             </tr>
 
-                            {{#unless data.data.armourDesign.getSizeFromActor}}
+                            {{#unless system.armourDesign.getSizeFromActor}}
                             <tr class="design-row">
-                                {{#if (eq data.data.armourDesign.scalingMethodForCustomArmour "weight") }}
-                                <td>Input Character Weight:</td><td><input type="number" style="width: unset;" name="data.armourDesign.inputWeight" value="{{data.data.armourDesign.inputWeight}}" data-dtype="Number" /></td>
-                                {{else if (eq data.data.armourDesign.scalingMethodForCustomArmour "height")}}
-                                <td>Input Character Height:</td><td><input type="number" style="width: unset;" name="data.armourDesign.inputHeight" value="{{data.data.armourDesign.inputHeight}}" data-dtype="Number" /></td>
+                                {{#if (eq system.armourDesign.scalingMethodForCustomArmour "weight") }}
+                                <td>Input Character Weight:</td><td><input type="number" style="width: unset;" name="system.armourDesign.inputWeight" value="{{system.armourDesign.inputWeight}}" data-dtype="Number" /></td>
+                                {{else if (eq system.armourDesign.scalingMethodForCustomArmour "height")}}
+                                <td>Input Character Height:</td><td><input type="number" style="width: unset;" name="system.armourDesign.inputHeight" value="{{system.armourDesign.inputHeight}}" data-dtype="Number" /></td>
                                 {{else}}
-                                <td>Input Character SM:</td><td><input type="number" style="width: unset;" name="data.armourDesign.inputSM" value="{{data.data.armourDesign.inputSM}}" data-dtype="Number" /></td>
+                                <td>Input Character SM:</td><td><input type="number" style="width: unset;" name="system.armourDesign.inputSM" value="{{system.armourDesign.inputSM}}" data-dtype="Number" /></td>
                                 {{/if}}
                                 <td class="question-container" id="armour-input-scaling">
                                     <div class="question-button">
@@ -156,8 +156,8 @@
                             <tr class="design-row">
                                 <td>Tailoring</td>
                                 <td>
-                                    <select name="data.armourDesign.tailoring">
-                                        {{#select data.data.armourDesign.tailoring}}
+                                    <select name="system.armourDesign.tailoring">
+                                        {{#select item.system.armourDesign.tailoring}}
                                         <option value="cheap">Cheap</option>
                                         <option value="">Regularly Tailored</option>
                                         <option value="expert">Expertly Tailored</option>
@@ -175,8 +175,8 @@
                             <tr class="design-row">
                                 <td>Styling</td>
                                 <td>
-                                    <select name="data.armourDesign.style">
-                                        {{#select data.data.armourDesign.style}}
+                                    <select name="system.armourDesign.style">
+                                        {{#select item.system.armourDesign.style}}
                                         <option value="0">No Styling</option>
                                         <option value="1">+1 Styling</option>
                                         <option value="2">+2 Styling (Presentation Quality)</option>
@@ -191,11 +191,11 @@
                                 </td>
                             </tr>
 
-                            {{#ifCond data.data.tl '>=' 6}}
+                            {{#ifCond system.tl '>=' 6}}
                             <tr class="design-row">
                                 <td>Sealed</td>
                                 <td>
-                                    <input type="checkbox" name="data.armourDesign.sealed" {{checked data.data.armourDesign.sealed}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.armourDesign.sealed" {{checked system.armourDesign.sealed}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="armour-sealed">
                                     <div class="question-button">
@@ -205,12 +205,12 @@
                             </tr>
                             {{/ifCond}}
 
-                            {{#if data.data.armourDesign.hasSole}}
-                            {{#ifCond data.data.tl '>=' 2}}
+                            {{#if system.armourDesign.hasSole}}
+                            {{#ifCond system.tl '>=' 2}}
                             <tr class="design-row">
                                 <td>Hobnails</td>
                                 <td>
-                                    <input type="checkbox" name="data.armourDesign.hobnails" {{checked data.data.armourDesign.hobnails}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.armourDesign.hobnails" {{checked system.armourDesign.hobnails}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="armour-hobnailed">
                                     <div class="question-button">
@@ -221,15 +221,15 @@
                             {{/ifCond}}
                             {{/if}}
 
-                            {{#if data.data.armourDesign.hasSteel}}
+                            {{#if system.armourDesign.hasSteel}}
                             <tr class="design-row">
                                 <td>Hardened Steel</td>
                                 <td>
-                                    <select name="data.armourDesign.steelHardening">
-                                        {{#select data.data.armourDesign.steelHardening}}
+                                    <select name="system.armourDesign.steelHardening">
+                                        {{#select item.system.armourDesign.steelHardening}}
                                         <option value="">None</option>
                                         <option value="hardened">Hardened Steel</option>
-                                        {{#if data.data.armourDesign.hasPlate}}
+                                        {{#if system.armourDesign.hasPlate}}
                                         <option value="duplex">Duplex Plate</option>
                                         {{/if}}
                                         {{/select}}
@@ -243,11 +243,11 @@
                             </tr>
                             {{/if}}
 
-                            {{#if (or data.data.armourDesign.hasPlate data.data.armourDesign.hasScale) }}
+                            {{#if (or system.armourDesign.hasPlate system.armourDesign.hasScale) }}
                             <tr class="design-row">
                                 <td>Fluting</td>
                                 <td>
-                                    <input type="checkbox" name="data.armourDesign.fluting" {{checked data.data.armourDesign.fluting}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.armourDesign.fluting" {{checked system.armourDesign.fluting}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="armour-fluting">
                                     <div class="question-button">
@@ -257,11 +257,11 @@
                             </tr>
                             {{/if}}
 
-                            {{#if data.data.armourDesign.hasMail}}
+                            {{#if system.armourDesign.hasMail}}
                             <tr class="design-row">
                                 <td>Banded Mail</td>
                                 <td>
-                                    <input type="checkbox" name="data.armourDesign.banded" {{checked data.data.armourDesign.banded}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.armourDesign.banded" {{checked system.armourDesign.banded}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="armour-banded">
                                     <div class="question-button">
@@ -273,7 +273,7 @@
                             <tr class="design-row">
                                 <td>Butted Mail</td>
                                 <td>
-                                    <input type="checkbox" name="data.armourDesign.butted" {{checked data.data.armourDesign.butted}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.armourDesign.butted" {{checked system.armourDesign.butted}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="armour-butted">
                                     <div class="question-button">
@@ -283,11 +283,11 @@
                             </tr>
                             {{/if}}
 
-                            {{#if data.data.armourDesign.hasCloth}}
+                            {{#if system.armourDesign.hasCloth}}
                             <tr class="design-row">
                                 <td>Silk</td>
                                 <td>
-                                    <input type="checkbox" name="data.armourDesign.silk" {{checked data.data.armourDesign.silk}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.armourDesign.silk" {{checked system.armourDesign.silk}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="armour-silk">
                                     <div class="question-button">
@@ -299,7 +299,7 @@
                             <tr class="design-row">
                                 <td>Paper</td>
                                 <td>
-                                    <input type="checkbox" name="data.armourDesign.paper" {{checked data.data.armourDesign.paper}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.armourDesign.paper" {{checked system.armourDesign.paper}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="armour-paper">
                                     <div class="question-button">
@@ -309,11 +309,11 @@
                             </tr>
                             {{/if}}
 
-                            {{#if  (or data.data.armourDesign.hasCloth data.data.armourDesign.hasLeather) }}
+                            {{#if  (or system.armourDesign.hasCloth system.armourDesign.hasLeather) }}
                             <tr class="design-row">
                                 <td>Reinforced</td>
                                 <td>
-                                    <input type="checkbox" name="data.armourDesign.reinforced" {{checked data.data.armourDesign.reinforced}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.armourDesign.reinforced" {{checked system.armourDesign.reinforced}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="armour-textile-reinforced">
                                     <div class="question-button">
@@ -323,11 +323,11 @@
                             </tr>
                             {{/if}}
 
-                            {{#if data.data.armourDesign.hasScale}}
+                            {{#if system.armourDesign.hasScale}}
                             <tr class="design-row">
                                 <td>Mountain Scale</td>
                                 <td>
-                                    <input type="checkbox" name="data.armourDesign.mountain" {{checked data.data.armourDesign.mountain}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.armourDesign.mountain" {{checked system.armourDesign.mountain}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="armour-mountain">
                                     <div class="question-button">
@@ -337,12 +337,12 @@
                             </tr>
                             {{/if}}
 
-                            {{#if data.data.armourDesign.hasLeather}}
+                            {{#if system.armourDesign.hasLeather}}
                             <tr class="design-row">
                                 <td>Leather Quality</td>
                                 <td>
-                                    <select name="data.armourDesign.leatherQuality">
-                                        {{#select data.data.armourDesign.leatherQuality}}
+                                    <select name="system.armourDesign.leatherQuality">
+                                        {{#select item.system.armourDesign.leatherQuality}}
                                         <option value="rawhide">Rawhide</option>
                                         <option value="">Standard</option>
                                         <option value="quality">Leather of Quality</option>
@@ -358,14 +358,14 @@
                             {{/if}}
                         </table>
 
-                        {{#if (or data.data.armourDesign.hasPunch data.data.armourDesign.hasKick) }}
+                        {{#if (or system.armourDesign.hasPunch system.armourDesign.hasKick) }}
                         <h2 class="bold" style="text-align: center;">Attack Options</h2>
                         <table>
-                            {{#if data.data.armourDesign.hasPunch}}
+                            {{#if system.armourDesign.hasPunch}}
                             <tr class="design-row">
                                 <td>Include punch attack profile</td>
                                 <td>
-                                    <input type="checkbox" name="data.armourDesign.punch" {{checked data.data.armourDesign.punch}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.armourDesign.punch" {{checked system.armourDesign.punch}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="armour-punch">
                                     <div class="question-button">
@@ -376,8 +376,8 @@
                             <tr class="design-row">
                                 <td>Punch Skill</td>
                                 <td>
-                                    <input style="width: 75%" type="text" placeholder="Skill" name="data.armourDesign.punchSkill" value="{{data.data.armourDesign.punchSkill}}"/>
-                                    <input style="width: 20%" type="number" placeholder="Mod" name="data.armourDesign.punchSkillMod" value="{{data.data.armourDesign.punchSkillMod}}"/>
+                                    <input style="width: 75%" type="text" placeholder="Skill" name="system.armourDesign.punchSkill" value="{{system.armourDesign.punchSkill}}"/>
+                                    <input style="width: 20%" type="number" placeholder="Mod" name="system.armourDesign.punchSkillMod" value="{{system.armourDesign.punchSkillMod}}"/>
                                 </td>
                                 <td class="question-container" id="armour-punch-skill">
                                     <div class="question-button">
@@ -386,11 +386,11 @@
                                 </td>
                             </tr>
                             {{/if}}
-                            {{#if data.data.armourDesign.hasKick}}
+                            {{#if system.armourDesign.hasKick}}
                             <tr class="design-row">
                                 <td>Include kick attack profile</td>
                                 <td>
-                                    <input type="checkbox" name="data.armourDesign.kick" {{checked data.data.armourDesign.kick}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.armourDesign.kick" {{checked system.armourDesign.kick}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="armour-kick">
                                     <div class="question-button">
@@ -401,8 +401,8 @@
                             <tr class="design-row">
                                 <td>Kick Skill</td>
                                 <td>
-                                    <input style="width: 75%" type="text" placeholder="Skill" name="data.armourDesign.kickSkill" value="{{data.data.armourDesign.kickSkill}}"/>
-                                    <input style="width: 20%" type="number" placeholder="Mod" name="data.armourDesign.kickSkillMod" value="{{data.data.armourDesign.kickSkillMod}}"/>
+                                    <input style="width: 75%" type="text" placeholder="Skill" name="system.armourDesign.kickSkill" value="{{system.armourDesign.kickSkill}}"/>
+                                    <input style="width: 20%" type="number" placeholder="Mod" name="system.armourDesign.kickSkillMod" value="{{system.armourDesign.kickSkillMod}}"/>
                                 </td>
                                 <td class="question-container" id="armour-kick-skill">
                                     <div class="question-button">
@@ -421,7 +421,7 @@
                             <tr class="design-row">
                                 <td>Concealed Armour</td>
                                 <td>
-                                    <input type="checkbox" name="data.armourDesign.concealed" {{checked data.data.armourDesign.concealed}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.armourDesign.concealed" {{checked system.armourDesign.concealed}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="armour-concealed">
                                     <div class="question-button">
@@ -429,11 +429,11 @@
                                     </div>
                                 </td>
                             </tr>
-                            {{#if data.data.armourDesign.concealed}}
+                            {{#if system.armourDesign.concealed}}
                             <tr class="design-row">
                                 <td>Holdout Penalty Reduction</td>
                                 <td>
-                                    <input type="number" style="width: unset;" name="data.armourDesign.holdoutReduction" value="{{data.data.armourDesign.holdoutReduction}}" data-dtype="Number" />
+                                    <input type="number" style="width: unset;" name="system.armourDesign.holdoutReduction" value="{{system.armourDesign.holdoutReduction}}" data-dtype="Number" />
                                 </td>
                                 <td class="question-container" id="armour-holdout-reduction">
                                     <div class="question-button">
@@ -445,8 +445,8 @@
                             <tr class="design-row">
                                 <td>Clothing</td>
                                 <td>
-                                    <select name="data.armourDesign.concealedClothing">
-                                        {{#select data.data.armourDesign.concealedClothing}}
+                                    <select name="system.armourDesign.concealedClothing">
+                                        {{#select item.system.armourDesign.concealedClothing}}
                                         <option value="">None</option>
                                         <option value="swimwear">Swimwear (-5)</option>
                                         <option value="summer">Summer Clothing (-3)</option>
@@ -468,9 +468,9 @@
                             </tr>
 
                             <tr class="design-row">
-                                <td>Clothing Status {{data.data.armourDesign.clothingStatus}}</td>
+                                <td>Clothing Status {{system.armourDesign.clothingStatus}}</td>
                                 <td>
-                                    <input type="range" min="-2" max="8" step="1" name="data.armourDesign.clothingStatus" value="{{data.data.armourDesign.clothingStatus}}" data-dtype="Number">
+                                    <input type="range" min="-2" max="8" step="1" name="system.armourDesign.clothingStatus" value="{{system.armourDesign.clothingStatus}}" data-dtype="Number">
                                 </td>
                                 <td class="question-container" id="armour-clothing-status">
                                     <div class="question-button">
@@ -482,8 +482,8 @@
                             <tr class="design-row">
                                 <td>Undercover Clothing</td>
                                 <td>
-                                    <select name="data.armourDesign.undercoverClothing">
-                                        {{#select data.data.armourDesign.undercoverClothing}}
+                                    <select name="system.armourDesign.undercoverClothing">
+                                        {{#select item.system.armourDesign.undercoverClothing}}
                                         <option value="0">No Bonus</option>
                                         <option value="1">+1 Bonus (+4 CF)</option>
                                         <option value="2">+2 Bonus (+19 CF)</option>
@@ -501,7 +501,7 @@
                     </div>
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
-                        <div class="equipment-info-container">{{{data.data.info}}}</div>
+                        <div class="equipment-info-container">{{{system.info}}}</div>
                     </div>
                 </div>
             </div>
@@ -510,12 +510,12 @@
         {{!-- Armour Design Tab --}}
         <div class="tab stats" data-tab="design" data-group="primary">
             <div class="tab">
-                {{#unless (eq data.data.armour.bodyType.name "") }}
+                {{#unless (eq system.armour.bodyType.name "") }}
                 <div>
                     <div>
                         <div>
                             <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
-                            <div class="equipment-info-container">{{{data.data.info}}}</div>
+                            <div class="equipment-info-container">{{{system.info}}}</div>
                         </div>
                     </div>
                     <table>
@@ -550,7 +550,7 @@
                                     <i class="fas fa-question"></i>
                                 </span>
                             </th>
-                            {{#if this.data.data.armourDesign.allowMagicalMaterialsForCustom}}
+                            {{#if this.system.armourDesign.allowMagicalMaterialsForCustom}}
                             <th class="question-container" id="armour-material-essential" style="width: 60px;">
                                 Essential
                                 <span class="small-question-button">
@@ -583,7 +583,7 @@
                                 </span>
                             </th>
                         </tr>
-                        {{#each data.data.armour.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
+                        {{#each system.armour.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
                         {{#if bodyPart.subLocation}}<!--Check to see if there are sublocations and display them-->
                         {{#each bodyPart.subLocation as |subLocation locationId|}}<!--Loop through the sublocations-->
                         {{#if subLocation.surfaceArea}}
@@ -602,26 +602,26 @@
                                 {{boolToYN subLocation.voider}}
                             </td>
                             <td>
-                                <select name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.material.name">
+                                <select name="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.material.name">
                                 {{#select subLocation.material.name}}
-                                {{#each ../../data.data.armourDesign.materials as |material id|}}
-                                {{#ifCond ../../../data.data.tl '>=' material.tl}}
+                                {{#each ../../system.armourDesign.materials as |material id|}}
+                                {{#ifCond ../../../item.system.tl '>=' material.tl}}
                                 <option value="{{material.name}}">{{material.name}}</option>
                                 {{/ifCond}}
                                 {{/each}}
                                 {{/select}}
                                 </select>
                             </td>
-                            {{#if ../../this.data.data.armourDesign.allowMagicalMaterialsForCustom}}
+                            {{#if ../../this.system.armourDesign.allowMagicalMaterialsForCustom}}
                             <td>
-                                <input type="checkbox" name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.material.essential" {{checked subLocation.material.essential}} data-dtype="Boolean" style="width: 100%;"/>
+                                <input type="checkbox" name="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.material.essential" {{checked subLocation.material.essential}} data-dtype="Boolean" style="width: 100%;"/>
                             </td>
                             {{/if}}
                             <td>
-                                <select name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.construction.name">
+                                <select name="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.construction.name">
                                     {{#select subLocation.construction.name}}
-                                    {{#each ../../data.data.armourDesign.constructionTypes as |construction id|}}
-                                    {{#armourConstructionLimit ../../../data.data.tl construction subLocation bodyPart}}
+                                    {{#each ../../system.armourDesign.constructionTypes as |construction id|}}
+                                    {{#armourConstructionLimit ../../../item.system.tl construction subLocation bodyPart}}
                                     <option value="{{construction.name}}">{{construction.name}}</option>
                                     {{/armourConstructionLimit}}
                                     {{/each}}
@@ -629,7 +629,7 @@
                                 </select>
                             </td>
                             <td style="{{{valueInRangeStyle subLocation.construction.minDR subLocation.selectedDR subLocation.material.maxDR}}}" class="custom-armour-selected-dr">
-                                {{subLocation.construction.minDR}} / <input type="number" name="data.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.selectedDR" value="{{subLocation.selectedDR}}" data-dtype="Number" style="width: 30px;"/> / {{subLocation.material.maxDR}}
+                                {{subLocation.construction.minDR}} / <input type="number" name="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.selectedDR" value="{{subLocation.selectedDR}}" data-dtype="Number" style="width: 30px;"/> / {{subLocation.material.maxDR}}
                             </td>
                             <td>
                                 {{round subLocation.cost 100}}
@@ -649,26 +649,26 @@
                             </td>
                             <td></td>
                             <td>
-                                <select name="data.armour.bodyType.body.{{partId}}.material.name">
+                                <select name="system.armour.bodyType.body.{{partId}}.material.name">
                                     {{#select bodyPart.material.name}}
-                                    {{#each ../data.data.armourDesign.materials as |material id|}}
-                                    {{#ifCond ../../data.data.tl '>=' material.tl}}
+                                    {{#each ../system.armourDesign.materials as |material id|}}
+                                    {{#ifCond ../../item.system.tl '>=' material.tl}}
                                     <option value="{{material.name}}">{{material.name}}</option>
                                     {{/ifCond}}
                                     {{/each}}
                                     {{/select}}
                                 </select>
                             </td>
-                            {{#if ../this.data.data.armourDesign.allowMagicalMaterialsForCustom}}
+                            {{#if ../this.system.armourDesign.allowMagicalMaterialsForCustom}}
                             <td>
-                                <input type="checkbox" name="data.armour.bodyType.body.{{partId}}.material.essential" {{checked bodyPart.material.essential}} data-dtype="Boolean" style="width: 100%;"/>
+                                <input type="checkbox" name="system.armour.bodyType.body.{{partId}}.material.essential" {{checked bodyPart.material.essential}} data-dtype="Boolean" style="width: 100%;"/>
                             </td>
                             {{/if}}
                             <td>
-                                <select name="data.armour.bodyType.body.{{partId}}.construction.name">
+                                <select name="system.armour.bodyType.body.{{partId}}.construction.name">
                                     {{#select bodyPart.construction.name}}
-                                    {{#each ../data.data.armourDesign.constructionTypes as |construction id|}}
-                                    {{#armourConstructionLimit ../../data.data.tl construction bodyPart bodyPart}}
+                                    {{#each ../system.armourDesign.constructionTypes as |construction id|}}
+                                    {{#armourConstructionLimit ../../item.system.tl construction bodyPart bodyPart}}
                                     <option value="{{construction.name}}">{{construction.name}}</option>
                                     {{/armourConstructionLimit}}
                                     {{/each}}
@@ -676,7 +676,7 @@
                                 </select>
                             </td>
                             <td style="{{{valueInRangeStyle bodyPart.construction.minDR bodyPart.selectedDR bodyPart.material.maxDR}}}" class="custom-armour-selected-dr">
-                                {{bodyPart.construction.minDR}} / <input type="number" name="data.armour.bodyType.body.{{partId}}.selectedDR" value="{{bodyPart.selectedDR}}" data-dtype="Number" style="width: 30px;"/> / {{bodyPart.material.maxDR}}
+                                {{bodyPart.construction.minDR}} / <input type="number" name="system.armour.bodyType.body.{{partId}}.selectedDR" value="{{bodyPart.selectedDR}}" data-dtype="Number" style="width: 30px;"/> / {{bodyPart.material.maxDR}}
                             </td>
                             <td>
                                 {{round bodyPart.cost 100}}
@@ -697,7 +697,7 @@
         <div class="tab stats" data-tab="armour" data-group="primary">
             <div class="tab">
                 <table class="dr-entry-table">
-                    {{#unless (eq data.data.armour.bodyType.name "") }}
+                    {{#unless (eq system.armour.bodyType.name "") }}
                         <tr class="hit-locations">
                             <td class="dr-header"></td>
                             <td class="dr-header" style="width: 30px;">Flex</td>
@@ -715,7 +715,7 @@
                             <td class="dr-damage-types" style="width: 60px;">Holdout</td>
                         </tr>
                     {{/unless}}
-                    {{#each data.data.armour.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
+                    {{#each system.armour.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
                     <tr class="hit-locations master-location">
                         <th colspan="14">
                             <div>{{bodyPart.label}}</div>
@@ -828,7 +828,7 @@
                                 <tr class="design-row">
                                     <td>Time to Don:</td>
                                     <td>
-                                        {{data.data.armourDesign.donTime}} seconds
+                                        {{system.armourDesign.donTime}} seconds
                                     </td>
                                     <td class="question-container" id="armour-don-time">
                                         <div class="question-button">
@@ -839,7 +839,7 @@
                                 <tr class="design-row">
                                     <td>Status Equivalent:</td>
                                     <td>
-                                        {{data.data.armourDesign.statusEq}}
+                                        {{system.armourDesign.statusEq}}
                                     </td>
                                     <td class="question-container" id="armour-status-eq">
                                         <div class="question-button">
@@ -850,7 +850,7 @@
                                 <tr class="design-row">
                                     <td>Can Pass For:</td>
                                     <td>
-                                        {{data.data.armourDesign.canPassFor}}
+                                        {{system.armourDesign.canPassFor}}
                                     </td>
                                     <td class="question-container" id="armour-can-pass-for">
                                         <div class="question-button">
@@ -861,7 +861,7 @@
                                 <tr class="design-row">
                                     <td>Holdout:</td>
                                     <td>
-                                        {{round data.data.armourDesign.holdout 1}}
+                                        {{round system.armourDesign.holdout 1}}
                                     </td>
                                     <td class="question-container" id="armour-holdout">
                                         <div class="question-button">
@@ -874,7 +874,7 @@
                     </div>
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
-                        <div class="equipment-info-container">{{{data.data.info}}}</div>
+                        <div class="equipment-info-container">{{{system.info}}}</div>
                     </div>
                 </div>
             </div>

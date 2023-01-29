@@ -13,7 +13,7 @@ import { vehicleHelpers } from "../../helpers/vehicleHelpers.js";
  */
 export class gurpsItem extends Item {
   /**
-   * Augment the basic Item data model with additional dynamic data.
+   * Augment the basic Item data model with additional dynamic system.
    * 
    * Note: This does not appear to do anything that is not already accomplished
    * by template.json but may be part of the functionality required for dynamic 
@@ -34,7 +34,7 @@ export class gurpsItem extends Item {
   prepareData() {
     super.prepareData();
 
-    switch (this.data.type) {
+    switch (this.type) {
       case "Equipment":
         this._prepareEquipmentData();
         break;
@@ -60,74 +60,74 @@ export class gurpsItem extends Item {
         this._prepareCustomJewelryData();
         break;
       default: // not a supported type
-        return ui.notifications.error("This type of item is not supported in the system!");
+       console.error("This type of item is not supported in the system!");
     }
     this.prepareAttackData();
   }
 
   validateEquipmentBasics() {
     // Check for undefined on cost, weight, and quantity
-    if (typeof this.data.data.cost === undefined || typeof this.data.data.cost == null) { // Undefined set to 0
-      this.data.data.cost = 0;
+    if (typeof this.system.cost === undefined || typeof this.system.cost == null) { // Undefined set to 0
+      this.system.cost = 0;
     }
-    if (typeof this.data.data.weight === undefined || typeof this.data.data.weight == null) { // Undefined set to 0
-      this.data.data.weight = 0;
+    if (typeof this.system.weight === undefined || typeof this.system.weight == null) { // Undefined set to 0
+      this.system.weight = 0;
     }
-    if (typeof this.data.data.quantity === undefined || typeof this.data.data.quantity == null) { // Undefined set to 0
-      this.data.data.quantity = 0;
+    if (typeof this.system.quantity === undefined || typeof this.system.quantity == null) { // Undefined set to 0
+      this.system.quantity = 0;
     }
 
     // Constrain TL to valid values
-    if (typeof this.data.data.tl === undefined || this.data.data.tl == null || this.data.data.tl === "") { // If it's undefined, blank, or null, set to default.
-      this.data.data.tl = game.settings.get("gurps4e", "campaignTL");
+    if (typeof this.system.tl === undefined || this.system.tl == null || this.system.tl === "") { // If it's undefined, blank, or null, set to default.
+      this.system.tl = game.settings.get("gurps4e", "campaignTL");
     }
 
     //Constrain LC to valid values
-    if (typeof this.data.data.lc === undefined || typeof this.data.data.lc == null) { // Undefined set to 4 (Open)
-      this.data.data.lc = 4;
+    if (typeof this.system.lc === undefined || typeof this.system.lc == null) { // Undefined set to 4 (Open)
+      this.system.lc = 4;
     }
   }
 
   finalEquipmentCalculation() {
     // Check for undefined on cost, weight, and quantity
-    if (typeof this.data.data.cost === undefined || typeof this.data.data.cost == null) { // Undefined set to 0
-      this.data.data.cost = 0;
+    if (typeof this.system.cost === undefined || typeof this.system.cost == null) { // Undefined set to 0
+      this.system.cost = 0;
     }
-    if (typeof this.data.data.weight === undefined || typeof this.data.data.weight == null) { // Undefined set to 0
-      this.data.data.weight = 0;
+    if (typeof this.system.weight === undefined || typeof this.system.weight == null) { // Undefined set to 0
+      this.system.weight = 0;
     }
-    if (typeof this.data.data.quantity === undefined || typeof this.data.data.quantity == null) { // Undefined set to 0
-      this.data.data.quantity = 0;
+    if (typeof this.system.quantity === undefined || typeof this.system.quantity == null) { // Undefined set to 0
+      this.system.quantity = 0;
     }
 
-    this.data.data.cost = Math.round(+this.data.data.cost * 100) / 100;
-    this.data.data.weight = Math.round(+this.data.data.weight * 100000) / 100000;
-    this.data.data.quantity = Math.round(+this.data.data.quantity);
+    this.system.cost = Math.round(+this.system.cost * 100) / 100;
+    this.system.weight = Math.round(+this.system.weight * 100000) / 100000;
+    this.system.quantity = Math.round(+this.system.quantity);
 
     // Calculated total weight and cost
-    this.data.data.ttlCost = Math.round((+this.data.data.cost * +this.data.data.quantity) * 100) / 100;
-    this.data.data.ttlWeight = Math.round((+this.data.data.weight * +this.data.data.quantity) * 100) / 100;
+    this.system.ttlCost = Math.round((+this.system.cost * +this.system.quantity) * 100) / 100;
+    this.system.ttlWeight = Math.round((+this.system.weight * +this.system.quantity) * 100) / 100;
 
     // Constrain TL to valid values
-    if (typeof this.data.data.tl === undefined || this.data.data.tl == null || this.data.data.tl === "") { // If it's undefined, blank, or null, set to default.
-      this.data.data.tl = game.settings.get("gurps4e", "campaignTL");
+    if (typeof this.system.tl === undefined || this.system.tl == null || this.system.tl === "") { // If it's undefined, blank, or null, set to default.
+      this.system.tl = game.settings.get("gurps4e", "campaignTL");
     }
-    if (this.data.data.tl < 0){ // Too low
-      this.data.data.tl = 0;
+    if (this.system.tl < 0){ // Too low
+      this.system.tl = 0;
     }
-    else if (this.data.data.tl > 12){ // Too high
-      this.data.data.tl = 12;
+    else if (this.system.tl > 12){ // Too high
+      this.system.tl = 12;
     }
 
     //Constrain LC to valid values
-    if (typeof this.data.data.lc === undefined || typeof this.data.data.lc == null) { // Undefined set to 4 (Open)
-      this.data.data.lc = 4;
+    if (typeof this.system.lc === undefined || typeof this.system.lc == null) { // Undefined set to 4 (Open)
+      this.system.lc = 4;
     }
-    if (this.data.data.lc < 0){ // Too low
-      this.data.data.lc = 0;
+    if (this.system.lc < 0){ // Too low
+      this.system.lc = 0;
     }
-    else if (this.data.data.lc > 4){ // Too high
-      this.data.data.lc = 4;
+    else if (this.system.lc > 4){ // Too high
+      this.system.lc = 4;
     }
   }
 
@@ -139,8 +139,8 @@ export class gurpsItem extends Item {
   _prepareTravelFare() {
     this.validateEquipmentBasics();
 
-    if (typeof this.data.data.travelFare == "undefined") {
-      this.data.data.travelFare = {
+    if (typeof this.system.travelFare == "undefined") {
+      this.system.travelFare = {
         "method": "ground",
         "tlRange": 0,
         "unit": "mile",
@@ -156,57 +156,57 @@ export class gurpsItem extends Item {
       }
     }
 
-    this.data.data.travelFare.units = distanceHelpers.listUnits();
-    this.data.data.travelFare.vehicles = vehicleHelpers.fetchVehicles();
-    this.data.data.travelFare.vehicleCatalogue = vehicleHelpers.fetchVehicleCatalogue(this.data.data.travelFare.method, this.data.data.tl, this.data.data.travelFare.tlRange);
+    this.system.travelFare.units = distanceHelpers.listUnits();
+    this.system.travelFare.vehicles = vehicleHelpers.fetchVehicles();
+    this.system.travelFare.vehicleCatalogue = vehicleHelpers.fetchVehicleCatalogue(this.system.travelFare.method, this.system.tl, this.system.travelFare.tlRange);
 
-    if (typeof this.data.data.travelFare.tlRange == "undefined" || this.data.data.travelFare.tlRange < 0) {
-      this.data.data.travelFare.tlRange = 0;
+    if (typeof this.system.travelFare.tlRange == "undefined" || this.system.travelFare.tlRange < 0) {
+      this.system.travelFare.tlRange = 0;
     }
-    else if (this.data.data.travelFare.tlRange > this.data.data.tl){
-      this.data.data.travelFare.tlRange = this.data.data.tl;
+    else if (this.system.travelFare.tlRange > this.system.tl){
+      this.system.travelFare.tlRange = this.system.tl;
     }
 
-    let distanceInYards = distanceHelpers.convertToYards(this.data.data.travelFare.distance, this.data.data.travelFare.unit);
+    let distanceInYards = distanceHelpers.convertToYards(this.system.travelFare.distance, this.system.travelFare.unit);
     let distanceInMiles = distanceInYards / 1760;
 
-    this.data.data.travelFare.vehicle = vehicleHelpers.getVehicleByCode(this.data.data.travelFare.vehicleCode);
+    this.system.travelFare.vehicle = vehicleHelpers.getVehicleByCode(this.system.travelFare.vehicleCode);
 
-    if (typeof this.data.data.travelFare.vehicle !== "undefined") {
+    if (typeof this.system.travelFare.vehicle !== "undefined") {
 
       // Validation for travelling hours
-      if (typeof this.data.data.travelFare.travellingHours == "undefined" || this.data.data.travelFare.travellingHours <= 0) { // Traveling hours is undefined or negative/zero. Set it to the default.
-        if (this.data.data.travelFare.vehicle.naval) { // Vehicle is naval or air, default is 24
-          this.data.data.travelFare.travellingHours = 24;
+      if (typeof this.system.travelFare.travellingHours == "undefined" || this.system.travelFare.travellingHours <= 0) { // Traveling hours is undefined or negative/zero. Set it to the default.
+        if (this.system.travelFare.vehicle.naval) { // Vehicle is naval or air, default is 24
+          this.system.travelFare.travellingHours = 24;
         }
         else { // Vehicle is ground, default is 8
-          this.data.data.travelFare.travellingHours = 8;
+          this.system.travelFare.travellingHours = 8;
         }
       }
-      else if (this.data.data.travelFare.travellingHours > 24){ // Travelling hours is more than 24, set it to 24
-        this.data.data.travelFare.travellingHours = 24;
+      else if (this.system.travelFare.travellingHours > 24){ // Travelling hours is more than 24, set it to 24
+        this.system.travelFare.travellingHours = 24;
       }
-      else if (typeof this.data.data.travelFare.vehicle.animal !== "undefined"){ // The vehicle requires animals to draw it
-        if (this.data.data.travelFare.travellingHours > 8 && this.data.data.travelFare.travellingHours <= 9.3) { // The vehicle is in it's rest period, push the selected hours out of that period.
-          if (this.data.data.travelFare.travellingHours > 8.65) { // The travel time is in the bottom half of the rest period
-            this.data.data.travelFare.travellingHours = 8; // Move it to before the rest period
+      else if (typeof this.system.travelFare.vehicle.animal !== "undefined"){ // The vehicle requires animals to draw it
+        if (this.system.travelFare.travellingHours > 8 && this.system.travelFare.travellingHours <= 9.3) { // The vehicle is in it's rest period, push the selected hours out of that period.
+          if (this.system.travelFare.travellingHours > 8.65) { // The travel time is in the bottom half of the rest period
+            this.system.travelFare.travellingHours = 8; // Move it to before the rest period
           }
           else { // The travel time is in the upper half of the rest period.
-            this.data.data.travelFare.travellingHours = 9.4; // Move it to after the rest period
+            this.system.travelFare.travellingHours = 9.4; // Move it to after the rest period
           }
         }
       }
 
-      let travellingHoursMinusRest = this.data.data.travelFare.travellingHours;
+      let travellingHoursMinusRest = this.system.travelFare.travellingHours;
 
-      if (this.data.data.travelFare.vehicle.animals > 0 && this.data.data.travelFare.travellingHours >= 9.3) { // There are animals involved and the trip is long enough to require a rest.
+      if (this.system.travelFare.vehicle.animals > 0 && this.system.travelFare.travellingHours >= 9.3) { // There are animals involved and the trip is long enough to require a rest.
         travellingHoursMinusRest -= 1.3; // Remove the rest hours from the effective travelling hours.
       }
 
       // Travel Time Calculation
-      let cargoSpacePounds = this.data.data.travelFare.vehicle.load * 2000;
+      let cargoSpacePounds = this.system.travelFare.vehicle.load * 2000;
 
-      if (this.data.data.travelFare.vehicle.naval) {
+      if (this.system.travelFare.vehicle.naval) {
         let downwindTime = "";
 
         let downwindHoursDecimal = 0;
@@ -214,34 +214,34 @@ export class gurpsItem extends Item {
         let downwindHours = 0;
         let downwindMinutes = 0;
 
-        downwindHoursDecimal = (distanceInMiles / (this.data.data.travelFare.vehicle.moveDownwind * 2));
+        downwindHoursDecimal = (distanceInMiles / (this.system.travelFare.vehicle.moveDownwind * 2));
         downwindDays = Math.floor(downwindHoursDecimal / travellingHoursMinusRest);
         downwindHours = Math.floor(downwindHoursDecimal - (downwindDays * travellingHoursMinusRest));
         downwindMinutes = Math.floor((downwindHoursDecimal - Math.floor(downwindHoursDecimal)) * 60);
         downwindTime = downwindDays + " days, " + downwindHours + " hours, " + downwindMinutes + " minutes.";
 
         // TODO - Use the new vehicleRunningCosts method
-        let downwindVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.data.data.travelFare.vehicle.cost, this.data.data.travelFare.vehicle.crew, downwindHoursDecimal, travellingHoursMinusRest);
+        let downwindVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.travelFare.vehicle.cost, this.system.travelFare.vehicle.crew, downwindHoursDecimal, travellingHoursMinusRest);
 
-        if (this.data.data.travelFare.vehicle.sail) {
+        if (this.system.travelFare.vehicle.sail) {
           let upwindTime = "";
           let upwindHoursDecimal = 0;
           let upwindDays = 0;
           let upwindHours = 0;
           let upwindMinutes = 0;
 
-          upwindHoursDecimal = (distanceInMiles / (this.data.data.travelFare.vehicle.moveUpwind * 2));
+          upwindHoursDecimal = (distanceInMiles / (this.system.travelFare.vehicle.moveUpwind * 2));
           upwindDays = Math.floor(upwindHoursDecimal / travellingHoursMinusRest);
           upwindHours = Math.floor(upwindHoursDecimal - (upwindDays * travellingHoursMinusRest));
           upwindMinutes = Math.floor((upwindHoursDecimal - Math.floor(upwindHoursDecimal)) * 60);
           upwindTime = upwindDays + " days, " + upwindHours + " hours, " + upwindMinutes + " minutes.";
 
-          this.data.data.travelFare.travelTime = "Travelling with the wind: " + downwindTime;
-          this.data.data.travelFare.travelTime += "<br/>Travelling against the wind: " + upwindTime;
+          this.system.travelFare.travelTime = "Travelling with the wind: " + downwindTime;
+          this.system.travelFare.travelTime += "<br/>Travelling against the wind: " + upwindTime;
 
-          let upwindVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.data.data.travelFare.vehicle.cost, this.data.data.travelFare.vehicle.crew, upwindHoursDecimal, travellingHoursMinusRest);
+          let upwindVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.travelFare.vehicle.cost, this.system.travelFare.vehicle.crew, upwindHoursDecimal, travellingHoursMinusRest);
 
-          this.data.data.travelFare.travelCost = "<table>" +
+          this.system.travelFare.travelCost = "<table>" +
               "<tr><th colspan='2'>Travelling with the wind</th></tr>" +
               "<tr><td>Maintenance Costs</td><td>"  + Math.floor(downwindVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
               "<tr><td>Crew Salaries</td><td>"      + Math.floor(downwindVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
@@ -251,7 +251,7 @@ export class gurpsItem extends Item {
               "<tr><td>Free Cargo Space</td><td>"   + Math.floor((cargoSpacePounds - downwindVehicleRunningCosts.provisionsWeight) * 100) / 100 + " lbs</td></tr>" +
               "</table>";
 
-          this.data.data.travelFare.travelCost += "<table>" +
+          this.system.travelFare.travelCost += "<table>" +
               "<tr><th colspan='2'>Travelling against the wind</th></tr>" +
               "<tr><td>Maintenance Costs</td><td>"  + Math.floor(upwindVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
               "<tr><td>Crew Salaries</td><td>"      + Math.floor(upwindVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
@@ -264,9 +264,9 @@ export class gurpsItem extends Item {
 
         }
         else {
-          this.data.data.travelFare.travelTime = downwindTime;
+          this.system.travelFare.travelTime = downwindTime;
 
-          this.data.data.travelFare.travelCost = "<table>" +
+          this.system.travelFare.travelCost = "<table>" +
               "<tr><td>Maintenance Costs</td><td>"  + Math.floor(downwindVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
               "<tr><td>Crew Salaries</td><td>"      + Math.floor(downwindVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
               "<tr><td>Provisions Cost</td><td>"    + Math.floor(downwindVehicleRunningCosts.provisionsCost * 100) / 100 + " $</td></tr>" +
@@ -276,24 +276,24 @@ export class gurpsItem extends Item {
               "</table>";
         }
       }
-      else if (this.data.data.travelFare.vehicle.ground) {
+      else if (this.system.travelFare.vehicle.ground) {
         let roadTime = "";
 
         let roadHoursDecimal = 0;
         let roadDays = 0;
         let roadHours = 0;
         let roadMinutes = 0;
-        this.data.data.travelFare.travelCost = "";
+        this.system.travelFare.travelCost = "";
 
-        roadHoursDecimal = (distanceInMiles / (this.data.data.travelFare.vehicle.moveRoad * 2));
+        roadHoursDecimal = (distanceInMiles / (this.system.travelFare.vehicle.moveRoad * 2));
         roadDays = Math.floor(roadHoursDecimal / travellingHoursMinusRest);
         roadHours = Math.floor(roadHoursDecimal - (roadDays * travellingHoursMinusRest));
         roadMinutes = Math.floor((roadHoursDecimal - Math.floor(roadHoursDecimal)) * 60);
         roadTime = "Travelling by road: " + roadDays + " days, " + roadHours + " hours, " + roadMinutes + " minutes.";
 
-        let roadVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.data.data.travelFare.vehicle.cost, this.data.data.travelFare.vehicle.crew, roadHoursDecimal, travellingHoursMinusRest);
+        let roadVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.travelFare.vehicle.cost, this.system.travelFare.vehicle.crew, roadHoursDecimal, travellingHoursMinusRest);
 
-        this.data.data.travelFare.travelCost += "<table>" +
+        this.system.travelFare.travelCost += "<table>" +
             "<tr><th colspan='2'>Travelling by road</th></tr>" +
             "<tr><td>Maintenance Costs</td><td>"  + Math.floor(roadVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
             "<tr><td>Crew Salaries</td><td>"      + Math.floor(roadVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
@@ -311,15 +311,15 @@ export class gurpsItem extends Item {
         let goodHours = 0;
         let goodMinutes = 0;
 
-        goodHoursDecimal = (distanceInMiles / (this.data.data.travelFare.vehicle.moveGood * 2));
+        goodHoursDecimal = (distanceInMiles / (this.system.travelFare.vehicle.moveGood * 2));
         goodDays = Math.floor(goodHoursDecimal / travellingHoursMinusRest);
         goodHours = Math.floor(goodHoursDecimal - (goodDays * travellingHoursMinusRest));
         goodMinutes = Math.floor((goodHoursDecimal - Math.floor(goodHoursDecimal)) * 60);
         goodTime = "Travelling on good terrain: " + goodDays + " days, " + goodHours + " hours, " + goodMinutes + " minutes.";
 
-        let goodVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.data.data.travelFare.vehicle.cost, this.data.data.travelFare.vehicle.crew, goodHoursDecimal, travellingHoursMinusRest);
+        let goodVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.travelFare.vehicle.cost, this.system.travelFare.vehicle.crew, goodHoursDecimal, travellingHoursMinusRest);
 
-        this.data.data.travelFare.travelCost += "<table>" +
+        this.system.travelFare.travelCost += "<table>" +
             "<tr><th colspan='2'>Travelling on good terrain</th></tr>" +
             "<tr><td>Maintenance Costs</td><td>"  + Math.floor(goodVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
             "<tr><td>Crew Salaries</td><td>"      + Math.floor(goodVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
@@ -337,15 +337,15 @@ export class gurpsItem extends Item {
         let averageHours = 0;
         let averageMinutes = 0;
 
-        averageHoursDecimal = (distanceInMiles / (this.data.data.travelFare.vehicle.moveAverage * 2));
+        averageHoursDecimal = (distanceInMiles / (this.system.travelFare.vehicle.moveAverage * 2));
         averageDays = Math.floor(averageHoursDecimal / travellingHoursMinusRest);
         averageHours = Math.floor(averageHoursDecimal - (averageDays * travellingHoursMinusRest));
         averageMinutes = Math.floor((averageHoursDecimal - Math.floor(averageHoursDecimal)) * 60);
         averageTime = "Travelling on average terrain: " + averageDays + " days, " + averageHours + " hours, " + averageMinutes + " minutes.";
 
-        let averageVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.data.data.travelFare.vehicle.cost, this.data.data.travelFare.vehicle.crew, averageHoursDecimal, travellingHoursMinusRest);
+        let averageVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.travelFare.vehicle.cost, this.system.travelFare.vehicle.crew, averageHoursDecimal, travellingHoursMinusRest);
 
-        this.data.data.travelFare.travelCost += "<table>" +
+        this.system.travelFare.travelCost += "<table>" +
             "<tr><th colspan='2'>Travelling on good terrain</th></tr>" +
             "<tr><td>Maintenance Costs</td><td>"  + Math.floor(averageVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
             "<tr><td>Crew Salaries</td><td>"      + Math.floor(averageVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
@@ -356,10 +356,10 @@ export class gurpsItem extends Item {
             "<tr><td></td><td></td></tr>" +
             "</table>";
 
-        this.data.data.travelFare.travelTime = roadTime + "<br/>" + goodTime + "<br/>" + averageTime;
+        this.system.travelFare.travelTime = roadTime + "<br/>" + goodTime + "<br/>" + averageTime;
 
       }
-      else if (this.data.data.travelFare.vehicle.air) {
+      else if (this.system.travelFare.vehicle.air) {
         let airTime = "";
 
         let airHoursDecimal = 0;
@@ -367,15 +367,15 @@ export class gurpsItem extends Item {
         let airHours = 0;
         let airMinutes = 0;
 
-        airHoursDecimal = (distanceInMiles / (this.data.data.travelFare.vehicle.moveGood * 2));
+        airHoursDecimal = (distanceInMiles / (this.system.travelFare.vehicle.moveGood * 2));
         airDays = Math.floor(airHoursDecimal / travellingHoursMinusRest);
         airHours = Math.floor(airHoursDecimal - (airDays * travellingHoursMinusRest));
         airMinutes = Math.floor((airHoursDecimal - Math.floor(airHoursDecimal)) * 60);
         airTime = airDays + " days, " + airHours + " hours, " + airMinutes + " minutes.";
 
-        let airVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.data.data.travelFare.vehicle.cost, this.data.data.travelFare.vehicle.crew, airHoursDecimal, travellingHoursMinusRest);
+        let airVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.travelFare.vehicle.cost, this.system.travelFare.vehicle.crew, airHoursDecimal, travellingHoursMinusRest);
 
-        this.data.data.travelFare.travelCost += "<table>" +
+        this.system.travelFare.travelCost += "<table>" +
             "<tr><th colspan='2'>Travelling by road</th></tr>" +
             "<tr><td>Maintenance Costs</td><td>"  + Math.floor(airVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
             "<tr><td>Crew Salaries</td><td>"      + Math.floor(airVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
@@ -386,24 +386,24 @@ export class gurpsItem extends Item {
             "<tr><td></td><td></td></tr>" +
             "</table>";
 
-        this.data.data.travelFare.travelTime = airTime;
+        this.system.travelFare.travelTime = airTime;
       }
     }
     else {
-      this.data.data.travelFare.travelTime = "";
+      this.system.travelFare.travelTime = "";
     }
 
     this.finalEquipmentCalculation();
 
-    this.data.data.travelFare.initComplete = true;
+    this.system.travelFare.initComplete = true;
   }
 
   _prepareCustomArmourData() {
     this.validateEquipmentBasics();
 
-    if (this.data.data.armour.bodyType.body) {
-      if (typeof this.data.data.armourDesign == "undefined"){
-        this.data.data.armourDesign = {
+    if (this.system.armour.bodyType.body) {
+      if (typeof this.system.armourDesign == "undefined"){
+        this.system.armourDesign = {
           "materials": [],
           "constructionTypes": [],
           "allowMagicalMaterialsForCustom": false,
@@ -457,91 +457,89 @@ export class gurpsItem extends Item {
       }
 
       // Get materials and construction methods
-      this.data.data.armourDesign.materials = game.materialAPI.fetchArmourMaterials();
-      this.data.data.armourDesign.constructionTypes = game.materialAPI.fetchArmourConstructionMethods();
+      this.system.armourDesign.materials = game.materialAPI.fetchArmourMaterials();
+      this.system.armourDesign.constructionTypes = game.materialAPI.fetchArmourConstructionMethods();
 
       // Get game settings relevant to the design of the laser
-      this.data.data.armourDesign.allowMagicalMaterialsForCustom = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
-      this.data.data.armourDesign.scalingMethodForCustomArmour = game.settings.get("gurps4e", "scalingMethodForCustomArmour");
-      this.data.data.armourDesign.adjustedHoldoutPenaltyForCustomArmour = game.settings.get("gurps4e", "adjustedHoldoutPenaltyForCustomArmour");
+      this.system.armourDesign.allowMagicalMaterialsForCustom = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
+      this.system.armourDesign.scalingMethodForCustomArmour = game.settings.get("gurps4e", "scalingMethodForCustomArmour");
+      this.system.armourDesign.adjustedHoldoutPenaltyForCustomArmour = game.settings.get("gurps4e", "adjustedHoldoutPenaltyForCustomArmour");
 
       // Validations
-      if(this.data.data.armourDesign.holdoutReduction < 0) { // If it's less than zero
-        this.data.data.armourDesign.holdoutReduction = 0; // Set it to zero
+      if(this.system.armourDesign.holdoutReduction < 0) { // If it's less than zero
+        this.system.armourDesign.holdoutReduction = 0; // Set it to zero
       }
       else { // If it's zero or above
-        this.data.data.armourDesign.holdoutReduction = Math.floor(this.data.data.armourDesign.holdoutReduction); // Round down, decimals are not allowed
+        this.system.armourDesign.holdoutReduction = Math.floor(this.system.armourDesign.holdoutReduction); // Round down, decimals are not allowed
       }
 
-      if (this.data.data.tl < 6) { // TL Less than 6, remove sealed.
-        this.data.data.armourDesign.sealed = false;
+      if (this.system.tl < 6) { // TL Less than 6, remove sealed.
+        this.system.armourDesign.sealed = false;
       }
 
-      if (this.data.data.tl < 6) { // TL is too low for sealed
-        this.data.data.armourDesign.sealed = false;
+      if (this.system.tl < 6) { // TL is too low for sealed
+        this.system.armourDesign.sealed = false;
       }
 
       // Check if there is an actor to fetch stats from
-      this.data.data.armourDesign.getSizeFromActor = false;
+      this.system.armourDesign.getSizeFromActor = false;
       if (this.actor) { // If there's an actor
-        if (this.actor.data) {
-          if (this.actor.data.data) {
-            this.data.data.armourDesign.getSizeFromActor = true;
-            if (this.data.data.armourDesign.scalingMethodForCustomArmour == "weight") { // Scaling using the rules from Pyramid 3-52:16
-              this.data.data.armourDesign.scalingMultiplier = (this.actor.data.data.bio.weight.value / 150) ** (2/3);
-            }
-            else if (this.data.data.armourDesign.scalingMethodForCustomArmour == "sm") { // Scaling using the rules from LTC2:21
-              this.data.data.armourDesign.scalingMultiplier = ((distanceHelpers.sizeToDistance(this.actor.data.data.bio.sm.value) / 10) ** 2);
-            }
-            else if (this.data.data.armourDesign.scalingMethodForCustomArmour == "height") { // Scaling based off the rules from LTC2:21, but gradually scaled based on height.
-              this.data.data.armourDesign.scalingMultiplier = (((5 / 36 * this.actor.data.data.bio.height.value) / 10)  ** 2);
-            }
-            else {
-              this.data.data.armourDesign.scalingMultiplier = 1;
-            }
+        if (this.actor.system) {
+          this.system.armourDesign.getSizeFromActor = true;
+          if (this.system.armourDesign.scalingMethodForCustomArmour == "weight") { // Scaling using the rules from Pyramid 3-52:16
+            this.system.armourDesign.scalingMultiplier = (this.actor.system.bio.weight.value / 150) ** (2/3);
+          }
+          else if (this.system.armourDesign.scalingMethodForCustomArmour == "sm") { // Scaling using the rules from LTC2:21
+            this.system.armourDesign.scalingMultiplier = ((distanceHelpers.sizeToDistance(this.actor.system.bio.sm.value) / 10) ** 2);
+          }
+          else if (this.system.armourDesign.scalingMethodForCustomArmour == "height") { // Scaling based off the rules from LTC2:21, but gradually scaled based on height.
+            this.system.armourDesign.scalingMultiplier = (((5 / 36 * this.actor.system.bio.height.value) / 10)  ** 2);
+          }
+          else {
+            this.system.armourDesign.scalingMultiplier = 1;
           }
         }
       }
       else { // There is no actor
-        if (this.data.data.armourDesign.scalingMethodForCustomArmour == "weight") { // Scaling using the rules from Pyramid 3-52:16
-          this.data.data.armourDesign.scalingMultiplier = (this.data.data.armourDesign.inputWeight / 150) ** (2/3);
+        if (this.system.armourDesign.scalingMethodForCustomArmour == "weight") { // Scaling using the rules from Pyramid 3-52:16
+          this.system.armourDesign.scalingMultiplier = (this.system.armourDesign.inputWeight / 150) ** (2/3);
         }
-        else if (this.data.data.armourDesign.scalingMethodForCustomArmour == "sm") { // Scaling using the rules from LTC2:21
-          this.data.data.armourDesign.scalingMultiplier = ((distanceHelpers.sizeToDistance(this.data.data.armourDesign.inputSM) / 10) ** 2);
+        else if (this.system.armourDesign.scalingMethodForCustomArmour == "sm") { // Scaling using the rules from LTC2:21
+          this.system.armourDesign.scalingMultiplier = ((distanceHelpers.sizeToDistance(this.system.armourDesign.inputSM) / 10) ** 2);
         }
-        else if (this.data.data.armourDesign.scalingMethodForCustomArmour == "height") { // Scaling based off the rules from LTC2:21, but gradually scaled based on height.
-          this.data.data.armourDesign.scalingMultiplier = (((5 / 36 * this.data.data.armourDesign.inputHeight) / 10)  ** 2);
+        else if (this.system.armourDesign.scalingMethodForCustomArmour == "height") { // Scaling based off the rules from LTC2:21, but gradually scaled based on height.
+          this.system.armourDesign.scalingMultiplier = (((5 / 36 * this.system.armourDesign.inputHeight) / 10)  ** 2);
         }
         else {
-          this.data.data.armourDesign.scalingMultiplier = 1;
+          this.system.armourDesign.scalingMultiplier = 1;
         }
       }
 
-      let bodyParts = Object.keys(this.data.data.armour.bodyType.body);
-      this.data.data.armourDesign.hasPlate    = false;
-      this.data.data.armourDesign.hasScale    = false;
-      this.data.data.armourDesign.hasMail     = false;
-      this.data.data.armourDesign.hasCloth    = false;
-      this.data.data.armourDesign.hasLeather  = false;
-      this.data.data.armourDesign.hasSteel    = false;
-      this.data.data.armourDesign.hasSole     = false;
-      this.data.data.armourDesign.soles       = 0;
-      this.data.data.armourDesign.hasKick     = false;
-      this.data.data.armourDesign.hasPunch    = false;
+      let bodyParts = Object.keys(this.system.armour.bodyType.body);
+      this.system.armourDesign.hasPlate    = false;
+      this.system.armourDesign.hasScale    = false;
+      this.system.armourDesign.hasMail     = false;
+      this.system.armourDesign.hasCloth    = false;
+      this.system.armourDesign.hasLeather  = false;
+      this.system.armourDesign.hasSteel    = false;
+      this.system.armourDesign.hasSole     = false;
+      this.system.armourDesign.soles       = 0;
+      this.system.armourDesign.hasKick     = false;
+      this.system.armourDesign.hasPunch    = false;
 
-      this.data.data.armourDesign.unitCost = 0;
-      this.data.data.armourDesign.unitWeight = 0;
-      this.data.data.armourDesign.unitDonTime = 0;
-      this.data.data.armourDesign.donTime = 0;
+      this.system.armourDesign.unitCost = 0;
+      this.system.armourDesign.unitWeight = 0;
+      this.system.armourDesign.unitDonTime = 0;
+      this.system.armourDesign.donTime = 0;
 
-      this.data.data.armourDesign.holdout = 0;
+      this.system.armourDesign.holdout = 0;
       for (let i = 0; i < bodyParts.length; i++) { // Loop through body parts
-        if (getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation")) { // Part has sub parts
-          let subParts = getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation");
+        if (getProperty(this.system.armour.bodyType.body, bodyParts[i] + ".subLocation")) { // Part has sub parts
+          let subParts = getProperty(this.system.armour.bodyType.body, bodyParts[i] + ".subLocation");
           let subPartKeys = Object.keys(subParts);
 
           for (let n = 0; n < subPartKeys.length; n++) { // Loop through sub parts
-            let currentSubPart = getProperty(this.data.data.armour.bodyType.body, bodyParts[i] + ".subLocation." + subPartKeys[n]);
+            let currentSubPart = getProperty(this.system.armour.bodyType.body, bodyParts[i] + ".subLocation." + subPartKeys[n]);
 
             if (subParts.thigh) { // There is a thigh
               if (subParts.thigh.construction && subParts.thigh.material) { // It has been correctly armoured
@@ -558,196 +556,196 @@ export class gurpsItem extends Item {
           }
         }
         else { // Part has no sub parts
-          let currentPart = getProperty(this.data.data.armour.bodyType.body, bodyParts[i]);
+          let currentPart = getProperty(this.system.armour.bodyType.body, bodyParts[i]);
 
           this.prepareLocationalCustomArmour(currentPart);
         }
       }
 
-      if (!this.data.data.armourDesign.hasSole || this.data.data.tl < 2) { // Either no sole or less than TL 2
-        this.data.data.armourDesign.hobnails = false;
+      if (!this.system.armourDesign.hasSole || this.system.tl < 2) { // Either no sole or less than TL 2
+        this.system.armourDesign.hobnails = false;
       }
 
-      if (!this.data.data.armourDesign.hasSteel) { // There is no steel, so the steel can't be hardened
-        this.data.data.armourDesign.steelHardening = "";
+      if (!this.system.armourDesign.hasSteel) { // There is no steel, so the steel can't be hardened
+        this.system.armourDesign.steelHardening = "";
       }
 
-      if (this.data.data.armourDesign.hasSteel && !this.data.data.armourDesign.hasPlate) { // There is steel, but not in the form of plate
-        this.data.data.armourDesign.steelHardening = "hardened";
+      if (this.system.armourDesign.hasSteel && !this.system.armourDesign.hasPlate) { // There is steel, but not in the form of plate
+        this.system.armourDesign.steelHardening = "hardened";
       }
 
-      if (!this.data.data.armourDesign.hasPlate && !this.data.data.armourDesign.hasScale) { // There is neither plate nor scale, so there can be no fluting
-        this.data.data.armourDesign.fluting = false;
+      if (!this.system.armourDesign.hasPlate && !this.system.armourDesign.hasScale) { // There is neither plate nor scale, so there can be no fluting
+        this.system.armourDesign.fluting = false;
       }
 
-      if (!this.data.data.armourDesign.hasMail) { // There is no mail, so there can't be mail variants
-        this.data.data.armourDesign.banded = false;
-        this.data.data.armourDesign.butted = false;
+      if (!this.system.armourDesign.hasMail) { // There is no mail, so there can't be mail variants
+        this.system.armourDesign.banded = false;
+        this.system.armourDesign.butted = false;
       }
 
-      if (!this.data.data.armourDesign.hasCloth) { // There is no cloth, so there can't be cloth variants
-        this.data.data.armourDesign.silk = false;
-        this.data.data.armourDesign.paper = false;
+      if (!this.system.armourDesign.hasCloth) { // There is no cloth, so there can't be cloth variants
+        this.system.armourDesign.silk = false;
+        this.system.armourDesign.paper = false;
       }
 
-      if (!this.data.data.armourDesign.hasLeather && !this.data.data.armourDesign.hasCloth) { // There is neither cloth nor leather, so there can be no reinforcement
-        this.data.data.armourDesign.reinforced = false;
+      if (!this.system.armourDesign.hasLeather && !this.system.armourDesign.hasCloth) { // There is neither cloth nor leather, so there can be no reinforcement
+        this.system.armourDesign.reinforced = false;
       }
 
-      if (!this.data.data.armourDesign.hasScale) { // There is no scale, so there can't be scale variants
-        this.data.data.armourDesign.mountain = false;
+      if (!this.system.armourDesign.hasScale) { // There is no scale, so there can't be scale variants
+        this.system.armourDesign.mountain = false;
       }
 
-      if (!this.data.data.armourDesign.hasLeather) { // There is no leather, so there can't be leather variants
-        this.data.data.armourDesign.leatherQuality = "";
+      if (!this.system.armourDesign.hasLeather) { // There is no leather, so there can't be leather variants
+        this.system.armourDesign.leatherQuality = "";
       }
 
-      if (!this.data.data.armourDesign.concealed) { // The armour is not concealed, unset concealment settings.
-        this.data.data.armourDesign.holdoutReduction = 0;
-        this.data.data.armourDesign.concealedClothing = "";
-        this.data.data.armourDesign.clothingStatus = 0;
-        this.data.data.armourDesign.undercoverClothing = "";
+      if (!this.system.armourDesign.concealed) { // The armour is not concealed, unset concealment settings.
+        this.system.armourDesign.holdoutReduction = 0;
+        this.system.armourDesign.concealedClothing = "";
+        this.system.armourDesign.clothingStatus = 0;
+        this.system.armourDesign.undercoverClothing = "";
       }
 
       // Hobnail cost and weight handling
-      if (this.data.data.armourDesign.hasSole && this.data.data.armourDesign.soles >= 1 && this.data.data.armourDesign.hobnails) {
-        this.data.data.armourDesign.unitCost += this.data.data.armourDesign.soles * 12.5;
-        this.data.data.armourDesign.unitWeight += this.data.data.armourDesign.soles * 0.5;
+      if (this.system.armourDesign.hasSole && this.system.armourDesign.soles >= 1 && this.system.armourDesign.hobnails) {
+        this.system.armourDesign.unitCost += this.system.armourDesign.soles * 12.5;
+        this.system.armourDesign.unitWeight += this.system.armourDesign.soles * 0.5;
       }
 
       // Calculate Status Equivalent
-      if (this.data.data.armourDesign.unitCost >= 0) {
-        if (this.data.data.armourDesign.unitCost <= 240) {
-          this.data.data.armourDesign.statusEq = "0 - Freeman, apprentice, ordinary citizen";
+      if (this.system.armourDesign.unitCost >= 0) {
+        if (this.system.armourDesign.unitCost <= 240) {
+          this.system.armourDesign.statusEq = "0 - Freeman, apprentice, ordinary citizen";
         }
-        else if (this.data.data.armourDesign.unitCost <= 480) {
-          this.data.data.armourDesign.statusEq = "1 - Squire, merchant, priest, doctor, councilor";
+        else if (this.system.armourDesign.unitCost <= 480) {
+          this.system.armourDesign.statusEq = "1 - Squire, merchant, priest, doctor, councilor";
         }
-        else if (this.data.data.armourDesign.unitCost <= 1200) {
-          this.data.data.armourDesign.statusEq = "2 - Landless knight, mayor, business leader";
+        else if (this.system.armourDesign.unitCost <= 1200) {
+          this.system.armourDesign.statusEq = "2 - Landless knight, mayor, business leader";
         }
-        else if (this.data.data.armourDesign.unitCost <= 4800) {
-          this.data.data.armourDesign.statusEq = "3 - Landed knight, guild master, big city mayor";
+        else if (this.system.armourDesign.unitCost <= 4800) {
+          this.system.armourDesign.statusEq = "3 - Landed knight, guild master, big city mayor";
         }
-        else if (this.data.data.armourDesign.unitCost <= 24000) {
-          this.data.data.armourDesign.statusEq = "4 - Lesser noble, congressional representative, Who’s Who";
+        else if (this.system.armourDesign.unitCost <= 24000) {
+          this.system.armourDesign.statusEq = "4 - Lesser noble, congressional representative, Who’s Who";
         }
-        else if (this.data.data.armourDesign.unitCost <= 240000) {
-          this.data.data.armourDesign.statusEq = "5 - Great noble, multinational corporate boss";
+        else if (this.system.armourDesign.unitCost <= 240000) {
+          this.system.armourDesign.statusEq = "5 - Great noble, multinational corporate boss";
         }
-        else if (this.data.data.armourDesign.unitCost <= 2400000) {
-          this.data.data.armourDesign.statusEq = "6 - Royal family, governor";
+        else if (this.system.armourDesign.unitCost <= 2400000) {
+          this.system.armourDesign.statusEq = "6 - Royal family, governor";
         }
-        else if (this.data.data.armourDesign.unitCost <= 24000000) {
-          this.data.data.armourDesign.statusEq = "7 - King, pope, president";
+        else if (this.system.armourDesign.unitCost <= 24000000) {
+          this.system.armourDesign.statusEq = "7 - King, pope, president";
         }
-        else if (this.data.data.armourDesign.unitCost <= 240000000) {
-          this.data.data.armourDesign.statusEq = "8 - Emperor, god-king, overlord";
+        else if (this.system.armourDesign.unitCost <= 240000000) {
+          this.system.armourDesign.statusEq = "8 - Emperor, god-king, overlord";
         }
       }
 
       // Can pass for
-      if (this.data.data.armourDesign.armourPercent <= (1/6)) {
-        this.data.data.armourDesign.canPassFor = "Swimwear, underwear, or other diaphanous clothing";
-        this.data.data.lc = 4;
+      if (this.system.armourDesign.armourPercent <= (1/6)) {
+        this.system.armourDesign.canPassFor = "Swimwear, underwear, or other diaphanous clothing";
+        this.system.lc = 4;
       }
-      else if (this.data.data.armourDesign.armourPercent <= (1/4)) {
-        this.data.data.armourDesign.canPassFor = "Light clothing such as T-shirts, evening wear, skintight suits, etc. and be worn beneath clothes";
-        this.data.data.lc = 4;
+      else if (this.system.armourDesign.armourPercent <= (1/4)) {
+        this.system.armourDesign.canPassFor = "Light clothing such as T-shirts, evening wear, skintight suits, etc. and be worn beneath clothes";
+        this.system.lc = 4;
       }
-      else if (this.data.data.armourDesign.armourPercent <= (1/2)) {
-        this.data.data.armourDesign.canPassFor = "Concealed under clothing or pass as ordinary civilian outerwear";
-        this.data.data.lc = 3;
+      else if (this.system.armourDesign.armourPercent <= (1/2)) {
+        this.system.armourDesign.canPassFor = "Concealed under clothing or pass as ordinary civilian outerwear";
+        this.system.lc = 3;
       }
       else {
-        this.data.data.armourDesign.canPassFor = "Not concealable. It can only pass as heavy clothing such as a trench coat, biker leathers, etc";
-        this.data.data.lc = 2;
+        this.system.armourDesign.canPassFor = "Not concealable. It can only pass as heavy clothing such as a trench coat, biker leathers, etc";
+        this.system.lc = 2;
       }
 
       let clothingCF = 1;
       let clothingWM = 1;
-      this.data.data.armourDesign.clothingCost = 0;
-      this.data.data.armourDesign.clothingWeight = 0;
+      this.system.armourDesign.clothingCost = 0;
+      this.system.armourDesign.clothingWeight = 0;
       // Handle cost and weight for armour concealed within clothing
-      if (this.data.data.armourDesign.concealed) { // If it's concealed, run concealment related code
+      if (this.system.armourDesign.concealed) { // If it's concealed, run concealment related code
         // Tailoring applies to the clothing as well
-        if (this.data.data.armourDesign.tailoring.toLowerCase() == "expert") {
+        if (this.system.armourDesign.tailoring.toLowerCase() == "expert") {
           clothingCF = clothingCF + 5;
           clothingWM = clothingWM - 0.15;
         }
-        else if (this.data.data.armourDesign.tailoring.toLowerCase() == "master") {
+        else if (this.system.armourDesign.tailoring.toLowerCase() == "master") {
           clothingCF = clothingCF +29
           clothingWM = clothingWM - 0.3;
         }
 
-        if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "swimwear") {
-          this.data.data.armourDesign.clothingCost = economicHelpers.getColByStatus(this.data.data.armourDesign.clothingStatus) * 0.05;
-          this.data.data.armourDesign.clothingWeight = 0.5;
+        if (this.system.armourDesign.concealedClothing.toLowerCase() == "swimwear") {
+          this.system.armourDesign.clothingCost = economicHelpers.getColByStatus(this.system.armourDesign.clothingStatus) * 0.05;
+          this.system.armourDesign.clothingWeight = 0.5;
         }
-        else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "summer") {
-          this.data.data.armourDesign.clothingCost = economicHelpers.getColByStatus(this.data.data.armourDesign.clothingStatus) * 0.10;
-          this.data.data.armourDesign.clothingWeight = 1;
+        else if (this.system.armourDesign.concealedClothing.toLowerCase() == "summer") {
+          this.system.armourDesign.clothingCost = economicHelpers.getColByStatus(this.system.armourDesign.clothingStatus) * 0.10;
+          this.system.armourDesign.clothingWeight = 1;
         }
-        else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "standard") {
-          this.data.data.armourDesign.clothingCost = economicHelpers.getColByStatus(this.data.data.armourDesign.clothingStatus) * 0.20;
-          this.data.data.armourDesign.clothingWeight = 2;
+        else if (this.system.armourDesign.concealedClothing.toLowerCase() == "standard") {
+          this.system.armourDesign.clothingCost = economicHelpers.getColByStatus(this.system.armourDesign.clothingStatus) * 0.20;
+          this.system.armourDesign.clothingWeight = 2;
         }
-        else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "winter") {
-          this.data.data.armourDesign.clothingCost = economicHelpers.getColByStatus(this.data.data.armourDesign.clothingStatus) * 0.30;
-          this.data.data.armourDesign.clothingWeight = 5;
+        else if (this.system.armourDesign.concealedClothing.toLowerCase() == "winter") {
+          this.system.armourDesign.clothingCost = economicHelpers.getColByStatus(this.system.armourDesign.clothingStatus) * 0.30;
+          this.system.armourDesign.clothingWeight = 5;
         }
-        else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "longcoat") {
-          this.data.data.armourDesign.clothingCost = 50;
-          this.data.data.armourDesign.clothingWeight = 5;
+        else if (this.system.armourDesign.concealedClothing.toLowerCase() == "longcoat") {
+          this.system.armourDesign.clothingCost = 50;
+          this.system.armourDesign.clothingWeight = 5;
         }
-        else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "leatherLongCoat") {
-          this.data.data.armourDesign.clothingCost = 100;
-          this.data.data.armourDesign.clothingWeight = 10;
+        else if (this.system.armourDesign.concealedClothing.toLowerCase() == "leatherLongCoat") {
+          this.system.armourDesign.clothingCost = 100;
+          this.system.armourDesign.clothingWeight = 10;
         }
-        else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "lightQualityLeatherLongCoat") {
-          this.data.data.armourDesign.clothingCost = 250;
-          this.data.data.armourDesign.clothingWeight = 5;
+        else if (this.system.armourDesign.concealedClothing.toLowerCase() == "lightQualityLeatherLongCoat") {
+          this.system.armourDesign.clothingCost = 250;
+          this.system.armourDesign.clothingWeight = 5;
         }
-        else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "qualityLeatherLongCoat") {
-          this.data.data.armourDesign.clothingCost = 500;
-          this.data.data.armourDesign.clothingWeight = 10;
+        else if (this.system.armourDesign.concealedClothing.toLowerCase() == "qualityLeatherLongCoat") {
+          this.system.armourDesign.clothingCost = 500;
+          this.system.armourDesign.clothingWeight = 10;
         }
-        else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "habit") {
-          this.data.data.armourDesign.clothingCost = economicHelpers.getColByStatus(this.data.data.armourDesign.clothingStatus) * 0.35;
-          this.data.data.armourDesign.clothingWeight = 6;
+        else if (this.system.armourDesign.concealedClothing.toLowerCase() == "habit") {
+          this.system.armourDesign.clothingCost = economicHelpers.getColByStatus(this.system.armourDesign.clothingStatus) * 0.35;
+          this.system.armourDesign.clothingWeight = 6;
         }
         else {
-          this.data.data.armourDesign.clothingCost = 0;
-          this.data.data.armourDesign.clothingWeight = 0;
+          this.system.armourDesign.clothingCost = 0;
+          this.system.armourDesign.clothingWeight = 0;
         }
 
-        if (this.data.data.armourDesign.undercoverClothing == "1") {
+        if (this.system.armourDesign.undercoverClothing == "1") {
           clothingCF += 4;
         }
-        else if (this.data.data.armourDesign.undercoverClothing == "2") {
+        else if (this.system.armourDesign.undercoverClothing == "2") {
           clothingCF += 19;
         }
 
-        this.data.data.armourDesign.clothingCost = this.data.data.armourDesign.clothingCost * clothingCF;
-        this.data.data.armourDesign.clothingWeight = this.data.data.armourDesign.clothingWeight * clothingWM;
+        this.system.armourDesign.clothingCost = this.system.armourDesign.clothingCost * clothingCF;
+        this.system.armourDesign.clothingWeight = this.system.armourDesign.clothingWeight * clothingWM;
       }
 
-      if (this.data.data.armourDesign.clothingCost > this.data.data.armourDesign.unitCost) {
-        this.data.data.cost = (this.data.data.armourDesign.unitCost * 0.8) + this.data.data.armourDesign.clothingCost;
+      if (this.system.armourDesign.clothingCost > this.system.armourDesign.unitCost) {
+        this.system.cost = (this.system.armourDesign.unitCost * 0.8) + this.system.armourDesign.clothingCost;
       }
       else {
-        this.data.data.cost = this.data.data.armourDesign.unitCost + (this.data.data.armourDesign.clothingCost * 0.8);
+        this.system.cost = this.system.armourDesign.unitCost + (this.system.armourDesign.clothingCost * 0.8);
       }
 
-      if (this.data.data.armourDesign.clothingWeight > this.data.data.armourDesign.unitWeight) {
-        this.data.data.weight = (this.data.data.armourDesign.unitWeight * 0.8) + this.data.data.armourDesign.clothingWeight;
+      if (this.system.armourDesign.clothingWeight > this.system.armourDesign.unitWeight) {
+        this.system.weight = (this.system.armourDesign.unitWeight * 0.8) + this.system.armourDesign.clothingWeight;
       }
       else {
-        this.data.data.weight = this.data.data.armourDesign.unitWeight + (this.data.data.armourDesign.clothingWeight * 0.8);
+        this.system.weight = this.system.armourDesign.unitWeight + (this.system.armourDesign.clothingWeight * 0.8);
       }
 
-      if (this.data.data.armourDesign.punch || this.data.data.armourDesign.kick) {
-        this.addUnarmedProfiles(this.data.data.armourDesign.punch, this.data.data.armourDesign.kick);
+      if (this.system.armourDesign.punch || this.system.armourDesign.kick) {
+        this.addUnarmedProfiles(this.system.armourDesign.punch, this.system.armourDesign.kick);
       }
     }
 
@@ -757,10 +755,8 @@ export class gurpsItem extends Item {
   addUnarmedProfiles(punch, kick) {
     let unarmedST = 10;
     if (this.actor) { // If there's an actor
-      if (this.actor.data) {
-        if (this.actor.data.data) {
-          unarmedST = actorHelpers.fetchStat(this.actor, "st");
-        }
+      if (this.actor.system) {
+        unarmedST = actorHelpers.fetchStat(this.actor, "st");
       }
     }
 
@@ -770,8 +766,8 @@ export class gurpsItem extends Item {
     if (punch) {
       punchRow = { // Init the new melee row using the values from the custom weapon
         "name": "Punch",
-        "skill": this.data.data.armourDesign.punchSkill,
-        "skillMod": this.data.data.armourDesign.punchSkillMod,
+        "skill": this.system.armourDesign.punchSkill,
+        "skillMod": this.system.armourDesign.punchSkillMod,
         "parryMod": 0,
         "parryType": "F",
         "blockMod": "No",
@@ -785,8 +781,8 @@ export class gurpsItem extends Item {
     if (kick) {
       kickRow = { // Init the new melee row using the values from the custom weapon
         "name": "Kick",
-        "skill": this.data.data.armourDesign.kickSkill,
-        "skillMod": this.data.data.armourDesign.kickSkillMod,
+        "skill": this.system.armourDesign.kickSkill,
+        "skillMod": this.system.armourDesign.kickSkillMod,
         "parryMod": 0,
         "parryType": "F",
         "blockMod": "No",
@@ -799,33 +795,33 @@ export class gurpsItem extends Item {
     }
 
     if (kick && punch) {
-      this.data.data.melee = [punchRow, kickRow];
+      this.system.melee = [punchRow, kickRow];
     }
     else if (kick) {
-      this.data.data.melee = [kickRow];
+      this.system.melee = [kickRow];
     }
     else if (punch) {
-      this.data.data.melee = [punchRow];
+      this.system.melee = [punchRow];
     }
   }
 
   prepareLocationalCustomArmour(currentSubPart) {
     if (typeof currentSubPart.material != "undefined") {
       if (currentSubPart.material.name) {
-        if (this.data.data.armourDesign.allowMagicalMaterialsForCustom) {
+        if (this.system.armourDesign.allowMagicalMaterialsForCustom) {
           currentSubPart.material = game.materialAPI.getAndCalculateArmourMaterialByName(currentSubPart.material.name, currentSubPart.material.essential);
         }
         else {
           currentSubPart.material = game.materialAPI.getAndCalculateArmourMaterialByName(currentSubPart.material.name, false);
         }
         if (currentSubPart.material.name.toLowerCase().includes("steel")){
-          this.data.data.armourDesign.hasSteel = true;
+          this.system.armourDesign.hasSteel = true;
         }
         else if (currentSubPart.material.name.toLowerCase().includes("leather")){
-          this.data.data.armourDesign.hasLeather = true;
+          this.system.armourDesign.hasLeather = true;
         }
         else if (currentSubPart.material.name.toLowerCase().includes("cloth")){
-          this.data.data.armourDesign.hasCloth = true;
+          this.system.armourDesign.hasCloth = true;
         }
       }
     }
@@ -835,13 +831,13 @@ export class gurpsItem extends Item {
         currentSubPart.construction = game.materialAPI.getArmourConstructionMethodByName(currentSubPart.construction.name);
         if (typeof currentSubPart.construction.name != "undefined") {
           if (currentSubPart.construction.name.toLowerCase().includes("plate")) {
-            this.data.data.armourDesign.hasPlate = true;
+            this.system.armourDesign.hasPlate = true;
           }
           else if (currentSubPart.construction.name.toLowerCase().includes("scale")) {
-            this.data.data.armourDesign.hasScale = true;
+            this.system.armourDesign.hasScale = true;
           }
           else if (currentSubPart.construction.name.toLowerCase().includes("mail")) {
-            this.data.data.armourDesign.hasMail = true;
+            this.system.armourDesign.hasMail = true;
           }
         }
       }
@@ -877,48 +873,48 @@ export class gurpsItem extends Item {
     if (currentSubPart.material && currentSubPart.construction) {
       if (currentSubPart.material.name && currentSubPart.construction.name) { // There is both a material and a construction type
         if (currentSubPart.label.toLowerCase().includes("sole") && currentSubPart.selectedDR > 0 && !currentSubPart.material.name.includes("no armour") && !currentSubPart.construction.name.includes("no armour")) { // There is a sole, it has DR, it has a material, and it has a construction type
-          this.data.data.armourDesign.hasSole = true; // Set the flag true
-          this.data.data.armourDesign.soles += 1; // Add to the sole count to account for quadrupeds, etc.
+          this.system.armourDesign.hasSole = true; // Set the flag true
+          this.system.armourDesign.soles += 1; // Add to the sole count to account for quadrupeds, etc.
         }
         if (currentSubPart.label.toLowerCase().includes("foot") && !currentSubPart.material.name.includes("no armour") && ((currentSubPart.selectedDR >= 1 && !currentSubPart.construction.flexible) || (currentSubPart.selectedDR >= 2))) { // There is a foot, it has a material, and it has 1 DR and it's not flexible, or it has 2 DR and is flexible
-          this.data.data.armourDesign.hasKick = true; // Set the flag true
+          this.system.armourDesign.hasKick = true; // Set the flag true
         }
         if (currentSubPart.label.toLowerCase().includes("hand") && !currentSubPart.material.name.includes("no armour") && ((currentSubPart.selectedDR >= 1 && !currentSubPart.construction.flexible) || (currentSubPart.selectedDR >= 2))) { // There is a hand, it has a material, and it has 1 DR and it's not flexible, or it has 2 DR and is flexible
-          this.data.data.armourDesign.hasPunch = true; // Set the flag true
+          this.system.armourDesign.hasPunch = true; // Set the flag true
         }
 
         if (currentSubPart.selectedDR >= currentSubPart.construction.minDR && currentSubPart.selectedDR <= currentSubPart.material.maxDR) { // DR is between max and min
 
-          if (this.data.data.armourDesign.tailoring.toLowerCase() == "cheap") {
+          if (this.system.armourDesign.tailoring.toLowerCase() == "cheap") {
             cf = cf -0.6
             drModifier = drModifier - 1;
           }
-          else if (this.data.data.armourDesign.tailoring.toLowerCase() == "expert") {
+          else if (this.system.armourDesign.tailoring.toLowerCase() == "expert") {
             cf = cf + 5;
             weightModifier = weightModifier - 0.15;
           }
-          else if (this.data.data.armourDesign.tailoring.toLowerCase() == "master") {
+          else if (this.system.armourDesign.tailoring.toLowerCase() == "master") {
             cf = cf +29
             weightModifier = weightModifier - 0.3;
           }
 
-          if (this.data.data.armourDesign.style.toLowerCase() == "1") {
+          if (this.system.armourDesign.style.toLowerCase() == "1") {
             cf += 1;
           }
-          else if (this.data.data.armourDesign.style.toLowerCase() == "2") {
+          else if (this.system.armourDesign.style.toLowerCase() == "2") {
             cf += 4;
           }
-          else if (this.data.data.armourDesign.style.toLowerCase() == "3") {
+          else if (this.system.armourDesign.style.toLowerCase() == "3") {
             cf += 9;
           }
 
           // This piece is made of steel, and the user has selected either hardened or duplex
-          if (currentSubPart.material.name.toLowerCase().includes("steel") && (this.data.data.armourDesign.steelHardening.toLowerCase().includes("hardened") || this.data.data.armourDesign.steelHardening.toLowerCase().includes("duplex"))) {
-            if (this.data.data.armourDesign.steelHardening.toLowerCase().includes("hardened")) {
+          if (currentSubPart.material.name.toLowerCase().includes("steel") && (this.system.armourDesign.steelHardening.toLowerCase().includes("hardened") || this.system.armourDesign.steelHardening.toLowerCase().includes("duplex"))) {
+            if (this.system.armourDesign.steelHardening.toLowerCase().includes("hardened")) {
               cf += 4;
               drModifier += 1;
             }
-            else if (this.data.data.armourDesign.steelHardening.toLowerCase().includes("duplex")) {
+            else if (this.system.armourDesign.steelHardening.toLowerCase().includes("duplex")) {
               cf += 8;
               weightModifier = weightModifier - 0.1;
               drModifier += 1;
@@ -926,22 +922,22 @@ export class gurpsItem extends Item {
           }
 
           // This piece is made of leather, and the user has selected a leather customization
-          if ((currentSubPart.material.name.toLowerCase().includes("leather")) && (this.data.data.armourDesign.leatherQuality.toLowerCase() == "rawhide" || this.data.data.armourDesign.leatherQuality.toLowerCase() == "quality")) {
-            if (this.data.data.armourDesign.leatherQuality.toLowerCase() == "rawhide") {
+          if ((currentSubPart.material.name.toLowerCase().includes("leather")) && (this.system.armourDesign.leatherQuality.toLowerCase() == "rawhide" || this.system.armourDesign.leatherQuality.toLowerCase() == "quality")) {
+            if (this.system.armourDesign.leatherQuality.toLowerCase() == "rawhide") {
               cf = cf -0.6;
               // TODO - x0.5 HP
             }
-            else if (this.data.data.armourDesign.leatherQuality.toLowerCase() == "quality") {
+            else if (this.system.armourDesign.leatherQuality.toLowerCase() == "quality") {
               cf = cf + 4;
               drModifier += 1;
             }
           }
 
           // Handle bonus DR from leather coat options
-          if (this.data.data.armourDesign.concealedClothing) {
-            if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "leatherlongcoat" || this.data.data.armourDesign.concealedClothing.toLowerCase() == "lightqualityleatherlongcoat" || this.data.data.armourDesign.concealedClothing.toLowerCase() == "qualityleatherlongcoat") {
+          if (this.system.armourDesign.concealedClothing) {
+            if (this.system.armourDesign.concealedClothing.toLowerCase() == "leatherlongcoat" || this.system.armourDesign.concealedClothing.toLowerCase() == "lightqualityleatherlongcoat" || this.system.armourDesign.concealedClothing.toLowerCase() == "qualityleatherlongcoat") {
               let leatherCoatBonus = 1; // Most of the coats give +1 DR
-              if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "qualityleatherlongcoat") { // Quality heavy leather coats give +2
+              if (this.system.armourDesign.concealedClothing.toLowerCase() == "qualityleatherlongcoat") { // Quality heavy leather coats give +2
                 leatherCoatBonus = 2;
               }
 
@@ -1077,33 +1073,33 @@ export class gurpsItem extends Item {
           else {
             currentSubPart.donTime = currentSubPart.construction.don;
           }
-          this.data.data.armourDesign.donTime += currentSubPart.donTime
+          this.system.armourDesign.donTime += currentSubPart.donTime
 
           // This piece is made of either plate or scale, and the user has selected fluting
-          if ((currentSubPart.construction.name.toLowerCase().includes("scale") || currentSubPart.construction.name.toLowerCase().includes("plate")) && this.data.data.armourDesign.fluting) {
+          if ((currentSubPart.construction.name.toLowerCase().includes("scale") || currentSubPart.construction.name.toLowerCase().includes("plate")) && this.system.armourDesign.fluting) {
             cf += 4;
             weightModifier = weightModifier - 0.1;
           }
 
           // This piece is made of mail, and the user has selected a mail customization
-          if ((currentSubPart.construction.name.toLowerCase().includes("mail")) && (this.data.data.armourDesign.banded || this.data.data.armourDesign.butted)) {
-            if (this.data.data.armourDesign.banded) {
+          if ((currentSubPart.construction.name.toLowerCase().includes("mail")) && (this.system.armourDesign.banded || this.system.armourDesign.butted)) {
+            if (this.system.armourDesign.banded) {
               cf += 0.5;
               weightModifier = weightModifier + 0.5;
               currentSubPart.drCr += 2;
             }
-            else if (this.data.data.armourDesign.butted) {
+            else if (this.system.armourDesign.butted) {
               cf = cf - 0.6;
               currentSubPart.drImp = Math.max(currentSubPart.drImp - 3, 0) // DR is at least zero
             }
           }
 
           // This piece is made of cloth, and the user has selected a cloth customization
-          if ((currentSubPart.material.name.toLowerCase().includes("cloth")) && (this.data.data.armourDesign.silk || this.data.data.armourDesign.paper)) {
-            if (this.data.data.armourDesign.paper) {
+          if ((currentSubPart.material.name.toLowerCase().includes("cloth")) && (this.system.armourDesign.silk || this.system.armourDesign.paper)) {
+            if (this.system.armourDesign.paper) {
               cf -= 0.25;
             }
-            else if (this.data.data.armourDesign.silk) {
+            else if (this.system.armourDesign.silk) {
               cf += 19;
               currentSubPart.drImp += 1;
               currentSubPart.drCut += 1;
@@ -1111,14 +1107,14 @@ export class gurpsItem extends Item {
           }
 
           // This piece is made of cloth or leather, and the user has selected a reinforcement
-          if ((currentSubPart.material.name.toLowerCase().includes("cloth") || currentSubPart.material.name.toLowerCase().includes("leather")) && this.data.data.armourDesign.reinforced) {
+          if ((currentSubPart.material.name.toLowerCase().includes("cloth") || currentSubPart.material.name.toLowerCase().includes("leather")) && this.system.armourDesign.reinforced) {
             cf += 0.25;
             weightModifier += 0.25;
             currentSubPart.drCut += 1;
           }
 
           // This piece is made of scale, and the user has selected mountain scale
-          if (currentSubPart.construction.name.toLowerCase().includes("scale") && this.data.data.armourDesign.mountain) {
+          if (currentSubPart.construction.name.toLowerCase().includes("scale") && this.system.armourDesign.mountain) {
             cf += 1;
             currentSubPart.drCr += 1;
           }
@@ -1204,13 +1200,13 @@ export class gurpsItem extends Item {
           }
           currentSubPart.mm = 25.4 * currentSubPart.in;
 
-          cf += this.data.data.armourDesign.holdoutReduction; // Add the cost factor for the holdout reduction.
+          cf += this.system.armourDesign.holdoutReduction; // Add the cost factor for the holdout reduction.
 
           cf = Math.max(cf, 0.2) // Cost factor can't go less than 80%
           weightModifier = Math.max(weightModifier, 0.2) // Weight mod can't go less than 80%
 
           currentSubPart.weight = currentSubPart.surfaceArea * currentSubPart.material.wm * currentSubPart.construction.wm * currentSubPart.selectedDR * weightModifier;
-          if (currentSubPart.material.costLTTL <= this.data.data.tl) { // The current TL is at or under the tl breakpoint
+          if (currentSubPart.material.costLTTL <= this.system.tl) { // The current TL is at or under the tl breakpoint
             currentSubPart.cost = currentSubPart.weight * currentSubPart.construction.cm * currentSubPart.material.costLT * cf;
           }
           else {
@@ -1222,8 +1218,8 @@ export class gurpsItem extends Item {
           currentSubPart.cost = 0;
         }
 
-        if (this.data.data.armourDesign.sealed && this.data.data.tl >= 6) { // Armour is sealed and the TL is high enough for it to actually be sealed.
-          if (this.data.data.tl >= 8) { // At TL 8+, sealed is 5$ per square foot
+        if (this.system.armourDesign.sealed && this.system.tl >= 6) { // Armour is sealed and the TL is high enough for it to actually be sealed.
+          if (this.system.tl >= 8) { // At TL 8+, sealed is 5$ per square foot
             currentSubPart.cost = currentSubPart.cost + (currentSubPart.surfaceArea * 5);
           }
           else { // At TL 7-, sealed is 10$ per square foot
@@ -1231,14 +1227,14 @@ export class gurpsItem extends Item {
           }
         }
 
-        this.data.data.armourDesign.armourPercent = Math.max(currentSubPart.armourPercent, this.data.data.armourDesign.armourPercent) // Always use the worst (highest) value
+        this.system.armourDesign.armourPercent = Math.max(currentSubPart.armourPercent, this.system.armourDesign.armourPercent) // Always use the worst (highest) value
 
-        this.data.data.armourDesign.donTime = Math.round(this.data.data.armourDesign.donTime);
-        this.data.data.armourDesign.unitWeight += currentSubPart.weight;
-        this.data.data.armourDesign.unitCost += currentSubPart.cost;
+        this.system.armourDesign.donTime = Math.round(this.system.armourDesign.donTime);
+        this.system.armourDesign.unitWeight += currentSubPart.weight;
+        this.system.armourDesign.unitCost += currentSubPart.cost;
 
         // Holdout
-        if (this.data.data.armourDesign.adjustedHoldoutPenaltyForCustomArmour.toLowerCase() == "") {
+        if (this.system.armourDesign.adjustedHoldoutPenaltyForCustomArmour.toLowerCase() == "") {
           if (currentSubPart.flexible) {
             currentSubPart.holdout = currentSubPart.selectedDR / 3;
           }
@@ -1246,7 +1242,7 @@ export class gurpsItem extends Item {
             currentSubPart.holdout = currentSubPart.selectedDR;
           }
         }
-        else if (this.data.data.armourDesign.adjustedHoldoutPenaltyForCustomArmour.toLowerCase() == "weight") {
+        else if (this.system.armourDesign.adjustedHoldoutPenaltyForCustomArmour.toLowerCase() == "weight") {
           if (currentSubPart.flexible) {
             currentSubPart.holdout = currentSubPart.selectedDR / 3 * (currentSubPart.material.wm / 0.9);
           }
@@ -1254,7 +1250,7 @@ export class gurpsItem extends Item {
             currentSubPart.holdout = currentSubPart.selectedDR * (currentSubPart.material.wm / 0.6);
           }
         }
-        else if (this.data.data.armourDesign.adjustedHoldoutPenaltyForCustomArmour.toLowerCase() == "thickness") {
+        else if (this.system.armourDesign.adjustedHoldoutPenaltyForCustomArmour.toLowerCase() == "thickness") {
           if (currentSubPart.flexible) {
             currentSubPart.holdout = currentSubPart.selectedDR / 3 * (currentSubPart.material.drPerIn / 8);
           }
@@ -1263,38 +1259,38 @@ export class gurpsItem extends Item {
           }
         }
 
-        if (this.data.data.armourDesign.concealed) { // If it's concealed, run concealment related code
-          currentSubPart.holdout = Math.max(currentSubPart.holdout - this.data.data.armourDesign.holdoutReduction, 0); // Apply any holdout penalty reduction, but only remove penalties, don't grant any bonus.
+        if (this.system.armourDesign.concealed) { // If it's concealed, run concealment related code
+          currentSubPart.holdout = Math.max(currentSubPart.holdout - this.system.armourDesign.holdoutReduction, 0); // Apply any holdout penalty reduction, but only remove penalties, don't grant any bonus.
         }
 
         currentSubPart.holdout *= -1; // Flip the holdout penalty to negative
 
-        if (this.data.data.armourDesign.concealed) { // If it's concealed, run concealment related code
-          if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "swimwear") {
+        if (this.system.armourDesign.concealed) { // If it's concealed, run concealment related code
+          if (this.system.armourDesign.concealedClothing.toLowerCase() == "swimwear") {
             currentSubPart.holdout = currentSubPart.holdout - 5;
           }
-          else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "summer") {
+          else if (this.system.armourDesign.concealedClothing.toLowerCase() == "summer") {
             currentSubPart.holdout = currentSubPart.holdout - 3;
           }
-          else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "winter") {
+          else if (this.system.armourDesign.concealedClothing.toLowerCase() == "winter") {
             currentSubPart.holdout = currentSubPart.holdout + 3;
           }
-          else if (this.data.data.armourDesign.concealedClothing.toLowerCase().includes("longcoat")) {
+          else if (this.system.armourDesign.concealedClothing.toLowerCase().includes("longcoat")) {
             currentSubPart.holdout = currentSubPart.holdout + 4;
           }
-          else if (this.data.data.armourDesign.concealedClothing.toLowerCase() == "habit") {
+          else if (this.system.armourDesign.concealedClothing.toLowerCase() == "habit") {
             currentSubPart.holdout = currentSubPart.holdout + 5;
           }
 
-          if (this.data.data.armourDesign.undercoverClothing == "1") {
+          if (this.system.armourDesign.undercoverClothing == "1") {
             currentSubPart.holdout += 1;
           }
-          else if (this.data.data.armourDesign.undercoverClothing == "2") {
+          else if (this.system.armourDesign.undercoverClothing == "2") {
             currentSubPart.holdout += 2;
           }
         }
 
-        this.data.data.armourDesign.holdout = Math.min(this.data.data.armourDesign.holdout, currentSubPart.holdout);
+        this.system.armourDesign.holdout = Math.min(this.system.armourDesign.holdout, currentSubPart.holdout);
       }
     }
   }
@@ -1302,8 +1298,8 @@ export class gurpsItem extends Item {
   _prepareCustomJewelryData() {
     this.validateEquipmentBasics();
 
-    if (typeof this.data.data.jewelryDesign == "undefined" || (typeof this.data.data.jewelryDesign != "undefined" && !this.data.data.jewelryDesign.initComplete)) { // If the firearmDesign block hasn't yet been created
-      this.data.data.jewelryDesign = { // Create it
+    if (typeof this.system.jewelryDesign == "undefined" || (typeof this.system.jewelryDesign != "undefined" && !this.system.jewelryDesign.initComplete)) { // If the firearmDesign block hasn't yet been created
+      this.system.jewelryDesign = { // Create it
         "initComplete": true,
         "showMana": false,
         "mana": 0,
@@ -1349,17 +1345,17 @@ export class gurpsItem extends Item {
       }
     }
     // Input validation
-    if (typeof this.data.data.jewelryDesign.style == "undefined" || this.data.data.jewelryDesign.style == "") {
-      this.data.data.jewelryDesign.style = "beads";
+    if (typeof this.system.jewelryDesign.style == "undefined" || this.system.jewelryDesign.style == "") {
+      this.system.jewelryDesign.style = "beads";
     }
-    if (typeof this.data.data.jewelryDesign.size == "undefined" || this.data.data.jewelryDesign.size <= 0 || this.data.data.jewelryDesign.size == "") {
-      this.data.data.jewelryDesign.size = 0.3;
+    if (typeof this.system.jewelryDesign.size == "undefined" || this.system.jewelryDesign.size <= 0 || this.system.jewelryDesign.size == "") {
+      this.system.jewelryDesign.size = 0.3;
     }
-    if (typeof this.data.data.jewelryDesign.value == "undefined" || this.data.data.jewelryDesign.value <= 0 || this.data.data.jewelryDesign.value == "") {
-      this.data.data.jewelryDesign.value = 100;
+    if (typeof this.system.jewelryDesign.value == "undefined" || this.system.jewelryDesign.value <= 0 || this.system.jewelryDesign.value == "") {
+      this.system.jewelryDesign.value = 100;
     }
-    if (typeof this.data.data.jewelryDesign.selectedMaterial === "undefined") {
-      this.data.data.jewelryDesign.selectedMaterial = {
+    if (typeof this.system.jewelryDesign.selectedMaterial === "undefined") {
+      this.system.jewelryDesign.selectedMaterial = {
         "name": "Generic Soft Metals",
         "tl": "1",
         "cost": "9.3",
@@ -1368,225 +1364,225 @@ export class gurpsItem extends Item {
       }
     }
 
-    this.data.data.jewelryDesign.hideDecorations = false;
-    this.data.data.jewelryDesign.manaTreasure = game.settings.get("gurps4e", "manaTreasure");
-    this.data.data.jewelryDesign.showMana = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
-    this.data.data.jewelryDesign.styles = game.materialAPI.fetchJewelryDesigns();
-    this.data.data.jewelryDesign.materials = game.materialAPI.fetchTreasureMaterials();
-    this.data.data.jewelryDesign.allowMagicalMaterialsForCustom = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
-    this.data.data.lc = 4;
-    this.data.data.jewelryDesign.selectedStyle = game.materialAPI.getJewelryDesignByCode(this.data.data.jewelryDesign.style);
-    this.data.data.jewelryDesign.selectedMaterial = game.materialAPI.getTreasureMaterialByName(this.data.data.jewelryDesign.material);
+    this.system.jewelryDesign.hideDecorations = false;
+    this.system.jewelryDesign.manaTreasure = game.settings.get("gurps4e", "manaTreasure");
+    this.system.jewelryDesign.showMana = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
+    this.system.jewelryDesign.styles = game.materialAPI.fetchJewelryDesigns();
+    this.system.jewelryDesign.materials = game.materialAPI.fetchTreasureMaterials();
+    this.system.jewelryDesign.allowMagicalMaterialsForCustom = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
+    this.system.lc = 4;
+    this.system.jewelryDesign.selectedStyle = game.materialAPI.getJewelryDesignByCode(this.system.jewelryDesign.style);
+    this.system.jewelryDesign.selectedMaterial = game.materialAPI.getTreasureMaterialByName(this.system.jewelryDesign.material);
 
     let cf = 1;
     let rollingDescription = "";
 
-    if (this.data.data.jewelryDesign.style === "gem") { // It's a gem
-      this.data.data.jewelryDesign.finalCost = ((this.data.data.jewelryDesign.size ** 2) + (4 * this.data.data.jewelryDesign.size)) * this.data.data.jewelryDesign.value;
-      this.data.data.jewelryDesign.finalWeight = this.data.data.jewelryDesign.size / 2267.96;
-      this.data.data.jewelryDesign.hideDecorations = true;
+    if (this.system.jewelryDesign.style === "gem") { // It's a gem
+      this.system.jewelryDesign.finalCost = ((this.system.jewelryDesign.size ** 2) + (4 * this.system.jewelryDesign.size)) * this.system.jewelryDesign.value;
+      this.system.jewelryDesign.finalWeight = this.system.jewelryDesign.size / 2267.96;
+      this.system.jewelryDesign.hideDecorations = true;
     }
     else { // It's not a gem
 
-      if (this.data.data.jewelryDesign.selectedStyle.code !== "mana") { // Mana sources cannot be decorated
-        if (typeof this.data.data.jewelryDesign.selectedMaterial !== "undefined") {
-          if (this.data.data.jewelryDesign.selectedMaterial.hard) {
-            if (this.data.data.jewelryDesign.relief !== "none") {
-              if (this.data.data.jewelryDesign.relief === "simple") {
+      if (this.system.jewelryDesign.selectedStyle.code !== "mana") { // Mana sources cannot be decorated
+        if (typeof this.system.jewelryDesign.selectedMaterial !== "undefined") {
+          if (this.system.jewelryDesign.selectedMaterial.hard) {
+            if (this.system.jewelryDesign.relief !== "none") {
+              if (this.system.jewelryDesign.relief === "simple") {
                 cf += 1.5;
                 rollingDescription += "<li>This object has a simple design carved or pressed into it.</li>";
               }
-              else if (this.data.data.jewelryDesign.relief === "extensive") {
+              else if (this.system.jewelryDesign.relief === "extensive") {
                 cf += 4;
                 rollingDescription += "<li>This object has a complex design carved or pressed into it.</li>";
               }
             }
 
-            if (this.data.data.jewelryDesign.inlay !== "none") {
-              if (this.data.data.jewelryDesign.inlay === "simpleCommon") {
+            if (this.system.jewelryDesign.inlay !== "none") {
+              if (this.system.jewelryDesign.inlay === "simpleCommon") {
                 cf += 3;
                 rollingDescription += "<li>This object has a simple design carved or pressed into it, and then the carvings have been filled with common materials of contrasting colours.</li>";
               }
-              else if (this.data.data.jewelryDesign.inlay === "simplePrecious") {
+              else if (this.system.jewelryDesign.inlay === "simplePrecious") {
                 cf += 7.5;
                 rollingDescription += "<li>This object has a simple design carved or pressed into it, and then the carvings have been filled with precious materials of contrasting colours.</li>";
               }
-              else if (this.data.data.jewelryDesign.inlay === "extensiveCommon") {
+              else if (this.system.jewelryDesign.inlay === "extensiveCommon") {
                 cf += 8;
                 rollingDescription += "<li>This object has a complex design carved or pressed into it, and then the carvings have been filled with common materials of contrasting colours.</li>";
               }
-              else if (this.data.data.jewelryDesign.inlay === "extensivePrecious") {
+              else if (this.system.jewelryDesign.inlay === "extensivePrecious") {
                 cf += 20;
                 rollingDescription += "<li>This object has a complex design carved or pressed into it, and then the carvings have been filled with precious materials of contrasting colours.</li>";
               }
             }
 
-            if (this.data.data.jewelryDesign.gilding !== "none"){
-              if (this.data.data.jewelryDesign.gilding === "copperAccent"){
+            if (this.system.jewelryDesign.gilding !== "none"){
+              if (this.system.jewelryDesign.gilding === "copperAccent"){
                 cf += 1.5;
                 rollingDescription += "<li>This object has copper leaf applied as accents.</li>";
               }
-              else if (this.data.data.jewelryDesign.gilding === "silverAccent"){
+              else if (this.system.jewelryDesign.gilding === "silverAccent"){
                 cf += 2;
                 rollingDescription += "<li>This object has silver leaf applied as accents.</li>";
               }
-              else if (this.data.data.jewelryDesign.gilding === "goldAccent"){
+              else if (this.system.jewelryDesign.gilding === "goldAccent"){
                 cf += 20;
                 rollingDescription += "<li>This object has gold leaf applied as accents.</li>";
               }
-              else if (this.data.data.jewelryDesign.gilding === "copper"){
+              else if (this.system.jewelryDesign.gilding === "copper"){
                 cf += 4.5;
                 rollingDescription += "<li>This object has been covered in copper leaf.</li>";
               }
-              else if (this.data.data.jewelryDesign.gilding === "silver"){
+              else if (this.system.jewelryDesign.gilding === "silver"){
                 cf += 6;
                 rollingDescription += "<li>This object has been covered in silver leaf.</li>";
               }
-              else if (this.data.data.jewelryDesign.gilding === "gold"){
+              else if (this.system.jewelryDesign.gilding === "gold"){
                 cf += 60;
                 rollingDescription += "<li>This object has been covered in gold leaf.</li>";
               }
             }
           }
           else {
-            if (this.data.data.jewelryDesign.beading !== "none"){
-              if (this.data.data.jewelryDesign.beading === "light"){
+            if (this.system.jewelryDesign.beading !== "none"){
+              if (this.system.jewelryDesign.beading === "light"){
                 cf += 2;
                 rollingDescription += "<li>This object has been lightly beaded along the edges or corners.</li>";
               }
-              else if (this.data.data.jewelryDesign.beading === "extensive"){
+              else if (this.system.jewelryDesign.beading === "extensive"){
                 cf += 8;
                 rollingDescription += "<li>This object has extensive beading across the entire surface.</li>";
               }
             }
 
-            if (this.data.data.jewelryDesign.dye !== "none"){
-              if (this.data.data.jewelryDesign.dye === "simple"){
+            if (this.system.jewelryDesign.dye !== "none"){
+              if (this.system.jewelryDesign.dye === "simple"){
                 cf += 1.5;
                 rollingDescription += "<li>This item has been dyed black, white, or a shade of grey.</li>";
               }
-              else if (this.data.data.jewelryDesign.dye === "common"){
+              else if (this.system.jewelryDesign.dye === "common"){
                 cf += 6;
                 rollingDescription += "<li>A more vivid, but common dye has been applied to this item. Examples are dull red from madder or blue-grey from indigo.</li>";
               }
-              else if (this.data.data.jewelryDesign.dye === "expensive"){
+              else if (this.system.jewelryDesign.dye === "expensive"){
                 cf += 30;
                 rollingDescription += "<li>An expensive dye, such as red from murex or cochnieal, yellow from saffron, or any other natural but extant dye has been applied to this item.</li>";
               }
             }
 
-            if (this.data.data.jewelryDesign.embroidery !== "none"){
-              if (this.data.data.jewelryDesign.embroidery === "minimal"){
+            if (this.system.jewelryDesign.embroidery !== "none"){
+              if (this.system.jewelryDesign.embroidery === "minimal"){
                 cf += 2;
                 rollingDescription += "<li>Minimal trim or simple designs have been stitched into the surface of this item.</li>";
               }
-              else if (this.data.data.jewelryDesign.embroidery === "elaborate"){
+              else if (this.system.jewelryDesign.embroidery === "elaborate"){
                 cf += 6;
                 rollingDescription += "<li>An elaborate design has been stitched into this item and it covers most of it's surface.</li>";
               }
-              else if (this.data.data.jewelryDesign.embroidery === "minimalSilver"){
+              else if (this.system.jewelryDesign.embroidery === "minimalSilver"){
                 cf += 6;
                 rollingDescription += "<li>Minimal trim or simple designs have been stitched into the surface of this item with cloth of silver.</li>";
               }
-              else if (this.data.data.jewelryDesign.embroidery === "elaborateSilver"){
+              else if (this.system.jewelryDesign.embroidery === "elaborateSilver"){
                 cf += 18;
                 rollingDescription += "<li>An elaborate design has been stitched into this item and it covers most of it's surface with cloth of silver.</li>";
               }
-              else if (this.data.data.jewelryDesign.embroidery === "minimalGold"){
+              else if (this.system.jewelryDesign.embroidery === "minimalGold"){
                 cf += 60;
                 rollingDescription += "<li>Minimal trim or simple designs have been stitched into the surface of this item with cloth of gold.</li>";
               }
-              else if (this.data.data.jewelryDesign.embroidery === "elaborateGold"){
+              else if (this.system.jewelryDesign.embroidery === "elaborateGold"){
                 cf += 180;
                 rollingDescription += "<li>An elaborate design has been stitched into this item and it covers most of it's surface with cloth of gold.</li>";
               }
             }
 
-            if (this.data.data.jewelryDesign.fringe !== "none"){
-              if (this.data.data.jewelryDesign.fringe === "common"){
+            if (this.system.jewelryDesign.fringe !== "none"){
+              if (this.system.jewelryDesign.fringe === "common"){
                 cf += 1.5;
                 rollingDescription += "<li>This object has common feathers, furs, or a dyed string fringe.</li>";
               }
-              else if (this.data.data.jewelryDesign.fringe === "rare"){
+              else if (this.system.jewelryDesign.fringe === "rare"){
                 cf += 4;
                 rollingDescription += "<li>This object has a particularly rare or colourful trim, like peacock feathers, rare dyes, or sable.</li>";
               }
-              else if (this.data.data.jewelryDesign.fringe === "commonSilver"){
+              else if (this.system.jewelryDesign.fringe === "commonSilver"){
                 cf += 4.5;
                 rollingDescription += "<li>This object has common feathers, furs, or a dyed string fringe that has been worked into cloth of silver.</li>";
               }
-              else if (this.data.data.jewelryDesign.fringe === "rareSilver"){
+              else if (this.system.jewelryDesign.fringe === "rareSilver"){
                 cf += 12;
                 rollingDescription += "<li>This object has a particularly rare or colourful trim, like peacock feathers, rare dyes, or sable that has been worked into cloth of silver.</li>";
               }
-              else if (this.data.data.jewelryDesign.fringe === "commonGold"){
+              else if (this.system.jewelryDesign.fringe === "commonGold"){
                 cf += 45;
                 rollingDescription += "<li>This object has common feathers, furs, or a dyed string fringe that has been worked into cloth of gold.</li>";
               }
-              else if (this.data.data.jewelryDesign.fringe === "rareGold"){
+              else if (this.system.jewelryDesign.fringe === "rareGold"){
                 cf += 120;
                 rollingDescription += "<li>This object has a particularly rare or colourful trim, like peacock feathers, rare dyes, or sable that has been worked into cloth of gold.</li>";
               }
             }
 
-            if (this.data.data.jewelryDesign.tapestryWeave !== "none") {
-              if (this.data.data.jewelryDesign.tapestryWeave === "simple") {
+            if (this.system.jewelryDesign.tapestryWeave !== "none") {
+              if (this.system.jewelryDesign.tapestryWeave === "simple") {
                 cf += 2;
                 rollingDescription += "<li>A simple pattern has been woven into this item.</li>";
               }
-              else if (this.data.data.jewelryDesign.tapestryWeave === "complex") {
+              else if (this.system.jewelryDesign.tapestryWeave === "complex") {
                 cf += 5;
                 rollingDescription += "<li>A complex pattern has been woven into this item.</li>";
               }
-              else if (this.data.data.jewelryDesign.tapestryWeave === "figurative") {
+              else if (this.system.jewelryDesign.tapestryWeave === "figurative") {
                 cf += 10;
                 rollingDescription += "<li>A figurative design has been woven into this item.</li>";
               }
             }
 
-            if (this.data.data.jewelryDesign.tapestryWeave !== "none"){
-              if (this.data.data.jewelryDesign.tapestryDye === "simple"){
+            if (this.system.jewelryDesign.tapestryWeave !== "none"){
+              if (this.system.jewelryDesign.tapestryDye === "simple"){
                 cf += 0;
                 rollingDescription += "<li>This tapestry uses black, white, or grey dye.</li>";
               }
-              else if (this.data.data.jewelryDesign.tapestryDye === "common"){
+              else if (this.system.jewelryDesign.tapestryDye === "common"){
                 cf += 1;
                 rollingDescription += "<li>This tapestry uses a more vivid, but common dye. Examples are dull red from madder or blue-grey from indigo.</li>";
               }
-              else if (this.data.data.jewelryDesign.tapestryDye === "expensive"){
+              else if (this.system.jewelryDesign.tapestryDye === "expensive"){
                 cf += 5;
                 rollingDescription += "<li>This tapestry uses an expensive dye, such as red from murex or cochnieal, yellow from saffron, or any other natural but extant dye.</li>";
               }
             }
           }
         }
-        if (typeof this.data.data.jewelryDesign.selectedMaterial !== "undefined") {
-          if (this.data.data.jewelryDesign.selectedMaterial.metal) {
-            if (this.data.data.jewelryDesign.enamel !== "none"){
-              if (this.data.data.jewelryDesign.enamel === "limitedSimple"){
+        if (typeof this.system.jewelryDesign.selectedMaterial !== "undefined") {
+          if (this.system.jewelryDesign.selectedMaterial.metal) {
+            if (this.system.jewelryDesign.enamel !== "none"){
+              if (this.system.jewelryDesign.enamel === "limitedSimple"){
                 cf += 2;
                 rollingDescription += "<li>Simple decoration on a limited portion of the object, like geometric patterns on only a portion of the item.</li>";
               }
-              else if (this.data.data.jewelryDesign.enamel === "limitedComplex"){
+              else if (this.system.jewelryDesign.enamel === "limitedComplex"){
                 cf += 5;
                 rollingDescription += "<li>Complex decoration on a limited portion of the object, like individually painted figures on only a portion of the item.</li>";
               }
-              else if (this.data.data.jewelryDesign.enamel === "extensiveSimple"){
+              else if (this.system.jewelryDesign.enamel === "extensiveSimple"){
                 cf += 5;
                 rollingDescription += "<li>Simple decoration on the entire object, like geometric patterns across the surface of the item.</li>";
               }
-              else if (this.data.data.jewelryDesign.enamel === "extensiveComplex"){
+              else if (this.system.jewelryDesign.enamel === "extensiveComplex"){
                 cf += 10;
                 rollingDescription += "<li>Complex decoration on the entire object, like a painted or printed scene covering the object.</li>";
               }
             }
 
-            if (this.data.data.jewelryDesign.etching !== "none") {
-              if (this.data.data.jewelryDesign.etching === "simple") {
+            if (this.system.jewelryDesign.etching !== "none") {
+              if (this.system.jewelryDesign.etching === "simple") {
                 cf += 1.5;
                 rollingDescription += "<li>This object has a simple design chemically etched into it.</li>";
               }
-              else if (this.data.data.jewelryDesign.etching === "extensive") {
+              else if (this.system.jewelryDesign.etching === "extensive") {
                 cf += 4;
                 rollingDescription += "<li>This object has a complex design chemically etched into it.</li>";
               }
@@ -1594,38 +1590,38 @@ export class gurpsItem extends Item {
           }
         }
 
-        if (this.data.data.jewelryDesign.figurativePainting !== "none"){
-          if (this.data.data.jewelryDesign.figurativePainting === "limitedSimple"){
+        if (this.system.jewelryDesign.figurativePainting !== "none"){
+          if (this.system.jewelryDesign.figurativePainting === "limitedSimple"){
             cf += 2;
             rollingDescription += "<li>Simple decoration on a limited portion of the object, like geometric patterns applied via block-print on only a portion of the item.</li>";
           }
-          else if (this.data.data.jewelryDesign.figurativePainting === "limitedComplex"){
+          else if (this.system.jewelryDesign.figurativePainting === "limitedComplex"){
             cf += 5;
             rollingDescription += "<li>Complex decoration on a limited portion of the object, like individually painted figures on only a portion of the item.</li>";
           }
-          else if (this.data.data.jewelryDesign.figurativePainting === "extensiveSimple"){
+          else if (this.system.jewelryDesign.figurativePainting === "extensiveSimple"){
             cf += 5;
             rollingDescription += "<li>Simple decoration on the entire object, like geometric patterns applied via block-print across the surface of the item.</li>";
           }
-          else if (this.data.data.jewelryDesign.figurativePainting === "extensiveComplex"){
+          else if (this.system.jewelryDesign.figurativePainting === "extensiveComplex"){
             cf += 10;
             rollingDescription += "<li>Complex decoration on the entire object, like a painted or printed scene covering the object.</li>";
           }
         }
       }
 
-      this.data.data.jewelryDesign.rollingDescription = rollingDescription;
-      this.data.data.jewelryDesign.finalWeight = this.data.data.jewelryDesign.size;
+      this.system.jewelryDesign.rollingDescription = rollingDescription;
+      this.system.jewelryDesign.finalWeight = this.system.jewelryDesign.size;
 
-      if (typeof this.data.data.jewelryDesign.selectedMaterial !== "undefined") {
-        this.data.data.jewelryDesign.finalCost = +this.data.data.jewelryDesign.size * +this.data.data.jewelryDesign.selectedStyle.valueMult * parseInt(this.data.data.jewelryDesign.selectedMaterial.cost);
+      if (typeof this.system.jewelryDesign.selectedMaterial !== "undefined") {
+        this.system.jewelryDesign.finalCost = +this.system.jewelryDesign.size * +this.system.jewelryDesign.selectedStyle.valueMult * parseInt(this.system.jewelryDesign.selectedMaterial.cost);
       }
       else {
-        this.data.data.jewelryDesign.finalCost = +this.data.data.jewelryDesign.size * +this.data.data.jewelryDesign.selectedStyle.valueMult;
+        this.system.jewelryDesign.finalCost = +this.system.jewelryDesign.size * +this.system.jewelryDesign.selectedStyle.valueMult;
       }
 
-      if (this.data.data.jewelryDesign.essential) {
-        this.data.data.jewelryDesign.finalCost *= 30;
+      if (this.system.jewelryDesign.essential) {
+        this.system.jewelryDesign.finalCost *= 30;
       }
     }
 
@@ -1634,23 +1630,25 @@ export class gurpsItem extends Item {
     let campaignStartingWealth = economicHelpers.getStartingCashByTL(campaignTL);
     let sacrificialValue = Math.round(campaignStartingWealth / 250);
 
-    this.data.data.jewelryDesign.finalCost = Math.round((this.data.data.jewelryDesign.finalCost * cf) * 100) / 100;
-    this.data.data.jewelryDesign.finalWeight = Math.round(this.data.data.jewelryDesign.finalWeight * 100000) / 100000;
-    this.data.data.jewelryDesign.mana = Math.floor(this.data.data.jewelryDesign.finalCost / sacrificialValue);
+    this.system.jewelryDesign.finalCost = Math.round((this.system.jewelryDesign.finalCost * cf) * 100) / 100;
+    this.system.jewelryDesign.finalWeight = Math.round(this.system.jewelryDesign.finalWeight * 100000) / 100000;
+    this.system.jewelryDesign.mana = Math.floor(this.system.jewelryDesign.finalCost / sacrificialValue);
 
     // Output
-    this.data.data.cost = this.data.data.jewelryDesign.finalCost;
-    this.data.data.weight = this.data.data.jewelryDesign.finalWeight;
+    this.system.cost = this.system.jewelryDesign.finalCost;
+    this.system.weight = this.system.jewelryDesign.finalWeight;
+
+    this.finalEquipmentCalculation();
   }
 
   _prepareCustomWeaponData() {
     this.validateEquipmentBasics();
 
-    if (typeof this.data.data.customType == "undefined" || this.data.data.customType == null || this.data.data.customType == "") {
-      this.data.data.customType = "bow"
+    if (typeof this.system.customType == "undefined" || this.system.customType == null || this.system.customType == "") {
+      this.system.customType = "bow"
     }
 
-    switch (this.data.data.customType) {
+    switch (this.system.customType) {
       case "firearm":
       case "muzzleLoader": // Included for backwards compatibility.
       case "cartridgeLoader": // Included for backwards compatibility.
@@ -1676,17 +1674,19 @@ export class gurpsItem extends Item {
   }
 
   prepareCustomFirearm() {
-    if (this.data.data.tl >= 3) { // TL must be at least 3 to design a custom gun
-      if (typeof this.data.data.firearmDesign == "undefined" || (typeof this.data.data.firearmDesign != "undefined" && !this.data.data.firearmDesign.initComplete)) { // If the firearmDesign block hasn't yet been created
-        this.data.data.firearmDesign = { // Create it
+    if (this.system.tl >= 3) { // TL must be at least 3 to design a custom gun
+      if (typeof this.system.firearmDesign == "undefined" || (typeof this.system.firearmDesign != "undefined" && !this.system.firearmDesign.initComplete)) { // If the firearmDesign block hasn't yet been created
+        this.system.firearmDesign = { // Create it
           "barrelLength": 100, // Measured in mm
           "barrels": 1, // At least one, whole numbers
           "configuration": "pistol", // cannon/pistol/bullpup/longarm/semiportable
-          "rifling": this.data.data.tl >= 5, // At or above TL5 barrels default rifled.
+          "rifling": this.system.tl >= 5, // At or above TL5 barrels default rifled.
           "bolt": "closed", // closed/open
           "action": "semi", // muzzle/breech/break/bolt/straightPull/lever/pump/revolverSA/revolverDA/semi/auto/burst/highCyclicBurst
           "lock": "centre", // cannon/match/wheel/flint/cap/pin/rim/centre
           "allowTL4BreechLoaders": game.settings.get("gurps4e", "allowTL4BreechLoaders"),
+
+          "magicalMaterials": false,
 
           "initComplete": true,
 
@@ -1719,6 +1719,7 @@ export class gurpsItem extends Item {
           "magazineMaterial": "steel", // steel/alloy/plastic
           "capacity": 1, // Whole positive numbers only
 
+          "essentialMaterials": false,
           "fitToOwner": false,
           "weightTweak": 1, // 0.85 to 999
           "meleeProfile": false,
@@ -1777,102 +1778,105 @@ export class gurpsItem extends Item {
         }
       }
 
-      this.data.data.lc = 3;
+      this.system.lc = 3;
+
+      // Get game settings
+      this.system.firearmDesign.magicalMaterials = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
 
       // Input Validation
-      if (typeof this.data.data.firearmDesign.barrelLength == "undefined" || this.data.data.firearmDesign.barrelLength <= 0 || this.data.data.firearmDesign.barrelLength == "") {
-        this.data.data.firearmDesign.barrelLength = 100;
+      if (typeof this.system.firearmDesign.barrelLength == "undefined" || this.system.firearmDesign.barrelLength <= 0 || this.system.firearmDesign.barrelLength == "") {
+        this.system.firearmDesign.barrelLength = 100;
       }
-      if (typeof this.data.data.firearmDesign.barrels == "undefined" || this.data.data.firearmDesign.barrels <= 0 || this.data.data.firearmDesign.barrels == "") {
-        this.data.data.firearmDesign.barrels = 1;
+      if (typeof this.system.firearmDesign.barrels == "undefined" || this.system.firearmDesign.barrels <= 0 || this.system.firearmDesign.barrels == "") {
+        this.system.firearmDesign.barrels = 1;
       }
-      if (typeof this.data.data.firearmDesign.projectileCalibre == "undefined" || this.data.data.firearmDesign.projectileCalibre <= 0 || this.data.data.firearmDesign.projectileCalibre == "") {
-        this.data.data.firearmDesign.projectileCalibre = 10;
+      if (typeof this.system.firearmDesign.projectileCalibre == "undefined" || this.system.firearmDesign.projectileCalibre <= 0 || this.system.firearmDesign.projectileCalibre == "") {
+        this.system.firearmDesign.projectileCalibre = 10;
       }
-      if (typeof this.data.data.firearmDesign.projectileMass == "undefined" || this.data.data.firearmDesign.projectileMass <= 0 || this.data.data.firearmDesign.projectileMass == "") {
-        this.data.data.firearmDesign.projectileMass = 100;
+      if (typeof this.system.firearmDesign.projectileMass == "undefined" || this.system.firearmDesign.projectileMass <= 0 || this.system.firearmDesign.projectileMass == "") {
+        this.system.firearmDesign.projectileMass = 100;
       }
-      if (typeof this.data.data.firearmDesign.projectileAspectRatio == "undefined" || this.data.data.firearmDesign.projectileAspectRatio <= 0 || this.data.data.firearmDesign.projectileAspectRatio == "") {
-        this.data.data.firearmDesign.projectileAspectRatio = 1;
+      if (typeof this.system.firearmDesign.projectileAspectRatio == "undefined" || this.system.firearmDesign.projectileAspectRatio <= 0 || this.system.firearmDesign.projectileAspectRatio == "") {
+        this.system.firearmDesign.projectileAspectRatio = 1;
       }
-      if (typeof this.data.data.firearmDesign.chamberBore == "undefined" || this.data.data.firearmDesign.chamberBore <= 0 || this.data.data.firearmDesign.chamberBore == "") {
-        this.data.data.firearmDesign.chamberBore = 10;
+      if (typeof this.system.firearmDesign.chamberBore == "undefined" || this.system.firearmDesign.chamberBore <= 0 || this.system.firearmDesign.chamberBore == "") {
+        this.system.firearmDesign.chamberBore = 10;
       }
-      if (typeof this.data.data.firearmDesign.caseLength == "undefined" || this.data.data.firearmDesign.caseLength <= 0 || this.data.data.firearmDesign.caseLength == "") {
-        this.data.data.firearmDesign.caseLength = 100;
+      if (typeof this.system.firearmDesign.caseLength == "undefined" || this.system.firearmDesign.caseLength <= 0 || this.system.firearmDesign.caseLength == "") {
+        this.system.firearmDesign.caseLength = 100;
       }
-      if (typeof this.data.data.firearmDesign.burnRatio == "undefined" || this.data.data.firearmDesign.burnRatio <= 0 || this.data.data.firearmDesign.burnRatio > 1 || this.data.data.firearmDesign.burnRatio == "") {
-        this.data.data.firearmDesign.burnRatio = 0.35;
+      if (typeof this.system.firearmDesign.burnRatio == "undefined" || this.system.firearmDesign.burnRatio <= 0 || this.system.firearmDesign.burnRatio > 1 || this.system.firearmDesign.burnRatio == "") {
+        this.system.firearmDesign.burnRatio = 0.35;
       }
-      if (typeof this.data.data.firearmDesign.chamberPressure == "undefined" || this.data.data.firearmDesign.chamberPressure <= 0 || this.data.data.firearmDesign.chamberPressure == "") {
-        this.data.data.firearmDesign.chamberPressure = 15000;
+      if (typeof this.system.firearmDesign.chamberPressure == "undefined" || this.system.firearmDesign.chamberPressure <= 0 || this.system.firearmDesign.chamberPressure == "") {
+        this.system.firearmDesign.chamberPressure = 15000;
       }
-      if (typeof this.data.data.firearmDesign.capacity == "undefined" || this.data.data.firearmDesign.capacity <= 0 || this.data.data.firearmDesign.capacity == "") {
-        this.data.data.firearmDesign.capacity = 1;
+      if (typeof this.system.firearmDesign.capacity == "undefined" || this.system.firearmDesign.capacity <= 0 || this.system.firearmDesign.capacity == "") {
+        this.system.firearmDesign.capacity = 1;
       }
-      if (typeof this.data.data.firearmDesign.weightTweak == "undefined" || this.data.data.firearmDesign.weightTweak <= 0 || this.data.data.firearmDesign.weightTweak == "") {
-        this.data.data.firearmDesign.weightTweak = 1;
+      if (typeof this.system.firearmDesign.weightTweak == "undefined" || this.system.firearmDesign.weightTweak <= 0 || this.system.firearmDesign.weightTweak == "") {
+        this.system.firearmDesign.weightTweak = 1;
       }
-      if (typeof this.data.data.firearmDesign.cf == "undefined" || this.data.data.firearmDesign.cf <= 0 || this.data.data.firearmDesign.cf == "") {
-        this.data.data.firearmDesign.cf = 1;
+      if (typeof this.system.firearmDesign.cf == "undefined" || this.system.firearmDesign.cf <= 0 || this.system.firearmDesign.cf == "") {
+        this.system.firearmDesign.cf = 1;
       }
 
-      this.data.data.firearmDesign.explosives = game.materialAPI.fetchExplosives();
+      this.system.firearmDesign.explosives = game.materialAPI.fetchExplosives();
 
       // The weapon is a muzzle loader, breach loader, or break action and magazine related info will be hidden
-      if (this.data.data.firearmDesign.action === "break" || this.data.data.firearmDesign.action === "breech" || this.data.data.firearmDesign.action === "muzzle") {
-        this.data.data.firearmDesign.magazineStyle = "none";
-        this.data.data.firearmDesign.magazineMaterial = "steel";
-        this.data.data.firearmDesign.capacity = 0;
-        this.data.data.firearmDesign.rof = 1;
+      if (this.system.firearmDesign.action === "break" || this.system.firearmDesign.action === "breech" || this.system.firearmDesign.action === "muzzle") {
+        this.system.firearmDesign.magazineStyle = "none";
+        this.system.firearmDesign.magazineMaterial = "steel";
+        this.system.firearmDesign.capacity = 0;
+        this.system.firearmDesign.rof = 1;
       }
 
       // The weapon is not some version of semi or automatic, and open/closed bolt info will be hidden
-      if (this.data.data.firearmDesign.action === "break" ||
-          this.data.data.firearmDesign.action === "breech" ||
-          this.data.data.firearmDesign.action === "muzzle" ||
-          this.data.data.firearmDesign.action === "bolt" ||
-          this.data.data.firearmDesign.action === "straightPull" ||
-          this.data.data.firearmDesign.action === "lever" ||
-          this.data.data.firearmDesign.action === "pump" ||
-          this.data.data.firearmDesign.action === "revolverSA" ||
-          this.data.data.firearmDesign.action === "revolverDA") {
-        this.data.data.firearmDesign.bolt = "closed";
+      if (this.system.firearmDesign.action === "break" ||
+          this.system.firearmDesign.action === "breech" ||
+          this.system.firearmDesign.action === "muzzle" ||
+          this.system.firearmDesign.action === "bolt" ||
+          this.system.firearmDesign.action === "straightPull" ||
+          this.system.firearmDesign.action === "lever" ||
+          this.system.firearmDesign.action === "pump" ||
+          this.system.firearmDesign.action === "revolverSA" ||
+          this.system.firearmDesign.action === "revolverDA") {
+        this.system.firearmDesign.bolt = "closed";
       }
 
       // Rifling does not become available until TL4
-      if (this.data.data.tl < 4) {
-        this.data.data.firearmDesign.rifling = false;
+      if (this.system.tl < 4) {
+        this.system.firearmDesign.rifling = false;
       }
 
-      this.data.data.firearmDesign.allowTL4BreechLoaders = game.settings.get("gurps4e", "allowTL4BreechLoaders");
+      this.system.firearmDesign.allowTL4BreechLoaders = game.settings.get("gurps4e", "allowTL4BreechLoaders");
 
       // Begin calculations proper
 
       // Burn length calculations
-      if (this.data.data.firearmDesign.cartridgeType == "pistol") {
-        this.data.data.firearmDesign.burnRatio = 7 / 24;
+      if (this.system.firearmDesign.cartridgeType == "pistol") {
+        this.system.firearmDesign.burnRatio = 7 / 24;
       }
-      else if (this.data.data.firearmDesign.cartridgeType == "rifle") {
-        this.data.data.firearmDesign.burnRatio = 7 / 16
+      else if (this.system.firearmDesign.cartridgeType == "rifle") {
+        this.system.firearmDesign.burnRatio = 7 / 16
       }
 
-      this.data.data.firearmDesign.burnLength = this.data.data.firearmDesign.burnRatio * this.data.data.firearmDesign.caseLength;
+      this.system.firearmDesign.burnLength = this.system.firearmDesign.burnRatio * this.system.firearmDesign.caseLength;
 
       // Prerequisite Calculations
-      let barrelBoreMetres        = this.data.data.firearmDesign.projectileCalibre / 1000 // F21 / F14
-      let chamberBoreMetres       = this.data.data.firearmDesign.chamberBore / 1000
-      let chamberPressurePascals  = this.data.data.firearmDesign.chamberPressure * 6896;
-      let burnLengthMeters        = this.data.data.firearmDesign.burnLength / 1000;
+      let barrelBoreMetres        = this.system.firearmDesign.projectileCalibre / 1000 // F21 / F14
+      let chamberBoreMetres       = this.system.firearmDesign.chamberBore / 1000
+      let chamberPressurePascals  = this.system.firearmDesign.chamberPressure * 6896;
+      let burnLengthMeters        = this.system.firearmDesign.burnLength / 1000;
       let boreCrossSection        = Math.PI * ( barrelBoreMetres / 2) ** 2; // I13
       let bulletCrossSection      = Math.PI * ( barrelBoreMetres / 2) ** 2; // I17
-      let barrelLengthMetres      = this.data.data.firearmDesign.barrelLength / 1000; // F17
-      let caseLengthMetres        = this.data.data.firearmDesign.caseLength / 1000;
+      let barrelLengthMetres      = this.system.firearmDesign.barrelLength / 1000; // F17
+      let caseLengthMetres        = this.system.firearmDesign.caseLength / 1000;
       let chamberCrossSection     = Math.PI * ( chamberBoreMetres / 2 ) ** 2
       let chamberVolume           = chamberCrossSection * ( caseLengthMetres * 7/8 - barrelBoreMetres);
       let fallOffVolume           = chamberVolume + boreCrossSection * burnLengthMeters;
       let acclerationDistance     = barrelLengthMetres - caseLengthMetres - burnLengthMeters + barrelBoreMetres;
-      let totalAcceleratedKgs     = this.data.data.firearmDesign.projectileMass / 15430; // F22 or F18
+      let totalAcceleratedKgs     = this.system.firearmDesign.projectileMass / 15430; // F22 or F18
 
       // Actually useful calculations
 
@@ -1882,124 +1886,124 @@ export class gurpsItem extends Item {
       // Velocity
       let metresPerSecond = Math.sqrt((2* Math.abs(kineticEnergy) / totalAcceleratedKgs )); // D25
       let feetPerSecond = metresPerSecond * 1000 / (12 * 25.4); // D26
-      this.data.data.firearmDesign.yardsPerSecond = Math.floor(feetPerSecond / 3);
+      this.system.firearmDesign.yardsPerSecond = Math.floor(feetPerSecond / 3);
 
       // Decide whether or not this gun counts 4 to 8mm projectiles as pi or pi- (High/Low energy)
       if (kineticEnergy > 1250 || metresPerSecond > 700) { // The KE is the NATO standard for intermediate cartridges.
-        this.data.data.firearmDesign.highEnergy = true;
+        this.system.firearmDesign.highEnergy = true;
       }
       else {
-        this.data.data.firearmDesign.highEnergy = false;
+        this.system.firearmDesign.highEnergy = false;
       }
 
       // Damage
-      this.data.data.firearmDesign.baseDamage = Math.round(Math.sqrt(( kineticEnergy ** 1.04)/( bulletCrossSection ** 0.314))/13.3926)
-      this.data.data.firearmDesign.baseDamageObject = generalHelpers.pointsToDiceAndAdds(this.data.data.firearmDesign.baseDamage);
+      this.system.firearmDesign.baseDamage = Math.round(Math.sqrt(( kineticEnergy ** 1.04)/( bulletCrossSection ** 0.314))/13.3926)
+      this.system.firearmDesign.baseDamageObject = generalHelpers.pointsToDiceAndAdds(this.system.firearmDesign.baseDamage);
 
       // Projectile Density
-      let projectileVolume = (Math.PI*(barrelBoreMetres/2) ** 3+Math.PI/12*barrelBoreMetres ** 2*(2 * barrelBoreMetres * this.data.data.firearmDesign.projectileAspectRatio - barrelBoreMetres)); // I21
-      this.data.data.firearmDesign.projectileDensity = totalAcceleratedKgs / projectileVolume / 1000 // I22 - Measured in g/cm^2
+      let projectileVolume = (Math.PI*(barrelBoreMetres/2) ** 3+Math.PI/12*barrelBoreMetres ** 2*(2 * barrelBoreMetres * this.system.firearmDesign.projectileAspectRatio - barrelBoreMetres)); // I21
+      this.system.firearmDesign.projectileDensity = totalAcceleratedKgs / projectileVolume / 1000 // I22 - Measured in g/cm^2
 
-      let projectileMaterialArray = materialHelpers.densityToMaterials(this.data.data.firearmDesign.projectileDensity);
+      let projectileMaterialArray = materialHelpers.densityToMaterials(this.system.firearmDesign.projectileDensity);
 
-      this.data.data.firearmDesign.projectileMaterials = "";
+      this.system.firearmDesign.projectileMaterials = "";
 
       for (let d = 0; d < projectileMaterialArray.length; d++) {
         if (d > 0) {
-          this.data.data.firearmDesign.projectileMaterials += ", ";
+          this.system.firearmDesign.projectileMaterials += ", ";
         }
 
-        this.data.data.firearmDesign.projectileMaterials += projectileMaterialArray[d];
+        this.system.firearmDesign.projectileMaterials += projectileMaterialArray[d];
       }
 
       // Wound modifier calculation
 
-      if (this.data.data.firearmDesign.projectileCalibre < 4) {
-        this.data.data.firearmDesign.baseWoundMod = 1;
+      if (this.system.firearmDesign.projectileCalibre < 4) {
+        this.system.firearmDesign.baseWoundMod = 1;
       }
-      else if (this.data.data.firearmDesign.projectileCalibre < 8) {
-        if (this.data.data.firearmDesign.highEnergy) { // If the projectile is moving quickly enough or carrying enough energy, count is as 'pi', otherwise it remains pi-
-          this.data.data.firearmDesign.baseWoundMod = 2;
+      else if (this.system.firearmDesign.projectileCalibre < 8) {
+        if (this.system.firearmDesign.highEnergy) { // If the projectile is moving quickly enough or carrying enough energy, count is as 'pi', otherwise it remains pi-
+          this.system.firearmDesign.baseWoundMod = 2;
         }
         else {
-          this.data.data.firearmDesign.baseWoundMod = 1;
+          this.system.firearmDesign.baseWoundMod = 1;
         }
       }
-      else if (this.data.data.firearmDesign.projectileCalibre < 10) {
-        this.data.data.firearmDesign.baseWoundMod = 2;
+      else if (this.system.firearmDesign.projectileCalibre < 10) {
+        this.system.firearmDesign.baseWoundMod = 2;
       }
-      else if (this.data.data.firearmDesign.projectileCalibre < 15) {
-        this.data.data.firearmDesign.baseWoundMod = 3;
+      else if (this.system.firearmDesign.projectileCalibre < 15) {
+        this.system.firearmDesign.baseWoundMod = 3;
       }
       else {
-        this.data.data.firearmDesign.baseWoundMod = 4;
+        this.system.firearmDesign.baseWoundMod = 4;
       }
 
       // ACC calculation
-      this.data.data.firearmDesign.baseAcc = 0;
+      this.system.firearmDesign.baseAcc = 0;
 
       // Base ACC from configuration
-      if (this.data.data.firearmDesign.configuration === "cannon") {
-        this.data.data.firearmDesign.baseAcc = 1;
+      if (this.system.firearmDesign.configuration === "cannon") {
+        this.system.firearmDesign.baseAcc = 1;
       }
-      else if (this.data.data.firearmDesign.configuration === "pistol") {
-        this.data.data.firearmDesign.baseAcc = 2;
+      else if (this.system.firearmDesign.configuration === "pistol") {
+        this.system.firearmDesign.baseAcc = 2;
       }
-      else if (this.data.data.firearmDesign.configuration === "bullpup" || this.data.data.firearmDesign.configuration === "longarm") {
-        this.data.data.firearmDesign.baseAcc = 4;
+      else if (this.system.firearmDesign.configuration === "bullpup" || this.system.firearmDesign.configuration === "longarm") {
+        this.system.firearmDesign.baseAcc = 4;
       }
-      else if (this.data.data.firearmDesign.configuration === "semiportable") {
-        this.data.data.firearmDesign.baseAcc = 5;
+      else if (this.system.firearmDesign.configuration === "semiportable") {
+        this.system.firearmDesign.baseAcc = 5;
       }
 
       // Open/Closed bolt guns
-      if (this.data.data.firearmDesign.bolt === "open") {
-        this.data.data.firearmDesign.baseAcc -= 1; // Open bolt is -1 ACC
+      if (this.system.firearmDesign.bolt === "open") {
+        this.system.firearmDesign.baseAcc -= 1; // Open bolt is -1 ACC
       }
 
       // Action ACC
-      if (this.data.data.firearmDesign.action === "break" || this.data.data.firearmDesign.action === "bolt" || this.data.data.firearmDesign.action === "straightPull") {
-        this.data.data.firearmDesign.baseAcc += 1;
+      if (this.system.firearmDesign.action === "break" || this.system.firearmDesign.action === "bolt" || this.system.firearmDesign.action === "straightPull") {
+        this.system.firearmDesign.baseAcc += 1;
       }
 
       // Rifling ACC
-      if (!this.data.data.firearmDesign.rifling) {
-        this.data.data.firearmDesign.baseAcc -= 1; // Unrifled weapons are -1 Acc
+      if (!this.system.firearmDesign.rifling) {
+        this.system.firearmDesign.baseAcc -= 1; // Unrifled weapons are -1 Acc
       }
 
       // ACC is at least 0
-      if (this.data.data.firearmDesign.baseAcc < 0) {
-        this.data.data.firearmDesign.baseAcc = 0;
+      if (this.system.firearmDesign.baseAcc < 0) {
+        this.system.firearmDesign.baseAcc = 0;
       }
 
-      this.data.data.firearmDesign.baseAcc += parseInt(this.data.data.firearmDesign.accuracy); // Apply acc modifier for quality level.
+      this.system.firearmDesign.baseAcc += parseInt(this.system.firearmDesign.accuracy); // Apply acc modifier for quality level.
 
       // Max Rof calculation
-      if (this.data.data.firearmDesign.action === "muzzle" || this.data.data.firearmDesign.action === "breech" || this.data.data.firearmDesign.action === "break" || this.data.data.firearmDesign.action === "bolt"  || this.data.data.firearmDesign.action === "revolverSA") {
-        this.data.data.firearmDesign.maxRof = 1;
+      if (this.system.firearmDesign.action === "muzzle" || this.system.firearmDesign.action === "breech" || this.system.firearmDesign.action === "break" || this.system.firearmDesign.action === "bolt"  || this.system.firearmDesign.action === "revolverSA") {
+        this.system.firearmDesign.maxRof = 1;
       }
-      else if (this.data.data.firearmDesign.action === "straightPull" || this.data.data.firearmDesign.action === "lever" || this.data.data.firearmDesign.action === "pump") {
-        this.data.data.firearmDesign.maxRof = 2;
+      else if (this.system.firearmDesign.action === "straightPull" || this.system.firearmDesign.action === "lever" || this.system.firearmDesign.action === "pump") {
+        this.system.firearmDesign.maxRof = 2;
       }
-      else if (this.data.data.firearmDesign.action === "revolverDA" || this.data.data.firearmDesign.action === "semi") {
-        this.data.data.firearmDesign.maxRof = 3;
+      else if (this.system.firearmDesign.action === "revolverDA" || this.system.firearmDesign.action === "semi") {
+        this.system.firearmDesign.maxRof = 3;
       }
-      else if (this.data.data.firearmDesign.action === "auto" || this.data.data.firearmDesign.action === "burst" || this.data.data.firearmDesign.action === "highCyclicBurst") {
-        if (this.data.data.firearmDesign.bolt === "open") {
-          this.data.data.firearmDesign.maxRof = 25;
+      else if (this.system.firearmDesign.action === "auto" || this.system.firearmDesign.action === "burst" || this.system.firearmDesign.action === "highCyclicBurst") {
+        if (this.system.firearmDesign.bolt === "open") {
+          this.system.firearmDesign.maxRof = 25;
         }
         else {
-          this.data.data.firearmDesign.maxRof = 20;
+          this.system.firearmDesign.maxRof = 20;
         }
       }
 
       // Weight
       let configWeightModifier = 45;
 
-      if (this.data.data.firearmDesign.action === "semi") {
+      if (this.system.firearmDesign.action === "semi") {
         configWeightModifier = 1.5 / 0.9 * configWeightModifier;
       }
-      else if (this.data.data.firearmDesign.action === "revolverSA" || this.data.data.firearmDesign.action === "revolverDA") {
+      else if (this.system.firearmDesign.action === "revolverSA" || this.system.firearmDesign.action === "revolverDA") {
         configWeightModifier = 5 * configWeightModifier;
       }
       else { // Else, use the modifier for bolt action weapons.
@@ -2007,28 +2011,36 @@ export class gurpsItem extends Item {
       }
 
       // Calculate the base receiver weight
-      let receiverWeight = ((kineticEnergy ** 0.66) / configWeightModifier / 1.4 ** (this.data.data.tl - 7))
+      let receiverWeight = ((kineticEnergy ** 0.66) / configWeightModifier / 1.4 ** (this.system.tl - 7))
 
-      // Add weight for revolver cylinder
-      if (this.data.data.firearmDesign.action === "revolverSA" || this.data.data.firearmDesign.action === "revolverDA") {
-        receiverWeight = (receiverWeight) + ((receiverWeight * (this.data.data.firearmDesign.capacity-1)) * 0.132)
+      if (this.system.firearmDesign.essentialMaterials) { // The gun is made of essential materials, modify receiverWeight weight accordingly.
+        receiverWeight = receiverWeight / 3;
       }
 
-      let wallThickness = this.data.data.firearmDesign.chamberPressure * this.data.data.firearmDesign.projectileCalibre / 2 / 44000000 * (1.4) ** (this.data.data.tl - 7); // H27
+      // Add weight for revolver cylinder
+      if (this.system.firearmDesign.action === "revolverSA" || this.system.firearmDesign.action === "revolverDA") {
+        receiverWeight = (receiverWeight) + ((receiverWeight * (this.system.firearmDesign.capacity-1)) * 0.132)
+      }
+
+      let wallThickness = this.system.firearmDesign.chamberPressure * this.system.firearmDesign.projectileCalibre / 2 / 44000000 * (1.4) ** (this.system.tl - 7); // H27
       let barrelDiameter = 2 * (wallThickness) + barrelBoreMetres;
 
       let barrelWeight = (Math.PI * (barrelBoreMetres / 2 + barrelDiameter) ** 2 - Math.PI * (barrelBoreMetres / 2) ** 2) * barrelLengthMetres * 7860
 
-      this.data.data.firearmDesign.weightKgs = ((receiverWeight + barrelWeight) + (((receiverWeight + barrelWeight) * 0.8) * (this.data.data.firearmDesign.barrels - 1))) * this.data.data.firearmDesign.weightTweak;
-      this.data.data.firearmDesign.weight = this.data.data.firearmDesign.weightKgs * 2.205;
+      if (this.system.firearmDesign.essentialMaterials) { // The gun is made of essential materials, modify barrelWeight accordingly.
+        barrelWeight = barrelWeight / 3;
+      }
+
+      this.system.firearmDesign.weightKgs = ((receiverWeight + barrelWeight) + (((receiverWeight + barrelWeight) * 0.8) * (this.system.firearmDesign.barrels - 1))) * this.system.firearmDesign.weightTweak;
+      this.system.firearmDesign.weight = this.system.firearmDesign.weightKgs * 2.205;
 
       // Add weight for ammo
-      let projectileWeight = this.data.data.firearmDesign.projectileMass * 0.000142857;
+      let projectileWeight = this.system.firearmDesign.projectileMass * 0.000142857;
 
       let propellantREF = 1;
       let propellantCost = 1; // We'll use this later to determine cost per shot
       let materialCost = 1; // We'll use this later to determine the weapon's material cost
-      switch (this.data.data.tl) {
+      switch (this.system.tl) {
         case 1:
         case 2:
         case 3:
@@ -2085,292 +2097,296 @@ export class gurpsItem extends Item {
       powderWeight = powderWeight * 0.00220462; // This is the required mass of TNT in pounds
       powderWeight = powderWeight / propellantREF; // This is the required mass of propellant, corrected for the REF of the propellant
 
-      this.data.data.firearmDesign.baseWeightPerShot = projectileWeight + powderWeight;
+      this.system.firearmDesign.baseWeightPerShot = projectileWeight + powderWeight;
 
       // Add weight for magazine body
       let magazineWeightMultiplier = 1;
-      if (this.data.data.firearmDesign.magazineStyle === "none" || this.data.data.firearmDesign.magazineStyle === "internal"){
+      if (this.system.firearmDesign.magazineStyle === "none" || this.system.firearmDesign.magazineStyle === "internal"){
         magazineWeightMultiplier = 1;
       }
-      else if (this.data.data.firearmDesign.magazineMaterial === "steel"){
-        if (this.data.data.firearmDesign.magazineStyle === "standard") {
+      else if (this.system.firearmDesign.magazineMaterial === "steel"){
+        if (this.system.firearmDesign.magazineStyle === "standard") {
           magazineWeightMultiplier = 1.2;
         }
-        else if (this.data.data.firearmDesign.magazineStyle === "highDensity") {
+        else if (this.system.firearmDesign.magazineStyle === "highDensity") {
           magazineWeightMultiplier = 1.3;
         }
-        else if (this.data.data.firearmDesign.magazineStyle === "extended") {
+        else if (this.system.firearmDesign.magazineStyle === "extended") {
           magazineWeightMultiplier = 1.5;
         }
-        else if (this.data.data.firearmDesign.magazineStyle === "drum") {
+        else if (this.system.firearmDesign.magazineStyle === "drum") {
           magazineWeightMultiplier = 1.6;
         }
       }
-      else if (this.data.data.firearmDesign.magazineMaterial === "alloy" || this.data.data.firearmDesign.magazineMaterial === "plastic"){
-        if (this.data.data.firearmDesign.magazineStyle === "standard") {
+      else if (this.system.firearmDesign.magazineMaterial === "alloy" || this.system.firearmDesign.magazineMaterial === "plastic"){
+        if (this.system.firearmDesign.magazineStyle === "standard") {
           magazineWeightMultiplier = 1.1;
         }
-        else if (this.data.data.firearmDesign.magazineStyle === "highDensity") {
+        else if (this.system.firearmDesign.magazineStyle === "highDensity") {
           magazineWeightMultiplier = 1.1;
         }
-        else if (this.data.data.firearmDesign.magazineStyle === "extended") {
+        else if (this.system.firearmDesign.magazineStyle === "extended") {
           magazineWeightMultiplier = 1.2;
         }
-        else if (this.data.data.firearmDesign.magazineStyle === "drum") {
+        else if (this.system.firearmDesign.magazineStyle === "drum") {
           magazineWeightMultiplier = 1.3;
         }
       }
 
-      let loadedRounds = this.data.data.firearmDesign.capacity;
-      if (this.data.data.firearmDesign.capacity === 0) {
+      if (this.system.firearmDesign.essentialMaterials) { // The gun is made of essential materials, modify magazine weight accordingly.
+        magazineWeightMultiplier = 1 + ((magazineWeightMultiplier - 1)/3);
+      }
+
+      let loadedRounds = this.system.firearmDesign.capacity;
+      if (this.system.firearmDesign.capacity === 0) {
         loadedRounds = 1
       }
-      else if (this.data.data.firearmDesign.bolt = "closed") {
+      else if (this.system.firearmDesign.bolt = "closed") {
         loadedRounds += 1;
       }
 
-      loadedRounds = loadedRounds * this.data.data.firearmDesign.barrels;
+      loadedRounds = loadedRounds * this.system.firearmDesign.barrels;
 
-      this.data.data.firearmDesign.ammoWeight = loadedRounds * this.data.data.firearmDesign.baseWeightPerShot * magazineWeightMultiplier;
+      this.system.firearmDesign.ammoWeight = loadedRounds * this.system.firearmDesign.baseWeightPerShot * magazineWeightMultiplier;
 
-      this.data.data.firearmDesign.loadedWeight = Math.floor((this.data.data.firearmDesign.weight + this.data.data.firearmDesign.ammoWeight) * 100) / 100;
-      this.data.data.weight = this.data.data.firearmDesign.loadedWeight;
+      this.system.firearmDesign.loadedWeight = Math.floor((this.system.firearmDesign.weight + this.system.firearmDesign.ammoWeight) * 100) / 100;
+      this.system.weight = this.system.firearmDesign.loadedWeight;
 
       // Shots
-      if (this.data.data.firearmDesign.action === "break" || this.data.data.firearmDesign.action === "breech" || this.data.data.firearmDesign.action === "muzzle") { // The weapon is some version of a single shot weapon, so the number of shots is the same as the number of barrels
-        if (this.data.data.firearmDesign.barrels > 1){
-          this.data.data.firearmDesign.shots = "1x" + this.data.data.firearmDesign.barrels;
+      if (this.system.firearmDesign.action === "break" || this.system.firearmDesign.action === "breech" || this.system.firearmDesign.action === "muzzle") { // The weapon is some version of a single shot weapon, so the number of shots is the same as the number of barrels
+        if (this.system.firearmDesign.barrels > 1){
+          this.system.firearmDesign.shots = "1x" + this.system.firearmDesign.barrels;
         }
         else {
-          this.data.data.firearmDesign.shots = "1";
+          this.system.firearmDesign.shots = "1";
         }
       }
       else { // The weapon has a magazine of some sort.
-        this.data.data.firearmDesign.shots = this.data.data.firearmDesign.capacity // Base shots is the magazine capacity
+        this.system.firearmDesign.shots = this.system.firearmDesign.capacity // Base shots is the magazine capacity
 
-        if (this.data.data.firearmDesign.bolt === "closed") { // If it's closed bolt, add +1
-          this.data.data.firearmDesign.shot += "+" + 1
+        if (this.system.firearmDesign.bolt === "closed") { // If it's closed bolt, add +1
+          this.system.firearmDesign.shot += "+" + 1
         }
 
-        if (this.data.data.firearmDesign.barrels > 1) { // If it has multiple barrels, multiply accordingly
-          this.data.data.firearmDesign.shots += "x" + this.data.data.firearmDesign.barrels;
+        if (this.system.firearmDesign.barrels > 1) { // If it has multiple barrels, multiply accordingly
+          this.system.firearmDesign.shots += "x" + this.system.firearmDesign.barrels;
         }
       }
 
       // Bulk and ST
       let bulkConfigLengthModifier = 304;
-      if (this.data.data.firearmDesign.configuration === "pistol" || this.data.data.firearmDesign.configuration === "bullpup") {
+      if (this.system.firearmDesign.configuration === "pistol" || this.system.firearmDesign.configuration === "bullpup") {
         bulkConfigLengthModifier = 76;
       }
 
-      let bulkLength = (this.data.data.firearmDesign.barrelLength+(this.data.data.firearmDesign.caseLength*2)+bulkConfigLengthModifier)/1000*1.09361*3*12
+      let bulkLength = (this.system.firearmDesign.barrelLength+(this.system.firearmDesign.caseLength*2)+bulkConfigLengthModifier)/1000*1.09361*3*12
 
       let bulkConfigMod = 1;
-      if (this.data.data.firearmDesign.configuration === "cannon") {
+      if (this.system.firearmDesign.configuration === "cannon") {
         bulkConfigMod = 6;
-        this.data.data.firearmDesign.st = (Math.sqrt(this.data.data.weight) * 2.4);
-        this.data.data.firearmDesign.stOutput = Math.round(this.data.data.firearmDesign.st);
-        this.data.data.firearmDesign.stCode = "†";
+        this.system.firearmDesign.st = (Math.sqrt(this.system.weight) * 2.4);
+        this.system.firearmDesign.stOutput = Math.round(this.system.firearmDesign.st);
+        this.system.firearmDesign.stCode = "†";
       }
-      else if (this.data.data.firearmDesign.configuration === "pistol") {
+      else if (this.system.firearmDesign.configuration === "pistol") {
         bulkConfigMod = 2;
-        this.data.data.firearmDesign.st =Math.sqrt(this.data.data.weight) * 3.3;
-        this.data.data.firearmDesign.stOutput = Math.round(this.data.data.firearmDesign.st);
+        this.system.firearmDesign.st =Math.sqrt(this.system.weight) * 3.3;
+        this.system.firearmDesign.stOutput = Math.round(this.system.firearmDesign.st);
       }
-      else if (this.data.data.firearmDesign.configuration === "bullpup") {
+      else if (this.system.firearmDesign.configuration === "bullpup") {
         bulkConfigMod = 3;
-        this.data.data.firearmDesign.st = (Math.sqrt(this.data.data.weight) * 2.2);
-        this.data.data.firearmDesign.stOutput = Math.round(this.data.data.firearmDesign.st);
-        this.data.data.firearmDesign.stCode = "†";
+        this.system.firearmDesign.st = (Math.sqrt(this.system.weight) * 2.2);
+        this.system.firearmDesign.stOutput = Math.round(this.system.firearmDesign.st);
+        this.system.firearmDesign.stCode = "†";
       }
-      else if (this.data.data.firearmDesign.configuration === "longarm") {
+      else if (this.system.firearmDesign.configuration === "longarm") {
         bulkConfigMod = 4;
-        this.data.data.firearmDesign.st = (Math.sqrt(this.data.data.weight) * 2.2);
-        this.data.data.firearmDesign.stOutput = Math.round(this.data.data.firearmDesign.st);
-        this.data.data.firearmDesign.stCode = "†";
+        this.system.firearmDesign.st = (Math.sqrt(this.system.weight) * 2.2);
+        this.system.firearmDesign.stOutput = Math.round(this.system.firearmDesign.st);
+        this.system.firearmDesign.stCode = "†";
       }
-      else if (this.data.data.firearmDesign.configuration === "semiportable") {
+      else if (this.system.firearmDesign.configuration === "semiportable") {
         bulkConfigMod = 5;
-        this.data.data.firearmDesign.st = (Math.sqrt(this.data.data.weight) * 2.2);
-        this.data.data.firearmDesign.stOutput = Math.round(this.data.data.firearmDesign.st);
-        this.data.data.firearmDesign.stCode = "†";
+        this.system.firearmDesign.st = (Math.sqrt(this.system.weight) * 2.2);
+        this.system.firearmDesign.stOutput = Math.round(this.system.firearmDesign.st);
+        this.system.firearmDesign.stCode = "†";
       }
 
-      this.data.data.firearmDesign.bulk = 0.1-Math.log10(bulkConfigMod) -Math.log10(this.data.data.weight) - (2*Math.log10(bulkLength))
+      this.system.firearmDesign.bulk = 0.1-Math.log10(bulkConfigMod) -Math.log10(this.system.weight) - (2*Math.log10(bulkLength))
 
       // Rcl
       let mv = totalAcceleratedKgs * metresPerSecond;
-      this.data.data.firearmDesign.rclRaw = mv / (this.data.data.firearmDesign.loadedWeight * 0.453592);
+      this.system.firearmDesign.rclRaw = mv / (this.system.firearmDesign.loadedWeight * 0.453592);
 
-      if (this.data.data.firearmDesign.rclRaw < 2) {
-        this.data.data.firearmDesign.rcl = 2;
+      if (this.system.firearmDesign.rclRaw < 2) {
+        this.system.firearmDesign.rcl = 2;
       }
       else {
-        this.data.data.firearmDesign.rcl = Math.round(this.data.data.firearmDesign.rclRaw);
+        this.system.firearmDesign.rcl = Math.round(this.system.firearmDesign.rclRaw);
       }
 
       // Range
-      let sectionalDensity = (this.data.data.firearmDesign.projectileMass/15.43)/(Math.PI*(this.data.data.firearmDesign.projectileCalibre/2) ** 2); // D37
-      let lossCoefficient = 0.000178 * sectionalDensity ** - 1.1213 / Math.pow(this.data.data.firearmDesign.projectileAspectRatio,1/4)*1.65; // D38
+      let sectionalDensity = (this.system.firearmDesign.projectileMass/15.43)/(Math.PI*(this.system.firearmDesign.projectileCalibre/2) ** 2); // D37
+      let lossCoefficient = 0.000178 * sectionalDensity ** - 1.1213 / Math.pow(this.system.firearmDesign.projectileAspectRatio,1/4)*1.65; // D38
 
       let someWeirdConstant = 0.5 * Math.round(Math.sqrt(kineticEnergy ** 1.04/bulletCrossSection ** 0.314)/13.3926);
 
-      this.data.data.firearmDesign.halfRange = Math.round((Math.log(13.3926)+Math.log(someWeirdConstant)-0.52*Math.log(totalAcceleratedKgs/2)+0.157*Math.log(bulletCrossSection))/(-1.04*lossCoefficient) + Math.log(metresPerSecond)/lossCoefficient);
-      this.data.data.firearmDesign.maxRange = Math.round((Math.log(13.3926)+Math.log(0.017)-0.52*Math.log(totalAcceleratedKgs/2)+0.157*Math.log(bulletCrossSection))/(-1.04*lossCoefficient) + Math.log(metresPerSecond)/lossCoefficient);
+      this.system.firearmDesign.halfRange = Math.round((Math.log(13.3926)+Math.log(someWeirdConstant)-0.52*Math.log(totalAcceleratedKgs/2)+0.157*Math.log(bulletCrossSection))/(-1.04*lossCoefficient) + Math.log(metresPerSecond)/lossCoefficient);
+      this.system.firearmDesign.maxRange = Math.round((Math.log(13.3926)+Math.log(0.017)-0.52*Math.log(totalAcceleratedKgs/2)+0.157*Math.log(bulletCrossSection))/(-1.04*lossCoefficient) + Math.log(metresPerSecond)/lossCoefficient);
 
       // Malf
-      this.data.data.firearmDesign.malf = 17;
+      this.system.firearmDesign.malf = 17;
 
-      switch (this.data.data.tl) {
+      switch (this.system.tl) {
         case 1:
         case 2:
         case 3:
-          this.data.data.firearmDesign.malf = 12;
+          this.system.firearmDesign.malf = 12;
           break;
         case 4:
-          this.data.data.firearmDesign.malf = 14;
+          this.system.firearmDesign.malf = 14;
           break;
         case 5:
-          this.data.data.firearmDesign.malf = 16;
+          this.system.firearmDesign.malf = 16;
           break;
         default:
-          this.data.data.firearmDesign.malf = 17;
+          this.system.firearmDesign.malf = 17;
           break;
       }
 
-      if (this.data.data.firearmDesign.action === "straightPull" && this.data.data.tl === 6) { // Straight pull weapons are -1 malf at TL6
-        this.data.data.firearmDesign.malf -= 1;
+      if (this.system.firearmDesign.action === "straightPull" && this.system.tl === 6) { // Straight pull weapons are -1 malf at TL6
+        this.system.firearmDesign.malf -= 1;
       }
 
-      if (this.data.data.tl >= 6 && (this.data.data.firearmDesign.action === "revolverSA" || this.data.data.firearmDesign.action === "revolverDA")) { // Revolvers are +1 malf at higher TLs
-        this.data.data.firearmDesign.malf += 1;
+      if (this.system.tl >= 6 && (this.system.firearmDesign.action === "revolverSA" || this.system.firearmDesign.action === "revolverDA")) { // Revolvers are +1 malf at higher TLs
+        this.system.firearmDesign.malf += 1;
       }
 
-      this.data.data.firearmDesign.malf += parseInt(this.data.data.firearmDesign.reliability); // Apply malf modifier for quality level.
+      this.system.firearmDesign.malf += parseInt(this.system.firearmDesign.reliability); // Apply malf modifier for quality level.
 
-      if (this.data.data.firearmDesign.malf > 17) { // Above a malf of 17, it's set to 17+. Which represents the fact two crit fails are required for the gun to malfunction.
-        this.data.data.firearmDesign.malf = "17+";
+      if (this.system.firearmDesign.malf > 17) { // Above a malf of 17, it's set to 17+. Which represents the fact two crit fails are required for the gun to malfunction.
+        this.system.firearmDesign.malf = "17+";
       }
 
       // Reload
-      this.data.data.firearmDesign.individualLoading = "";
-      if (this.data.data.firearmDesign.action === "muzzle") {
-        if (this.data.data.firearmDesign.lock === "cannon") {
-          this.data.data.firearmDesign.reload = 30;
-          this.data.data.firearmDesign.reloadFast = 30;
+      this.system.firearmDesign.individualLoading = "";
+      if (this.system.firearmDesign.action === "muzzle") {
+        if (this.system.firearmDesign.lock === "cannon") {
+          this.system.firearmDesign.reload = 30;
+          this.system.firearmDesign.reloadFast = 30;
         }
-        else if (this.data.data.firearmDesign.lock === "match") {
-          if (this.data.data.firearmDesign.configuration === "pistol") {
-            if (this.data.data.firearmDesign.rifling) {
-              this.data.data.firearmDesign.reload = 67;
-              this.data.data.firearmDesign.reloadFast = 54;
+        else if (this.system.firearmDesign.lock === "match") {
+          if (this.system.firearmDesign.configuration === "pistol") {
+            if (this.system.firearmDesign.rifling) {
+              this.system.firearmDesign.reload = 67;
+              this.system.firearmDesign.reloadFast = 54;
             }
             else {
-              this.data.data.firearmDesign.reload = 45;
-              this.data.data.firearmDesign.reloadFast = 36;
+              this.system.firearmDesign.reload = 45;
+              this.system.firearmDesign.reloadFast = 36;
             }
           }
           else {
-            if (this.data.data.firearmDesign.rifling) {
-              this.data.data.firearmDesign.reload = 90;
-              this.data.data.firearmDesign.reloadFast = 80;
+            if (this.system.firearmDesign.rifling) {
+              this.system.firearmDesign.reload = 90;
+              this.system.firearmDesign.reloadFast = 80;
             }
             else {
-              this.data.data.firearmDesign.reload = 60;
-              this.data.data.firearmDesign.reloadFast = 50;
+              this.system.firearmDesign.reload = 60;
+              this.system.firearmDesign.reloadFast = 50;
             }
           }
         }
-        else if (this.data.data.firearmDesign.lock === "wheel" || this.data.data.firearmDesign.lock === "flint") {
-          if (this.data.data.firearmDesign.configuration === "pistol") {
-            if (this.data.data.firearmDesign.rifling) {
-              this.data.data.firearmDesign.reload = 30;
-              this.data.data.firearmDesign.reloadFast = 24;
+        else if (this.system.firearmDesign.lock === "wheel" || this.system.firearmDesign.lock === "flint") {
+          if (this.system.firearmDesign.configuration === "pistol") {
+            if (this.system.firearmDesign.rifling) {
+              this.system.firearmDesign.reload = 30;
+              this.system.firearmDesign.reloadFast = 24;
             }
             else {
-              this.data.data.firearmDesign.reload = 20;
-              this.data.data.firearmDesign.reloadFast = 16;
+              this.system.firearmDesign.reload = 20;
+              this.system.firearmDesign.reloadFast = 16;
             }
           }
           else {
-            if (this.data.data.firearmDesign.rifling) {
-              this.data.data.firearmDesign.reload = 60;
-              this.data.data.firearmDesign.reloadFast = 50;
+            if (this.system.firearmDesign.rifling) {
+              this.system.firearmDesign.reload = 60;
+              this.system.firearmDesign.reloadFast = 50;
             }
             else {
-              this.data.data.firearmDesign.reload = 40;
-              this.data.data.firearmDesign.reloadFast = 30;
+              this.system.firearmDesign.reload = 40;
+              this.system.firearmDesign.reloadFast = 30;
             }
           }
         }
 
-        if (this.data.data.firearmDesign.barrels > 1) {
-          this.data.data.firearmDesign.individualLoading = "i";
+        if (this.system.firearmDesign.barrels > 1) {
+          this.system.firearmDesign.individualLoading = "i";
         }
       }
-      else if (this.data.data.firearmDesign.action === "breech") {
-        if (this.data.data.firearmDesign.lock === "pin" || this.data.data.firearmDesign.lock === "rim" || this.data.data.firearmDesign.lock === "centre") {
-          this.data.data.firearmDesign.reload = 3;
-          this.data.data.firearmDesign.reloadFast = 2;
+      else if (this.system.firearmDesign.action === "breech") {
+        if (this.system.firearmDesign.lock === "pin" || this.system.firearmDesign.lock === "rim" || this.system.firearmDesign.lock === "centre") {
+          this.system.firearmDesign.reload = 3;
+          this.system.firearmDesign.reloadFast = 2;
         }
         else {
-          this.data.data.firearmDesign.reload = 10;
-          this.data.data.firearmDesign.reloadFast = 8;
+          this.system.firearmDesign.reload = 10;
+          this.system.firearmDesign.reloadFast = 8;
         }
 
-        if (this.data.data.firearmDesign.barrels > 1) {
-          this.data.data.firearmDesign.individualLoading = "i";
-        }
-      }
-      else if (this.data.data.firearmDesign.action === "break") {
-        this.data.data.firearmDesign.reload = 2;
-        this.data.data.firearmDesign.reloadFast = 1;
-
-        if (this.data.data.firearmDesign.barrels > 1) {
-          this.data.data.firearmDesign.individualLoading = "i";
+        if (this.system.firearmDesign.barrels > 1) {
+          this.system.firearmDesign.individualLoading = "i";
         }
       }
-      else if (this.data.data.firearmDesign.magazineStyle === "internal") {
-        this.data.data.firearmDesign.reload = 2;
-        this.data.data.firearmDesign.reloadFast = 1;
+      else if (this.system.firearmDesign.action === "break") {
+        this.system.firearmDesign.reload = 2;
+        this.system.firearmDesign.reloadFast = 1;
 
-        this.data.data.firearmDesign.individualLoading = "i";
+        if (this.system.firearmDesign.barrels > 1) {
+          this.system.firearmDesign.individualLoading = "i";
+        }
+      }
+      else if (this.system.firearmDesign.magazineStyle === "internal") {
+        this.system.firearmDesign.reload = 2;
+        this.system.firearmDesign.reloadFast = 1;
+
+        this.system.firearmDesign.individualLoading = "i";
       }
       else {
-        this.data.data.firearmDesign.reload = 3;
-        this.data.data.firearmDesign.reloadFast = 2;
+        this.system.firearmDesign.reload = 3;
+        this.system.firearmDesign.reloadFast = 2;
       }
 
-      this.data.data.firearmDesign.reloadQuickFast = (this.data.data.firearmDesign.reloadFast - Math.min(Math.floor(this.data.data.firearmDesign.reloadFast * 0.25), 1)); // Quick reload reduces time by 25%, rounded down, but always at least 1 second.
+      this.system.firearmDesign.reloadQuickFast = (this.system.firearmDesign.reloadFast - Math.min(Math.floor(this.system.firearmDesign.reloadFast * 0.25), 1)); // Quick reload reduces time by 25%, rounded down, but always at least 1 second.
 
-      if (this.data.data.firearmDesign.action === "muzzle" || this.data.data.firearmDesign.action === "breech") {
-        if (this.data.data.firearmDesign.powderFlasks) {
-          this.data.data.firearmDesign.reload -= 5;
-          this.data.data.firearmDesign.reloadFast -= 5;
-          this.data.data.firearmDesign.reloadQuickFast -= 5;
+      if (this.system.firearmDesign.action === "muzzle" || this.system.firearmDesign.action === "breech") {
+        if (this.system.firearmDesign.powderFlasks) {
+          this.system.firearmDesign.reload -= 5;
+          this.system.firearmDesign.reloadFast -= 5;
+          this.system.firearmDesign.reloadQuickFast -= 5;
         }
 
-        else if (this.data.data.firearmDesign.paperCartridges) {
-          this.data.data.firearmDesign.reload           = this.data.data.firearmDesign.reload          / 2;
-          this.data.data.firearmDesign.reloadFast       = this.data.data.firearmDesign.reloadFast      / 2;
-          this.data.data.firearmDesign.reloadQuickFast  = this.data.data.firearmDesign.reloadQuickFast / 2;
+        else if (this.system.firearmDesign.paperCartridges) {
+          this.system.firearmDesign.reload           = this.system.firearmDesign.reload          / 2;
+          this.system.firearmDesign.reloadFast       = this.system.firearmDesign.reloadFast      / 2;
+          this.system.firearmDesign.reloadQuickFast  = this.system.firearmDesign.reloadQuickFast / 2;
         }
 
-        if (this.data.data.firearmDesign.carefulLoading) {
-          this.data.data.firearmDesign.reload           = this.data.data.firearmDesign.reload          * 2;
-          this.data.data.firearmDesign.reloadFast       = this.data.data.firearmDesign.reloadFast      * 2;
-          this.data.data.firearmDesign.reloadQuickFast  = this.data.data.firearmDesign.reloadQuickFast * 2;
+        if (this.system.firearmDesign.carefulLoading) {
+          this.system.firearmDesign.reload           = this.system.firearmDesign.reload          * 2;
+          this.system.firearmDesign.reloadFast       = this.system.firearmDesign.reloadFast      * 2;
+          this.system.firearmDesign.reloadQuickFast  = this.system.firearmDesign.reloadQuickFast * 2;
         }
       }
 
       // Cost
-      let costOfLead = this.data.data.tl >= 5 ? 1 : 2;
-      this.data.data.firearmDesign.cps = (projectileWeight * costOfLead) + (propellantCost * powderWeight);
-      this.data.data.firearmDesign.finalCps = this.data.data.firearmDesign.cf * this.data.data.firearmDesign.cps;
+      let costOfLead = this.system.tl >= 5 ? 1 : 2;
+      this.system.firearmDesign.cps = (projectileWeight * costOfLead) + (propellantCost * powderWeight);
+      this.system.firearmDesign.finalCps = this.system.firearmDesign.cf * this.system.firearmDesign.cps;
 
       let cost = 350;
 
-      switch (this.data.data.firearmDesign.configuration) {
+      switch (this.system.firearmDesign.configuration) {
         case "cannon":
           cost = 350 * 0.75;
           break;
@@ -2391,7 +2407,7 @@ export class gurpsItem extends Item {
           break;
       }
 
-      switch (this.data.data.tl) { // This modifier assumes the weapons are rifled.
+      switch (this.system.tl) { // This modifier assumes the weapons are rifled.
         case 1:
         case 2:
         case 3:
@@ -2429,601 +2445,605 @@ export class gurpsItem extends Item {
           break;
       }
 
-      if (!this.data.data.firearmDesign.rifling) { // Rifling is available, but it's early TL.
+      if (!this.system.firearmDesign.rifling) { // Rifling is available, but it's early TL.
         cost *= 0.75;
       }
 
-      cost = cost + ((cost * 0.8) * (this.data.data.firearmDesign.barrels - 1)); // Apply cost for extra barrels
+      cost = cost + ((cost * 0.8) * (this.system.firearmDesign.barrels - 1)); // Apply cost for extra barrels
 
-      this.data.data.firearmDesign.cf = 1;
+      this.system.firearmDesign.cf = 1;
 
-      if (this.data.data.firearmDesign.fitToOwner) {
-        this.data.data.firearmDesign.cf += 1;
+      if (this.system.firearmDesign.fitToOwner) {
+        this.system.firearmDesign.cf += 1;
       }
 
-      switch (this.data.data.firearmDesign.accuracy) {
+      if (this.system.firearmDesign.essentialMaterials) { // The gun is made of essential materials, modify cost factor accordingly.
+        this.system.firearmDesign.cf += 9; // Essential materials are 30x the cost for the same weight. But we're using essential materials to reduce the weight, which means it only costs 10x as much in this case.
+      }
+
+      switch (this.system.firearmDesign.accuracy) {
         case "-2":
         case "-1":
-          this.data.data.firearmDesign.cf -= 0.4;
+          this.system.firearmDesign.cf -= 0.4;
           break;
         case "0":
           break;
         case "1":
-          this.data.data.firearmDesign.cf += 0.75;
+          this.system.firearmDesign.cf += 0.75;
           break;
         case "2":
-          this.data.data.firearmDesign.cf += 3.75;
+          this.system.firearmDesign.cf += 3.75;
           break;
         default:
           break;
       }
 
-      switch (this.data.data.firearmDesign.reliability) {
+      switch (this.system.firearmDesign.reliability) {
         case "-2":
         case "-1":
-          this.data.data.firearmDesign.cf -= 0.4;
+          this.system.firearmDesign.cf -= 0.4;
           break;
         case "0":
           break;
         case "1":
-          this.data.data.firearmDesign.cf += 0.25;
+          this.system.firearmDesign.cf += 0.25;
           break;
         case "2":
-          this.data.data.firearmDesign.cf += 1.25;
+          this.system.firearmDesign.cf += 1.25;
           break;
         default:
           break;
       }
 
-      this.data.data.firearmDesign.cf = Math.max(this.data.data.firearmDesign.cf, 0.2);
+      this.system.firearmDesign.cf = Math.max(this.system.firearmDesign.cf, 0.2);
 
-      this.data.data.firearmDesign.baseCost = cost;
-      this.data.data.firearmDesign.finalCost = this.data.data.firearmDesign.cf * this.data.data.firearmDesign.baseCost;
+      this.system.firearmDesign.baseCost = cost;
+      this.system.firearmDesign.finalCost = this.system.firearmDesign.cf * this.system.firearmDesign.baseCost;
 
       // Pre-calculate helpers for ammo related stuff
       // Shot
-      this.data.data.firearmDesign.maxSPi = Math.floor((this.data.data.firearmDesign.projectileCalibre/4) ** 3); // Gives max number of 4mm balls (pi- or pi depending on velocity) Less than this is always pi-
-      this.data.data.firearmDesign.maxPi = Math.floor((this.data.data.firearmDesign.projectileCalibre/8) ** 3); // Gives max number of 8mm balls  (pi)
-      this.data.data.firearmDesign.maxLPi = Math.floor((this.data.data.firearmDesign.projectileCalibre/10) ** 3); // Gives max number of 10mm balls (pi+)
-      this.data.data.firearmDesign.maxHPi = Math.floor((this.data.data.firearmDesign.projectileCalibre/15) ** 3); // Gives max number of 15mm balls (pi++)
+      this.system.firearmDesign.maxSPi = Math.floor((this.system.firearmDesign.projectileCalibre/4) ** 3); // Gives max number of 4mm balls (pi- or pi depending on velocity) Less than this is always pi-
+      this.system.firearmDesign.maxPi = Math.floor((this.system.firearmDesign.projectileCalibre/8) ** 3); // Gives max number of 8mm balls  (pi)
+      this.system.firearmDesign.maxLPi = Math.floor((this.system.firearmDesign.projectileCalibre/10) ** 3); // Gives max number of 10mm balls (pi+)
+      this.system.firearmDesign.maxHPi = Math.floor((this.system.firearmDesign.projectileCalibre/15) ** 3); // Gives max number of 15mm balls (pi++)
 
       // Flechettes
-      this.data.data.firearmDesign.maxSPiF = Math.floor(((this.data.data.firearmDesign.projectileCalibre/4) ** 3) / 40);
-      this.data.data.firearmDesign.maxPiF = Math.floor(((this.data.data.firearmDesign.projectileCalibre/8) ** 3) / 40);
-      this.data.data.firearmDesign.maxLPiF = Math.floor(((this.data.data.firearmDesign.projectileCalibre/10) ** 3) / 40);
-      this.data.data.firearmDesign.maxHPiF = Math.floor(((this.data.data.firearmDesign.projectileCalibre/15) ** 3) / 40);
+      this.system.firearmDesign.maxSPiF = Math.floor(((this.system.firearmDesign.projectileCalibre/4) ** 3) / 40);
+      this.system.firearmDesign.maxPiF = Math.floor(((this.system.firearmDesign.projectileCalibre/8) ** 3) / 40);
+      this.system.firearmDesign.maxLPiF = Math.floor(((this.system.firearmDesign.projectileCalibre/10) ** 3) / 40);
+      this.system.firearmDesign.maxHPiF = Math.floor(((this.system.firearmDesign.projectileCalibre/15) ** 3) / 40);
 
-      switch (this.data.data.firearmDesign.baseWoundMod) {
+      switch (this.system.firearmDesign.baseWoundMod) {
         case 1:
-          this.data.data.firearmDesign.woundMod = "pi-";
+          this.system.firearmDesign.woundMod = "pi-";
           break;
         case 2:
-          this.data.data.firearmDesign.woundMod = "pi";
+          this.system.firearmDesign.woundMod = "pi";
           break;
         case 3:
-          this.data.data.firearmDesign.woundMod = "pi+";
+          this.system.firearmDesign.woundMod = "pi+";
           break;
         case 4:
-          this.data.data.firearmDesign.woundMod = "pi++";
+          this.system.firearmDesign.woundMod = "pi++";
           break;
         default:
-          this.data.data.firearmDesign.woundMod = "pi";
+          this.system.firearmDesign.woundMod = "pi";
           break;
       }
 
-      this.data.data.cost = this.data.data.firearmDesign.finalCost;
+      this.system.cost = this.system.firearmDesign.finalCost;
 
       // Calculate Ammo Stuff
-      if (typeof this.data.data.firearmDesign.ammunition != "undefined") {
-        let ammoKeys = Object.keys(this.data.data.firearmDesign.ammunition); // Get the ammo keys
+      if (typeof this.system.firearmDesign.ammunition != "undefined") {
+        let ammoKeys = Object.keys(this.system.firearmDesign.ammunition); // Get the ammo keys
         if (ammoKeys.length > 0) { // If there are actually keys
           for (let i = 0; i < ammoKeys.length; i++) { // Loop through the ammo the user has created and run whatever numbers need to be run.
 
             // Input validation for projectile count
-            if (typeof this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles == "undefined" || this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles <= 0 || this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles == "") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles = 1;
+            if (typeof this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles == "undefined" || this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles <= 0 || this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles == "") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles = 1;
             }
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles = Math.floor(Math.abs(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles));
+            this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles = Math.floor(Math.abs(this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles));
 
             // Init some things
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].wps = this.data.data.firearmDesign.baseWeightPerShot;
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps = this.data.data.firearmDesign.cps;
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF = 1;
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].malf = this.data.data.firearmDesign.malf;
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc = this.data.data.firearmDesign.baseAcc;
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage = this.data.data.firearmDesign.baseDamage;
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].st = this.data.data.firearmDesign.st;
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange = this.data.data.firearmDesign.halfRange;
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange = this.data.data.firearmDesign.maxRange;
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].range = this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange + "/" + this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange;
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = this.data.data.firearmDesign.baseWoundMod;
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = 3;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].wps = this.system.firearmDesign.baseWeightPerShot;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].cps = this.system.firearmDesign.cps;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF = 1;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].malf = this.system.firearmDesign.malf;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].acc = this.system.firearmDesign.baseAcc;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].damage = this.system.firearmDesign.baseDamage;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].st = this.system.firearmDesign.st;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange = this.system.firearmDesign.halfRange;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange = this.system.firearmDesign.maxRange;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].range = this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange + "/" + this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = this.system.firearmDesign.baseWoundMod;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].lc = 3;
 
             // Light cased
-            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].case === "lightCased") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].wps *= 0.7;
+            if (this.system.firearmDesign.ammunition[ammoKeys[i]].case === "lightCased") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].wps *= 0.7;
             }
 
             // +P ammo
-            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].plusp) {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.1;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].st *= 1.1;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1.1;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1.1;
-              if (this.data.data.tl <= 6 || this.data.data.firearmDesign.reliability < 0) { // Weapon is low TL or cheap
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].malf -= 1;
+            if (this.system.firearmDesign.ammunition[ammoKeys[i]].plusp) {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].st *= 1.1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1.1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1.1;
+              if (this.system.tl <= 6 || this.system.firearmDesign.reliability < 0) { // Weapon is low TL or cheap
+                this.system.firearmDesign.ammunition[ammoKeys[i]].malf -= 1;
               }
             }
 
             // Match ammo
-            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].match !== "1") {
-              if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].match === "1.25") {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
-                if (this.data.data.firearmDesign.baseAcc >= 4) {
-                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc = Math.floor(this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc * 1.25);
+            if (this.system.firearmDesign.ammunition[ammoKeys[i]].match !== "1") {
+              if (this.system.firearmDesign.ammunition[ammoKeys[i]].match === "1.25") {
+                this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+                if (this.system.firearmDesign.baseAcc >= 4) {
+                  this.system.firearmDesign.ammunition[ammoKeys[i]].acc = Math.floor(this.system.firearmDesign.ammunition[ammoKeys[i]].acc * 1.25);
                 }
               }
-              else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].match === "1.5") {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
-                if (this.data.data.firearmDesign.baseAcc >= 2) {
-                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc = Math.floor(this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc * 1.5);
+              else if (this.system.firearmDesign.ammunition[ammoKeys[i]].match === "1.5") {
+                this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
+                if (this.system.firearmDesign.baseAcc >= 2) {
+                  this.system.firearmDesign.ammunition[ammoKeys[i]].acc = Math.floor(this.system.firearmDesign.ammunition[ammoKeys[i]].acc * 1.5);
                 }
               }
             }
 
             // Subsonic ammo
-            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].subsonic) {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.3;
-              if (this.data.data.firearmDesign.yardsPerSecond >= 375.109) {
-                if (this.data.data.firearmDesign.highEnergy) { // If the projectile is moving quickly enough or carrying enough energy, count is as a rifle round, otherwise a pistol round
-                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.6;
-                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 0.6;
-                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 0.6;
+            if (this.system.firearmDesign.ammunition[ammoKeys[i]].subsonic) {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.3;
+              if (this.system.firearmDesign.yardsPerSecond >= 375.109) {
+                if (this.system.firearmDesign.highEnergy) { // If the projectile is moving quickly enough or carrying enough energy, count is as a rifle round, otherwise a pistol round
+                  this.system.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.6;
+                  this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 0.6;
+                  this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 0.6;
                 }
                 else {
-                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 0.8;
-                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 0.8;
+                  this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 0.8;
+                  this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 0.8;
                 }
               }
             }
 
             // Silent ammo
-            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].silent) {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 9;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+            if (this.system.firearmDesign.ammunition[ammoKeys[i]].silent) {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 9;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
 
             // Poison ammo
-            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].poison) {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+            if (this.system.firearmDesign.ammunition[ammoKeys[i]].poison) {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
 
             // Incendiary and tracer ammo
-            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].inc || this.data.data.firearmDesign.ammunition[ammoKeys[i]].tracer) {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage += 1;
+            if (this.system.firearmDesign.ammunition[ammoKeys[i]].inc || this.system.firearmDesign.ammunition[ammoKeys[i]].tracer) {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].damage += 1;
             }
 
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 1;
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = false;
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 0;
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "";
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl = this.data.data.firearmDesign.rcl;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 1;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].frag = false;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 0;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "";
+            this.system.firearmDesign.ammunition[ammoKeys[i]].rcl = this.system.firearmDesign.rcl;
 
             // Projectile Type
-            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "le" ||
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "he") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 15;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = true;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+            if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "le" ||
+                this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "he") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 15;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].frag = true;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "lec" ||
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "hec") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 15;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "lec" ||
+                this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "hec") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 15;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "thermobaric") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 25;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 7;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "thermobaric") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 25;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 7;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
 
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "saplec") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 10;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "saplec") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 10;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "saple" ||
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "saphe") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 10;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = true;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "saple" ||
+                this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "saphe") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 10;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].frag = true;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "saphec") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 20;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "saphec") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 20;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "apex") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = true;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.7;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
-              if (this.data.data.firearmDesign.projectileCalibre < 20) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "apex") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].frag = true;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.7;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+              if (this.system.firearmDesign.projectileCalibre < 20) {
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
               }
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "aphex") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = true;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
-              if (this.data.data.firearmDesign.projectileCalibre < 20) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "aphex") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].frag = true;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+              if (this.system.firearmDesign.projectileCalibre < 20) {
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
               }
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "heat") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 25;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 10;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "heat") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 25;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 10;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "msheat") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 25;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 10;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 7;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "msheat") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 25;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 10;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 7;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "hedp") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 25;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 10;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = true;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "hedp") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 25;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 10;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].frag = true;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "hesh") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 95;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "hesh") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 95;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "efp") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 50;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag = true;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 7;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 4;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "efp") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 50;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].frag = true;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 7;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 4;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "hp") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod += 1;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 3);
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "hp") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod += 1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 3);
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "frangible") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod += 1;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 0.9;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 0.9;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 3);
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "frangible") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod += 1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 0.9;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 0.9;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 3);
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "ap") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.7;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 2);
-              if (this.data.data.firearmDesign.projectileCalibre < 20) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "ap") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.7;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 2);
+              if (this.system.firearmDesign.projectileCalibre < 20) {
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
               }
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "aphc") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 2);
-              if (this.data.data.firearmDesign.projectileCalibre < 20) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "aphc") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 2);
+              if (this.system.firearmDesign.projectileCalibre < 20) {
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
               }
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "apdu") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
-              if (this.data.data.firearmDesign.projectileCalibre < 20) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "apdu") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+              if (this.system.firearmDesign.projectileCalibre < 20) {
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
               }
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "apds") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.3;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
-              if (this.data.data.firearmDesign.projectileCalibre < 30) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "apds") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.3;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+              if (this.system.firearmDesign.projectileCalibre < 30) {
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
               }
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "apdsdu") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
-              if (this.data.data.firearmDesign.projectileCalibre < 30) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "apdsdu") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+              if (this.system.firearmDesign.projectileCalibre < 30) {
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
               }
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "apfsds") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
-              if (this.data.data.firearmDesign.projectileCalibre < 40) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "apfsds") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 1);
+              if (this.system.firearmDesign.projectileCalibre < 40) {
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
               }
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "apfsdsdu") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 4;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.7;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 2);
-              if (this.data.data.firearmDesign.projectileCalibre < 40) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "apfsdsdu") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 4;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.7;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 2);
+              if (this.system.firearmDesign.projectileCalibre < 40) {
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
               }
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "sapfsds") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 2);
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "sapfsds") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod -= 1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 2);
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "baton") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 0.2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 0.2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc -= 1;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 3);
-              if (this.data.data.firearmDesign.projectileCalibre >= 35) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "cr dbk";
-              }
-              else {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "cr";
-              }
-            }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "bean") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad = 0.2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1/8;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1/8;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc = 0;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 3);
-              if (this.data.data.firearmDesign.projectileCalibre >= 15) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "cr dbk";
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "baton") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 0.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 0.2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 0.2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].acc -= 1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 3);
+              if (this.system.firearmDesign.projectileCalibre >= 35) {
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "cr dbk";
               }
               else {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "cr";
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "cr";
               }
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "underwater") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "imp";
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc, 2);
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "bean") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].ad = 0.2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1/8;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1/8;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].acc = 0;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 3);
+              if (this.system.firearmDesign.projectileCalibre >= 15) {
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "cr dbk";
+              }
+              else {
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "cr";
+              }
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "shotshell" || this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "canister") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= (1 / Math.sqrt(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles));
-              let projectileDiameter = ((this.data.data.firearmDesign.projectileCalibre ** 3) / this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles) ** (1/3);
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "underwater") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "imp";
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 2);
+            }
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "shotshell" || this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "canister") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].damage *= (1 / Math.sqrt(this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles));
+              let projectileDiameter = ((this.system.firearmDesign.projectileCalibre ** 3) / this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles) ** (1/3);
 
               // Wound modifier calculation
               if (projectileDiameter < 4) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 1;
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 1;
               }
               else if (projectileDiameter < 8) {
-                if (this.data.data.firearmDesign.highEnergy) { // If the projectile is moving quickly enough or carrying enough energy, count is as 'pi', otherwise it remains pi-
-                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 2;
+                if (this.system.firearmDesign.highEnergy) { // If the projectile is moving quickly enough or carrying enough energy, count is as 'pi', otherwise it remains pi-
+                  this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 2;
                 }
                 else {
-                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 1;
+                  this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 1;
                 }
               }
               else if (projectileDiameter < 10) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 2;
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 2;
               }
               else if (projectileDiameter < 15) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 3;
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 3;
               }
               else {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 4;
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 4;
               }
 
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange = projectileDiameter * 5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange = projectileDiameter * 100;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange = projectileDiameter * 5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange = projectileDiameter * 100;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "mf") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= (1 / Math.sqrt(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles));
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
-              let projectileDiameter = ((this.data.data.firearmDesign.projectileCalibre ** 3) / this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles) ** (1/3)
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "mf") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].damage *= (1 / Math.sqrt(this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles));
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 3;
+              let projectileDiameter = ((this.system.firearmDesign.projectileCalibre ** 3) / this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles) ** (1/3)
 
               // Wound modifier calculation
               if (projectileDiameter < 4) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 1;
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 1;
               }
               else if (projectileDiameter < 8) {
-                if (this.data.data.firearmDesign.highEnergy) { // If the projectile is moving quickly enough or carrying enough energy, count is as 'pi', otherwise it remains pi-
-                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 2;
+                if (this.system.firearmDesign.highEnergy) { // If the projectile is moving quickly enough or carrying enough energy, count is as 'pi', otherwise it remains pi-
+                  this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 2;
                 }
                 else {
-                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 1;
+                  this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 1;
                 }
               }
               else if (projectileDiameter < 10) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 2;
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 2;
               }
               else if (projectileDiameter < 15) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 3;
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 3;
               }
               else {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 4;
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 4;
               }
 
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange = projectileDiameter * 50;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange = projectileDiameter * 600;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange = projectileDiameter * 50;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange = projectileDiameter * 600;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "rs") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= (1 / Math.sqrt(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles));
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
-              let projectileDiameter = ((this.data.data.firearmDesign.projectileCalibre ** 3) / this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles) ** (1/3)
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "rs") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].damage *= (1 / Math.sqrt(this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles));
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 1;
+              let projectileDiameter = ((this.system.firearmDesign.projectileCalibre ** 3) / this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles) ** (1/3)
 
               // Wound modifier calculation
               if (projectileDiameter < 4) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 1;
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 1;
               }
               else if (projectileDiameter < 8) {
-                if (this.data.data.firearmDesign.highEnergy) { // If the projectile is moving quickly enough or carrying enough energy, count is as 'pi', otherwise it remains pi-
-                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 2;
+                if (this.system.firearmDesign.highEnergy) { // If the projectile is moving quickly enough or carrying enough energy, count is as 'pi', otherwise it remains pi-
+                  this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 2;
                 }
                 else {
-                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 1;
+                  this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 1;
                 }
               }
               else if (projectileDiameter < 10) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 2;
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 2;
               }
               else if (projectileDiameter < 15) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 3;
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 3;
               }
               else {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod = 4;
+                this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 4;
               }
 
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange = projectileDiameter * 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange = projectileDiameter * 10;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange = projectileDiameter * 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange = projectileDiameter * 10;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "duplex") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.85;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles = 2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1/2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1/2;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "duplex") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.85;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles = 2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1/2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1/2;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
             }
-            else if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectile === "triplex") {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.7;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.5;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles = 3;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1/3;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1/3;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
+            else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "triplex") {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].damage *= 0.7;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.5;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles = 3;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange *= 1/3;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange *= 1/3;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
             }
 
-            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut === "") {
-              switch (this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundMod) {
+            if (this.system.firearmDesign.ammunition[ammoKeys[i]].woundModOut === "") {
+              switch (this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod) {
                 case 1:
-                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "pi-";
+                  this.system.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "pi-";
                   break;
                 case 2:
-                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "pi";
+                  this.system.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "pi";
                   break;
                 case 3:
-                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "pi+";
+                  this.system.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "pi+";
                   break;
                 case 4:
-                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "pi++";
+                  this.system.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "pi++";
                   break;
                 default:
-                  this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "pi";
+                  this.system.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "pi";
                   break;
               }
             }
 
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps = Math.round((this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps * this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF) * 100) / 100
+            this.system.firearmDesign.ammunition[ammoKeys[i]].cps = Math.round((this.system.firearmDesign.ammunition[ammoKeys[i]].cps * this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF) * 100) / 100
 
-            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent == 0) {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosivePercent = 0;
+            if (this.system.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent == 0) {
+              this.system.firearmDesign.ammunition[ammoKeys[i]].explosivePercent = 0;
             }
 
             // Handle explosive calculation
-            if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosivePercent > 0) {
+            if (this.system.firearmDesign.ammunition[ammoKeys[i]].explosivePercent > 0) {
 
-              let explosive = materialHelpers.getExplosiveByCode(this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveFiller);
+              let explosive = materialHelpers.getExplosiveByCode(this.system.firearmDesign.ammunition[ammoKeys[i]].explosiveFiller);
 
-              let baseExplosiveDamage = 21 * (Math.sqrt((this.data.data.firearmDesign.ammunition[ammoKeys[i]].wps * (this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosivePercent / 100)) * 4 * explosive.ref));
+              let baseExplosiveDamage = 21 * (Math.sqrt((this.system.firearmDesign.ammunition[ammoKeys[i]].wps * (this.system.firearmDesign.ammunition[ammoKeys[i]].explosivePercent / 100)) * 4 * explosive.ref));
 
-              if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag) {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveDamage = Math.round(baseExplosiveDamage * 0.7);
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamage = Math.round(baseExplosiveDamage * 0.3);
+              if (this.system.firearmDesign.ammunition[ammoKeys[i]].frag) {
+                this.system.firearmDesign.ammunition[ammoKeys[i]].explosiveDamage = Math.round(baseExplosiveDamage * 0.7);
+                this.system.firearmDesign.ammunition[ammoKeys[i]].fragDamage = Math.round(baseExplosiveDamage * 0.3);
               }
               else {
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveDamage = Math.round(baseExplosiveDamage);
-                this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamage = 0;
+                this.system.firearmDesign.ammunition[ammoKeys[i]].explosiveDamage = Math.round(baseExplosiveDamage);
+                this.system.firearmDesign.ammunition[ammoKeys[i]].fragDamage = 0;
               }
 
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveDamageObject = generalHelpers.pointsToDiceAndAdds(this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveDamage);
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveDamageDice = generalHelpers.diceAndAddsToGURPSOutput(this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveDamageObject.dice, this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveDamageObject.adds);
+              this.system.firearmDesign.ammunition[ammoKeys[i]].explosiveDamageObject = generalHelpers.pointsToDiceAndAdds(this.system.firearmDesign.ammunition[ammoKeys[i]].explosiveDamage);
+              this.system.firearmDesign.ammunition[ammoKeys[i]].explosiveDamageDice = generalHelpers.diceAndAddsToGURPSOutput(this.system.firearmDesign.ammunition[ammoKeys[i]].explosiveDamageObject.dice, this.system.firearmDesign.ammunition[ammoKeys[i]].explosiveDamageObject.adds);
 
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamageObject = generalHelpers.pointsToDiceAndAdds(this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamage);
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamageDice = generalHelpers.diceAndAddsToGURPSOutput(this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamageObject.dice, this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamageObject.adds);
+              this.system.firearmDesign.ammunition[ammoKeys[i]].fragDamageObject = generalHelpers.pointsToDiceAndAdds(this.system.firearmDesign.ammunition[ammoKeys[i]].fragDamage);
+              this.system.firearmDesign.ammunition[ammoKeys[i]].fragDamageDice = generalHelpers.diceAndAddsToGURPSOutput(this.system.firearmDesign.ammunition[ammoKeys[i]].fragDamageObject.dice, this.system.firearmDesign.ammunition[ammoKeys[i]].fragDamageObject.adds);
 
               // Add the cost of the explosives to the cost of the shot
-              let explosiveCost = explosive.costPerLb * (this.data.data.firearmDesign.ammunition[ammoKeys[i]].wps * (this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosivePercent / 100));
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps += explosiveCost;
+              let explosiveCost = explosive.costPerLb * (this.system.firearmDesign.ammunition[ammoKeys[i]].wps * (this.system.firearmDesign.ammunition[ammoKeys[i]].explosivePercent / 100));
+              this.system.firearmDesign.ammunition[ammoKeys[i]].cps += explosiveCost;
             }
             else {
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveDamage = 0;
-              this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamage = 0;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].explosiveDamage = 0;
+              this.system.firearmDesign.ammunition[ammoKeys[i]].fragDamage = 0;
             }
 
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].st = Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].st);
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].range = Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange) + "/" + Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange);
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].rofBonus = generalHelpers.rofToBonus(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles);
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].damageObject = generalHelpers.pointsToDiceAndAdds(this.data.data.firearmDesign.ammunition[ammoKeys[i]].damage);
-            this.data.data.firearmDesign.ammunition[ammoKeys[i]].damageDice = generalHelpers.diceAndAddsToGURPSOutput(this.data.data.firearmDesign.ammunition[ammoKeys[i]].damageObject.dice, this.data.data.firearmDesign.ammunition[ammoKeys[i]].damageObject.adds);
+            this.system.firearmDesign.ammunition[ammoKeys[i]].st = Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].st);
+            this.system.firearmDesign.ammunition[ammoKeys[i]].range = Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange) + "/" + Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange);
+            this.system.firearmDesign.ammunition[ammoKeys[i]].rofBonus = generalHelpers.rofToBonus(this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles);
+            this.system.firearmDesign.ammunition[ammoKeys[i]].damageObject = generalHelpers.pointsToDiceAndAdds(this.system.firearmDesign.ammunition[ammoKeys[i]].damage);
+            this.system.firearmDesign.ammunition[ammoKeys[i]].damageDice = generalHelpers.diceAndAddsToGURPSOutput(this.system.firearmDesign.ammunition[ammoKeys[i]].damageObject.dice, this.system.firearmDesign.ammunition[ammoKeys[i]].damageObject.adds);
           }
         }
       }
 
       // Loop through ammo designs and add ranged profiles
-      if (typeof this.data.data.firearmDesign.ammunition != "undefined") {
+      if (typeof this.system.firearmDesign.ammunition != "undefined") {
         this.addCustomFirearmProfiles();
       }
 
       // Adding melee profiles
-      if (this.data.data.firearmDesign.meleeProfile) { // If the user wants to include a melee profile
-        this.addMeleeProfile(this.data.data.firearmDesign.bulk, this.data.data.firearmDesign.cavalierWeapon, this.data.data.firearmDesign.configuration, this.data.data.firearmDesign.meleeSkill, this.data.data.firearmDesign.meleeSkillMod, this.data.data.firearmDesign.st) // Include one
+      if (this.system.firearmDesign.meleeProfile) { // If the user wants to include a melee profile
+        this.addMeleeProfile(this.system.firearmDesign.bulk, this.system.firearmDesign.cavalierWeapon, this.system.firearmDesign.configuration, this.system.firearmDesign.meleeSkill, this.system.firearmDesign.meleeSkillMod, this.system.firearmDesign.st) // Include one
       }
 
-      this.data.data.firearmDesign.baseDamageDice = generalHelpers.diceAndAddsToGURPSOutput(this.data.data.firearmDesign.baseDamageObject.dice, this.data.data.firearmDesign.baseDamageObject.adds);
+      this.system.firearmDesign.baseDamageDice = generalHelpers.diceAndAddsToGURPSOutput(this.system.firearmDesign.baseDamageObject.dice, this.system.firearmDesign.baseDamageObject.adds);
     }
   }
 
   prepareCustomLaser() {
-    if (this.data.data.tl >= 8) { // TL must be at least 9 to be able to design a custom laser
-      if (typeof this.data.data.laserDesign == "undefined") { // If the laserDesign block hasn't yet been created
-        this.data.data.laserDesign = { // Create it
+    if (this.system.tl >= 8) { // TL must be at least 9 to be able to design a custom laser
+      if (typeof this.system.laserDesign == "undefined") { // If the laserDesign block hasn't yet been created
+        this.system.laserDesign = { // Create it
           "configuration": "", // Beamer/Pistol/Rifle/Cannon
           "beamType": "laser", // Laser/Force Beam/Etc
           "laserColour": "ir", // See UT 114, options are ir/bg/uv
@@ -3092,57 +3112,57 @@ export class gurpsItem extends Item {
       }
 
       // Input Validation
-      if (typeof this.data.data.laserDesign.powerCellQty == "undefined" || this.data.data.laserDesign.powerCellQty <= 0 || this.data.data.laserDesign.powerCellQty === "") { // If the cell quantity is blank or negative
-        this.data.data.laserDesign.powerCellQty = 1; // Set to 1
+      if (typeof this.system.laserDesign.powerCellQty == "undefined" || this.system.laserDesign.powerCellQty <= 0 || this.system.laserDesign.powerCellQty === "") { // If the cell quantity is blank or negative
+        this.system.laserDesign.powerCellQty = 1; // Set to 1
       }
-      if (typeof this.data.data.laserDesign.damageDice == "undefined" || this.data.data.laserDesign.damageDice <= 0 || this.data.data.laserDesign.damageDice === "") { // If the damage dice is blank or negative
-        this.data.data.laserDesign.damageDice = 1; // Set to 1
+      if (typeof this.system.laserDesign.damageDice == "undefined" || this.system.laserDesign.damageDice <= 0 || this.system.laserDesign.damageDice === "") { // If the damage dice is blank or negative
+        this.system.laserDesign.damageDice = 1; // Set to 1
       }
-      if (typeof this.data.data.laserDesign.graviticFocus == "undefined" || this.data.data.laserDesign.graviticFocus === "") { // If the damage dice is blank or negative
-        this.data.data.laserDesign.graviticFocus = "0"; // Set to zero
+      if (typeof this.system.laserDesign.graviticFocus == "undefined" || this.system.laserDesign.graviticFocus === "") { // If the damage dice is blank or negative
+        this.system.laserDesign.graviticFocus = "0"; // Set to zero
       }
-      if (this.data.data.laserDesign.ftl) {
-        this.data.data.laserDesign.fieldJacketed = this.data.data.laserDesign.ftl;
+      if (this.system.laserDesign.ftl) {
+        this.system.laserDesign.fieldJacketed = this.system.laserDesign.ftl;
       }
-      if (!this.data.data.laserDesign.pulseLaser) {
-        this.data.data.laserDesign.pulseBeamLaser = false;
+      if (!this.system.laserDesign.pulseLaser) {
+        this.system.laserDesign.pulseBeamLaser = false;
       }
-      if (typeof this.data.data.laserDesign.chemicalShots == "undefined" || this.data.data.laserDesign.chemicalShots <= 0 || this.data.data.laserDesign.chemicalShots === "") { // If the cell quantity is blank or negative
-        this.data.data.laserDesign.chemicalShots = 1; // Set to 1
+      if (typeof this.system.laserDesign.chemicalShots == "undefined" || this.system.laserDesign.chemicalShots <= 0 || this.system.laserDesign.chemicalShots === "") { // If the cell quantity is blank or negative
+        this.system.laserDesign.chemicalShots = 1; // Set to 1
       }
 
-      this.data.data.laserDesign.damageDice = this.data.data.laserDesign.damageDiceInput / 2**(parseInt(this.data.data.laserDesign.graviticFocus));
+      this.system.laserDesign.damageDice = this.system.laserDesign.damageDiceInput / 2**(parseInt(this.system.laserDesign.graviticFocus));
 
       // Get game settings relevant to the design of the laser
-      this.data.data.laserDesign.hotshotsAndOverheating = game.settings.get("gurps4e", "hotshotsAndOverheating");
-      this.data.data.laserDesign.allowSuperScienceCustomLasers = game.settings.get("gurps4e", "allowSuperScienceCustomLasers");
+      this.system.laserDesign.hotshotsAndOverheating = game.settings.get("gurps4e", "hotshotsAndOverheating");
+      this.system.laserDesign.allowSuperScienceCustomLasers = game.settings.get("gurps4e", "allowSuperScienceCustomLasers");
 
       // This block categorizes the user's focal array selection into the categories given in the article
-      if (this.data.data.laserDesign.focalArray < 0.175) { // Default tiny is 0.1, average of it and the next size is 0.175
-        this.data.data.laserDesign.focalArraySize = "Tiny";
+      if (this.system.laserDesign.focalArray < 0.175) { // Default tiny is 0.1, average of it and the next size is 0.175
+        this.system.laserDesign.focalArraySize = "Tiny";
       }
-      else if (this.data.data.laserDesign.focalArray < 0.375) { // Default very small is 0.25, average of it and the next size is 0.375
-        this.data.data.laserDesign.focalArraySize = "Very Small";
+      else if (this.system.laserDesign.focalArray < 0.375) { // Default very small is 0.25, average of it and the next size is 0.375
+        this.system.laserDesign.focalArraySize = "Very Small";
       }
-      else if (this.data.data.laserDesign.focalArray < 0.75) { // Default small is 0.5, average of it and the next size is 0.75
-        this.data.data.laserDesign.focalArraySize = "Small";
+      else if (this.system.laserDesign.focalArray < 0.75) { // Default small is 0.5, average of it and the next size is 0.75
+        this.system.laserDesign.focalArraySize = "Small";
       }
-      else if (this.data.data.laserDesign.focalArray < 1.25) { // Default medium is 1, average of it and the next size is 1.25
-        this.data.data.laserDesign.focalArraySize = "Medium";
+      else if (this.system.laserDesign.focalArray < 1.25) { // Default medium is 1, average of it and the next size is 1.25
+        this.system.laserDesign.focalArraySize = "Medium";
       }
-      else if (this.data.data.laserDesign.focalArray < 1.75) { // Default large is 1.5, average of it and the next size is 1.75
-        this.data.data.laserDesign.focalArraySize = "Large";
+      else if (this.system.laserDesign.focalArray < 1.75) { // Default large is 1.5, average of it and the next size is 1.75
+        this.system.laserDesign.focalArraySize = "Large";
       }
-      else if (this.data.data.laserDesign.focalArray < 3) { // Default very large is 2, average of it and the next size is 3
-        this.data.data.laserDesign.focalArraySize = "Very Large";
+      else if (this.system.laserDesign.focalArray < 3) { // Default very large is 2, average of it and the next size is 3
+        this.system.laserDesign.focalArraySize = "Very Large";
       }
       else { // Anything 3 or over is Extremely Large. Default XL is 4
-        this.data.data.laserDesign.focalArraySize = "Extremely Large";
+        this.system.laserDesign.focalArraySize = "Extremely Large";
       }
 
       // Weight modifier for superscience beams
       let s = 1;
-      if (this.data.data.laserDesign.superScience) {
+      if (this.system.laserDesign.superScience) {
         s = 0.5;
       }
 
@@ -3152,365 +3172,365 @@ export class gurpsItem extends Item {
       let bc = 0;
       let baseShots = 0;
       let lc = 4;
-      if (this.data.data.laserDesign.beamType == "chemicalLaser") {
+      if (this.system.laserDesign.beamType == "chemicalLaser") {
         lc = 3;
         bc = 500;
 
-        if (this.data.data.laserDesign.pulseLaser) {
-          this.data.data.laserDesign.damageType = "cr ex";
-          this.data.data.laserDesign.armourDivisor = 0.5;
+        if (this.system.laserDesign.pulseLaser) {
+          this.system.laserDesign.damageType = "cr ex";
+          this.system.laserDesign.armourDivisor = 0.5;
         }
         else {
-          this.data.data.laserDesign.damageType = "burn";
-          this.data.data.laserDesign.armourDivisor = 1;
+          this.system.laserDesign.damageType = "burn";
+          this.system.laserDesign.armourDivisor = 1;
         }
 
-        if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 6;
+        if (this.system.laserDesign.configuration == "pistol") {
+          this.system.laserDesign.outputAcc = 6;
         }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
-          this.data.data.laserDesign.outputAcc = 12;
+        else if (this.system.laserDesign.configuration == "rifle") {
+          this.system.laserDesign.outputAcc = 12;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
-          this.data.data.laserDesign.outputAcc = 3;
+        else if (this.system.laserDesign.configuration == "beamer") {
+          this.system.laserDesign.outputAcc = 3;
         }
-        else if (this.data.data.laserDesign.configuration == "cannon") {
-          this.data.data.laserDesign.outputAcc = 18;
+        else if (this.system.laserDesign.configuration == "cannon") {
+          this.system.laserDesign.outputAcc = 18;
         }
 
         rb = 120;
         e = 1/3.7;
       }
-      else if (this.data.data.laserDesign.beamType == "laser") {
+      else if (this.system.laserDesign.beamType == "laser") {
         lc = 3;
         bc = 500;
 
-        if (this.data.data.laserDesign.pulseLaser){
-          this.data.data.laserDesign.damageType = "cr ex";
-          this.data.data.laserDesign.armourDivisor = 1;
+        if (this.system.laserDesign.pulseLaser){
+          this.system.laserDesign.damageType = "cr ex";
+          this.system.laserDesign.armourDivisor = 1;
         }
         else {
-          this.data.data.laserDesign.damageType = "tbb";
-          this.data.data.laserDesign.armourDivisor = 2;
+          this.system.laserDesign.damageType = "tbb";
+          this.system.laserDesign.armourDivisor = 2;
         }
 
-        if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 6;
+        if (this.system.laserDesign.configuration == "pistol") {
+          this.system.laserDesign.outputAcc = 6;
         }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
-          this.data.data.laserDesign.outputAcc = 12;
+        else if (this.system.laserDesign.configuration == "rifle") {
+          this.system.laserDesign.outputAcc = 12;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
-          this.data.data.laserDesign.outputAcc = 3;
+        else if (this.system.laserDesign.configuration == "beamer") {
+          this.system.laserDesign.outputAcc = 3;
         }
-        else if (this.data.data.laserDesign.configuration == "cannon") {
-          this.data.data.laserDesign.outputAcc = 18;
+        else if (this.system.laserDesign.configuration == "cannon") {
+          this.system.laserDesign.outputAcc = 18;
         }
 
-        if (this.data.data.tl <= 9) {
+        if (this.system.tl <= 9) {
           baseShots = 225;
         }
-        else if (this.data.data.tl == 10) {
+        else if (this.system.tl == 10) {
           baseShots = 1800;
         }
-        else if (this.data.data.tl == 11) {
+        else if (this.system.tl == 11) {
           baseShots = 7200;
         }
-        else if (this.data.data.tl == 12) {
+        else if (this.system.tl == 12) {
           baseShots = 28800;
         }
 
         rb = 40;
         e = 3;
       }
-      else if (this.data.data.laserDesign.beamType == "forceBeam") {
+      else if (this.system.laserDesign.beamType == "forceBeam") {
         lc = 4;
         bc = 500;
-        this.data.data.laserDesign.armourDivisor = 1;
-        this.data.data.laserDesign.damageType = "cr dbk";
+        this.system.laserDesign.armourDivisor = 1;
+        this.system.laserDesign.damageType = "cr dbk";
 
-        if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 6;
+        if (this.system.laserDesign.configuration == "pistol") {
+          this.system.laserDesign.outputAcc = 6;
         }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
-          this.data.data.laserDesign.outputAcc = 12;
+        else if (this.system.laserDesign.configuration == "rifle") {
+          this.system.laserDesign.outputAcc = 12;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
-          this.data.data.laserDesign.outputAcc = 3;
+        else if (this.system.laserDesign.configuration == "beamer") {
+          this.system.laserDesign.outputAcc = 3;
         }
-        else if (this.data.data.laserDesign.configuration == "cannon") {
-          this.data.data.laserDesign.outputAcc = 18;
+        else if (this.system.laserDesign.configuration == "cannon") {
+          this.system.laserDesign.outputAcc = 18;
         }
 
-        if (this.data.data.tl <= 9) {
+        if (this.system.tl <= 9) {
           baseShots = 270;
         }
-        else if (this.data.data.tl == 10) {
+        else if (this.system.tl == 10) {
           baseShots = 1080;
         }
-        else if (this.data.data.tl == 11) {
+        else if (this.system.tl == 11) {
           baseShots = 8640;
         }
-        else if (this.data.data.tl == 12) {
+        else if (this.system.tl == 12) {
           baseShots = 34560;
         }
 
         rb = 11
         e = 4
       }
-      else if (this.data.data.laserDesign.beamType == "blaster") {
+      else if (this.system.laserDesign.beamType == "blaster") {
         lc = 3;
         bc = 2000;
-        this.data.data.laserDesign.armourDivisor = 5;
-        this.data.data.laserDesign.damageType = "tbb sur";
+        this.system.laserDesign.armourDivisor = 5;
+        this.system.laserDesign.damageType = "tbb sur";
 
-        if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 5;
+        if (this.system.laserDesign.configuration == "pistol") {
+          this.system.laserDesign.outputAcc = 5;
         }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
-          this.data.data.laserDesign.outputAcc = 10;
+        else if (this.system.laserDesign.configuration == "rifle") {
+          this.system.laserDesign.outputAcc = 10;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
-          this.data.data.laserDesign.outputAcc = 3;
+        else if (this.system.laserDesign.configuration == "beamer") {
+          this.system.laserDesign.outputAcc = 3;
         }
-        else if (this.data.data.laserDesign.configuration == "cannon") {
-          this.data.data.laserDesign.outputAcc = 15;
+        else if (this.system.laserDesign.configuration == "cannon") {
+          this.system.laserDesign.outputAcc = 15;
         }
 
-        if (this.data.data.tl <= 9) {
+        if (this.system.tl <= 9) {
           baseShots = 34;
         }
-        else if (this.data.data.tl == 10) {
+        else if (this.system.tl == 10) {
           baseShots = 135;
         }
-        else if (this.data.data.tl == 11) {
+        else if (this.system.tl == 11) {
           baseShots = 1080;
         }
-        else if (this.data.data.tl == 12) {
+        else if (this.system.tl == 12) {
           baseShots = 4320;
         }
 
         rb = 32
         e = 3
       }
-      else if (this.data.data.laserDesign.beamType == "neutralParticleBeam") {
+      else if (this.system.laserDesign.beamType == "neutralParticleBeam") {
         lc = 3;
         bc = 3000;
-        this.data.data.laserDesign.armourDivisor = 1;
-        this.data.data.laserDesign.damageType = "tbb rad sur";
+        this.system.laserDesign.armourDivisor = 1;
+        this.system.laserDesign.damageType = "tbb rad sur";
 
-        if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 5;
+        if (this.system.laserDesign.configuration == "pistol") {
+          this.system.laserDesign.outputAcc = 5;
         }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
-          this.data.data.laserDesign.outputAcc = 10;
+        else if (this.system.laserDesign.configuration == "rifle") {
+          this.system.laserDesign.outputAcc = 10;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
-          this.data.data.laserDesign.outputAcc = 3;
+        else if (this.system.laserDesign.configuration == "beamer") {
+          this.system.laserDesign.outputAcc = 3;
         }
-        else if (this.data.data.laserDesign.configuration == "cannon") {
-          this.data.data.laserDesign.outputAcc = 15;
+        else if (this.system.laserDesign.configuration == "cannon") {
+          this.system.laserDesign.outputAcc = 15;
         }
 
-        if (this.data.data.tl <= 9) {
+        if (this.system.tl <= 9) {
           baseShots = 17;
         }
-        else if (this.data.data.tl == 10) {
+        else if (this.system.tl == 10) {
           baseShots = 68;
         }
-        else if (this.data.data.tl == 11) {
+        else if (this.system.tl == 11) {
           baseShots = 1080;
         }
-        else if (this.data.data.tl == 12) {
+        else if (this.system.tl == 12) {
           baseShots = 4320;
         }
 
         rb = 32
         e = 3
       }
-      else if (this.data.data.laserDesign.beamType == "rainbowLaser") {
+      else if (this.system.laserDesign.beamType == "rainbowLaser") {
         lc = 3;
         bc = 500;
-        this.data.data.laserDesign.armourDivisor = 3;
-        this.data.data.laserDesign.damageType = "tbb";
+        this.system.laserDesign.armourDivisor = 3;
+        this.system.laserDesign.damageType = "tbb";
 
-        if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 6;
+        if (this.system.laserDesign.configuration == "pistol") {
+          this.system.laserDesign.outputAcc = 6;
         }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
-          this.data.data.laserDesign.outputAcc = 12;
+        else if (this.system.laserDesign.configuration == "rifle") {
+          this.system.laserDesign.outputAcc = 12;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
-          this.data.data.laserDesign.outputAcc = 3;
+        else if (this.system.laserDesign.configuration == "beamer") {
+          this.system.laserDesign.outputAcc = 3;
         }
-        else if (this.data.data.laserDesign.configuration == "cannon") {
-          this.data.data.laserDesign.outputAcc = 18;
+        else if (this.system.laserDesign.configuration == "cannon") {
+          this.system.laserDesign.outputAcc = 18;
         }
 
-        if (this.data.data.tl <= 9) {
+        if (this.system.tl <= 9) {
           baseShots = 112;
         }
-        else if (this.data.data.tl == 10) {
+        else if (this.system.tl == 10) {
           baseShots = 450;
         }
-        else if (this.data.data.tl == 11) {
+        else if (this.system.tl == 11) {
           baseShots = 3600;
         }
-        else if (this.data.data.tl == 12) {
+        else if (this.system.tl == 12) {
           baseShots = 14400;
         }
 
         rb = 56
         e = 3
       }
-      else if (this.data.data.laserDesign.beamType == "xRayLaser") {
+      else if (this.system.laserDesign.beamType == "xRayLaser") {
         lc = 3;
         bc = 1000;
 
-        if (this.data.data.laserDesign.pulseLaser){
-          this.data.data.laserDesign.damageType = "cr ex";
-          this.data.data.laserDesign.armourDivisor = 3;
+        if (this.system.laserDesign.pulseLaser){
+          this.system.laserDesign.damageType = "cr ex";
+          this.system.laserDesign.armourDivisor = 3;
         }
         else {
-          this.data.data.laserDesign.damageType = "tbb";
-          this.data.data.laserDesign.armourDivisor = 5;
+          this.system.laserDesign.damageType = "tbb";
+          this.system.laserDesign.armourDivisor = 5;
         }
 
-        if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 6;
+        if (this.system.laserDesign.configuration == "pistol") {
+          this.system.laserDesign.outputAcc = 6;
         }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
-          this.data.data.laserDesign.outputAcc = 12;
+        else if (this.system.laserDesign.configuration == "rifle") {
+          this.system.laserDesign.outputAcc = 12;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
-          this.data.data.laserDesign.outputAcc = 3;
+        else if (this.system.laserDesign.configuration == "beamer") {
+          this.system.laserDesign.outputAcc = 3;
         }
-        else if (this.data.data.laserDesign.configuration == "cannon") {
-          this.data.data.laserDesign.outputAcc = 18;
+        else if (this.system.laserDesign.configuration == "cannon") {
+          this.system.laserDesign.outputAcc = 18;
         }
 
-        if (this.data.data.tl <= 9) {
+        if (this.system.tl <= 9) {
           baseShots = 112;
         }
-        else if (this.data.data.tl == 10) {
+        else if (this.system.tl == 10) {
           baseShots = 450;
         }
-        else if (this.data.data.tl == 11) {
+        else if (this.system.tl == 11) {
           baseShots = 3600;
         }
-        else if (this.data.data.tl == 12) {
+        else if (this.system.tl == 12) {
           baseShots = 14400;
         }
 
         rb = 2000
         e = 3
       }
-      else if (this.data.data.laserDesign.beamType == "gravitonBeam") {
+      else if (this.system.laserDesign.beamType == "gravitonBeam") {
         lc = 3;
         bc = 2000;
-        this.data.data.laserDesign.armourDivisor = "I";
-        this.data.data.laserDesign.damageType = "cr";
+        this.system.laserDesign.armourDivisor = "I";
+        this.system.laserDesign.damageType = "cr";
 
-        if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 6;
+        if (this.system.laserDesign.configuration == "pistol") {
+          this.system.laserDesign.outputAcc = 6;
         }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
-          this.data.data.laserDesign.outputAcc = 12;
+        else if (this.system.laserDesign.configuration == "rifle") {
+          this.system.laserDesign.outputAcc = 12;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
-          this.data.data.laserDesign.outputAcc = 3;
+        else if (this.system.laserDesign.configuration == "beamer") {
+          this.system.laserDesign.outputAcc = 3;
         }
-        else if (this.data.data.laserDesign.configuration == "cannon") {
-          this.data.data.laserDesign.outputAcc = 18;
+        else if (this.system.laserDesign.configuration == "cannon") {
+          this.system.laserDesign.outputAcc = 18;
         }
 
-        if (this.data.data.tl <= 9) {
+        if (this.system.tl <= 9) {
           baseShots = 14;
         }
-        else if (this.data.data.tl == 10) {
+        else if (this.system.tl == 10) {
           baseShots = 56;
         }
-        else if (this.data.data.tl == 11) {
+        else if (this.system.tl == 11) {
           baseShots = 450;
         }
-        else if (this.data.data.tl == 12) {
+        else if (this.system.tl == 12) {
           baseShots = 1800;
         }
 
         rb = 100
         e = 1.5
       }
-      else if (this.data.data.laserDesign.beamType == "pulsar") {
+      else if (this.system.laserDesign.beamType == "pulsar") {
         lc = 2;
         bc = 3000;
-        this.data.data.laserDesign.armourDivisor = 3;
-        this.data.data.laserDesign.damageType = "cr ex rad sur";
+        this.system.laserDesign.armourDivisor = 3;
+        this.system.laserDesign.damageType = "cr ex rad sur";
 
-        if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 5;
+        if (this.system.laserDesign.configuration == "pistol") {
+          this.system.laserDesign.outputAcc = 5;
         }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
-          this.data.data.laserDesign.outputAcc = 10;
+        else if (this.system.laserDesign.configuration == "rifle") {
+          this.system.laserDesign.outputAcc = 10;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
-          this.data.data.laserDesign.outputAcc = 3;
+        else if (this.system.laserDesign.configuration == "beamer") {
+          this.system.laserDesign.outputAcc = 3;
         }
-        else if (this.data.data.laserDesign.configuration == "cannon") {
-          this.data.data.laserDesign.outputAcc = 15;
+        else if (this.system.laserDesign.configuration == "cannon") {
+          this.system.laserDesign.outputAcc = 15;
         }
 
-        if (this.data.data.tl <= 9) {
+        if (this.system.tl <= 9) {
           baseShots = 135;
         }
-        else if (this.data.data.tl == 10) {
+        else if (this.system.tl == 10) {
           baseShots = 540;
         }
-        else if (this.data.data.tl == 11) {
+        else if (this.system.tl == 11) {
           baseShots = 4320;
         }
-        else if (this.data.data.tl == 12) {
+        else if (this.system.tl == 12) {
           baseShots = 17280;
         }
 
         rb = 8
         e = 6
       }
-      else if (this.data.data.laserDesign.beamType == "graser") {
+      else if (this.system.laserDesign.beamType == "graser") {
         lc = 3;
         bc = 1500;
 
-        if (this.data.data.laserDesign.pulseLaser){
-          this.data.data.laserDesign.damageType = "cr ex";
-          this.data.data.laserDesign.armourDivisor = 5;
+        if (this.system.laserDesign.pulseLaser){
+          this.system.laserDesign.damageType = "cr ex";
+          this.system.laserDesign.armourDivisor = 5;
         }
         else {
-          this.data.data.laserDesign.damageType = "cr";
-          this.data.data.laserDesign.armourDivisor = 10;
+          this.system.laserDesign.damageType = "cr";
+          this.system.laserDesign.armourDivisor = 10;
         }
 
-        if (this.data.data.laserDesign.configuration == "pistol") {
-          this.data.data.laserDesign.outputAcc = 6;
+        if (this.system.laserDesign.configuration == "pistol") {
+          this.system.laserDesign.outputAcc = 6;
         }
-        else if (this.data.data.laserDesign.configuration == "rifle") {
-          this.data.data.laserDesign.outputAcc = 12;
+        else if (this.system.laserDesign.configuration == "rifle") {
+          this.system.laserDesign.outputAcc = 12;
         }
-        else if (this.data.data.laserDesign.configuration == "beamer") {
-          this.data.data.laserDesign.outputAcc = 3;
+        else if (this.system.laserDesign.configuration == "beamer") {
+          this.system.laserDesign.outputAcc = 3;
         }
-        else if (this.data.data.laserDesign.configuration == "cannon") {
-          this.data.data.laserDesign.outputAcc = 18;
+        else if (this.system.laserDesign.configuration == "cannon") {
+          this.system.laserDesign.outputAcc = 18;
         }
 
-        if (this.data.data.tl <= 9) {
+        if (this.system.tl <= 9) {
           baseShots = 28;
         }
-        else if (this.data.data.tl == 10) {
+        else if (this.system.tl == 10) {
           baseShots = 112;
         }
-        else if (this.data.data.tl == 11) {
+        else if (this.system.tl == 11) {
           baseShots = 450;
         }
-        else if (this.data.data.tl == 12) {
+        else if (this.system.tl == 12) {
           baseShots = 1880;
         }
 
@@ -3518,20 +3538,20 @@ export class gurpsItem extends Item {
         e = 3
       }
 
-      this.data.data.laserDesign.outputAccWater = this.data.data.laserDesign.outputAcc;
-      this.data.data.laserDesign.outputAccSpace = this.data.data.laserDesign.outputAcc;
+      this.system.laserDesign.outputAccWater = this.system.laserDesign.outputAcc;
+      this.system.laserDesign.outputAccSpace = this.system.laserDesign.outputAcc;
 
-      this.data.data.laserDesign.armourDivisorWater = this.data.data.laserDesign.armourDivisor;
-      this.data.data.laserDesign.armourDivisorSpace = this.data.data.laserDesign.armourDivisor;
+      this.system.laserDesign.armourDivisorWater = this.system.laserDesign.armourDivisor;
+      this.system.laserDesign.armourDivisorSpace = this.system.laserDesign.armourDivisor;
 
-      if (this.data.data.laserDesign.beamType == "rainbowLaser") {
-        this.data.data.laserDesign.armourDivisorSpace = 1;
+      if (this.system.laserDesign.beamType == "rainbowLaser") {
+        this.system.laserDesign.armourDivisorSpace = 1;
       }
 
       // Weight modifier for focal array
       let f = 1;
-      let focalArray = +this.data.data.laserDesign.focalArray;
-      if (this.data.data.laserDesign.focalArray < 1.6) { // Below 1.6 the equation is a really annoying fourth order polynomial
+      let focalArray = +this.system.laserDesign.focalArray;
+      if (this.system.laserDesign.focalArray < 1.6) { // Below 1.6 the equation is a really annoying fourth order polynomial
         f = (-0.1422*(focalArray**4))+(1.0155*(focalArray**3))-(2.2582*(focalArray**2))+(2.377*focalArray)+0.0366;
       }
       else { // At and above 1.6 the giant polynomial breaks down and we use a linear equation
@@ -3542,101 +3562,101 @@ export class gurpsItem extends Item {
       // Weight modifier and rate of fire for generator
       let g = 1;
       let gc = 1;
-      if (this.data.data.laserDesign.beamType == "chemicalLaser") { // Chemical lasers use light as the baseline for "g" and "gc"
-        if (this.data.data.laserDesign.generator == "single") {
+      if (this.system.laserDesign.beamType == "chemicalLaser") { // Chemical lasers use light as the baseline for "g" and "gc"
+        if (this.system.laserDesign.generator == "single") {
           gc = 0.5;
           g = 0.8;
-          this.data.data.laserDesign.outputRoF = 1;
+          this.system.laserDesign.outputRoF = 1;
         }
-        if (this.data.data.laserDesign.generator == "semi") {
+        if (this.system.laserDesign.generator == "semi") {
           gc = 0.5;
           g = 1;
-          this.data.data.laserDesign.outputRoF = 3;
+          this.system.laserDesign.outputRoF = 3;
         }
-        if (this.data.data.laserDesign.generator == "light") {
+        if (this.system.laserDesign.generator == "light") {
           gc = 1;
           g = 1;
-          this.data.data.laserDesign.outputRoF = 10;
+          this.system.laserDesign.outputRoF = 10;
         }
-        else if (this.data.data.laserDesign.generator == "heavy") {
+        else if (this.system.laserDesign.generator == "heavy") {
           gc = 1;
           g = 1.6;
-          this.data.data.laserDesign.outputRoF = 20;
+          this.system.laserDesign.outputRoF = 20;
         }
-        else if (this.data.data.laserDesign.generator == "lightGat") {
+        else if (this.system.laserDesign.generator == "lightGat") {
           gc = 1.25;
           g = 1.6;
-          this.data.data.laserDesign.outputRoF = 10;
+          this.system.laserDesign.outputRoF = 10;
         }
-        else if (this.data.data.laserDesign.generator == "heavyGat") {
+        else if (this.system.laserDesign.generator == "heavyGat") {
           gc = 1.25;
           g = 1.6;
-          this.data.data.laserDesign.outputRoF = 20;
+          this.system.laserDesign.outputRoF = 20;
         }
       }
       else {
-        if (this.data.data.laserDesign.generator == "single") {
+        if (this.system.laserDesign.generator == "single") {
           gc = 1;
           g = 1;
-          this.data.data.laserDesign.outputRoF = 1;
+          this.system.laserDesign.outputRoF = 1;
         }
-        if (this.data.data.laserDesign.generator == "semi") {
+        if (this.system.laserDesign.generator == "semi") {
           gc = 1;
           g = 1.25;
-          this.data.data.laserDesign.outputRoF = 3;
+          this.system.laserDesign.outputRoF = 3;
         }
-        if (this.data.data.laserDesign.generator == "light") {
+        if (this.system.laserDesign.generator == "light") {
           gc = 2;
           g = 1.25;
-          this.data.data.laserDesign.outputRoF = 10;
+          this.system.laserDesign.outputRoF = 10;
         }
-        else if (this.data.data.laserDesign.generator == "heavy") {
+        else if (this.system.laserDesign.generator == "heavy") {
           gc = 2;
           g = 2;
-          this.data.data.laserDesign.outputRoF = 20;
+          this.system.laserDesign.outputRoF = 20;
         }
-        else if (this.data.data.laserDesign.generator == "lightGat") {
+        else if (this.system.laserDesign.generator == "lightGat") {
           gc = 2.5;
           g = 2;
-          this.data.data.laserDesign.outputRoF = 10;
+          this.system.laserDesign.outputRoF = 10;
         }
-        else if (this.data.data.laserDesign.generator == "heavyGat") {
+        else if (this.system.laserDesign.generator == "heavyGat") {
           gc = 2.5;
           g = 2;
-          this.data.data.laserDesign.outputRoF = 20;
+          this.system.laserDesign.outputRoF = 20;
         }
       }
 
 
-      if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "bg") {
-        this.data.data.laserDesign.outputRoF = Math.max(this.data.data.laserDesign.outputRoF / 2, 1);
+      if (this.system.laserDesign.beamType == "laser" && this.system.laserDesign.laserColour == "bg") {
+        this.system.laserDesign.outputRoF = Math.max(this.system.laserDesign.outputRoF / 2, 1);
       }
 
       // Rounding damage dice to dice and adds, per page 13 of Pyramid 37
       let dice = 0;
       let adds = 0;
-      if (this.data.data.laserDesign.damageDice < 1) { // Dice is less than 1, use different rules than normal rounding.
-        if (this.data.data.laserDesign.damageDice == 0) {
+      if (this.system.laserDesign.damageDice < 1) { // Dice is less than 1, use different rules than normal rounding.
+        if (this.system.laserDesign.damageDice == 0) {
           dice = 0;
           adds = 0;
         }
-        else if (this.data.data.laserDesign.damageDice <= 0.32) {
+        else if (this.system.laserDesign.damageDice <= 0.32) {
           dice = 1;
           adds = -5;
         }
-        else if (this.data.data.laserDesign.damageDice <= 0.42) {
+        else if (this.system.laserDesign.damageDice <= 0.42) {
           dice = 1;
           adds = -4;
         }
-        else if (this.data.data.laserDesign.damageDice <= 0.56) {
+        else if (this.system.laserDesign.damageDice <= 0.56) {
           dice = 1;
           adds = -3;
         }
-        else if (this.data.data.laserDesign.damageDice <= 0.75) {
+        else if (this.system.laserDesign.damageDice <= 0.75) {
           dice = 1;
           adds = -2;
         }
-        else if (this.data.data.laserDesign.damageDice <= 0.95) {
+        else if (this.system.laserDesign.damageDice <= 0.95) {
           dice = 1;
           adds = -1;
         }
@@ -3646,8 +3666,8 @@ export class gurpsItem extends Item {
         }
       }
       else {
-        dice = parseInt(this.data.data.laserDesign.damageDice); // Get the number of dice without modifiers or decimals
-        let remainder = +this.data.data.laserDesign.damageDice - +dice; // Get the remainder after above.
+        dice = parseInt(this.system.laserDesign.damageDice); // Get the number of dice without modifiers or decimals
+        let remainder = +this.system.laserDesign.damageDice - +dice; // Get the remainder after above.
 
         // Use the remainder to figure out the adds
         if (remainder <= 0.14) {
@@ -3672,30 +3692,30 @@ export class gurpsItem extends Item {
       // Hotshots are allowed and this isn't a gatling weapon
       let hotshotDice = 0;
       let hotshotAdds = 0;
-      if (this.data.data.laserDesign.hotshotsAndOverheating && !(this.data.data.laserDesign.generator == "lightGat" || this.data.data.laserDesign.generator == "heavyGat")) {
-        this.data.data.laserDesign.hotshotDamageDice = this.data.data.laserDesign.damageDice * 1.3;
-        if (this.data.data.laserDesign.hotshotDamageDice < 1) { // Dice is less than 1, use different rules than normal rounding.
-          if (this.data.data.laserDesign.hotshotDamageDice == 0) {
+      if (this.system.laserDesign.hotshotsAndOverheating && !(this.system.laserDesign.generator == "lightGat" || this.system.laserDesign.generator == "heavyGat")) {
+        this.system.laserDesign.hotshotDamageDice = this.system.laserDesign.damageDice * 1.3;
+        if (this.system.laserDesign.hotshotDamageDice < 1) { // Dice is less than 1, use different rules than normal rounding.
+          if (this.system.laserDesign.hotshotDamageDice == 0) {
             hotshotDice = 0;
             hotshotAdds = 0;
           }
-          else if (this.data.data.laserDesign.hotshotDamageDice <= 0.32) {
+          else if (this.system.laserDesign.hotshotDamageDice <= 0.32) {
             hotshotDice = 1;
             hotshotAdds = -5;
           }
-          else if (this.data.data.laserDesign.hotshotDamageDice <= 0.42) {
+          else if (this.system.laserDesign.hotshotDamageDice <= 0.42) {
             hotshotDice = 1;
             hotshotAdds = -4;
           }
-          else if (this.data.data.laserDesign.hotshotDamageDice <= 0.56) {
+          else if (this.system.laserDesign.hotshotDamageDice <= 0.56) {
             hotshotDice = 1;
             hotshotAdds = -3;
           }
-          else if (this.data.data.laserDesign.hotshotDamageDice <= 0.75) {
+          else if (this.system.laserDesign.hotshotDamageDice <= 0.75) {
             hotshotDice = 1;
             hotshotAdds = -2;
           }
-          else if (this.data.data.laserDesign.hotshotDamageDice <= 0.95) {
+          else if (this.system.laserDesign.hotshotDamageDice <= 0.95) {
             hotshotDice = 1;
             hotshotAdds = -1;
           }
@@ -3705,8 +3725,8 @@ export class gurpsItem extends Item {
           }
         }
         else {
-          hotshotDice = parseInt(this.data.data.laserDesign.hotshotDamageDice); // Get the number of dice without modifiers or decimals
-          let remainder = +this.data.data.laserDesign.hotshotDamageDice - +hotshotDice; // Get the remainder after above.
+          hotshotDice = parseInt(this.system.laserDesign.hotshotDamageDice); // Get the number of dice without modifiers or decimals
+          let remainder = +this.system.laserDesign.hotshotDamageDice - +hotshotDice; // Get the remainder after above.
 
           // Use the remainder to figure out the adds
           if (remainder <= 0.14) {
@@ -3744,11 +3764,11 @@ export class gurpsItem extends Item {
       else if (adds < 0) { // Adds is less than zero
         displayHotshotAdds = "-" + Math.abs(hotshotAdds);
       }
-      this.data.data.laserDesign.outputDamage = dice + "d6" + displayAdds;
-      this.data.data.laserDesign.outputDamageHotshots = hotshotDice + "d6" + displayHotshotAdds;
+      this.system.laserDesign.outputDamage = dice + "d6" + displayAdds;
+      this.system.laserDesign.outputDamageHotshots = hotshotDice + "d6" + displayHotshotAdds;
 
       // Determine RF for the purposes of range calculation
-      let rf = this.data.data.laserDesign.focalArray;
+      let rf = this.system.laserDesign.focalArray;
       if (rf > 1 && rf <= 1.75) {
         rf = rf * 1.33;
       }
@@ -3758,357 +3778,357 @@ export class gurpsItem extends Item {
 
       // Calculate the ranges
       // 1/2D Range
-      this.data.data.laserDesign.halfRange = this.data.data.laserDesign.damageDiceInput * this.data.data.laserDesign.damageDiceInput * rb * rf;
+      this.system.laserDesign.halfRange = this.system.laserDesign.damageDiceInput * this.system.laserDesign.damageDiceInput * rb * rf;
 
-      if (this.data.data.laserDesign.pulseLaser) {
-        this.data.data.laserDesign.halfRange = this.data.data.laserDesign.halfRange * 2;
+      if (this.system.laserDesign.pulseLaser) {
+        this.system.laserDesign.halfRange = this.system.laserDesign.halfRange * 2;
       }
 
-      if (parseInt(this.data.data.laserDesign.graviticFocus) > 0 && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
-        if (parseInt(this.data.data.laserDesign.graviticFocus) == 1) {
-          this.data.data.laserDesign.halfRange = this.data.data.laserDesign.halfRange * 10;
+      if (parseInt(this.system.laserDesign.graviticFocus) > 0 && this.system.laserDesign.allowSuperScienceCustomLasers) {
+        if (parseInt(this.system.laserDesign.graviticFocus) == 1) {
+          this.system.laserDesign.halfRange = this.system.laserDesign.halfRange * 10;
         }
-        else if (parseInt(this.data.data.laserDesign.graviticFocus) == 2) {
-          this.data.data.laserDesign.halfRange = this.data.data.laserDesign.halfRange * 10 * 10;
+        else if (parseInt(this.system.laserDesign.graviticFocus) == 2) {
+          this.system.laserDesign.halfRange = this.system.laserDesign.halfRange * 10 * 10;
         }
-        else if (parseInt(this.data.data.laserDesign.graviticFocus) == 3) {
-          this.data.data.laserDesign.halfRange = this.data.data.laserDesign.halfRange * 10 * 10 * 10;
+        else if (parseInt(this.system.laserDesign.graviticFocus) == 3) {
+          this.system.laserDesign.halfRange = this.system.laserDesign.halfRange * 10 * 10 * 10;
         }
       }
 
-      if ((this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "ir") || this.data.data.laserDesign.beamType == "chemicalLaser") {
-        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
-          if (this.data.data.laserDesign.halfRange >= 100) {
-            this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+      if ((this.system.laserDesign.beamType == "laser" && this.system.laserDesign.laserColour == "ir") || this.system.laserDesign.beamType == "chemicalLaser") {
+        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+          if (this.system.laserDesign.halfRange >= 100) {
+            this.system.laserDesign.halfRangeWater = Math.round(this.system.laserDesign.halfRange / 10) * 10;
           }
           else {
-            this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange);
+            this.system.laserDesign.halfRangeWater = Math.round(this.system.laserDesign.halfRange);
           }
         }
         else {
-          this.data.data.laserDesign.halfRangeWater = 0;
+          this.system.laserDesign.halfRangeWater = 0;
         }
 
-        if (this.data.data.laserDesign.halfRange >= 100) {
-          this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-          this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+        if (this.system.laserDesign.halfRange >= 100) {
+          this.system.laserDesign.halfRange = Math.round(this.system.laserDesign.halfRange / 10) * 10;
+          this.system.laserDesign.halfRangeSpace = Math.round(this.system.laserDesign.halfRange / 10) * 10;
         }
         else {
-          this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange);
-          this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange);
+          this.system.laserDesign.halfRange = Math.round(this.system.laserDesign.halfRange);
+          this.system.laserDesign.halfRangeSpace = Math.round(this.system.laserDesign.halfRange);
         }
       }
-      else if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "bg") {
-        this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange * 2 / 10) * 10;
-        this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange * 2 / 10) * 10;
-        this.data.data.laserDesign.halfRangeWater = Math.round(Math.min(this.data.data.laserDesign.halfRange * 2, 150/3) / 10) * 10;
+      else if (this.system.laserDesign.beamType == "laser" && this.system.laserDesign.laserColour == "bg") {
+        this.system.laserDesign.halfRange = Math.round(this.system.laserDesign.halfRange * 2 / 10) * 10;
+        this.system.laserDesign.halfRangeSpace = Math.round(this.system.laserDesign.halfRange * 2 / 10) * 10;
+        this.system.laserDesign.halfRangeWater = Math.round(Math.min(this.system.laserDesign.halfRange * 2, 150/3) / 10) * 10;
       }
-      else if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "uv") {
-        this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange * 3 / 10) * 10;
-        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
-          this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange * 3 / 10) * 10;
-          this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange * 3 / 10) * 10;
+      else if (this.system.laserDesign.beamType == "laser" && this.system.laserDesign.laserColour == "uv") {
+        this.system.laserDesign.halfRangeSpace = Math.round(this.system.laserDesign.halfRange * 3 / 10) * 10;
+        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+          this.system.laserDesign.halfRangeWater = Math.round(this.system.laserDesign.halfRange * 3 / 10) * 10;
+          this.system.laserDesign.halfRange = Math.round(this.system.laserDesign.halfRange * 3 / 10) * 10;
         }
         else {
-          this.data.data.laserDesign.halfRangeWater = 0;
-          this.data.data.laserDesign.halfRange = Math.round(Math.min(this.data.data.laserDesign.halfRange * 3, 500/3) / 10) * 10;
+          this.system.laserDesign.halfRangeWater = 0;
+          this.system.laserDesign.halfRange = Math.round(Math.min(this.system.laserDesign.halfRange * 3, 500/3) / 10) * 10;
         }
       }
-      else if (this.data.data.laserDesign.beamType == "rainbowLaser") {
-        this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
-          this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-          this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+      else if (this.system.laserDesign.beamType == "rainbowLaser") {
+        this.system.laserDesign.halfRange = Math.round(this.system.laserDesign.halfRange / 10) * 10;
+        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+          this.system.laserDesign.halfRangeSpace = Math.round(this.system.laserDesign.halfRange / 10) * 10;
+          this.system.laserDesign.halfRangeWater = Math.round(this.system.laserDesign.halfRange / 10) * 10;
         }
         else {
-          this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10 / 10) * 10;
-          this.data.data.laserDesign.halfRangeWater = 1;
+          this.system.laserDesign.halfRangeSpace = Math.round(this.system.laserDesign.halfRange / 10 / 10) * 10;
+          this.system.laserDesign.halfRangeWater = 1;
         }
       }
-      else if (this.data.data.laserDesign.beamType == "xRayLaser") {
-        this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
-          this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-          this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+      else if (this.system.laserDesign.beamType == "xRayLaser") {
+        this.system.laserDesign.halfRangeSpace = Math.round(this.system.laserDesign.halfRange / 10) * 10;
+        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+          this.system.laserDesign.halfRange = Math.round(this.system.laserDesign.halfRange / 10) * 10;
+          this.system.laserDesign.halfRangeWater = Math.round(this.system.laserDesign.halfRange / 10) * 10;
         }
         else {
-          this.data.data.laserDesign.halfRange = 7;
-          this.data.data.laserDesign.halfRangeWater = 0;
+          this.system.laserDesign.halfRange = 7;
+          this.system.laserDesign.halfRangeWater = 0;
         }
       }
-      else if (this.data.data.laserDesign.beamType == "graser") {
-        this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
-          this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-          this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+      else if (this.system.laserDesign.beamType == "graser") {
+        this.system.laserDesign.halfRangeSpace = Math.round(this.system.laserDesign.halfRange / 10) * 10;
+        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+          this.system.laserDesign.halfRange = Math.round(this.system.laserDesign.halfRange / 10) * 10;
+          this.system.laserDesign.halfRangeWater = Math.round(this.system.laserDesign.halfRange / 10) * 10;
         }
         else {
-          this.data.data.laserDesign.halfRange = 70;
-          this.data.data.laserDesign.halfRangeWater = 0;
+          this.system.laserDesign.halfRange = 70;
+          this.system.laserDesign.halfRangeWater = 0;
         }
       }
-      else if (this.data.data.laserDesign.beamType == "blaster") {
-        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
-          this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-          this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-          this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+      else if (this.system.laserDesign.beamType == "blaster") {
+        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+          this.system.laserDesign.halfRange = Math.round(this.system.laserDesign.halfRange / 10) * 10;
+          this.system.laserDesign.halfRangeSpace = Math.round(this.system.laserDesign.halfRange / 10) * 10;
+          this.system.laserDesign.halfRangeWater = Math.round(this.system.laserDesign.halfRange / 10) * 10;
         }
         else {
-          this.data.data.laserDesign.outputAccSpace = Math.ceil(this.data.data.laserDesign.outputAccSpace / 2);
-          this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-          this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 5 / 10) * 10;
-          this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+          this.system.laserDesign.outputAccSpace = Math.ceil(this.system.laserDesign.outputAccSpace / 2);
+          this.system.laserDesign.halfRange = Math.round(this.system.laserDesign.halfRange / 10) * 10;
+          this.system.laserDesign.halfRangeSpace = Math.round(this.system.laserDesign.halfRange / 5 / 10) * 10;
+          this.system.laserDesign.halfRangeWater = Math.round(this.system.laserDesign.halfRange / 10) * 10;
         }
       }
-      else if (this.data.data.laserDesign.beamType == "pulsar") {
-        this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-        this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
-          this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+      else if (this.system.laserDesign.beamType == "pulsar") {
+        this.system.laserDesign.halfRangeSpace = Math.round(this.system.laserDesign.halfRange / 10) * 10;
+        this.system.laserDesign.halfRangeWater = Math.round(this.system.laserDesign.halfRange / 10) * 10;
+        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+          this.system.laserDesign.halfRange = Math.round(this.system.laserDesign.halfRange / 10) * 10;
         }
         else {
-          this.data.data.laserDesign.halfRange = Math.min(Math.round(this.data.data.laserDesign.halfRange / 10) * 10, 333);
+          this.system.laserDesign.halfRange = Math.min(Math.round(this.system.laserDesign.halfRange / 10) * 10, 333);
         }
       }
       else {
-        this.data.data.laserDesign.halfRange = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-        this.data.data.laserDesign.halfRangeSpace = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
-        this.data.data.laserDesign.halfRangeWater = Math.round(this.data.data.laserDesign.halfRange / 10) * 10;
+        this.system.laserDesign.halfRange = Math.round(this.system.laserDesign.halfRange / 10) * 10;
+        this.system.laserDesign.halfRangeSpace = Math.round(this.system.laserDesign.halfRange / 10) * 10;
+        this.system.laserDesign.halfRangeWater = Math.round(this.system.laserDesign.halfRange / 10) * 10;
       }
 
       // Max Range
-      if (this.data.data.laserDesign.beamType == "chemicalLaser") {
-        this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
-        this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
-        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
-          this.data.data.laserDesign.maxRangeWater = this.data.data.laserDesign.halfRange * 3;
+      if (this.system.laserDesign.beamType == "chemicalLaser") {
+        this.system.laserDesign.maxRange = this.system.laserDesign.halfRange * 3;
+        this.system.laserDesign.maxRangeSpace = this.system.laserDesign.halfRangeSpace * 3;
+        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+          this.system.laserDesign.maxRangeWater = this.system.laserDesign.halfRange * 3;
         }
         else {
-          this.data.data.laserDesign.maxRangeWater = 1;
+          this.system.laserDesign.maxRangeWater = 1;
         }
       }
-      else if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "ir") {
-        this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
-        this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
-        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
-          this.data.data.laserDesign.maxRangeWater = this.data.data.laserDesign.halfRange * 3;
+      else if (this.system.laserDesign.beamType == "laser" && this.system.laserDesign.laserColour == "ir") {
+        this.system.laserDesign.maxRange = this.system.laserDesign.halfRange * 3;
+        this.system.laserDesign.maxRangeSpace = this.system.laserDesign.halfRangeSpace * 3;
+        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+          this.system.laserDesign.maxRangeWater = this.system.laserDesign.halfRange * 3;
         }
         else {
-          this.data.data.laserDesign.maxRangeWater = 1;
+          this.system.laserDesign.maxRangeWater = 1;
         }
       }
-      else if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "bg") {
-        this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
-        this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
-        this.data.data.laserDesign.maxRangeWater = this.data.data.laserDesign.halfRangeWater * 3;
+      else if (this.system.laserDesign.beamType == "laser" && this.system.laserDesign.laserColour == "bg") {
+        this.system.laserDesign.maxRange = this.system.laserDesign.halfRange * 3;
+        this.system.laserDesign.maxRangeSpace = this.system.laserDesign.halfRangeSpace * 3;
+        this.system.laserDesign.maxRangeWater = this.system.laserDesign.halfRangeWater * 3;
       }
-      else if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "uv") {
-        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
-          this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
+      else if (this.system.laserDesign.beamType == "laser" && this.system.laserDesign.laserColour == "uv") {
+        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+          this.system.laserDesign.maxRange = this.system.laserDesign.halfRange * 3;
         }
         else {
-          this.data.data.laserDesign.maxRange = Math.min(this.data.data.laserDesign.halfRange * 3, 500);
+          this.system.laserDesign.maxRange = Math.min(this.system.laserDesign.halfRange * 3, 500);
         }
-        this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
-        this.data.data.laserDesign.maxRangeWater = this.data.data.laserDesign.halfRangeWater * 3;
+        this.system.laserDesign.maxRangeSpace = this.system.laserDesign.halfRangeSpace * 3;
+        this.system.laserDesign.maxRangeWater = this.system.laserDesign.halfRangeWater * 3;
       }
-      else if (this.data.data.laserDesign.beamType == "rainbowLaser") {
-        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
-          this.data.data.laserDesign.maxRangeWater = this.data.data.laserDesign.halfRange * 3;
+      else if (this.system.laserDesign.beamType == "rainbowLaser") {
+        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+          this.system.laserDesign.maxRangeWater = this.system.laserDesign.halfRange * 3;
         }
         else {
-          this.data.data.laserDesign.maxRangeWater = 2;
+          this.system.laserDesign.maxRangeWater = 2;
         }
-        this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
-        this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
+        this.system.laserDesign.maxRange = this.system.laserDesign.halfRange * 3;
+        this.system.laserDesign.maxRangeSpace = this.system.laserDesign.halfRangeSpace * 3;
       }
-      else if (this.data.data.laserDesign.beamType == "xRayLaser") {
-        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
-          this.data.data.laserDesign.maxRangeWater = this.data.data.laserDesign.halfRangeWater * 3;
-          this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
+      else if (this.system.laserDesign.beamType == "xRayLaser") {
+        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+          this.system.laserDesign.maxRangeWater = this.system.laserDesign.halfRangeWater * 3;
+          this.system.laserDesign.maxRange = this.system.laserDesign.halfRange * 3;
         }
         else {
-          this.data.data.laserDesign.maxRangeWater = 0;
-          this.data.data.laserDesign.maxRange = 20;
+          this.system.laserDesign.maxRangeWater = 0;
+          this.system.laserDesign.maxRange = 20;
         }
-        this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
+        this.system.laserDesign.maxRangeSpace = this.system.laserDesign.halfRangeSpace * 3;
       }
-      else if (this.data.data.laserDesign.beamType == "graser") {
-        if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
-          this.data.data.laserDesign.maxRangeWater = this.data.data.laserDesign.halfRangeWater * 3;
-          this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
+      else if (this.system.laserDesign.beamType == "graser") {
+        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+          this.system.laserDesign.maxRangeWater = this.system.laserDesign.halfRangeWater * 3;
+          this.system.laserDesign.maxRange = this.system.laserDesign.halfRange * 3;
         }
         else {
-          this.data.data.laserDesign.maxRangeWater = 0;
-          this.data.data.laserDesign.maxRange = 200;
+          this.system.laserDesign.maxRangeWater = 0;
+          this.system.laserDesign.maxRange = 200;
         }
-        this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
+        this.system.laserDesign.maxRangeSpace = this.system.laserDesign.halfRangeSpace * 3;
       }
-      else if (this.data.data.laserDesign.beamType == "blaster") {
-        this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
-        this.data.data.laserDesign.maxRangeWater = this.data.data.laserDesign.halfRangeWater * 3;
-        this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
+      else if (this.system.laserDesign.beamType == "blaster") {
+        this.system.laserDesign.maxRangeSpace = this.system.laserDesign.halfRangeSpace * 3;
+        this.system.laserDesign.maxRangeWater = this.system.laserDesign.halfRangeWater * 3;
+        this.system.laserDesign.maxRange = this.system.laserDesign.halfRange * 3;
       }
-      else if (this.data.data.laserDesign.beamType == "pulsar") {
-        this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
-        this.data.data.laserDesign.maxRangeWater = this.data.data.laserDesign.halfRangeWater * 3;
-        this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
-        if (this.data.data.laserDesign.maxRange == 999) {
-          this.data.data.laserDesign.maxRange = 1000;
+      else if (this.system.laserDesign.beamType == "pulsar") {
+        this.system.laserDesign.maxRangeSpace = this.system.laserDesign.halfRangeSpace * 3;
+        this.system.laserDesign.maxRangeWater = this.system.laserDesign.halfRangeWater * 3;
+        this.system.laserDesign.maxRange = this.system.laserDesign.halfRange * 3;
+        if (this.system.laserDesign.maxRange == 999) {
+          this.system.laserDesign.maxRange = 1000;
         }
       }
       else {
-        this.data.data.laserDesign.maxRangeSpace = this.data.data.laserDesign.halfRangeSpace * 3;
-        this.data.data.laserDesign.maxRangeWater = this.data.data.laserDesign.halfRangeWater * 3;
-        this.data.data.laserDesign.maxRange = this.data.data.laserDesign.halfRange * 3;
+        this.system.laserDesign.maxRangeSpace = this.system.laserDesign.halfRangeSpace * 3;
+        this.system.laserDesign.maxRangeWater = this.system.laserDesign.halfRangeWater * 3;
+        this.system.laserDesign.maxRange = this.system.laserDesign.halfRange * 3;
       }
 
-      if (this.data.data.laserDesign.ftl && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
-        this.data.data.laserDesign.halfRange = this.data.data.laserDesign.maxRangeSpace;
-        this.data.data.laserDesign.halfRangeSpace = this.data.data.laserDesign.maxRangeWater;
-        this.data.data.laserDesign.halfRangeWater = this.data.data.laserDesign.maxRange;
+      if (this.system.laserDesign.ftl && this.system.laserDesign.allowSuperScienceCustomLasers) {
+        this.system.laserDesign.halfRange = this.system.laserDesign.maxRangeSpace;
+        this.system.laserDesign.halfRangeSpace = this.system.laserDesign.maxRangeWater;
+        this.system.laserDesign.halfRangeWater = this.system.laserDesign.maxRange;
       }
 
-      this.data.data.laserDesign.outputRange = this.data.data.laserDesign.halfRange + " / " + this.data.data.laserDesign.maxRange;
-      this.data.data.laserDesign.outputRangeWater = this.data.data.laserDesign.halfRangeWater + " / " + this.data.data.laserDesign.maxRangeWater;
-      this.data.data.laserDesign.outputRangeSpace = this.data.data.laserDesign.halfRangeSpace + " / " + this.data.data.laserDesign.maxRangeSpace;
+      this.system.laserDesign.outputRange = this.system.laserDesign.halfRange + " / " + this.system.laserDesign.maxRange;
+      this.system.laserDesign.outputRangeWater = this.system.laserDesign.halfRangeWater + " / " + this.system.laserDesign.maxRangeWater;
+      this.system.laserDesign.outputRangeSpace = this.system.laserDesign.halfRangeSpace + " / " + this.system.laserDesign.maxRangeSpace;
 
       // Shots
       let reloadTime = 3;
-      if (this.data.data.laserDesign.beamType == "chemicalLaser") {
-        let kw = ((this.data.data.laserDesign.damageDice * 1.84) ** 3); // The wattage of the laser
-        this.data.data.laserDesign.powerCellWeight = (this.data.data.laserDesign.chemicalShots * kw ) / 160;
-        this.data.data.laserDesign.powerCellQty = 1;
-        this.data.data.laserDesign.chemicalCost = this.data.data.laserDesign.powerCellWeight * 20;
-        this.data.data.laserDesign.powerCellWeight = Math.floor(this.data.data.laserDesign.powerCellWeight * 100) / 100;
+      if (this.system.laserDesign.beamType == "chemicalLaser") {
+        let kw = ((this.system.laserDesign.damageDice * 1.84) ** 3); // The wattage of the laser
+        this.system.laserDesign.powerCellWeight = (this.system.laserDesign.chemicalShots * kw ) / 160;
+        this.system.laserDesign.powerCellQty = 1;
+        this.system.laserDesign.chemicalCost = this.system.laserDesign.powerCellWeight * 20;
+        this.system.laserDesign.powerCellWeight = Math.floor(this.system.laserDesign.powerCellWeight * 100) / 100;
       }
-      else if (this.data.data.laserDesign.powerCell == "A") {
+      else if (this.system.laserDesign.powerCell == "A") {
         baseShots = +baseShots * 0.01;
-        this.data.data.laserDesign.powerCellWeight = 0.005;
+        this.system.laserDesign.powerCellWeight = 0.005;
       }
-      else if (this.data.data.laserDesign.powerCell == "B") {
+      else if (this.system.laserDesign.powerCell == "B") {
         baseShots = +baseShots * 0.1;
-        this.data.data.laserDesign.powerCellWeight = 0.05;
+        this.system.laserDesign.powerCellWeight = 0.05;
       }
-      else if (this.data.data.laserDesign.powerCell == "C") {
+      else if (this.system.laserDesign.powerCell == "C") {
         baseShots = +baseShots * 1;
-        this.data.data.laserDesign.powerCellWeight = 0.5;
+        this.system.laserDesign.powerCellWeight = 0.5;
       }
-      else if (this.data.data.laserDesign.powerCell == "D") {
+      else if (this.system.laserDesign.powerCell == "D") {
         baseShots = +baseShots * 10;
         reloadTime = 5;
-        this.data.data.laserDesign.powerCellWeight = 5;
+        this.system.laserDesign.powerCellWeight = 5;
       }
-      else if (this.data.data.laserDesign.powerCell == "E") {
+      else if (this.system.laserDesign.powerCell == "E") {
         baseShots = +baseShots * 100;
         reloadTime = 5;
-        this.data.data.laserDesign.powerCellWeight = 20;
+        this.system.laserDesign.powerCellWeight = 20;
       }
-      else if (this.data.data.laserDesign.powerCell == "F") {
+      else if (this.system.laserDesign.powerCell == "F") {
         baseShots = +baseShots * 1000;
         reloadTime = 5;
-        this.data.data.laserDesign.powerCellWeight = 200;
+        this.system.laserDesign.powerCellWeight = 200;
       }
 
-      if (this.data.data.laserDesign.superScienceCells) {
+      if (this.system.laserDesign.superScienceCells) {
         baseShots = +baseShots * 5;
       }
-      if (this.data.data.laserDesign.nonRechargeableCells) {
+      if (this.system.laserDesign.nonRechargeableCells) {
         baseShots = +baseShots * 2;
       }
 
-      if (this.data.data.laserDesign.beamType == "chemicalLaser") {
+      if (this.system.laserDesign.beamType == "chemicalLaser") {
         reloadTime = 3;
-        this.data.data.laserDesign.shots = Math.floor(this.data.data.laserDesign.chemicalShots)
+        this.system.laserDesign.shots = Math.floor(this.system.laserDesign.chemicalShots)
       }
       else {
-        reloadTime = reloadTime * this.data.data.laserDesign.powerCellQty;
-        baseShots = +baseShots * this.data.data.laserDesign.powerCellQty;
-        this.data.data.laserDesign.shots = Math.floor(+baseShots / this.data.data.laserDesign.damageDiceInput ** 3);
+        reloadTime = reloadTime * this.system.laserDesign.powerCellQty;
+        baseShots = +baseShots * this.system.laserDesign.powerCellQty;
+        this.system.laserDesign.shots = Math.floor(+baseShots / this.system.laserDesign.damageDiceInput ** 3);
       }
 
-      if (this.data.data.laserDesign.beamType == "laser" && this.data.data.laserDesign.laserColour == "bg") {
-        this.data.data.laserDesign.shots = this.data.data.laserDesign.shots / 2;
+      if (this.system.laserDesign.beamType == "laser" && this.system.laserDesign.laserColour == "bg") {
+        this.system.laserDesign.shots = this.system.laserDesign.shots / 2;
       }
 
-      this.data.data.laserDesign.outputShots = this.data.data.laserDesign.shots + " (" + reloadTime + ")";
-      this.data.data.laserDesign.outputShotsHotshots = (this.data.data.laserDesign.shots/2) + " (" + reloadTime + ")";
+      this.system.laserDesign.outputShots = this.system.laserDesign.shots + " (" + reloadTime + ")";
+      this.system.laserDesign.outputShotsHotshots = (this.system.laserDesign.shots/2) + " (" + reloadTime + ")";
 
       // Calculate empty weight
-      this.data.data.laserDesign.emptyWeight = ((+this.data.data.laserDesign.damageDiceInput * s / e)**3 * f * g) * +this.data.data.laserDesign.weightTweak;
+      this.system.laserDesign.emptyWeight = ((+this.system.laserDesign.damageDiceInput * s / e)**3 * f * g) * +this.system.laserDesign.weightTweak;
 
       // Calculate the loaded weight
-      this.data.data.laserDesign.loadedWeight = (Math.round(((Math.round(this.data.data.laserDesign.emptyWeight * 100) / 100) + (this.data.data.laserDesign.powerCellQty * this.data.data.laserDesign.powerCellWeight)) * 100) / 100);
+      this.system.laserDesign.loadedWeight = (Math.round(((Math.round(this.system.laserDesign.emptyWeight * 100) / 100) + (this.system.laserDesign.powerCellQty * this.system.laserDesign.powerCellWeight)) * 100) / 100);
 
-      this.data.data.weight = this.data.data.laserDesign.loadedWeight
-      this.data.data.ttlWeight = this.data.data.weight * this.data.data.quantity;
+      this.system.weight = this.system.laserDesign.loadedWeight
+      this.system.ttlWeight = this.system.weight * this.system.quantity;
 
       // Calculate the output weight
-      if (this.data.data.laserDesign.beamType == "chemicalLaser") {
-        this.data.data.laserDesign.outputWeight = this.data.data.laserDesign.loadedWeight + "/" + this.data.data.laserDesign.powerCellWeight;
+      if (this.system.laserDesign.beamType == "chemicalLaser") {
+        this.system.laserDesign.outputWeight = this.system.laserDesign.loadedWeight + "/" + this.system.laserDesign.powerCellWeight;
       }
       else {
-        this.data.data.laserDesign.outputWeight = this.data.data.laserDesign.loadedWeight + "/" + this.data.data.laserDesign.powerCellQty + this.data.data.laserDesign.powerCell;
+        this.system.laserDesign.outputWeight = this.system.laserDesign.loadedWeight + "/" + this.system.laserDesign.powerCellQty + this.system.laserDesign.powerCell;
       }
 
       // Calculate ST and Bulk
-      if (this.data.data.laserDesign.configuration == "pistol") {
-        this.data.data.laserDesign.outputST = Math.round(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 3.3);
-        this.data.data.laserDesign.outputBulk = Math.min(Math.max(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 1.25, 1),10) * -1;
+      if (this.system.laserDesign.configuration == "pistol") {
+        this.system.laserDesign.outputST = Math.round(Math.sqrt(this.system.laserDesign.loadedWeight) * 3.3);
+        this.system.laserDesign.outputBulk = Math.min(Math.max(Math.sqrt(this.system.laserDesign.loadedWeight) * 1.25, 1),10) * -1;
       }
-      else if (this.data.data.laserDesign.configuration == "beamer") {
-        this.data.data.laserDesign.outputST = Math.round(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 3.3);
-        this.data.data.laserDesign.outputBulk = Math.min(Math.max(Math.sqrt(this.data.data.laserDesign.loadedWeight), 0),10) * -1;
+      else if (this.system.laserDesign.configuration == "beamer") {
+        this.system.laserDesign.outputST = Math.round(Math.sqrt(this.system.laserDesign.loadedWeight) * 3.3);
+        this.system.laserDesign.outputBulk = Math.min(Math.max(Math.sqrt(this.system.laserDesign.loadedWeight), 0),10) * -1;
       }
-      else if (this.data.data.laserDesign.configuration == "cannon") {
-        this.data.data.laserDesign.outputST = Math.round(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 2.4) + "M";
-        this.data.data.laserDesign.outputBulk = Math.min(Math.max(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 1.5, 6),10) * -1;
+      else if (this.system.laserDesign.configuration == "cannon") {
+        this.system.laserDesign.outputST = Math.round(Math.sqrt(this.system.laserDesign.loadedWeight) * 2.4) + "M";
+        this.system.laserDesign.outputBulk = Math.min(Math.max(Math.sqrt(this.system.laserDesign.loadedWeight) * 1.5, 6),10) * -1;
       }
-      else if (this.data.data.laserDesign.configuration == "rifle") {
-        this.data.data.laserDesign.outputST = Math.round(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 2.2) + "†";
-        this.data.data.laserDesign.outputBulk = Math.min(Math.max(Math.sqrt(this.data.data.laserDesign.loadedWeight) * 1.5, 3),10) * -1;
+      else if (this.system.laserDesign.configuration == "rifle") {
+        this.system.laserDesign.outputST = Math.round(Math.sqrt(this.system.laserDesign.loadedWeight) * 2.2) + "†";
+        this.system.laserDesign.outputBulk = Math.min(Math.max(Math.sqrt(this.system.laserDesign.loadedWeight) * 1.5, 3),10) * -1;
       }
-      this.data.data.laserDesign.outputBulk = Math.round(this.data.data.laserDesign.outputBulk)
+      this.system.laserDesign.outputBulk = Math.round(this.system.laserDesign.outputBulk)
 
-      this.data.data.laserDesign.outputRcl = 1;
+      this.system.laserDesign.outputRcl = 1;
 
-      this.data.data.cost = (Math.round(this.data.data.laserDesign.emptyWeight * bc * gc * 100) / 100);
+      this.system.cost = (Math.round(this.system.laserDesign.emptyWeight * bc * gc * 100) / 100);
 
       let cf = 1
-      if (this.data.data.laserDesign.beamType == "blaster" && this.data.data.laserDesign.omniBlaster) {
+      if (this.system.laserDesign.beamType == "blaster" && this.system.laserDesign.omniBlaster) {
         cf += 1;
       }
-      if (this.data.data.laserDesign.fieldJacketed && this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+      if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
         cf += 1;
       }
-      if (parseInt(this.data.data.laserDesign.graviticFocus) > 0){
-        if (parseInt(this.data.data.laserDesign.graviticFocus) == 1) {
+      if (parseInt(this.system.laserDesign.graviticFocus) > 0){
+        if (parseInt(this.system.laserDesign.graviticFocus) == 1) {
           cf += 1
         }
-        else if (parseInt(this.data.data.laserDesign.graviticFocus) == 2) {
+        else if (parseInt(this.system.laserDesign.graviticFocus) == 2) {
           cf += 3
         }
-        else if (parseInt(this.data.data.laserDesign.graviticFocus) == 3) {
+        else if (parseInt(this.system.laserDesign.graviticFocus) == 3) {
           cf += 7
         }
       }
-      if (this.data.data.laserDesign.pulseBeamLaser && this.data.data.laserDesign.pulseLaser) {
+      if (this.system.laserDesign.pulseBeamLaser && this.system.laserDesign.pulseLaser) {
         cf += 1
       }
 
-      this.data.data.cost = this.data.data.cost * cf;
+      this.system.cost = this.system.cost * cf;
 
-      this.data.data.ttlCost = this.data.data.cost * this.data.data.quantity;
+      this.system.ttlCost = this.system.cost * this.system.quantity;
 
       // Calculate LC
-      if (this.data.data.laserDesign.loadedWeight >= 15) {
+      if (this.system.laserDesign.loadedWeight >= 15) {
         lc -= 2;
       }
-      else if (this.data.data.laserDesign.loadedWeight >= 5) {
+      else if (this.system.laserDesign.loadedWeight >= 5) {
         lc -= 1;
       }
 
-      this.data.data.lc = lc;
+      this.system.lc = lc;
 
       // Done building the custom laser
 
@@ -4117,133 +4137,133 @@ export class gurpsItem extends Item {
   }
 
   addCustomLaserProfiles() {
-    if (this.data.data.laserDesign.meleeProfile) { // If the user wants to include a melee profile
-      this.addMeleeProfile(this.data.data.laserDesign.outputBulk, this.data.data.laserDesign.cavalierWeapon, this.data.data.laserDesign.configuration, this.data.data.laserDesign.meleeSkill, this.data.data.laserDesign.meleeSkillMod, this.data.data.laserDesign.outputST) // Include one
+    if (this.system.laserDesign.meleeProfile) { // If the user wants to include a melee profile
+      this.addMeleeProfile(this.system.laserDesign.outputBulk, this.system.laserDesign.cavalierWeapon, this.system.laserDesign.configuration, this.system.laserDesign.meleeSkill, this.system.laserDesign.meleeSkillMod, this.system.laserDesign.outputST) // Include one
     }
 
     let rangedProfiles = [];
     // For each ranged profile, check if the box is checked and add the ranged profile accordingly.
-    if (this.data.data.laserDesign.showAir) {
+    if (this.system.laserDesign.showAir) {
       let showAir = {
         "name": "Air",
-        "skill": this.data.data.laserDesign.rangedSkill,
-        "skillMod": this.data.data.laserDesign.rangedSkillMod,
-        "acc": this.data.data.laserDesign.outputAcc,
-        "damageInput": this.data.data.laserDesign.outputDamage,
-        "damageType": this.data.data.laserDesign.damageType,
-        "armourDivisor": this.data.data.laserDesign.armourDivisor,
-        "range": this.data.data.laserDesign.halfRange + " " + this.data.data.laserDesign.maxRange,
-        "rof": this.data.data.laserDesign.outputRoF,
-        "shots": this.data.data.laserDesign.shots,
-        "bulk": this.data.data.laserDesign.bulk,
-        "rcl": this.data.data.laserDesign.rcl,
-        "st": this.data.data.laserDesign.st,
+        "skill": this.system.laserDesign.rangedSkill,
+        "skillMod": this.system.laserDesign.rangedSkillMod,
+        "acc": this.system.laserDesign.outputAcc,
+        "damageInput": this.system.laserDesign.outputDamage,
+        "damageType": this.system.laserDesign.damageType,
+        "armourDivisor": this.system.laserDesign.armourDivisor,
+        "range": this.system.laserDesign.halfRange + " " + this.system.laserDesign.maxRange,
+        "rof": this.system.laserDesign.outputRoF,
+        "shots": this.system.laserDesign.shots,
+        "bulk": this.system.laserDesign.bulk,
+        "rcl": this.system.laserDesign.rcl,
+        "st": this.system.laserDesign.st,
         "malf": 17
       }
 
       rangedProfiles.push(showAir);
     }
-    if (this.data.data.laserDesign.showSpace) {
+    if (this.system.laserDesign.showSpace) {
       let showSpace = {
         "name": "Space",
-        "skill": this.data.data.laserDesign.rangedSkill,
-        "skillMod": this.data.data.laserDesign.rangedSkillMod,
-        "acc": this.data.data.laserDesign.outputAccSpace,
-        "damageInput": this.data.data.laserDesign.outputDamage,
-        "damageType": this.data.data.laserDesign.damageType,
-        "armourDivisor": this.data.data.laserDesign.armourDivisorSpace,
-        "range": this.data.data.laserDesign.halfRangeSpace + " " + this.data.data.laserDesign.maxRangeSpace,
-        "rof": this.data.data.laserDesign.outputRoF,
-        "shots": this.data.data.laserDesign.shots,
-        "bulk": this.data.data.laserDesign.bulk,
-        "rcl": this.data.data.laserDesign.rcl,
-        "st": this.data.data.laserDesign.st,
+        "skill": this.system.laserDesign.rangedSkill,
+        "skillMod": this.system.laserDesign.rangedSkillMod,
+        "acc": this.system.laserDesign.outputAccSpace,
+        "damageInput": this.system.laserDesign.outputDamage,
+        "damageType": this.system.laserDesign.damageType,
+        "armourDivisor": this.system.laserDesign.armourDivisorSpace,
+        "range": this.system.laserDesign.halfRangeSpace + " " + this.system.laserDesign.maxRangeSpace,
+        "rof": this.system.laserDesign.outputRoF,
+        "shots": this.system.laserDesign.shots,
+        "bulk": this.system.laserDesign.bulk,
+        "rcl": this.system.laserDesign.rcl,
+        "st": this.system.laserDesign.st,
         "malf": 17
       }
 
       rangedProfiles.push(showSpace);
     }
-    if (this.data.data.laserDesign.showWater) {
+    if (this.system.laserDesign.showWater) {
       let showWater = {
         "name": "Water",
-        "skill": this.data.data.laserDesign.rangedSkill,
-        "skillMod": this.data.data.laserDesign.rangedSkillMod,
-        "acc": this.data.data.laserDesign.outputAccWater,
-        "damageInput": this.data.data.laserDesign.outputDamage,
-        "damageType": this.data.data.laserDesign.damageType,
-        "armourDivisor": this.data.data.laserDesign.armourDivisorWater,
-        "range": this.data.data.laserDesign.halfRangeWater + " " + this.data.data.laserDesign.maxRangeWater,
-        "rof": this.data.data.laserDesign.outputRoF,
-        "shots": this.data.data.laserDesign.shots / 2,
-        "bulk": this.data.data.laserDesign.bulk,
-        "rcl": this.data.data.laserDesign.rcl,
-        "st": this.data.data.laserDesign.st,
+        "skill": this.system.laserDesign.rangedSkill,
+        "skillMod": this.system.laserDesign.rangedSkillMod,
+        "acc": this.system.laserDesign.outputAccWater,
+        "damageInput": this.system.laserDesign.outputDamage,
+        "damageType": this.system.laserDesign.damageType,
+        "armourDivisor": this.system.laserDesign.armourDivisorWater,
+        "range": this.system.laserDesign.halfRangeWater + " " + this.system.laserDesign.maxRangeWater,
+        "rof": this.system.laserDesign.outputRoF,
+        "shots": this.system.laserDesign.shots / 2,
+        "bulk": this.system.laserDesign.bulk,
+        "rcl": this.system.laserDesign.rcl,
+        "st": this.system.laserDesign.st,
         "malf": 17
       }
 
       rangedProfiles.push(showWater);
     }
-    if (this.data.data.laserDesign.showAirHotshot && this.data.data.hotshotsAndOverheating && !(this.data.data.configuration.toLowerCase().includes("gat"))) { // The user wants to show hotshots, hotshots are allowed, and this isn't a gatling weapon
+    if (this.system.laserDesign.showAirHotshot && this.system.hotshotsAndOverheating && !(this.system.configuration.toLowerCase().includes("gat"))) { // The user wants to show hotshots, hotshots are allowed, and this isn't a gatling weapon
       let showAirHotshot = {
         "name": "Hotshot Air",
-        "skill": this.data.data.laserDesign.rangedSkill,
-        "skillMod": this.data.data.laserDesign.rangedSkillMod,
-        "acc": this.data.data.laserDesign.outputAcc,
-        "damageInput": this.data.data.laserDesign.outputDamageHotshots,
-        "damageType": this.data.data.laserDesign.damageType,
-        "armourDivisor": this.data.data.laserDesign.armourDivisor,
-        "range": this.data.data.laserDesign.halfRange + " " + this.data.data.laserDesign.maxRange,
-        "rof": this.data.data.laserDesign.outputRoF,
-        "shots": this.data.data.laserDesign.shots / 2,
-        "bulk": this.data.data.laserDesign.bulk,
-        "rcl": this.data.data.laserDesign.rcl,
-        "st": this.data.data.laserDesign.st,
+        "skill": this.system.laserDesign.rangedSkill,
+        "skillMod": this.system.laserDesign.rangedSkillMod,
+        "acc": this.system.laserDesign.outputAcc,
+        "damageInput": this.system.laserDesign.outputDamageHotshots,
+        "damageType": this.system.laserDesign.damageType,
+        "armourDivisor": this.system.laserDesign.armourDivisor,
+        "range": this.system.laserDesign.halfRange + " " + this.system.laserDesign.maxRange,
+        "rof": this.system.laserDesign.outputRoF,
+        "shots": this.system.laserDesign.shots / 2,
+        "bulk": this.system.laserDesign.bulk,
+        "rcl": this.system.laserDesign.rcl,
+        "st": this.system.laserDesign.st,
         "malf": 14
       }
 
       rangedProfiles.push(showAirHotshot);
     }
-    if (this.data.data.laserDesign.showSpaceHotshot && this.data.data.hotshotsAndOverheating && !(this.data.data.configuration.toLowerCase().includes("gat"))) { // The user wants to show hotshots, hotshots are allowed, and this isn't a gatling weapon
+    if (this.system.laserDesign.showSpaceHotshot && this.system.hotshotsAndOverheating && !(this.system.configuration.toLowerCase().includes("gat"))) { // The user wants to show hotshots, hotshots are allowed, and this isn't a gatling weapon
       let showSpaceHotshot = {
         "name": "Space Hotshot",
-        "skill": this.data.data.laserDesign.rangedSkill,
-        "skillMod": this.data.data.laserDesign.rangedSkillMod,
-        "acc": this.data.data.laserDesign.outputAccSpace,
-        "damageInput": this.data.data.laserDesign.outputDamageHotshots,
-        "damageType": this.data.data.laserDesign.damageType,
-        "armourDivisor": this.data.data.laserDesign.armourDivisorSpace,
-        "range": this.data.data.laserDesign.halfRangeSpace + " " + this.data.data.laserDesign.maxRangeSpace,
-        "rof": this.data.data.laserDesign.outputRoF,
-        "shots": this.data.data.laserDesign.shots / 2,
-        "bulk": this.data.data.laserDesign.bulk,
-        "rcl": this.data.data.laserDesign.rcl,
-        "st": this.data.data.laserDesign.st,
+        "skill": this.system.laserDesign.rangedSkill,
+        "skillMod": this.system.laserDesign.rangedSkillMod,
+        "acc": this.system.laserDesign.outputAccSpace,
+        "damageInput": this.system.laserDesign.outputDamageHotshots,
+        "damageType": this.system.laserDesign.damageType,
+        "armourDivisor": this.system.laserDesign.armourDivisorSpace,
+        "range": this.system.laserDesign.halfRangeSpace + " " + this.system.laserDesign.maxRangeSpace,
+        "rof": this.system.laserDesign.outputRoF,
+        "shots": this.system.laserDesign.shots / 2,
+        "bulk": this.system.laserDesign.bulk,
+        "rcl": this.system.laserDesign.rcl,
+        "st": this.system.laserDesign.st,
         "malf": 14
       }
 
       rangedProfiles.push(showSpaceHotshot);
     }
-    if (this.data.data.laserDesign.showWaterHotshot && this.data.data.hotshotsAndOverheating && !(this.data.data.configuration.toLowerCase().includes("gat"))) { // The user wants to show hotshots, hotshots are allowed, and this isn't a gatling weapon
+    if (this.system.laserDesign.showWaterHotshot && this.system.hotshotsAndOverheating && !(this.system.configuration.toLowerCase().includes("gat"))) { // The user wants to show hotshots, hotshots are allowed, and this isn't a gatling weapon
       let showWaterHotshot = {
         "name": "Water Hotshot",
-        "skill": this.data.data.laserDesign.rangedSkill,
-        "skillMod": this.data.data.laserDesign.rangedSkillMod,
-        "acc": this.data.data.laserDesign.outputAccWater,
-        "damageInput": this.data.data.laserDesign.outputDamageHotshots,
-        "damageType": this.data.data.laserDesign.damageType,
-        "armourDivisor": this.data.data.laserDesign.armourDivisorWater,
-        "range": this.data.data.laserDesign.halfRangeWater + " " + this.data.data.laserDesign.maxRangeWater,
-        "rof": this.data.data.laserDesign.outputRoF,
-        "shots": this.data.data.laserDesign.shots / 2,
-        "bulk": this.data.data.laserDesign.bulk,
-        "rcl": this.data.data.laserDesign.rcl,
-        "st": this.data.data.laserDesign.st,
+        "skill": this.system.laserDesign.rangedSkill,
+        "skillMod": this.system.laserDesign.rangedSkillMod,
+        "acc": this.system.laserDesign.outputAccWater,
+        "damageInput": this.system.laserDesign.outputDamageHotshots,
+        "damageType": this.system.laserDesign.damageType,
+        "armourDivisor": this.system.laserDesign.armourDivisorWater,
+        "range": this.system.laserDesign.halfRangeWater + " " + this.system.laserDesign.maxRangeWater,
+        "rof": this.system.laserDesign.outputRoF,
+        "shots": this.system.laserDesign.shots / 2,
+        "bulk": this.system.laserDesign.bulk,
+        "rcl": this.system.laserDesign.rcl,
+        "st": this.system.laserDesign.st,
         "malf": 14
       }
 
       rangedProfiles.push(showWaterHotshot);
     }
-    this.data.data.ranged = rangedProfiles;
+    this.system.ranged = rangedProfiles;
   }
 
   addMeleeProfile(bulk, cavalier, config, meleeSkill, meleeSkillMod, ST) {
@@ -4279,12 +4299,12 @@ export class gurpsItem extends Item {
       "st": Math.round(ST),
     };
 
-    this.data.data.melee = [newRow];
+    this.system.melee = [newRow];
   }
 
   prepareCustomBow(type) {
-    if (typeof this.data.data.bowDesign == "undefined") { // If the bowDesign block hasn't yet been created
-      this.data.data.bowDesign = { // Create it
+    if (typeof this.system.bowDesign == "undefined") { // If the bowDesign block hasn't yet been created
+      this.system.bowDesign = { // Create it
         "type": type, // bow/footbow/xbow
         "magicalMaterials": false,
         "superScienceMaterials": false,
@@ -4342,8 +4362,8 @@ export class gurpsItem extends Item {
       }
     }
 
-    if (typeof this.data.data.bowDesign.workingMaterialOne == "undefined") { // If the material block hasn't yet been created
-      this.data.data.bowDesign.workingMaterialOne = { // Create it
+    if (typeof this.system.bowDesign.workingMaterialOne == "undefined") { // If the material block hasn't yet been created
+      this.system.bowDesign.workingMaterialOne = { // Create it
         "a": 0,
         "densityLbsCuIn": 0,
         "elasticModulusPsi": 0,
@@ -4356,8 +4376,8 @@ export class gurpsItem extends Item {
       }
     }
 
-    if (typeof this.data.data.bowDesign.workingMaterialTwo == "undefined") { // If the material block hasn't yet been created
-      this.data.data.bowDesign.workingMaterialTwo = { // Create it
+    if (typeof this.system.bowDesign.workingMaterialTwo == "undefined") { // If the material block hasn't yet been created
+      this.system.bowDesign.workingMaterialTwo = { // Create it
         "a": 0,
         "densityLbsCuIn": 0,
         "elasticModulusPsi": 0,
@@ -4370,8 +4390,8 @@ export class gurpsItem extends Item {
       }
     }
 
-    if (typeof this.data.data.bowDesign.workingMaterialAvg == "undefined") { // If the material block hasn't yet been created
-      this.data.data.bowDesign.workingMaterialAvg = { // Create it
+    if (typeof this.system.bowDesign.workingMaterialAvg == "undefined") { // If the material block hasn't yet been created
+      this.system.bowDesign.workingMaterialAvg = { // Create it
         "a": 0,
         "densityLbsCuIn": 0,
         "elasticModulusPsi": 0,
@@ -4383,22 +4403,8 @@ export class gurpsItem extends Item {
       }
     }
 
-    if (typeof this.data.data.bowDesign.riserMaterialOne == "undefined") { // If the material block hasn't yet been created
-      this.data.data.bowDesign.riserMaterialOne = { // Create it
-        "a": 0,
-        "densityLbsCuIn": 0,
-        "elasticModulusPsi": 0,
-        "name": "Wood - White Pine",
-        "tensileStPsi": 0,
-        "tl": 0,
-        "maxStrain": 0,
-        "bowCostPerLb": 0,
-        "arrowCostPerLb": 0,
-      }
-    }
-
-    if (typeof this.data.data.bowDesign.riserMaterialTwo == "undefined") { // If the material block hasn't yet been created
-      this.data.data.bowDesign.riserMaterialTwo = { // Create it
+    if (typeof this.system.bowDesign.riserMaterialOne == "undefined") { // If the material block hasn't yet been created
+      this.system.bowDesign.riserMaterialOne = { // Create it
         "a": 0,
         "densityLbsCuIn": 0,
         "elasticModulusPsi": 0,
@@ -4411,8 +4417,22 @@ export class gurpsItem extends Item {
       }
     }
 
-    if (typeof this.data.data.bowDesign.stockMaterialOne == "undefined") { // If the material block hasn't yet been created
-      this.data.data.bowDesign.stockMaterialOne = { // Create it
+    if (typeof this.system.bowDesign.riserMaterialTwo == "undefined") { // If the material block hasn't yet been created
+      this.system.bowDesign.riserMaterialTwo = { // Create it
+        "a": 0,
+        "densityLbsCuIn": 0,
+        "elasticModulusPsi": 0,
+        "name": "Wood - White Pine",
+        "tensileStPsi": 0,
+        "tl": 0,
+        "maxStrain": 0,
+        "bowCostPerLb": 0,
+        "arrowCostPerLb": 0,
+      }
+    }
+
+    if (typeof this.system.bowDesign.stockMaterialOne == "undefined") { // If the material block hasn't yet been created
+      this.system.bowDesign.stockMaterialOne = { // Create it
         "a": 0,
         "densityLbsCuIn": 0,
         "elasticModulusPsi": 0,
@@ -4425,8 +4445,8 @@ export class gurpsItem extends Item {
       }
     }
 
-    if (typeof this.data.data.bowDesign.stockMaterialTwo == "undefined") { // If the material block hasn't yet been created
-      this.data.data.bowDesign.stockMaterialTwo = { // Create it
+    if (typeof this.system.bowDesign.stockMaterialTwo == "undefined") { // If the material block hasn't yet been created
+      this.system.bowDesign.stockMaterialTwo = { // Create it
         "a": 0,
         "densityLbsCuIn": 0,
         "elasticModulusPsi": 0,
@@ -4441,212 +4461,210 @@ export class gurpsItem extends Item {
 
     // Validations
     // Working percentage must be between 0 and 100
-    if (this.data.data.bowDesign.workingPercentage > 100) {
-      this.data.data.bowDesign.workingPercentage = 100;
+    if (this.system.bowDesign.workingPercentage > 100) {
+      this.system.bowDesign.workingPercentage = 100;
     }
-    else if (this.data.data.bowDesign.workingPercentage < 0){
-      this.data.data.bowDesign.workingPercentage = 0;
+    else if (this.system.bowDesign.workingPercentage < 0){
+      this.system.bowDesign.workingPercentage = 0;
     }
 
     // Stock length must be zero or more
-    if(typeof this.data.data.bowDesign.stockLength === "undefined" || this.data.data.bowDesign.stockLength < 0) {
-      this.data.data.bowDesign.stockLength = 0;
+    if(typeof this.system.bowDesign.stockLength === "undefined" || this.system.bowDesign.stockLength < 0) {
+      this.system.bowDesign.stockLength = 0;
     }
 
     // Cross section must not be zero or negative
-    if (!(this.data.data.bowDesign.crossSection > 0)) {
-      this.data.data.bowDesign.crossSection = 1;
+    if (!(this.system.bowDesign.crossSection > 0)) {
+      this.system.bowDesign.crossSection = 1;
     }
 
-    if (this.data.data.bowDesign.workingPercentage < 100) { // If working percent is not 100 then there must be a riser.
-      this.data.data.bowDesign.riser = true;
+    if (this.system.bowDesign.workingPercentage < 100) { // If working percent is not 100 then there must be a riser.
+      this.system.bowDesign.riser = true;
     }
 
-    if (this.data.data.bowDesign.bowConstruction == "compound") { // It's a compound bow
-      this.data.data.bowDesign.loops = Math.max(this.data.data.bowDesign.loops, 1); // There must be at least 1 loop
+    if (this.system.bowDesign.bowConstruction == "compound") { // It's a compound bow
+      this.system.bowDesign.loops = Math.max(this.system.bowDesign.loops, 1); // There must be at least 1 loop
     }
     else { // It's not a compound bow
-      this.data.data.bowDesign.loops = 1; // Bows that are not compound bows have a single loop
+      this.system.bowDesign.loops = 1; // Bows that are not compound bows have a single loop
     }
 
-    if (this.data.data.bowDesign.totalBowLength <= 0) { // Total bow length must be greater than zero, otherwise it doesn't exist.
-      this.data.data.bowDesign.totalBowLength = 1;
+    if (this.system.bowDesign.totalBowLength <= 0) { // Total bow length must be greater than zero, otherwise it doesn't exist.
+      this.system.bowDesign.totalBowLength = 1;
     }
 
     // Get game settings
-    this.data.data.bowDesign.magicalMaterials         = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
-    this.data.data.bowDesign.compoundBowStrictTL      = game.settings.get("gurps4e", "compoundBowStrictTL");
-    this.data.data.bowDesign.fixedBonusStrongbow      = game.settings.get("gurps4e", "fixedBonusStrongbow");
-    this.data.data.bowDesign.realisticBowScale        = game.settings.get("gurps4e", "realisticBowScale");
+    this.system.bowDesign.magicalMaterials         = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
+    this.system.bowDesign.compoundBowStrictTL      = game.settings.get("gurps4e", "compoundBowStrictTL");
+    this.system.bowDesign.fixedBonusStrongbow      = game.settings.get("gurps4e", "fixedBonusStrongbow");
+    this.system.bowDesign.realisticBowScale        = game.settings.get("gurps4e", "realisticBowScale");
 
     // Get materials
-    this.data.data.bowDesign.materials = game.materialAPI.fetchBowMaterials();
+    this.system.bowDesign.materials = game.materialAPI.fetchBowMaterials();
 
     // Do actual code stuff
-    this.data.data.bowDesign.type = type;
+    this.system.bowDesign.type = type;
 
-    this.data.data.bowDesign.userSTFromActor = false; // Reset whether we're getting the ST from the actor.
-    this.data.data.bowDesign.strongBowCrossbowFinesseFromActor = false; // Reset whether we're getting the perk from the user.
+    this.system.bowDesign.userSTFromActor = false; // Reset whether we're getting the ST from the actor.
+    this.system.bowDesign.strongBowCrossbowFinesseFromActor = false; // Reset whether we're getting the perk from the user.
     if (this.actor) { // If there's an actor
-      if (this.actor.data) {
-        if (this.actor.data.data) {
-          let smDiscount = attributeHelpers.calcSMDiscount(this.actor.data.data.bio.sm);
-          let st = attributeHelpers.calcStOrHt(this.actor.data.data.primaryAttributes.strength, smDiscount);
-          let lifting = attributeHelpers.calcLiftingSt(st, this.actor.data.data.primaryAttributes.lifting, smDiscount)
+      if (this.actor.system) {
+        let smDiscount = attributeHelpers.calcSMDiscount(this.actor.system.bio.sm);
+        let st = attributeHelpers.calcStOrHt(this.actor.system.primaryAttributes.strength, smDiscount);
+        let lifting = attributeHelpers.calcLiftingSt(st, this.actor.system.primaryAttributes.lifting, smDiscount)
 
-          this.data.data.bowDesign.userST = lifting; // Get lifting ST from the user
-          this.data.data.bowDesign.userSTFromActor = true; // Flag that we're getting the ST from the user
+        this.system.bowDesign.userST = lifting; // Get lifting ST from the user
+        this.system.bowDesign.userSTFromActor = true; // Flag that we're getting the ST from the user
 
-          for (let i = 0; i < this.actor.data.items._source.length; i++) { // Loop through the list of the actor's items
-            if (this.actor.data.items._source[i].type === "Trait") { // Make sure it's a trait
-              if ((this.actor.data.items._source[i].name.toLowerCase() == "strongbow" || // Check if they have strongbow
-                  this.actor.data.items._source[i].name.toLowerCase() == "strong bow") &&
-                  (this.data.data.bowDesign.type == "bow" || this.data.data.bowDesign.type == "footbow")) { // And make sure this is a bow
-                this.data.data.bowDesign.strongBowCrossbowFinesseFromActor = true; // Flag that the perk is coming from the actor.
-                this.data.data.bowDesign.strongBowCrossbowFinesse = true; // Set the status of the perk
-              }
-              else if ((this.actor.data.items._source[i].name.toLowerCase() == "crossbow finesse") && (this.data.data.bowDesign.type == "xbow")) {
-                this.data.data.bowDesign.strongBowCrossbowFinesseFromActor = true; // Flag that the perk is coming from the actor.
-                this.data.data.bowDesign.strongBowCrossbowFinesse = true; // Set the status of the perk
-              }
+        for (let i = 0; i < this.actor.items._source.length; i++) { // Loop through the list of the actor's items
+          if (this.actor.items._source[i].type === "Trait") { // Make sure it's a trait
+            if ((this.actor.items._source[i].name.toLowerCase() == "strongbow" || // Check if they have strongbow
+                this.actor.items._source[i].name.toLowerCase() == "strong bow") &&
+                (this.system.bowDesign.type == "bow" || this.system.bowDesign.type == "footbow")) { // And make sure this is a bow
+              this.system.bowDesign.strongBowCrossbowFinesseFromActor = true; // Flag that the perk is coming from the actor.
+              this.system.bowDesign.strongBowCrossbowFinesse = true; // Set the status of the perk
+            }
+            else if ((this.actor.items._source[i].name.toLowerCase() == "crossbow finesse") && (this.system.bowDesign.type == "xbow")) {
+              this.system.bowDesign.strongBowCrossbowFinesseFromActor = true; // Flag that the perk is coming from the actor.
+              this.system.bowDesign.strongBowCrossbowFinesse = true; // Set the status of the perk
             }
           }
         }
       }
     }
 
-    if (this.data.data.bowDesign.strongBowCrossbowFinesse) { // If the perk is set
+    if (this.system.bowDesign.strongBowCrossbowFinesse) { // If the perk is set
       if (this.actor) { // If there's an actor we will need to fetch the finesse effect from the sheet
-        if (this.actor.data) {
+        if (this.actor.system) {
           let skillLevel = 0;
           let attrLevel = 0;
           let relativeBonus = 0;
-          for (let i = 0; i < this.actor.data.items._source.length; i++) { // Loop through the list of the actor's items
-            if (this.actor.data.items._source[i].type === "Rollable") { // Make sure it's a skill
-              if (this.actor.data.items._source[i].name.toLowerCase() == this.data.data.bowDesign.skill.toLowerCase()) { // And make sure it matches the skill name they've given
-                skillLevel = skillHelpers.computeSkillLevel(this.actor, this.actor.data.items._source[i].data); // Get the skill level.
-                attrLevel = skillHelpers.getBaseAttrValue(this.actor.data.items._source[i].data.baseAttr, this.actor); // Get the attribute level
+          for (let i = 0; i < this.actor.items._source.length; i++) { // Loop through the list of the actor's items
+            if (this.actor.items._source[i].type === "Rollable") { // Make sure it's a skill
+              if (this.actor.items._source[i].name.toLowerCase() == this.system.bowDesign.skill.toLowerCase()) { // And make sure it matches the skill name they've given
+                skillLevel = skillHelpers.computeSkillLevel(this.actor, this.actor.items._source[i].system); // Get the skill level.
+                attrLevel = skillHelpers.getBaseAttrValue(this.actor.items._source[i].system.baseAttr, this.actor); // Get the attribute level
                 relativeBonus = skillLevel - attrLevel;
                 relativeBonus = Math.max(relativeBonus, 0); // Make the bonus at least zero.
                 relativeBonus = Math.min(relativeBonus, 2); // Make the bonus no more than two
-                this.data.data.bowDesign.strongBowCrossbowFinesseEffect = relativeBonus;
+                this.system.bowDesign.strongBowCrossbowFinesseEffect = relativeBonus;
               }
             }
           }
         }
       }
 
-      if (this.data.data.bowDesign.fixedBonusStrongbow) { // If we're using the fixed bonus
-        this.data.data.bowDesign.userBL = (this.data.data.bowDesign.userST * this.data.data.bowDesign.userST)/5; // Basic Lift
-        this.data.data.bowDesign.userBL = this.data.data.bowDesign.userBL * (1 + (0.15 * this.data.data.bowDesign.strongBowCrossbowFinesseEffect)) // Basic lift plus the perk's bonus
+      if (this.system.bowDesign.fixedBonusStrongbow) { // If we're using the fixed bonus
+        this.system.bowDesign.userBL = (this.system.bowDesign.userST * this.system.bowDesign.userST)/5; // Basic Lift
+        this.system.bowDesign.userBL = this.system.bowDesign.userBL * (1 + (0.15 * this.system.bowDesign.strongBowCrossbowFinesseEffect)) // Basic lift plus the perk's bonus
       }
       else { // If it's not
-        this.data.data.bowDesign.userBL = ((this.data.data.bowDesign.userST+this.data.data.bowDesign.strongBowCrossbowFinesseEffect) * (this.data.data.bowDesign.userST+this.data.data.bowDesign.strongBowCrossbowFinesseEffect))/5
+        this.system.bowDesign.userBL = ((this.system.bowDesign.userST+this.system.bowDesign.strongBowCrossbowFinesseEffect) * (this.system.bowDesign.userST+this.system.bowDesign.strongBowCrossbowFinesseEffect))/5
       }
     }
     else { // If the perk is not set at all
-      this.data.data.bowDesign.userBL = ((this.data.data.bowDesign.userST) * (this.data.data.bowDesign.userST))/5
+      this.system.bowDesign.userBL = ((this.system.bowDesign.userST) * (this.system.bowDesign.userST))/5
     }
 
     // Fetch the materials
-    this.data.data.bowDesign.workingMaterialOne = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.workingMaterialOne.name);
-    this.data.data.bowDesign.workingMaterialTwo = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.workingMaterialTwo.name);
-    this.data.data.bowDesign.riserMaterialOne   = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.riserMaterialOne.name);
-    this.data.data.bowDesign.riserMaterialTwo   = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.riserMaterialTwo.name);
-    this.data.data.bowDesign.stockMaterialOne   = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.stockMaterialOne.name);
-    this.data.data.bowDesign.stockMaterialTwo   = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.stockMaterialTwo.name);
+    this.system.bowDesign.workingMaterialOne = game.materialAPI.getBowMaterialByName(this.system.bowDesign.workingMaterialOne.name);
+    this.system.bowDesign.workingMaterialTwo = game.materialAPI.getBowMaterialByName(this.system.bowDesign.workingMaterialTwo.name);
+    this.system.bowDesign.riserMaterialOne   = game.materialAPI.getBowMaterialByName(this.system.bowDesign.riserMaterialOne.name);
+    this.system.bowDesign.riserMaterialTwo   = game.materialAPI.getBowMaterialByName(this.system.bowDesign.riserMaterialTwo.name);
+    this.system.bowDesign.stockMaterialOne   = game.materialAPI.getBowMaterialByName(this.system.bowDesign.stockMaterialOne.name);
+    this.system.bowDesign.stockMaterialTwo   = game.materialAPI.getBowMaterialByName(this.system.bowDesign.stockMaterialTwo.name);
 
-    if (this.data.data.bowDesign.workingMaterialOneEssential) {
-      this.data.data.bowDesign.workingMaterialOne = game.materialAPI.essentializeBowMaterial(this.data.data.bowDesign.workingMaterialOne);
+    if (this.system.bowDesign.workingMaterialOneEssential) {
+      this.system.bowDesign.workingMaterialOne = game.materialAPI.essentializeBowMaterial(this.system.bowDesign.workingMaterialOne);
     }
 
-    if (this.data.data.bowDesign.workingMaterialTwoEssential) {
-      this.data.data.bowDesign.workingMaterialTwo = game.materialAPI.essentializeBowMaterial(this.data.data.bowDesign.workingMaterialTwo);
+    if (this.system.bowDesign.workingMaterialTwoEssential) {
+      this.system.bowDesign.workingMaterialTwo = game.materialAPI.essentializeBowMaterial(this.system.bowDesign.workingMaterialTwo);
     }
 
-    if (this.data.data.bowDesign.riserMaterialOneEssential) {
-      this.data.data.bowDesign.riserMaterialOne = game.materialAPI.essentializeBowMaterial(this.data.data.bowDesign.riserMaterialOne);
+    if (this.system.bowDesign.riserMaterialOneEssential) {
+      this.system.bowDesign.riserMaterialOne = game.materialAPI.essentializeBowMaterial(this.system.bowDesign.riserMaterialOne);
     }
 
-    if (this.data.data.bowDesign.riserMaterialTwoEssential) {
-      this.data.data.bowDesign.riserMaterialTwo = game.materialAPI.essentializeBowMaterial(this.data.data.bowDesign.riserMaterialTwo);
+    if (this.system.bowDesign.riserMaterialTwoEssential) {
+      this.system.bowDesign.riserMaterialTwo = game.materialAPI.essentializeBowMaterial(this.system.bowDesign.riserMaterialTwo);
     }
 
-    if (this.data.data.bowDesign.stockMaterialOneEssential) {
-      this.data.data.bowDesign.stockMaterialOne = game.materialAPI.essentializeBowMaterial(this.data.data.bowDesign.stockMaterialOne);
+    if (this.system.bowDesign.stockMaterialOneEssential) {
+      this.system.bowDesign.stockMaterialOne = game.materialAPI.essentializeBowMaterial(this.system.bowDesign.stockMaterialOne);
     }
 
-    if (this.data.data.bowDesign.stockMaterialTwoEssential) {
-      this.data.data.bowDesign.stockMaterialTwo = game.materialAPI.essentializeBowMaterial(this.data.data.bowDesign.stockMaterialTwo);
+    if (this.system.bowDesign.stockMaterialTwoEssential) {
+      this.system.bowDesign.stockMaterialTwo = game.materialAPI.essentializeBowMaterial(this.system.bowDesign.stockMaterialTwo);
     }
 
     // Calculate the inferred values
-    if (typeof this.data.data.bowDesign.workingMaterialOne != "undefined") {
-      this.data.data.bowDesign.workingMaterialOne.maxStrain      = this.data.data.bowDesign.workingMaterialOne.tensileStPsi  / this.data.data.bowDesign.workingMaterialOne.elasticModulusPsi;
-      this.data.data.bowDesign.workingMaterialOne.bowCostPerLb   = Math.round(this.data.data.bowDesign.workingMaterialOne.tensileStPsi ** 2 / 100 / this.data.data.bowDesign.workingMaterialOne.elasticModulusPsi / this.data.data.bowDesign.workingMaterialOne.densityLbsCuIn*100)/100;
-      this.data.data.bowDesign.workingMaterialOne.arrowCostPerLb = Math.round(this.data.data.bowDesign.workingMaterialOne.elasticModulusPsi / this.data.data.bowDesign.workingMaterialOne.densityLbsCuIn*1.25/9000000*100)/100;
+    if (typeof this.system.bowDesign.workingMaterialOne != "undefined") {
+      this.system.bowDesign.workingMaterialOne.maxStrain      = this.system.bowDesign.workingMaterialOne.tensileStPsi  / this.system.bowDesign.workingMaterialOne.elasticModulusPsi;
+      this.system.bowDesign.workingMaterialOne.bowCostPerLb   = Math.round(this.system.bowDesign.workingMaterialOne.tensileStPsi ** 2 / 100 / this.system.bowDesign.workingMaterialOne.elasticModulusPsi / this.system.bowDesign.workingMaterialOne.densityLbsCuIn*100)/100;
+      this.system.bowDesign.workingMaterialOne.arrowCostPerLb = Math.round(this.system.bowDesign.workingMaterialOne.elasticModulusPsi / this.system.bowDesign.workingMaterialOne.densityLbsCuIn*1.25/9000000*100)/100;
     }
-    if (typeof this.data.data.bowDesign.workingMaterialTwo != "undefined") {
-      this.data.data.bowDesign.workingMaterialTwo.maxStrain      = this.data.data.bowDesign.workingMaterialTwo.tensileStPsi  / this.data.data.bowDesign.workingMaterialTwo.elasticModulusPsi;
-      this.data.data.bowDesign.workingMaterialTwo.bowCostPerLb   = Math.round(this.data.data.bowDesign.workingMaterialTwo.tensileStPsi ** 2 / 100 / this.data.data.bowDesign.workingMaterialTwo.elasticModulusPsi / this.data.data.bowDesign.workingMaterialTwo.densityLbsCuIn*100)/100;
-      this.data.data.bowDesign.workingMaterialTwo.arrowCostPerLb = Math.round(this.data.data.bowDesign.workingMaterialTwo.elasticModulusPsi / this.data.data.bowDesign.workingMaterialTwo.densityLbsCuIn*1.25/9000000*100)/100;
+    if (typeof this.system.bowDesign.workingMaterialTwo != "undefined") {
+      this.system.bowDesign.workingMaterialTwo.maxStrain      = this.system.bowDesign.workingMaterialTwo.tensileStPsi  / this.system.bowDesign.workingMaterialTwo.elasticModulusPsi;
+      this.system.bowDesign.workingMaterialTwo.bowCostPerLb   = Math.round(this.system.bowDesign.workingMaterialTwo.tensileStPsi ** 2 / 100 / this.system.bowDesign.workingMaterialTwo.elasticModulusPsi / this.system.bowDesign.workingMaterialTwo.densityLbsCuIn*100)/100;
+      this.system.bowDesign.workingMaterialTwo.arrowCostPerLb = Math.round(this.system.bowDesign.workingMaterialTwo.elasticModulusPsi / this.system.bowDesign.workingMaterialTwo.densityLbsCuIn*1.25/9000000*100)/100;
     }
-    if (typeof this.data.data.bowDesign.riserMaterialOne != "undefined") {
-      this.data.data.bowDesign.riserMaterialOne.maxStrain      = this.data.data.bowDesign.riserMaterialOne.tensileStPsi    / this.data.data.bowDesign.riserMaterialOne.elasticModulusPsi;
-      this.data.data.bowDesign.riserMaterialOne.bowCostPerLb   = Math.round(this.data.data.bowDesign.riserMaterialOne.tensileStPsi   ** 2 / 100 / this.data.data.bowDesign.riserMaterialOne.elasticModulusPsi   / this.data.data.bowDesign.riserMaterialOne.densityLbsCuIn*100)/100;
-      this.data.data.bowDesign.riserMaterialOne.arrowCostPerLb = Math.round(this.data.data.bowDesign.riserMaterialOne.elasticModulusPsi / this.data.data.bowDesign.riserMaterialOne.densityLbsCuIn*1.25/9000000*100)/100;
+    if (typeof this.system.bowDesign.riserMaterialOne != "undefined") {
+      this.system.bowDesign.riserMaterialOne.maxStrain      = this.system.bowDesign.riserMaterialOne.tensileStPsi    / this.system.bowDesign.riserMaterialOne.elasticModulusPsi;
+      this.system.bowDesign.riserMaterialOne.bowCostPerLb   = Math.round(this.system.bowDesign.riserMaterialOne.tensileStPsi   ** 2 / 100 / this.system.bowDesign.riserMaterialOne.elasticModulusPsi   / this.system.bowDesign.riserMaterialOne.densityLbsCuIn*100)/100;
+      this.system.bowDesign.riserMaterialOne.arrowCostPerLb = Math.round(this.system.bowDesign.riserMaterialOne.elasticModulusPsi / this.system.bowDesign.riserMaterialOne.densityLbsCuIn*1.25/9000000*100)/100;
     }
-    if (typeof this.data.data.bowDesign.riserMaterialTwo != "undefined") {
-      this.data.data.bowDesign.riserMaterialTwo.maxStrain      = this.data.data.bowDesign.riserMaterialTwo.tensileStPsi    / this.data.data.bowDesign.riserMaterialTwo.elasticModulusPsi;
-      this.data.data.bowDesign.riserMaterialTwo.bowCostPerLb   = Math.round(this.data.data.bowDesign.riserMaterialTwo.tensileStPsi   ** 2 / 100 / this.data.data.bowDesign.riserMaterialTwo.elasticModulusPsi   / this.data.data.bowDesign.riserMaterialTwo.densityLbsCuIn*100)/100;
-      this.data.data.bowDesign.riserMaterialTwo.arrowCostPerLb = Math.round(this.data.data.bowDesign.riserMaterialTwo.elasticModulusPsi / this.data.data.bowDesign.riserMaterialTwo.densityLbsCuIn*1.25/9000000*100)/100;
+    if (typeof this.system.bowDesign.riserMaterialTwo != "undefined") {
+      this.system.bowDesign.riserMaterialTwo.maxStrain      = this.system.bowDesign.riserMaterialTwo.tensileStPsi    / this.system.bowDesign.riserMaterialTwo.elasticModulusPsi;
+      this.system.bowDesign.riserMaterialTwo.bowCostPerLb   = Math.round(this.system.bowDesign.riserMaterialTwo.tensileStPsi   ** 2 / 100 / this.system.bowDesign.riserMaterialTwo.elasticModulusPsi   / this.system.bowDesign.riserMaterialTwo.densityLbsCuIn*100)/100;
+      this.system.bowDesign.riserMaterialTwo.arrowCostPerLb = Math.round(this.system.bowDesign.riserMaterialTwo.elasticModulusPsi / this.system.bowDesign.riserMaterialTwo.densityLbsCuIn*1.25/9000000*100)/100;
     }
-    if (typeof this.data.data.bowDesign.stockMaterialOne != "undefined") {
-      this.data.data.bowDesign.stockMaterialOne.maxStrain      = this.data.data.bowDesign.stockMaterialOne.tensileStPsi    / this.data.data.bowDesign.stockMaterialOne.elasticModulusPsi;
-      this.data.data.bowDesign.stockMaterialOne.bowCostPerLb   = Math.round(this.data.data.bowDesign.stockMaterialOne.tensileStPsi   ** 2 / 100 / this.data.data.bowDesign.stockMaterialOne.elasticModulusPsi   / this.data.data.bowDesign.stockMaterialOne.densityLbsCuIn*100)/100;
-      this.data.data.bowDesign.stockMaterialOne.arrowCostPerLb = Math.round(this.data.data.bowDesign.stockMaterialOne.elasticModulusPsi / this.data.data.bowDesign.stockMaterialOne.densityLbsCuIn*1.25/9000000*100)/100;
+    if (typeof this.system.bowDesign.stockMaterialOne != "undefined") {
+      this.system.bowDesign.stockMaterialOne.maxStrain      = this.system.bowDesign.stockMaterialOne.tensileStPsi    / this.system.bowDesign.stockMaterialOne.elasticModulusPsi;
+      this.system.bowDesign.stockMaterialOne.bowCostPerLb   = Math.round(this.system.bowDesign.stockMaterialOne.tensileStPsi   ** 2 / 100 / this.system.bowDesign.stockMaterialOne.elasticModulusPsi   / this.system.bowDesign.stockMaterialOne.densityLbsCuIn*100)/100;
+      this.system.bowDesign.stockMaterialOne.arrowCostPerLb = Math.round(this.system.bowDesign.stockMaterialOne.elasticModulusPsi / this.system.bowDesign.stockMaterialOne.densityLbsCuIn*1.25/9000000*100)/100;
     }
-    if (typeof this.data.data.bowDesign.stockMaterialTwo != "undefined") {
-      this.data.data.bowDesign.stockMaterialTwo.maxStrain      = this.data.data.bowDesign.stockMaterialTwo.tensileStPsi    / this.data.data.bowDesign.stockMaterialTwo.elasticModulusPsi;
-      this.data.data.bowDesign.stockMaterialTwo.bowCostPerLb   = Math.round(this.data.data.bowDesign.stockMaterialTwo.tensileStPsi   ** 2 / 100 / this.data.data.bowDesign.stockMaterialTwo.elasticModulusPsi   / this.data.data.bowDesign.stockMaterialTwo.densityLbsCuIn*100)/100;
-      this.data.data.bowDesign.stockMaterialTwo.arrowCostPerLb = Math.round(this.data.data.bowDesign.stockMaterialTwo.elasticModulusPsi / this.data.data.bowDesign.stockMaterialTwo.densityLbsCuIn*1.25/9000000*100)/100;
+    if (typeof this.system.bowDesign.stockMaterialTwo != "undefined") {
+      this.system.bowDesign.stockMaterialTwo.maxStrain      = this.system.bowDesign.stockMaterialTwo.tensileStPsi    / this.system.bowDesign.stockMaterialTwo.elasticModulusPsi;
+      this.system.bowDesign.stockMaterialTwo.bowCostPerLb   = Math.round(this.system.bowDesign.stockMaterialTwo.tensileStPsi   ** 2 / 100 / this.system.bowDesign.stockMaterialTwo.elasticModulusPsi   / this.system.bowDesign.stockMaterialTwo.densityLbsCuIn*100)/100;
+      this.system.bowDesign.stockMaterialTwo.arrowCostPerLb = Math.round(this.system.bowDesign.stockMaterialTwo.elasticModulusPsi / this.system.bowDesign.stockMaterialTwo.densityLbsCuIn*1.25/9000000*100)/100;
     }
 
     // Put together the average values
-    if (typeof this.data.data.bowDesign.workingMaterialOne != "undefined" && typeof this.data.data.bowDesign.workingMaterialTwo != "undefined") {
-      this.data.data.bowDesign.workingMaterialAvg = { // Create it
-        "a"                 : (this.data.data.bowDesign.workingMaterialOne.a + this.data.data.bowDesign.workingMaterialTwo.a)/2,
-        "densityLbsCuIn"    : (this.data.data.bowDesign.workingMaterialOne.densityLbsCuIn + this.data.data.bowDesign.workingMaterialTwo.densityLbsCuIn)/2,
-        "elasticModulusPsi" : (this.data.data.bowDesign.workingMaterialOne.elasticModulusPsi + this.data.data.bowDesign.workingMaterialTwo.elasticModulusPsi)/2,
-        "tensileStPsi"      : (this.data.data.bowDesign.workingMaterialOne.tensileStPsi + this.data.data.bowDesign.workingMaterialTwo.tensileStPsi)/2,
-        "tl"                : Math.max(this.data.data.bowDesign.workingMaterialOne.tl + this.data.data.bowDesign.workingMaterialTwo.tl),
-        "maxStrain"         : (this.data.data.bowDesign.workingMaterialOne.maxStrain + this.data.data.bowDesign.workingMaterialTwo.maxStrain)/2,
-        "bowCostPerLb"      : (this.data.data.bowDesign.workingMaterialOne.bowCostPerLb + this.data.data.bowDesign.workingMaterialTwo.bowCostPerLb)/2,
-        "arrowCostPerLb"    : (this.data.data.bowDesign.workingMaterialOne.arrowCostPerLb + this.data.data.bowDesign.workingMaterialTwo.arrowCostPerLb)/2,
+    if (typeof this.system.bowDesign.workingMaterialOne != "undefined" && typeof this.system.bowDesign.workingMaterialTwo != "undefined") {
+      this.system.bowDesign.workingMaterialAvg = { // Create it
+        "a"                 : (this.system.bowDesign.workingMaterialOne.a + this.system.bowDesign.workingMaterialTwo.a)/2,
+        "densityLbsCuIn"    : (this.system.bowDesign.workingMaterialOne.densityLbsCuIn + this.system.bowDesign.workingMaterialTwo.densityLbsCuIn)/2,
+        "elasticModulusPsi" : (this.system.bowDesign.workingMaterialOne.elasticModulusPsi + this.system.bowDesign.workingMaterialTwo.elasticModulusPsi)/2,
+        "tensileStPsi"      : (this.system.bowDesign.workingMaterialOne.tensileStPsi + this.system.bowDesign.workingMaterialTwo.tensileStPsi)/2,
+        "tl"                : Math.max(this.system.bowDesign.workingMaterialOne.tl + this.system.bowDesign.workingMaterialTwo.tl),
+        "maxStrain"         : (this.system.bowDesign.workingMaterialOne.maxStrain + this.system.bowDesign.workingMaterialTwo.maxStrain)/2,
+        "bowCostPerLb"      : (this.system.bowDesign.workingMaterialOne.bowCostPerLb + this.system.bowDesign.workingMaterialTwo.bowCostPerLb)/2,
+        "arrowCostPerLb"    : (this.system.bowDesign.workingMaterialOne.arrowCostPerLb + this.system.bowDesign.workingMaterialTwo.arrowCostPerLb)/2,
       }
     }
-    if (typeof this.data.data.bowDesign.riserMaterialOne != "undefined" && typeof this.data.data.bowDesign.riserMaterialTwo != "undefined") {
-      this.data.data.bowDesign.riserMaterialAvg = { // Create it
-        "a": (this.data.data.bowDesign.riserMaterialOne.a + this.data.data.bowDesign.riserMaterialTwo.a) / 2,
-        "densityLbsCuIn": (this.data.data.bowDesign.riserMaterialOne.densityLbsCuIn + this.data.data.bowDesign.riserMaterialTwo.densityLbsCuIn) / 2,
-        "elasticModulusPsi": (this.data.data.bowDesign.riserMaterialOne.elasticModulusPsi + this.data.data.bowDesign.riserMaterialTwo.elasticModulusPsi) / 2,
-        "tensileStPsi": (this.data.data.bowDesign.riserMaterialOne.tensileStPsi + this.data.data.bowDesign.riserMaterialTwo.tensileStPsi) / 2,
-        "tl": Math.max(this.data.data.bowDesign.riserMaterialOne.tl + this.data.data.bowDesign.riserMaterialTwo.tl),
-        "maxStrain": (this.data.data.bowDesign.riserMaterialOne.maxStrain + this.data.data.bowDesign.riserMaterialTwo.maxStrain) / 2,
-        "bowCostPerLb": ((this.data.data.bowDesign.riserMaterialOne.bowCostPerLb + this.data.data.bowDesign.riserMaterialTwo.bowCostPerLb) / 2) / 5,
-        "arrowCostPerLb": (this.data.data.bowDesign.riserMaterialOne.arrowCostPerLb + this.data.data.bowDesign.riserMaterialTwo.arrowCostPerLb) / 2,
+    if (typeof this.system.bowDesign.riserMaterialOne != "undefined" && typeof this.system.bowDesign.riserMaterialTwo != "undefined") {
+      this.system.bowDesign.riserMaterialAvg = { // Create it
+        "a": (this.system.bowDesign.riserMaterialOne.a + this.system.bowDesign.riserMaterialTwo.a) / 2,
+        "densityLbsCuIn": (this.system.bowDesign.riserMaterialOne.densityLbsCuIn + this.system.bowDesign.riserMaterialTwo.densityLbsCuIn) / 2,
+        "elasticModulusPsi": (this.system.bowDesign.riserMaterialOne.elasticModulusPsi + this.system.bowDesign.riserMaterialTwo.elasticModulusPsi) / 2,
+        "tensileStPsi": (this.system.bowDesign.riserMaterialOne.tensileStPsi + this.system.bowDesign.riserMaterialTwo.tensileStPsi) / 2,
+        "tl": Math.max(this.system.bowDesign.riserMaterialOne.tl + this.system.bowDesign.riserMaterialTwo.tl),
+        "maxStrain": (this.system.bowDesign.riserMaterialOne.maxStrain + this.system.bowDesign.riserMaterialTwo.maxStrain) / 2,
+        "bowCostPerLb": ((this.system.bowDesign.riserMaterialOne.bowCostPerLb + this.system.bowDesign.riserMaterialTwo.bowCostPerLb) / 2) / 5,
+        "arrowCostPerLb": (this.system.bowDesign.riserMaterialOne.arrowCostPerLb + this.system.bowDesign.riserMaterialTwo.arrowCostPerLb) / 2,
       }
     }
-    if (typeof this.data.data.bowDesign.stockMaterialOne !== "undefined" && typeof this.data.data.bowDesign.stockMaterialTwo !== "undefined") {
-      this.data.data.bowDesign.stockMaterialAvg = { // Create it
-        "a": (this.data.data.bowDesign.stockMaterialOne.a + this.data.data.bowDesign.stockMaterialTwo.a) / 2,
-        "densityLbsCuIn": (this.data.data.bowDesign.stockMaterialOne.densityLbsCuIn + this.data.data.bowDesign.stockMaterialTwo.densityLbsCuIn) / 2,
-        "elasticModulusPsi": (this.data.data.bowDesign.stockMaterialOne.elasticModulusPsi + this.data.data.bowDesign.stockMaterialTwo.elasticModulusPsi) / 2,
-        "tensileStPsi": (this.data.data.bowDesign.stockMaterialOne.tensileStPsi + this.data.data.bowDesign.stockMaterialTwo.tensileStPsi) / 2,
-        "tl": Math.max(this.data.data.bowDesign.stockMaterialOne.tl + this.data.data.bowDesign.stockMaterialTwo.tl),
-        "maxStrain": (this.data.data.bowDesign.stockMaterialOne.maxStrain + this.data.data.bowDesign.stockMaterialTwo.maxStrain) / 2,
-        "bowCostPerLb": ((this.data.data.bowDesign.stockMaterialOne.bowCostPerLb + this.data.data.bowDesign.stockMaterialTwo.bowCostPerLb) / 2) / 10,
-        "arrowCostPerLb": (this.data.data.bowDesign.stockMaterialOne.arrowCostPerLb + this.data.data.bowDesign.stockMaterialTwo.arrowCostPerLb) / 2,
+    if (typeof this.system.bowDesign.stockMaterialOne !== "undefined" && typeof this.system.bowDesign.stockMaterialTwo !== "undefined") {
+      this.system.bowDesign.stockMaterialAvg = { // Create it
+        "a": (this.system.bowDesign.stockMaterialOne.a + this.system.bowDesign.stockMaterialTwo.a) / 2,
+        "densityLbsCuIn": (this.system.bowDesign.stockMaterialOne.densityLbsCuIn + this.system.bowDesign.stockMaterialTwo.densityLbsCuIn) / 2,
+        "elasticModulusPsi": (this.system.bowDesign.stockMaterialOne.elasticModulusPsi + this.system.bowDesign.stockMaterialTwo.elasticModulusPsi) / 2,
+        "tensileStPsi": (this.system.bowDesign.stockMaterialOne.tensileStPsi + this.system.bowDesign.stockMaterialTwo.tensileStPsi) / 2,
+        "tl": Math.max(this.system.bowDesign.stockMaterialOne.tl + this.system.bowDesign.stockMaterialTwo.tl),
+        "maxStrain": (this.system.bowDesign.stockMaterialOne.maxStrain + this.system.bowDesign.stockMaterialTwo.maxStrain) / 2,
+        "bowCostPerLb": ((this.system.bowDesign.stockMaterialOne.bowCostPerLb + this.system.bowDesign.stockMaterialTwo.bowCostPerLb) / 2) / 10,
+        "arrowCostPerLb": (this.system.bowDesign.stockMaterialOne.arrowCostPerLb + this.system.bowDesign.stockMaterialTwo.arrowCostPerLb) / 2,
       }
     }
 
@@ -4654,151 +4672,151 @@ export class gurpsItem extends Item {
 
     // Calc k factor
     let k = 0;
-    if (this.data.data.bowDesign.shape == "round") { // Bow is round
+    if (this.system.bowDesign.shape == "round") { // Bow is round
       k = 64/Math.PI;
     }
     else { // Bow is D-section
-      k = 12 / this.data.data.bowDesign.crossSection;
+      k = 12 / this.system.bowDesign.crossSection;
     }
 
     // Get constructionFactor based on bowConstruction
     let constructionFactor = 0;
-    if (this.data.data.bowDesign.bowConstruction == "straight") {
+    if (this.system.bowDesign.bowConstruction == "straight") {
       constructionFactor = 1;
     }
-    else if (this.data.data.bowDesign.bowConstruction == "recurve") {
+    else if (this.system.bowDesign.bowConstruction == "recurve") {
       constructionFactor = 1.3;
     }
-    else if (this.data.data.bowDesign.bowConstruction == "reflex") {
+    else if (this.system.bowDesign.bowConstruction == "reflex") {
       constructionFactor = 1.6;
     }
-    else if (this.data.data.bowDesign.bowConstruction == "compound") {
+    else if (this.system.bowDesign.bowConstruction == "compound") {
       constructionFactor = 1;
     }
 
     // Begin minimum thickness calc
-    this.data.data.bowDesign.limbMinThickness = ((k * this.data.data.bowDesign.drawWeight * (this.data.data.bowDesign.totalBowLength * (this.data.data.bowDesign.workingPercentage / 100)) * constructionFactor)/(8 * this.data.data.bowDesign.workingMaterialAvg.tensileStPsi)) ** (1/3);
-    this.data.data.bowDesign.limbMinThickness = Math.round(this.data.data.bowDesign.limbMinThickness * 10000) / 10000;
+    this.system.bowDesign.limbMinThickness = ((k * this.system.bowDesign.drawWeight * (this.system.bowDesign.totalBowLength * (this.system.bowDesign.workingPercentage / 100)) * constructionFactor)/(8 * this.system.bowDesign.workingMaterialAvg.tensileStPsi)) ** (1/3);
+    this.system.bowDesign.limbMinThickness = Math.round(this.system.bowDesign.limbMinThickness * 10000) / 10000;
 
     // Begin Deflection calc
-    let delta = ((k * this.data.data.bowDesign.drawWeight * (this.data.data.bowDesign.totalBowLength * (this.data.data.bowDesign.workingPercentage / 100)) ** 3) / (32 * this.data.data.bowDesign.workingMaterialAvg.elasticModulusPsi * this.data.data.bowDesign.limbThickness ** 4));
+    let delta = ((k * this.system.bowDesign.drawWeight * (this.system.bowDesign.totalBowLength * (this.system.bowDesign.workingPercentage / 100)) ** 3) / (32 * this.system.bowDesign.workingMaterialAvg.elasticModulusPsi * this.system.bowDesign.limbThickness ** 4));
 
-    this.data.data.bowDesign.deflection = delta / (this.data.data.bowDesign.totalBowLength * (this.data.data.bowDesign.workingPercentage / 100))
+    this.system.bowDesign.deflection = delta / (this.system.bowDesign.totalBowLength * (this.system.bowDesign.workingPercentage / 100))
 
     // Begin max draw length calc
-    let r = this.data.data.bowDesign.totalBowLength * (1 - (this.data.data.bowDesign.workingPercentage/100));
-    let l = this.data.data.bowDesign.totalBowLength * (this.data.data.bowDesign.workingPercentage/100);
+    let r = this.system.bowDesign.totalBowLength * (1 - (this.system.bowDesign.workingPercentage/100));
+    let l = this.system.bowDesign.totalBowLength * (this.system.bowDesign.workingPercentage/100);
 
     // theta calculation is a bitch.
-    let theta = (141.99 * this.data.data.bowDesign.deflection ** 4) - (51.892 * this.data.data.bowDesign.deflection ** 3) + (9.4364 * this.data.data.bowDesign.deflection ** 2) + (7.5125 * this.data.data.bowDesign.deflection) + 0.0047;
+    let theta = (141.99 * this.system.bowDesign.deflection ** 4) - (51.892 * this.system.bowDesign.deflection ** 3) + (9.4364 * this.system.bowDesign.deflection ** 2) + (7.5125 * this.system.bowDesign.deflection) + 0.0047;
 
     // Calc working string length
-    let s = this.data.data.bowDesign.loops * this.data.data.bowDesign.totalBowLength - ((this.data.data.bowDesign.loops - 1) * (r + (2 * l * Math.sin(theta/2)) / theta));
+    let s = this.system.bowDesign.loops * this.system.bowDesign.totalBowLength - ((this.system.bowDesign.loops - 1) * (r + (2 * l * Math.sin(theta/2)) / theta));
 
     let rDiv2 = (r == 0) ? 0 : r / 2; // r divided by 2, but if r is 0, result is 0
 
     // Calculate max draw
-    this.data.data.bowDesign.maxDrawLength = delta + Math.sqrt((s ** 2)/4 - (rDiv2 + (l * Math.sin(theta/2))/theta) ** 2);
+    this.system.bowDesign.maxDrawLength = delta + Math.sqrt((s ** 2)/4 - (rDiv2 + (l * Math.sin(theta/2))/theta) ** 2);
 
     // Cap draw at max draw
-    this.data.data.bowDesign.drawLength = Math.min(this.data.data.bowDesign.maxDrawLength, this.data.data.bowDesign.targetDrawLength);
+    this.system.bowDesign.drawLength = Math.min(this.system.bowDesign.maxDrawLength, this.system.bowDesign.targetDrawLength);
 
     // Calculate the thickness of the stock and riser
-    this.data.data.bowDesign.riserThickness = 0;
-    this.data.data.bowDesign.stockThickness = 0;
+    this.system.bowDesign.riserThickness = 0;
+    this.system.bowDesign.stockThickness = 0;
     let riserWeight = 0;
     let stockWeight = 0;
-    if (this.data.data.bowDesign.riser && typeof this.data.data.bowDesign.riserMaterialAvg != "undefined") { // It has a riser and the material is defined
-      this.data.data.bowDesign.riserThickness = ((this.data.data.bowDesign.drawWeight * r ** 2) / (4 * this.data.data.bowDesign.riserMaterialAvg.elasticModulusPsi * this.data.data.bowDesign.riserWidth * this.data.data.bowDesign.allowedRiserDeflection * 100)) ** (1/3);
-      riserWeight = this.data.data.bowDesign.riserMaterialAvg.densityLbsCuIn * this.data.data.bowDesign.riserWidth * this.data.data.bowDesign.riserThickness * r;
+    if (this.system.bowDesign.riser && typeof this.system.bowDesign.riserMaterialAvg != "undefined") { // It has a riser and the material is defined
+      this.system.bowDesign.riserThickness = ((this.system.bowDesign.drawWeight * r ** 2) / (4 * this.system.bowDesign.riserMaterialAvg.elasticModulusPsi * this.system.bowDesign.riserWidth * this.system.bowDesign.allowedRiserDeflection * 100)) ** (1/3);
+      riserWeight = this.system.bowDesign.riserMaterialAvg.densityLbsCuIn * this.system.bowDesign.riserWidth * this.system.bowDesign.riserThickness * r;
     }
-    if (this.data.data.bowDesign.type == "xbow" && typeof this.data.data.bowDesign.stockMaterialAvg != "undefined"){ // It has a stock and the material is defined
-      this.data.data.bowDesign.stockThickness = (this.data.data.bowDesign.drawWeight * this.data.data.bowDesign.drawLength ** 2 / 4 / this.data.data.bowDesign.stockMaterialAvg.elasticModulusPsi / this.data.data.bowDesign.stockWidth / this.data.data.bowDesign.allowedStockDeflection * 100) ** (1/3);
-      stockWeight = this.data.data.bowDesign.stockMaterialAvg.densityLbsCuIn * this.data.data.bowDesign.stockWidth * this.data.data.bowDesign.stockThickness * this.data.data.bowDesign.stockLength;
+    if (this.system.bowDesign.type == "xbow" && typeof this.system.bowDesign.stockMaterialAvg != "undefined"){ // It has a stock and the material is defined
+      this.system.bowDesign.stockThickness = (this.system.bowDesign.drawWeight * this.system.bowDesign.drawLength ** 2 / 4 / this.system.bowDesign.stockMaterialAvg.elasticModulusPsi / this.system.bowDesign.stockWidth / this.system.bowDesign.allowedStockDeflection * 100) ** (1/3);
+      stockWeight = this.system.bowDesign.stockMaterialAvg.densityLbsCuIn * this.system.bowDesign.stockWidth * this.system.bowDesign.stockThickness * this.system.bowDesign.stockLength;
     }
 
     // Calculate bow weight
     let c = 0.785
-    if (this.data.data.bowDesign.shape == "d") {
-      c = this.data.data.bowDesign.crossSection;
+    if (this.system.bowDesign.shape == "d") {
+      c = this.system.bowDesign.crossSection;
     }
 
-    let limbsWeight = (this.data.data.bowDesign.workingMaterialAvg.densityLbsCuIn * l * this.data.data.bowDesign.limbMinThickness ** 2 * c)
-    this.data.data.weight = limbsWeight + riserWeight + stockWeight;
+    let limbsWeight = (this.system.bowDesign.workingMaterialAvg.densityLbsCuIn * l * this.system.bowDesign.limbMinThickness ** 2 * c)
+    this.system.weight = limbsWeight + riserWeight + stockWeight;
 
     // Calculate Stored Energy
     let z = 0.057;
-    if (this.data.data.bowDesign.bowConstruction == "straight") {
+    if (this.system.bowDesign.bowConstruction == "straight") {
       z = 0.057;
     }
-    else if (this.data.data.bowDesign.bowConstruction == "recurve") {
+    else if (this.system.bowDesign.bowConstruction == "recurve") {
       z = 0.065;
     }
-    else if (this.data.data.bowDesign.bowConstruction == "reflex") {
+    else if (this.system.bowDesign.bowConstruction == "reflex") {
       z = 0.073;
     }
-    else if (this.data.data.bowDesign.bowConstruction == "compound") {
+    else if (this.system.bowDesign.bowConstruction == "compound") {
       z = 0.090;
     }
 
     // Calculate Bow Energy
-    let potentialEnergy = this.data.data.bowDesign.drawWeight * this.data.data.bowDesign.drawLength * z; // Potential energy in joules.
-    let workingMass = 37 * this.data.data.bowDesign.workingMaterialAvg.densityLbsCuIn * this.data.data.bowDesign.limbMinThickness ** 2 * Math.sqrt(this.data.data.bowDesign.crossSection / l);
+    let potentialEnergy = this.system.bowDesign.drawWeight * this.system.bowDesign.drawLength * z; // Potential energy in joules.
+    let workingMass = 37 * this.system.bowDesign.workingMaterialAvg.densityLbsCuIn * this.system.bowDesign.limbMinThickness ** 2 * Math.sqrt(this.system.bowDesign.crossSection / l);
 
     // Bow Bulk
-    this.data.data.bowDesign.bulk = Math.round(9 - 9 * Math.log10(l + r + this.data.data.bowDesign.stockLength));
+    this.system.bowDesign.bulk = Math.round(9 - 9 * Math.log10(l + r + this.system.bowDesign.stockLength));
 
-    if (this.data.data.bowDesign.type == "bow") {
-      this.data.data.bowDesign.st = Math.ceil(Math.sqrt(this.data.data.bowDesign.drawWeight*2));
+    if (this.system.bowDesign.type == "bow") {
+      this.system.bowDesign.st = Math.ceil(Math.sqrt(this.system.bowDesign.drawWeight*2));
     }
     else {
-      this.data.data.bowDesign.st = Math.ceil(Math.sqrt(5/8 * this.data.data.bowDesign.drawWeight));
+      this.system.bowDesign.st = Math.ceil(Math.sqrt(5/8 * this.system.bowDesign.drawWeight));
     }
 
     // Calculate Arrow Stuff
-    if (typeof this.data.data.bowDesign.arrows != "undefined") {
-      let arrowKeys = Object.keys(this.data.data.bowDesign.arrows); // Get the arrow keys
+    if (typeof this.system.bowDesign.arrows != "undefined") {
+      let arrowKeys = Object.keys(this.system.bowDesign.arrows); // Get the arrow keys
       if (arrowKeys.length > 0) { // If there are actually keys
         for (let i = 0; i < arrowKeys.length; i++){
           let accFactor = 0
-          if (this.data.data.bowDesign.type === "footbow") {
+          if (this.system.bowDesign.type === "footbow") {
             accFactor = -1
           }
-          else if (this.data.data.bowDesign.type === "xbow") {
+          else if (this.system.bowDesign.type === "xbow") {
             accFactor = 1
           }
 
-          if (typeof this.data.data.bowDesign.arrows[arrowKeys[i]].material.name != "undefined") {
-            this.data.data.bowDesign.arrows[arrowKeys[i]].material = game.materialAPI.getBowMaterialByName(this.data.data.bowDesign.arrows[arrowKeys[i]].material.name);
+          if (typeof this.system.bowDesign.arrows[arrowKeys[i]].material.name != "undefined") {
+            this.system.bowDesign.arrows[arrowKeys[i]].material = game.materialAPI.getBowMaterialByName(this.system.bowDesign.arrows[arrowKeys[i]].material.name);
 
-            if (this.data.data.bowDesign.arrows[arrowKeys[i]].materialEssential) {
-              this.data.data.bowDesign.arrows[arrowKeys[i]].material = game.materialAPI.essentializeBowMaterial(this.data.data.bowDesign.arrows[arrowKeys[i]].material);
+            if (this.system.bowDesign.arrows[arrowKeys[i]].materialEssential) {
+              this.system.bowDesign.arrows[arrowKeys[i]].material = game.materialAPI.essentializeBowMaterial(this.system.bowDesign.arrows[arrowKeys[i]].material);
             }
           }
 
-          if (this.data.data.bowDesign.arrows[arrowKeys[i]].length >= this.data.data.bowDesign.drawLength) {
-            this.data.data.bowDesign.arrows[arrowKeys[i]].validShaft = false;
+          if (this.system.bowDesign.arrows[arrowKeys[i]].length >= this.system.bowDesign.drawLength) {
+            this.system.bowDesign.arrows[arrowKeys[i]].validShaft = false;
           }
           else {
-            this.data.data.bowDesign.arrows[arrowKeys[i]].validShaft = true;
+            this.system.bowDesign.arrows[arrowKeys[i]].validShaft = true;
           }
 
-          if (typeof this.data.data.bowDesign.arrows[arrowKeys[i]].material != "undefined") {
-            this.data.data.bowDesign.arrows[arrowKeys[i]].material.maxStrain         = this.data.data.bowDesign.arrows[arrowKeys[i]].material.tensileStPsi    / this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi;
-            this.data.data.bowDesign.arrows[arrowKeys[i]].material.bowCostPerLb      = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].material.tensileStPsi   ** 2 / 100 / this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi   / this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn*100)/100;
-            this.data.data.bowDesign.arrows[arrowKeys[i]].material.arrowCostPerLb    = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi / this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn*1.25/9000000*100)/100;
+          if (typeof this.system.bowDesign.arrows[arrowKeys[i]].material != "undefined") {
+            this.system.bowDesign.arrows[arrowKeys[i]].material.maxStrain         = this.system.bowDesign.arrows[arrowKeys[i]].material.tensileStPsi    / this.system.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi;
+            this.system.bowDesign.arrows[arrowKeys[i]].material.bowCostPerLb      = Math.round(this.system.bowDesign.arrows[arrowKeys[i]].material.tensileStPsi   ** 2 / 100 / this.system.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi   / this.system.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn*100)/100;
+            this.system.bowDesign.arrows[arrowKeys[i]].material.arrowCostPerLb    = Math.round(this.system.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi / this.system.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn*1.25/9000000*100)/100;
 
-            let a = 1.25 * Math.exp(-0.0000000054 * this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi / this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn);
-            this.data.data.bowDesign.arrows[arrowKeys[i]].minOuterDiameter = 2 * (this.data.data.bowDesign.drawWeight * this.data.data.bowDesign.arrows[arrowKeys[i]].length / this.data.data.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi / a) ** (1/4)
-            let shaftWeight = Math.PI/4 * ( this.data.data.bowDesign.arrows[arrowKeys[i]].outerDiameter ** 2 - this.data.data.bowDesign.arrows[arrowKeys[i]].innerDiameter ** 2 ) * this.data.data.bowDesign.arrows[arrowKeys[i]].length * this.data.data.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn;
-            this.data.data.bowDesign.arrows[arrowKeys[i]].weight = shaftWeight + this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.weight;
+            let a = 1.25 * Math.exp(-0.0000000054 * this.system.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi / this.system.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn);
+            this.system.bowDesign.arrows[arrowKeys[i]].minOuterDiameter = 2 * (this.system.bowDesign.drawWeight * this.system.bowDesign.arrows[arrowKeys[i]].length / this.system.bowDesign.arrows[arrowKeys[i]].material.elasticModulusPsi / a) ** (1/4)
+            let shaftWeight = Math.PI/4 * ( this.system.bowDesign.arrows[arrowKeys[i]].outerDiameter ** 2 - this.system.bowDesign.arrows[arrowKeys[i]].innerDiameter ** 2 ) * this.system.bowDesign.arrows[arrowKeys[i]].length * this.system.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn;
+            this.system.bowDesign.arrows[arrowKeys[i]].weight = shaftWeight + this.system.bowDesign.arrows[arrowKeys[i]].arrowhead.weight;
 
             let arrowCF = 1;
-            if (this.data.data.bowDesign.arrows[arrowKeys[i]].quality == "fine") {
+            if (this.system.bowDesign.arrows[arrowKeys[i]].quality == "fine") {
               accFactor += 1
               arrowCF = 3;
             }
-            else if (this.data.data.bowDesign.arrows[arrowKeys[i]].quality == "cheap") {
+            else if (this.system.bowDesign.arrows[arrowKeys[i]].quality == "cheap") {
               accFactor -= 1
               arrowCF = 0.7;
             }
@@ -4806,147 +4824,154 @@ export class gurpsItem extends Item {
               arrowCF = 1;
             }
 
-            let shaftCost = (this.data.data.bowDesign.arrows[arrowKeys[i]].material.arrowCostPerLb * shaftWeight)
+            if (game.settings.get("gurps4e", "simpleEssentialMaterials")) { // If the game is using simple essential materials
+              if (this.system.bowDesign.arrows[arrowKeys[i]].materialEssential) { // And the arrow is essential
+                // Simple essential arrows are no better so they don't automatically cost more as an arrow.
+                arrowCF += 29; // So apply the appropriate cost modifier
+              }
+            }
 
-            if (this.data.data.bowDesign.arrows[arrowKeys[i]].material.tl > 4 && this.data.data.bowDesign.arrows[arrowKeys[i]].innerDiameter > 0) { // Material is synthetic and the arrow is hollow.
+            let shaftCost = (this.system.bowDesign.arrows[arrowKeys[i]].material.arrowCostPerLb * shaftWeight)
+
+            if (this.system.bowDesign.arrows[arrowKeys[i]].material.tl > 4 && this.system.bowDesign.arrows[arrowKeys[i]].innerDiameter > 0) { // Material is synthetic and the arrow is hollow.
               shaftCost = shaftCost * (arrowCF + 4);
             }
 
-            // Calculate arrohead cost
-            let arrowHeadCost = 50 * this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.weight;
+            // Calculate arrowhead cost
+            let arrowHeadCost = 50 * this.system.bowDesign.arrows[arrowKeys[i]].arrowhead.weight;
             // Apply AD CF
-            if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.ad == "0.5") {
+            if (this.system.bowDesign.arrows[arrowKeys[i]].arrowhead.ad == "0.5") {
               arrowHeadCost = arrowHeadCost * 0.8;
             }
-            else if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.ad == "2") {
+            else if (this.system.bowDesign.arrows[arrowKeys[i]].arrowhead.ad == "2") {
               arrowHeadCost = arrowHeadCost * 4;
             }
 
             // Apply Damage type CF
-            if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType == "cut") {
+            if (this.system.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType == "cut") {
               arrowHeadCost = arrowHeadCost * 0.9;
             }
-            else if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType == "pi") {
+            else if (this.system.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType == "pi") {
               arrowHeadCost = arrowHeadCost * 0.8;
             }
-            else if (this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType == "cr") {
+            else if (this.system.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType == "cr") {
               arrowHeadCost = arrowHeadCost * 0.7;
             }
 
-            this.data.data.bowDesign.arrows[arrowKeys[i]].cost = (arrowHeadCost * arrowCF) + shaftCost;
+            this.system.bowDesign.arrows[arrowKeys[i]].cost = (arrowHeadCost * arrowCF) + shaftCost;
 
-            let efficiency = 1 / (1 + workingMass/this.data.data.bowDesign.arrows[arrowKeys[i]].weight);
+            let efficiency = 1 / (1 + workingMass/this.system.bowDesign.arrows[arrowKeys[i]].weight);
             let kineticEnergy = efficiency * potentialEnergy;
 
-            if (this.data.data.bowDesign.realisticBowScale) {
-              this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints = Math.sqrt(kineticEnergy) / 2.5;
+            if (this.system.bowDesign.realisticBowScale) {
+              this.system.bowDesign.arrows[arrowKeys[i]].damagePoints = Math.sqrt(kineticEnergy) / 2.5;
             }
             else {
-              this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints = Math.sqrt(kineticEnergy) / 1.75;
+              this.system.bowDesign.arrows[arrowKeys[i]].damagePoints = Math.sqrt(kineticEnergy) / 1.75;
             }
 
-            let dice = Math.floor(this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints / 3.5);
-            let adds = Math.floor(this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints - (dice * 3.5));
+            let dice = Math.floor(this.system.bowDesign.arrows[arrowKeys[i]].damagePoints / 3.5);
+            let adds = Math.floor(this.system.bowDesign.arrows[arrowKeys[i]].damagePoints - (dice * 3.5));
 
-            this.data.data.bowDesign.arrows[arrowKeys[i]].dice = dice + "d6 + " + adds;
+            this.system.bowDesign.arrows[arrowKeys[i]].dice = dice + "d6 + " + adds;
 
-            this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].damagePoints * 100) / 100;
-            this.data.data.bowDesign.arrows[arrowKeys[i]].minOuterDiameter = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].minOuterDiameter * 1000) / 1000;
-            this.data.data.bowDesign.arrows[arrowKeys[i]].weight = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].weight * 1000) / 1000;
-            this.data.data.bowDesign.arrows[arrowKeys[i]].cost = Math.round(this.data.data.bowDesign.arrows[arrowKeys[i]].cost * 100) / 100;
+            this.system.bowDesign.arrows[arrowKeys[i]].damagePoints = Math.round(this.system.bowDesign.arrows[arrowKeys[i]].damagePoints * 100) / 100;
+            this.system.bowDesign.arrows[arrowKeys[i]].minOuterDiameter = Math.round(this.system.bowDesign.arrows[arrowKeys[i]].minOuterDiameter * 1000) / 1000;
+            this.system.bowDesign.arrows[arrowKeys[i]].weight = Math.round(this.system.bowDesign.arrows[arrowKeys[i]].weight * 1000) / 1000;
+            this.system.bowDesign.arrows[arrowKeys[i]].cost = Math.round(this.system.bowDesign.arrows[arrowKeys[i]].cost * 100) / 100;
 
-            this.data.data.bowDesign.arrows[arrowKeys[i]].range = Math.floor(0.34 * kineticEnergy / this.data.data.bowDesign.arrows[arrowKeys[i]].weight);
-            this.data.data.bowDesign.arrows[arrowKeys[i]].halfRange = Math.min(this.data.data.bowDesign.arrows[arrowKeys[i]].range, Math.floor(750 * this.data.data.bowDesign.arrows[arrowKeys[i]].weight/this.data.data.bowDesign.arrows[arrowKeys[i]].outerDiameter ** 2));
+            this.system.bowDesign.arrows[arrowKeys[i]].range = Math.floor(0.34 * kineticEnergy / this.system.bowDesign.arrows[arrowKeys[i]].weight);
+            this.system.bowDesign.arrows[arrowKeys[i]].halfRange = Math.min(this.system.bowDesign.arrows[arrowKeys[i]].range, Math.floor(750 * this.system.bowDesign.arrows[arrowKeys[i]].weight/this.system.bowDesign.arrows[arrowKeys[i]].outerDiameter ** 2));
 
-            let v = Math.sqrt(5.28 * kineticEnergy / this.data.data.bowDesign.arrows[arrowKeys[i]].weight)
+            let v = Math.sqrt(5.28 * kineticEnergy / this.system.bowDesign.arrows[arrowKeys[i]].weight)
 
-            this.data.data.bowDesign.arrows[arrowKeys[i]].acc = Math.max(0, Math.min(4,  Math.round(3 * Math.log10(v) - this.data.data.bowDesign.bulk/2 - 7.5 + accFactor)));
+            this.system.bowDesign.arrows[arrowKeys[i]].acc = Math.max(0, Math.min(4,  Math.round(3 * Math.log10(v) - this.system.bowDesign.bulk/2 - 7.5 + accFactor)));
           }
         }
       }
     }
 
-    if (typeof this.data.data.bowDesign.workingMaterialAvg != "undefined" && typeof this.data.data.bowDesign.riserMaterialAvg != "undefined" && typeof this.data.data.bowDesign.stockMaterialAvg != "undefined") {
-      this.data.data.cost = limbsWeight * this.data.data.bowDesign.workingMaterialAvg.bowCostPerLb + riserWeight * this.data.data.bowDesign.riserMaterialAvg.bowCostPerLb + stockWeight * this.data.data.bowDesign.stockMaterialAvg.bowCostPerLb
+    if (typeof this.system.bowDesign.workingMaterialAvg != "undefined" && typeof this.system.bowDesign.riserMaterialAvg != "undefined" && typeof this.system.bowDesign.stockMaterialAvg != "undefined") {
+      this.system.cost = limbsWeight * this.system.bowDesign.workingMaterialAvg.bowCostPerLb + riserWeight * this.system.bowDesign.riserMaterialAvg.bowCostPerLb + stockWeight * this.system.bowDesign.stockMaterialAvg.bowCostPerLb
 
-      if (this.data.data.bowDesign.quality == "fine") {
-        this.data.data.cost = this.data.data.cost * 4;
+      if (this.system.bowDesign.quality == "fine") {
+        this.system.cost = this.system.cost * 4;
       }
-      else if (this.data.data.bowDesign.quality == "cheap") {
-        this.data.data.cost = this.data.data.cost * 0.7;
+      else if (this.system.bowDesign.quality == "cheap") {
+        this.system.cost = this.system.cost * 0.7;
       }
 
-      if (this.data.data.bowDesign.bowConstruction == "recurve") {
-        this.data.data.cost = this.data.data.cost * 1.25;
+      if (this.system.bowDesign.bowConstruction == "recurve") {
+        this.system.cost = this.system.cost * 1.25;
       }
-      else if (this.data.data.bowDesign.bowConstruction == "reflex") {
-        this.data.data.cost = this.data.data.cost * 1.5;
+      else if (this.system.bowDesign.bowConstruction == "reflex") {
+        this.system.cost = this.system.cost * 1.5;
       }
-      else if (this.data.data.bowDesign.bowConstruction == "compound") {
-        this.data.data.cost = this.data.data.cost * 2;
+      else if (this.system.bowDesign.bowConstruction == "compound") {
+        this.system.cost = this.system.cost * 2;
       }
     }
     else {
-      this.data.data.cost = 0;
+      this.system.cost = 0;
     }
 
-    if (typeof this.data.data.bowDesign.arrows != "undefined") {
+    if (typeof this.system.bowDesign.arrows != "undefined") {
       this.addCustomBowProfiles()
     }
 
     // Only round things prior to display after all the actual math is done.
-    this.data.data.bowDesign.maxDrawLength = Math.round(this.data.data.bowDesign.maxDrawLength * 100) / 100;
-    this.data.data.bowDesign.deflection = Math.round(this.data.data.bowDesign.deflection * 1000) / 1000 * 100;
-    this.data.data.bowDesign.stockThickness = Math.round(this.data.data.bowDesign.stockThickness * 100) / 100;
-    this.data.data.bowDesign.riserThickness = Math.round(this.data.data.bowDesign.riserThickness * 100) / 100;
-    this.data.data.weight = Math.round(this.data.data.weight * 100000) / 100000;
-    this.data.data.ttlWeight = this.data.data.weight * this.data.data.quantity;
-    this.data.data.cost = Math.round(this.data.data.cost * 100) / 100;
-    this.data.data.ttlCost = this.data.data.cost * this.data.data.quantity;
+    this.system.bowDesign.maxDrawLength = Math.round(this.system.bowDesign.maxDrawLength * 100) / 100;
+    this.system.bowDesign.deflection = Math.round(this.system.bowDesign.deflection * 1000) / 1000 * 100;
+    this.system.bowDesign.stockThickness = Math.round(this.system.bowDesign.stockThickness * 100) / 100;
+    this.system.bowDesign.riserThickness = Math.round(this.system.bowDesign.riserThickness * 100) / 100;
+    this.system.weight = Math.round(this.system.weight * 100000) / 100000;
+    this.system.ttlWeight = this.system.weight * this.system.quantity;
+    this.system.cost = Math.round(this.system.cost * 100) / 100;
+    this.system.ttlCost = this.system.cost * this.system.quantity;
   }
 
   addCustomBowProfiles() {
     // Calculate Arrow Stuff
-    let arrowKeys = Object.keys(this.data.data.bowDesign.arrows); // Get the arrow keys
+    let arrowKeys = Object.keys(this.system.bowDesign.arrows); // Get the arrow keys
     if (arrowKeys.length > 0) { // If there are actually keys
       let rangedProfiles = [];
       for (let i = 0; i < arrowKeys.length; i++) {
-        if (this.data.data.bowDesign.arrows[arrowKeys[i]].showProfile) {
+        if (this.system.bowDesign.arrows[arrowKeys[i]].showProfile) {
           let profile = {
-            "name": this.data.data.bowDesign.arrows[arrowKeys[i]].name,
-            "skill": this.data.data.bowDesign.skill,
-            "skillMod": this.data.data.bowDesign.skillMod,
-            "acc": this.data.data.bowDesign.arrows[arrowKeys[i]].acc,
-            "damageInput": this.data.data.bowDesign.arrows[arrowKeys[i]].dice,
-            "damageType": this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType,
-            "armourDivisor": this.data.data.bowDesign.arrows[arrowKeys[i]].arrowhead.ad,
-            "range": this.data.data.bowDesign.arrows[arrowKeys[i]].halfRange + "/" + this.data.data.bowDesign.arrows[arrowKeys[i]].range,
+            "name": this.system.bowDesign.arrows[arrowKeys[i]].name,
+            "skill": this.system.bowDesign.skill,
+            "skillMod": this.system.bowDesign.skillMod,
+            "acc": this.system.bowDesign.arrows[arrowKeys[i]].acc,
+            "damageInput": this.system.bowDesign.arrows[arrowKeys[i]].dice,
+            "damageType": this.system.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType,
+            "armourDivisor": this.system.bowDesign.arrows[arrowKeys[i]].arrowhead.ad,
+            "range": this.system.bowDesign.arrows[arrowKeys[i]].halfRange + "/" + this.system.bowDesign.arrows[arrowKeys[i]].range,
             "rof": "1",
             "shots": "1",
-            "bulk": this.data.data.bowDesign.bulk,
+            "bulk": this.system.bowDesign.bulk,
             "rcl": "2",
-            "st": this.data.data.bowDesign.st,
+            "st": this.system.bowDesign.st,
             "malf": 17
           }
           rangedProfiles.push(profile);
         }
       }
 
-      this.data.data.ranged = rangedProfiles;
+      this.system.ranged = rangedProfiles;
     }
   }
 
   addCustomFirearmProfiles() {
     // Calculate Ammo Stuff
-    let ammoKeys = Object.keys(this.data.data.firearmDesign.ammunition); // Get the ammo keys
+    let ammoKeys = Object.keys(this.system.firearmDesign.ammunition); // Get the ammo keys
     if (ammoKeys.length > 0) { // If there are actually keys
       let rangedProfiles = [];
       for (let i = 0; i < ammoKeys.length; i++) {
-        if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].showProfile) {
+        if (this.system.firearmDesign.ammunition[ammoKeys[i]].showProfile) {
 
           let rof = ""
-          let shots = parseInt((this.data.data.firearmDesign.rof * this.data.data.firearmDesign.barrels));
-          let pellets = parseInt(this.data.data.firearmDesign.ammunition[ammoKeys[i]].projectiles);
+          let shots = parseInt((this.system.firearmDesign.rof * this.system.firearmDesign.barrels));
+          let pellets = parseInt(this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles);
 
           if (pellets > 1) {
             rof = shots + "x" + pellets;
@@ -4955,152 +4980,156 @@ export class gurpsItem extends Item {
             rof = shots;
           }
 
-          let skillMod = this.data.data.firearmDesign.rangedSkillMod
-          if (this.data.data.firearmDesign.fitToOwner) {
+          let skillMod = this.system.firearmDesign.rangedSkillMod
+          if (this.system.firearmDesign.fitToOwner) {
             skillMod += 1;
           }
 
           let profile = {
-            "name": this.data.data.firearmDesign.ammunition[ammoKeys[i]].name,
-            "skill": this.data.data.firearmDesign.rangedSkill,
+            "name": this.system.firearmDesign.ammunition[ammoKeys[i]].name,
+            "skill": this.system.firearmDesign.rangedSkill,
             "skillMod": skillMod,
-            "acc": this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc,
-            "damageInput": this.data.data.firearmDesign.ammunition[ammoKeys[i]].damageDice,
-            "damageType": this.data.data.firearmDesign.ammunition[ammoKeys[i]].woundModOut,
-            "armourDivisor": this.data.data.firearmDesign.ammunition[ammoKeys[i]].ad,
-            "range": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange) + "/" + Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange),
+            "acc": this.system.firearmDesign.ammunition[ammoKeys[i]].acc,
+            "damageInput": this.system.firearmDesign.ammunition[ammoKeys[i]].damageDice,
+            "damageType": this.system.firearmDesign.ammunition[ammoKeys[i]].woundModOut,
+            "armourDivisor": this.system.firearmDesign.ammunition[ammoKeys[i]].ad,
+            "range": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange) + "/" + Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange),
             "rof": rof,
-            "shots": this.data.data.firearmDesign.shots,
-            "bulk": Math.round(this.data.data.firearmDesign.bulk),
-            "rcl": this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl,
-            "lc": this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc,
-            "st": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].st),
-            "malf": this.data.data.firearmDesign.ammunition[ammoKeys[i]].malf,
-            "cps": this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps,
-            "wps": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].wps * 100) / 100
+            "shots": this.system.firearmDesign.shots,
+            "bulk": Math.round(this.system.firearmDesign.bulk),
+            "rcl": this.system.firearmDesign.ammunition[ammoKeys[i]].rcl,
+            "lc": this.system.firearmDesign.ammunition[ammoKeys[i]].lc,
+            "st": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].st),
+            "malf": this.system.firearmDesign.ammunition[ammoKeys[i]].malf,
+            "cps": this.system.firearmDesign.ammunition[ammoKeys[i]].cps,
+            "wps": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].wps * 100) / 100
           }
           rangedProfiles.push(profile);
 
-          if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosivePercent > 0) {
+          if (this.system.firearmDesign.ammunition[ammoKeys[i]].explosivePercent > 0) {
             let followUpExplosion = {
-              "name": this.data.data.firearmDesign.ammunition[ammoKeys[i]].name + " - Explosion",
-              "skill": this.data.data.firearmDesign.rangedSkill,
+              "name": this.system.firearmDesign.ammunition[ammoKeys[i]].name + " - Explosion",
+              "skill": this.system.firearmDesign.rangedSkill,
               "skillMod": skillMod,
-              "acc": this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc,
-              "damageInput": this.data.data.firearmDesign.ammunition[ammoKeys[i]].explosiveDamageDice,
+              "acc": this.system.firearmDesign.ammunition[ammoKeys[i]].acc,
+              "damageInput": this.system.firearmDesign.ammunition[ammoKeys[i]].explosiveDamageDice,
               "damageType": "cr ex",
               "armourDivisor": 1,
-              "range": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange) + "/" + Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange),
+              "range": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange) + "/" + Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange),
               "rof": rof,
-              "shots": this.data.data.firearmDesign.shots,
-              "bulk": Math.round(this.data.data.firearmDesign.bulk),
-              "rcl": this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl,
-              "lc": this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc,
-              "st": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].st),
-              "malf": this.data.data.firearmDesign.ammunition[ammoKeys[i]].malf,
-              "cps": Math.round((this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps * this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF) * 100) / 100,
-              "wps": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].wps * 100) / 100
+              "shots": this.system.firearmDesign.shots,
+              "bulk": Math.round(this.system.firearmDesign.bulk),
+              "rcl": this.system.firearmDesign.ammunition[ammoKeys[i]].rcl,
+              "lc": this.system.firearmDesign.ammunition[ammoKeys[i]].lc,
+              "st": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].st),
+              "malf": this.system.firearmDesign.ammunition[ammoKeys[i]].malf,
+              "cps": Math.round((this.system.firearmDesign.ammunition[ammoKeys[i]].cps * this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF) * 100) / 100,
+              "wps": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].wps * 100) / 100
             }
             rangedProfiles.push(followUpExplosion);
           }
 
-          if (this.data.data.firearmDesign.ammunition[ammoKeys[i]].frag) {
+          if (this.system.firearmDesign.ammunition[ammoKeys[i]].frag) {
             let followUpFrag = {
-              "name": this.data.data.firearmDesign.ammunition[ammoKeys[i]].name + " - Fragments",
-              "skill": this.data.data.firearmDesign.rangedSkill,
+              "name": this.system.firearmDesign.ammunition[ammoKeys[i]].name + " - Fragments",
+              "skill": this.system.firearmDesign.rangedSkill,
               "skillMod": skillMod,
-              "acc": this.data.data.firearmDesign.ammunition[ammoKeys[i]].acc,
-              "damageInput": this.data.data.firearmDesign.ammunition[ammoKeys[i]].fragDamageDice,
+              "acc": this.system.firearmDesign.ammunition[ammoKeys[i]].acc,
+              "damageInput": this.system.firearmDesign.ammunition[ammoKeys[i]].fragDamageDice,
               "damageType": "cut",
               "armourDivisor": 1,
-              "range": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].halfRange) + "/" + Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].maxRange),
+              "range": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange) + "/" + Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange),
               "rof": rof,
-              "shots": this.data.data.firearmDesign.shots,
-              "bulk": Math.round(this.data.data.firearmDesign.bulk),
-              "rcl": this.data.data.firearmDesign.ammunition[ammoKeys[i]].rcl,
-              "lc": this.data.data.firearmDesign.ammunition[ammoKeys[i]].lc,
-              "st": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].st),
-              "malf": this.data.data.firearmDesign.ammunition[ammoKeys[i]].malf,
-              "cps": Math.round((this.data.data.firearmDesign.ammunition[ammoKeys[i]].cps * this.data.data.firearmDesign.ammunition[ammoKeys[i]].cpsCF) * 100) / 100,
-              "wps": Math.round(this.data.data.firearmDesign.ammunition[ammoKeys[i]].wps * 100) / 100
+              "shots": this.system.firearmDesign.shots,
+              "bulk": Math.round(this.system.firearmDesign.bulk),
+              "rcl": this.system.firearmDesign.ammunition[ammoKeys[i]].rcl,
+              "lc": this.system.firearmDesign.ammunition[ammoKeys[i]].lc,
+              "st": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].st),
+              "malf": this.system.firearmDesign.ammunition[ammoKeys[i]].malf,
+              "cps": Math.round((this.system.firearmDesign.ammunition[ammoKeys[i]].cps * this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF) * 100) / 100,
+              "wps": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].wps * 100) / 100
             }
             rangedProfiles.push(followUpFrag);
           }
         }
       }
 
-      this.data.data.ranged = rangedProfiles;
+      this.system.ranged = rangedProfiles;
     }
   }
 
   prepareAttackData() {
     //Check to see if there is an actor yet
     if (this.actor){
-      if (this.actor.data) {
+      if (this.actor.system) {
         let damage;
         //Do logic stuff for melee profiles
-        if (this.data.data.melee) {
-          let meleeKeys = Object.keys(this.data.data.melee);
+        if (this.system.melee) {
+          let meleeKeys = Object.keys(this.system.melee);
           if (meleeKeys.length) {//Check to see if there are any melee profiles
             for (let k = 0; k < meleeKeys.length; k++) {
-              if (this.data.data.melee[meleeKeys[k]].name) {//Check to see if name is filled in. Otherwise don't bother.
+              if (this.system.melee[meleeKeys[k]].name) {//Check to see if name is filled in. Otherwise don't bother.
                 let level = 0;
-                let mod = +this.data.data.melee[meleeKeys[k]].skillMod;
+                let mod = +this.system.melee[meleeKeys[k]].skillMod;
                 let parry = 0;
                 let block = 0;
 
-                if (this.data.data.melee[meleeKeys[k]].skill.toLowerCase() == "dx") {
-                  level = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
-                } else {
+                if (this.system.melee[meleeKeys[k]].skill.toLowerCase() == "dx") {
+                  level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity);
+                }
+                else if (this.system.melee[meleeKeys[k]].skill.toLowerCase() == "iq") {
+                  level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.intelligence);
+                }
+                else {
                   //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-                  for (let i = 0; i < this.actor.data.items._source.length; i++) {
-                    if (this.actor.data.items._source[i].type === "Rollable") {
-                      if (this.data.data.melee[meleeKeys[k]].skill === this.actor.data.items._source[i].name) {
-                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.data.items._source[i].data);
+                  for (let i = 0; i < this.actor.items._source.length; i++) {
+                    if (this.actor.items._source[i].type === "Rollable") {
+                      if (this.system.melee[meleeKeys[k]].skill === this.actor.items._source[i].name) {
+                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items._source[i].system);
                       }
                     }
                   }
                 }
 
                 level = level + mod;//Update the skill level with the skill modifier
-                this.data.data.melee[meleeKeys[k]].level = level//Update skill level
+                this.system.melee[meleeKeys[k]].level = level//Update skill level
 
-                if (Number.isInteger(+this.data.data.melee[meleeKeys[k]].parryMod)) {//If parry mod is a number, compute normally
-                  parry = Math.floor(+(level / 2 + 3) + +this.data.data.melee[meleeKeys[k]].parryMod);//Calculate the parry value
-                  if (this.actor.data.data.enhanced.parry) {
-                    parry += this.actor.data.data.enhanced.parry;
+                if (Number.isInteger(+this.system.melee[meleeKeys[k]].parryMod)) {//If parry mod is a number, compute normally
+                  parry = Math.floor(+(level / 2 + 3) + +this.system.melee[meleeKeys[k]].parryMod);//Calculate the parry value
+                  if (this.actor.system.enhanced.parry) {
+                    parry += this.actor.system.enhanced.parry;
                   }
-                  if (this.actor.data.data.flag.combatReflexes) {
+                  if (this.actor.system.flag.combatReflexes) {
                     parry += 1;
                   }
                 } else {//If it's not a number, display the entry
-                  parry = this.data.data.melee[meleeKeys[k]].parryMod;
+                  parry = this.system.melee[meleeKeys[k]].parryMod;
                 }
-                this.data.data.melee[meleeKeys[k]].parry = parry//Update parry value
+                this.system.melee[meleeKeys[k]].parry = parry//Update parry value
 
-                if (Number.isInteger(+this.data.data.melee[meleeKeys[k]].blockMod)) {//If block mod is a number, compute normally
-                  block = Math.floor(+(level / 2 + 3) + +this.data.data.melee[meleeKeys[k]].blockMod);//Calculate the block value
-                  if (this.actor.data.data.enhanced.block) {
-                    block += this.actor.data.data.enhanced.block;
+                if (Number.isInteger(+this.system.melee[meleeKeys[k]].blockMod)) {//If block mod is a number, compute normally
+                  block = Math.floor(+(level / 2 + 3) + +this.system.melee[meleeKeys[k]].blockMod);//Calculate the block value
+                  if (this.actor.system.enhanced.block) {
+                    block += this.actor.system.enhanced.block;
                   }
-                  if (this.actor.data.data.flag.combatReflexes) {
+                  if (this.actor.system.flag.combatReflexes) {
                     block += 1;
                   }
                 } else {
-                  block = this.data.data.melee[meleeKeys[k]].blockMod;
+                  block = this.system.melee[meleeKeys[k]].blockMod;
                 }
-                damage = this.damageParseSwThr(this.data.data.melee[meleeKeys[k]].damageInput);//Update damage value
-                this.data.data.melee[meleeKeys[k]].block = block; // Update block value
-                this.data.data.melee[meleeKeys[k]].type = "melee"; // Update attack type
-                this.data.data.melee[meleeKeys[k]].damage = damage;
+                damage = this.damageParseSwThr(this.system.melee[meleeKeys[k]].damageInput);//Update damage value
+                this.system.melee[meleeKeys[k]].block = block; // Update block value
+                this.system.melee[meleeKeys[k]].type = "melee"; // Update attack type
+                this.system.melee[meleeKeys[k]].damage = damage;
 
                 // Validation for Armour Divisor
-                if (!(this.data.data.melee[meleeKeys[k]].armourDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
-                    this.data.data.melee[meleeKeys[k]].armourDivisor.toString().toLowerCase().includes("cosmic") ||
-                    this.data.data.melee[meleeKeys[k]].armourDivisor.toString().toLowerCase().includes("i") ||
-                    this.data.data.melee[meleeKeys[k]].armourDivisor >= 0)
+                if (!(this.system.melee[meleeKeys[k]].armourDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
+                    this.system.melee[meleeKeys[k]].armourDivisor.toString().toLowerCase().includes("cosmic") ||
+                    this.system.melee[meleeKeys[k]].armourDivisor.toString().toLowerCase().includes("i") ||
+                    this.system.melee[meleeKeys[k]].armourDivisor >= 0)
                 ) {
-                  this.data.data.melee[meleeKeys[k]].armourDivisor = 1;
+                  this.system.melee[meleeKeys[k]].armourDivisor = 1;
                 }
               }
             }
@@ -5108,95 +5137,100 @@ export class gurpsItem extends Item {
         }
 
         //Do logic stuff for ranged profiles
-        if (this.data.data.ranged) {
-          let rangedKeys = Object.keys(this.data.data.ranged);
+        if (this.system.ranged) {
+          let rangedKeys = Object.keys(this.system.ranged);
           if (rangedKeys.length) {//Check to see if there are any ranged profiles
             for (let k = 0; k < rangedKeys.length; k++) {
-              if (this.data.data.ranged[rangedKeys[k]].name) {//Check to see if name is filled in
+              if (this.system.ranged[rangedKeys[k]].name) {//Check to see if name is filled in
                 let level = 0;
-                let mod = +this.data.data.ranged[rangedKeys[k]].skillMod;
+                let mod = +this.system.ranged[rangedKeys[k]].skillMod;
 
-                if (this.data.data.ranged[rangedKeys[k]].skill.toLowerCase() == "dx") {
-                  level = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
+                if (this.system.ranged[rangedKeys[k]].skill.toLowerCase() == "dx") {
+                  level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity);
                 } else {
                   //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-                  for (let i = 0; i < this.actor.data.items._source.length; i++) {
-                    if (this.actor.data.items._source[i].type === "Rollable") {
-                      if (this.data.data.ranged[rangedKeys[k]].skill === this.actor.data.items._source[i].name) {
-                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.data.items._source[i].data);
+                  for (let i = 0; i < this.actor.items._source.length; i++) {
+                    if (this.actor.items._source[i].type === "Rollable") {
+                      if (this.system.ranged[rangedKeys[k]].skill === this.actor.items._source[i].name) {
+                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items._source[i].system);
                       }
                     }
                   }
                 }
                 level = level + mod;//Update the skill level with the skill modifier
-                this.data.data.ranged[rangedKeys[k]].level = level;
-                this.data.data.ranged[rangedKeys[k]].type = "ranged"; // Update attack type
-                damage = this.damageParseSwThr(this.data.data.ranged[rangedKeys[k]].damageInput);
-                this.data.data.ranged[rangedKeys[k]].damage = damage;
+                this.system.ranged[rangedKeys[k]].level = level;
+                this.system.ranged[rangedKeys[k]].type = "ranged"; // Update attack type
+                damage = this.damageParseSwThr(this.system.ranged[rangedKeys[k]].damageInput);
+                this.system.ranged[rangedKeys[k]].damage = damage;
 
-                if (typeof this.data.data.ranged[rangedKeys[k]].rcl == "undefined" || this.data.data.ranged[rangedKeys[k]].rcl <= 0) { // Catch invalid values for rcl. Value must exist and be at least one.
-                  this.data.data.ranged[rangedKeys[k]].rcl = 1;
+                if (typeof this.system.ranged[rangedKeys[k]].rcl == "undefined" || this.system.ranged[rangedKeys[k]].rcl <= 0) { // Catch invalid values for rcl. Value must exist and be at least one.
+                  this.system.ranged[rangedKeys[k]].rcl = 1;
                 }
-                if (typeof this.data.data.ranged[rangedKeys[k]].rof == "undefined" || this.data.data.ranged[rangedKeys[k]].rof <= 0) { // Catch invalid values for rof. Value must exist and be at least one.
-                  this.data.data.ranged[rangedKeys[k]].rof = 1;
+                if (typeof this.system.ranged[rangedKeys[k]].rof == "undefined" || this.system.ranged[rangedKeys[k]].rof <= 0) { // Catch invalid values for rof. Value must exist and be at least one.
+                  this.system.ranged[rangedKeys[k]].rof = 1;
                 }
-                if (typeof this.data.data.ranged[rangedKeys[k]].acc == "undefined" || this.data.data.ranged[rangedKeys[k]].acc < 0) { // Catch invalid values for Acc. Value must exist and be at least zero.
-                  this.data.data.ranged[rangedKeys[k]].acc = 0;
+                if (typeof this.system.ranged[rangedKeys[k]].acc == "undefined" || this.system.ranged[rangedKeys[k]].acc < 0) { // Catch invalid values for Acc. Value must exist and be at least zero.
+                  this.system.ranged[rangedKeys[k]].acc = 0;
                 }
 
                 // Validation for bulk
-                if (typeof this.data.data.ranged[rangedKeys[k]].bulk == "undefined" || this.data.data.ranged[rangedKeys[k]].bulk == "") { // Must exist.
-                  this.data.data.ranged[rangedKeys[k]].bulk = -2;
-                } else if (this.data.data.ranged[rangedKeys[k]].bulk > 0) { // Must be less than zero. Set positive values to negative equivilent
-                  this.data.data.ranged[rangedKeys[k]].bulk = -this.data.data.ranged[rangedKeys[k]].bulk;
+                if (typeof this.system.ranged[rangedKeys[k]].bulk == "undefined" || this.system.ranged[rangedKeys[k]].bulk == "") { // Must exist.
+                  this.system.ranged[rangedKeys[k]].bulk = -2;
+                } else if (this.system.ranged[rangedKeys[k]].bulk > 0) { // Must be less than zero. Set positive values to negative equivilent
+                  this.system.ranged[rangedKeys[k]].bulk = -this.system.ranged[rangedKeys[k]].bulk;
                 }
 
                 // Validation for Armour Divisor
-                if (!(this.data.data.ranged[rangedKeys[k]].armourDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
-                    this.data.data.ranged[rangedKeys[k]].armourDivisor.toString().toLowerCase().includes("cosmic") ||
-                    this.data.data.ranged[rangedKeys[k]].armourDivisor.toString().toLowerCase().includes("i") ||
-                    this.data.data.ranged[rangedKeys[k]].armourDivisor >= 0)
+                if (!(this.system.ranged[rangedKeys[k]].armourDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
+                    this.system.ranged[rangedKeys[k]].armourDivisor.toString().toLowerCase().includes("cosmic") ||
+                    this.system.ranged[rangedKeys[k]].armourDivisor.toString().toLowerCase().includes("i") ||
+                    this.system.ranged[rangedKeys[k]].armourDivisor >= 0)
                 ) {
-                  this.data.data.ranged[rangedKeys[k]].armourDivisor = 1;
+                  this.system.ranged[rangedKeys[k]].armourDivisor = 1;
                 }
               }
             }
           }
         }
 
-        if (this.data.data.affliction) {
-          let afflictionKeys = Object.keys(this.data.data.affliction);
+        if (this.system.affliction) {
+          let afflictionKeys = Object.keys(this.system.affliction);
           if (afflictionKeys.length) { // Check to see if there are any affliction profiles
             for (let k = 0; k < afflictionKeys.length; k++) {
-              if (this.data.data.affliction[afflictionKeys[k]].name) { // Check to see if name is filled in. Otherwise don't bother.
+              if (this.system.affliction[afflictionKeys[k]].name) { // Check to see if name is filled in. Otherwise don't bother.
+                damage = this.damageParseSwThr(this.system.affliction[afflictionKeys[k]].damageInput); // Update damage value
 
-                damage = this.damageParseSwThr(this.data.data.affliction[afflictionKeys[k]].damageInput); // Update damage value
 
-
-                if (this.data.type == "Spell") {
-                  this.data.data.affliction[afflictionKeys[k]].level = this.data.data.level;
+                if (this.system.type == "Spell") {
+                  this.system.affliction[afflictionKeys[k]].level = this.system.level;
+                }
+                else if (this.system.affliction[afflictionKeys[k]].skill.toLowerCase() == "dx") {
+                  this.system.affliction[afflictionKeys[k]].level = +attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity) + +this.system.affliction[afflictionKeys[k]].skillMod;
+                }
+                else if (this.system.affliction[afflictionKeys[k]].skill.toLowerCase() == "iq") {
+                  this.system.affliction[afflictionKeys[k]].level = +attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.intelligence) + +this.system.affliction[afflictionKeys[k]].skillMod;
                 }
                 else {
                   // Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-                  for (let i = 0; i < this.actor.data.items._source.length; i++) {
-                    if (this.actor.data.items._source[i].type === "Rollable") {
-                      if (this.data.data.affliction[afflictionKeys[k]].skill === this.actor.data.items._source[i].name) {
-                        this.data.data.affliction[afflictionKeys[k]].level = +skillHelpers.computeSkillLevel(this.actor, this.actor.data.items._source[i].data) + +this.data.data.affliction[afflictionKeys[k]].skillMod;;
+                  for (let i = 0; i < this.actor.items._source.length; i++) {
+                    if (this.actor.items._source[i].type === "Rollable") {
+                      if (this.system.affliction[afflictionKeys[k]].skill === this.actor.items._source[i].name) {
+                        this.system.affliction[afflictionKeys[k]].level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items._source[i].system) + +this.system.affliction[afflictionKeys[k]].skillMod;
                       }
                     }
                   }
                 }
 
-                this.data.data.affliction[afflictionKeys[k]].type = "affliction"; // Update attack type
-                this.data.data.affliction[afflictionKeys[k]].damage = damage;
+                this.system.affliction[afflictionKeys[k]].type = "affliction"; // Update attack type
+                this.system.affliction[afflictionKeys[k]].damage = damage;
 
                 // Validation for Armour Divisor
-                if (!(this.data.data.affliction[afflictionKeys[k]].armourDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
-                    this.data.data.affliction[afflictionKeys[k]].armourDivisor.toString().toLowerCase().includes("cosmic") ||
-                    this.data.data.affliction[afflictionKeys[k]].armourDivisor.toString().toLowerCase().includes("i") ||
-                    this.data.data.affliction[afflictionKeys[k]].armourDivisor >= 0)
+                if (!(this.system.affliction[afflictionKeys[k]].armourDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
+                    this.system.affliction[afflictionKeys[k]].armourDivisor.toString().toLowerCase().includes("cosmic") ||
+                    this.system.affliction[afflictionKeys[k]].armourDivisor.toString().toLowerCase().includes("i") ||
+                    this.system.affliction[afflictionKeys[k]].armourDivisor >= 0)
                 ) {
-                  this.data.data.affliction[afflictionKeys[k]].armourDivisor = 1;
+                  this.system.affliction[afflictionKeys[k]].armourDivisor = 1;
                 }
               }
             }
@@ -5207,9 +5241,9 @@ export class gurpsItem extends Item {
   }
 
   damageParseSwThr(damage){
-    let smDiscount = attributeHelpers.calcSMDiscount(this.actor.data.data.bio.sm)
-    let st = attributeHelpers.calcStOrHt(this.actor.data.data.primaryAttributes.strength, smDiscount)
-    let sst = attributeHelpers.calcStrikingSt(st, this.actor.data.data.primaryAttributes.striking, smDiscount);
+    let smDiscount = attributeHelpers.calcSMDiscount(this.actor.system.bio.sm)
+    let st = attributeHelpers.calcStOrHt(this.actor.system.primaryAttributes.strength, smDiscount)
+    let sst = attributeHelpers.calcStrikingSt(st, this.actor.system.primaryAttributes.striking, smDiscount);
     let thr = attributeHelpers.strikingStrengthToThrust(sst);//Get thrust damage
     let sw = attributeHelpers.strikingStrengthToSwing(sst);//Get swing damage
 
@@ -5226,68 +5260,66 @@ export class gurpsItem extends Item {
   getBaseAttrValue(baseAttr) {
     let base = 0;
     if (baseAttr.toUpperCase() == 'ST' || baseAttr.toUpperCase() == 'STRENGTH'){
-      let smDiscount = attributeHelpers.calcSMDiscount(this.actor.data.data.bio.sm)
-      base = attributeHelpers.calcStOrHt(this.actor.data.data.primaryAttributes.strength, smDiscount);
+      let smDiscount = attributeHelpers.calcSMDiscount(this.actor.system.bio.sm)
+      base = attributeHelpers.calcStOrHt(this.actor.system.primaryAttributes.strength, smDiscount);
     }
     else if (baseAttr.toUpperCase() == 'DX' || baseAttr.toUpperCase() == 'DEXTERITY') {
-      base = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.dexterity);
+      base = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity);
     }
     else if (baseAttr.toUpperCase() == 'IQ' || baseAttr.toUpperCase() == 'INTELLIGENCE') {
-      base = attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.intelligence);
+      base = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.intelligence);
     }
     else if (baseAttr.toUpperCase() == 'HT' || baseAttr.toUpperCase() == 'HEALTH') {
-      base = attributeHelpers.calcStOrHt(this.actor.data.data.primaryAttributes.health, 1);
+      base = attributeHelpers.calcStOrHt(this.actor.system.primaryAttributes.health, 1);
     }
     else if (baseAttr.toUpperCase() == 'PER' || baseAttr.toUpperCase() == 'PERCEPTION') {
-      base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.intelligence), this.actor.data.data.primaryAttributes.perception);
+      base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.intelligence), this.actor.system.primaryAttributes.perception);
     }
     else if (baseAttr.toUpperCase() == 'WILL') {
-      base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(this.actor.data.data.primaryAttributes.intelligence), this.actor.data.data.primaryAttributes.will);
+      base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.intelligence), this.actor.system.primaryAttributes.will);
     }
     return base;
   }
 
   _prepareSpellData() {
     if (this.actor) {
-      if (this.actor.data) {
-        if (this.actor.data.data) {
-          if (this.actor.data.data.magic) {
+      if (this.actor.system) {
+        if (this.actor.system.magic) {
 
-            // Calculate the total magical attribute
-            let totalMagicAttribute = 0;
-            let points = this.data.data.points;
-            let mod = this.data.data.mod;
-            let attributeMod = this.actor.data.data.magic.attributeMod;
-            let difficulty = this.data.data.difficulty;
-            let magery = this.actor.data.data.magic.magery;
-            let attribute = this.actor.data.data.magic.attribute;
+          // Calculate the total magical attribute
+          let totalMagicAttribute = 0;
+          let points = this.system.points;
+          let mod = this.system.mod;
+          let attributeMod = this.actor.system.magic.attributeMod;
+          let difficulty = this.system.difficulty;
+          let magery = this.actor.system.magic.magery;
+          let attribute = this.actor.system.magic.attribute;
 
-            let level = skillHelpers.computeSpellLevel(this.actor, points, mod, attributeMod, difficulty, magery, attribute)
+          let level = skillHelpers.computeSpellLevel(this.actor, points, mod, attributeMod, difficulty, magery, attribute)
 
-            if (attribute != "") { // Attribute is not blank
-              totalMagicAttribute += this.getBaseAttrValue(attribute)
-            }
-
-            totalMagicAttribute += attributeMod ? attributeMod : 0;
-            totalMagicAttribute += magery ? magery : 0;
-            this.data.data.magicalAbility = totalMagicAttribute;
-
-            this.data.data.level = level;
+          if (attribute != "") { // Attribute is not blank
+            totalMagicAttribute += this.getBaseAttrValue(attribute)
           }
+
+          totalMagicAttribute += attributeMod ? attributeMod : 0;
+          totalMagicAttribute += magery ? magery : 0;
+          this.system.magicalAbility = totalMagicAttribute;
+
+          this.system.level = level;
         }
       }
     }
   }
 
   _prepareRollableData() {
-    if (this.data.data.category == ""){//The category will be blank upon initialization. Set it to skill so that the form's dynamic elements display correctly the first time it's opened.
-      this.data.data.category = "skill";
+    if (this.system.category == ""){//The category will be blank upon initialization. Set it to skill so that the form's dynamic elements display correctly the first time it's opened.
+      this.system.category = "skill";
     }
 
-    if(this.data.data && this.actor){
-      let level = skillHelpers.computeSkillLevel(this.actor, this.data.data);
+    if(this.system && this.actor){
+      let level = skillHelpers.computeSkillLevel(this.actor, this.system);
 
-      this.data.data.level = level;
+      this.system.level = level;
     }
   }
 
@@ -5322,8 +5354,8 @@ export class gurpsItem extends Item {
           "<td><p>Shooty burny light at people. Works in all environments and has an armour divisor of (2)</p></td>" +
           "</tr>";
 
-      if (this.data.data.tl >= 10){
-        if (this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+      if (this.system.tl >= 10){
+        if (this.system.laserDesign.allowSuperScienceCustomLasers) {
           info += "<tr>" +
               "<td style='width: 160px;'>Force Beam (TL 10^)</td>" +
               "<td><p>Fus Roh Dah except in a gun. Includes a stun setting.</p></td>" +
@@ -5341,7 +5373,7 @@ export class gurpsItem extends Item {
             "</tr>";
       }
 
-      if (this.data.data.tl >= 11) {
+      if (this.system.tl >= 11) {
         info += "<tr>" +
             "<td style='width: 160px;'>Rainbow Laser (TL 11)</td>" +
             "<td><p>Colourfull burny light. Works well in the air and under water, range is severly reduced in a vacum. Armour divisor of (3)</p></td>" +
@@ -5352,7 +5384,7 @@ export class gurpsItem extends Item {
             "<td><p>A fuckin sick laser weapon, if not for the fact it's range in air is terrible. You can probably throw the gun farther than the beam will reach. But it's got AD (5) and its range is ludicrous in space.</p></td>" +
             "</tr>";
 
-        if (this.data.data.laserDesign.allowSuperScienceCustomLasers) {
+        if (this.system.laserDesign.allowSuperScienceCustomLasers) {
           info += "<tr>" +
               "<td style='width: 160px;'>Graviton Beam (TL 11^)</td>" +
               "<td><p>Shoot gravity at people. Low damage but it ignores armour.</p></td>" +
@@ -5364,7 +5396,7 @@ export class gurpsItem extends Item {
             "<td><p>Make people explode. AD (3) crushing explosions.</p></td>" +
             "</tr>";
       }
-      if (this.data.data.tl >= 12) {
+      if (this.system.tl >= 12) {
         info += "<tr>" +
             "<td style='width: 160px;'>Graser (TL 12)</td>" +
             "<td><p>Like the X-Ray laser, this is fuckin sick. AD (10) and in space the range is measured in tens of miles, even for pistols. But in air the range is extremely limited, though better than the X-Ray laser.</p></td>" +
@@ -5417,7 +5449,7 @@ export class gurpsItem extends Item {
           "<p>These options determine how quickly the weapon can draw from its power source, allowing for higher or lower rates of fire. Higher rate of fire options cost and weigh more.</p>" +
           "</td>" +
           "</tr>";
-      if (this.data.data.laserDesign.hotshotsAndOverheating) {
+      if (this.system.laserDesign.hotshotsAndOverheating) {
         info += "<tr>" +
             "<td><p>Gatling versions of the Light and Heavy generators prevent the laser from overheating due to continuous fire, but are incapable of firing hotshots.</p></td>" +
             "</tr>";
@@ -5629,7 +5661,7 @@ export class gurpsItem extends Item {
     }
     else if (id === "strong-bow-crossbow-finesse") {
       info = "<table>";
-      if (this.data.data.bowDesign.fixedBonusStrongbow) {
+      if (this.system.bowDesign.fixedBonusStrongbow) {
         info += "<tr>" +
             "<td>This perk increases your draw weight by 15% your skill is at DX+1, or by 30% if your skill is at DX+2. This is then used to figure out what kind of draw weight you can handle.</td>" +
             "</tr>";
@@ -5692,106 +5724,106 @@ export class gurpsItem extends Item {
           "<td>1 sec</td>" +
           "<td>3 secs</td>" +
           "<td>2 secs</td>" +
-          "<td>" + Math.floor(this.data.data.bowDesign.userBL*2*100)/100 + "lbs</td>" +
+          "<td>" + Math.floor(this.system.bowDesign.userBL*2*100)/100 + "lbs</td>" +
           "</tr>"
 
-      if (this.data.data.bowDesign.type == "bow") {
+      if (this.system.bowDesign.type == "bow") {
         info += "<tr class='bow-hand'>" +
             "<td>This is the highest weight you are capable of drawing.</td>" +
             "<td>2 secs</td>" +
             "<td>4 secs</td>" +
             "<td>3 secs</td>" +
-            "<td>" + Math.floor(this.data.data.bowDesign.userBL*2.5*100)/100 + "lbs</td>" +
+            "<td>" + Math.floor(this.system.bowDesign.userBL*2.5*100)/100 + "lbs</td>" +
             "</tr>"
       }
-      else if (this.data.data.bowDesign.type == "footbow" || this.data.data.bowDesign.type == "xbow") {
+      else if (this.system.bowDesign.type == "footbow" || this.system.bowDesign.type == "xbow") {
         info += "<tr class='bow-hand'>" +
             "<td>This is the highest weight you are capable of drawing by hand in two rounds.</td>" +
             "<td>2 secs</td>" +
             "<td>4 secs</td>" +
             "<td>3 secs</td>" +
-            "<td>" + Math.floor(this.data.data.bowDesign.userBL*4*100)/100 + "lbs</td>" +
+            "<td>" + Math.floor(this.system.bowDesign.userBL*4*100)/100 + "lbs</td>" +
             "</tr>"
         info += "<tr class='bow-hand'>" +
             "<td>This is the highest weight you are capable of drawing by hand in three rounds.</td>" +
             "<td>3 secs</td>" +
             "<td>5 secs</td>" +
             "<td>4 secs</td>" +
-            "<td>" + Math.floor(this.data.data.bowDesign.userBL*6*100)/100 + "lbs</td>" +
+            "<td>" + Math.floor(this.system.bowDesign.userBL*6*100)/100 + "lbs</td>" +
             "</tr>"
         info += "<tr class='bow-hand'>" +
             "<td>This is the highest weight you are capable of drawing by hand.</td>" +
             "<td>4 secs</td>" +
             "<td>6 secs</td>" +
             "<td>5 secs</td>" +
-            "<td>" + Math.floor(this.data.data.bowDesign.userBL*8*100)/100 + "lbs</td>" +
+            "<td>" + Math.floor(this.system.bowDesign.userBL*8*100)/100 + "lbs</td>" +
             "</tr>"
 
-        if (this.data.data.bowDesign.type == "xbow") {
+        if (this.system.bowDesign.type == "xbow") {
           info += "<tr class='bow-hook'>" +
               "<td>This is the highest weight you are capable of drawing with a belt hook in a single round (Or by hand in two rounds)</td>" +
               "<td>1 secs</td>" +
               "<td>3 secs</td>" +
               "<td>2 secs</td>" +
-              "<td>" + Math.floor(this.data.data.bowDesign.userBL*4*100)/100 + "lbs</td>" +
+              "<td>" + Math.floor(this.system.bowDesign.userBL*4*100)/100 + "lbs</td>" +
               "</tr>"
           info += "<tr class='bow-hook'>" +
               "<td>This is the highest weight you are capable of drawing with a belt hook in two rounds (Or by hand in four rounds)</td>" +
               "<td>2 secs</td>" +
               "<td>4 secs</td>" +
               "<td>3 secs</td>" +
-              "<td>" + Math.floor(this.data.data.bowDesign.userBL*8*100)/100 + "lbs</td>" +
+              "<td>" + Math.floor(this.system.bowDesign.userBL*8*100)/100 + "lbs</td>" +
               "</tr>"
 
-          if (this.data.data.tl >= 3) {
+          if (this.system.tl >= 3) {
             info += "<tr class='bow-mech'>" +
                 "<td rowspan='3'>Using a goat's foot lets you go over the normal draw limit, but using the device takes extra time, so it's really only useful if it lets you exceede what you could do by hand.</td>" +
                 "<td>7 secs</td>" +
                 "<td>9 secs</td>" +
                 "<td>8 secs</td>" +
-                "<td>" + Math.floor(this.data.data.bowDesign.userBL*5*2*100)/100 + "lbs</td>" +
+                "<td>" + Math.floor(this.system.bowDesign.userBL*5*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-mech'>" +
                 "<td>8 secs</td>" +
                 "<td>10 secs</td>" +
                 "<td>9 secs</td>" +
-                "<td>" + Math.floor(this.data.data.bowDesign.userBL*6*2*100)/100 + "lbs</td>" +
+                "<td>" + Math.floor(this.system.bowDesign.userBL*6*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-mech'>" +
                 "<td>9 secs</td>" +
                 "<td>11 secs</td>" +
                 "<td>10 secs</td>" +
-                "<td>" + Math.floor(this.data.data.bowDesign.userBL*7*2*100)/100 + "lbs</td>" +
+                "<td>" + Math.floor(this.system.bowDesign.userBL*7*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-mech'>" +
                 "<td>This is the draw limit with a goat's foot.</td>" +
                 "<td>10 secs</td>" +
                 "<td>12 secs</td>" +
                 "<td>11 secs</td>" +
-                "<td>" + Math.floor(this.data.data.bowDesign.userBL*8*2*100)/100 + "lbs</td>" +
+                "<td>" + Math.floor(this.system.bowDesign.userBL*8*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-wind'>" +
                 "<td>With a windlass you can draw a bow of pretty much any weight. It just takes a long fucking time. This is as fast as it gets, and it only gets slower.</td>" +
                 "<td>8 secs</td>" +
                 "<td>10 secs</td>" +
                 "<td>9 secs</td>" +
-                "<td>" + Math.floor(this.data.data.bowDesign.userBL*8*2*100)/100 + "lbs</td>" +
+                "<td>" + Math.floor(this.system.bowDesign.userBL*8*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-wind'>" +
                 "<td>Windlasses also get heavier the higher the draw weight multiplier gets.</td>" +
                 "<td>12 secs</td>" +
                 "<td>14 secs</td>" +
                 "<td>13 secs</td>" +
-                "<td>" + Math.floor(this.data.data.bowDesign.userBL*8*3*100)/100 + "lbs</td>" +
+                "<td>" + Math.floor(this.system.bowDesign.userBL*8*3*100)/100 + "lbs</td>" +
                 "</tr>"
 
-            if (this.data.data.tl >= 4) {
+            if (this.system.tl >= 4) {
               info += "<tr class='bow-cranq'>" +
                   "<td>Cranequins are half the weight, but are twice as slow.</td>" +
                   "<td>24 secs</td>" +
                   "<td>26 secs</td>" +
                   "<td>25 secs</td>" +
-                  "<td>" + Math.floor(this.data.data.bowDesign.userBL * 8 * 3*100)/100 + "lbs</td>" +
+                  "<td>" + Math.floor(this.system.bowDesign.userBL * 8 * 3*100)/100 + "lbs</td>" +
                   "</tr>"
             }
           }
@@ -5829,7 +5861,7 @@ export class gurpsItem extends Item {
           "</td>" +
           "</tr>";
 
-      if (this.data.data.bowDesign.type == "bow") {
+      if (this.system.bowDesign.type == "bow") {
         info += "<tr>" +
             "<td>" +
             "<p>The basic formula for draw length is your height in inches, minus 15, and then divided by two.</p>" +
@@ -5845,7 +5877,7 @@ export class gurpsItem extends Item {
             "</td>" +
             "</tr>";
       }
-      else if (this.data.data.bowDesign.type == "footbow") {
+      else if (this.system.bowDesign.type == "footbow") {
         info += "<tr>" +
             "<td>" +
             "<p>A footbow's draw length is usually around 60% of the person's height, but it can go as high as 75%. Flying characters in particular are much more likely to use the full 75%." +
@@ -5861,7 +5893,7 @@ export class gurpsItem extends Item {
             "</td>" +
             "</tr>";
       }
-      else if (this.data.data.bowDesign.type == "xbow") {
+      else if (this.system.bowDesign.type == "xbow") {
         info += "<tr>" +
             "<td>" +
             "<p>With crossbows such as they are, you can make the draw length of a crossbow as high as you like, with the following two limits." +
@@ -5921,7 +5953,7 @@ export class gurpsItem extends Item {
           "</td>" +
           "</tr>";
 
-      if (this.data.data.bowDesign.type == "bow") {
+      if (this.system.bowDesign.type == "bow") {
         info += "<tr>" +
             "<td>" +
             "<p>A longbow is generally 100 to 105% of the user's height, but higher values are possible. Some Japanese Yumi are as much as 140% of the user's height." +
@@ -6577,7 +6609,7 @@ export class gurpsItem extends Item {
           "<td>$3.75</td>" +
           "</tr>";
 
-      if (this.data.data.tl >= 4) {
+      if (this.system.tl >= 4) {
         info += "<tr>" +
             "<td>War, Light, AP</td>" +
             "<td>imp</td>" +
@@ -6611,7 +6643,7 @@ export class gurpsItem extends Item {
             "</tr>";
       }
 
-      if (this.data.data.tl >= 7) {
+      if (this.system.tl >= 7) {
         info += "<tr>" +
             "<td>Hunting Broadhead, Modern</td>" +
             "<td>imp</td>" +
@@ -7364,6 +7396,20 @@ export class gurpsItem extends Item {
 
         info += "</table>"
     }
+    else if (id === "essential-gun-material") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>Essential materials are three times as strong for the same weight, but cost 30x as much for the same weight. For guns this means the weapons weighs 1/3rd as normal but costs 10x as much.</p>" +
+          "</td>" +
+          "</tr>" +
+          "<tr>" +
+          "<td>" +
+          "<p>This is questionably useful. Lighter guns obviously impact your encumbrance less and a lower ST stat, but they also have more recoil.</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
+    }
     else if (id === "firearm-weight-tweak") {
         info = "<table>" +
             "<tr>" +
@@ -8001,8 +8047,8 @@ export class gurpsItem extends Item {
             "</tr>" +
             "</table>"
       }
-    this.data.data.info = info;
+    this.system.info = info;
 
-    this.update({ 'data.info': this.data.data.info });
+    this.update({ 'system.info': this.system.info });
   }
 }
