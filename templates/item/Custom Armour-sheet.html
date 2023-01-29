@@ -20,7 +20,7 @@
                 </div>
                 <div id="equipped" class="flexrow">
                     <select name="system.equipStatus" class="equipStatusSelect">
-                        {{#select system.equipStatus}}
+                        {{#select item.system.equipStatus}}
                         <option value="equipped">Equipped</option>
                         <option value="carried">Carried</option>
                         <option value="notCarried">Not Carried</option>
@@ -92,7 +92,7 @@
                                 <td>Body Type</td>
                                 <td>
                                     <select name="system.armour.bodyType.name" class="bodyType">
-                                        {{#select system.armour.bodyType.name}}
+                                        {{#select item.system.armour.bodyType.name}}
                                         <option value="">Make a Selection</option>
                                         <option value="humanoid">Humanoid</option>
                                         <option value="wingedHumanoid">Winged Humanoid</option>
@@ -157,7 +157,7 @@
                                 <td>Tailoring</td>
                                 <td>
                                     <select name="system.armourDesign.tailoring">
-                                        {{#select system.armourDesign.tailoring}}
+                                        {{#select item.system.armourDesign.tailoring}}
                                         <option value="cheap">Cheap</option>
                                         <option value="">Regularly Tailored</option>
                                         <option value="expert">Expertly Tailored</option>
@@ -176,7 +176,7 @@
                                 <td>Styling</td>
                                 <td>
                                     <select name="system.armourDesign.style">
-                                        {{#select system.armourDesign.style}}
+                                        {{#select item.system.armourDesign.style}}
                                         <option value="0">No Styling</option>
                                         <option value="1">+1 Styling</option>
                                         <option value="2">+2 Styling (Presentation Quality)</option>
@@ -226,7 +226,7 @@
                                 <td>Hardened Steel</td>
                                 <td>
                                     <select name="system.armourDesign.steelHardening">
-                                        {{#select system.armourDesign.steelHardening}}
+                                        {{#select item.system.armourDesign.steelHardening}}
                                         <option value="">None</option>
                                         <option value="hardened">Hardened Steel</option>
                                         {{#if system.armourDesign.hasPlate}}
@@ -342,7 +342,7 @@
                                 <td>Leather Quality</td>
                                 <td>
                                     <select name="system.armourDesign.leatherQuality">
-                                        {{#select system.armourDesign.leatherQuality}}
+                                        {{#select item.system.armourDesign.leatherQuality}}
                                         <option value="rawhide">Rawhide</option>
                                         <option value="">Standard</option>
                                         <option value="quality">Leather of Quality</option>
@@ -446,7 +446,7 @@
                                 <td>Clothing</td>
                                 <td>
                                     <select name="system.armourDesign.concealedClothing">
-                                        {{#select system.armourDesign.concealedClothing}}
+                                        {{#select item.system.armourDesign.concealedClothing}}
                                         <option value="">None</option>
                                         <option value="swimwear">Swimwear (-5)</option>
                                         <option value="summer">Summer Clothing (-3)</option>
@@ -483,7 +483,7 @@
                                 <td>Undercover Clothing</td>
                                 <td>
                                     <select name="system.armourDesign.undercoverClothing">
-                                        {{#select system.armourDesign.undercoverClothing}}
+                                        {{#select item.system.armourDesign.undercoverClothing}}
                                         <option value="0">No Bonus</option>
                                         <option value="1">+1 Bonus (+4 CF)</option>
                                         <option value="2">+2 Bonus (+19 CF)</option>
@@ -605,7 +605,7 @@
                                 <select name="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.material.name">
                                 {{#select subLocation.material.name}}
                                 {{#each ../../system.armourDesign.materials as |material id|}}
-                                {{#ifCond ../../../system.tl '>=' material.tl}}
+                                {{#ifCond ../../../item.system.tl '>=' material.tl}}
                                 <option value="{{material.name}}">{{material.name}}</option>
                                 {{/ifCond}}
                                 {{/each}}
@@ -621,7 +621,7 @@
                                 <select name="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.construction.name">
                                     {{#select subLocation.construction.name}}
                                     {{#each ../../system.armourDesign.constructionTypes as |construction id|}}
-                                    {{#armourConstructionLimit ../../../system.tl construction subLocation bodyPart}}
+                                    {{#armourConstructionLimit ../../../item.system.tl construction subLocation bodyPart}}
                                     <option value="{{construction.name}}">{{construction.name}}</option>
                                     {{/armourConstructionLimit}}
                                     {{/each}}
@@ -652,7 +652,7 @@
                                 <select name="system.armour.bodyType.body.{{partId}}.material.name">
                                     {{#select bodyPart.material.name}}
                                     {{#each ../system.armourDesign.materials as |material id|}}
-                                    {{#ifCond ../../system.tl '>=' material.tl}}
+                                    {{#ifCond ../../item.system.tl '>=' material.tl}}
                                     <option value="{{material.name}}">{{material.name}}</option>
                                     {{/ifCond}}
                                     {{/each}}
@@ -668,7 +668,7 @@
                                 <select name="system.armour.bodyType.body.{{partId}}.construction.name">
                                     {{#select bodyPart.construction.name}}
                                     {{#each ../system.armourDesign.constructionTypes as |construction id|}}
-                                    {{#armourConstructionLimit ../../system.tl construction bodyPart bodyPart}}
+                                    {{#armourConstructionLimit ../../item.system.tl construction bodyPart bodyPart}}
                                     <option value="{{construction.name}}">{{construction.name}}</option>
                                     {{/armourConstructionLimit}}
                                     {{/each}}

@@ -8,19 +8,19 @@
             <div class="equipmentDetails" id="equipmentDetails">
                 <div id="qty" class="equipmentStat">
                     <label class="resource-label">Qty:</label>
-                    <input type="number" name="data.quantity" value="{{system.quantity}}" data-dtype="Number"/>
+                    <input type="number" name="system.quantity" value="{{item.system.quantity}}" data-dtype="Number"/>
                 </div>
                 <div id="tl" class="equipmentStat">
                     <label class="resource-label">TL:</label>
-                    <input type="number" name="data.tl" value="{{system.tl}}" data-dtype="Number"/>
+                    <input type="number" name="system.tl" value="{{item.system.tl}}" data-dtype="Number"/>
                 </div>
                 <div id="lc" class="equipmentStat">
                     <label class="resource-label">LC:</label>
-                    <span>{{system.lc}}</span>
+                    <span>{{item.system.lc}}</span>
                 </div>
                 <div id="equipped" class="flexrow">
-                    <select name="data.equipStatus" class="equipStatusSelect">
-                        {{#select system.equipStatus}}
+                    <select name="system.equipStatus" class="equipStatusSelect">
+                        {{#select item.system.equipStatus}}
                         <option value="equipped">Equipped</option>
                         <option value="carried">Carried</option>
                         <option value="notCarried">Not Carried</option>
@@ -29,22 +29,22 @@
                 </div>
                 <div id="subCategory" class="flexrow">
                     <label class="resource-label" style="flex: 0.5;">Race / Meta Trait / Etc:</label>
-                    <input type="text" style="flex: 1;" name="data.subCategory" value="{{system.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
+                    <input type="text" style="flex: 1;" name="system.subCategory" value="{{item.system.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
                 </div>
                 <div id="customType" class="flexrow">
-                    <select name="data.customType" class="equipStatusSelect">
-                        {{#select system.customType}}
+                    <select name="system.customType" class="equipStatusSelect">
+                        {{#select item.system.customType}}
                             <option value="bow">Bow</option>
-                            {{#ifCond system.tl '>=' 1 }}
+                            {{#ifCond item.system.tl '>=' 1 }}
                                 <option value="footbow">Footbow</option>
                             {{/ifCond}}
-                            {{#ifCond system.tl '>=' 2 }}
+                            {{#ifCond item.system.tl '>=' 2 }}
                                 <option value="xbow">Crossbow</option>
                             {{/ifCond}}
-                            {{#ifCond system.tl '>=' 3 }}
+                            {{#ifCond item.system.tl '>=' 3 }}
                                 <option value="firearm">Firearm</option>
                             {{/ifCond}}
-                            {{#ifCond system.tl '>=' 8 }}
+                            {{#ifCond item.system.tl '>=' 8 }}
                                 <option value="laser">Laser Weapon</option>
                             {{/ifCond}}
                         {{/select}}
@@ -52,20 +52,20 @@
                 </div>
                 <div id="value" class="equipmentStatLong">
                     <label class="resource-label">Value:</label>
-                    <span>{{round system.cost 100}}</span>
-                    <label class="resource-label"> / {{round system.ttlCost 100}}$ total</label>
+                    <span>{{round item.system.cost 100}}</span>
+                    <label class="resource-label"> / {{round item.system.ttlCost 100}}$ total</label>
                 </div>
                 <div id="weight" class="equipmentStatLong">
                     <label class="resource-label">Weight:</label>
-                    <span>{{round system.weight 100}}</span>
-                    <label class="resource-label"> / {{round system.ttlWeight 100}}lbs total</label>
+                    <span>{{round item.system.weight 100}}</span>
+                    <label class="resource-label"> / {{round item.system.ttlWeight 100}}lbs total</label>
                 </div>
             </div>
         </div>
     </header>
     <div style="padding-top: 2px;">
         <label class="resource-label" style="width: 32px;">Short Notes:</label>
-        <input type="text" name="data.shortNotes" value="{{system.shortNotes}}" style="width: calc(100% - 78px);"/>
+        <input type="text" name="system.shortNotes" value="{{item.system.shortNotes}}" style="width: calc(100% - 78px);"/>
     </div>
 
     {{!-- Sheet Tab Navigation --}}
@@ -73,32 +73,32 @@
         <div class="header">
             <a class="item" data-tab="notes">Notes</a>
         </div>
-        {{#if (eq system.customType "laser")}}
+        {{#if (eq item.system.customType "laser")}}
         <div class="header">
             <a class="item" data-tab="designLaser">Design Laser</a>
         </div>
         {{/if}}
-        {{#if (eq system.customType "bow")}}
+        {{#if (eq item.system.customType "bow")}}
         <div class="header">
             <a class="item" data-tab="designBow">Design Bow</a>
         </div>
         {{/if}}
-        {{#if (eq system.customType "footbow")}}
+        {{#if (eq item.system.customType "footbow")}}
         <div class="header">
             <a class="item" data-tab="designBow">Design Footbow</a>
         </div>
         {{/if}}
-        {{#if (eq system.customType "xbow")}}
+        {{#if (eq item.system.customType "xbow")}}
         <div class="header">
             <a class="item" data-tab="designBow">Design Crossbow</a>
         </div>
         {{/if}}
-        {{#if (eq system.customType "firearm")}}
+        {{#if (eq item.system.customType "firearm")}}
         <div class="header">
             <a class="item" data-tab="designFirearm">Design Firearm</a>
         </div>
         {{/if}}
-        {{#if (or (eq system.customType "xbow") (eq system.customType "footbow") (eq system.customType "bow")) }}
+        {{#if (or (eq item.system.customType "xbow") (eq item.system.customType "footbow") (eq item.system.customType "bow")) }}
         <div class="header">
             <a class="item" data-tab="materials">Material Catalogue</a>
         </div>
@@ -112,7 +112,7 @@
         <div class="tab stats" data-tab="notes" data-group="primary">
             <h3 class="bold">Detailed Notes</h3>
             <div class="tab">
-                <textarea rows="8" name="data.notes">{{{system.notes}}}</textarea>
+                <textarea rows="8" name="system.notes">{{{item.system.notes}}}</textarea>
             </div>
         </div>
 
@@ -129,10 +129,10 @@
                                     User ST
                                 </td>
                                 <td>
-                                    {{#if system.bowDesign.userSTFromActor}}
-                                    {{system.bowDesign.userST}}
+                                    {{#if item.system.bowDesign.userSTFromActor}}
+                                    {{item.system.bowDesign.userST}}
                                     {{else}}
-                                    <input type="number" name="data.bowDesign.userST" value="{{system.bowDesign.userST}}" data-dtype="Number"/>
+                                    <input type="number" name="system.bowDesign.userST" value="{{item.system.bowDesign.userST}}" data-dtype="Number"/>
                                     {{/if}}
                                 </td>
                                 <td class="question-container" id="user-st">
@@ -143,17 +143,17 @@
                             </tr>
                             <tr class="design-row">
                                 <td style="width: 150px">
-                                    {{#if (eq system.bowDesign.type "xbow")}}
+                                    {{#if (eq item.system.bowDesign.type "xbow")}}
                                     Crossbow Finesse
                                     {{else}}
                                     Strongbow
                                     {{/if}}
                                 </td>
                                 <td>
-                                    {{#if system.bowDesign.strongBowCrossbowFinesseFromActor}}
-                                    {{system.bowDesign.strongBowCrossbowFinesse}}
+                                    {{#if item.system.bowDesign.strongBowCrossbowFinesseFromActor}}
+                                    {{item.system.bowDesign.strongBowCrossbowFinesse}}
                                     {{else}}
-                                    <input type="checkbox" name="data.bowDesign.strongBowCrossbowFinesse" {{checked system.bowDesign.strongBowCrossbowFinesse}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.bowDesign.strongBowCrossbowFinesse" {{checked item.system.bowDesign.strongBowCrossbowFinesse}} data-dtype="Boolean"/>
                                     {{/if}}
                                 </td>
                                 <td class="question-container" id="strong-bow-crossbow-finesse">
@@ -163,20 +163,20 @@
                                 </td>
                             </tr>
                             <!-- TODO - Make this only show up if there is not an actor -->
-                            {{#unless system.bowDesign.strongBowCrossbowFinesseFromActor}}
+                            {{#unless item.system.bowDesign.strongBowCrossbowFinesseFromActor}}
                             <tr class="design-row">
                                 <td style="width: 150px">
-                                    {{#if (eq system.bowDesign.type "xbow")}}
+                                    {{#if (eq item.system.bowDesign.type "xbow")}}
                                     Crossbow Finesse
                                     {{else}}
                                     Strongbow
                                     {{/if}}
                                     Spoof:
 
-                                    {{system.bowDesign.strongBowCrossbowFinesseEffect}}
+                                    {{item.system.bowDesign.strongBowCrossbowFinesseEffect}}
                                 </td>
                                 <td>
-                                    <input type="range" min="0" max="2" step="1" name="data.bowDesign.strongBowCrossbowFinesseEffect" value="{{system.bowDesign.strongBowCrossbowFinesseEffect}}" data-dtype="Number">
+                                    <input type="range" min="0" max="2" step="1" name="system.bowDesign.strongBowCrossbowFinesseEffect" value="{{item.system.bowDesign.strongBowCrossbowFinesseEffect}}" data-dtype="Number">
                                 </td>
                                 <td class="question-container" id="strong-bow-crossbow-finesse-effect">
                                     <div class="question-button">
@@ -187,9 +187,9 @@
                             {{/unless}}
                         </table>
                         <h2 class="bold" style="text-align: center;">
-                            {{#if (eq system.bowDesign.type "bow")}}Bow {{/if}}
-                            {{#if (eq system.bowDesign.type "xbow")}}Crossbow {{/if}}
-                            {{#if (eq system.bowDesign.type "footbow")}}Footbow {{/if}}
+                            {{#if (eq item.system.bowDesign.type "bow")}}Bow {{/if}}
+                            {{#if (eq item.system.bowDesign.type "xbow")}}Crossbow {{/if}}
+                            {{#if (eq item.system.bowDesign.type "footbow")}}Footbow {{/if}}
                             Options</h2>
                         <table>
                             <tr class="design-row">
@@ -197,7 +197,7 @@
                                     Draw Weight
                                 </td>
                                 <td>
-                                    <input type="number" name="data.bowDesign.drawWeight" value="{{system.bowDesign.drawWeight}}" data-dtype="Number"/>
+                                    <input type="number" name="system.bowDesign.drawWeight" value="{{item.system.bowDesign.drawWeight}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="draw-weight">
                                     <div class="question-button">
@@ -205,12 +205,12 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr class="design-row" style="{{{drawLengthStyle system.bowDesign.targetDrawLength system.bowDesign.maxDrawLength}}}">
+                            <tr class="design-row" style="{{{drawLengthStyle item.system.bowDesign.targetDrawLength item.system.bowDesign.maxDrawLength}}}">
                                 <td style="width: 150px">
                                     Target Draw Length
                                 </td>
                                 <td>
-                                    <input type="number" name="data.bowDesign.targetDrawLength" value="{{system.bowDesign.targetDrawLength}}" style="width: 45%" data-dtype="Number"/> / {{system.bowDesign.maxDrawLength}} in
+                                    <input type="number" name="system.bowDesign.targetDrawLength" value="{{item.system.bowDesign.targetDrawLength}}" style="width: 45%" data-dtype="Number"/> / {{item.system.bowDesign.maxDrawLength}} in
                                 </td>
                                 <td class="question-container" id="target-draw-length">
                                     <div class="question-button">
@@ -223,7 +223,7 @@
                                     Bow Length
                                 </td>
                                 <td>
-                                    <input type="number" name="data.bowDesign.totalBowLength" value="{{system.bowDesign.totalBowLength}}" data-dtype="Number"/>
+                                    <input type="number" name="system.bowDesign.totalBowLength" value="{{item.system.bowDesign.totalBowLength}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="total-bow-length">
                                     <div class="question-button">
@@ -236,7 +236,7 @@
                                     Working Percentage
                                 </td>
                                 <td>
-                                    <input type="number" name="data.bowDesign.workingPercentage" value="{{system.bowDesign.workingPercentage}}" data-dtype="Number"/>
+                                    <input type="number" name="system.bowDesign.workingPercentage" value="{{item.system.bowDesign.workingPercentage}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="working-bow-length">
                                     <div class="question-button">
@@ -249,8 +249,8 @@
                                     Quality
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.quality">
-                                        {{#select system.bowDesign.quality}}
+                                    <select name="system.bowDesign.quality">
+                                        {{#select item.system.bowDesign.quality}}
                                         <option value="cheap">Cheap</option>
                                         <option value="good">Good</option>
                                         <option value="fine">Fine (Accurate)</option>
@@ -272,10 +272,10 @@
                                     Working Bow Material 1
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.workingMaterialOne.name">
-                                        {{#select system.bowDesign.workingMaterialOne.name}}
-                                        {{#each system.bowDesign.materials as |material id|}}
-                                        {{#ifCond ../system.tl '>=' material.tl}}
+                                    <select name="system.bowDesign.workingMaterialOne.name">
+                                        {{#select item.system.bowDesign.workingMaterialOne.name}}
+                                        {{#each item.system.bowDesign.materials as |material id|}}
+                                        {{#ifCond ../item.system.tl '>=' material.tl}}
                                         <option value="{{material.name}}">{{material.name}}</option>
                                         {{/ifCond}}
                                         {{/each}}
@@ -289,13 +289,13 @@
                                 </td>
                             </tr>
 
-                            {{#if system.bowDesign.magicalMaterials}}
+                            {{#if item.system.bowDesign.magicalMaterials}}
                             <tr class="design-row">
                                 <td style="width: 150px">
                                     Is Material 1 Essential?
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.bowDesign.workingMaterialOneEssential" {{checked system.bowDesign.workingMaterialOneEssential}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.bowDesign.workingMaterialOneEssential" {{checked item.system.bowDesign.workingMaterialOneEssential}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="working-material-essential">
                                     <div class="question-button">
@@ -310,10 +310,10 @@
                                     Working Bow Material 2
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.workingMaterialTwo.name">
-                                        {{#select system.bowDesign.workingMaterialTwo.name}}
-                                        {{#each system.bowDesign.materials as |material id|}}
-                                        {{#ifCond ../system.tl '>=' material.tl}}
+                                    <select name="system.bowDesign.workingMaterialTwo.name">
+                                        {{#select item.system.bowDesign.workingMaterialTwo.name}}
+                                        {{#each item.system.bowDesign.materials as |material id|}}
+                                        {{#ifCond ../item.system.tl '>=' material.tl}}
                                         <option value="{{material.name}}">{{material.name}}</option>
                                         {{/ifCond}}
                                         {{/each}}
@@ -326,13 +326,13 @@
                                     </div>
                                 </td>
                             </tr>
-                            {{#if system.bowDesign.magicalMaterials}}
+                            {{#if item.system.bowDesign.magicalMaterials}}
                             <tr class="design-row">
                                 <td style="width: 150px">
                                     Is Material 2 Essential?
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.bowDesign.workingMaterialTwoEssential" {{checked system.bowDesign.workingMaterialTwoEssential}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.bowDesign.workingMaterialTwoEssential" {{checked item.system.bowDesign.workingMaterialTwoEssential}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="working-material-essential">
                                     <div class="question-button">
@@ -353,8 +353,8 @@
                                     Bow Shape
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.shape">
-                                        {{#select system.bowDesign.shape}}
+                                    <select name="system.bowDesign.shape">
+                                        {{#select item.system.bowDesign.shape}}
                                         <option value="d">D-Section</option>
                                         <option value="round">Round</option>
                                         {{/select}}
@@ -367,13 +367,13 @@
                                 </td>
                             </tr>
 
-                            {{#if (eq system.bowDesign.shape "d")}}
+                            {{#if (eq item.system.bowDesign.shape "d")}}
                             <tr class="design-row">
                                 <td style="width: 150px">
                                     Cross Section
                                 </td>
                                 <td>
-                                    <input type="number" name="data.bowDesign.crossSection" value="{{system.bowDesign.crossSection}}" data-dtype="Number"/>
+                                    <input type="number" name="system.bowDesign.crossSection" value="{{item.system.bowDesign.crossSection}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="cross-section">
                                     <div class="question-button">
@@ -388,19 +388,19 @@
                                     Bow Type
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.bowConstruction">
-                                        {{#select system.bowDesign.bowConstruction}}
+                                    <select name="system.bowDesign.bowConstruction">
+                                        {{#select item.system.bowDesign.bowConstruction}}
                                         <option value="straight">Straight</option>
-                                        {{#ifCond system.tl '>=' 1}}
+                                        {{#ifCond item.system.tl '>=' 1}}
                                         <option value="recurve">Recurve</option>
                                         <option value="reflex">Reflex</option>
                                         {{/ifCond}}
-                                        {{#if system.bowDesign.compoundBowStrictTL}}
-                                        {{#ifCond system.tl '>=' 7}}
+                                        {{#if item.system.bowDesign.compoundBowStrictTL}}
+                                        {{#ifCond item.system.tl '>=' 7}}
                                         <option value="compound">Compound</option>
                                         {{/ifCond}}
                                         {{else}}
-                                        {{#ifCond system.tl '>=' 2}}
+                                        {{#ifCond item.system.tl '>=' 2}}
                                         <option value="compound">Compound</option>
                                         {{/ifCond}}
                                         {{/if}}
@@ -414,13 +414,13 @@
                                 </td>
                             </tr>
 
-                            {{#if (eq system.bowDesign.bowConstruction "compound")}}
+                            {{#if (eq item.system.bowDesign.bowConstruction "compound")}}
                             <tr class="design-row">
                                 <td style="width: 150px">
                                     String Loops / Pulleys
                                 </td>
                                 <td>
-                                    <input type="number" name="data.bowDesign.loops" value="{{system.bowDesign.loops}}" data-dtype="Number"/>
+                                    <input type="number" name="system.bowDesign.loops" value="{{item.system.bowDesign.loops}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="bow-loops">
                                     <div class="question-button">
@@ -435,7 +435,7 @@
                                     Thickness
                                 </td>
                                 <td>
-                                    <input type="number" name="data.bowDesign.limbThickness" value="{{system.bowDesign.limbThickness}}" data-dtype="Number"/>
+                                    <input type="number" name="system.bowDesign.limbThickness" value="{{item.system.bowDesign.limbThickness}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="limb-thickness" rowspan="3">
                                     <div class="question-button">
@@ -449,21 +449,21 @@
                                     Minimum Thickness
                                 </td>
                                 <td>
-                                    {{system.bowDesign.limbMinThickness}} in
+                                    {{item.system.bowDesign.limbMinThickness}} in
                                 </td>
                             </tr>
 
-                            <tr class="design-row"  style="{{{deflectionStyle system.bowDesign.deflection}}}">
+                            <tr class="design-row"  style="{{{deflectionStyle item.system.bowDesign.deflection}}}">
                                 <td style="width: 150px">
                                     Deflection
                                 </td>
                                 <td>
-                                    {{round system.bowDesign.deflection 100}} %
+                                    {{round item.system.bowDesign.deflection 100}} %
                                 </td>
                             </tr>
                         </table>
 
-                        {{#if (eq system.bowDesign.type "xbow")}}
+                        {{#if (eq item.system.bowDesign.type "xbow")}}
                             <h2 class="bold" style="text-align: center;">
                                 Stock Construction
                             </h2>
@@ -473,10 +473,10 @@
                                         Stock Material 1
                                     </td>
                                     <td>
-                                        <select name="data.bowDesign.stockMaterialOne.name">
-                                            {{#select system.bowDesign.stockMaterialOne.name}}
-                                            {{#each system.bowDesign.materials as |material id|}}
-                                            {{#ifCond ../system.tl '>=' material.tl}}
+                                        <select name="system.bowDesign.stockMaterialOne.name">
+                                            {{#select item.system.bowDesign.stockMaterialOne.name}}
+                                            {{#each item.system.bowDesign.materials as |material id|}}
+                                            {{#ifCond ../item.system.tl '>=' material.tl}}
                                             <option value="{{material.name}}">{{material.name}}</option>
                                             {{/ifCond}}
                                             {{/each}}
@@ -489,13 +489,13 @@
                                         </div>
                                     </td>
                                 </tr>
-                                {{#if system.bowDesign.magicalMaterials}}
+                                {{#if item.system.bowDesign.magicalMaterials}}
                                 <tr class="design-row">
                                     <td style="width: 150px">
                                         Is Material 1 Essential?
                                     </td>
                                     <td>
-                                        <input type="checkbox" name="data.bowDesign.stockMaterialOneEssential" {{checked system.bowDesign.stockMaterialOneEssential}} data-dtype="Boolean"/>
+                                        <input type="checkbox" name="system.bowDesign.stockMaterialOneEssential" {{checked item.system.bowDesign.stockMaterialOneEssential}} data-dtype="Boolean"/>
                                     </td>
                                     <td class="question-container" id="riser-material-essential">
                                         <div class="question-button">
@@ -509,10 +509,10 @@
                                         Stock Material 2
                                     </td>
                                     <td>
-                                        <select name="data.bowDesign.stockMaterialTwo.name">
-                                            {{#select system.bowDesign.stockMaterialTwo.name}}
-                                            {{#each system.bowDesign.materials as |material id|}}
-                                            {{#ifCond ../system.tl '>=' material.tl}}
+                                        <select name="system.bowDesign.stockMaterialTwo.name">
+                                            {{#select item.system.bowDesign.stockMaterialTwo.name}}
+                                            {{#each item.system.bowDesign.materials as |material id|}}
+                                            {{#ifCond ../item.system.tl '>=' material.tl}}
                                             <option value="{{material.name}}">{{material.name}}</option>
                                             {{/ifCond}}
                                             {{/each}}
@@ -525,13 +525,13 @@
                                         </div>
                                     </td>
                                 </tr>
-                                {{#if system.bowDesign.magicalMaterials}}
+                                {{#if item.system.bowDesign.magicalMaterials}}
                                 <tr class="design-row">
                                     <td style="width: 150px">
                                         Is Material 2 Essential?
                                     </td>
                                     <td>
-                                        <input type="checkbox" name="data.bowDesign.stockMaterialTwoEssential" {{checked system.bowDesign.stockMaterialTwoEssential}} data-dtype="Boolean"/>
+                                        <input type="checkbox" name="system.bowDesign.stockMaterialTwoEssential" {{checked item.system.bowDesign.stockMaterialTwoEssential}} data-dtype="Boolean"/>
                                     </td>
                                     <td class="question-container" id="riser-material-essential">
                                         <div class="question-button">
@@ -542,10 +542,10 @@
                                 {{/if}}
                                 <tr class="design-row">
                                     <td style="width: 150px">
-                                        Allowed Deflection: {{system.bowDesign.allowedStockDeflection}}%
+                                        Allowed Deflection: {{item.system.bowDesign.allowedStockDeflection}}%
                                     </td>
                                     <td>
-                                        <input type="range" min="0.01" max="0.1" step="0.01" name="data.bowDesign.allowedStockDeflection" value="{{system.bowDesign.allowedStockDeflection}}" data-dtype="Number">
+                                        <input type="range" min="0.01" max="0.1" step="0.01" name="system.bowDesign.allowedStockDeflection" value="{{item.system.bowDesign.allowedStockDeflection}}" data-dtype="Number">
                                     </td>
                                     <td class="question-container" id="allowed-deflection">
                                         <div class="question-button">
@@ -558,7 +558,7 @@
                                         Stock Length
                                     </td>
                                     <td>
-                                        <input type="number" name="data.bowDesign.stockLength" value="{{system.bowDesign.stockLength}}" data-dtype="Number"/>
+                                        <input type="number" name="system.bowDesign.stockLength" value="{{item.system.bowDesign.stockLength}}" data-dtype="Number"/>
                                     </td>
                                     <td class="question-container" id="stock-length">
                                         <div class="question-button">
@@ -571,7 +571,7 @@
                                         Stock Width:
                                     </td>
                                     <td>
-                                        <input type="number" name="data.bowDesign.stockWidth" value="{{system.bowDesign.stockWidth}}" data-dtype="Number"/>
+                                        <input type="number" name="system.bowDesign.stockWidth" value="{{item.system.bowDesign.stockWidth}}" data-dtype="Number"/>
                                     </td>
                                     <td class="question-container" id="riser-width">
                                         <div class="question-button">
@@ -584,7 +584,7 @@
                                         Resulting Thickness:
                                     </td>
                                     <td>
-                                        {{system.bowDesign.stockThickness}}
+                                        {{item.system.bowDesign.stockThickness}}
                                     </td>
                                     <td class="question-container" id="riser-thickness">
                                         <div class="question-button">
@@ -595,7 +595,7 @@
                             </table>
                         {{/if}}
 
-                        {{#if (eq system.bowDesign.riser true)}}
+                        {{#if (eq item.system.bowDesign.riser true)}}
                         <h2 class="bold" style="text-align: center;">
                             Riser Construction
                         </h2>
@@ -605,10 +605,10 @@
                                     Riser Material 1
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.riserMaterialOne.name">
-                                        {{#select system.bowDesign.riserMaterialOne.name}}
-                                        {{#each system.bowDesign.materials as |material id|}}
-                                        {{#ifCond ../system.tl '>=' material.tl}}
+                                    <select name="system.bowDesign.riserMaterialOne.name">
+                                        {{#select item.system.bowDesign.riserMaterialOne.name}}
+                                        {{#each item.system.bowDesign.materials as |material id|}}
+                                        {{#ifCond ../item.system.tl '>=' material.tl}}
                                         <option value="{{material.name}}">{{material.name}}</option>
                                         {{/ifCond}}
                                         {{/each}}
@@ -621,13 +621,13 @@
                                     </div>
                                 </td>
                             </tr>
-                            {{#if system.bowDesign.magicalMaterials}}
+                            {{#if item.system.bowDesign.magicalMaterials}}
                             <tr class="design-row">
                                 <td style="width: 150px">
                                     Is Material 1 Essential?
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.bowDesign.riserMaterialOneEssential" {{checked system.bowDesign.riserMaterialOneEssential}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.bowDesign.riserMaterialOneEssential" {{checked item.system.bowDesign.riserMaterialOneEssential}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="riser-material-essential">
                                     <div class="question-button">
@@ -641,10 +641,10 @@
                                     Riser Material 2
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.riserMaterialTwo.name">
-                                        {{#select system.bowDesign.riserMaterialTwo.name}}
-                                        {{#each system.bowDesign.materials as |material id|}}
-                                        {{#ifCond ../system.tl '>=' material.tl}}
+                                    <select name="system.bowDesign.riserMaterialTwo.name">
+                                        {{#select item.system.bowDesign.riserMaterialTwo.name}}
+                                        {{#each item.system.bowDesign.materials as |material id|}}
+                                        {{#ifCond ../item.system.tl '>=' material.tl}}
                                         <option value="{{material.name}}">{{material.name}}</option>
                                         {{/ifCond}}
                                         {{/each}}
@@ -657,13 +657,13 @@
                                     </div>
                                 </td>
                             </tr>
-                            {{#if system.bowDesign.magicalMaterials}}
+                            {{#if item.system.bowDesign.magicalMaterials}}
                             <tr class="design-row">
                                 <td style="width: 150px">
                                     Is Material 2 Essential?
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.bowDesign.riserMaterialTwoEssential" {{checked system.bowDesign.riserMaterialTwoEssential}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.bowDesign.riserMaterialTwoEssential" {{checked item.system.bowDesign.riserMaterialTwoEssential}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="riser-material-essential">
                                     <div class="question-button">
@@ -674,10 +674,10 @@
                             {{/if}}
                             <tr class="design-row">
                                 <td style="width: 150px">
-                                    Allowed Deflection: {{system.bowDesign.allowedRiserDeflection}}%
+                                    Allowed Deflection: {{item.system.bowDesign.allowedRiserDeflection}}%
                                 </td>
                                 <td>
-                                    <input type="range" min="0.01" max="0.1" step="0.01" name="data.bowDesign.allowedRiserDeflection" value="{{system.bowDesign.allowedRiserDeflection}}" data-dtype="Number">
+                                    <input type="range" min="0.01" max="0.1" step="0.01" name="system.bowDesign.allowedRiserDeflection" value="{{item.system.bowDesign.allowedRiserDeflection}}" data-dtype="Number">
                                 </td>
                                 <td class="question-container" id="allowed-deflection">
                                     <div class="question-button">
@@ -690,7 +690,7 @@
                                     Riser Width:
                                 </td>
                                 <td>
-                                    <input type="number" name="data.bowDesign.riserWidth" value="{{system.bowDesign.riserWidth}}" data-dtype="Number"/>
+                                    <input type="number" name="system.bowDesign.riserWidth" value="{{item.system.bowDesign.riserWidth}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="riser-width">
                                     <div class="question-button">
@@ -703,7 +703,7 @@
                                     Resulting Thickness:
                                 </td>
                                 <td>
-                                    {{system.bowDesign.riserThickness}}
+                                    {{item.system.bowDesign.riserThickness}}
                                 </td>
                                 <td class="question-container" id="riser-thickness">
                                     <div class="question-button">
@@ -718,8 +718,8 @@
                         <table>
                             <tr class="design-row">
                                 <td style="line-height: 27.5px" colspan="2">
-                                    <input style="width: 75%" type="text" placeholder="Skill" name="data.bowDesign.skill" value="{{system.bowDesign.skill}}"/>
-                                    <input style="width: 20%" type="number" placeholder="Mod" name="data.bowDesign.skillMod" value="{{system.bowDesign.skillMod}}"/>
+                                    <input style="width: 75%" type="text" placeholder="Skill" name="system.bowDesign.skill" value="{{item.system.bowDesign.skill}}"/>
+                                    <input style="width: 20%" type="number" placeholder="Mod" name="system.bowDesign.skillMod" value="{{item.system.bowDesign.skillMod}}"/>
                                 </td>
                                 <td class="question-container" id="bow-skill">
                                     <div class="question-button">
@@ -730,7 +730,7 @@
                         </table>
 
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Projectile Designs</h2>
-                        {{#each system.bowDesign.arrows as |arrow id|}}
+                        {{#each item.system.bowDesign.arrows as |arrow id|}}
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Projectile {{id}} <a class="deleteArrowRow" id="arroww{{id}}" title="Delete Row"><i class="fas fa-trash"></i></a></h2>
                         <table>
                             <tr class="design-row">
@@ -738,7 +738,7 @@
                                     Projectile Name:
                                 </td>
                                 <td>
-                                    <input type="text" name="data.bowDesign.arrows.{{id}}.name" value="{{arrow.name}}" data-dtype="String"/>
+                                    <input type="text" name="system.bowDesign.arrows.{{id}}.name" value="{{arrow.name}}" data-dtype="String"/>
                                 </td>
                                 <td class="question-container" id="arrow-name">
                                     <div class="question-button">
@@ -752,7 +752,7 @@
                                     Shaft Length:
                                 </td>
                                 <td>
-                                    <input type="number" name="data.bowDesign.arrows.{{id}}.length" value="{{arrow.length}}" data-dtype="Number"/>
+                                    <input type="number" name="system.bowDesign.arrows.{{id}}.length" value="{{arrow.length}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="shaft-length">
                                     <div class="question-button">
@@ -766,10 +766,10 @@
                                     Shaft Material
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.arrows.{{id}}.material.name">
+                                    <select name="system.bowDesign.arrows.{{id}}.material.name">
                                         {{#select arrow.material.name}}
-                                        {{#each ../system.bowDesign.materials as |material id|}}
-                                        {{#ifCond ../../system.tl '>=' material.tl}}
+                                        {{#each ../item.system.bowDesign.materials as |material id|}}
+                                        {{#ifCond ../../item.system.tl '>=' material.tl}}
                                         <option value="{{material.name}}">{{material.name}}</option>
                                         {{/ifCond}}
                                         {{/each}}
@@ -783,12 +783,13 @@
                                 </td>
                             </tr>
 
+                            {{#if ../item.system.bowDesign.magicalMaterials}}
                             <tr class="design-row">
                                 <td style="width: 160px">
                                     Shaft Material Essential
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.bowDesign.arrows.{{id}}.materialEssential" {{checked arrow.materialEssential}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.bowDesign.arrows.{{id}}.materialEssential" {{checked arrow.materialEssential}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="shaft-material-essential">
                                     <div class="question-button">
@@ -796,13 +797,14 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{/if}}
 
                             <tr class="design-row">
                                 <td style="width: 160px">
                                     Arrow Quality:
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.arrows.{{id}}.quality">
+                                    <select name="system.bowDesign.arrows.{{id}}.quality">
                                         {{#select arrow.quality}}
                                         <option value="cheap">Cheap</option>
                                         <option value="good">Good</option>
@@ -822,7 +824,7 @@
                                     Arrow Outer Diameter
                                 </td>
                                 <td>
-                                    <input type="number" name="data.bowDesign.arrows.{{id}}.outerDiameter" value="{{arrow.outerDiameter}}" data-dtype="Number" style="width: 45%"/>
+                                    <input type="number" name="system.bowDesign.arrows.{{id}}.outerDiameter" value="{{arrow.outerDiameter}}" data-dtype="Number" style="width: 45%"/>
                                      / {{arrow.minOuterDiameter}}
                                 </td>
                                 <td class="question-container" id="arrow-outer-diameter">
@@ -837,7 +839,7 @@
                                     Arrow Inner Diameter
                                 </td>
                                 <td>
-                                    <input type="number" name="data.bowDesign.arrows.{{id}}.innerDiameter" value="{{arrow.innerDiameter}}" data-dtype="Number"/>
+                                    <input type="number" name="system.bowDesign.arrows.{{id}}.innerDiameter" value="{{arrow.innerDiameter}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="arrow-inner-diameter">
                                     <div class="question-button">
@@ -851,7 +853,7 @@
                                     Damage Type
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.arrows.{{id}}.arrowhead.damageType">
+                                    <select name="system.bowDesign.arrows.{{id}}.arrowhead.damageType">
                                         {{#select arrow.arrowhead.damageType}}
                                         <option value="imp">Impaling</option>
                                         <option value="pi">Piercing</option>
@@ -871,7 +873,7 @@
                                     Armour Divisor
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.arrows.{{id}}.arrowhead.ad">
+                                    <select name="system.bowDesign.arrows.{{id}}.arrowhead.ad">
                                         {{#select arrow.arrowhead.ad}}
                                         <option value="1">(1)</option>
                                         <option value="0.5">(0.5)</option>
@@ -891,7 +893,7 @@
                                     Barbed
                                 </td>
                                 <td>
-                                    <select name="data.bowDesign.arrows.{{id}}.arrowhead.barbed">
+                                    <select name="system.bowDesign.arrows.{{id}}.arrowhead.barbed">
                                         {{#select arrow.arrowhead.barbed}}
                                         <option value="yes">Yes</option>
                                         <option value="no">No</option>
@@ -910,7 +912,7 @@
                                     Arrowhead Weight: {{arrow.arrowhead.weight}}lbs
                                 </td>
                                 <td>
-                                    <input type="range" min="0.015" max="0.1" step="0.005" name="data.bowDesign.arrows.{{id}}.arrowhead.weight" value="{{arrow.arrowhead.weight}}" data-dtype="Number">
+                                    <input type="range" min="0.015" max="0.1" step="0.005" name="system.bowDesign.arrows.{{id}}.arrowhead.weight" value="{{arrow.arrowhead.weight}}" data-dtype="Number">
                                 </td>
                                 <td class="question-container" id="arrowhead-weight">
                                     <div class="question-button">
@@ -966,7 +968,7 @@
                                     Show Profile
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.bowDesign.arrows.{{id}}.showProfile" {{checked arrow.showProfile}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.bowDesign.arrows.{{id}}.showProfile" {{checked arrow.showProfile}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="bow-show-profile">
                                     <div class="question-button">
@@ -982,7 +984,7 @@
                     </div>
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
-                        <div class="equipment-info-container">{{{system.info}}}</div>
+                        <div class="equipment-info-container">{{{item.system.info}}}</div>
                     </div>
                 </div>
             </div>
@@ -993,7 +995,7 @@
             <h2 class="bold">Material Catalogue</h2>
             <div>
                 <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
-                <div class="equipment-info-container">{{{system.info}}}</div>
+                <div class="equipment-info-container">{{{item.system.info}}}</div>
             </div>
             <div class="tab">
                 <table class="material-catalogue-table">
@@ -1037,8 +1039,8 @@
                         </div>
                         </td>
                     </tr>
-                    {{#each system.bowDesign.materials as |material id|}}
-                    {{#ifCond ../system.tl '>=' material.tl}}
+                    {{#each item.system.bowDesign.materials as |material id|}}
+                    {{#ifCond ../item.system.tl '>=' material.tl}}
                     <tr class="design-row">
                         <td>{{material.name}}</td>
                         <td style="text-align: right">{{material.densityLbsCuIn}}</td>
@@ -1062,22 +1064,22 @@
                 <div class="design-block">
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">Firearm Options</h2>
-                        <input style="display: none;" type="checkbox" name="data.firearmDesign.initComplete" {{checked system.firearmDesign.initComplete}} data-dtype="Boolean"/>
+                        <input style="display: none;" type="checkbox" name="system.firearmDesign.initComplete" {{checked item.system.firearmDesign.initComplete}} data-dtype="Boolean"/>
                         <table>
                             <tr class="design-row">
                                 <td style="width: 150px">
                                     Configuration
                                 </td>
                                 <td>
-                                    <select name="data.firearmDesign.configuration">
-                                        {{#select system.firearmDesign.configuration}}
+                                    <select name="system.firearmDesign.configuration">
+                                        {{#select item.system.firearmDesign.configuration}}
                                         <option value="cannon">Cannon</option>
-                                        {{#ifCond  system.tl '>=' 4 }}
+                                        {{#ifCond  item.system.tl '>=' 4 }}
                                         <option value="pistol">Pistol</option>
                                         <option value="longarm">Longarm</option>
                                         <option value="semiportable">Semi-Portable Longarm</option>
                                         {{/ifCond}}
-                                        {{#ifCond  system.tl '>=' 6 }}
+                                        {{#ifCond  item.system.tl '>=' 6 }}
                                         <option value="bullpup">Bullpup Longarm</option>
                                         {{/ifCond}}
                                         {{/select}}
@@ -1090,13 +1092,13 @@
                                 </td>
                             </tr>
 
-                            {{#ifCond system.tl '>=' 4 }}
+                            {{#ifCond item.system.tl '>=' 4 }}
                             <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Barrel Rifling
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.firearmDesign.rifling" {{checked system.firearmDesign.rifling}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.firearmDesign.rifling" {{checked item.system.firearmDesign.rifling}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="rifling">
                                     <div class="question-button">
@@ -1111,21 +1113,21 @@
                                     Action Type
                                 </td>
                                 <td>
-                                    <select name="data.firearmDesign.action">
-                                        {{#select system.firearmDesign.action}}
+                                    <select name="system.firearmDesign.action">
+                                        {{#select item.system.firearmDesign.action}}
                                         <option value="muzzle">Muzzle Loader (TL3)</option>
 
-                                        {{#if system.firearmDesign.allowTL4BreechLoaders}}
-                                            {{#ifCond  system.tl '==' 4 }}
+                                        {{#if item.system.firearmDesign.allowTL4BreechLoaders}}
+                                            {{#ifCond  item.system.tl '==' 4 }}
                                                 <option value="breech">Breech Loader (TL4)</option>
                                             {{/ifCond}}
                                         {{else}}
-                                            {{#ifCond  system.tl '>=' 5 }}
+                                            {{#ifCond  item.system.tl '>=' 5 }}
                                                 <option value="breech">Breech Loader (TL5)</option>
                                             {{/ifCond}}
                                         {{/if}}
 
-                                        {{#ifCond  system.tl '>=' 5 }}
+                                        {{#ifCond  item.system.tl '>=' 5 }}
                                         <option value="break">Break Action (TL5)</option>
                                         <option value="lever">Lever Action (Mid-Late TL5)</option>
                                         <option value="revolverSA">Single Action Revolver (Mid-Late TL5)</option>
@@ -1133,14 +1135,14 @@
                                         <option value="bolt">Bolt Action (Very Late TL5)</option>
                                         {{/ifCond}}
 
-                                        {{#ifCond  system.tl '>=' 6 }}
+                                        {{#ifCond  item.system.tl '>=' 6 }}
                                         <option value="revolverDA">Double Action Revolver (TL6)</option>
                                         <option value="straightPull">Straight Pull Bolt Action (TL6)</option>
                                         <option value="semi">Semi Automatic (TL6)</option>
                                         <option value="auto">Automatic (TL6)</option>
                                         {{/ifCond}}
 
-                                        {{#ifCond  system.tl '>=' 7 }}
+                                        {{#ifCond  item.system.tl '>=' 7 }}
                                         <option value="burst">Automatic With Burst (TL7)</option>
                                         <option value="burst">Automatic With High-Cyclic Burst (Mid TL7)</option>
                                         {{/ifCond}}
@@ -1160,23 +1162,23 @@
                                     Lock Type
                                 </td>
                                 <td>
-                                    <select name="data.firearmDesign.lock">
-                                        {{#select system.firearmDesign.lock}}
+                                    <select name="system.firearmDesign.lock">
+                                        {{#select item.system.firearmDesign.lock}}
                                         <option value="cannon">Cannonlock (TL 3)</option>
                                         <option value="match">Matchlock (Very Late TL 3)</option>
 
-                                        {{#ifCond  system.tl '>=' 4 }}
+                                        {{#ifCond  item.system.tl '>=' 4 }}
                                         <option value="wheel">Wheellock (TL4)</option>
                                         <option value="flint">Flintlock (Mid-Early TL4)</option>
                                         {{/ifCond}}
 
-                                        {{#ifCond  system.tl '>=' 5 }}
+                                        {{#ifCond  item.system.tl '>=' 5 }}
                                         <option value="cap">Caplock (Mid TL5)</option>
                                         <option value="pin">Pinfire (Late TL5)</option>
                                         <option value="rim">Rimfire (Late TL5)</option>
                                         {{/ifCond}}
 
-                                        {{#ifCond  system.tl '>=' 6 }}
+                                        {{#ifCond  item.system.tl '>=' 6 }}
                                         <option value="centre">Centrefire (Late TL6)</option>
                                         {{/ifCond}}
 
@@ -1190,14 +1192,14 @@
                                 </td>
                             </tr>
 
-                            {{#if (or (eq system.firearmDesign.action "semi") (eq system.firearmDesign.action "auto") (eq system.firearmDesign.action "burst") (eq system.firearmDesign.action "highCyclicBurst") ) }}
+                            {{#if (or (eq item.system.firearmDesign.action "semi") (eq item.system.firearmDesign.action "auto") (eq item.system.firearmDesign.action "burst") (eq item.system.firearmDesign.action "highCyclicBurst") ) }}
                             <tr class="design-row">
                                 <td style="width: 150px">
                                     Open or Closed Bolt
                                 </td>
                                 <td>
-                                    <select name="data.firearmDesign.bolt">
-                                        {{#select system.firearmDesign.bolt}}
+                                    <select name="system.firearmDesign.bolt">
+                                        {{#select item.system.firearmDesign.bolt}}
                                         <option value="closed">Closed</option>
                                         <option value="open">Open</option>
                                         {{/select}}
@@ -1216,7 +1218,7 @@
                                     Barrel Length (mm)
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    <input type="number" name="data.firearmDesign.barrelLength" value="{{system.firearmDesign.barrelLength}}" data-dtype="Number"/>
+                                    <input type="number" name="system.firearmDesign.barrelLength" value="{{item.system.firearmDesign.barrelLength}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="barrel-length">
                                     <div class="question-button">
@@ -1230,7 +1232,7 @@
                                     Barrels
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    {{system.firearmDesign.barrels}}
+                                    {{item.system.firearmDesign.barrels}}
                                 </td>
                                 <td class="question-container" id="firearm-barrels">
                                     <div class="question-button">
@@ -1241,17 +1243,17 @@
 
                             <tr>
                                 <td colspan="3">
-                                    <input type="range" min="1" max="12" step="1" name="data.firearmDesign.barrels" value="{{system.firearmDesign.barrels}}" data-dtype="Number">
+                                    <input type="range" min="1" max="12" step="1" name="system.firearmDesign.barrels" value="{{item.system.firearmDesign.barrels}}" data-dtype="Number">
                                 </td>
                             </tr>
 
-                            {{#ifCond system.firearmDesign.maxRof '>=' 2}}
+                            {{#ifCond item.system.firearmDesign.maxRof '>=' 2}}
                             <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Rate of Fire
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    {{system.firearmDesign.rof}} per turn or {{rpm system.firearmDesign.rof}} rounds per minute
+                                    {{item.system.firearmDesign.rof}} per turn or {{rpm item.system.firearmDesign.rof}} rounds per minute
                                 </td>
                                 <td class="question-container" id="rate-of-fire">
                                     <div class="question-button">
@@ -1262,7 +1264,7 @@
 
                             <tr>
                                 <td colspan="3">
-                                    <input type="range" min="1" max="{{system.firearmDesign.maxRof}}" step="1" name="data.firearmDesign.rof" value="{{system.firearmDesign.rof}}" data-dtype="Number">
+                                    <input type="range" min="1" max="{{item.system.firearmDesign.maxRof}}" step="1" name="system.firearmDesign.rof" value="{{item.system.firearmDesign.rof}}" data-dtype="Number">
                                 </td>
                             </tr>
                             {{/ifCond}}
@@ -1277,16 +1279,16 @@
                                     Powder Type
                                 </td>
                                 <td>
-                                    <select name="data.firearmDesign.powder">
-                                        {{#select system.firearmDesign.powder}}
+                                    <select name="system.firearmDesign.powder">
+                                        {{#select item.system.firearmDesign.powder}}
                                         <option value="black">Black Powder (TL 3)</option>
-                                        {{#ifCond  system.tl '>=' 6 }}
+                                        {{#ifCond  item.system.tl '>=' 6 }}
                                         <option value="smokeless">Smokeless Powder (TL 6)</option>
                                         {{/ifCond}}
-                                        {{#ifCond  system.tl '>=' 9 }}
+                                        {{#ifCond  item.system.tl '>=' 9 }}
                                         <option value="etc">Electrothermal Chemical (TL 9)</option>
                                         {{/ifCond}}
-                                        {{#ifCond  system.tl '>=' 10 }}
+                                        {{#ifCond  item.system.tl '>=' 10 }}
                                         <option value="etk">Electrothermal Kinetic (TL 10)</option>
                                         {{/ifCond}}
                                         {{/select}}
@@ -1304,7 +1306,7 @@
                                     Projectile Calibre (mm)
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    <input type="number" name="data.firearmDesign.projectileCalibre" value="{{system.firearmDesign.projectileCalibre}}" data-dtype="Number"/>
+                                    <input type="number" name="system.firearmDesign.projectileCalibre" value="{{item.system.firearmDesign.projectileCalibre}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="projectile-calibre">
                                     <div class="question-button">
@@ -1318,7 +1320,7 @@
                                     Projectile Aspect Ratio
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    <input type="number" name="data.firearmDesign.projectileAspectRatio" value="{{system.firearmDesign.projectileAspectRatio}}" data-dtype="Number"/>
+                                    <input type="number" name="system.firearmDesign.projectileAspectRatio" value="{{item.system.firearmDesign.projectileAspectRatio}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="projectile-aspect">
                                     <div class="question-button">
@@ -1332,7 +1334,7 @@
                                     Projectile Mass (grains)
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    <input type="number" name="data.firearmDesign.projectileMass" value="{{system.firearmDesign.projectileMass}}" data-dtype="Number"/>
+                                    <input type="number" name="system.firearmDesign.projectileMass" value="{{item.system.firearmDesign.projectileMass}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="projectile-mass">
                                     <div class="question-button">
@@ -1346,7 +1348,7 @@
                                     Resulting Projectile Density and Sample Materials
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    {{round system.firearmDesign.projectileDensity 100}} g/cm^2 : {{system.firearmDesign.projectileMaterials}}
+                                    {{round item.system.firearmDesign.projectileDensity 100}} g/cm^2 : {{item.system.firearmDesign.projectileMaterials}}
                                 </td>
                                 <td class="question-container" id="projectile-density">
                                     <div class="question-button">
@@ -1360,7 +1362,7 @@
                                     Chamber Bore (mm)
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    <input type="number" name="data.firearmDesign.chamberBore" value="{{system.firearmDesign.chamberBore}}" data-dtype="Number"/>
+                                    <input type="number" name="system.firearmDesign.chamberBore" value="{{item.system.firearmDesign.chamberBore}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="chamber-bore">
                                     <div class="question-button">
@@ -1374,7 +1376,7 @@
                                     Case Length (mm)
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    <input type="number" name="data.firearmDesign.caseLength" value="{{system.firearmDesign.caseLength}}" data-dtype="Number"/>
+                                    <input type="number" name="system.firearmDesign.caseLength" value="{{item.system.firearmDesign.caseLength}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="case-length">
                                     <div class="question-button">
@@ -1388,8 +1390,8 @@
                                     Cartridge Type
                                 </td>
                                 <td>
-                                    <select name="data.firearmDesign.cartridgeType">
-                                        {{#select system.firearmDesign.cartridgeType}}
+                                    <select name="system.firearmDesign.cartridgeType">
+                                        {{#select item.system.firearmDesign.cartridgeType}}
                                         <option value="pistol">Pistol</option>
                                         <option value="rifle">Rifle</option>
                                         <option value="custom">Custom</option>
@@ -1408,10 +1410,10 @@
                                     Burn Length
                                 </td>
                                 <td>
-                                    {{#if (eq system.firearmDesign.cartridgeType "custom")}}
-                                        <input type="range" min="0.01" max="1" step="0.01" name="data.firearmDesign.burnRatio" value="{{system.firearmDesign.burnRatio}}" data-dtype="Number"><br/>
+                                    {{#if (eq item.system.firearmDesign.cartridgeType "custom")}}
+                                        <input type="range" min="0.01" max="1" step="0.01" name="system.firearmDesign.burnRatio" value="{{item.system.firearmDesign.burnRatio}}" data-dtype="Number"><br/>
                                     {{/if}}
-                                    {{round system.firearmDesign.burnRatio 100}}% / {{round system.firearmDesign.burnLength 100}} mm / {{mmToIn system.firearmDesign.burnLength 100}} in
+                                    {{round item.system.firearmDesign.burnRatio 100}}% / {{round item.system.firearmDesign.burnLength 100}} mm / {{mmToIn item.system.firearmDesign.burnLength 100}} in
                                 </td>
                                 <td class="question-container" id="burn-length">
                                     <div class="question-button">
@@ -1425,7 +1427,7 @@
                                     Chamber Pressure (psi)
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    <input type="number" name="data.firearmDesign.chamberPressure" value="{{system.firearmDesign.chamberPressure}}" data-dtype="Number"/> : {{chamberPressureExample system.firearmDesign.chamberPressure system.firearmDesign.powder}}
+                                    <input type="number" name="system.firearmDesign.chamberPressure" value="{{item.system.firearmDesign.chamberPressure}}" data-dtype="Number"/> : {{chamberPressureExample item.system.firearmDesign.chamberPressure item.system.firearmDesign.powder}}
                                 </td>
                                 <td class="question-container" id="chamber-pressure">
                                     <div class="question-button">
@@ -1435,7 +1437,7 @@
                             </tr>
                         </table>
 
-                        {{#unless (or (eq system.firearmDesign.action "break") (eq system.firearmDesign.action "breech") (eq system.firearmDesign.action "muzzle") ) }}
+                        {{#unless (or (eq item.system.firearmDesign.action "break") (eq item.system.firearmDesign.action "breech") (eq item.system.firearmDesign.action "muzzle") ) }}
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Magazine</h2>
                         <table>
                             <tr class="design-row">
@@ -1443,16 +1445,16 @@
                                     Magazine Style
                                 </td>
                                 <td>
-                                    <select name="data.firearmDesign.magazineStyle">
-                                        {{#select system.firearmDesign.magazineStyle}}
+                                    <select name="system.firearmDesign.magazineStyle">
+                                        {{#select item.system.firearmDesign.magazineStyle}}
                                         <option value="none">None</option>
                                         <option value="internal">Internal (TL 3)</option>
-                                        {{#ifCond  system.tl '>=' 6 }}
+                                        {{#ifCond  item.system.tl '>=' 6 }}
                                         <option value="standard">Standard (TL 6)</option>
                                         <option value="extended">Extended (TL 6)</option>
                                         <option value="drum">Drum (TL 6)</option>
                                         {{/ifCond}}
-                                        {{#ifCond  system.tl '>=' 7 }}
+                                        {{#ifCond  item.system.tl '>=' 7 }}
                                         <option value="highDensity">High Density (TL 7)</option>
                                         {{/ifCond}}
                                         {{/select}}
@@ -1470,13 +1472,13 @@
                                     Magazine Material
                                 </td>
                                 <td>
-                                    <select name="data.firearmDesign.magazineMaterial">
-                                        {{#select system.firearmDesign.magazineMaterial}}
+                                    <select name="system.firearmDesign.magazineMaterial">
+                                        {{#select item.system.firearmDesign.magazineMaterial}}
                                         <option value="internal">Steel (TL 3)</option>
-                                        {{#ifCond  system.tl '>=' 6 }}
+                                        {{#ifCond  item.system.tl '>=' 6 }}
                                         <option value="drum">Alloy (TL 6)</option>
                                         {{/ifCond}}
-                                        {{#ifCond  system.tl '>=' 7 }}
+                                        {{#ifCond  item.system.tl '>=' 7 }}
                                         <option value="plastic">Plastic (TL 7)</option>
                                         {{/ifCond}}
                                         {{/select}}
@@ -1494,7 +1496,7 @@
                                     Magazine Capacity
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    <input type="number" name="data.firearmDesign.capacity" value="{{system.firearmDesign.capacity}}" data-dtype="Number"/>
+                                    <input type="number" name="system.firearmDesign.capacity" value="{{item.system.firearmDesign.capacity}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="magazine-capacity">
                                     <div class="question-button">
@@ -1512,14 +1514,14 @@
                                     Firearm Accuracy
                                 </td>
                                 <td>
-                                    <select name="data.firearmDesign.accuracy">
-                                        {{#select system.firearmDesign.accuracy}}
+                                    <select name="system.firearmDesign.accuracy">
+                                        {{#select item.system.firearmDesign.accuracy}}
                                         <option value="-1">Cheap</option>
                                         <option value="0">Good</option>
-                                        {{#ifCond system.firearmDesign.baseAcc '>=' 2 }}
+                                        {{#ifCond item.system.firearmDesign.baseAcc '>=' 2 }}
                                         <option value="1">Fine</option>
                                         {{/ifCond}}
-                                        {{#ifCond system.firearmDesign.baseAcc '>=' 4 }}
+                                        {{#ifCond item.system.firearmDesign.baseAcc '>=' 4 }}
                                         <option value="2">Very Fine</option>
                                         {{/ifCond}}
                                         {{/select}}
@@ -1537,8 +1539,8 @@
                                     Firearm Reliability
                                 </td>
                                 <td>
-                                    <select name="data.firearmDesign.reliability">
-                                        {{#select system.firearmDesign.reliability}}
+                                    <select name="system.firearmDesign.reliability">
+                                        {{#select item.system.firearmDesign.reliability}}
                                         <option value="-2">Cheap</option>
                                         <option value="0">Good</option>
                                         <option value="1">Fine</option>
@@ -1558,10 +1560,10 @@
                         <table>
                             <tr class="design-row">
                                 <td style="line-height: 27.5px">
-                                    Tweak Weight x{{system.firearmDesign.weightTweak}}
+                                    Tweak Weight x{{item.system.firearmDesign.weightTweak}}
                                 </td>
                                 <td>
-                                    <input type="range" min="0.85" max="2" step="0.05" name="data.firearmDesign.weightTweak" value="{{system.firearmDesign.weightTweak}}" data-dtype="Number">
+                                    <input type="range" min="0.85" max="2" step="0.05" name="system.firearmDesign.weightTweak" value="{{item.system.firearmDesign.weightTweak}}" data-dtype="Number">
                                 </td>
                                 <td class="question-container" id="firearm-weight-tweak">
                                     <div class="question-button">
@@ -1575,7 +1577,7 @@
                                     Fit to Owner
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.firearmDesign.fitToOwner" {{checked system.firearmDesign.fitToOwner}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.firearmDesign.fitToOwner" {{checked item.system.firearmDesign.fitToOwner}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="fit-to-owner">
                                     <div class="question-button">
@@ -1589,7 +1591,7 @@
                                     Include a melee profile
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.firearmDesign.meleeProfile" {{checked system.firearmDesign.meleeProfile}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.firearmDesign.meleeProfile" {{checked item.system.firearmDesign.meleeProfile}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="melee-profile">
                                     <div class="question-button">
@@ -1598,13 +1600,13 @@
                                 </td>
                             </tr>
 
-                            {{#if system.firearmDesign.meleeProfile}}
+                            {{#if item.system.firearmDesign.meleeProfile}}
                             <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Cavalier Weapon
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.firearmDesign.cavalierWeapon" {{checked system.firearmDesign.cavalierWeapon}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.firearmDesign.cavalierWeapon" {{checked item.system.firearmDesign.cavalierWeapon}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="cavalier-weapon">
                                     <div class="question-button">
@@ -1619,8 +1621,8 @@
                         <table>
                             <tr class="design-row">
                                 <td style="line-height: 27.5px" colspan="2">
-                                    <input style="width: 75%" type="text" placeholder="Ranged Skill" name="data.firearmDesign.rangedSkill" value="{{system.firearmDesign.rangedSkill}}"/>
-                                    <input style="width: 20%" type="number" placeholder="Mod" name="data.firearmDesign.rangedSkillMod" value="{{system.firearmDesign.rangedSkillMod}}"/>
+                                    <input style="width: 75%" type="text" placeholder="Ranged Skill" name="system.firearmDesign.rangedSkill" value="{{item.system.firearmDesign.rangedSkill}}"/>
+                                    <input style="width: 20%" type="number" placeholder="Mod" name="system.firearmDesign.rangedSkillMod" value="{{item.system.firearmDesign.rangedSkillMod}}"/>
                                 </td>
                                 <td class="question-container" id="laser-ranged-skill">
                                     <div class="question-button">
@@ -1629,11 +1631,11 @@
                                 </td>
                             </tr>
 
-                            {{#if system.firearmDesign.meleeProfile}}
+                            {{#if item.system.firearmDesign.meleeProfile}}
                             <tr class="design-row">
                                 <td style="line-height: 27.5px" colspan="2">
-                                    <input style="width: 75%" type="text" placeholder="Melee Skill" name="data.firearmDesign.meleeSkill" value="{{system.firearmDesign.meleeSkill}}"/>
-                                    <input style="width: 20%" type="number" placeholder="Mod" name="data.firearmDesign.meleeSkillMod" value="{{system.firearmDesign.meleeSkillMod}}"/>
+                                    <input style="width: 75%" type="text" placeholder="Melee Skill" name="system.firearmDesign.meleeSkill" value="{{item.system.firearmDesign.meleeSkill}}"/>
+                                    <input style="width: 20%" type="number" placeholder="Mod" name="system.firearmDesign.meleeSkillMod" value="{{item.system.firearmDesign.meleeSkillMod}}"/>
                                 </td>
                                 <td class="question-container" id="laser-melee-skill">
                                     <div class="question-button">
@@ -1651,7 +1653,7 @@
                                     Baseline Damage
                                 </td>
                                 <td>
-                                    {{system.firearmDesign.baseDamage}} {{this.system.firearmDesign.woundMod}}, or {{system.firearmDesign.baseDamageDice}} {{this.system.firearmDesign.woundMod}}
+                                    {{item.system.firearmDesign.baseDamage}} {{this.system.firearmDesign.woundMod}}, or {{item.system.firearmDesign.baseDamageDice}} {{this.system.firearmDesign.woundMod}}
                                 </td>
                                 <td class="question-container" id="damage-output">
                                     <div class="question-button">
@@ -1665,7 +1667,7 @@
                                     Baseline Acc
                                 </td>
                                 <td>
-                                    {{system.firearmDesign.baseAcc}}
+                                    {{item.system.firearmDesign.baseAcc}}
                                 </td>
                                 <td class="question-container" id="acc-output">
                                     <div class="question-button">
@@ -1679,7 +1681,7 @@
                                     Baseline Shots
                                 </td>
                                 <td>
-                                    {{system.firearmDesign.shots}} ({{system.firearmDesign.reload}})
+                                    {{item.system.firearmDesign.shots}} ({{item.system.firearmDesign.reload}})
                                 </td>
                                 <td class="question-container" id="shots-output">
                                     <div class="question-button">
@@ -1693,7 +1695,7 @@
                                     Baseline Bulk
                                 </td>
                                 <td>
-                                    {{round system.firearmDesign.bulk 100}} rounded to {{round system.firearmDesign.bulk 1}}
+                                    {{round item.system.firearmDesign.bulk 100}} rounded to {{round item.system.firearmDesign.bulk 1}}
                                 </td>
                                 <td class="question-container" id="bulk-output">
                                     <div class="question-button">
@@ -1707,9 +1709,9 @@
                                     Baseline Weight
                                 </td>
                                 <td>
-                                    Unloaded: {{round system.firearmDesign.weight 100}}lbs</br>
-                                    Per Shot: {{round system.firearmDesign.baseWeightPerShot 100}}lbs</br>
-                                    Ammunition: {{round system.firearmDesign.ammoWeight 100}}lbs</br>
+                                    Unloaded: {{round item.system.firearmDesign.weight 100}}lbs</br>
+                                    Per Shot: {{round item.system.firearmDesign.baseWeightPerShot 100}}lbs</br>
+                                    Ammunition: {{round item.system.firearmDesign.ammoWeight 100}}lbs</br>
                                     Loaded: {{round this.system.firearmDesign.loadedWeight 100}}lbs
                                 </td>
                                 <td class="question-container" id="weight-output">
@@ -1724,7 +1726,7 @@
                                     Baseline ST
                                 </td>
                                 <td>
-                                    {{round system.firearmDesign.st 100}} rounded to {{system.firearmDesign.stOutput}}{{system.firearmDesign.stCode}}
+                                    {{round item.system.firearmDesign.st 100}} rounded to {{item.system.firearmDesign.stOutput}}{{item.system.firearmDesign.stCode}}
                                 </td>
                                 <td class="question-container" id="st-output">
                                     <div class="question-button">
@@ -1738,7 +1740,7 @@
                                     Baseline Range and Velocity
                                 </td>
                                 <td>
-                                    {{system.firearmDesign.halfRange}} / {{system.firearmDesign.maxRange}} : {{system.firearmDesign.yardsPerSecond}} yards per second
+                                    {{item.system.firearmDesign.halfRange}} / {{item.system.firearmDesign.maxRange}} : {{item.system.firearmDesign.yardsPerSecond}} yards per second
                                 </td>
                                 <td class="question-container" id="range-output">
                                     <div class="question-button">
@@ -1753,7 +1755,7 @@
                                     Baseline Malf
                                 </td>
                                 <td>
-                                    {{system.firearmDesign.malf}}
+                                    {{item.system.firearmDesign.malf}}
                                 </td>
                                 <td class="question-container" id="malf-output">
                                     <div class="question-button">
@@ -1767,7 +1769,7 @@
                                     Baseline RcL
                                 </td>
                                 <td>
-                                    {{round system.firearmDesign.rclRaw 100}} rounded to {{system.firearmDesign.rcl}}
+                                    {{round item.system.firearmDesign.rclRaw 100}} rounded to {{item.system.firearmDesign.rcl}}
                                 </td>
                                 <td class="question-container" id="rcl-output">
                                     <div class="question-button">
@@ -1781,7 +1783,7 @@
                                     Baseline Cost Per Shot
                                 </td>
                                 <td>
-                                    Base Cost: {{round system.firearmDesign.cps 100}}$
+                                    Base Cost: {{round item.system.firearmDesign.cps 100}}$
                                 </td>
                                 <td class="question-container" id="cps-output">
                                     <div class="question-button">
@@ -1795,9 +1797,9 @@
                                     Baseline Cost
                                 </td>
                                 <td>
-                                    Base Cost: {{round system.firearmDesign.baseCost 100}}$</br>
-                                    CF: {{system.firearmDesign.cf}}</br>
-                                    Final Cost: {{round system.firearmDesign.finalCost 100}}$
+                                    Base Cost: {{round item.system.firearmDesign.baseCost 100}}$</br>
+                                    CF: {{item.system.firearmDesign.cf}}</br>
+                                    Final Cost: {{round item.system.firearmDesign.finalCost 100}}$
                                 </td>
                                 <td class="question-container" id="cost-output">
                                     <div class="question-button">
@@ -1808,7 +1810,7 @@
                         </table>
 
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Ammunition Designs</h2>
-                        {{#each system.firearmDesign.ammunition as |ammo id|}}
+                        {{#each item.system.firearmDesign.ammunition as |ammo id|}}
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Ammo {{id}} <a class="deleteAmmoRow" id="ammo{{id}}" title="Delete Row"><i class="fas fa-trash"></i></a></h2>
                         <table>
                             <tr class="design-row">
@@ -1816,7 +1818,7 @@
                                     Projectile Name:
                                 </td>
                                 <td>
-                                    <input type="text" name="data.firearmDesign.ammunition.{{id}}.name" value="{{ammo.name}}" data-dtype="String"/>
+                                    <input type="text" name="system.firearmDesign.ammunition.{{id}}.name" value="{{ammo.name}}" data-dtype="String"/>
                                 </td>
                                 <td class="question-container" id="arrow-name">
                                     <div class="question-button">
@@ -1825,14 +1827,14 @@
                                 </td>
                             </tr>
 
-                            {{#unless (and (eq system.firearmDesign.action "breech") (eq system.firearmDesign.action "muzzle") ) }}
-                            {{#ifCond ../system.tl '>=' 5 }}
+                            {{#unless (and (eq item.system.firearmDesign.action "breech") (eq item.system.firearmDesign.action "muzzle") ) }}
+                            {{#ifCond ../item.system.tl '>=' 5 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
                                     Casing Type
                                 </td>
                                 <td>
-                                    <select name="data.firearmDesign.ammunition.{{id}}.case">
+                                    <select name="system.firearmDesign.ammunition.{{id}}.case">
                                         {{#select ammo.case}}
                                         <option value="cased">Cased (TL5)</option>
                                         <option value="lightCased">Light Cased (TL5)</option>
@@ -1848,13 +1850,13 @@
                             {{/ifCond}}
                             {{/unless}}
 
-                            {{#ifCond ../system.tl '>=' 4 }}
+                            {{#ifCond ../item.system.tl '>=' 4 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
                                     Extra Powerful Ammunition
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.firearmDesign.ammunition.{{id}}.plusp" {{checked ammo.plusp}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.firearmDesign.ammunition.{{id}}.plusp" {{checked ammo.plusp}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="plusp">
                                     <div class="question-button">
@@ -1864,13 +1866,13 @@
                             </tr>
                             {{/ifCond}}
 
-                            {{#ifCond ../system.tl '>=' 6 }}
+                            {{#ifCond ../item.system.tl '>=' 6 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
                                     Match-Grade
                                 </td>
                                 <td>
-                                    <select name="data.firearmDesign.ammunition.{{id}}.match">
+                                    <select name="system.firearmDesign.ammunition.{{id}}.match">
                                         {{#select ammo.match}}
                                         <option value="1">Standard Grade</option>
                                         <option value="1.25">Match Grade (TL6)</option>
@@ -1886,14 +1888,14 @@
                             </tr>
                             {{/ifCond}}
 
-                            {{#ifCond ../system.tl '>=' 6 }}
-                            {{#ifCond system.firearmDesign.yardsPerSecond '>=' 375.109 }}
+                            {{#ifCond ../item.system.tl '>=' 6 }}
+                            {{#ifCond item.system.firearmDesign.yardsPerSecond '>=' 375.109 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
                                     Subsonic Ammunition
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.firearmDesign.ammunition.{{id}}.subsonic" {{checked ammo.subsonic}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.firearmDesign.ammunition.{{id}}.subsonic" {{checked ammo.subsonic}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="subsonic">
                                     <div class="question-button">
@@ -1904,13 +1906,13 @@
                             {{/ifCond}}
                             {{/ifCond}}
 
-                            {{#ifCond ../system.tl '>=' 6 }}
+                            {{#ifCond ../item.system.tl '>=' 6 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
                                     Silent Ammunition
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.firearmDesign.ammunition.{{id}}.silent" {{checked ammo.silent}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.firearmDesign.ammunition.{{id}}.silent" {{checked ammo.silent}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="silent">
                                     <div class="question-button">
@@ -1920,13 +1922,13 @@
                             </tr>
                             {{/ifCond}}
 
-                            {{#ifCond ../system.tl '>=' 5 }}
+                            {{#ifCond ../item.system.tl '>=' 5 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
                                     Poison Ammunition
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.firearmDesign.ammunition.{{id}}.poison" {{checked ammo.poison}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.firearmDesign.ammunition.{{id}}.poison" {{checked ammo.poison}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="poison">
                                     <div class="question-button">
@@ -1936,13 +1938,13 @@
                             </tr>
                             {{/ifCond}}
 
-                            {{#ifCond ../system.tl '>=' 5 }}
+                            {{#ifCond ../item.system.tl '>=' 5 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
                                     Incendiary Ammunition
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.firearmDesign.ammunition.{{id}}.inc" {{checked ammo.inc}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.firearmDesign.ammunition.{{id}}.inc" {{checked ammo.inc}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="inc">
                                     <div class="question-button">
@@ -1952,13 +1954,13 @@
                             </tr>
                             {{/ifCond}}
 
-                            {{#ifCond ../system.tl '>=' 6 }}
+                            {{#ifCond ../item.system.tl '>=' 6 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
                                     Tracer Ammunition
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.firearmDesign.ammunition.{{id}}.tracer" {{checked ammo.tracer}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.firearmDesign.ammunition.{{id}}.tracer" {{checked ammo.tracer}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="tracer">
                                     <div class="question-button">
@@ -1973,10 +1975,10 @@
                                     Projectile Type
                                 </td>
                                 <td>
-                                    <select name="data.firearmDesign.ammunition.{{id}}.projectile">
+                                    <select name="system.firearmDesign.ammunition.{{id}}.projectile">
                                         {{#select ammo.projectile}}
                                             <option value="solid">Solid</option>
-                                            {{#ifCond ../system.tl '>=' 4 }}
+                                            {{#ifCond ../item.system.tl '>=' 4 }}
                                                 <option value="le">Low Explosive</option>
                                                 <option value="lec">Low Explosive Concussion</option>
                                                 {{#ifCond ../system.firearmDesign.projectileCalibre '>=' 5 }}
@@ -1986,12 +1988,12 @@
                                                     <option value="canister">Canister</option>
                                                 {{/ifCond}}
                                             {{/ifCond}}
-                                            {{#ifCond ../system.tl '>=' 5 }}
+                                            {{#ifCond ../item.system.tl '>=' 5 }}
                                                 <option value="hp">Hollow Point</option>
                                                 <option value="saple">Semi Armour Piercing Low Explosive</option>
                                                 <option value="saplec">Semi Armour Piercing Low Explosive Concussion</option>
                                             {{/ifCond}}
-                                            {{#ifCond ../system.tl '>=' 6 }}
+                                            {{#ifCond ../item.system.tl '>=' 6 }}
                                                 <option value="ap">Armour Piercing</option>
                                                 <option value="aphc">Armour Piercing Hardcore</option>
                                                 <option value="frangible">Frangible</option>
@@ -2003,7 +2005,7 @@
                                                 <option value="duplex">Duplex</option>
                                                 <option value="triplex">Triplex</option>
                                             {{/ifCond}}
-                                            {{#ifCond ../system.tl '>=' 7 }}
+                                            {{#ifCond ../item.system.tl '>=' 7 }}
                                                 <option value="apds">Armour Piercing Discarding Sabot</option>
                                                 <option value="apfsds">Armour Piercing Fin Stabilized Discarding Sabot</option>
                                                 {{#ifCond ../system.firearmDesign.projectileCalibre '>=' 10 }}
@@ -2030,7 +2032,7 @@
                                                     <option value="rs">Rubber Shot</option>
                                                 {{/ifCond}}
                                             {{/ifCond}}
-                                            {{#ifCond ../system.tl '>=' 8 }}
+                                            {{#ifCond ../item.system.tl '>=' 8 }}
                                                 <option value="apdu">Armour Piercing Depleted Uranium</option>
                                                 <option value="apdsdu">Armour Piercing Discarding-Sabot Depleted Uranium</option>
                                                 {{#ifCond ../system.firearmDesign.projectileCalibre '>=' 10 }}
@@ -2059,7 +2061,7 @@
                                     Number of Projectiles
                                 </td>
                                 <td>
-                                    <input type="text" name="data.firearmDesign.ammunition.{{id}}.projectiles" value="{{ammo.projectiles}}" data-dtype="Number"/>
+                                    <input type="text" name="system.firearmDesign.ammunition.{{id}}.projectiles" value="{{ammo.projectiles}}" data-dtype="Number"/>
                                     Rate of Fire Bonus: {{ammo.rofBonus}}
                                 </td>
                                 <td class="question-container" id="number-of-shots">
@@ -2086,7 +2088,7 @@
                                     Number of Projectiles
                                 </td>
                                 <td>
-                                    <input type="text" name="data.firearmDesign.ammunition.{{id}}.projectiles" value="{{ammo.projectiles}}" data-dtype="Number"/>
+                                    <input type="text" name="system.firearmDesign.ammunition.{{id}}.projectiles" value="{{ammo.projectiles}}" data-dtype="Number"/>
                                     Rate of Fire Bonus: {{ammo.rofBonus}}
                                 </td>
                                 <td class="question-container" id="number-of-shots">
@@ -2111,10 +2113,10 @@
                                     Explosive Filler
                                 </td>
                                 <td>
-                                    <select name="data.firearmDesign.ammunition.{{id}}.explosiveFiller">
+                                    <select name="system.firearmDesign.ammunition.{{id}}.explosiveFiller">
                                         {{#select ammo.explosiveFiller}}
-                                            {{#each ../system.firearmDesign.explosives as |explosive id|}}
-                                                {{#ifCond ../../system.tl '>=' explosive.tl}}
+                                            {{#each ../item.system.firearmDesign.explosives as |explosive id|}}
+                                                {{#ifCond ../../item.system.tl '>=' explosive.tl}}
                                                     <option value="{{explosive.code}}">{{explosive.name}} - REF: {{explosive.ref}}</option>
                                                 {{/ifCond}}
                                             {{/each}}
@@ -2132,7 +2134,7 @@
                                     % Explosive Filler By Mass
                                 </td>
                                 <td colspan="2">
-                                    <input type="range" min="0" max="{{ammo.maxExplosivePercent}}" step="0.5" name="data.firearmDesign.ammunition.{{id}}.explosivePercent" value="{{ammo.explosivePercent}}" data-dtype="Number">
+                                    <input type="range" min="0" max="{{ammo.maxExplosivePercent}}" step="0.5" name="system.firearmDesign.ammunition.{{id}}.explosivePercent" value="{{ammo.explosivePercent}}" data-dtype="Number">
                                 </td>
                             </tr>
                             {{#ifCond ammo.explosivePercent '>' 0 }}
@@ -2180,7 +2182,7 @@
                                     Show Profile
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.firearmDesign.ammunition.{{id}}.showProfile" {{checked ammo.showProfile}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.firearmDesign.ammunition.{{id}}.showProfile" {{checked ammo.showProfile}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="bow-show-profile">
                                     <div class="question-button">
@@ -2197,7 +2199,7 @@
                     </div>
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
-                        <div class="equipment-info-container">{{{system.info}}}</div>
+                        <div class="equipment-info-container">{{{item.system.info}}}</div>
                     </div>
                 </div>
 
@@ -2221,9 +2223,9 @@
                         <td>LC</td>
                         <td>Malf</td>
                     </tr>
-                    {{#each system.ranged as |ammo id|}}
+                    {{#each item.system.ranged as |ammo id|}}
                     <tr>
-                        <td>{{../system.tl}}</td>
+                        <td>{{../item.system.tl}}</td>
                         <td>{{ammo.name}}</td>
                         <td>{{ammo.damageInput}} ({{ammo.armourDivisor}}) {{ammo.damageType}}</td>
                         <td>{{ammo.acc}}</td>
@@ -2255,8 +2257,8 @@
                                     Configuration
                                 </td>
                                 <td>
-                                    <select name="data.laserDesign.configuration">
-                                        {{#select system.laserDesign.configuration}}
+                                    <select name="system.laserDesign.configuration">
+                                        {{#select item.system.laserDesign.configuration}}
                                         <option value="pistol">Pistol</option>
                                         <option value="rifle">Rifle</option>
                                         <option value="beamer">Beamer</option>
@@ -2276,63 +2278,63 @@
                                     Beam Type
                                 </td>
                                 <td>
-                                    <select name="data.laserDesign.beamType">
-                                        {{#select system.laserDesign.beamType}}
-                                        {{#ifCond  system.tl '>=' 8 }}
+                                    <select name="system.laserDesign.beamType">
+                                        {{#select item.system.laserDesign.beamType}}
+                                        {{#ifCond  item.system.tl '>=' 8 }}
                                         <option value="chemicalLaser">Chemical Laser (TL8)</option>
                                         {{/ifCond}}
-                                        {{#ifCond  system.tl '>=' 9 }}
+                                        {{#ifCond  item.system.tl '>=' 9 }}
                                         <option value="laser">Laser (TL9)</option>
                                         {{/ifCond}}
-                                        {{#if system.laserDesign.allowSuperScienceCustomLasers}}
-                                        {{#ifCond  system.tl '>=' 10 }}
+                                        {{#if item.system.laserDesign.allowSuperScienceCustomLasers}}
+                                        {{#ifCond  item.system.tl '>=' 10 }}
                                         <option value="forceBeam">Force Beam (TL 10^)</option>
                                         {{/ifCond}}
                                         {{/if}}
-                                        {{#if (eq system.laserDesign.configuration "cannon")}}
-                                        {{#ifCond  system.tl '>=' 10 }}
+                                        {{#if (eq item.system.laserDesign.configuration "cannon")}}
+                                        {{#ifCond  item.system.tl '>=' 10 }}
                                         <option value="blaster">Blaster (TL 10)</option>
                                         {{/ifCond}}
-                                        {{#ifCond  system.tl '>=' 10 }}
+                                        {{#ifCond  item.system.tl '>=' 10 }}
                                         <option value="neutralParticleBeam">Neutral Particle Beam (TL 10)</option>
                                         {{/ifCond}}
-                                        {{#ifCond  system.tl '>=' 11 }}
+                                        {{#ifCond  item.system.tl '>=' 11 }}
                                         <option value="rainbowLaser">Rainbow Laser (TL 11)</option>
                                         {{/ifCond}}
-                                        {{#ifCond  system.tl '>=' 11 }}
+                                        {{#ifCond  item.system.tl '>=' 11 }}
                                         <option value="xRayLaser">X-Ray Laser (TL 11)</option>
                                         {{/ifCond}}
-                                        {{#if system.laserDesign.allowSuperScienceCustomLasers}}
-                                        {{#ifCond  system.tl '>=' 11 }}
+                                        {{#if item.system.laserDesign.allowSuperScienceCustomLasers}}
+                                        {{#ifCond  item.system.tl '>=' 11 }}
                                         <option value="gravitonBeam">Graviton Beam (TL 11^)</option>
                                         {{/ifCond}}
                                         {{/if}}
-                                        {{#ifCond  system.tl '>=' 11 }}
+                                        {{#ifCond  item.system.tl '>=' 11 }}
                                         <option value="pulsar">Pulsar (TL 11)</option>
                                         {{/ifCond}}
                                         {{else}}
-                                        {{#ifCond  system.tl '>=' 11 }}
+                                        {{#ifCond  item.system.tl '>=' 11 }}
                                         <option value="blaster">Blaster (TL 11)</option>
                                         {{/ifCond}}
-                                        {{#ifCond  system.tl '>=' 11 }}
+                                        {{#ifCond  item.system.tl '>=' 11 }}
                                         <option value="neutralParticleBeam">Neutral Particle Beam (TL 11)</option>
                                         {{/ifCond}}
-                                        {{#ifCond  system.tl '>=' 11 }}
+                                        {{#ifCond  item.system.tl '>=' 11 }}
                                         <option value="rainbowLaser">Rainbow Laser (TL 11)</option>
                                         {{/ifCond}}
-                                        {{#ifCond  system.tl '>=' 11 }}
+                                        {{#ifCond  item.system.tl '>=' 11 }}
                                         <option value="xRayLaser">X-Ray Laser (TL 11)</option>
                                         {{/ifCond}}
-                                        {{#if system.laserDesign.allowSuperScienceCustomLasers}}
-                                        {{#ifCond  system.tl '>=' 11 }}
+                                        {{#if item.system.laserDesign.allowSuperScienceCustomLasers}}
+                                        {{#ifCond  item.system.tl '>=' 11 }}
                                         <option value="gravitonBeam">Graviton Beam (TL 11^)</option>
                                         {{/ifCond}}
                                         {{/if}}
-                                        {{#ifCond  system.tl '>=' 12 }}
+                                        {{#ifCond  item.system.tl '>=' 12 }}
                                         <option value="pulsar">Pulsar (TL 12)</option>
                                         {{/ifCond}}
                                         {{/if}}
-                                        {{#ifCond  system.tl '==' 12 }}
+                                        {{#ifCond  item.system.tl '==' 12 }}
                                         <option value="graser">Graser (TL 12)</option>
                                         {{/ifCond}}
                                         {{/select}}
@@ -2345,14 +2347,14 @@
                                 </td>
                             </tr>
 
-                            {{#if (eq system.laserDesign.beamType "laser")}}
+                            {{#if (eq item.system.laserDesign.beamType "laser")}}
                             <tr class="design-row">
                                 <td>
                                     Laser Colour
                                 </td>
                                 <td>
-                                <select name="data.laserDesign.laserColour">
-                                    {{#select system.laserDesign.laserColour}}
+                                <select name="system.laserDesign.laserColour">
+                                    {{#select item.system.laserDesign.laserColour}}
                                     <option value="ir">Infrared</option>
                                     <option value="bg">Blue-Green</option>
                                     <option value="uv">Ultraviolet</option>
@@ -2367,13 +2369,13 @@
                             </tr>
                             {{/if}}
 
-                            {{#if (eq system.laserDesign.beamType "blaster")}}
+                            {{#if (eq item.system.laserDesign.beamType "blaster")}}
                             <tr class="design-row">
                                 <td>
                                     Omni-Blaster
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.laserDesign.omniBlaster" {{checked system.laserDesign.omniBlaster}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.laserDesign.omniBlaster" {{checked item.system.laserDesign.omniBlaster}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="omni-blaster">
                                     <div class="question-button">
@@ -2388,7 +2390,7 @@
                                     Focal Array
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    {{system.laserDesign.focalArraySize}} : x{{system.laserDesign.focalArray}}
+                                    {{item.system.laserDesign.focalArraySize}} : x{{item.system.laserDesign.focalArray}}
                                 </td>
                                 <td class="question-container" id="focal-array">
                                     <div class="question-button">
@@ -2399,7 +2401,7 @@
 
                             <tr>
                                 <td colspan="3">
-                                    <input type="range" min="0.1" max="4" step="0.05" name="data.laserDesign.focalArray" value="{{system.laserDesign.focalArray}}" data-dtype="Number">
+                                    <input type="range" min="0.1" max="4" step="0.05" name="system.laserDesign.focalArray" value="{{item.system.laserDesign.focalArray}}" data-dtype="Number">
                                 </td>
                             </tr>
 
@@ -2408,13 +2410,13 @@
                                     Generator
                                 </td>
                                 <td>
-                                <select name="data.laserDesign.generator">
-                                    {{#select system.laserDesign.generator}}
+                                <select name="system.laserDesign.generator">
+                                    {{#select item.system.laserDesign.generator}}
                                     <option value="single">Single Shot</option>
                                     <option value="semi">Semi-Auto</option>
                                     <option value="light">Light Automatic</option>
                                     <option value="heavy">Heavy Automatic</option>
-                                    {{#if system.laserDesign.hotshotsAndOverheating}}
+                                    {{#if item.system.laserDesign.hotshotsAndOverheating}}
                                     <option value="lightGat">Light Gatling</option>
                                     <option value="heavyGat">Heavy Gatling</option>
                                     {{/if}}
@@ -2428,7 +2430,7 @@
                                 </td>
                             </tr>
                         </table>
-                        {{#if system.laserDesign.allowSuperScienceCustomLasers}}
+                        {{#if item.system.laserDesign.allowSuperScienceCustomLasers}}
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Super Science Options</h2>
                         <table>
                         <tr class="design-row">
@@ -2436,7 +2438,7 @@
                                 Super Science Laser Upgrade
                             </td>
                             <td style="line-height: 27.5px">
-                                <input type="checkbox" name="data.laserDesign.superScience" {{checked system.laserDesign.superScience}} data-dtype="Boolean"/>
+                                <input type="checkbox" name="system.laserDesign.superScience" {{checked item.system.laserDesign.superScience}} data-dtype="Boolean"/>
                             </td>
                             <td class="question-container" id="super-science-laser">
                                 <div class="question-button">
@@ -2444,13 +2446,13 @@
                                 </div>
                             </td>
                         </tr>
-                        {{#ifCond  system.tl '>=' 10 }}
+                        {{#ifCond  item.system.tl '>=' 10 }}
                         <tr class="design-row">
                             <td style="line-height: 27.5px">
                                 Field Jacketed (TL 10^)
                             </td>
                             <td style="line-height: 27.5px">
-                                <input type="checkbox" name="data.laserDesign.fieldJacketed" {{checked system.laserDesign.fieldJacketed}} data-dtype="Boolean"/>
+                                <input type="checkbox" name="system.laserDesign.fieldJacketed" {{checked item.system.laserDesign.fieldJacketed}} data-dtype="Boolean"/>
                             </td>
                             <td class="question-container" id="field-jacket">
                                 <div class="question-button">
@@ -2463,13 +2465,13 @@
                                 Gravitic Focusing (TL 10^)
                             </td>
                             <td style="line-height: 27.5px">
-                                <select name="data.laserDesign.graviticFocus">
-                                    {{#select system.laserDesign.graviticFocus}}
+                                <select name="system.laserDesign.graviticFocus">
+                                    {{#select item.system.laserDesign.graviticFocus}}
                                     <option value="0">None</option>
                                     <option value="1">One Level (TL 10^)</option>
-                                    {{#ifCond  system.tl '>=' 11 }}
+                                    {{#ifCond  item.system.tl '>=' 11 }}
                                     <option value="2">Two Levels (TL 11^)</option>
-                                    {{#ifCond  system.tl '>=' 12 }}
+                                    {{#ifCond  item.system.tl '>=' 12 }}
                                     <option value="3">Three Levels (TL 12^)</option>
                                     {{/ifCond}}
                                     {{/ifCond}}
@@ -2483,13 +2485,13 @@
                             </td>
                         </tr>
                         {{/ifCond}}
-                        {{#ifCond  system.tl '>=' 11 }}
+                        {{#ifCond  item.system.tl '>=' 11 }}
                         <tr class="design-row">
                             <td style="line-height: 27.5px">
                                 FTL (TL 11^)
                             </td>
                             <td style="line-height: 27.5px">
-                                <input type="checkbox" name="data.laserDesign.ftl" {{checked system.laserDesign.ftl}} data-dtype="Boolean"/>
+                                <input type="checkbox" name="system.laserDesign.ftl" {{checked item.system.laserDesign.ftl}} data-dtype="Boolean"/>
                             </td>
                             <td class="question-container" id="ftl-laser">
                                 <div class="question-button">
@@ -2507,7 +2509,7 @@
                                     Damage Dice
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    <input type="number" name="data.laserDesign.damageDiceInput" value="{{system.laserDesign.damageDiceInput}}" data-dtype="Number"/>
+                                    <input type="number" name="system.laserDesign.damageDiceInput" value="{{item.system.laserDesign.damageDiceInput}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="laser-damage-dice">
                                     <div class="question-button">
@@ -2516,13 +2518,13 @@
                                 </td>
                             </tr>
 
-                            {{#if (eq system.laserDesign.beamType "chemicalLaser")}}
+                            {{#if (eq item.system.laserDesign.beamType "chemicalLaser")}}
                             <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Shots:
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    <input type="number" name="data.laserDesign.chemicalShots" value="{{system.laserDesign.chemicalShots}}" data-dtype="Number"/>
+                                    <input type="number" name="system.laserDesign.chemicalShots" value="{{item.system.laserDesign.chemicalShots}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="chemcial-laser-shots">
                                     <div class="question-button">
@@ -2540,18 +2542,18 @@
                             {{else}}
                             <tr class="design-row">
                                 <td style="line-height: 27.5px">
-                                    Power System:
+                                    Power item.system:
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    <input type="number" style="width: 50px;" name="data.laserDesign.powerCellQty" value="{{system.laserDesign.powerCellQty}}" data-dtype="Number"/>
-                                    <select name="data.laserDesign.powerCell">
-                                        {{#select system.laserDesign.powerCell}}
-                                        <option value="A">A cell{{#ifCond system.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
-                                        <option value="B">B cell{{#ifCond system.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
-                                        <option value="C">C cell{{#ifCond system.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
-                                        <option value="D">D cell{{#ifCond system.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
-                                        <option value="E">E cell{{#ifCond system.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
-                                        <option value="F">F cell{{#ifCond system.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
+                                    <input type="number" style="width: 50px;" name="system.laserDesign.powerCellQty" value="{{item.system.laserDesign.powerCellQty}}" data-dtype="Number"/>
+                                    <select name="system.laserDesign.powerCell">
+                                        {{#select item.system.laserDesign.powerCell}}
+                                        <option value="A">A cell{{#ifCond item.system.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
+                                        <option value="B">B cell{{#ifCond item.system.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
+                                        <option value="C">C cell{{#ifCond item.system.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
+                                        <option value="D">D cell{{#ifCond item.system.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
+                                        <option value="E">E cell{{#ifCond item.system.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
+                                        <option value="F">F cell{{#ifCond item.system.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
                                         {{/select}}
                                     </select>
                                 </td>
@@ -2561,13 +2563,13 @@
                                     </div>
                                 </td>
                             </tr>
-                            {{#if system.laserDesign.allowSuperScienceCustomLasers}}
+                            {{#if item.system.laserDesign.allowSuperScienceCustomLasers}}
                             <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Super Science Power Cells
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    <input type="checkbox" name="data.laserDesign.superScienceCells" {{checked system.laserDesign.superScienceCells}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.laserDesign.superScienceCells" {{checked item.system.laserDesign.superScienceCells}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="super-science-power-cells">
                                     <div class="question-button">
@@ -2581,7 +2583,7 @@
                                     Non-Rechargeable Power Cells
                                 </td>
                                 <td style="line-height: 27.5px">
-                                    <input type="checkbox" name="data.laserDesign.nonRechargeableCells" {{checked system.laserDesign.nonRechargeableCells}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.laserDesign.nonRechargeableCells" {{checked item.system.laserDesign.nonRechargeableCells}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="non-rechargeable-power-cells">
                                     <div class="question-button">
@@ -2595,10 +2597,10 @@
                         <table>
                             <tr class="design-row">
                                 <td style="line-height: 27.5px">
-                                    Tweak Weight x{{system.laserDesign.weightTweak}}
+                                    Tweak Weight x{{item.system.laserDesign.weightTweak}}
                                 </td>
                                 <td>
-                                    <input type="range" min="0.85" max="2" step="0.05" name="data.laserDesign.weightTweak" value="{{system.laserDesign.weightTweak}}" data-dtype="Number">
+                                    <input type="range" min="0.85" max="2" step="0.05" name="system.laserDesign.weightTweak" value="{{item.system.laserDesign.weightTweak}}" data-dtype="Number">
                                 </td>
                                 <td class="question-container" id="laser-weight-tweak">
                                     <div class="question-button">
@@ -2606,13 +2608,13 @@
                                     </div>
                                 </td>
                             </tr>
-                            {{#if (or (eq system.laserDesign.beamType "laser") (eq system.laserDesign.beamType "xRayLaser") (eq system.laserDesign.beamType "graser"))}}
+                            {{#if (or (eq item.system.laserDesign.beamType "laser") (eq item.system.laserDesign.beamType "xRayLaser") (eq item.system.laserDesign.beamType "graser"))}}
                             <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Pulse Laser
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.laserDesign.pulseLaser" {{checked system.laserDesign.pulseLaser}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.laserDesign.pulseLaser" {{checked item.system.laserDesign.pulseLaser}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="pulse-laser">
                                     <div class="question-button">
@@ -2621,13 +2623,13 @@
                                 </td>
                             </tr>
 
-                            {{#if system.laserDesign.pulseLaser}}
+                            {{#if item.system.laserDesign.pulseLaser}}
                             <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Pulse-Beam Laser
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.laserDesign.pulseBeamLaser" {{checked system.laserDesign.pulseBeamLaser}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.laserDesign.pulseBeamLaser" {{checked item.system.laserDesign.pulseBeamLaser}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="pulse-beam-laser">
                                     <div class="question-button">
@@ -2642,7 +2644,7 @@
                                     Include a melee profile
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="data.laserDesign.meleeProfile" {{checked system.laserDesign.meleeProfile}} data-dtype="Boolean"/>
+                                    <input type="checkbox" name="system.laserDesign.meleeProfile" {{checked item.system.laserDesign.meleeProfile}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="melee-profile">
                                     <div class="question-button">
@@ -2651,13 +2653,13 @@
                                 </td>
                             </tr>
 
-                            {{#if system.laserDesign.meleeProfile}}
+                            {{#if item.system.laserDesign.meleeProfile}}
                                 <tr class="design-row">
                                     <td style="line-height: 27.5px">
                                         Cavalier Weapon
                                     </td>
                                     <td>
-                                        <input type="checkbox" name="data.laserDesign.cavalierWeapon" {{checked system.laserDesign.cavalierWeapon}} data-dtype="Boolean"/>
+                                        <input type="checkbox" name="system.laserDesign.cavalierWeapon" {{checked item.system.laserDesign.cavalierWeapon}} data-dtype="Boolean"/>
                                     </td>
                                     <td class="question-container" id="cavalier-weapon">
                                         <div class="question-button">
@@ -2672,8 +2674,8 @@
                         <table>
                             <tr class="design-row">
                                 <td style="line-height: 27.5px" colspan="2">
-                                    <input style="width: 75%" type="text" placeholder="Ranged Skill" name="data.laserDesign.rangedSkill" value="{{system.laserDesign.rangedSkill}}"/>
-                                    <input style="width: 20%" type="number" placeholder="Mod" name="data.laserDesign.rangedSkillMod" value="{{system.laserDesign.rangedSkillMod}}"/>
+                                    <input style="width: 75%" type="text" placeholder="Ranged Skill" name="system.laserDesign.rangedSkill" value="{{item.system.laserDesign.rangedSkill}}"/>
+                                    <input style="width: 20%" type="number" placeholder="Mod" name="system.laserDesign.rangedSkillMod" value="{{item.system.laserDesign.rangedSkillMod}}"/>
                                 </td>
                                 <td class="question-container" id="laser-ranged-skill">
                                     <div class="question-button">
@@ -2682,11 +2684,11 @@
                                 </td>
                             </tr>
 
-                            {{#if system.laserDesign.meleeProfile}}
+                            {{#if item.system.laserDesign.meleeProfile}}
                             <tr class="design-row">
                                 <td style="line-height: 27.5px" colspan="2">
-                                    <input style="width: 75%" type="text" placeholder="Melee Skill" name="data.laserDesign.meleeSkill" value="{{system.laserDesign.meleeSkill}}"/>
-                                    <input style="width: 20%" type="number" placeholder="Mod" name="data.laserDesign.meleeSkillMod" value="{{system.laserDesign.meleeSkillMod}}"/>
+                                    <input style="width: 75%" type="text" placeholder="Melee Skill" name="system.laserDesign.meleeSkill" value="{{item.system.laserDesign.meleeSkill}}"/>
+                                    <input style="width: 20%" type="number" placeholder="Mod" name="system.laserDesign.meleeSkillMod" value="{{item.system.laserDesign.meleeSkillMod}}"/>
                                 </td>
                                 <td class="question-container" id="laser-melee-skill">
                                     <div class="question-button">
@@ -2699,7 +2701,7 @@
                     </div>
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
-                        <div class="equipment-info-container">{{{system.info}}}</div>
+                        <div class="equipment-info-container">{{{item.system.info}}}</div>
                     </div>
                 </div>
 
@@ -2726,112 +2728,112 @@
                         <td>Malf</td>
                     </tr>
                     <tr class="custom-laser-air">
-                        <td><input type="checkbox" name="data.laserDesign.showAir" {{checked system.laserDesign.showAir}} data-dtype="Boolean" style="width: 100%;"/></td>
-                        <td>{{system.tl}}</td>
+                        <td><input type="checkbox" name="system.laserDesign.showAir" {{checked item.system.laserDesign.showAir}} data-dtype="Boolean" style="width: 100%;"/></td>
+                        <td>{{item.system.tl}}</td>
                         <td>{{item.name}} - Air</td>
-                        <td>{{system.laserDesign.outputDamage}} ({{this.system.laserDesign.armourDivisor}}) {{this.system.laserDesign.damageType}}</td>
-                        <td>{{system.laserDesign.outputAcc}}</td>
-                        <td>{{system.laserDesign.outputRange}}</td>
-                        <td>{{system.laserDesign.outputWeight}}</td>
-                        <td>{{system.laserDesign.outputRoF}}</td>
-                        <td>{{system.laserDesign.outputShots}}</td>
-                        <td>{{system.laserDesign.outputST}}</td>
-                        <td>{{system.laserDesign.outputBulk}}</td>
-                        <td>{{system.laserDesign.outputRcl}}</td>
-                        <td>{{system.cost}}</td>
-                        <td>{{system.lc}}</td>
+                        <td>{{item.system.laserDesign.outputDamage}} ({{this.system.laserDesign.armourDivisor}}) {{this.system.laserDesign.damageType}}</td>
+                        <td>{{item.system.laserDesign.outputAcc}}</td>
+                        <td>{{item.system.laserDesign.outputRange}}</td>
+                        <td>{{item.system.laserDesign.outputWeight}}</td>
+                        <td>{{item.system.laserDesign.outputRoF}}</td>
+                        <td>{{item.system.laserDesign.outputShots}}</td>
+                        <td>{{item.system.laserDesign.outputST}}</td>
+                        <td>{{item.system.laserDesign.outputBulk}}</td>
+                        <td>{{item.system.laserDesign.outputRcl}}</td>
+                        <td>{{item.system.cost}}</td>
+                        <td>{{item.system.lc}}</td>
                         <td>17</td>
                     </tr>
                     <tr class="custom-laser-space">
-                        <td><input type="checkbox" name="data.laserDesign.showSpace" {{checked system.laserDesign.showSpace}} data-dtype="Boolean" style="width: 100%;"/></td>
-                        <td>{{system.tl}}</td>
+                        <td><input type="checkbox" name="system.laserDesign.showSpace" {{checked item.system.laserDesign.showSpace}} data-dtype="Boolean" style="width: 100%;"/></td>
+                        <td>{{item.system.tl}}</td>
                         <td>{{item.name}} - Space</td>
-                        <td>{{system.laserDesign.outputDamage}} ({{this.system.laserDesign.armourDivisorSpace}})
+                        <td>{{item.system.laserDesign.outputDamage}} ({{this.system.laserDesign.armourDivisorSpace}})
                             {{this.system.laserDesign.damageType}}</td>
-                        <td>{{system.laserDesign.outputAccSpace}}</td>
-                        <td>{{system.laserDesign.outputRangeSpace}}</td>
-                        <td>{{system.laserDesign.outputWeight}}</td>
-                        <td>{{system.laserDesign.outputRoF}}</td>
-                        <td>{{system.laserDesign.outputShots}}</td>
-                        <td>{{system.laserDesign.outputST}}</td>
-                        <td>{{system.laserDesign.outputBulk}}</td>
-                        <td>{{system.laserDesign.outputRcl}}</td>
-                        <td>{{system.cost}}</td>
-                        <td>{{system.lc}}</td>
+                        <td>{{item.system.laserDesign.outputAccSpace}}</td>
+                        <td>{{item.system.laserDesign.outputRangeSpace}}</td>
+                        <td>{{item.system.laserDesign.outputWeight}}</td>
+                        <td>{{item.system.laserDesign.outputRoF}}</td>
+                        <td>{{item.system.laserDesign.outputShots}}</td>
+                        <td>{{item.system.laserDesign.outputST}}</td>
+                        <td>{{item.system.laserDesign.outputBulk}}</td>
+                        <td>{{item.system.laserDesign.outputRcl}}</td>
+                        <td>{{item.system.cost}}</td>
+                        <td>{{item.system.lc}}</td>
                         <td>17</td>
                     </tr>
                     <tr class="custom-laser-water">
-                        <td><input type="checkbox" name="data.laserDesign.showWater" {{checked system.laserDesign.showWater}} data-dtype="Boolean" style="width: 100%;"/></td>
-                        <td>{{system.tl}}</td>
+                        <td><input type="checkbox" name="system.laserDesign.showWater" {{checked item.system.laserDesign.showWater}} data-dtype="Boolean" style="width: 100%;"/></td>
+                        <td>{{item.system.tl}}</td>
                         <td>{{item.name}} - Underwater</td>
-                        <td>{{system.laserDesign.outputDamage}} ({{this.system.laserDesign.armourDivisorWater}})
+                        <td>{{item.system.laserDesign.outputDamage}} ({{this.system.laserDesign.armourDivisorWater}})
                             {{this.system.laserDesign.damageType}}</td>
-                        <td>{{system.laserDesign.outputAccWater}}</td>
-                        <td>{{system.laserDesign.outputRangeWater}}</td>
-                        <td>{{system.laserDesign.outputWeight}}</td>
-                        <td>{{system.laserDesign.outputRoF}}</td>
-                        <td>{{system.laserDesign.outputShots}}</td>
-                        <td>{{system.laserDesign.outputST}}</td>
-                        <td>{{system.laserDesign.outputBulk}}</td>
-                        <td>{{system.laserDesign.outputRcl}}</td>
-                        <td>{{system.cost}}</td>
-                        <td>{{system.lc}}</td>
+                        <td>{{item.system.laserDesign.outputAccWater}}</td>
+                        <td>{{item.system.laserDesign.outputRangeWater}}</td>
+                        <td>{{item.system.laserDesign.outputWeight}}</td>
+                        <td>{{item.system.laserDesign.outputRoF}}</td>
+                        <td>{{item.system.laserDesign.outputShots}}</td>
+                        <td>{{item.system.laserDesign.outputST}}</td>
+                        <td>{{item.system.laserDesign.outputBulk}}</td>
+                        <td>{{item.system.laserDesign.outputRcl}}</td>
+                        <td>{{item.system.cost}}</td>
+                        <td>{{item.system.lc}}</td>
                         <td>17</td>
                     </tr>
-                    {{#if system.laserDesign.hotshotsAndOverheating}}
-                    {{#unless (or (eq system.laserDesign.generator "lightGat") (eq system.laserDesign.generator "heavyGat"))}}
+                    {{#if item.system.laserDesign.hotshotsAndOverheating}}
+                    {{#unless (or (eq item.system.laserDesign.generator "lightGat") (eq item.system.laserDesign.generator "heavyGat"))}}
                     <tr class="custom-laser-air-hotshot">
-                        <td><input type="checkbox" name="data.laserDesign.showAirHotshot" {{checked system.laserDesign.showAirHotshot}} data-dtype="Boolean" style="width: 100%;"/></td>
-                        <td>{{system.tl}}</td>
+                        <td><input type="checkbox" name="system.laserDesign.showAirHotshot" {{checked item.system.laserDesign.showAirHotshot}} data-dtype="Boolean" style="width: 100%;"/></td>
+                        <td>{{item.system.tl}}</td>
                         <td>{{item.name}} - Hotshot Air</td>
-                        <td>{{system.laserDesign.outputDamageHotshots}} ({{this.system.laserDesign.armourDivisor}})
+                        <td>{{item.system.laserDesign.outputDamageHotshots}} ({{this.system.laserDesign.armourDivisor}})
                             {{this.system.laserDesign.damageType}}</td>
-                        <td>{{system.laserDesign.outputAcc}}</td>
-                        <td>{{system.laserDesign.outputRange}}</td>
-                        <td>{{system.laserDesign.outputWeight}}</td>
-                        <td>{{system.laserDesign.outputRoF}}</td>
-                        <td>{{system.laserDesign.outputShotsHotshots}}</td>
-                        <td>{{system.laserDesign.outputST}}</td>
-                        <td>{{system.laserDesign.outputBulk}}</td>
-                        <td>{{system.laserDesign.outputRcl}}</td>
-                        <td>{{system.cost}}</td>
-                        <td>{{system.lc}}</td>
+                        <td>{{item.system.laserDesign.outputAcc}}</td>
+                        <td>{{item.system.laserDesign.outputRange}}</td>
+                        <td>{{item.system.laserDesign.outputWeight}}</td>
+                        <td>{{item.system.laserDesign.outputRoF}}</td>
+                        <td>{{item.system.laserDesign.outputShotsHotshots}}</td>
+                        <td>{{item.system.laserDesign.outputST}}</td>
+                        <td>{{item.system.laserDesign.outputBulk}}</td>
+                        <td>{{item.system.laserDesign.outputRcl}}</td>
+                        <td>{{item.system.cost}}</td>
+                        <td>{{item.system.lc}}</td>
                         <td>14</td>
                     </tr>
                     <tr class="custom-laser-space-hotshot">
-                        <td><input type="checkbox" name="data.laserDesign.showSpaceHotshot" {{checked system.laserDesign.showSpaceHotshot}} data-dtype="Boolean" style="width: 100%;"/></td>
-                        <td>{{system.tl}}</td>
+                        <td><input type="checkbox" name="system.laserDesign.showSpaceHotshot" {{checked item.system.laserDesign.showSpaceHotshot}} data-dtype="Boolean" style="width: 100%;"/></td>
+                        <td>{{item.system.tl}}</td>
                         <td>{{item.name}} - Hotshot Space</td>
-                        <td>{{system.laserDesign.outputDamageHotshots}} ({{this.system.laserDesign.armourDivisorSpace}})
+                        <td>{{item.system.laserDesign.outputDamageHotshots}} ({{this.system.laserDesign.armourDivisorSpace}})
                             {{this.system.laserDesign.damageTypeSpace}}</td>
-                        <td>{{system.laserDesign.outputAccSpace}}</td>
-                        <td>{{system.laserDesign.outputRangeSpace}}</td>
-                        <td>{{system.laserDesign.outputWeight}}</td>
-                        <td>{{system.laserDesign.outputRoF}}</td>
-                        <td>{{system.laserDesign.outputShotsHotshots}}</td>
-                        <td>{{system.laserDesign.outputST}}</td>
-                        <td>{{system.laserDesign.outputBulk}}</td>
-                        <td>{{system.laserDesign.outputRcl}}</td>
-                        <td>{{system.cost}}</td>
-                        <td>{{system.lc}}</td>
+                        <td>{{item.system.laserDesign.outputAccSpace}}</td>
+                        <td>{{item.system.laserDesign.outputRangeSpace}}</td>
+                        <td>{{item.system.laserDesign.outputWeight}}</td>
+                        <td>{{item.system.laserDesign.outputRoF}}</td>
+                        <td>{{item.system.laserDesign.outputShotsHotshots}}</td>
+                        <td>{{item.system.laserDesign.outputST}}</td>
+                        <td>{{item.system.laserDesign.outputBulk}}</td>
+                        <td>{{item.system.laserDesign.outputRcl}}</td>
+                        <td>{{item.system.cost}}</td>
+                        <td>{{item.system.lc}}</td>
                         <td>14</td>
                     </tr>
                     <tr class="custom-laser-water-hotshot">
-                        <td><input type="checkbox" name="data.laserDesign.showWaterHotshot" {{checked system.laserDesign.showWaterHotshot}} data-dtype="Boolean" style="width: 100%;"/></td>
-                        <td>{{system.tl}}</td>
+                        <td><input type="checkbox" name="system.laserDesign.showWaterHotshot" {{checked item.system.laserDesign.showWaterHotshot}} data-dtype="Boolean" style="width: 100%;"/></td>
+                        <td>{{item.system.tl}}</td>
                         <td>{{item.name}} - Hotshot Underwater</td>
-                        <td>{{system.laserDesign.outputDamageHotshots}} ({{this.system.laserDesign.armourDivisorWater}})
+                        <td>{{item.system.laserDesign.outputDamageHotshots}} ({{this.system.laserDesign.armourDivisorWater}})
                             {{this.system.laserDesign.damageTypeWater}}</td>
-                        <td>{{system.laserDesign.outputAccWater}}</td>
-                        <td>{{system.laserDesign.outputRangeWater}}</td>
-                        <td>{{system.laserDesign.outputWeight}}</td>
-                        <td>{{system.laserDesign.outputRoF}}</td>
-                        <td>{{system.laserDesign.outputShotsHotshots}}</td>
-                        <td>{{system.laserDesign.outputST}}</td>
-                        <td>{{system.laserDesign.outputBulk}}</td>
-                        <td>{{system.laserDesign.outputRcl}}</td>
-                        <td>{{system.cost}}</td>
-                        <td>{{system.lc}}</td>
+                        <td>{{item.system.laserDesign.outputAccWater}}</td>
+                        <td>{{item.system.laserDesign.outputRangeWater}}</td>
+                        <td>{{item.system.laserDesign.outputWeight}}</td>
+                        <td>{{item.system.laserDesign.outputRoF}}</td>
+                        <td>{{item.system.laserDesign.outputShotsHotshots}}</td>
+                        <td>{{item.system.laserDesign.outputST}}</td>
+                        <td>{{item.system.laserDesign.outputBulk}}</td>
+                        <td>{{item.system.laserDesign.outputRcl}}</td>
+                        <td>{{item.system.cost}}</td>
+                        <td>{{item.system.lc}}</td>
                         <td>14</td>
                     </tr>
                     {{/unless}}
