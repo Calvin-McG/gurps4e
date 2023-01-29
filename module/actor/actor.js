@@ -874,7 +874,7 @@ export class gurpsActor extends Actor {
 							this.system.spellCategories.push(this.items._source[w].system.subCategory.trim())
 						}
 					}
-					else if (this.items._source[w].type == "Equipment"){
+					else if (this.items._source[w].type == "Equipment" || this.items._source[w].type == "Custom Weapon" || this.items._source[w].type == "Custom Armour" || this.items._source[w].type == "Custom Jewelry" || this.items._source[w].type == "Travel Fare"){
 						if (!this.system.equipmentCategories.includes(this.items._source[w].system.subCategory.trim())) {//Make sure the item array doesn't already contain the category.
 							this.system.equipmentCategories.push(this.items._source[w].system.subCategory.trim())
 						}
