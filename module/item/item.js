@@ -1684,6 +1684,8 @@ export class gurpsItem extends Item {
           "lock": "centre", // cannon/match/wheel/flint/cap/pin/rim/centre
           "allowTL4BreechLoaders": game.settings.get("gurps4e", "allowTL4BreechLoaders"),
 
+          "magicalMaterials": false,
+
           "initComplete": true,
 
           "projectileCalibre": 10, // Measured in mm
@@ -1715,6 +1717,7 @@ export class gurpsItem extends Item {
           "magazineMaterial": "steel", // steel/alloy/plastic
           "capacity": 1, // Whole positive numbers only
 
+          "essentialMaterials": false,
           "fitToOwner": false,
           "weightTweak": 1, // 0.85 to 999
           "meleeProfile": false,
@@ -1774,6 +1777,9 @@ export class gurpsItem extends Item {
       }
 
       this.system.lc = 3;
+
+      // Get game settings
+      this.system.firearmDesign.magicalMaterials = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
 
       // Input Validation
       if (typeof this.system.firearmDesign.barrelLength == "undefined" || this.system.firearmDesign.barrelLength <= 0 || this.system.firearmDesign.barrelLength == "") {
@@ -2005,6 +2011,10 @@ export class gurpsItem extends Item {
       // Calculate the base receiver weight
       let receiverWeight = ((kineticEnergy ** 0.66) / configWeightModifier / 1.4 ** (this.system.tl - 7))
 
+      if (this.system.firearmDesign.essentialMaterials) { // The gun is made of essential materials, modify receiverWeight weight accordingly.
+        receiverWeight = receiverWeight / 3;
+      }
+
       // Add weight for revolver cylinder
       if (this.system.firearmDesign.action === "revolverSA" || this.system.firearmDesign.action === "revolverDA") {
         receiverWeight = (receiverWeight) + ((receiverWeight * (this.system.firearmDesign.capacity-1)) * 0.132)
@@ -2014,6 +2024,10 @@ export class gurpsItem extends Item {
       let barrelDiameter = 2 * (wallThickness) + barrelBoreMetres;
 
       let barrelWeight = (Math.PI * (barrelBoreMetres / 2 + barrelDiameter) ** 2 - Math.PI * (barrelBoreMetres / 2) ** 2) * barrelLengthMetres * 7860
+
+      if (this.system.firearmDesign.essentialMaterials) { // The gun is made of essential materials, modify barrelWeight accordingly.
+        barrelWeight = barrelWeight / 3;
+      }
 
       this.system.firearmDesign.weightKgs = ((receiverWeight + barrelWeight) + (((receiverWeight + barrelWeight) * 0.8) * (this.system.firearmDesign.barrels - 1))) * this.system.firearmDesign.weightTweak;
       this.system.firearmDesign.weight = this.system.firearmDesign.weightKgs * 2.205;
@@ -2115,6 +2129,10 @@ export class gurpsItem extends Item {
         else if (this.system.firearmDesign.magazineStyle === "drum") {
           magazineWeightMultiplier = 1.3;
         }
+      }
+
+      if (this.system.firearmDesign.essentialMaterials) { // The gun is made of essential materials, modify magazine weight accordingly.
+        magazineWeightMultiplier = 1 + ((magazineWeightMultiplier - 1)/3);
       }
 
       let loadedRounds = this.system.firearmDesign.capacity;
@@ -2435,6 +2453,10 @@ export class gurpsItem extends Item {
 
       if (this.system.firearmDesign.fitToOwner) {
         this.system.firearmDesign.cf += 1;
+      }
+
+      if (this.system.firearmDesign.essentialMaterials) { // The gun is made of essential materials, modify cost factor accordingly.
+        this.system.firearmDesign.cf += 9; // Essential materials are 30x the cost for the same weight. But we're using essential materials to reduce the weight, which means it only costs 10x as much in this case.
       }
 
       switch (this.system.firearmDesign.accuracy) {
@@ -7371,6 +7393,20 @@ export class gurpsItem extends Item {
             "</tr>";
 
         info += "</table>"
+    }
+    else if (id === "essential-gun-material") {
+      info = "<table>" +
+          "<tr>" +
+          "<td>" +
+          "<p>Essential materials are three times as strong for the same weight, but cost 30x as much for the same weight. For guns this means the weapons weighs 1/3rd as normal but costs 10x as much.</p>" +
+          "</td>" +
+          "</tr>" +
+          "<tr>" +
+          "<td>" +
+          "<p>This is questionably useful. Lighter guns obviously impact your encumbrance less and a lower ST stat, but they also have more recoil.</p>" +
+          "</td>" +
+          "</tr>";
+      info += "</table>"
     }
     else if (id === "firearm-weight-tweak") {
         info = "<table>" +

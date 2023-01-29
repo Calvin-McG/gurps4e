@@ -1572,6 +1572,22 @@
                                 </td>
                             </tr>
 
+                            {{#if item.system.firearmDesign.magicalMaterials}}
+                            <tr class="design-row">
+                                <td style="line-height: 27.5px">
+                                    Essential Materials
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="system.firearmDesign.essentialMaterials" {{checked item.system.firearmDesign.essentialMaterials}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="essential-gun-material">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/if}}
+
                             <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Fit to Owner
@@ -1653,7 +1669,7 @@
                                     Baseline Damage
                                 </td>
                                 <td>
-                                    {{item.system.firearmDesign.baseDamage}} {{this.system.firearmDesign.woundMod}}, or {{item.system.firearmDesign.baseDamageDice}} {{this.system.firearmDesign.woundMod}}
+                                    {{item.system.firearmDesign.baseDamage}} {{item.system.firearmDesign.woundMod}}, or {{item.system.firearmDesign.baseDamageDice}} {{item.system.firearmDesign.woundMod}}
                                 </td>
                                 <td class="question-container" id="damage-output">
                                     <div class="question-button">
@@ -1712,7 +1728,7 @@
                                     Unloaded: {{round item.system.firearmDesign.weight 100}}lbs</br>
                                     Per Shot: {{round item.system.firearmDesign.baseWeightPerShot 100}}lbs</br>
                                     Ammunition: {{round item.system.firearmDesign.ammoWeight 100}}lbs</br>
-                                    Loaded: {{round this.system.firearmDesign.loadedWeight 100}}lbs
+                                    Loaded: {{round item.system.firearmDesign.loadedWeight 100}}lbs
                                 </td>
                                 <td class="question-container" id="weight-output">
                                     <div class="question-button">
@@ -1981,10 +1997,10 @@
                                             {{#ifCond ../item.system.tl '>=' 4 }}
                                                 <option value="le">Low Explosive</option>
                                                 <option value="lec">Low Explosive Concussion</option>
-                                                {{#ifCond ../system.firearmDesign.projectileCalibre '>=' 5 }}
+                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 5 }}
                                                     <option value="shotshell">Shotshell</option>
                                                 {{/ifCond}}
-                                                {{#ifCond ../system.firearmDesign.projectileCalibre '>=' 20 }}
+                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 20 }}
                                                     <option value="canister">Canister</option>
                                                 {{/ifCond}}
                                             {{/ifCond}}
@@ -2008,26 +2024,26 @@
                                             {{#ifCond ../item.system.tl '>=' 7 }}
                                                 <option value="apds">Armour Piercing Discarding Sabot</option>
                                                 <option value="apfsds">Armour Piercing Fin Stabilized Discarding Sabot</option>
-                                                {{#ifCond ../system.firearmDesign.projectileCalibre '>=' 10 }}
+                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 10 }}
                                                     <option value="baton">Baton</option>
                                                 {{/ifCond}}
-                                                {{#ifCond ../system.firearmDesign.projectileCalibre '>=' 9 }}
+                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 9 }}
                                                     <option value="bean">Beanbag</option>
                                                 {{/ifCond}}
-                                                {{#ifCond ../system.firearmDesign.projectileCalibre '<=' 10 }}
+                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '<=' 10 }}
                                                     <option value="sapfsds">Semi Armor Piercing Fin Stabilized Discarding Sabot</option>
                                                 {{/ifCond}}
                                                 <option value="underwater">Underwater Dart</option>
                                                 <option value="aphex">Armour Piercing Hardcore Explosive</option>
-                                                {{#ifCond ../system.firearmDesign.projectileCalibre '>=' 50 }}
+                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 50 }}
                                                     <option value="efp">Explosively Formed Projectile</option>
                                                     <option value="hesh">High Explosive Squash Head</option>
                                                 {{/ifCond}}
-                                                {{#ifCond ../system.firearmDesign.projectileCalibre '>=' 20 }}
+                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 20 }}
                                                     <option value="heat">High Explosive Antitank</option>
                                                     <option value="hedp">High Explosive Dual Purpose</option>
                                                 {{/ifCond}}
-                                                {{#ifCond ../system.firearmDesign.projectileCalibre '>=' 10 }}
+                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 10 }}
                                                     <option value="mf">Multi Flechette</option>
                                                     <option value="rs">Rubber Shot</option>
                                                 {{/ifCond}}
@@ -2035,13 +2051,13 @@
                                             {{#ifCond ../item.system.tl '>=' 8 }}
                                                 <option value="apdu">Armour Piercing Depleted Uranium</option>
                                                 <option value="apdsdu">Armour Piercing Discarding-Sabot Depleted Uranium</option>
-                                                {{#ifCond ../system.firearmDesign.projectileCalibre '>=' 10 }}
+                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 10 }}
                                                     <option value="apfsdsdu">Armour Piercing Fin Stabilized Discarding Sabot Depleted Uranium</option>
                                                 {{/ifCond}}
-                                                {{#ifCond ../system.firearmDesign.projectileCalibre '>=' 50 }}
+                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 50 }}
                                                     <option value="msheat">Multi-Stage High Explosive Antitank</option>
                                                 {{/ifCond}}
-                                                {{#ifCond ../system.firearmDesign.projectileCalibre '>=' 20 }}
+                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 20 }}
                                                     <option value="thermobaric">Thermobaric</option>
                                                 {{/ifCond}}
                                             {{/ifCond}}
@@ -2075,9 +2091,9 @@
                                     Max Number of Shots
                                 </td>
                                 <td colspan="2">
-                                    pi++: {{../system.firearmDesign.maxHPi}}
-                                    pi+: {{../system.firearmDesign.maxLPi}}
-                                    pi: {{#if ../system.firearmDesign.highEnergy}} {{../system.firearmDesign.maxSPi}} {{else}} {{../system.firearmDesign.maxPi}} {{/if}}
+                                    pi++: {{../item.system.firearmDesign.maxHPi}}
+                                    pi+: {{../item.system.firearmDesign.maxLPi}}
+                                    pi: {{#if ../item.system.firearmDesign.highEnergy}} {{../item.system.firearmDesign.maxSPi}} {{else}} {{../item.system.firearmDesign.maxPi}} {{/if}}
                                 </td>
                             </tr>
                             {{/if}}
@@ -2102,7 +2118,7 @@
                                     Max Number of Projectiles
                                 </td>
                                 <td colspan="2">
-                                    pi++: {{../system.firearmDesign.maxHPiF}} pi+: {{../system.firearmDesign.maxLPiF}} pi: {{#if ../system.firearmDesign.highEnergy}} {{../system.firearmDesign.maxSPiF}} {{else}} {{../system.firearmDesign.maxPiF}} {{/if}}
+                                    pi++: {{../item.system.firearmDesign.maxHPiF}} pi+: {{../item.system.firearmDesign.maxLPiF}} pi: {{#if ../item.system.firearmDesign.highEnergy}} {{../item.system.firearmDesign.maxSPiF}} {{else}} {{../item.system.firearmDesign.maxPiF}} {{/if}}
                                 </td>
                             </tr>
                             {{/if}}
@@ -2230,10 +2246,10 @@
                         <td>{{ammo.damageInput}} ({{ammo.armourDivisor}}) {{ammo.damageType}}</td>
                         <td>{{ammo.acc}}</td>
                         <td>{{ammo.range}}</td>
-                        <td>{{../system.firearmDesign.loadedWeight}}</td>
+                        <td>{{../item.system.firearmDesign.loadedWeight}}</td>
                         <td>{{ammo.rof}}</td>
                         <td>{{ammo.shots}}</td>
-                        <td>{{ammo.st}}{{../system.firearmDesign.stCode}}</td>
+                        <td>{{ammo.st}}{{../item.system.firearmDesign.stCode}}</td>
                         <td>{{ammo.bulk}}</td>
                         <td>{{ammo.rcl}}</td>
                         <td>{{ammo.lc}}</td>
@@ -2535,14 +2551,14 @@
 
                             <tr class="design-row">
                                 <td colspan="3" style="line-height: 27.5px">
-                                    This number of shots weighs {{round this.system.laserDesign.powerCellWeight 100}} lbs and costs
-                                    {{round this.system.laserDesign.chemicalCost 100}}$
+                                    This number of shots weighs {{round item.system.laserDesign.powerCellWeight 100}} lbs and costs
+                                    {{round item.system.laserDesign.chemicalCost 100}}$
                                 </td>
                             </tr>
                             {{else}}
                             <tr class="design-row">
                                 <td style="line-height: 27.5px">
-                                    Power item.system:
+                                    Power System:
                                 </td>
                                 <td style="line-height: 27.5px">
                                     <input type="number" style="width: 50px;" name="system.laserDesign.powerCellQty" value="{{item.system.laserDesign.powerCellQty}}" data-dtype="Number"/>
@@ -2731,7 +2747,7 @@
                         <td><input type="checkbox" name="system.laserDesign.showAir" {{checked item.system.laserDesign.showAir}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{item.system.tl}}</td>
                         <td>{{item.name}} - Air</td>
-                        <td>{{item.system.laserDesign.outputDamage}} ({{this.system.laserDesign.armourDivisor}}) {{this.system.laserDesign.damageType}}</td>
+                        <td>{{item.system.laserDesign.outputDamage}} ({{item.system.laserDesign.armourDivisor}}) {{item.system.laserDesign.damageType}}</td>
                         <td>{{item.system.laserDesign.outputAcc}}</td>
                         <td>{{item.system.laserDesign.outputRange}}</td>
                         <td>{{item.system.laserDesign.outputWeight}}</td>
@@ -2748,8 +2764,8 @@
                         <td><input type="checkbox" name="system.laserDesign.showSpace" {{checked item.system.laserDesign.showSpace}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{item.system.tl}}</td>
                         <td>{{item.name}} - Space</td>
-                        <td>{{item.system.laserDesign.outputDamage}} ({{this.system.laserDesign.armourDivisorSpace}})
-                            {{this.system.laserDesign.damageType}}</td>
+                        <td>{{item.system.laserDesign.outputDamage}} ({{item.system.laserDesign.armourDivisorSpace}})
+                            {{item.system.laserDesign.damageType}}</td>
                         <td>{{item.system.laserDesign.outputAccSpace}}</td>
                         <td>{{item.system.laserDesign.outputRangeSpace}}</td>
                         <td>{{item.system.laserDesign.outputWeight}}</td>
@@ -2766,8 +2782,8 @@
                         <td><input type="checkbox" name="system.laserDesign.showWater" {{checked item.system.laserDesign.showWater}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{item.system.tl}}</td>
                         <td>{{item.name}} - Underwater</td>
-                        <td>{{item.system.laserDesign.outputDamage}} ({{this.system.laserDesign.armourDivisorWater}})
-                            {{this.system.laserDesign.damageType}}</td>
+                        <td>{{item.system.laserDesign.outputDamage}} ({{item.system.laserDesign.armourDivisorWater}})
+                            {{item.system.laserDesign.damageType}}</td>
                         <td>{{item.system.laserDesign.outputAccWater}}</td>
                         <td>{{item.system.laserDesign.outputRangeWater}}</td>
                         <td>{{item.system.laserDesign.outputWeight}}</td>
@@ -2786,8 +2802,8 @@
                         <td><input type="checkbox" name="system.laserDesign.showAirHotshot" {{checked item.system.laserDesign.showAirHotshot}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{item.system.tl}}</td>
                         <td>{{item.name}} - Hotshot Air</td>
-                        <td>{{item.system.laserDesign.outputDamageHotshots}} ({{this.system.laserDesign.armourDivisor}})
-                            {{this.system.laserDesign.damageType}}</td>
+                        <td>{{item.system.laserDesign.outputDamageHotshots}} ({{item.system.laserDesign.armourDivisor}})
+                            {{item.system.laserDesign.damageType}}</td>
                         <td>{{item.system.laserDesign.outputAcc}}</td>
                         <td>{{item.system.laserDesign.outputRange}}</td>
                         <td>{{item.system.laserDesign.outputWeight}}</td>
@@ -2804,8 +2820,8 @@
                         <td><input type="checkbox" name="system.laserDesign.showSpaceHotshot" {{checked item.system.laserDesign.showSpaceHotshot}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{item.system.tl}}</td>
                         <td>{{item.name}} - Hotshot Space</td>
-                        <td>{{item.system.laserDesign.outputDamageHotshots}} ({{this.system.laserDesign.armourDivisorSpace}})
-                            {{this.system.laserDesign.damageTypeSpace}}</td>
+                        <td>{{item.system.laserDesign.outputDamageHotshots}} ({{item.system.laserDesign.armourDivisorSpace}})
+                            {{item.system.laserDesign.damageTypeSpace}}</td>
                         <td>{{item.system.laserDesign.outputAccSpace}}</td>
                         <td>{{item.system.laserDesign.outputRangeSpace}}</td>
                         <td>{{item.system.laserDesign.outputWeight}}</td>
@@ -2822,8 +2838,8 @@
                         <td><input type="checkbox" name="system.laserDesign.showWaterHotshot" {{checked item.system.laserDesign.showWaterHotshot}} data-dtype="Boolean" style="width: 100%;"/></td>
                         <td>{{item.system.tl}}</td>
                         <td>{{item.name}} - Hotshot Underwater</td>
-                        <td>{{item.system.laserDesign.outputDamageHotshots}} ({{this.system.laserDesign.armourDivisorWater}})
-                            {{this.system.laserDesign.damageTypeWater}}</td>
+                        <td>{{item.system.laserDesign.outputDamageHotshots}} ({{item.system.laserDesign.armourDivisorWater}})
+                            {{item.system.laserDesign.damageTypeWater}}</td>
                         <td>{{item.system.laserDesign.outputAccWater}}</td>
                         <td>{{item.system.laserDesign.outputRangeWater}}</td>
                         <td>{{item.system.laserDesign.outputWeight}}</td>
