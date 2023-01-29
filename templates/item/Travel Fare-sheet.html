@@ -8,19 +8,19 @@
             <div class="equipmentDetails" id="equipmentDetails">
                 <div id="qty" class="equipmentStat">
                     <label class="resource-label">Qty:</label>
-                    <input type="number" name="data.quantity" value="{{data.data.quantity}}" data-dtype="Number"/>
+                    <input type="number" name="system.quantity" value="{{item.system.quantity}}" data-dtype="Number"/>
                 </div>
                 <div id="tl" class="equipmentStat">
                     <label class="resource-label">TL:</label>
-                    <input type="number" name="data.tl" value="{{data.data.tl}}" data-dtype="Number"/>
+                    <input type="number" name="system.tl" value="{{item.system.tl}}" data-dtype="Number"/>
                 </div>
                 <div id="lc" class="equipmentStat">
                     <label class="resource-label">LC:</label>
-                    <input type="number" name="data.lc" value="{{data.data.lc}}" data-dtype="Number"/>
+                    <input type="number" name="system.lc" value="{{item.system.lc}}" data-dtype="Number"/>
                 </div>
                 <div id="equipped" class="flexrow">
-                    <select name="data.equipStatus" class="equipStatusSelect">
-                        {{#select data.data.equipStatus}}
+                    <select name="system.equipStatus" class="equipStatusSelect">
+                        {{#select item.system.equipStatus}}
                         <option value="equipped">Equipped</option>
                         <option value="carried">Carried</option>
                         <option value="notCarried">Not Carried</option>
@@ -29,23 +29,23 @@
                 </div>
                 <div id="subCategory" class="flexrow">
                     <label class="resource-label" style="flex: 0.5;">Race / Meta Trait / Etc:</label>
-                    <input type="text" style="flex: 1;" name="data.subCategory" value="{{data.data.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
+                    <input type="text" style="flex: 1;" name="system.subCategory" value="{{item.system.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
                 </div>
                 <div id="value" class="equipmentStatLong">
                     <label class="resource-label">Value:</label>
-                    <input type="number" name="data.cost" value="{{data.data.cost}}" data-dtype="Number"/>
-                    <label class="resource-label"> / {{data.data.ttlCost}}$ total</label>
+                    <input type="number" name="system.cost" value="{{item.system.cost}}" data-dtype="Number"/>
+                    <label class="resource-label"> / {{item.system.ttlCost}}$ total</label>
                 </div>
                 <div id="weight" class="equipmentStatLong">
                     <label class="resource-label">Weight:</label>
-                    <label class="resource-label"> {{data.data.weight}} / {{data.data.ttlWeight}}lbs total</label>
+                    <label class="resource-label"> {{item.system.weight}} / {{item.system.ttlWeight}}lbs total</label>
                 </div>
             </div>
         </div>
     </header>
     <div style="padding-top: 2px;">
         <label class="resource-label" style="width: 32px;">Short Notes:</label>
-        <input type="text" name="data.shortNotes" value="{{data.data.shortNotes}}" style="width: calc(100% - 78px);"/>
+        <input type="text" name="system.shortNotes" value="{{item.system.shortNotes}}" style="width: calc(100% - 78px);"/>
     </div>
 
     {{!-- Sheet Tab Navigation --}}
@@ -68,7 +68,7 @@
         <div class="tab stats" data-tab="notes" data-group="primary">
             <h3 class="bold">Detailed Notes</h3>
             <div class="tab">
-                <textarea rows="8" name="data.notes">{{{data.data.notes}}}</textarea>
+                <textarea rows="8" name="system.notes">{{{item.system.notes}}}</textarea>
             </div>
         </div>
 
@@ -76,7 +76,7 @@
         <div class="tab stats" data-tab="catalogue" data-group="primary">
             <h3 class="bold">Vehicle Catalogue</h3>
             <div class="tab">
-                {{{data.data.travelFare.vehicleCatalogue}}}
+                {{{item.system.travelFare.vehicleCatalogue}}}
             </div>
         </div>
 
@@ -87,15 +87,15 @@
                 <div class="design-block">
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">Travel Options</h2>
-                        <input style="display: none;" type="checkbox" name="data.travelFare.initComplete" {{checked data.data.travelFare.initComplete}} data-dtype="Boolean"/>
+                        <input style="display: none;" type="checkbox" name="system.travelFare.initComplete" {{checked item.system.travelFare.initComplete}} data-dtype="Boolean"/>
                         <table>
                             <tr class="design-row">
                                 <td style="line-height: 27.5px">
                                     Travel Method
                                 </td>
                                 <td>
-                                    <select name="data.travelFare.method">
-                                        {{#select data.data.travelFare.method}}
+                                    <select name="system.travelFare.method">
+                                        {{#select item.system.travelFare.method}}
                                         <option value="ground">Ground</option>
                                         <option value="naval">Water</option>
                                         <option value="air">Air</option>
@@ -111,10 +111,10 @@
 
                             <tr class="design-row">
                                 <td style="width: 150px">
-                                    TL Range: {{data.data.travelFare.tlRange}}
+                                    TL Range: {{item.system.travelFare.tlRange}}
                                 </td>
                                 <td>
-                                    <input type="range" min="0" max="{{data.data.tl}}" step="1" name="data.travelFare.tlRange" value="{{data.data.travelFare.tlRange}}" data-dtype="Number">
+                                    <input type="range" min="0" max="{{item.system.tl}}" step="1" name="system.travelFare.tlRange" value="{{item.system.travelFare.tlRange}}" data-dtype="Number">
                                 </td>
                                 <td class="question-container" id="fare-tl-range">
                                     <div class="question-button">
@@ -128,19 +128,19 @@
                                     Distance
                                 </td>
                                 <td>
-                                    <input style="width: 25%" type="number" name="data.travelFare.distance" value="{{data.data.travelFare.distance}}" data-dtype="Number"/>
-                                    <select style="width: 70%" name="data.travelFare.unit">
-                                        {{#select data.data.travelFare.unit}}
-                                            {{#each data.data.travelFare.units as |unit id|}}
-                                                {{#ifCond ../data.data.travelFare.distance '>' 1 }}
-                                                    {{#if (and (eq unit.name "mile") (eq ../data.data.travelFare.initComplete false)) }}
+                                    <input style="width: 25%" type="number" name="system.travelFare.distance" value="{{item.system.travelFare.distance}}" data-dtype="Number"/>
+                                    <select style="width: 70%" name="system.travelFare.unit">
+                                        {{#select item.system.travelFare.unit}}
+                                            {{#each item.system.travelFare.units as |unit id|}}
+                                                {{#ifCond ../item.system.travelFare.distance '>' 1 }}
+                                                    {{#if (and (eq unit.name "mile") (eq ../item.system.travelFare.initComplete false)) }}
                                                         <option value="{{unit.name}}" selected>{{unit.names}}</option>
                                                     {{else}}
                                                         <option value="{{unit.name}}">{{unit.names}}</option>
                                                     {{/if}}
                                                 {{/ifCond}}
-                                                {{#ifCond ../data.data.travelFare.distance '<=' 1 }}
-                                                    {{#if (and (eq unit.name "mile") (eq ../data.data.travelFare.initComplete false)) }}
+                                                {{#ifCond ../item.system.travelFare.distance '<=' 1 }}
+                                                    {{#if (and (eq unit.name "mile") (eq ../item.system.travelFare.initComplete false)) }}
                                                         <option value="{{unit.name}}" selected>{{unit.name}}</option>
                                                     {{else}}
                                                         <option value="{{unit.name}}">{{unit.name}}</option>
@@ -162,7 +162,7 @@
                                     Travelling Hours
                                 </td>
                                 <td>
-                                    <input type="number" name="data.travelFare.travellingHours" value="{{data.data.travelFare.travellingHours}}" data-dtype="Number"/>
+                                    <input type="number" name="system.travelFare.travellingHours" value="{{item.system.travelFare.travellingHours}}" data-dtype="Number"/>
                                 </td>
                                 <td class="question-container" id="travel-hours">
                                     <div class="question-button">
@@ -176,10 +176,10 @@
                                     Vehicle
                                 </td>
                                 <td>
-                                    <select name="data.travelFare.vehicleCode">
-                                        {{#select data.data.travelFare.vehicleCode}}
-                                            {{#each data.data.travelFare.vehicles as |vehicle id|}}
-                                                {{#validVehicle ../data.data.tl ../data.data.travelFare.tlRange ../data.data.travelFare.method vehicle}}
+                                    <select name="system.travelFare.vehicleCode">
+                                        {{#select item.system.travelFare.vehicleCode}}
+                                            {{#each item.system.travelFare.vehicles as |vehicle id|}}
+                                                {{#validVehicle ../item.system.tl ../item.system.travelFare.tlRange ../item.system.travelFare.method vehicle}}
                                                         <option value="{{vehicle.code}}">{{vehicle.name}}</option>
                                                 {{/validVehicle}}
                                             {{/each}}
@@ -201,7 +201,7 @@
                                     Travel Time
                                 </td>
                                 <td>
-                                    {{{data.data.travelFare.travelTime}}}
+                                    {{{item.system.travelFare.travelTime}}}
                                 </td>
                                 <td class="question-container" id="travel-time">
                                     <div class="question-button">
@@ -218,7 +218,7 @@
                                     Travel Costs
                                 </td>
                                 <td>
-                                    {{{data.data.travelFare.travelCost}}}
+                                    {{{item.system.travelFare.travelCost}}}
                                 </td>
                                 <td class="question-container" id="travel-costs">
                                     <div class="question-button">
@@ -231,7 +231,7 @@
                     </div>
                     <div style="width: 50%;">
                         <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
-                        <div class="equipment-info-container">{{{data.data.info}}}</div>
+                        <div class="equipment-info-container">{{{item.system.info}}}</div>
                     </div>
                 </div>
             </div>
