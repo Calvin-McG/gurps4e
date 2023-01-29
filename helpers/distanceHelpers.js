@@ -10,6 +10,7 @@ export class distanceHelpers {
 
         switch (gridUnits.toLowerCase()) {
             case undefined:
+            case '':
             case 'yard':
             case 'yrd':
             case 'yd':
