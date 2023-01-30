@@ -1749,6 +1749,10 @@ attribute-senses {
 	width: 11em;
 }
 
+.item-money {
+	background-color: rgba(0, 255, 0, 0.2);
+}
+
 .dr-damage-type-buttons {
 	display: flex;
 	justify-content: space-around;

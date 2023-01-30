@@ -791,6 +791,8 @@ export class gurpsActor extends Actor {
 			}
 		}
 
+		carriedCost += this.system.bio.money;
+
 		carriedWeight = Math.round(carriedWeight * 100) / 100;
 		carriedCost = Math.round(carriedCost * 100) / 100;
 
