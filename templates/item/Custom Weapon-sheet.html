@@ -58,7 +58,7 @@
                 <div id="weight" class="equipmentStatLong">
                     <label class="resource-label">Weight:</label>
                     <span>{{round item.system.weight 100}}</span>
-                    <label class="resource-label"> / {{round item.system.ttlWeight 100}}lbs total</label>
+                    <label class="resource-label"> / {{round item.system.ttlWeight 100}}lb{{checkPlural item.system.ttlWeight}} total</label>
                 </div>
             </div>
         </div>

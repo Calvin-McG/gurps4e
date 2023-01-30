@@ -637,8 +637,8 @@
 										<td style="width: 1em;"><span>{{item.system.tl}}</span></td>
 										<td style="width: 1em;"><span>{{item.system.lc}}</span></td>
 										<td style="width: 1.5em;"><span>{{item.system.quantity}}</span></td>
-										<td style="text-align: center;"><span>{{round item.system.ttlCost 100}}</span></td>
-										<td style="text-align: center;"><span>{{round item.system.ttlWeight 100}}</span></td>
+										<td style="text-align: center;"><span>{{round item.system.ttlCost 100}} $</span></td>
+										<td style="text-align: center;"><span>{{round item.system.ttlWeight 100}} lb{{checkPlural item.system.ttlWeight}}</span></td>
 										<td style="width: 62px;"><span>{{equipStatusToString item.system.equipStatus}}</span></td>
 										<td class="item-controls" style="width: 30px;">
 											<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
@@ -656,8 +656,8 @@
 						<td><span></span></td>
 						<td><span></span></td>
 						<td><span class="bold">Totals:</span></td>
-						<td style="text-align: center;"><span>{{round actor.system.bio.carriedValue 100}}</span></td>
-						<td style="text-align: center;"><span>{{round actor.system.bio.carriedWeight 100}}</span></td>
+						<td style="text-align: center;"><span>{{round actor.system.bio.carriedValue 100}} $</span></td>
+						<td style="text-align: center;"><span>{{round actor.system.bio.carriedWeight 100}} lb{{checkPlural actor.system.bio.carriedWeight}}</span></td>
 						<td><span></span></td>
 						<td class="item-controls"></td>
 					</tr>

@@ -432,6 +432,20 @@ Hooks.once('init', async function() {
     }
   });
 
+  Handlebars.registerHelper("checkPlural", function(num) {
+    if (typeof num != "number") { // If it's not a number
+      return ""; // Return blank
+    }
+    else {
+      if (num !== 1) { // It's not exactly 1.
+        return "s"; // Return pluralization
+      }
+      else { // It's 1
+        return ""; // Return blank
+      }
+    }
+  });
+
   // Convert GURPS RoF to rounds per minute
   Handlebars.registerHelper("rpm", function(rof) {
     return rof * 60;
