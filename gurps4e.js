@@ -308,6 +308,17 @@ Hooks.once('init', async function() {
     return Math.round(+grams * 15.4324 * +decimals) / +decimals;
   });
 
+  Handlebars.registerHelper("equipStatusToString", function(equipStatus) {
+    let equipStatusString = "Equipped";
+    if (equipStatus === "notCarried") {
+      equipStatusString = "Not Carried";
+    }
+    else if (equipStatus === "carried") {
+      equipStatusString = "Carried";
+    }
+
+    return equipStatusString;
+  });
 
   Handlebars.registerHelper("calcMaxStrain", function(tensileStPsi, elasticModulusPsi) {
     let maxStrain = (tensileStPsi / elasticModulusPsi) * 100 ;
