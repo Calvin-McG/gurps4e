@@ -127,6 +127,10 @@ export class gurpsActor extends Actor {
 			}
 		}
 
+		if (typeof this.system.bio.money === 'undefined') { // If money is undefined, set to zero.
+			this.system.bio.money = 0
+		}
+
 		if (this.system.senses.vis) {
 			this.system.senses.vis = {
 				id: "vis",

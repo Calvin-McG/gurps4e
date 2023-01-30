@@ -31,7 +31,8 @@
             "label": "TL",
             "value": "",
             "points": 0
-          }
+          },
+          "money": 0
         },
         "posture": {
           "label": "Posture",
