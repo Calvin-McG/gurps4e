@@ -127,7 +127,7 @@ export class gurpsActor extends Actor {
 			}
 		}
 
-		if (typeof this.system.bio.money === 'undefined') { // If money is undefined, set to zero.
+		if (typeof this.system.bio.money !== 'number') { // If money is not a number, set to zero. Covers undefined, null, strings, etc.
 			this.system.bio.money = 0
 		}
 
@@ -791,7 +791,7 @@ export class gurpsActor extends Actor {
 			}
 		}
 
-		carriedCost += this.system.bio.money;
+		carriedCost += +this.system.bio.money;
 
 		carriedWeight = Math.round(carriedWeight * 100) / 100;
 		carriedCost = Math.round(carriedCost * 100) / 100;
