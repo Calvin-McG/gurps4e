@@ -1216,6 +1216,8 @@ export class gurpsActor extends Actor {
 	}
 
 	updateMagic() {
+		this.system.showVanillaMagic = game.settings.get("gurps4e", "showVanillaMagic");
+
 		if (this.system) {
 			if (this.system.magic) { // Character has the magic block
 				// Calculate the total magical attribute

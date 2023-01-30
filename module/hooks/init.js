@@ -36,6 +36,16 @@ Hooks.once("init", () => {
     type: Number
   });
 
+  // Register option for whether the vanilla magic tab shows up
+  game.settings.register("gurps4e", "showVanillaMagic", {
+    name: "Show vanilla magic tab.",
+    hint: "Enable this setting to show a tab on the character sheet for tracking info related to vanilla GURPS Magic.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
   // Register option for what counts as 'rear' when it comes to hit locations where that matters
   game.settings.register("gurps4e", "literalRear", {
     name: "Literal rear hit locations",
