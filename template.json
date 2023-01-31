@@ -132,7 +132,8 @@
           "current": {
             "ref": "none",
             "title": "None",
-            "mult": 1
+            "mult": 1,
+            "fpCost": 1
           }
         },
         "baseDamage": {
