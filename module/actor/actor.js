@@ -62,6 +62,9 @@ export class gurpsActor extends Actor {
 		//Update part specific HP
 		this.partHP();
 
+		// Store stuff for the info tab.
+		this.storeInfo();
+
 		// Recalculate encumbrance values, along with effective dodge and move. Do this last so move and dodge is correct.
 		this.recalcEncValues();
 		console.log("Actor is done updating.")
@@ -109,6 +112,15 @@ export class gurpsActor extends Actor {
 			}
 
 			this.system.senses = senses;
+		}
+
+		if (typeof this.system.info == 'undefined') { // If info does not yet exist, create a basic object for them
+			let info = {
+				jump: {},
+				breath: {},
+				runHikeSwim: {}
+			}
+			this.system.info = info;
 		}
 
 		if (this.system.bio.sm) {
@@ -728,7 +740,63 @@ export class gurpsActor extends Actor {
 		this.system.points.spells = spellPoints;
 	}
 
-	recalcEncValues(){
+	storeInfo() {
+		this.calcJumpInfo();
+	}
+
+	// Calculates jump based information based on the rules in B352
+	calcJumpInfo() {
+		this.system.info.jump.liftingSTBasedJump = Math.floor(this.system.primaryAttributes.lifting.value / 4); // 1/4 lifting strength can also be used to figure jump distance. Really only matters for really fuckin strong characters
+		this.system.info.jump.moveBasedJump = this.system.primaryAttributes.move.value; // Basic Move is what most people use to figure jump distance.
+		this.system.info.jump.jumpingSkill = skillHelpers.getSkillLevelByName("Jumping", this) // Get jumping skill for use later.
+		if (typeof this.system.info.jump.jumpingSkill !== 'number') { // If it didn't return a number
+			this.system.info.jump.jumpingSkill = 0 // Set it to zero, as the skill has no default.
+			this.system.info.jump.skillBasedJump = 0; // They have no skill based jump
+		}
+		else { // It did return a number
+			this.system.info.jump.skillBasedJump = Math.floor(this.system.info.jump.jumpingSkill / 2); // Half jump skill can also be used to figure jump distance.
+		}
+		this.system.info.jump.effectiveJump = Math.max(this.system.info.jump.liftingSTBasedJump, this.system.info.jump.moveBasedJump, this.system.info.jump.skillBasedJump);
+
+
+		if (typeof this.system.info.jump.superJump !== 'number') { // If superJump is something other than a number
+			console.log("ZERO")
+			this.system.info.jump.superJump = 0;
+		}
+		else if (this.system.info.jump.superJump < 0){ // If it's less than zero
+			console.log("ZERO")
+			this.system.info.jump.superJump = 0; // Set it to zero
+		}
+
+		if (typeof this.system.info.jump.enhancedMove !== 'number') { // If enhancedMove is something other than a number
+			this.system.info.jump.enhancedMove = 0;
+		}
+		else if (this.system.info.jump.enhancedMove < 0){ // If it's less than zero
+			this.system.info.jump.enhancedMove = 0; // Set it to zero
+		}
+
+		if (typeof this.system.info.jump.runningStart !== 'number') { // If runningStart is something other than a number
+			this.system.info.jump.runningStart = 0;
+		}
+		else if (this.system.info.jump.runningStart < 0){ // If it's less than zero
+			this.system.info.jump.runningStart = 0; // Set it to zero
+		}
+
+		// Use the better of their enhanced move boosted Jump, or their running start boosted jump.
+		this.system.info.jump.effectiveJump = Math.max(this.system.info.jump.effectiveJump * (1 + this.system.info.jump.enhancedMove), (this.system.info.jump.effectiveJump + this.system.info.jump.runningStart));
+
+		let superJumpMult = 2 ** this.system.info.jump.superJump;
+
+		this.system.info.jump.preparedHighJump = ((6 * this.system.info.jump.effectiveJump) - 10) * superJumpMult; // This figure is given in inches. (For some fucking reason)
+		this.system.info.jump.unpreparedHighJump = this.system.info.jump.preparedHighJump / 2;
+
+		this.system.info.jump.preparedBroadJump = ((2 * this.system.info.jump.effectiveJump) - 3) * superJumpMult; // This figure is given in feet.
+		this.system.info.jump.unpreparedBroadJump = this.system.info.jump.preparedBroadJump / 2;
+
+		this.system.info.jump.velocity = Math.max(this.system.info.jump.preparedBroadJump/5 , this.system.info.jump.moveBasedJump) // Jump velocity is the higher of Basic Move and one fifth highest broad jump.
+	}
+
+	recalcEncValues() {
 		var st = this.system.primaryAttributes.lifting.value;
 
 		let dodgeMultiplier = 1;
