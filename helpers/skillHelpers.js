@@ -350,4 +350,63 @@ export class skillHelpers {
             return skill.system.level;
         }
     }
+
+    // Takes in effective skill and returns the chance of success.
+    static skillLevelToProbability(skill) {
+        if (skill > 16){ // Anything above a 16 still fails on 17+
+            skill = 16;
+        }
+        else {
+            skill = Math.round(skill); // Make sure there's no decimals
+        }
+        let prob = 0; // By default, assume probability of zero to cover skills below 3.
+        switch(skill) {
+            case 3:
+                prob = 0.00462962962963;
+                break;
+            case 4:
+                prob = 0.01851851851853;
+                break;
+            case 5:
+                prob = 0.046296296296329995;
+                break;
+            case 6:
+                prob = 0.09259259259263;
+                break;
+            case 7:
+                prob = 0.16203703703703;
+                break;
+            case 8:
+                prob = 0.25925925925922996;
+                break;
+            case 9:
+                prob = 0.375;
+                break;
+            case 10:
+                prob = 0.50;
+                break;
+            case 11:
+                prob = 0.625;
+                break;
+            case 12:
+                prob = 0.7407407407412299;
+                break;
+            case 13:
+                prob = 0.8379629629634299;
+                break;
+            case 14:
+                prob = 0.9074074074078298;
+                break;
+            case 15:
+                prob = 0.9537037037041299;
+                break;
+            case 16:
+                prob = 0.9814814814819299;
+                break;
+            default:
+                break;
+        }
+
+        return prob;
+    }
 }
