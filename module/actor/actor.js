@@ -62,11 +62,11 @@ export class gurpsActor extends Actor {
 		//Update part specific HP
 		this.partHP();
 
-		// Store stuff for the info tab.
-		this.storeInfo();
-
-		// Recalculate encumbrance values, along with effective dodge and move. Do this last so move and dodge is correct.
+		// Recalculate encumbrance values, along with effective dodge and move. Do this before info but after everything else so move and dodge is correct.
 		this.recalcEncValues();
+
+		// Store stuff for the info tab. Do this after Enc so we can reference it for swimming, running, etc.
+		this.storeInfo();
 		console.log("Actor is done updating.")
 	}
 
@@ -823,6 +823,7 @@ export class gurpsActor extends Actor {
 		this.system.info.jump.liftingSTBasedJump = Math.floor(this.system.primaryAttributes.lifting.value / 4); // 1/4 lifting strength can also be used to figure jump distance. Really only matters for really fuckin strong characters
 		this.system.info.jump.moveBasedJump = this.system.primaryAttributes.move.value; // Basic Move is what most people use to figure jump distance.
 		this.system.info.jump.jumpingSkill = skillHelpers.getSkillLevelByName("Jumping", this) // Get jumping skill for use later.
+		let encMult = this.system.encumbrance.current.mult;
 		if (typeof this.system.info.jump.jumpingSkill !== 'number') { // If it didn't return a number
 			this.system.info.jump.jumpingSkill = 0 // Set it to zero, as the skill has no default.
 			this.system.info.jump.skillBasedJump = 0; // They have no skill based jump
@@ -859,10 +860,10 @@ export class gurpsActor extends Actor {
 
 		let superJumpMult = 2 ** this.system.info.jump.superJump;
 
-		this.system.info.jump.preparedHighJump = ((6 * this.system.info.jump.effectiveJump) - 10) * superJumpMult; // This figure is given in inches. (For some fucking reason)
+		this.system.info.jump.preparedHighJump = ((6 * this.system.info.jump.effectiveJump) - 10) * superJumpMult * encMult; // This figure is given in inches. (For some fucking reason)
 		this.system.info.jump.unpreparedHighJump = this.system.info.jump.preparedHighJump / 2;
 
-		this.system.info.jump.preparedBroadJump = ((2 * this.system.info.jump.effectiveJump) - 3) * superJumpMult; // This figure is given in feet.
+		this.system.info.jump.preparedBroadJump = ((2 * this.system.info.jump.effectiveJump) - 3) * superJumpMult * encMult; // This figure is given in feet.
 		this.system.info.jump.unpreparedBroadJump = this.system.info.jump.preparedBroadJump / 2;
 
 		this.system.info.jump.velocity = Math.max(this.system.info.jump.preparedBroadJump/5 , this.system.info.jump.moveBasedJump) // Jump velocity is the higher of Basic Move and one fifth highest broad jump.
@@ -900,8 +901,10 @@ export class gurpsActor extends Actor {
 
 		this.system.info.runSprint.runningSkill = Math.max(this.system.info.runSprint.runningSkill, this.system.primaryAttributes.health.value) // Running skill is based off the higher of their running skill and base HT
 
-		this.system.info.runSprint.sprintMove = this.system.primaryAttributes.move.value * 1.2; // Sprint move is base move * 1.2
-		this.system.info.runSprint.combatSprintMove = Math.floor(Math.max(this.system.primaryAttributes.move.value * 1.2, this.system.primaryAttributes.move.value + 1)); // Combat sprint is always at least 1 point higher than base move.
+		let effectiveMove = this.system.primaryAttributes.move.value * this.system.encumbrance.current.mult;
+
+		this.system.info.runSprint.sprintMove = +effectiveMove * 1.2; // Sprint move is base move * 1.2
+		this.system.info.runSprint.combatSprintMove = Math.floor(Math.max(+effectiveMove * 1.2, +effectiveMove + 1)); // Combat sprint is always at least 1 point higher than base move.
 		this.system.info.runSprint.sprintMph = this.system.info.runSprint.sprintMove * 2; // yps to mph is not exactly double, but it's the figure GURPS uses and keeps extra decimals from creeping in.
 
 		this.system.info.runSprint.pacedRunningMove = this.system.info.runSprint.sprintMove / 2; // Paced running move is half sprint speed.
