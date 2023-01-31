@@ -114,6 +114,38 @@ export class gurpsActor extends Actor {
 			this.system.senses = senses;
 		}
 
+		if (typeof this.system.encumbrance === 'undefined') {
+			this.system.encumbrance = {
+				none : {
+					title: "None"
+				},
+				light : {
+					title: "Light"
+				},
+				medium : {
+					title: "Medium"
+				},
+				heavy : {
+					title: "Heavy"
+				},
+				xheavy : {
+					title: "X-Heavy"
+				},
+				current: {
+					ref: "none",
+					title: "None",
+					mult: 1
+				}
+			}
+		}
+		else if (typeof this.system.encumbrance.current === 'undefined') {
+			this.system.encumbrance.current = {
+				ref: "none",
+				title: "None",
+				mult: 1
+			}
+		}
+
 		if (typeof this.system.info === 'undefined') { // If info does not yet exist, create a basic object for them
 			let info = {
 				jump: {
@@ -982,18 +1014,43 @@ export class gurpsActor extends Actor {
 
 		if (carriedWeight <= this.system.encumbrance.none.lbs) {
 			finalDodge = this.system.encumbrance.none.dodge;
+			this.system.encumbrance.current = {
+				ref: "none",
+				title: "None",
+				mult: 1
+			};
 		}
 		else if (carriedWeight <= this.system.encumbrance.light.lbs){
 			finalDodge = this.system.encumbrance.light.dodge;
+			this.system.encumbrance.current = {
+				ref: "light",
+				title: "Light",
+				mult: 0.8
+			};
 		}
 		else if (carriedWeight <= this.system.encumbrance.medium.lbs){
 			finalDodge = this.system.encumbrance.medium.dodge;
+			this.system.encumbrance.current = {
+				ref: "medium",
+				title: "Medium",
+				mult: 0.6
+			};
 		}
 		else if (carriedWeight <= this.system.encumbrance.heavy.lbs){
 			finalDodge = this.system.encumbrance.heavy.dodge;
+			this.system.encumbrance.current = {
+				ref: "heavy",
+				title: "Heavy",
+				mult: 0.4
+			};
 		}
 		else if (carriedWeight <= this.system.encumbrance.xheavy.lbs){
 			finalDodge = this.system.encumbrance.xheavy.dodge;
+			this.system.encumbrance.current = {
+				ref: "xheavy",
+				title: "X-Heavy",
+				mult: 0.2
+			};
 		}
 		else {
 			finalDodge = 0;

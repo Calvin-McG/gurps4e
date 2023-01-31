@@ -376,6 +376,7 @@
 							<td>Level</td><td>Max Load</td><td>Move</td><td>Dodge</td>
 						</tr>
 						{{#each actor.system.encumbrance as |enc id|}}
+						{{#unless enc.ref}}
 						<tr class="enc-entry">
 							<td>{{enc.title}}</td>
 							<td>{{enc.lbs}}</td>
@@ -385,6 +386,7 @@
 									   data-label="Makes a &lt;b&gt;Dodge&lt;/b&gt; roll." data-type="skill"></label>
 							</td>
 						</tr>
+						{{/unless}}
 						{{/each}}
 					</table>
 					<table class="combat-table">
