@@ -2958,19 +2958,20 @@
 			<div class="tab stats" data-tab="info" data-group="primary">
 				<h3 class="bold">General Info</h3>
 				<div class="tab">
-					<h1 class="bold" style="text-align: center;">
-						<label for="infoJumping">
-							<div>
-								{{#if actor.system.info.jump.show }}
+					<div>
+						<h1 class="bold" style="text-align: center;">
+							<label for="infoJumping">
+								<div>
+									{{#if actor.system.info.jump.show }}
 									Jumping
-								{{else}}
+									{{else}}
 									Jumping (Hidden)
-								{{/if}}
-							</div>
-						</label>
-					</h1>
-					<input style="display: none" id="infoJumping" type="checkbox" name="system.info.jump.show" {{checked system.info.jump.show}} data-dtype="Boolean"/>
-					{{#if actor.system.info.jump.show }}
+									{{/if}}
+								</div>
+							</label>
+						</h1>
+						<input style="display: none" id="infoJumping" type="checkbox" name="system.info.jump.show" {{checked actor.system.info.jump.show}} data-dtype="Boolean"/>
+						{{#if actor.system.info.jump.show }}
 						<table>
 							<tr class="item item-header">
 								<td style="font-style: italic" colspan="3">The highest of these three figures are used to figure out your effective Basic Move for the jump calculation.</td>
@@ -3063,7 +3064,71 @@
 								<td></td>
 							</tr>
 						</table>
-					{{/if}}
+						{{/if}}
+					</div>
+
+
+					<div>
+						<h1 class="bold" style="text-align: center;">
+							<label for="infoBreathing">
+								<div>
+									{{#if actor.system.info.breath.show }}
+									Breath Holding
+									{{else}}
+									Breath Holding (Hidden)
+									{{/if}}
+								</div>
+							</label>
+						</h1>
+						<input style="display: none" id="infoBreathing" type="checkbox" name="system.info.breath.show" {{checked actor.system.info.breath.show}} data-dtype="Boolean"/>
+						{{#if actor.system.info.breath.show }}
+						<table>
+							<tr class="item">
+								<td>Breath Holding</td>
+								<td>
+									<input type="number" name="system.info.breath.breathHolding" value="{{actor.system.info.breath.breathHolding}}" data-dtype="Number" />
+								</td>
+								<td>If you have the Breath Holding advantage, enter the number of levels here. Each level doubles your breath holding time.</td>
+							</tr>
+							<tr class="item">
+								<td>Breath Control</td>
+								<td>
+									<input type="checkbox" id="breathControl" name="system.info.breath.breathControl" {{checked actor.system.info.breath.breathControl}} data-dtype="Boolean"/>
+								</td>
+								<td>If you succeeded your Breath Control roll, check this box. Success increases your breath holding time by 50%</td>
+							</tr>
+						</table>
+
+						<table>
+							<tr class="item item-header">
+								<th>Level of Exertion</th>
+								<th>Time</th>
+								<th>Description</th>
+							</tr>
+							<tr class="item">
+								<td>None</td>
+								<td>
+									{{actor.system.info.breath.noExertion}} seconds
+								</td>
+								<td>Sitting quietly or meditating.</td>
+							</tr>
+							<tr class="item">
+								<td>Mild</td>
+								<td>
+									{{actor.system.info.breath.mildExertion}} seconds
+								</td>
+								<td>Operating a vehicle, treading water, or walking.</td>
+							</tr>
+							<tr class="item">
+								<td>None</td>
+								<td>
+									{{actor.system.info.breath.heavyExertion}} seconds
+								</td>
+								<td>Climbing, combat, or running.</td>
+							</tr>
+						</table>
+						{{/if}}
+					</div>
 				</div>
 			</div>
 		</section>

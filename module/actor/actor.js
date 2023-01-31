@@ -114,11 +114,17 @@ export class gurpsActor extends Actor {
 			this.system.senses = senses;
 		}
 
-		if (typeof this.system.info == 'undefined') { // If info does not yet exist, create a basic object for them
+		if (typeof this.system.info === 'undefined') { // If info does not yet exist, create a basic object for them
 			let info = {
-				jump: {},
-				breath: {},
-				runHikeSwim: {}
+				jump: {
+					show: false
+				},
+				breath: {
+					show: false
+				},
+				runHikeSwim: {
+					show: false
+				}
 			}
 			this.system.info = info;
 		}
@@ -742,6 +748,7 @@ export class gurpsActor extends Actor {
 
 	storeInfo() {
 		this.calcJumpInfo();
+		this.calcBreathHoldingInfo();
 	}
 
 	// Calculates jump based information based on the rules in B352
@@ -760,11 +767,9 @@ export class gurpsActor extends Actor {
 
 
 		if (typeof this.system.info.jump.superJump !== 'number') { // If superJump is something other than a number
-			console.log("ZERO")
 			this.system.info.jump.superJump = 0;
 		}
 		else if (this.system.info.jump.superJump < 0){ // If it's less than zero
-			console.log("ZERO")
 			this.system.info.jump.superJump = 0; // Set it to zero
 		}
 
@@ -794,6 +799,26 @@ export class gurpsActor extends Actor {
 		this.system.info.jump.unpreparedBroadJump = this.system.info.jump.preparedBroadJump / 2;
 
 		this.system.info.jump.velocity = Math.max(this.system.info.jump.preparedBroadJump/5 , this.system.info.jump.moveBasedJump) // Jump velocity is the higher of Basic Move and one fifth highest broad jump.
+	}
+
+	// Calculates breath holding stats based on the rules from B351
+	calcBreathHoldingInfo() {
+		if (typeof this.system.info.breath.breathHolding !== 'number') { // If breathHolding is something other than a number
+			this.system.info.breath.breathHolding = 0;
+		}
+		if (typeof this.system.info.breath.breathControl === 'undefined') { // If breathControl is undefined
+			this.system.info.breath.breathControl = false;
+		}
+
+		this.system.info.breath.noExertion = 	(this.system.primaryAttributes.health.value * 10)	* 2 ** this.system.info.breath.breathHolding;
+		this.system.info.breath.mildExertion = 	(this.system.primaryAttributes.health.value * 4)	* 2 ** this.system.info.breath.breathHolding;
+		this.system.info.breath.heavyExertion = (this.system.primaryAttributes.health.value)		* 2 ** this.system.info.breath.breathHolding;
+
+		if (this.system.info.breath.breathControl) {
+			this.system.info.breath.noExertion =	this.system.info.breath.noExertion *= 1.5;
+			this.system.info.breath.mildExertion =	this.system.info.breath.mildExertion *= 1.5;
+			this.system.info.breath.heavyExertion =	this.system.info.breath.heavyExertion *= 1.5;
+		}
 	}
 
 	recalcEncValues() {
