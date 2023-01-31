@@ -166,7 +166,8 @@ export class gurpsActor extends Actor {
 					show: false,
 					terrain: "1",
 					weather: "none",
-					ice: false
+					ice: false,
+					hours: 16
 				}
 			}
 		}
@@ -196,7 +197,8 @@ export class gurpsActor extends Actor {
 					show: false,
 					terrain: "1",
 					weather: "none",
-					ice: false
+					ice: false,
+					hours: 16
 				}
 			}
 		}
@@ -1046,10 +1048,11 @@ export class gurpsActor extends Actor {
 			this.system.info.hiking.skill = this.system.primaryAttributes.health.value - 5; // Set it to HT - 5, as that's the default.
 		}
 
+		let timeMult = this.system.info.hiking.hours / 16;
 		let terrainMult = parseFloat(this.system.info.hiking.terrain)
 		let weatherMult = parseFloat(this.system.info.hiking.weather)
 
-		let effectiveMove = this.system.primaryAttributes.move.value * this.system.encumbrance.current.mult * (this.system.info.hiking.enhancedMove + 1) * terrainMult * weatherMult; // Start with the basic move, and apply multipliers for enc, enhanced move, terrain, and weather
+		let effectiveMove = this.system.primaryAttributes.move.value * this.system.encumbrance.current.mult * (this.system.info.hiking.enhancedMove + 1) * terrainMult * weatherMult * timeMult; // Start with the basic move, and apply multipliers for enc, enhanced move, terrain, and weather
 
 		if (this.system.info.hiking.ice) { // If there's ice
 			effectiveMove *= 0.5; // Ice halves movement speed.
