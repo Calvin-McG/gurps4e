@@ -877,10 +877,16 @@ export class gurpsActor extends Actor {
 		if (typeof this.system.info.breath.breathControl === 'undefined') { // If breathControl is undefined
 			this.system.info.breath.breathControl = false;
 		}
+		if (typeof this.system.info.breath.oxygenStorage !== 'number') { // If oxygenStorage is something other than a number
+			this.system.info.breath.oxygenStorage = 1;
+		}
+		else if (this.system.info.breath.oxygenStorage < 1) { // If oxygenStorage is less than 1, set it to 1.
+			this.system.info.breath.oxygenStorage = 1;
+		}
 
-		this.system.info.breath.noExertion = 	(this.system.primaryAttributes.health.value * 10)	* 2 ** this.system.info.breath.breathHolding;
-		this.system.info.breath.mildExertion = 	(this.system.primaryAttributes.health.value * 4)	* 2 ** this.system.info.breath.breathHolding;
-		this.system.info.breath.heavyExertion = (this.system.primaryAttributes.health.value)		* 2 ** this.system.info.breath.breathHolding;
+		this.system.info.breath.noExertion = 	((this.system.primaryAttributes.health.value * 10)	* 2 ** this.system.info.breath.breathHolding) * this.system.info.breath.oxygenStorage;
+		this.system.info.breath.mildExertion = 	((this.system.primaryAttributes.health.value * 4)	* 2 ** this.system.info.breath.breathHolding) * this.system.info.breath.oxygenStorage;
+		this.system.info.breath.heavyExertion = ((this.system.primaryAttributes.health.value)		* 2 ** this.system.info.breath.breathHolding) * this.system.info.breath.oxygenStorage;
 
 		if (this.system.info.breath.breathControl) {
 			this.system.info.breath.noExertion =	this.system.info.breath.noExertion *= 1.5;
