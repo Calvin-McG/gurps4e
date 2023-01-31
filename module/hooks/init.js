@@ -107,7 +107,7 @@ Hooks.once("init", () => {
         "After all, by these rules, a DR 4 piece of leather has the same holdout penalty as a DR 4 piece of Kevlar, despite the fact that the leather is half an inch thick and the kevlar is less than an eighth of an inch. " +
         "There are three options to address this: First is to make no correction, though this means that a lot of UT armour meant to be worn as clothing has Holdout penalties in the area of -8. (Which is a lot) " +
         "Second is to correct for this by the weight of the material. Rigid materials use High Quality Iron as the baseline and flexible materials use Leather. " +
-        "Third is to correct for this by the thickness of the material. Again, High Quality Iron and Leather are used as the baseline.",
+        "Third is to correct for this by the thickness of the material. Again, High Quality Iron and Leather are used as the baseline. This is the method suggested by the pyramid articles which give rules for Custom Armour.",
     scope: "world",
     config: true,
     type: String,
@@ -187,7 +187,7 @@ Hooks.once("init", () => {
   game.settings.register("gurps4e", "realisticBowScale", {
     name: "Realistic Scale Bows",
     hint: "The default is Cinematic scale, which is designed to match the bows seen in Basic and Low Tech. " +
-        "Realistic scale instead sets the damage to better reflect the difference between bows and firearms. ",
+        "Realistic scale instead reduces the damage to better reflect the difference between bows and firearms. ",
     scope: "world",
     config: true,
     default: false,
@@ -226,7 +226,7 @@ Hooks.once("init", () => {
 
   game.settings.register("gurps4e", "manaTreasure", {
     name: "Include mana on Custom Jewelry",
-    hint: "For custom jewelry, include a display showing how much mana the item would be worth when using inanimate sacrifice from Thaumatology 55.",
+    hint: "For custom jewelry, include a display showing how much mana the item would be worth when using inanimate sacrifice from Thaumatology 55. These rules are really only helpful for magic systems that use FP and it's equivalents as energy.",
     scope: "world",
     config: true,
     default: false,
