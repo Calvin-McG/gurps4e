@@ -2958,101 +2958,112 @@
 			<div class="tab stats" data-tab="info" data-group="primary">
 				<h3 class="bold">General Info</h3>
 				<div class="tab">
-					<table>
-						<tr class="item bold trait-category-header">
-							<th colspan="3">Jumping</th>
-						</tr>
-						<tr class="item item-header">
-							<td style="font-style: italic" colspan="3">The highest of these three figures are used to figure out your effective Basic Move for the jump calculation.</td>
-						</tr>
-						<tr class="item">
-							<td>Movement</td>
-							<td style="width: 5%; font-weight: bold; text-align: center">{{actor.system.info.jump.moveBasedJump}}</td>
-							<td>This is just Basic Move with no modifiers</td>
-						</tr>
-						<tr class="item">
-							<td>Skill</td>
-							<td style="width: 5%; font-weight: bold; text-align: center">{{actor.system.info.jump.skillBasedJump}}</td>
-							<td>This is half of your Jumping skill, rounded down, if you have it.</td>
-						</tr>
-						<tr class="item">
-							<td>Strength</td>
-							<td style="width: 5%; font-weight: bold; text-align: center">{{actor.system.info.jump.liftingSTBasedJump}}</td>
-							<td>This is one quarter your lifting ST, rounded down.</td>
-						</tr>
-					</table>
+					<h1 class="bold" style="text-align: center;">
+						<label for="infoJumping">
+							<div>
+								{{#if actor.system.info.jump.show }}
+									Jumping
+								{{else}}
+									Jumping (Hidden)
+								{{/if}}
+							</div>
+						</label>
+					</h1>
+					<input style="display: none" id="infoJumping" type="checkbox" name="system.info.jump.show" {{checked system.info.jump.show}} data-dtype="Boolean"/>
+					{{#if actor.system.info.jump.show }}
+						<table>
+							<tr class="item item-header">
+								<td style="font-style: italic" colspan="3">The highest of these three figures are used to figure out your effective Basic Move for the jump calculation.</td>
+							</tr>
+							<tr class="item">
+								<td>Movement</td>
+								<td style="width: 5%; font-weight: bold; text-align: center">{{actor.system.info.jump.moveBasedJump}}</td>
+								<td>This is just Basic Move with no modifiers</td>
+							</tr>
+							<tr class="item">
+								<td>Skill</td>
+								<td style="width: 5%; font-weight: bold; text-align: center">{{actor.system.info.jump.skillBasedJump}}</td>
+								<td>This is half of your Jumping skill, rounded down, if you have it.</td>
+							</tr>
+							<tr class="item">
+								<td>Strength</td>
+								<td style="width: 5%; font-weight: bold; text-align: center">{{actor.system.info.jump.liftingSTBasedJump}}</td>
+								<td>This is one quarter your lifting ST, rounded down.</td>
+							</tr>
+						</table>
 
-					<table>
-						<tr class="item">
-							<td>Super Jump</td>
-							<td>
-								<input type="number" name="system.info.jump.superJump" value="{{actor.system.info.jump.superJump}}" data-dtype="Number" />
-							</td>
-							<td>If you have Super Jump, enter the level here.</td>
-						</tr>
-						<tr class="item">
-							<td>Running Start</td>
-							<td>
-								<input type="number" name="system.info.jump.runningStart" value="{{actor.system.info.jump.runningStart}}" data-dtype="Number" />
-							</td>
-							<td>If you had a running start, enter the number of yards you moved on the previous round.</td>
-						</tr>
-						<tr class="item">
-							<td>Enhanced Ground Move</td>
-							<td>
-								<input type="number" name="system.info.jump.enhancedMove" value="{{actor.system.info.jump.enhancedMove}}" data-dtype="Number" />
-							</td>
-							<td>If you have Enhanced Ground Move and are currently able to make use of it, enter it here.</td>
-						</tr>
-					</table>
+						<table>
+							<tr class="item">
+								<td>Super Jump</td>
+								<td>
+									<input type="number" name="system.info.jump.superJump" value="{{actor.system.info.jump.superJump}}" data-dtype="Number" />
+								</td>
+								<td>If you have Super Jump, enter the level here.</td>
+							</tr>
+							<tr class="item">
+								<td>Running Start</td>
+								<td>
+									<input type="number" name="system.info.jump.runningStart" value="{{actor.system.info.jump.runningStart}}" data-dtype="Number" />
+								</td>
+								<td>If you had a running start, enter the number of yards you moved on the previous round.</td>
+							</tr>
+							<tr class="item">
+								<td>Enhanced Ground Move</td>
+								<td>
+									<input type="number" name="system.info.jump.enhancedMove" value="{{actor.system.info.jump.enhancedMove}}" data-dtype="Number" />
+								</td>
+								<td>If you have Enhanced Ground Move and are currently able to make use of it, enter it here.</td>
+							</tr>
+						</table>
 
-					<table>
-						<tr class="item">
-							<td>Effective Movement</td>
-							<td style="width: 5%; font-weight: bold; text-align: center">
-								{{actor.system.info.jump.effectiveJump}}
-							</td>
-							<td>This number is used in the jump calculation in place of Basic Move.</td>
-						</tr>
-					</table>
+						<table>
+							<tr class="item">
+								<td>Effective Movement</td>
+								<td style="width: 5%; font-weight: bold; text-align: center">
+									{{actor.system.info.jump.effectiveJump}}
+								</td>
+								<td>This number is used in the jump calculation in place of Basic Move.</td>
+							</tr>
+						</table>
 
-					<table>
-						<tr class="item">
-							<td>Prepared Broad Jump</td>
-							<td style="width: 5%; font-weight: bold; text-align: center">
-								{{actor.system.info.jump.preparedBroadJump}} feet
-							</td>
-							<td>You must have either Concentrated or Moved in both of the previous two turns to use this.</td>
-						</tr>
-						<tr class="item">
-							<td>Unprepared Broad Jump</td>
-							<td style="width: 5%; font-weight: bold; text-align: center">
-								{{actor.system.info.jump.unpreparedBroadJump}} feet
-							</td>
-							<td></td>
-						</tr>
-						<tr class="item">
-							<td>Jump Move</td>
-							<td style="width: 5%; font-weight: bold; text-align: center">
-								{{actor.system.info.jump.velocity}} yards
-							</td>
-							<td>This is the speed at which you fly through the air. Jumps longer than this mean you're still in the air at the end of your turn.</td>
-						</tr>
-						<tr class="item">
-							<td>Prepared High Jump</td>
-							<td style="width: 5%; font-weight: bold; text-align: center">
-								{{actor.system.info.jump.preparedHighJump}} inches
-							</td>
-							<td>You must have either Concentrated or Moved in both of the previous two turns to use this.</td>
-						</tr>
-						<tr class="item">
-							<td>Unprepared High Jump</td>
-							<td style="width: 5%; font-weight: bold; text-align: center">
-								{{actor.system.info.jump.unpreparedHighJump}} inches
-							</td>
-							<td></td>
-						</tr>
-					</table>
+						<table>
+							<tr class="item">
+								<td>Prepared Broad Jump</td>
+								<td style="width: 5%; font-weight: bold; text-align: center">
+									{{actor.system.info.jump.preparedBroadJump}} feet
+								</td>
+								<td>You must have either Concentrated or Moved in both of the previous two turns to use this.</td>
+							</tr>
+							<tr class="item">
+								<td>Unprepared Broad Jump</td>
+								<td style="width: 5%; font-weight: bold; text-align: center">
+									{{actor.system.info.jump.unpreparedBroadJump}} feet
+								</td>
+								<td></td>
+							</tr>
+							<tr class="item">
+								<td>Jump Move</td>
+								<td style="width: 5%; font-weight: bold; text-align: center">
+									{{actor.system.info.jump.velocity}} yards
+								</td>
+								<td>This is the speed at which you fly through the air. Jumps longer than this mean you're still in the air at the end of your turn.</td>
+							</tr>
+							<tr class="item">
+								<td>Prepared High Jump</td>
+								<td style="width: 5%; font-weight: bold; text-align: center">
+									{{actor.system.info.jump.preparedHighJump}} inches
+								</td>
+								<td>You must have either Concentrated or Moved in both of the previous two turns to use this.</td>
+							</tr>
+							<tr class="item">
+								<td>Unprepared High Jump</td>
+								<td style="width: 5%; font-weight: bold; text-align: center">
+									{{actor.system.info.jump.unpreparedHighJump}} inches
+								</td>
+								<td></td>
+							</tr>
+						</table>
+					{{/if}}
 				</div>
 			</div>
 		</section>
