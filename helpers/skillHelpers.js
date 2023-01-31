@@ -326,4 +326,28 @@ export class skillHelpers {
 
         return bonus;
     }
+
+    // This method takes an actor and a skill name, and returns the item object for the rollable that matches name name.
+    static getSkillObjectByName(name, actor){
+        for (let i = 0; i < actor.items.contents.length; i++) { // Loop through all the items on the sheet.
+            if (actor.items.contents[i].type.toLowerCase() === "rollable"){ // Only examine the rollables
+                if (actor.items.contents[i].name.toLowerCase() === name.toLowerCase()) { // Check that the name matches what the method was given
+                    return actor.items.contents[i]; // Return the skill we are currently looking at.
+                }
+            }
+        }
+
+        return undefined; // If nothing was found, return undefined.
+    }
+
+    static getSkillLevelByName(name, actor){
+        let skill = this.getSkillObjectByName(name, actor);
+
+        if (typeof skill === 'undefined') { // If there was no skill, return undefined.
+            return undefined;
+        }
+        else { // There was a skill, so return the level.
+            return skill.system.level;
+        }
+    }
 }
