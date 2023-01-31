@@ -2,11 +2,16 @@
   "name": "gurps4e",
   "title": "GURPS4E",
   "description": "A GURPS4E system that automates as much as possible",
-  "version": "4.0.1",
-  "minimumCoreVersion": "10",
-  "compatibleCoreVersion": "10",
+  "version": "4.1.0",
+  "compatibility": {
+    "minimum": 10,
+    "verified": "10.291",
+    "maximum": 10
+  },
   "templateVersion": 2,
-  "author": "Calvin",
+  "authors": [{
+    "name": "Calvin"
+  }],
   "esmodules": [
     "./gurps4e.js",
     "./module/hooks/init.js",
@@ -22,7 +27,7 @@
       "system": "gurps4e",
       "module": "gurps4e",
       "path": "packs/gurps-macros.db",
-      "entity": "Macro"
+      "type": "Macro"
     }
   ],
   "scripts": [
