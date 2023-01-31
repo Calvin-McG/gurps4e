@@ -3209,6 +3209,98 @@
 						</table>
 						{{/if}}
 					</div>
+
+					<div>
+						<h1 class="bold" style="text-align: center;">
+							<label for="infoSwim">
+								<div>
+									{{#if actor.system.info.swim.show }}
+									Swimming
+									{{else}}
+									Swimming (Hidden)
+									{{/if}}
+								</div>
+							</label>
+						</h1>
+						<input style="display: none" id="infoSwim" type="checkbox" name="system.info.swim.show" {{checked actor.system.info.swim.show}} data-dtype="Boolean"/>
+						{{#if actor.system.info.swim.show }}
+						<table>
+							<tr class="item">
+								<td>Effective Swimming Skill</td>
+								<td style="width: 25%">
+									{{ actor.system.info.swim.effectiveSkill }}
+								</td>
+								<td>This is the higher of your HT, or Swimming skill, and is used to figure out how far you can swim.</td>
+							</tr>
+							<tr class="item">
+								<td>Actual Swimming Skill</td>
+								<td style="width: 25%">
+									{{ actor.system.info.swim.skill }}
+								</td>
+								<td>This is your actual Swimming skill (Or the default if you don't have it) and is what you should roll if you're trying not to drown or are doing other swimming related things.</td>
+							</tr>
+							<tr class="item">
+								<td>Aquatic or Amphibious</td>
+								<td>
+									<input type="checkbox" id="aquatic" name="system.info.swim.waterBoi" {{checked actor.system.info.swim.waterBoi}} data-dtype="Boolean"/>
+								</td>
+								<td>If you are Aquatic or Amphibious, check this box.</td>
+							</tr>
+							<tr class="item">
+								<td>Fast Swimming Move</td>
+								<td style="width: 25%">
+									{{round actor.system.info.swim.swimMove 100}} yards per second, or {{round actor.system.info.swim.swimMph 100}} mph
+								</td>
+								<td>This is 1/5th your Basic Move unless you are Aquatic or Amphibious in which case it's 1:1.</td>
+							</tr>
+							<tr class="item">
+								<td>Combat Swimming Move</td>
+								<td style="width: 25%">
+									{{ actor.system.info.swim.combatSwimMove }}
+								</td>
+								<td>In combat your swim move is always at least 1, but is otherwise rounded down.</td>
+							</tr>
+							<tr class="item">
+								<td>Paced Swimming Move</td>
+								<td style="width: 25%">
+									{{round actor.system.info.swim.pacedSwimMove 100}} yards per second, or {{round actor.system.info.swim.pacedSwimMph 100}} mph
+								</td>
+								<td>Paced swimming is half of your fast swim speed.</td>
+							</tr>
+						</table>
+
+						<table>
+							<tr class="item item-header">
+								<th colspan="3" style="font-style: italic">This table gives the probability you'll make the rolls necessary to cover a given distance while swimming.<br>You do still need to roll, this is just for guidance.</th>
+							</tr>
+							<tr class="item">
+								<td></td>
+								<td>Fast</td>
+								<td>Paced</td>
+							</tr>
+							<tr class="item">
+								<td>100%</td>
+								<td>{{round actor.system.info.swim.pacedSwim100 100}} yards / {{round actor.system.info.swim.swim100Mi 100}} miles</td>
+								<td>{{round actor.system.info.swim.swim100 100}} yards / {{round actor.system.info.swim.pacedSwim100Mi 100}} miles</td>
+							</tr>
+							<tr class="item">
+								<td>75%</td>
+								<td>{{round actor.system.info.swim.swim75 100}} yards / {{round actor.system.info.swim.swim75Mi 100}} miles</td>
+								<td>{{round actor.system.info.swim.pacedSwim75 100}} yards / {{round actor.system.info.swim.pacedSwim75Mi 100}} miles</td>
+							</tr>
+							<tr class="item">
+								<td>50%</td>
+								<td>{{round actor.system.info.swim.swim50 100}} yards / {{round actor.system.info.swim.swim50Mi 100}} miles</td>
+								<td>{{round actor.system.info.swim.pacedSwim50 100}} yards / {{round actor.system.info.swim.pacedSwim50Mi 100}} miles</td>
+							</tr>
+							<tr class="item">
+								<td>25%</td>
+								<td>{{round actor.system.info.swim.swim25 100}} yards / {{round actor.system.info.swim.swim25Mi 100}} miles</td>
+								<td>{{round actor.system.info.swim.pacedSwim25 100}} yards / {{round actor.system.info.swim.pacedSwim25Mi 100}} miles</td>
+							</tr>
+						</table>
+						{{/if}}
+					</div>
 				</div>
 			</div>
 		</section>

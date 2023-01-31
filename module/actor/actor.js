@@ -156,6 +156,9 @@ export class gurpsActor extends Actor {
 				},
 				runSprint: {
 					show: false
+				},
+				swim: {
+					show: false
 				}
 			}
 			this.system.info = info;
@@ -178,6 +181,13 @@ export class gurpsActor extends Actor {
 			if (typeof this.system.info.runSprint === 'undefined') {
 				this.system.info.runSprint = {
 					runSprint: {
+						show: false
+					}
+				}
+			}
+			if (typeof this.system.info.swim === 'undefined') {
+				this.system.info.swim = {
+					swim: {
 						show: false
 					}
 				}
@@ -805,6 +815,7 @@ export class gurpsActor extends Actor {
 		this.calcJumpInfo();
 		this.calcBreathHoldingInfo();
 		this.calcRunSprintInfo();
+		this.calcSwimmingInfo();
 	}
 
 	// Calculates jump based information based on the rules in B352
@@ -938,6 +949,76 @@ export class gurpsActor extends Actor {
 
 		this.system.info.runSprint.sprint25Mi  = this.system.info.runSprint.sprint25 / 1760;
 		this.system.info.runSprint.run25Mi	 = this.system.info.runSprint.run25 / 1760;
+	}
+
+	calcSwimmingInfo() {
+		let fpBeforeVeryTired = this.system.reserves.fp.max - Math.floor(this.system.reserves.fp.max / 3); // Figure out the number of FP they have before they hit Very Tired and store it for later.
+
+		this.system.info.swim.skill = skillHelpers.getSkillLevelByName("Swimming", this) // Base swimming might still be rolled against to make sure your character doesn't drown. - TODO Add not drowning rules. (Or don't)
+
+		if (typeof this.system.info.swim.skill !== 'number') { // If it didn't return a number
+			this.system.info.swim.skill = this.system.primaryAttributes.health.value - 4; // Set it to HT - 4, as that's the default.
+		}
+
+		this.system.info.swim.effectiveSkill = Math.max(this.system.info.swim.skill, this.system.primaryAttributes.health.value) // This is the skill used when determining how far you can get.
+
+		let effectiveMove = this.system.primaryAttributes.move.value * this.system.encumbrance.current.mult;
+
+		if (!this.system.info.swim.waterBoi) { // Character is not aquatic or amphibious
+			this.system.info.swim.swimMove = +effectiveMove * 0.2; // Swimming move is one fifth base move.
+			this.system.info.swim.combatSwimMove = Math.floor(Math.max(+effectiveMove * 0.2, 1)); // Combat swimming move is one fifth base move, but always at least 1.
+		}
+		else {
+			this.system.info.swim.swimMove = effectiveMove;
+			this.system.info.swim.combatSwimMove = effectiveMove;
+		}
+
+		this.system.info.swim.swimMph = this.system.info.swim.swimMove * 2; // yps to mph is not exactly double, but it's the figure GURPS uses and keeps extra decimals from creeping in.
+
+		this.system.info.swim.pacedSwimMove = this.system.info.swim.swimMove / 2; // Assuming paced swimming is half regular swim move
+		this.system.info.swim.pacedSwimMph = this.system.info.swim.pacedSwimMove * 2; // yps to mph is not exactly double, but it's the figure GURPS uses and keeps extra decimals from creeping in.
+
+		this.system.info.swim.swim100		= this.system.info.swim.swimMove * 60 * fpBeforeVeryTired; // Every minute, the person rolls vs pacedSwimning skill. This entry assumes all rolls are failed.
+		this.system.info.swim.pacedSwim100	= this.system.info.swim.pacedSwimMove * 60 * 30 * fpBeforeVeryTired; // Every 60 seconds, the person rolls vs pacedSwimning skill. This entry assumes all rolls are failed.
+
+		let skillProbability = skillHelpers.skillLevelToProbability(this.system.info.swim.skill); // Get the probability of success with the effective pacedSwimning skill.
+
+		let mult75 = 1;
+		let mult50 = 1;
+		let mult = 1;
+		let hit75 = false;
+		let hit50 = false;
+		for (let a = 1; a > 0.25; a = a * skillProbability){ // With each step the loop simulates the stacking probability of repeated skill rolls. As the index passes certain thresholds the value is saved as the multiplier for the swim/pacedSwim distance.
+			if (a < 0.75 && hit75 === false) {
+				hit75 = true;
+				mult75 = mult;
+			}
+			if (a < 0.50 && hit50 === false) {
+				hit50 = true;
+				mult50 = mult;
+			}
+			mult += 1;
+		}
+		let mult25 = mult;
+
+		this.system.info.swim.swim75		= this.system.info.swim.swim100			* mult75;
+		this.system.info.swim.pacedSwim75	= this.system.info.swim.pacedSwim100    * mult75;
+		this.system.info.swim.swim50		= this.system.info.swim.swim100			* mult50;
+		this.system.info.swim.pacedSwim50	= this.system.info.swim.pacedSwim100    * mult50;
+		this.system.info.swim.swim25		= this.system.info.swim.swim100			* mult25;
+		this.system.info.swim.pacedSwim25	= this.system.info.swim.pacedSwim100	* mult25;
+
+		this.system.info.swim.swim100Mi			= this.system.info.swim.swim100 / 1760;
+		this.system.info.swim.pacedSwim100Mi	= this.system.info.swim.pacedSwim100 / 1760;
+
+		this.system.info.swim.swim75Mi			= this.system.info.swim.swim75 / 1760;
+		this.system.info.swim.pacedSwim75Mi		= this.system.info.swim.pacedSwim75 / 1760;
+
+		this.system.info.swim.swim50Mi			= this.system.info.swim.swim50 / 1760;
+		this.system.info.swim.pacedSwim50Mi		= this.system.info.swim.pacedSwim50 / 1760;
+
+		this.system.info.swim.swim25Mi			= this.system.info.swim.swim25 / 1760;
+		this.system.info.swim.pacedSwim25Mi		= this.system.info.swim.pacedSwim25 / 1760;
 	}
 
 	recalcEncValues() {
