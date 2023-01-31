@@ -241,6 +241,7 @@ export class distanceHelpers {
     }
 
     // This method returns the normal distance penalty based on the Size/Speed/Range table
+    // Distance is given in yards.
     static distancePenalty(distance){
         return Math.min(Math.floor(2 - (6 * Math.log10(distance))),0);
     }
