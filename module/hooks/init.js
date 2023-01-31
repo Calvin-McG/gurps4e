@@ -194,6 +194,16 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  game.settings.register("gurps4e", "realisticFootTravel", {
+    name: "Realistic Foot Travel (LTC 2)",
+    hint: "Enable this setting to use the 'Realistic Foot Travel' rules from Low Tech Companion 2 instead of those from the Basic Set. " +
+        "The existing hiking section of the info pane already includes options to vary the Basic Set rules for realism, but this switch moves things over entirely. ",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
   game.settings.register("gurps4e", "allowSuperScienceMaterialsForCustom", {
     name: "Allow Super Science Materials For Custom Weapons and Armour",
     hint: "Allows stuff like Retro-Reflective Armour.",

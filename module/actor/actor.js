@@ -28,7 +28,6 @@ export class gurpsActor extends Actor {
 	 * Augment the basic actor data with additional dynamic system.
 	 */
 	prepareData() {
-		console.log("Actor is updating.")
 		super.prepareData();
 
 		this.checkUndefined();
@@ -67,7 +66,6 @@ export class gurpsActor extends Actor {
 
 		// Store stuff for the info tab. Do this after Enc so we can reference it for swimming, running, etc.
 		this.storeInfo();
-		console.log("Actor is done updating.")
 	}
 
 	checkUndefined(){
@@ -167,7 +165,8 @@ export class gurpsActor extends Actor {
 					terrain: "1",
 					weather: "none",
 					ice: false,
-					hours: 16
+					hours: 16,
+					fpRecovery: 10,
 				}
 			}
 		}
@@ -198,7 +197,8 @@ export class gurpsActor extends Actor {
 					terrain: "1",
 					weather: "none",
 					ice: false,
-					hours: 16
+					hours: 16,
+					fpRecovery: 10,
 				}
 			}
 		}
@@ -1040,22 +1040,23 @@ export class gurpsActor extends Actor {
 		this.system.info.swim.pacedSwim25Mi		= this.system.info.swim.pacedSwim25 / 1760;
 	}
 
-	// Calculate info related to hiking from B351
+
 	calcHikingInfo() {
+		this.system.info.hiking.realisticRules = game.settings.get("gurps4e", "realisticFootTravel");
+
 		this.system.info.hiking.skill = skillHelpers.getSkillLevelByName("Hiking", this) // Get running skill for use later.
 
 		if (typeof this.system.info.hiking.skill !== 'number') { // If it didn't return a number
 			this.system.info.hiking.skill = this.system.primaryAttributes.health.value - 5; // Set it to HT - 5, as that's the default.
 		}
 
-		let timeMult = this.system.info.hiking.hours / 16;
 		let terrainMult = parseFloat(this.system.info.hiking.terrain)
 		let weatherMult = parseFloat(this.system.info.hiking.weather)
 
-		let effectiveMove = this.system.primaryAttributes.move.value * this.system.encumbrance.current.mult * (this.system.info.hiking.enhancedMove + 1) * terrainMult * weatherMult * timeMult; // Start with the basic move, and apply multipliers for enc, enhanced move, terrain, and weather
+		let iceMult = 1;
 
 		if (this.system.info.hiking.ice) { // If there's ice
-			effectiveMove *= 0.5; // Ice halves movement speed.
+			iceMult = 0.5; // Ice halves movement speed.
 		}
 
 		this.system.info.hiking.fpCost = this.system.encumbrance.current.fpCost;
@@ -1069,11 +1070,32 @@ export class gurpsActor extends Actor {
 			}
 		}
 
-		this.system.info.hiking.baseSpeed = effectiveMove * 10; // This value is given in mph and assumes a failed hiking roll.
-		this.system.info.hiking.successSpeed = this.system.info.hiking.baseSpeed * 1.2; // This value is given in mph and assumes a successful hiking roll.
+		let effectiveMove = this.system.primaryAttributes.move.value * this.system.encumbrance.current.mult * (this.system.info.hiking.enhancedMove + 1) * terrainMult * weatherMult * iceMult; // Start with the basic move, and apply multipliers for enc, enhanced move, terrain, and weather
+
+		// Final calculation depends on whether they are using realistic or basic set hiking rules.
+		if (this.system.info.hiking.realisticRules) { // Calculate info related to hiking from LTC2
+			let fpBeforeVeryTired = this.system.reserves.fp.max - Math.floor(this.system.reserves.fp.max / 3); // Figure out the number of FP they have before they hit Very Tired and store it for later.
+			this.system.info.hiking.moveMph = effectiveMove / 2;
+			this.system.info.hiking.moveYps = this.system.info.hiking.moveMph / 2;
+
+			let hoursBeforeVeryTired = fpBeforeVeryTired / this.system.info.hiking.fpCost; // Hours before the character must rest.
+			let lostFP = hoursBeforeVeryTired * this.system.info.hiking.fpCost // The specific number of fp lost as part of the above.
+			let restTime = lostFP * this.system.info.hiking.fpRecovery / 60; // The number of hours it takes for each rest period.
+			let stretchTime = hoursBeforeVeryTired + restTime; // The time to cover your max distance and then recover all the FP lost.
+			let distancePerStretch = hoursBeforeVeryTired * effectiveMove; // The distance covered each time you do above
+			let stretchesPerDay = this.system.info.hiking.hours / stretchTime;
+			this.system.info.hiking.baseSpeed = stretchesPerDay * distancePerStretch; // This value is given in miles per day and assumes a failed hiking roll.
+		}
+		else { // Calculate info related to hiking from B351
+			let timeMult = this.system.info.hiking.hours / 16;
+			effectiveMove *= timeMult;
+			this.system.info.hiking.baseSpeed = effectiveMove * 10; // This value is given in miles per day and assumes a failed hiking roll.
+		}
+		this.system.info.hiking.successSpeed = this.system.info.hiking.baseSpeed * 1.2; // This value is given in miles per day and assumes a successful hiking roll.
 		let skillProbability = skillHelpers.skillLevelToProbability(this.system.info.hiking.skill); // Get the probability of success with the hiking skill.
 		this.system.info.hiking.probableSpeed = this.system.info.hiking.baseSpeed * (1 + (0.2 * skillProbability)) // This value takes the 20% bonus and multiplies it by the chance of actually getting it before applying the result as a modifier.
-
+		this.system.info.hiking.averageMoveMph = this.system.info.hiking.baseSpeed / this.system.info.hiking.hours; // This is the average speed in mph, rests included.
+		this.system.info.hiking.averageMoveYps = this.system.info.hiking.averageMoveMph / 2;
 	}
 
 	recalcEncValues() {

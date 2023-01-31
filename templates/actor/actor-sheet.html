@@ -3226,28 +3226,42 @@
 								<td>This assumes you're wearing plate armour, an overcoat, etc.</td>
 							</tr>
 							{{/if}}
+							{{#if actor.system.info.hiking.realisticRules}}
+							<tr class="item">
+								<td>FP Recovery Rate</td>
+								<td>
+									<input type="number" name="system.info.hiking.fpRecovery" value="{{actor.system.info.hiking.fpRecovery}}" data-dtype="Number" />
+								</td>
+								<td>Enter the number of minutes it takes you to recover 1 FP. The default is 10 minutes, Fit halves this, among other things.</td>
+							</tr>
+							{{/if}}
 						</table>
 
 						<table>
 							<tr>
-								<td>Base Hiking Speed: </td>
+								<td>Base Hiking Rate: </td>
 								<td>{{round actor.system.info.hiking.baseSpeed 100}} miles per day</td>
-								<td>This is your basic hiking speed, assuming you fail or do not attempt your Hiking roll.</td>
+								<td>This is your basic hiking rate, assuming you fail or do not attempt your Hiking roll.</td>
 							</tr>
 							<tr>
-								<td>Average Hiking Speed: </td>
+								<td>Average Hiking Rate: </td>
 								<td>{{round actor.system.info.hiking.probableSpeed 100}} miles per day</td>
-								<td>This is your hiking speed, assuming you make Hiking rolls every day, but with success and failure averaged out to a single figure.</td>
+								<td>This is your hiking rate, assuming you make Hiking rolls every day, but with success and failure averaged out to a single figure.</td>
 							</tr>
 							<tr>
-								<td>Ideal Hiking Speed: </td>
+								<td>Ideal Hiking Rate: </td>
 								<td>{{round actor.system.info.hiking.successSpeed 100}} miles per day</td>
-								<td>This is your max hiking speed, assuming you succeed your Hiking roll.</td>
+								<td>This is your max hiking rate, assuming you succeed your Hiking roll.</td>
 							</tr>
 							<tr>
 								<td>FP Cost per Hour</td>
 								<td>{{actor.system.info.hiking.fpCost}}</td>
 								<td>This is set by your encumbrance and heat. Frequent resting is assumed as part of the hiking process so if you are interrupted while hiking, assume only 1 hour has passed since the last rest unless events dictate otherwise.</td>
+							</tr>
+							<tr>
+								<td>Average Hiking Move</td>
+								<td>{{round actor.system.info.hiking.averageMoveMph 100}} mph / {{round actor.system.info.hiking.averageMoveYps 100}} yards</td>
+								<td>This is the average movement the character is actually maintaining while hiking, with rests averaged in.</td>
 							</tr>
 						</table>
 						{{/if}}
