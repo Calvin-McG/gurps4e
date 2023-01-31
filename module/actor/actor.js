@@ -149,7 +149,7 @@ export class gurpsActor extends Actor {
 		}
 
 		if (typeof this.system.info === 'undefined') { // If info does not yet exist, create a basic object for them
-			let info = {
+			this.system.info = {
 				jump: {
 					show: false
 				},
@@ -161,37 +161,42 @@ export class gurpsActor extends Actor {
 				},
 				swim: {
 					show: false
+				},
+				hiking: {
+					show: false,
+					terrain: "1",
+					weather: "none",
+					ice: false
 				}
 			}
-			this.system.info = info;
 		}
 		else {
 			if (typeof this.system.info.jump === 'undefined') {
 				this.system.info.jump = {
-					jump: {
-						show: false
-					}
+					show: false
 				}
 			}
 			if (typeof this.system.info.breath === 'undefined') {
 				this.system.info.breath = {
-					breath: {
-						show: false
-					}
+					show: false
 				}
 			}
 			if (typeof this.system.info.runSprint === 'undefined') {
 				this.system.info.runSprint = {
-					runSprint: {
-						show: false
-					}
+					show: false
 				}
 			}
 			if (typeof this.system.info.swim === 'undefined') {
 				this.system.info.swim = {
-					swim: {
-						show: false
-					}
+					show: false
+				}
+			}
+			if (typeof this.system.info.hiking === 'undefined') {
+				this.system.info.hiking = {
+					show: false,
+					terrain: "1",
+					weather: "none",
+					ice: false
 				}
 			}
 		}
@@ -818,6 +823,7 @@ export class gurpsActor extends Actor {
 		this.calcBreathHoldingInfo();
 		this.calcRunSprintInfo();
 		this.calcSwimmingInfo();
+		this.calcHikingInfo();
 	}
 
 	// Calculates jump based information based on the rules in B352
@@ -1030,6 +1036,41 @@ export class gurpsActor extends Actor {
 
 		this.system.info.swim.swim25Mi			= this.system.info.swim.swim25 / 1760;
 		this.system.info.swim.pacedSwim25Mi		= this.system.info.swim.pacedSwim25 / 1760;
+	}
+
+	// Calculate info related to hiking from B351
+	calcHikingInfo() {
+		this.system.info.hiking.skill = skillHelpers.getSkillLevelByName("Hiking", this) // Get running skill for use later.
+
+		if (typeof this.system.info.hiking.skill !== 'number') { // If it didn't return a number
+			this.system.info.hiking.skill = this.system.primaryAttributes.health.value - 5; // Set it to HT - 5, as that's the default.
+		}
+
+		let terrainMult = parseFloat(this.system.info.hiking.terrain)
+		let weatherMult = parseFloat(this.system.info.hiking.weather)
+
+		let effectiveMove = this.system.primaryAttributes.move.value * this.system.encumbrance.current.mult * (this.system.info.hiking.enhancedMove + 1) * terrainMult * weatherMult; // Start with the basic move, and apply multipliers for enc, enhanced move, terrain, and weather
+
+		if (this.system.info.hiking.ice) { // If there's ice
+			effectiveMove *= 0.5; // Ice halves movement speed.
+		}
+
+		this.system.info.hiking.fpCost = this.system.encumbrance.current.fpCost;
+
+		if (this.system.info.hiking.hot) { // If it's hot
+			if (this.system.info.hiking.hotClothing) { // They might also be wearing heavy clothing
+				this.system.info.hiking.fpCost += 2; // Add 2 FP to the cost
+			}
+			else { // Or they might not
+				this.system.info.hiking.fpCost += 1; // Add only 1 FP to the cost
+			}
+		}
+
+		this.system.info.hiking.baseSpeed = effectiveMove * 10; // This value is given in mph and assumes a failed hiking roll.
+		this.system.info.hiking.successSpeed = this.system.info.hiking.baseSpeed * 1.2; // This value is given in mph and assumes a successful hiking roll.
+		let skillProbability = skillHelpers.skillLevelToProbability(this.system.info.hiking.skill); // Get the probability of success with the hiking skill.
+		this.system.info.hiking.probableSpeed = this.system.info.hiking.baseSpeed * (1 + (0.2 * skillProbability)) // This value takes the 20% bonus and multiplies it by the chance of actually getting it before applying the result as a modifier.
+
 	}
 
 	recalcEncValues() {

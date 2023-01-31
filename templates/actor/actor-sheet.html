@@ -3141,6 +3141,113 @@
 
 					<div>
 						<h1 class="bold" style="text-align: center;">
+							<label for="infoHiking">
+								<div>
+									{{#if actor.system.info.hiking.show }}
+									Hiking
+									{{else}}
+									Hiking (Hidden)
+									{{/if}}
+								</div>
+							</label>
+						</h1>
+						<input style="display: none" id="infoHiking" type="checkbox" name="system.info.hiking.show" {{checked actor.system.info.hiking.show}} data-dtype="Boolean"/>
+						{{#if actor.system.info.hiking.show }}
+						<table>
+							<tr class="item">
+								<td>Hiking Skill</td>
+								<td>
+									{{ actor.system.info.hiking.skill }}
+								</td>
+								<td>This is your Hiking skill, or it's default if you don't have it.</td>
+							</tr>
+							<tr class="item">
+								<td>Enhanced Move</td>
+								<td>
+									<input type="number" name="system.info.hiking.enhancedMove" value="{{actor.system.info.hiking.enhancedMove}}" data-dtype="Number" />
+								</td>
+								<td>If you have Enhanced Move and are currently able to make use of it, enter it here.</td>
+							</tr>
+							<tr class="item">
+								<td>Terrain</td>
+								<td>
+									<select name="system.info.hiking.terrain">
+										{{#select actor.system.info.hiking.terrain}}
+										<option value="1.25">Good</option>
+										<option value="1">Average</option>
+										<option value="0.5">Bad</option>
+										<option value="0.2">Very Bad</option>
+										{{/select}}
+									</select>
+								</td>
+								<td>Most of the time this will be Average, even on most roads. See Basic 351 for details.</td>
+							</tr>
+							<tr class="item">
+								<td>Weather</td>
+								<td>
+									<select name="system.info.hiking.weather">
+										{{#select actor.system.info.hiking.weather}}
+										<option value="1">Fine</option>
+										<option value="0.5">Rain</option>
+										<option value="0.5">Ankle Deep Snow</option>
+										<option value="0.25">Deeper Snow</option>
+										{{/select}}
+									</select>
+								</td>
+								<td>This assumes the precipitation is enough to make a difference. Otherwise leave as Fine. Rain also has no impact when on roads. Instead see top left of 351 for the effect of rain on roads.</td>
+							</tr>
+							<tr class="item">
+								<td>Ice</td>
+								<td>
+									<input type="checkbox" id="ice" name="system.info.hiking.ice" {{checked actor.system.info.hiking.ice}} data-dtype="Boolean"/>
+								</td>
+								<td>This assumes a coating of ice on whatever you're trying to walk on. Should generally be mutually exclusive with any level of snow.</td>
+							</tr>
+							<tr class="item">
+								<td>Hot Weather</td>
+								<td>
+									<input type="checkbox" id="hot" name="system.info.hiking.hot" {{checked actor.system.info.hiking.hot}} data-dtype="Boolean"/>
+								</td>
+								<td>This assumes the day is hot enough to make a difference in the FP cost.</td>
+							</tr>
+							{{#if actor.system.info.hiking.hot}}
+							<tr class="item">
+								<td>Hot Clothing</td>
+								<td>
+									<input type="checkbox" id="hotClothing" name="system.info.hiking.hotClothing" {{checked actor.system.info.hiking.hotClothing}} data-dtype="Boolean"/>
+								</td>
+								<td>This assumes you're wearing plate armour, an overcoat, etc.</td>
+							</tr>
+							{{/if}}
+						</table>
+
+						<table>
+							<tr>
+								<td>Base Hiking Speed: </td>
+								<td>{{round actor.system.info.hiking.baseSpeed 100}} miles per day</td>
+								<td>This is your basic hiking speed, assuming you fail or do not attempt your Hiking roll.</td>
+							</tr>
+							<tr>
+								<td>Average Hiking Speed: </td>
+								<td>{{round actor.system.info.hiking.probableSpeed 100}} miles per day</td>
+								<td>This is your hiking speed, assuming you make Hiking rolls every day, but with success and failure averaged out to a single figure.</td>
+							</tr>
+							<tr>
+								<td>Ideal Hiking Speed: </td>
+								<td>{{round actor.system.info.hiking.successSpeed 100}} miles per day</td>
+								<td>This is your max hiking speed, assuming you succeed your Hiking roll.</td>
+							</tr>
+							<tr>
+								<td>FP Cost per Hour</td>
+								<td>{{actor.system.info.hiking.fpCost}}</td>
+								<td>This is set by your encumbrance and heat. Frequent resting is assumed as part of the hiking process so if you are interrupted while hiking, assume only 1 hour has passed since the last rest unless events dictate otherwise.</td>
+							</tr>
+						</table>
+						{{/if}}
+					</div>
+
+					<div>
+						<h1 class="bold" style="text-align: center;">
 							<label for="inforunSprint">
 								<div>
 									{{#if actor.system.info.runSprint.show }}
