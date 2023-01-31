@@ -122,11 +122,34 @@ export class gurpsActor extends Actor {
 				breath: {
 					show: false
 				},
-				runHikeSwim: {
+				runSprint: {
 					show: false
 				}
 			}
 			this.system.info = info;
+		}
+		else {
+			if (typeof this.system.info.jump === 'undefined') {
+				this.system.info.jump = {
+					jump: {
+						show: false
+					}
+				}
+			}
+			if (typeof this.system.info.breath === 'undefined') {
+				this.system.info.breath = {
+					breath: {
+						show: false
+					}
+				}
+			}
+			if (typeof this.system.info.runSprint === 'undefined') {
+				this.system.info.runSprint = {
+					runSprint: {
+						show: false
+					}
+				}
+			}
 		}
 
 		if (this.system.bio.sm) {
@@ -749,6 +772,7 @@ export class gurpsActor extends Actor {
 	storeInfo() {
 		this.calcJumpInfo();
 		this.calcBreathHoldingInfo();
+		this.calcRunSprintInfo();
 	}
 
 	// Calculates jump based information based on the rules in B352
@@ -819,6 +843,69 @@ export class gurpsActor extends Actor {
 			this.system.info.breath.mildExertion =	this.system.info.breath.mildExertion *= 1.5;
 			this.system.info.breath.heavyExertion =	this.system.info.breath.heavyExertion *= 1.5;
 		}
+	}
+
+	// Calculate info related to running, hiking, and swimming from B354
+	calcRunSprintInfo() {
+		let fpBeforeVeryTired = this.system.reserves.fp.max - Math.floor(this.system.reserves.fp.max / 3); // Figure out the number of FP they have before they hit Very Tired and store it for later.
+
+		this.system.info.runSprint.runningSkill = skillHelpers.getSkillLevelByName("Running", this) // Get running skill for use later.
+
+		if (typeof this.system.info.runSprint.runningSkill !== 'number') { // If it didn't return a number
+			this.system.info.runSprint.runningSkill = this.system.primaryAttributes.health.value - 5; // Set it to HT - 5, as that's the default.
+		}
+
+		this.system.info.runSprint.runningSkill = Math.max(this.system.info.runSprint.runningSkill, this.system.primaryAttributes.health.value) // Running skill is based off the higher of their running skill and base HT
+
+		this.system.info.runSprint.sprintMove = this.system.primaryAttributes.move.value * 1.2; // Sprint move is base move * 1.2
+		this.system.info.runSprint.combatSprintMove = Math.floor(Math.max(this.system.primaryAttributes.move.value * 1.2, this.system.primaryAttributes.move.value + 1)); // Combat sprint is always at least 1 point higher than base move.
+		this.system.info.runSprint.sprintMph = this.system.info.runSprint.sprintMove * 2; // yps to mph is not exactly double, but it's the figure GURPS uses and keeps extra decimals from creeping in.
+
+		this.system.info.runSprint.pacedRunningMove = this.system.info.runSprint.sprintMove / 2; // Paced running move is half sprint speed.
+		this.system.info.runSprint.pacedRunningMph = this.system.info.runSprint.pacedRunningMove * 2; // yps to mph is not exactly double, but it's the figure GURPS uses and keeps extra decimals from creeping in.
+
+		this.system.info.runSprint.sprint100 = this.system.info.runSprint.sprintMove * 15 * fpBeforeVeryTired; // Every 15 seconds, the person rolls vs running skill. This entry assumes all rolls are failed.
+		this.system.info.runSprint.run100    = this.system.info.runSprint.pacedRunningMove * 60 * fpBeforeVeryTired; // Every 60 seconds, the person rolls vs running skill. This entry assumes all rolls are failed.
+
+		let skillProbability = skillHelpers.skillLevelToProbability(this.system.info.runSprint.runningSkill); // Get the probability of success with the effective running skill.
+
+		let mult75 = 1;
+		let mult50 = 1;
+		let mult = 1;
+		let hit75 = false;
+		let hit50 = false;
+		for (let a = 1; a > 0.25; a = a * skillProbability){ // With each step the loop simulates the stacking probability of repeated skill rolls. As the index passes certain thresholds the value is saved as the multiplier for the sprint/run distance.
+			if (a < 0.75 && hit75 === false) {
+				hit75 = true;
+				mult75 = mult;
+			}
+			if (a < 0.50 && hit50 === false) {
+				hit50 = true;
+				mult50 = mult;
+			}
+			mult += 1;
+		}
+		let mult25 = mult;
+
+
+		this.system.info.runSprint.sprint75  = this.system.info.runSprint.sprint100 * mult75;
+		this.system.info.runSprint.run75     = this.system.info.runSprint.run100    * mult75;
+		this.system.info.runSprint.sprint50  = this.system.info.runSprint.sprint100 * mult50;
+		this.system.info.runSprint.run50     = this.system.info.runSprint.run100    * mult50;
+		this.system.info.runSprint.sprint25  = this.system.info.runSprint.sprint100 * mult25;
+		this.system.info.runSprint.run25     = this.system.info.runSprint.run100    * mult25;
+
+		this.system.info.runSprint.sprint100Mi = this.system.info.runSprint.sprint100 / 1760;
+		this.system.info.runSprint.run100Mi	 = this.system.info.runSprint.run100 / 1760;
+
+		this.system.info.runSprint.sprint75Mi  = this.system.info.runSprint.sprint75 / 1760;
+		this.system.info.runSprint.run75Mi	 = this.system.info.runSprint.run75 / 1760;
+
+		this.system.info.runSprint.sprint50Mi  = this.system.info.runSprint.sprint50 / 1760;
+		this.system.info.runSprint.run50Mi	 = this.system.info.runSprint.run50 / 1760;
+
+		this.system.info.runSprint.sprint25Mi  = this.system.info.runSprint.sprint25 / 1760;
+		this.system.info.runSprint.run25Mi	 = this.system.info.runSprint.run25 / 1760;
 	}
 
 	recalcEncValues() {

@@ -3129,6 +3129,84 @@
 						</table>
 						{{/if}}
 					</div>
+
+					<div>
+						<h1 class="bold" style="text-align: center;">
+							<label for="inforunSprint">
+								<div>
+									{{#if actor.system.info.runSprint.show }}
+									Sprinting and Running
+									{{else}}
+									Sprinting and Running (Hidden)
+									{{/if}}
+								</div>
+							</label>
+						</h1>
+						<input style="display: none" id="inforunSprint" type="checkbox" name="system.info.runSprint.show" {{checked actor.system.info.runSprint.show}} data-dtype="Boolean"/>
+						{{#if actor.system.info.runSprint.show }}
+						<table>
+							<tr class="item">
+								<td>Effective Running Skill</td>
+								<td style="width: 25%">
+									{{ actor.system.info.runSprint.runningSkill }}
+								</td>
+								<td>This is the higher of your HT, or Running skill, and is used to figure out how far you can run or sprint.</td>
+							</tr>
+							<tr class="item">
+								<td>Sprint Move</td>
+								<td style="width: 25%">
+									{{round actor.system.info.runSprint.sprintMove 100}} yards per second, or {{round actor.system.info.runSprint.sprintMph 100}} mph
+								</td>
+								<td>Sprinting is your Basic Move plus 20%</td>
+							</tr>
+							<tr class="item">
+								<td>Combat Sprint Move</td>
+								<td style="width: 25%">
+									{{ actor.system.info.runSprint.combatSprintMove }}
+								</td>
+								<td>In combat, sprinting always adds at least +1 to movement but is otherwise rounded down.</td>
+							</tr>
+							<tr class="item">
+								<td>Paced Running Move</td>
+								<td style="width: 25%">
+									{{round actor.system.info.runSprint.pacedRunningMove 100}} yards per second, or {{round actor.system.info.runSprint.pacedRunningMph 100}} mph
+								</td>
+								<td>Paced running is half your sprint speed, or 60% of your Basic Move.</td>
+							</tr>
+						</table>
+
+						<table>
+							<tr class="item item-header">
+								<th colspan="3" style="font-style: italic">This table gives the probability you'll make the rolls necessary to cover a given distance while running or sprinting.<br>You do still need to roll, this is just for guidance.</th>
+							</tr>
+							<tr class="item">
+								<td></td>
+								<td>Running</td>
+								<td>Sprinting</td>
+							</tr>
+							<tr class="item">
+								<td>100%</td>
+								<td>{{round actor.system.info.runSprint.run100 100}} yards / {{round actor.system.info.runSprint.run100Mi 100}} miles</td>
+								<td>{{round actor.system.info.runSprint.sprint100 100}} yards / {{round actor.system.info.runSprint.sprint100Mi 100}} miles</td>
+							</tr>
+							<tr class="item">
+								<td>75%</td>
+								<td>{{round actor.system.info.runSprint.run75 100}} yards / {{round actor.system.info.runSprint.run75Mi 100}} miles</td>
+								<td>{{round actor.system.info.runSprint.sprint75 100}} yards / {{round actor.system.info.runSprint.sprint75Mi 100}} miles</td>
+							</tr>
+							<tr class="item">
+								<td>50%</td>
+								<td>{{round actor.system.info.runSprint.run50 100}} yards / {{round actor.system.info.runSprint.run50Mi 100}} miles</td>
+								<td>{{round actor.system.info.runSprint.sprint50 100}} yards / {{round actor.system.info.runSprint.sprint50Mi 100}} miles</td>
+							</tr>
+							<tr class="item">
+								<td>25%</td>
+								<td>{{round actor.system.info.runSprint.run25 100}} yards / {{round actor.system.info.runSprint.run25Mi 100}} miles</td>
+								<td>{{round actor.system.info.runSprint.sprint25 100}} yards / {{round actor.system.info.runSprint.sprint25Mi 100}} miles</td>
+							</tr>
+						</table>
+						{{/if}}
+					</div>
 				</div>
 			</div>
 		</section>
