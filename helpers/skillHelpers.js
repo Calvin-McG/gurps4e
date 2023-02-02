@@ -1,17 +1,23 @@
 import { attributeHelpers } from "./attributeHelpers.js";
 
 export class skillHelpers {
-    static computeSkillLevel(actor, item) {
+    static computeSkillLevel(actor, item, blockBuyingUpFromDefaults) {
         let level = 0;
         if (actor.system) { // Make sure there's an actor before computing skill level
             let category = item.category;
             let defaults = item.defaults;
             let difficulty = item.difficulty;
             let baseAttr = item.baseAttr;
-            let baseSkill = item.baseSkill.toUpperCase();
+            let baseSkill = "";
+            if (item.baseSkill) {
+                baseSkill = item.baseSkill.toUpperCase();
+            }
             let minLevel = item.minLevel;
             let maxLevel = item.maxLevel;
-            let dabblerPoints = item.dabblerPoints;
+            let dabblerPoints = 0;
+            if (typeof item.dabblerPoints !== 'undefined') {
+                dabblerPoints = item.dabblerPoints;
+            }
             let pts = item.points;
             let mod = item.mod;
             let base = 0;
@@ -52,12 +58,12 @@ export class skillHelpers {
                     }
                     // Then check other skills, add any results to the array of skill defaults
                     else {
-                        for (let i = 0; i < actor.system.items._source.length; i++) { // Loop through the list of items
-                            if (actor.system.items._source[i].type === "Rollable") { // Make sure it's a Rollable
-                                if (actor.system.items._source[i].system.category === "skill") { // Make sure it's a skill and not a technique
-                                    if (actor.system.items._source[i].system.points > 0) { // Make sure it has more than 0 points
-                                        if (defaults[q].skill === actor.system.items._source[i].name) { // Make sure it matches the name
-                                            let defaultLevel = this.computeSkillLevelWithoutDefaults(actor, actor.system.items._source[i].system.difficulty, actor.system.items._source[i].system.baseAttr, actor.system.items._source[i].system.points, actor.system.items._source[i].system.mod)
+                        for (let i = 0; i < actor.items.contents.length; i++) { // Loop through the list of items
+                            if (actor.items.contents[i].type === "Rollable") { // Make sure it's a Rollable
+                                if (actor.items.contents[i].system.category === "skill") { // Make sure it's a skill and not a technique
+                                    if (actor.items.contents[i].system.points > 0) { // Make sure it has more than 0 points
+                                        if (defaults[q].skill === actor.items.contents[i].name) { // Make sure it matches the name
+                                            let defaultLevel = this.computeSkillLevelWithoutDefaults(actor, actor.items.contents[i].system.difficulty, actor.items.contents[i].system.baseAttr, actor.items.contents[i].system.points, actor.items.contents[i].system.mod)
                                             skillDefaultArray.push(+defaultLevel + +defaults[q].mod);
                                         }
                                     }
@@ -84,7 +90,9 @@ export class skillHelpers {
                     let bestDefault = Math.max(...skillDefaultArray, ...attrDefaultArray); // Get the best default
 
                     if (bestDefault >= this.onePointInSkill(baseAttr, difficulty, actor)){ // The best default is equal to or better than what you'd get by spending points. Account for Improving Skills from Default (B. 173)
-                        points = points + this.defaultIsWorth(baseAttr, difficulty, bestDefault, actor); // The effective point value is whatever they put in, plus whatever their default is worth.
+                        if (!blockBuyingUpFromDefaults) {
+                            points = points + this.defaultIsWorth(baseAttr, difficulty, bestDefault, actor); // The effective point value is whatever they put in, plus whatever their default is worth.
+                        }
                     }
 
                     // Compute skill value based on effective points spent on the skill
@@ -114,11 +122,11 @@ export class skillHelpers {
                     base = will;
                 }
                 else {
-                    for (let i = 0; i < actor.system.items._source.length; i++){
-                        if (actor.system.items._source[i].type === "Rollable"){
-                            if (actor.system.items._source[i].system.category === "skill"){
-                                if (baseSkill === actor.system.items._source[i].name.toUpperCase()){
-                                    base = this.computeSkillLevelWithoutDefaults(actor, actor.system.items._source[i].system)
+                    for (let i = 0; i < actor.items.contents.length; i++){
+                        if (actor.items.contents[i].type === "Rollable"){
+                            if (actor.items.contents[i].system.category === "skill"){
+                                if (baseSkill === actor.items.contents[i].name.toUpperCase()){
+                                    base = this.computeSkillLevelWithoutDefaults(actor, actor.items.contents[i].system);
                                 }
                             }
                         }
