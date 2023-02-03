@@ -289,6 +289,173 @@
           "attributeMod": 0,
           "magery": 0,
           "totalMagicAttribute": 0
+        },
+        "rpm": {
+          "magery": 0,
+          "hasMagery": false,
+          "naturalCaster": 0,
+          "er": 0,
+          "ritualAdeptConnection": false,
+          "ritualAdeptSpace": false,
+          "ritualAdeptTime": 0,
+          "coreSkill": "Thaumatology",
+          "coreSkillLevel": 0,
+          "higherPurpose1Name": "",
+          "higherPurpose2Name": "",
+          "higherPurpose3Name": "",
+          "higherPurpose1level": 0,
+          "higherPurpose2level": 0,
+          "higherPurpose3level": 0,
+          "showThematic": "0",
+          "showStats": true,
+          "showPaths": true,
+          "showGrimoire": true,
+          "paths": {
+            "body": {
+              "name": "Body",
+              "theme": "Yesod",
+              "baseAttr": "IQ",
+              "category": "skill",
+              "defaults": [
+                {
+                  "skill": "Thaumatology",
+                  "mod": -6
+                }
+              ],
+              "difficulty": "VH",
+              "level": 0,
+              "mod": 0,
+              "points": 0
+            },
+            "chance": {
+              "name": "Chance",
+              "theme": "Hod",
+              "baseAttr": "IQ",
+              "category": "skill",
+              "defaults": [
+                {
+                  "skill": "Thaumatology",
+                  "mod": -6
+                }
+              ],
+              "difficulty": "VH",
+              "level": 0,
+              "mod": 0,
+              "points": 0
+            },
+            "crossroads": {
+              "name": "Crossroads",
+              "theme": "Tiphareth",
+              "baseAttr": "IQ",
+              "category": "skill",
+              "defaults": [
+                {
+                  "skill": "Thaumatology",
+                  "mod": -6
+                }
+              ],
+              "difficulty": "VH",
+              "level": 0,
+              "mod": 0,
+              "points": 0
+            },
+            "energy": {
+              "name": "Energy",
+              "theme": "Greburah",
+              "baseAttr": "IQ",
+              "category": "skill",
+              "defaults": [
+                {
+                  "skill": "Thaumatology",
+                  "mod": -6
+                }
+              ],
+              "difficulty": "VH",
+              "level": 0,
+              "mod": 0,
+              "points": 0
+            },
+            "magic": {
+              "name": "Magic",
+              "theme": "Chesed",
+              "baseAttr": "IQ",
+              "category": "skill",
+              "defaults": [
+                {
+                  "skill": "Thaumatology",
+                  "mod": -6
+                }
+              ],
+              "difficulty": "VH",
+              "level": 0,
+              "mod": 0,
+              "points": 0
+            },
+            "matter": {
+              "name": "Matter",
+              "theme": "Netzach",
+              "baseAttr": "IQ",
+              "category": "skill",
+              "defaults": [
+                {
+                  "skill": "Thaumatology",
+                  "mod": -6
+                }
+              ],
+              "difficulty": "VH",
+              "level": 0,
+              "mod": 0,
+              "points": 0
+            },
+            "mind": {
+              "name": "Mind",
+              "theme": "Chokmah",
+              "baseAttr": "IQ",
+              "category": "skill",
+              "defaults": [
+                {
+                  "skill": "Thaumatology",
+                  "mod": -6
+                }
+              ],
+              "difficulty": "VH",
+              "level": 0,
+              "mod": 0,
+              "points": 0
+            },
+            "spirit": {
+              "name": "Spirit",
+              "theme": "Binah",
+              "baseAttr": "IQ",
+              "category": "skill",
+              "defaults": [
+                {
+                  "skill": "Thaumatology",
+                  "mod": -6
+                }
+              ],
+              "difficulty": "VH",
+              "level": 0,
+              "mod": 0,
+              "points": 0
+            },
+            "undead": {
+              "name": "Undead",
+              "theme": "Malkuth",
+              "baseAttr": "IQ",
+              "category": "skill",
+              "defaults": [
+                {
+                  "skill": "Thaumatology",
+                  "mod": -6
+                }
+              ],
+              "difficulty": "VH",
+              "level": 0,
+              "mod": 0,
+              "points": 0
+            }
+          }
         }
       }
     },
@@ -304,10 +471,11 @@
       "Rollable",
       "Trait",
       "Spell",
+      "Ritual",
       "Custom Weapon",
       "Custom Armour",
-      "Travel Fare",
-      "Custom Jewelry"
+      "Custom Jewelry",
+      "Travel Fare"
     ],
     "templates": {
       "base": {
@@ -436,6 +604,37 @@
         "damageType": "cut",
         "armourDiv": 1,
         "minST": ""
+      }
+    },
+    "Ritual": {
+      "templates": [
+        "base",
+        "subCategory",
+        "melee",
+        "ranged",
+        "affliction",
+        "tl",
+        "level"
+      ],
+      "armour": {
+        "bodyType": "",
+        "layer": 0
+      },
+      "ritualMastery": false,
+      "ritualType": "standard",
+      "higherPurpose1Applies": false,
+      "higherPurpose2Applies": false,
+      "higherPurpose3Applies": false,
+      "energyCost": 0,
+      "grimBonus": 0,
+      "path": [],
+      "ritualModifier": [],
+      "charm": {
+        "safeThreshold": "6",
+        "saleCost": 0
+      },
+      "elixir": {
+        "type": "potion"
       }
     },
     "Equipment": {

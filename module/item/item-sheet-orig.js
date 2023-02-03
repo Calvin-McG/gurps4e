@@ -53,6 +53,8 @@ export class gurpsItemSheet extends ItemSheet {
         html.find('.addDefaultRow').click(this._onAddDefaultRow.bind(this));
         html.find('.addArrowRow').click(this._onAddArrowRow.bind(this));
         html.find('.addAmmoRow').click(this._onAddAmmoRow.bind(this));
+        html.find('.addPathRow').click(this._onAddPathRow.bind(this));
+        html.find('.addRitualModifierRow').click(this._onAddRitualModifierRow.bind(this));
 
         // User clicked delete thingy on the row
         html.find('.attack-delete').click(this._onDeleteRow.bind(this));
@@ -61,6 +63,8 @@ export class gurpsItemSheet extends ItemSheet {
         html.find('.default-delete').click(this._onDeleteDefaultRow.bind(this));
         html.find('.deleteArrowRow').click(this._onDeleteArrowRow.bind(this));
         html.find('.deleteAmmoRow').click(this._onDeleteAmmoRow.bind(this));
+        html.find('.path-delete').click(this._onDeletePathRow.bind(this));
+        html.find('.ritualModifier-delete').click(this._onDeleteRitualModifierRow.bind(this));
 
         // Update body type
         html.find('.bodyType').change(this._onBodyTypeChange.bind(this));
@@ -426,6 +430,62 @@ export class gurpsItemSheet extends ItemSheet {
         this.item.update({ ["system.defaults." + newKey]: newRow });
     }
 
+
+    _onAddPathRow(event) {
+        // If there's no path container, add one
+        if(typeof this.item.system.path == "undefined") {
+            this.item.system.path = {
+                "path": []
+            }
+        }
+        let keys = Object.keys(this.item.system.path); // Get the existing set of melee keys
+        let newKey = 0; // Init the new key
+        if (keys.length){ // The list of keys is not empty
+            newKey = (+keys[keys.length-1] + +1); // Add the new one in at the end
+        }
+        else { // The list of keys is empty
+            newKey = 0; // Add the new one at the start of the empty list
+        }
+
+        let newRow = {  // Init the new path row
+            "level": "lesser",
+            "effect": "sense",
+            "path": "body",
+            "cost": 2,
+            "notes": ""
+        };
+
+        this.item.update({ ["system.path." + newKey]: newRow }); // Add the new row to the list of path keys
+    }
+
+    _onAddRitualModifierRow(event) {
+        // If there's no ritual modifier container, add one
+        if(typeof this.item.system.ritualModifier == "undefined") {
+            this.item.system.ritualModifier = {
+                "ritualModifier": []
+            }
+        }
+        let keys = Object.keys(this.item.system.ritualModifier); // Get the existing set of melee keys
+        let newKey = 0; // Init the new key
+        if (keys.length){ // The list of keys is not empty
+            newKey = (+keys[keys.length-1] + +1); // Add the new one in at the end
+        }
+        else { // The list of keys is empty
+            newKey = 0; // Add the new one at the start of the empty list
+        }
+
+        let newRow = {  // Init the new path row
+            "modifier": "affliction",
+            "effect": {
+                "percentage": 0
+            },
+            "cost": 0,
+            "notes": ""
+        };
+
+        this.item.update({ ["system.ritualModifier." + newKey]: newRow }); // Add the new row to the list of path keys
+    }
+
     _onDeleteRow(event) {
         let confirmationModal = new Dialog({
             title: "Are you sure?",
@@ -533,6 +593,70 @@ export class gurpsItemSheet extends ItemSheet {
                     callback: () => {
                         let id = event.currentTarget.id.substring(7);
                         this.item.update({ ["system.defaults.-=" + id] : null});
+                    }
+                },
+                cancel: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: "Cancel",
+                    callback: () => {
+
+                    }
+                },
+            },
+            default: "cancel",
+            render: html => console.info("Register interactivity in the rendered dialog"),
+            close: html => console.info("This always is logged no matter which option is chosen")
+        },{
+            resizable: true,
+            width: "250"
+        })
+
+        confirmationModal.render(true);
+    }
+
+    _onDeletePathRow(event) {
+        let confirmationModal = new Dialog({
+            title: "Are you sure?",
+            content: "<div style='width: 100%; text-align: center'>Are you sure?</div>",
+            buttons: {
+                delete: {
+                    icon: '<i class="fas fa-trash"></i>',
+                    label: "Delete",
+                    callback: () => {
+                        let id = event.currentTarget.id.substring(6);
+                        this.item.update({ ["system.path.-=" + id] : null});
+                    }
+                },
+                cancel: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: "Cancel",
+                    callback: () => {
+
+                    }
+                },
+            },
+            default: "cancel",
+            render: html => console.info("Register interactivity in the rendered dialog"),
+            close: html => console.info("This always is logged no matter which option is chosen")
+        },{
+            resizable: true,
+            width: "250"
+        })
+
+        confirmationModal.render(true);
+    }
+
+    _onDeleteRitualModifierRow(event) {
+        let confirmationModal = new Dialog({
+            title: "Are you sure?",
+            content: "<div style='width: 100%; text-align: center'>Are you sure?</div>",
+            buttons: {
+                delete: {
+                    icon: '<i class="fas fa-trash"></i>',
+                    label: "Delete",
+                    callback: () => {
+                        let id = event.currentTarget.id.substring(6);
+                        this.item.update({ ["system.ritualModifier.-=" + id] : null});
                     }
                 },
                 cancel: {

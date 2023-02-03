@@ -1,0 +1,729 @@
+<form class="{{cssClass}}" autocomplete="off">
+
+    {{!-- Sheet Header --}}
+    <header class="sheet-header">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+        <div class="header-fields">
+            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+            <table style="margin: unset; padding: unset; background: unset; border: unset;">
+                <tr>
+                    <td style="width: 50%; vertical-align:top"><!-- Left Col -->
+                        <table>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Category: </label>
+                                    <input type="text" style="flex: 1;" name="system.subCategory" value="{{item.system.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Ritual Type:</label>
+                                    <select name="system.ritualType">
+                                        {{#select item.system.ritualType}}
+                                        <option value="standard">Standard</option>
+                                        <option value="conditional">Conditional</option>
+                                        <option value="charm">Charm</option>
+                                        <option value="elixir">Elixir</option>
+                                        <option value="conditionalCharm">Conditional Charm</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Ritual Mastery:</label>
+                                    <input id="rpmStats" type="checkbox" name="system.ritualMastery" {{checked item.system.ritualMastery}} data-dtype="Boolean"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Grimoire Bonus:</label>
+                                    <input type="number" style="width: 50%" name="system.grimBonus" value="{{item.system.grimBonus}}" data-dtype="Number" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Level:</label>
+                                    {{item.system.level}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Energy Cost:</label>
+                                    {{item.system.energyCost}}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="width: 50%; vertical-align:top"><!-- Right Col -->
+                        <table>
+                            {{#if (eq item.system.ritualType "charm") }}
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Safe Threshold:</label>
+                                    {{item.system.charm.safeThreshold}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Sale Cost:</label>
+                                    {{item.system.charm.saleCost}}
+                                </td>
+                            </tr>
+                            {{/if}}
+
+                            {{#if (eq item.system.ritualType "elixir") }}
+                            <tr>
+                                <label class="resource-label" style="flex: 0.5;">Elixir Type:</label>
+                                <select name="system.elixir.type">
+                                    {{#select item.system.elixir.type}}
+                                    <option value="grenade">Grenade</option>
+                                    <option value="ointment">Ointment</option>
+                                    <option value="pastille">Pastille</option>
+                                    <option value="potion">Potion</option>
+                                    <option value="powder">Powder</option>
+                                    {{/select}}
+                                </select>
+                            </tr>
+                            {{/if}}
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+            <div style="padding-top: 2px;">
+                <label class="resource-label" style="width: 32px;">Short Notes:</label>
+                <input type="text" name="system.shortNotes" value="{{item.system.shortNotes}}" style="width: calc(100% - 78px);"/>
+            </div>
+
+            <!-- Paths -->
+            <table>
+                <tr>
+                    <td style="width: 70px;">Level</td>
+                    <td style="width: 90px;">Effect</td>
+                    <td style="width: 95px;">Path</td>
+                    <td style="width: 35px; text-align: center">Cost</td>
+                    <td>Notes</td>
+                    <td style="width: 65px;"><h3 class="addPathRow" style="text-align: right;">Add Path</h3></td>
+                </tr>
+                {{#each item.system.path as |path id|}}
+                <tr>
+                    <td>
+                        <select name="system.path.{{id}}.level">
+                        {{#select path.level}}
+                        <option value="lesser">Lesser</option>
+                        <option value="greater">Greater</option>
+                        {{/select}}
+                        </select>
+                    </td>
+                    <td>
+                        <select name="system.path.{{id}}.effect">
+                            {{#select path.effect}}
+                            <option value="sense">Sense</option>
+                            <option value="strengthen">Strengthen</option>
+                            <option value="restore">Restore</option>
+                            <option value="control">Control</option>
+                            <option value="destroy">Destroy</option>
+                            <option value="create">Create</option>
+                            <option value="transform">Transform</option>
+                            {{/select}}
+                        </select>
+                    </td>
+                    <td>
+                        <select name="system.path.{{id}}.path">
+                            {{#select path.path}}
+                            <option value="body">Body</option>
+                            <option value="chance">Chance</option>
+                            <option value="crossroads">Crossroads</option>
+                            <option value="energy">Energy</option>
+                            <option value="magic">Magic</option>
+                            <option value="matter">Matter</option>
+                            <option value="mind">Mind</option>
+                            <option value="spirit">Spirit</option>
+                            <option value="undead">Undead</option>
+                            {{/select}}
+                        </select>
+                    </td>
+                    <td style="text-align: center">{{path.cost}}</td>
+                    <td>
+                        <input type="text" placeholder="Notes" name="system.path.{{id}}.notes" value="{{path.notes}}" title="{{path.notes}}" style="text-align:left; margin: unset" data-dtype="String"/>
+                    </td>
+                    <td  style="text-align: right;"><a class="path-delete" id="pathhh{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
+                </tr>
+                {{/each}}
+            </table>
+
+            <!-- Ritual Modifiers -->
+            <table>
+                <tr>
+                    <td style="width: 143px;">Modifier</td>
+                    <td>Effect</td>
+                    <td style="width: 35px; text-align: center">Cost</td>
+                    <td>Notes</td>
+                    <td style="width: 130px;"><h3 class="addRitualModifierRow" style="text-align: right;">Add Ritual Modifier</h3></td>
+                </tr>
+                {{#each item.system.ritualModifier as |ritualModifier id|}}
+                <tr>
+                    <td>
+                        <select name="system.ritualModifier.{{id}}.modifier">
+                            {{#select ritualModifier.modifier}}
+                            <option value="affliction">Affliction</option>
+                            <option value="trait">Altered Trait</option>
+                            <option value="aoe">Area Of Effect</option>
+                            <option value="bonus">Bestows a Bonus</option>
+                            <option value="penalty">Bestows a Penalty</option>
+                            <option value="damage">Damage</option>
+                            <option value="duration">Duration</option>
+                            <option value="energy">Extra Energy</option>
+                            <option value="healing">Healing</option>
+                            <option value="meta">Meta-Magic</option>
+                            <option value="range">Range</option>
+                            <option value="speed">Speed</option>
+                            <option value="weight">Subject Weight</option>
+                            <option value="trappings">Traditional Trappings</option>
+                            {{/select}}
+                        </select>
+                    </td>
+                    <td>Effect</td>
+                    <td style="text-align: center">{{ritualModifier.cost}}</td>
+                    <td><input type="text" placeholder="Notes" name="system.ritualModifier.{{id}}.notes" value="{{ritualModifier.notes}}" title="{{ritualModifier.notes}}" style="text-align:left; margin: unset" data-dtype="String"/></td>
+                    <td style="text-align: right;"><a class="ritualModifier-delete" id="ritual{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
+                </tr>
+                {{/each}}
+            </table>
+        </div>
+    </header>
+
+
+    {{!-- Sheet Tab Navigation --}}
+    <nav id="tabselect" class="sheet-tabs tabs" data-group="primary">
+        <div class="header">
+            <a class="item" data-tab="notes">Notes</a>
+        </div>
+        <div class="header">
+            <a class="item" data-tab="melee">Melee</a>
+        </div>
+        <div class="header">
+            <a class="item" data-tab="ranged">Ranged</a>
+        </div>
+        <div class="header">
+            <a class="item" data-tab="affliction">Affliction</a>
+        </div>
+        <div class="header">
+            <a class="item" data-tab="armour">Armour</a>
+        </div>
+    </nav>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+
+        {{!-- Note Tab --}}
+        <div class="tab stats" data-tab="notes" data-group="primary">
+            <h3 class="bold">Detailed Notes</h3>
+            <div class="tab">
+                <textarea rows="8" name="system.notes">{{{item.system.notes}}}</textarea>
+            </div>
+        </div>
+
+        {{!-- Melee Tab --}}
+        <div class="tab stats" data-tab="melee" data-group="primary">
+            <h3 class="addRow" style="text-align: right;">Add Row</h3>
+            <div class="tab">
+                <table>
+                <tr class="equipment-header">
+                    <td class="resource-label">ID</td>
+                    <td class="resource-label">Name</td>
+                    <td class="resource-label">Level</td>
+                    <td class="resource-label">Skill Name / Mod</td>
+                    <td class="resource-label">Parry - Type</td>
+                    <td class="resource-label">Block</td>
+                    <td class="resource-label">Damage</td>
+                    <td class="resource-label">Type</td>
+                    <td class="resource-label">Divisor</td>
+                    <td class="resource-label">Reach</td>
+                    <td class="resource-label">ST</td>
+                    <td class="resource-label"></td>
+                </tr>
+                {{#each item.system.melee as |melee id|}}
+                <tr class="equipment-entry">
+                    <td class="resource-label">{{id}}</td>
+                    <td><input type="text" name="system.melee.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
+                    <td class="resource-label">{{melee.level}}</td>
+                    <td class="equipmentInputInput">
+                        <input type="text" name="system.melee.{{id}}.skill" value="{{melee.skill}}" title="{{melee.skill}}" style="text-align:left;" />/
+                        <input type="text" name="system.melee.{{id}}.skillMod" value="{{melee.skillMod}}" data-dtype="Number"/>
+                    </td>
+                    <td>
+                        <input type="text" name="system.melee.{{id}}.parryMod" value="{{melee.parryMod}}" style="width: 50%"/>
+                        <input type="text" name="system.melee.{{id}}.parryType" value="{{melee.parryType}}" style="width: 20%"/>
+                    </td>
+                    <td>
+                        <input type="text" name="system.melee.{{id}}.blockMod" value="{{melee.blockMod}}"/>
+                    </td>
+                    <td><input type="text" name="system.melee.{{id}}.damageInput" value="{{melee.damageInput}}" title="{{melee.damageInput}}" style="text-align:left;" /></td>
+                    <td>
+                        <span class="tooltip">
+                            <input type="text" name="system.melee.{{id}}.damageType" value="{{melee.damageType}}" title="{{melee.damageType}}" style="text-align:left;" />
+                            <span class="tooltiptext" style="margin-left: -100px">
+                                <div>
+                                    <span style="text-decoration: underline">Valid entries are:</span><br>
+                                    burn: Burning<br>
+                                    cor: Corrosion<br>
+                                    cr: Crushing<br>
+                                    cut: Cutting<br>
+                                    fat: Fatigue<br>
+                                    imp: Impaling<br>
+                                    pi-: Small Piercing<br>
+                                    pi: Piercing<br>
+                                    pi+: Large Piercing<br>
+                                    pi++: Huge Piercing<br>
+                                    tox: Toxic<br>
+                                    tbb: Tight Beam Burning<br>
+                                    dam: Untyped<br>
+                                    <span style="text-decoration: underline">Valid modifiers are:</span><br>
+                                    ex: Explosive<br>
+                                    dbk: Double Knockback<br>
+                                    dbt: Double Blunt Trauma<br>
+                                    nw: No Wounding<br>
+                                </div>
+                            </span>
+                        </span>
+                    </td>
+                    <td>
+                        <span class="tooltip">
+                            <input type="text" name="system.melee.{{id}}.armourDivisor" value="{{melee.armourDivisor}}" title="{{melee.armourDivisor}}" style="text-align:left;" />
+                            <span class="tooltiptext" style="margin-left: -100px">
+                                <div>
+                                    Default is 1<br>
+                                    0 makes effective armour infinite<br>
+                                    Using the words 'ignore' or 'cosmic' allows the attack to ignore armour<br>
+                                    Setting this to 'I' will also ignore armour
+                                </div>
+                            </span>
+                        </span>
+                    </td>
+                    <td><input type="text" name="system.melee.{{id}}.reach" value="{{melee.reach}}" title="{{melee.reach}}" style="text-align:left;" /></td>
+                    <td><input type="text" name="system.melee.{{id}}.st" value="{{melee.st}}"/></td>
+                    <td><a class="attack-delete" id="meleee{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
+                </tr>
+                {{/each}}
+                </table>
+            </div>
+        </div>
+
+        {{!-- Ranged Tab --}}
+        <div class="tab stats" data-tab="ranged" data-group="primary">
+            <h3 class="addRangedRow" style="text-align: right;">Add Row</h3>
+            <div class="tab">
+                <table>
+                    <tr class="equipment-header">
+                        <td class="resource-label">ID</td>
+                        <td class="resource-label">Name</td>
+                        <td class="resource-label">Level</td>
+                        <td class="resource-label">Skill Name / Mod</td>
+                        <td class="resource-label">Acc</td>
+                        <td class="resource-label">Damage</td>
+                        <td class="resource-label">Type</td>
+                        <td class="resource-label">Divisor</td>
+                        <td class="resource-label">Range</td>
+                        <td class="resource-label">Rof</td>
+                        <td class="resource-label">Shots</td>
+                        <td class="resource-label">Bulk</td>
+                        <td class="resource-label">Rcl</td>
+                        <td class="resource-label">ST</td>
+                        <td class="resource-label">Malf</td>
+                        <td class="resource-label"></td>
+                    </tr>
+                    {{#each item.system.ranged as |ranged id|}}
+                    <tr class="equipment-entry">
+                        <td class="resource-label">{{id}}</td>
+                        <td><input type="text" name="system.ranged.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
+                        <td class="resource-label">{{ranged.level}}</td>
+                        <td class="equipmentInputInput">
+                            <input type="text" name="system.ranged.{{id}}.skill" value="{{ranged.skill}}" title="{{ranged.skill}}" style="text-align:left;" />/
+                            <input type="text" name="system.ranged.{{id}}.skillMod" value="{{ranged.skillMod}}" data-dtype="Number"/>
+                        </td>
+                        <td><input type="text" name="system.ranged.{{id}}.acc" value="{{ranged.acc}}" data-dtype="Number"/></td>
+                        <td><input type="text" name="system.ranged.{{id}}.damageInput" value="{{ranged.damageInput}}" title="{{ranged.damageInput}}" style="text-align:left;" /></td>
+                        <td>
+                            <span class="tooltip">
+                                <input type="text" name="system.ranged.{{id}}.damageType" value="{{ranged.damageType}}" title="{{ranged.damageType}}" style="text-align:left;" />
+                                <span class="tooltiptext" style="margin-left: -100px">
+                                    <div>
+                                        <span style="text-decoration: underline">Valid entries are:</span><br>
+                                        burn: Burning<br>
+                                        cor: Corrosion<br>
+                                        cr: Crushing<br>
+                                        cut: Cutting<br>
+                                        fat: Fatigue<br>
+                                        imp: Impaling<br>
+                                        pi-: Small Piercing<br>
+                                        pi: Piercing<br>
+                                        pi+: Large Piercing<br>
+                                        pi++: Huge Piercing<br>
+                                        tox: Toxic<br>
+                                        tbb: Tight Beam Burning<br>
+                                        dam: Untyped<br>
+                                        <span style="text-decoration: underline">Valid modifiers are:</span><br>
+                                        ex: Explosive<br>
+                                        dbk: Double Knockback<br>
+                                        dbt: Double Blunt Trauma<br>
+                                        nw: No Wounding<br>
+                                    </div>
+                                </span>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="tooltip">
+                                <input type="text" name="system.ranged.{{id}}.armourDivisor" value="{{ranged.armourDivisor}}" title="{{ranged.armourDivisor}}" style="text-align:left;" />
+                                <span class="tooltiptext" style="margin-left: -100px">
+                                    <div>
+                                        Default is 1<br>
+                                        0 makes effective armour infinite<br>
+                                        Using the words 'ignore' or 'cosmic' allows the attack to ignore armour<br>
+                                        Setting this to 'I' will also ignore armour
+                                    </div>
+                                </span>
+                            </span>
+                        </td>
+                        <td><input type="text" name="system.ranged.{{id}}.range" value="{{ranged.range}}" title="{{ranged.range}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="system.ranged.{{id}}.rof" value="{{ranged.rof}}" title="{{ranged.rof}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="system.ranged.{{id}}.shots" value="{{ranged.shots}}" title="{{ranged.shots}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="system.ranged.{{id}}.bulk" value="{{ranged.bulk}}" title="{{ranged.bulk}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="system.ranged.{{id}}.rcl" value="{{ranged.rcl}}" title="{{ranged.rcl}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="system.ranged.{{id}}.st" value="{{ranged.st}}"/></td>
+                        <td><input type="text" name="system.ranged.{{id}}.malf" value="{{ranged.malf}}"/></td>
+                        <td><a class="ranged-delete" id="ranged{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
+                    </tr>
+                    {{/each}}
+                </table>
+            </div>
+        </div>
+
+        {{!-- Affliction Tab --}}
+        <div class="tab stats" data-tab="affliction" data-group="primary">
+            <h3 class="addAfflictionRow" style="text-align: right;">Add Row</h3>
+            <div class="tab">
+                <table>
+                    <tr class="equipment-header">
+                        <td class="resource-label">Name</td>
+                        <td class="resource-label">Level</td>
+                        <td class="resource-label">Skill Name / Mod</td>
+                        <td class="resource-label">Damage</td>
+                        <td class="resource-label">Type</td>
+                        <td class="resource-label">Divisor</td>
+                        <td class="resource-label">Effect Description</td>
+                        <td class="resource-label">Range Penalties</td>
+                        <td class="resource-label" style="width: 240px">
+                            <span class="tooltip">
+                                Resist With
+                                <span class="tooltiptext" style="margin-left: -100px;">For both Quick Contests and Resistance Rolls.<br>
+                                    Penalty applies to the target's roll in either case.</span>
+                            </span>
+                        </td>
+                        <td class="resource-label">
+                            <span class="tooltip">
+                                Rule Of
+                                <span class="tooltiptext" style="margin-left: -100px;">This should be 13 for Fright and 16 for everything else except in special cases.</span>
+                            </span>
+                        </td>
+                        <td class="resource-label"></td>
+                    </tr>
+                    {{#each item.system.affliction as |affliction id|}}
+                    <tr class="equipment-entry">
+                        <td><input type="text" name="system.affliction.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
+                        <td class="resource-label">{{affliction.level}}</td>
+                        <td class="equipmentInputInput">
+                            <input type="text" name="system.affliction.{{id}}.skill" value="{{affliction.skill}}" title="{{affliction.skill}}" style="text-align:left;" />/
+                            <input type="text" name="system.affliction.{{id}}.skillMod" value="{{affliction.skillMod}}" data-dtype="Number"/>
+                        </td>
+                        <td><input type="text" name="system.affliction.{{id}}.damageInput" value="{{affliction.damageInput}}" title="{{affliction.damageInput}}" style="text-align:left; width: 40px;" /></td>
+                        <td>
+                            <span class="tooltip">
+                                <input type="text" name="system.affliction.{{id}}.damageType" value="{{affliction.damageType}}" title="{{affliction.damageType}}" style="text-align:left; width: 40px;" />
+                                <span class="tooltiptext" style="margin-left: -100px">
+                                    <div>
+                                        <span style="text-decoration: underline">Valid entries are:</span><br>
+                                        burn: Burning<br>
+                                        cor: Corrosion<br>
+                                        cr: Crushing<br>
+                                        cut: Cutting<br>
+                                        fat: Fatigue<br>
+                                        imp: Impaling<br>
+                                        pi-: Small Piercing<br>
+                                        pi: Piercing<br>
+                                        pi+: Large Piercing<br>
+                                        pi++: Huge Piercing<br>
+                                        tox: Toxic<br>
+                                        tbb: Tight Beam Burning<br>
+                                        dam: Untyped<br>
+                                        <span style="text-decoration: underline">Valid modifiers are:</span><br>
+                                        ex: Explosive<br>
+                                        dbk: Double Knockback<br>
+                                        dbt: Double Blunt Trauma<br>
+                                        nw: No Wounding<br>
+                                        la: Large Area Injury<br>
+                                        area: Large Area Injury<br>
+                                    </div>
+                                </span>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="tooltip">
+                                <input type="text" name="system.affliction.{{id}}.armourDivisor" value="{{affliction.armourDivisor}}" title="{{affliction.armourDivisor}}" style="text-align:left; width: 40px;" />
+                                <span class="tooltiptext" style="margin-left: -100px">
+                                    <div>
+                                        Default is 1<br>
+                                        0 makes effective armour infinite<br>
+                                        Using the words 'ignore' or 'cosmic' allows the attack to ignore armour<br>
+                                        Setting this to 'I' will also ignore armour
+                                    </div>
+                                </span>
+                            </span>
+                        </td>
+                        <td><input type="text" name="system.affliction.{{id}}.desc" value="{{desc}}" title="{{desc}}" style="text-align:left;" /></td>
+                        <td class="resource-label">
+                            <select name="system.affliction.{{id}}.rangePenalties">
+                                {{#select affliction.rangePenalties}}
+                                <option value="">Make a Selection</option>
+                                <option value="regular">Regular (-1/yard)</option>
+                                <option value="ssrt">Size/Speed/Range Table</option>
+                                <option value="long">Long Distance Penalties</option>
+                                <option value="none">None</option>
+                                {{/select}}
+                            </select>
+                        </td>
+                        <td style="display: flex; width: 240px" >
+                            <select name="system.affliction.{{id}}.resistanceType">
+                                {{#select affliction.resistanceType}}
+                                <option value="">Make a Selection</option>
+                                <option value="contest">Quick Contest</option>
+                                <option value="resistance">Resistance</option>
+                                <option value="irresistible">Irresistible</option>
+                                {{/select}}
+                            </select>
+                            <select name="system.affliction.{{id}}.resistanceRoll" class="resistanceRoll">
+                                {{#select affliction.resistanceRoll}}
+                                <option value="">None</option>
+                                <option value="Strength">ST</option>
+                                <option value="Dexterity">DX</option>
+                                <option value="Intelligence">IQ</option>
+                                <option value="Health">HT</option>
+                                <option value="Will">Will</option>
+                                <option value="Perception">Per</option>
+                                <option value="Fright">Fright</option>
+                                {{/select}}
+                            </select>
+                            <input type="text" placeholder="-0" name="system.affliction.{{id}}.resistanceRollPenalty" value="{{affliction.resistanceRollPenalty}}" title="{{affliction.resistanceRollPenalty}}" style="text-align:left; width: 40px; margin: unset" />
+                        </td>
+                        <td><input type="text" name="system.affliction.{{id}}.ruleOf" value="{{affliction.ruleOf}}" title="{{affliction.ruleOf}}" style="text-align:left; width: 40px;" /></td>
+                        <td><a class="affliction-delete" id="affliction{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
+                    </tr>
+                    {{/each}}
+                </table>
+            </div>
+        </div>
+
+        {{!-- Armour Tab --}}
+        <div class="tab stats" data-tab="armour" data-group="primary">
+            <div class="tab">
+                <span>
+                    <label>Body Type:</label>
+                    <select name="system.armour.bodyType.name" class="bodyType">
+                        {{#select item.system.armour.bodyType.name}}
+                        <option value="">Make a Selection</option>
+                        <option value="humanoid">Humanoid</option>
+                        <option value="wingedHumanoid">Winged Humanoid</option>
+                        <option value="quadruped">Quadruped</option>
+                        <option value="wingedQuadruped">Winged Quadruped</option>
+                        <option value="hexapod">Hexapod</option>
+                        <option value="wingedHexapod">Winged Hexapod</option>
+                        <option value="centaur">Centaur</option>
+                        <option value="avian">Avian</option>
+                        <option value="vermiform">Vermiform</option>
+                        <option value="lamia">Lamia</option>
+                        <option value="wingedLamia">Winged Lamia</option>
+                        <option value="octopod">Octopod</option>
+                        <option value="cancroid">Cancroid</option>
+                        <option value="ichthyoid">Ichthyoid</option>
+                        <option value="arachnoid">Arachnoid</option>
+                        {{/select}}
+                    </select>
+                </span>
+                {{#if (eq item.system.armour.bodyType.name "") }}
+                    <br>Please only set body type if this equipment applies DR. Otherwise the formula that adds up armour will check this for DR values. With enough items on your sheet it will eventually degrade performance.
+                {{else}}
+                <span class="tooltip">
+                    <label>Layer:</label>
+                    <input type="number" style="width: unset;" name="system.armour.layer" value="{{item.system.armour.layer}}" data-dtype="Number" />
+                    <span class="tooltiptext">
+                        <div>
+                            Higher layer numbers are placed above lower layer numbers.<br>
+                            -∞ is closest to the body.<br>
+                            +∞ is furthest from the body.<br>
+                            You can enter any real number.<br>
+                            Ties won't cause errors but should be avoided.<br>
+                        </div>
+					</span>
+                </span>
+                {{/if}}
+                <table class="dr-entry-table">
+                    {{#unless (eq item.system.armour.bodyType.name "") }}
+                        <tr class="hit-locations">
+                            <td class="dr-header"></td>
+                            <td class="dr-header">Flex</td>
+                            <td class="dr-damage-types">Hardness</td>
+                            <td class="dr-damage-types">Burn</td>
+                            <td class="dr-damage-types">Cor</td>
+                            <td class="dr-damage-types">Cr</td>
+                            <td class="dr-damage-types">Cut</td>
+                            <td class="dr-damage-types">Fat</td>
+                            <td class="dr-damage-types">Imp</td>
+                            <td class="dr-damage-types">Pi</td>
+                            <td class="dr-damage-types">Tox</td>
+                        </tr>
+                    {{/unless}}
+                    {{#each item.system.armour.bodyType.body as |bodyPart partId|}}<!--Loop through the body parts-->
+                    <tr class="hit-locations master-location">
+                        <th colspan="11">
+                            <div>{{bodyPart.label}}</div>
+                            <div>
+                                <a class="locationDRUp" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                <a class="locationDRDown" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                            </div>
+                        </th>
+                        <tr>
+                            <td colspan="3"></td>
+                            <td>
+                                <div class="dr-damage-type-buttons">
+                                    <a class="burnDRUp" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                    <a class="burnDRDown" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="dr-damage-type-buttons">
+                                    <a class="corDRUp" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                    <a class="corDRDown" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="dr-damage-type-buttons">
+                                    <a class="crDRUp" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                    <a class="crDRDown" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="dr-damage-type-buttons">
+                                    <a class="cutDRUp" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                    <a class="cutDRDown" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="dr-damage-type-buttons">
+                                    <a class="fatDRUp" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                    <a class="fatDRDown" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="dr-damage-type-buttons">
+                                    <a class="impDRUp" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                    <a class="impDRDown" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="dr-damage-type-buttons">
+                                    <a class="piDRUp" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                    <a class="piDRDown" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="dr-damage-type-buttons">
+                                    <a class="toxDRUp" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-up"></i></a>
+                                    <a class="toxDRDown" id="item.system.armour.bodyType.body.{{partId}}" title="Shift x10, Ctrl x5, Alt x2"><i class="fas fa-arrow-down"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tr>
+                    {{#if bodyPart.subLocation}}<!--Check to see if there are sublocations and display them-->
+                    {{#each bodyPart.subLocation as |subLocation locationId|}}<!--Loop through the sublocations-->
+                    <tr class="hit-locations">
+                        <td class="dr-row">
+                            <div>{{subLocation.label}}</div>
+                            <div>
+                                <a class="subLocationDRUp" id="item.system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}" title="Sublocation DR Up"><i class="fas fa-arrow-up"></i></a>
+                                <a class="subLocationDRDown" id="item.system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}" title="Sublocation DR Down"><i class="fas fa-arrow-down"></i></a>
+                            </div>
+                        </td>
+                        <td class="dr-row">
+                            <input type="checkbox" name="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.flexible" {{checked subLocation.flexible}} data-dtype="Boolean" style="width: 100%;"/>
+                        </td>
+                        <td class="dr-row">
+                            <input type="number" name="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.drHardening" value="{{subLocation.drHardening}}" data-dtype="Number" />
+                        </td>
+                        <td class="dr-row">
+                            <input type="number" name="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.drBurn" value="{{subLocation.drBurn}}" data-dtype="Number" />
+                        </td>
+                        <td class="dr-row">
+                            <input type="number" name="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.drCor" value="{{subLocation.drCor}}" data-dtype="Number" />
+                        </td>
+                        <td class="dr-row">
+                            <input type="number" name="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.drCr" value="{{subLocation.drCr}}" data-dtype="Number" />
+                        </td>
+                        <td class="dr-row">
+                            <input type="number" name="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.drCut" value="{{subLocation.drCut}}" data-dtype="Number" />
+                        </td>
+                        <td class="dr-row">
+                            <input type="number" name="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.drFat" value="{{subLocation.drFat}}" data-dtype="Number" />
+                        </td>
+                        <td class="dr-row">
+                            <input type="number" name="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.drImp" value="{{subLocation.drImp}}" data-dtype="Number" />
+                        </td>
+                        <td class="dr-row">
+                            <input type="number" name="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.drPi" value="{{subLocation.drPi}}" data-dtype="Number" />
+                        </td>
+                        <td class="dr-row">
+                            <input type="number" name="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.drTox" value="{{subLocation.drTox}}" data-dtype="Number" />
+                        </td>
+                    </tr>
+                    {{/each}}
+                    {{else}}<!--Display details for parts without sublocations (Pretty much only the skull and brian)-->
+                    <tr class="hit-locations">
+                        <td class="dr-row">{{bodyPart.label}}</td>
+                        <td class="dr-row">
+                            <input type="checkbox" name="system.armour.bodyType.body.{{partId}}.flexible" {{checked bodyPart.flexible}} data-dtype="Boolean" style="width: 100%;"/>
+                        </td>
+                        <td class="dr-row">
+                            <input type="number" name="system.armour.bodyType.body.{{partId}}.drHardening" value="{{bodyPart.drHardening}}" data-dtype="Number" />
+                        </td>
+                        <td class="dr-row">
+                            <input type="number" name="system.armour.bodyType.body.{{partId}}.drBurn" value="{{bodyPart.drBurn}}" data-dtype="Number" />
+                        </td>
+                        <td class="dr-row">
+                            <input type="number" name="system.armour.bodyType.body.{{partId}}.drCor" value="{{bodyPart.drCor}}" data-dtype="Number" />
+                        </td>
+                        <td class="dr-row">
+                            <input type="number" name="system.armour.bodyType.body.{{partId}}.drCr" value="{{bodyPart.drCr}}" data-dtype="Number" />
+                        </td>
+                        <td class="dr-row">
+                            <input type="number" name="system.armour.bodyType.body.{{partId}}.drCut" value="{{bodyPart.drCut}}" data-dtype="Number" />
+                        </td>
+                        <td class="dr-row">
+                            <input type="number" name="system.armour.bodyType.body.{{partId}}.drFat" value="{{bodyPart.drFat}}" data-dtype="Number" />
+                        </td>
+                        <td class="dr-row">
+                            <input type="number" name="system.armour.bodyType.body.{{partId}}.drImp" value="{{bodyPart.drImp}}" data-dtype="Number" />
+                        </td>
+                        <td class="dr-row">
+                            <input type="number" name="system.armour.bodyType.body.{{partId}}.drPi" value="{{bodyPart.drPi}}" data-dtype="Number" />
+                        </td>
+                        <td class="dr-row">
+                            <input type="number" name="system.armour.bodyType.body.{{partId}}.drTox" value="{{bodyPart.drTox}}" data-dtype="Number" />
+                        </td>
+                    </tr>
+                    {{/if}}
+                    {{/each}}
+                </table>
+            </div>
+        </div>
+    </section>
+</form>

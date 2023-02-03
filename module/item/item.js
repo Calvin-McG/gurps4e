@@ -59,6 +59,9 @@ export class gurpsItem extends Item {
       case "Custom Jewelry":
         this._prepareCustomJewelryData();
         break;
+      case "Ritual":
+        this._prepareRitualData();
+        break;
       default: // not a supported type
        console.error("This type of item is not supported in the system!");
     }
@@ -1638,6 +1641,12 @@ export class gurpsItem extends Item {
     this.system.cost = this.system.jewelryDesign.finalCost;
     this.system.weight = this.system.jewelryDesign.finalWeight;
 
+    this.finalEquipmentCalculation();
+  }
+
+  _prepareRitualData() {
+    this.validateEquipmentBasics();
+    console.log(this);
     this.finalEquipmentCalculation();
   }
 
