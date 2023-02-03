@@ -46,6 +46,26 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  // Register option for whether the RPM magic tab shows up
+  game.settings.register("gurps4e", "showRPM", {
+    name: "Show RPM magic tab.",
+    hint: "Enable this setting to show a tab on the character sheet for tracking info related to Ritual Path Magic.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
+  // Register option for whether the RPM magic tab shows up
+  game.settings.register("gurps4e", "allowRPMTalent", {
+    name: "Allow Natural Caster.",
+    hint: "Enable this setting to allow characters to take the Natural Caster Talent from page 12 of Thaumatology - Ritual Path Magic.",
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
   // Register option for what counts as 'rear' when it comes to hit locations where that matters
   game.settings.register("gurps4e", "literalRear", {
     name: "Literal rear hit locations",
