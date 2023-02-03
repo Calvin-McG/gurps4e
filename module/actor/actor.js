@@ -383,6 +383,322 @@ export class gurpsActor extends Actor {
 		else {
 			this.system.bio.tl.value = Math.floor(this.system.bio.tl.value);
 		}
+
+		if (typeof this.system.rpm === 'undefined') {
+			this.system.rpm = {
+				"magery": 0,
+				"naturalCaster": 0,
+				"er": 0,
+				"ritualAdeptConnection": false,
+				"ritualAdeptSpace": false,
+				"ritualAdeptTime": 0,
+				"coreSkill": "Thaumatology",
+				"higherPurpose1Name": "",
+				"higherPurpose2Name": "",
+				"higherPurpose3Name": "",
+				"higherPurpose1level": 0,
+				"higherPurpose2level": 0,
+				"higherPurpose3level": 0,
+				"showThematic": "0", // -1 is no thematic, just name. 0 is both. 1 is thematic only
+				"showStats": true,
+				"showPaths": true,
+				"showGrimoire": true,
+				"paths": {
+					"body": {
+						"name": "Body",
+						"theme": "Yesod",
+						"baseAttr": "IQ",
+						"category": "skill",
+						"defaults": [
+							{
+								"skill": "Thaumatology",
+								"mod": -6
+							}
+						],
+						"difficulty": "VH",
+						"level": 0,
+						"mod": 0,
+						"points": 0
+					},
+					"chance": {
+						"name": "Chance",
+						"theme": "Hod",
+						"baseAttr": "IQ",
+						"category": "skill",
+						"defaults": [
+							{
+								"skill": "Thaumatology",
+								"mod": -6
+							}
+						],
+						"difficulty": "VH",
+						"level": 0,
+						"mod": 0,
+						"points": 0
+					},
+					"crossroads": {
+						"name": "Crossroads",
+						"theme": "Tiphareth",
+						"baseAttr": "IQ",
+						"category": "skill",
+						"defaults": [
+							{
+								"skill": "Thaumatology",
+								"mod": -6
+							}
+						],
+						"difficulty": "VH",
+						"level": 0,
+						"mod": 0,
+						"points": 0
+					},
+					"energy": {
+						"name": "Energy",
+						"theme": "Greburah",
+						"baseAttr": "IQ",
+						"category": "skill",
+						"defaults": [
+							{
+								"skill": "Thaumatology",
+								"mod": -6
+							}
+						],
+						"difficulty": "VH",
+						"level": 0,
+						"mod": 0,
+						"points": 0
+					},
+					"magic": {
+						"name": "Magic",
+						"theme": "Chesed",
+						"baseAttr": "IQ",
+						"category": "skill",
+						"defaults": [
+							{
+								"skill": "Thaumatology",
+								"mod": -6
+							}
+						],
+						"difficulty": "VH",
+						"level": 0,
+						"mod": 0,
+						"points": 0
+					},
+					"matter": {
+						"name": "Matter",
+						"theme": "Netzach",
+						"baseAttr": "IQ",
+						"category": "skill",
+						"defaults": [
+							{
+								"skill": "Thaumatology",
+								"mod": -6
+							}
+						],
+						"difficulty": "VH",
+						"level": 0,
+						"mod": 0,
+						"points": 0
+					},
+					"mind": {
+						"name": "Mind",
+						"theme": "Chokmah",
+						"baseAttr": "IQ",
+						"category": "skill",
+						"defaults": [
+							{
+								"skill": "Thaumatology",
+								"mod": -6
+							}
+						],
+						"difficulty": "VH",
+						"level": 0,
+						"mod": 0,
+						"points": 0
+					},
+					"spirit": {
+						"name": "Spirit",
+						"theme": "Binah",
+						"baseAttr": "IQ",
+						"category": "skill",
+						"defaults": [
+							{
+								"skill": "Thaumatology",
+								"mod": -6
+							}
+						],
+						"difficulty": "VH",
+						"level": 0,
+						"mod": 0,
+						"points": 0
+					},
+					"undead": {
+						"name": "Undead",
+						"theme": "Malkuth",
+						"baseAttr": "IQ",
+						"category": "skill",
+						"defaults": [
+							{
+								"skill": "Thaumatology",
+								"mod": -6
+							}
+						],
+						"difficulty": "VH",
+						"level": 0,
+						"mod": 0,
+						"points": 0
+					}
+				}
+			}
+		}
+		else if (typeof this.system.rpm.paths === 'undefined') { // If they've got an rpm object, but no paths.
+			this.system.rpm.paths = {
+				"body": {
+					"name": "Body",
+						"theme": "Yesod",
+						"baseAttr": "IQ",
+						"category": "skill",
+						"defaults": [
+						{
+							"skill": "Thaumatology",
+							"mod": -6
+						}
+					],
+						"difficulty": "VH",
+						"level": 0,
+						"mod": 0,
+						"points": 0
+				},
+				"chance": {
+					"name": "Chance",
+						"theme": "Hod",
+						"baseAttr": "IQ",
+						"category": "skill",
+						"defaults": [
+						{
+							"skill": "Thaumatology",
+							"mod": -6
+						}
+					],
+						"difficulty": "VH",
+						"level": 0,
+						"mod": 0,
+						"points": 0
+				},
+				"crossroads": {
+					"name": "Crossroads",
+						"theme": "Tiphareth",
+						"baseAttr": "IQ",
+						"category": "skill",
+						"defaults": [
+						{
+							"skill": "Thaumatology",
+							"mod": -6
+						}
+					],
+						"difficulty": "VH",
+						"level": 0,
+						"mod": 0,
+						"points": 0
+				},
+				"energy": {
+					"name": "Energy",
+						"theme": "Greburah",
+						"baseAttr": "IQ",
+						"category": "skill",
+						"defaults": [
+						{
+							"skill": "Thaumatology",
+							"mod": -6
+						}
+					],
+						"difficulty": "VH",
+						"level": 0,
+						"mod": 0,
+						"points": 0
+				},
+				"magic": {
+					"name": "Magic",
+						"theme": "Chesed",
+						"baseAttr": "IQ",
+						"category": "skill",
+						"defaults": [
+						{
+							"skill": "Thaumatology",
+							"mod": -6
+						}
+					],
+						"difficulty": "VH",
+						"level": 0,
+						"mod": 0,
+						"points": 0
+				},
+				"matter": {
+					"name": "Matter",
+						"theme": "Netzach",
+						"baseAttr": "IQ",
+						"category": "skill",
+						"defaults": [
+						{
+							"skill": "Thaumatology",
+							"mod": -6
+						}
+					],
+						"difficulty": "VH",
+						"level": 0,
+						"mod": 0,
+						"points": 0
+				},
+				"mind": {
+					"name": "Mind",
+						"theme": "Chokmah",
+						"baseAttr": "IQ",
+						"category": "skill",
+						"defaults": [
+						{
+							"skill": "Thaumatology",
+							"mod": -6
+						}
+					],
+						"difficulty": "VH",
+						"level": 0,
+						"mod": 0,
+						"points": 0
+				},
+				"spirit": {
+					"name": "Spirit",
+						"theme": "Binah",
+						"baseAttr": "IQ",
+						"category": "skill",
+						"defaults": [
+						{
+							"skill": "Thaumatology",
+							"mod": -6
+						}
+					],
+						"difficulty": "VH",
+						"level": 0,
+						"mod": 0,
+						"points": 0
+				},
+				"undead": {
+					"name": "Undead",
+						"theme": "Malkuth",
+						"baseAttr": "IQ",
+						"category": "skill",
+						"defaults": [
+						{
+							"skill": "Thaumatology",
+							"mod": -6
+						}
+					],
+						"difficulty": "VH",
+						"level": 0,
+						"mod": 0,
+						"points": 0
+				}
+			}
+		}
 	}
 
 	bodyTypeUpdate(){
@@ -1619,17 +1935,59 @@ export class gurpsActor extends Actor {
 
 	updateMagic() {
 		this.system.showVanillaMagic = game.settings.get("gurps4e", "showVanillaMagic");
+		this.system.showRPM = game.settings.get("gurps4e", "showRPM");
 
 		if (this.system) {
-			if (this.system.magic) { // Character has the magic block
-				// Calculate the total magical attribute
-				let totalMagicAttribute = 0;
-				if (this.system.magic.attribute != "") { // Attribute is not blank
-					totalMagicAttribute += skillHelpers.getBaseAttrValue(this.system.magic.attribute, this)
+			if (this.system.showVanillaMagic) { // The campaign is using the vanilla magic tab.
+				this.updateVanillaMagic();
+			}
+			if (this.system.showRPM) { // The campaign is using the RPM tab.
+				this.updateRPM();
+			}
+		}
+	}
+
+	updateVanillaMagic() {
+		if (this.system.magic) { // Character has the magic block
+			// Calculate the total magical attribute
+			let totalMagicAttribute = 0;
+			if (this.system.magic.attribute != "") { // Attribute is not blank
+				totalMagicAttribute += skillHelpers.getBaseAttrValue(this.system.magic.attribute, this)
+			}
+			totalMagicAttribute += this.system.magic.attributeMod ? this.system.magic.attributeMod : 0;
+			totalMagicAttribute += this.system.magic.magery ? this.system.magic.magery : 0;
+			this.system.magic.totalMagicAttribute = totalMagicAttribute;
+		}
+	}
+
+	updateRPM() {
+		if (this.system.rpm) { // Character has the rpm block
+			if (typeof this.system.rpm.coreSkill === "undefined") { // If the core skill is undefined
+				this.system.rpm.coreSkill = "Thaumatology"; // Default to Thaumatology
+			}
+			else if (this.system.rpm.coreSkill === "") { // If the core skill is blank
+				this.system.rpm.coreSkill = "Thaumatology"; // Default to Thaumatology
+			}
+
+			this.system.rpm.coreSkillLevel = skillHelpers.getSkillLevelByName(this.system.rpm.coreSkill, this) // Get the level of the core skill for this RPM caster
+
+			if (typeof this.system.rpm.coreSkillLevel === 'undefined') {
+				this.system.rpm.coreSkillLevel = 0;
+			}
+			this.system.rpm.allowTalent = game.settings.get("gurps4e", "allowRPMTalent");
+			this.system.rpm.totalEnergy = (this.system.rpm.magery * 3) + this.system.rpm.er;
+			this.system.rpm.maxSkill = 12 + this.system.rpm.magery;
+			this.system.rpm.maxConditional = this.system.rpm.magery + this.system.rpm.coreSkillLevel; // TODO plus core skill level
+
+			let keys = Object.keys(this.system.rpm.paths);
+
+			if (keys.length > 0) {
+				for (let k = 0; k < keys.length; k++) {
+					let path = getProperty(this.system.rpm.paths, keys[k]);
+					path.level = skillHelpers.computeSkillLevel(this, path); // Get the base skill level based on the points spent and any buying up from defaults
+					path.level += path.mod; // Add path mod.
+					path.level = Math.min(path.level, this.system.rpm.maxSkill); // Apply the skill cap
 				}
-				totalMagicAttribute += this.system.magic.attributeMod ? this.system.magic.attributeMod : 0;
-				totalMagicAttribute += this.system.magic.magery ? this.system.magic.magery : 0;
-				this.system.magic.totalMagicAttribute = totalMagicAttribute;
 			}
 		}
 	}

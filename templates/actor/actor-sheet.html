@@ -161,9 +161,14 @@
 				<a class="item" data-tab="body-type">Body Type</a>
 			</div>
 			{{#if actor.system.showVanillaMagic}}
-				<div class="header">
-					<a class="item" data-tab="magic">Magic</a>
-				</div>
+			<div class="header">
+				<a class="item" data-tab="magic">Magic</a>
+			</div>
+			{{/if}}
+			{{#if actor.system.showRPM}}
+			<div class="header">
+				<a class="item" data-tab="rpm">RPM</a>
+			</div>
 			{{/if}}
 			<div class="header">
 				<a class="item" data-tab="info">Info</a>
@@ -2954,6 +2959,204 @@
 						</table>
 					</div>
 				</div>
+			{{/if}}
+
+			{{#if actor.system.showRPM}}
+			{{!-- RPM Magic Tab --}}
+			<div id="rpm" class="tab magic" data-tab="rpm" data-group="primary">
+				<div style="display: flex; flex-direction: column;">
+					<!-- Start of stats block -->
+					<h1 class="bold" style="text-align: center;">
+						<label for="rpmStats">
+							<div>
+								{{#if actor.system.rpm.showStats }}
+								Stats
+								{{else}}
+								Stats (Hidden)
+								{{/if}}
+							</div>
+						</label>
+					</h1>
+					<input style="display: none" id="rpmStats" type="checkbox" name="system.rpm.showStats" {{checked actor.system.rpm.showStats}} data-dtype="Boolean"/>
+					{{#if actor.system.rpm.showStats }}
+					<table>
+						<tr>
+							<td>
+								Magery
+								<input id="hasMagery" type="checkbox" name="system.rpm.hasMagery" {{checked actor.system.rpm.hasMagery}} data-dtype="Boolean"/>
+								<input type="number" style="width: 50%" name="system.rpm.magery" value="{{actor.system.rpm.magery}}" data-dtype="Number" />
+							</td>
+							<td>
+								Energy Reserve
+								<input type="number" style="width: 50%" name="system.rpm.er" value="{{actor.system.rpm.er}}" data-dtype="Number" />
+							</td>
+							<td>
+								Total Energy: {{actor.system.rpm.totalEnergy}}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Maximum Path Skill: {{actor.system.rpm.maxSkill}}
+							</td>
+							<td>
+								Maximum Conditional Spells: {{actor.system.rpm.maxConditional}}
+							</td>
+							<td>
+								<select name="system.rpm.showThematic">
+									{{#select actor.system.rpm.showThematic}}
+									<option value="-1">Show common name</option>
+									<option value="0">Show common and sephirotic names</option>
+									<option value="1">Show sephirotic name</option>
+									{{/select}}
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3" style="text-align: center;" class="tooltip">
+								<span style="font-weight: bold; text-decoration: underline; font-size: larger;">Ritual Adept</span><br>
+								<span class="tooltiptext">
+									<div>
+										<span>If your Ritual Adept advantage is not broken down into parts, just check both boxes and select Time 2</span>
+									</div>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Ritual Adept (Connection): <input id="ritualAdeptConnection" type="checkbox" name="system.rpm.ritualAdeptConnection" {{checked actor.system.rpm.ritualAdeptConnection}} data-dtype="Boolean"/>
+							</td>
+							<td>
+								Ritual Adept (Space): <input id="ritualAdeptSpace" type="checkbox" name="system.rpm.ritualAdeptSpace" {{checked actor.system.rpm.ritualAdeptSpace}} data-dtype="Boolean"/>
+							</td>
+							<td>
+								Ritual Adept (Time): <select name="system.rpm.ritualAdeptTime">
+									{{#select actor.system.rpm.ritualAdeptTime}}
+									<option value="0">None</option>
+									<option value="1">Level 1</option>
+									<option value="2">Level 2</option>
+									{{/select}}
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3" style="text-align: center;" class="tooltip">
+								<span style="font-weight: bold; text-decoration: underline; font-size: larger;">Higher Purposes</span><br>
+								<span class="tooltiptext">
+									<div>
+										<span>Both Traditions and Pursuits are acceptable and allow you to break the skill cap.</span><br><br>
+										<span>Traditions should be about a 1/3rd the size of a full Path, and can be spread across multiple paths.</span><br><br>
+										<span>Pursuits are a specific thing like “Defend all women”, “Slay all demons”, "Acquire Knowledge", "Assist Allies", "Defend the Faithful", "Deliver the Package", "Medic!", "Slay (Specific Monster Type)".</span><br><br>
+										<span>You may only have three levels across all of your Higher Purposes.</span>
+									</div>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="text" style="width: 70%" name="system.rpm.higherPurpose1Name" value="{{actor.system.rpm.higherPurpose1Name}}" placeholder="Higher Purpose 1" />
+								<input type="number" style="width: 20%" name="system.rpm.higherPurpose1level" value="{{actor.system.rpm.higherPurpose1level}}" data-dtype="Number" />
+							</td>
+							<td>
+								<input type="text" style="width: 70%" name="system.rpm.higherPurpose2Name" value="{{actor.system.rpm.higherPurpose2Name}}" placeholder="Higher Purpose 2" />
+								<input type="number" style="width: 20%" name="system.rpm.higherPurpose2level" value="{{actor.system.rpm.higherPurpose2level}}" data-dtype="Number" />
+							</td>
+							<td>
+								<input type="text" style="width: 70%" name="system.rpm.higherPurpose3Name" value="{{actor.system.rpm.higherPurpose3Name}}" placeholder="Higher Purpose 3" />
+								<input type="number" style="width: 20%" name="system.rpm.higherPurpose3level" value="{{actor.system.rpm.higherPurpose3level}}" data-dtype="Number" />
+							</td>
+						</tr>
+
+						<tr>
+							<td>
+								Core Skill:
+								<input type="text" style="width: 55%" name="system.rpm.coreSkill" value="{{actor.system.rpm.coreSkill}}" placeholder="" />
+								 {{actor.system.rpm.coreSkillLevel}}
+							</td>
+							{{#if actor.system.rpm.allowTalent }}
+							<td>
+								Natural Caster Talent:
+								<input type="number" style="width: 20%" name="system.rpm.naturalCaster" value="{{actor.system.rpm.naturalCaster}}" data-dtype="Number" />
+							</td>
+							{{/if}}
+						</tr>
+					</table>
+					{{/if}}
+					<!-- End of stats block -->
+					<!-- Start of Paths block -->
+					<h1 class="bold" style="text-align: center;">
+						<label for="rpmPaths">
+							<div>
+								{{#if actor.system.rpm.showPaths }}
+								Paths
+								{{else}}
+								Paths (Hidden)
+								{{/if}}
+							</div>
+						</label>
+					</h1>
+					<input style="display: none" id="rpmPaths" type="checkbox" name="system.rpm.showPaths" {{checked actor.system.rpm.showPaths}} data-dtype="Boolean"/>
+					{{#if actor.system.rpm.showPaths }}
+					<table>
+						<tr>
+							<th>{{#if (eq actor.system.rpm.showThematic "-1") }}
+								Common Name
+								{{/if}}
+								{{#if (eq actor.system.rpm.showThematic "0") }}
+								Common Name (Sephirotic Name)
+								{{/if}}
+								{{#if (eq actor.system.rpm.showThematic "1") }}
+								Sephirotic Name
+								{{/if}}</th>
+							<th>Level</th>
+							<th>Points</th>
+							<th>Modifier</th>
+						</tr>
+						{{#each actor.system.rpm.paths as |path id|}}
+						<tr>
+							<td>
+								{{#if (eq ../actor.system.rpm.showThematic "-1") }}
+									{{path.name}}
+								{{/if}}
+								{{#if (eq ../actor.system.rpm.showThematic "0") }}
+									{{path.name}} ({{path.theme}})
+								{{/if}}
+								{{#if (eq ../actor.system.rpm.showThematic "1") }}
+									{{path.theme}}
+								{{/if}}
+							</td>
+							<td>
+								{{path.level}}
+							</td>
+							<td>
+								<input type="number" name="system.rpm.paths.{{id}}.points" value="{{points}}" data-dtype="Number" />
+							</td>
+							<td>
+								<input type="number" name="system.rpm.paths.{{id}}.mod" value="{{mod}}" data-dtype="Number" />
+							</td>
+						</tr>
+						{{/each}}
+					</table>
+					{{/if}}
+					<!-- End of Paths block -->
+					<!-- Start of Grimoire block -->
+					<h1 class="bold" style="text-align: center;">
+						<label for="rpmGrimoire">
+							<div>
+								{{#if actor.system.rpm.showGrimoire }}
+								Grimoire
+								{{else}}
+								Grimoire (Hidden)
+								{{/if}}
+							</div>
+						</label>
+					</h1>
+					<input style="display: none" id="rpmGrimoire" type="checkbox" name="system.rpm.showGrimoire" {{checked actor.system.rpm.showGrimoire}} data-dtype="Boolean"/>
+					{{#if actor.system.rpm.showGrimoire }}
+					Test
+					{{/if}}
+					<!-- End of Grimoire block -->
+				</div>
+			</div>
 			{{/if}}
 
 			{{!-- Info Tab --}}
