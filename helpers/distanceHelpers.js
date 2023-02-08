@@ -243,7 +243,42 @@ export class distanceHelpers {
     // This method returns the normal distance penalty based on the Size/Speed/Range table
     // Distance is given in yards.
     static distancePenalty(distance){
-        return Math.min(Math.floor(2 - (6 * Math.log10(distance))),0);
+        if (distance <= 2) {
+            return 0;
+        }
+        else if (distance <= 3) {
+            return -1;
+        }
+        else if (distance <= 5) {
+            return -2;
+        }
+        else if (distance <= 7) {
+            return -3;
+        }
+        else if (distance <= 10) {
+            return -4;
+        }
+        else if (distance <= 15) {
+            return -5;
+        }
+        else if (distance <= 20) {
+            return -6;
+        }
+        else if (distance <= 30) {
+            return -7;
+        }
+        else if (distance <= 50) {
+            return -8;
+        }
+        else if (distance <= 70) {
+            return -9;
+        }
+        else if (distance <= 100) {
+            return -10;
+        }
+        else {
+            return Math.min(Math.floor(2 - (6 * Math.log10(distance))),0);
+        }
     }
 
     // This method takes the distance in yards and returns the long range distance penalty
