@@ -551,8 +551,8 @@ export class gurpsActor extends Actor {
 				}
 			}
 		}
-		else if (typeof this.system.rpm.paths === 'undefined') { // If they've got an rpm object, but no paths.
-			this.system.rpm.paths = {
+		else if (typeof this.system.rpm.path === 'undefined') { // If they've got an rpm object, but no paths.
+			this.system.rpm.path = {
 				"body": {
 					"name": "Body",
 						"theme": "Yesod",
@@ -1979,11 +1979,11 @@ export class gurpsActor extends Actor {
 			this.system.rpm.maxSkill = 12 + this.system.rpm.magery;
 			this.system.rpm.maxConditional = this.system.rpm.magery + this.system.rpm.coreSkillLevel; // TODO plus core skill level
 
-			let keys = Object.keys(this.system.rpm.paths);
+			let keys = Object.keys(this.system.rpm.path);
 
 			if (keys.length > 0) {
 				for (let k = 0; k < keys.length; k++) {
-					let path = getProperty(this.system.rpm.paths, keys[k]);
+					let path = getProperty(this.system.rpm.path, keys[k]);
 					path.level = skillHelpers.computeSkillLevel(this, path); // Get the base skill level based on the points spent and any buying up from defaults
 					path.level += path.mod; // Add path mod.
 					path.level = Math.min(path.level, this.system.rpm.maxSkill); // Apply the skill cap
