@@ -477,7 +477,34 @@ export class gurpsItemSheet extends ItemSheet {
         let newRow = {  // Init the new path row
             "modifier": "affliction",
             "effect": {
-                "percentage": 0
+                "percentage": 0, // For Affliction
+                "level": 0, // For Altered Trait or Meta-Magic
+                "area": 0, // For AoE
+                "excludes": 0, // For AoE
+                "scope": "broad", // Broad, Moderate, Single, for both bonuses and penalties
+                "modifier": 0, // For Bonuses and Penalties
+                "dice": 1, // For damage and healing
+                "adds": 1, // For damage and healing
+                "woundMod": "cr", // For damage
+                "external": false, // For damage
+                "explosive": false, // For damage
+                "enhancementsOn": false, // For damage
+                "enhancements": 0, // For damage
+                "enhancementNotes": "", // For damage
+                "limitationsOn": false, // For damage
+                "limitations": 0, // For damage
+                "limitationNotes": "", // For damage
+                "durationQty": 0, // For duration
+                "durationUnits": 0, // For duration
+                "extraEnergy": 0, // For Extra Energy
+                "resource": "hp", // For healing
+                "range": 0, // For range
+                "rangeType": "normal", // For range
+                "speed": 0, // For speed
+                "weight": 10, // For Subject Weight
+                "trappings": 0, // For Traditional Trappings.
+                "crafting": 0, // For the crafting penalty thingy
+                "craftingPenalty": 0, // For the crafting penalty thingy
             },
             "cost": 0,
             "notes": ""
