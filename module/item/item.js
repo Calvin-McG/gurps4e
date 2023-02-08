@@ -1646,8 +1646,419 @@ export class gurpsItem extends Item {
 
   _prepareRitualData() {
     this.validateEquipmentBasics();
-    console.log(this);
+
+    let greaterEffectsMultiplier = 1;
+    let costFromPaths = 0;
+    let costFromModifiers = 0;
+
+    let keys = Object.keys(this.system.path);
+    if (keys.length > 0) {
+      for (let k = 0; k < keys.length; k++) {
+        let path = getProperty(this.system.path, keys[k]);
+        path.cost = this._setCostByEffectName(path.effect); // Get the base cost of the spell
+        costFromPaths += path.cost;
+
+        if (path.level === "greater") { // If the effect is greater
+          greaterEffectsMultiplier += 2; // Start applying the stacking multiplier.
+        }
+      }
+    }
+
+    let ritualModifierKeys = Object.keys(this.system.ritualModifier);
+    let trappingsDiscount = 0;
+    let totalCraftingModifier = 0;
+    if (keys.length > 0) {
+      for (let k = 0; k < ritualModifierKeys.length; k++) {
+        let ritualModifier = getProperty(this.system.ritualModifier, ritualModifierKeys[k]);
+
+        ritualModifier.effect.craftingPenalty = 0;
+
+        // Check modifier type and calculate cost accordingly.
+        if (ritualModifier.modifier === "affliction") {
+          ritualModifier.cost = Math.floor(ritualModifier.effect.percentage / 5);
+        }
+        else if (ritualModifier.modifier === "trait") {
+          if (ritualModifier.effect.level > 0) {
+            ritualModifier.cost = Math.floor(ritualModifier.effect.level); // Cost is equal to level
+          }
+          else if (ritualModifier.effect.level < 0) {
+            ritualModifier.cost = Math.abs(Math.floor(ritualModifier.effect.level / 5));
+          }
+          else {
+            ritualModifier.cost = 0; // Cost is equal to level, which is zero
+          }
+        }
+        else if (ritualModifier.modifier === "aoe") {
+          ritualModifier.cost = Math.max(Math.abs(distanceHelpers.distancePenalty(ritualModifier.effect.area)) * 2, 2); // Add twice the distance penalty, but at least 2.
+          ritualModifier.cost += Math.ceil(ritualModifier.effect.excludes / 2); // It's +1 mana per 2 exclusions, rounded up.
+        }
+        else if (ritualModifier.modifier === "modifier" || ritualModifier.modifier === "bonus" || ritualModifier.modifier === "penalty") {
+          ritualModifier.cost = this.getRPMModifierCost(ritualModifier.effect.scope, ritualModifier.effect.modifier);
+        }
+        else if (ritualModifier.modifier === "damage") {
+          let averageDamage = (ritualModifier.effect.dice * 3.5) + ritualModifier.effect.adds; // First, get the total average damage selected
+          if (ritualModifier.effect.external && ritualModifier.effect.explosive) { // Damage is both external and explosive
+            averageDamage /= 2; // Explosive external spells cost half as much mana for the same amount of damage.
+          }
+          else if (ritualModifier.effect.external) { // Damage is just external
+            averageDamage /= 3; // External spells cost a third as much mana for the same amount of damage.
+          }
+          let additionalDamage = averageDamage - 3.5; // Get any additional points of average damage beyond the first 1d.
+          additionalDamage = Math.max(additionalDamage, 0); // If for some reason they've entered a damage value less than 1d, this catches it.
+          let energyCost = additionalDamage; // This is sometimes incorrect by 0.5 energy, but it vastly simplifies the math. We will do Math.ceil later to attempt to catch this issue.
+
+          // Apply damage modifier
+
+          if (ritualModifier.effect.woundMod === "pi-") {
+            energyCost /= 0.5;
+          }
+          else if (ritualModifier.effect.woundMod === "cut" ||  ritualModifier.effect.woundMod === "pi+") {
+            energyCost *= 1.5;
+          }
+          else if (ritualModifier.effect.woundMod === "pi++" ||  ritualModifier.effect.woundMod === "imp" ||  ritualModifier.effect.woundMod === "cor" ||  ritualModifier.effect.woundMod === "fat") {
+            energyCost *= 2;
+          }
+
+          energyCost = Math.ceil(energyCost); // Correct for any fractional mana.
+
+          // Sort out the cost of enhancements
+          if (ritualModifier.effect.enhancementsOn) { // They are using enhancements on the damage
+            let enhancementPercentage = Math.abs(ritualModifier.effect.enhancements); // Math.abs to input sanitize whether the user enters a positive or negative number
+            if (ritualModifier.effect.limitationsOn) { // They are using limitations on the damage
+              enhancementPercentage = enhancementPercentage - Math.abs(ritualModifier.effect.limitations); // Math.abs to input sanitize whether the user enters a positive or negative number
+            }
+
+            if (enhancementPercentage <= 0) { // If they've included enough limitations to keep the net value of all enhancements and limitations at or below zero
+              energyCost += 1; // Then still add a 1 point surcharge.
+            }
+            else { // The enhancement percentage is above zero, proceed normally.
+              if (energyCost < 20) { // Energy cost is less than 20
+                energyCost = energyCost + Math.ceil(enhancementPercentage / 5); // Every +5% is worth 1 energy, rounded up.
+              }
+              else { // Energy cost is equal to or greater than 20
+                energyCost = energyCost * (1 + (enhancementPercentage / 100)); // Just apply the modifier to the base energy cost of this damage section.
+              }
+            }
+          }
+
+          ritualModifier.cost = energyCost;
+        }
+        else if (ritualModifier.modifier === "duration") {
+          let seconds = this.rpmDurationToSeconds(ritualModifier.effect.durationQty, ritualModifier.effect.durationUnits);
+          ritualModifier.cost = this.getRPMDurationModifierCost(seconds);
+        }
+        else if (ritualModifier.modifier === "energy" || ritualModifier.modifier === "meta") {
+          ritualModifier.cost = ritualModifier.effect.extraEnergy;
+        }
+        else if (ritualModifier.modifier === "healing") {
+          let averageDamage = (ritualModifier.effect.dice * 3.5) + ritualModifier.effect.adds; // First, get the total average damage selected
+          let additionalDamage = averageDamage - 3.5; // Get any additional points of average damage beyond the first 1d.
+          additionalDamage = Math.max(additionalDamage, 0); // If for some reason they've entered a damage value less than 1d, this catches it.
+          ritualModifier.cost = Math.ceil(additionalDamage); // Correct for any fractional mana.
+        }
+        else if (ritualModifier.modifier === "range") {
+          if (ritualModifier.effect.rangeType === "normal") {
+            ritualModifier.cost = Math.max(Math.abs(distanceHelpers.distancePenalty(ritualModifier.effect.range)), 0); // Get the distance penalty, at least zero.
+          }
+          else if (ritualModifier.effect.rangeType === "info") {
+            ritualModifier.cost = Math.max(Math.abs(distanceHelpers.longDistancePenalty(ritualModifier.effect.range)), 0); // Get the long distance penalty, at least zero.
+          }
+          else if (ritualModifier.effect.rangeType === "time") {
+            ritualModifier.cost = Math.max(Math.abs(distanceHelpers.longDistancePenalty(ritualModifier.effect.range * 1760)), 0); // Get the long distance penalty, treating miles as days.
+          }
+          else if (ritualModifier.effect.rangeType === "dim") {
+            ritualModifier.cost = Math.max((ritualModifier.effect.range) * 10, 10); // Each dim crossed adds 10 energy. Math.max to catch edge cases.
+          }
+        }
+        else if (ritualModifier.modifier === "speed") {
+          ritualModifier.cost = Math.max(Math.abs(distanceHelpers.distancePenalty(ritualModifier.effect.speed)), 0); // Get the distance penalty, at least zero
+        }
+        else if (ritualModifier.modifier === "weight") {
+          ritualModifier.cost = this.getRPMWeightModifierCost(ritualModifier.effect.weight);
+        }
+        else if (ritualModifier.modifier === "trappings") {
+          ritualModifier.cost = 0;
+          trappingsDiscount += Math.abs(ritualModifier.effect.trappings);
+        }
+        else if (ritualModifier.modifier === "crafting") {
+          ritualModifier.cost = 0;
+          ritualModifier.effect.craftingPenalty = this.rpmCraftingCostToPenalty(ritualModifier.effect.crafting);
+        }
+        else if (ritualModifier.modifier === "gmCrafting") {
+          ritualModifier.cost = 0;
+        }
+
+        costFromModifiers += ritualModifier.cost;
+        totalCraftingModifier += ritualModifier.effect.craftingPenalty;
+      }
+    }
+
+    // Ritual Type cost thingy
+
+    if (this.system.ritualType === "conditional") {
+      costFromModifiers += 5; // Add +5 mana for the Lesser Control Magic necessary to make this ritual conditional.
+    }
+    else if (this.system.ritualType === "conditionalCharm") {
+      costFromModifiers += 5; // Add +5 mana for the Lesser Control Magic necessary to make this ritual conditional.
+      costFromModifiers += 8; // Add +5 mana for the Lesser Transform Magic necessary to make this ritual into a conditional charm.
+    }
+    else if (this.system.ritualType === "elixir") {
+      costFromModifiers += 6; // Add +5 mana for the Lesser Create Magic necessary to make this into an elixir
+    }
+
+    this.system.energyCost = Math.ceil((greaterEffectsMultiplier * (costFromPaths + costFromModifiers)) * ((100 - trappingsDiscount) / 100));
+
+    // Do the final skill calculation
+
     this.finalEquipmentCalculation();
+  }
+
+  getRPMModifierCost(scope, modifier) {
+    if (typeof scope !== 'undefined') {
+      let cost = 2 ** (Math.abs(modifier) - 1);
+      if (scope.toLowerCase() === "broad") {
+        cost *= 5;
+      }
+      else if (scope.toLowerCase() === "moderate") {
+        cost *= 2;
+      }
+
+      return cost;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  rpmDurationToSeconds(qty, units) { // Give the quantity and type of unit, convert to seconds.
+    switch (units) {
+      case "minutes":
+        return qty * 60;
+      case "hours":
+        return qty * 60 * 60;
+      case "days":
+        return qty * 60 * 60 * 24;
+      case "weeks":
+        return qty * 60 * 60 * 24 * 7;
+      case "fortnights":
+        return qty * 60 * 60 * 24 * 7 * 2;
+      case "months":
+        return qty * 60 * 60 * 24 * 365 / 12;
+      case "years":
+        return qty * 60 * 60 * 24 * 365;
+    }
+  }
+
+  rpmCraftingCostToPenalty(cost) {
+    let startingCash = economicHelpers.getStartingCashByTL(game.settings.get("gurps4e", "campaignTL")); // Get the starting cash for the campaign TL
+    let ratio = (cost / startingCash) * 100;
+
+    if (ratio <= 0.5) { // 0.5%
+      return 0;
+    }
+    else if (ratio <= 1) { // 1%
+      return -1;
+    }
+    else if (ratio <= 2) { // 2%
+      return -2;
+    }
+    else if (ratio <= 5) { // 5%
+      return -3;
+    }
+    else if (ratio <= 10) { // 10%
+      return -4;
+    }
+    else if (ratio <= 20) { // 20%
+      return -5;
+    }
+    else if (ratio <= 50) { // 50%
+      return -6;
+    }
+    else if (ratio <= 100) { // 100%
+      return -7;
+    }
+    else if (ratio <= 200) { // 200%
+      return -8;
+    }
+    else if (ratio <= 500) { // 500%
+      return -9;
+    }
+    else if (ratio <= 1000) { // 1000%
+      return -10;
+    }
+    else if (ratio <= 2000) { // 2000%
+      return -11;
+    }
+    else if (ratio <= 5000) { // 5000%
+      return -12;
+    }
+    else if (ratio <= 10000) { // 10000%
+      return -13;
+    }
+    else if (ratio <= 20000) { // 20000%
+      return -14;
+    }
+    else if (ratio <= 50000) { // 50000%
+      return -15;
+    }
+    else if (ratio <= 100000) { // 100000%
+      return -16;
+    }
+    else if (ratio <= 200000) { // 200000%
+      return -17;
+    }
+    else if (ratio <= 500000) { // 500000%
+      return -18;
+    }
+    else if (ratio <= 1000000) { // 100000%
+      return -19;
+    }
+    else if (ratio <= 2000000) { // 200000%
+      return -20;
+    }
+    else if (ratio <= 5000000) { // 500000%
+      return -21;
+    }
+    else {
+      return -22;
+    }
+  }
+
+  // Given a duration in seconds, how much mana does that cost?
+  getRPMDurationModifierCost(duration) {
+    if (duration <= 0) {
+      return 0;
+    }
+    else if (duration <= (10 * 60)) { // 10 minutes
+      return 1;
+    }
+    else if (duration <= (30 * 60)) { // 30 minutes
+      return 2;
+    }
+    else if (duration <= (3600)) { // 1 hour
+      return 3;
+    }
+    else if (duration <= (3600 * 3)) { // 3 hours
+      return 4;
+    }
+    else if (duration <= (3600 * 6)) { // 6 hours
+      return 5;
+    }
+    else if (duration <= (3600 * 12)) { // 12 hours
+      return 6;
+    }
+    else if (duration <= (86400)) { // 1 day
+      return 7;
+    }
+    else if (duration <= (86400 * 3)) { // 3 days
+      return 8;
+    }
+    else if (duration <= (86400 * 7)) { // 1 week
+      return 9;
+    }
+    else if (duration <= (86400 * 7 * 2)) { // 2 weeks
+      return 10;
+    }
+    else if (duration <= (86400 * (365 / 12) * 1)) { // 1 month
+      return 11;
+    }
+    else if (duration <= (86400 * (365 / 12) * 2)) { // 2 months
+      return 12;
+    }
+    else if (duration <= (86400 * (365 / 12) * 3)) { // 3 months
+      return 13;
+    }
+    else if (duration <= (86400 * (365 / 12) * 4)) { // 4 months
+      return 14;
+    }
+    else if (duration <= (86400 * (365 / 12) * 5)) { // 5 months
+      return 15;
+    }
+    else if (duration <= (86400 * (365 / 12) * 6)) { // 6 months
+      return 16;
+    }
+    else if (duration <= (86400 * (365 / 12) * 7)) { // 7 months
+      return 17;
+    }
+    else if (duration <= (86400 * (365 / 12) * 8)) { // 8 months
+      return 18;
+    }
+    else if (duration <= (86400 * (365 / 12) * 9)) { // 9 months
+      return 19;
+    }
+    else if (duration <= (86400 * (365 / 12) * 10)) { // 10 months
+      return 20;
+    }
+    else if (duration <= (86400 * (365 / 12) * 11)) { // 11 months
+      return 21;
+    }
+    else { // More than 11 months.
+      return 21 + (duration / (86400 * 365)); // Add the number of years to 21 to get the mana cost, rounded up.
+    }
+  }
+
+  // Given a weight in pounds, how much mana does that cost?
+  getRPMWeightModifierCost(weight) {
+    if (weight <= 10) {
+      return 0;
+    }
+    else if (weight <= 30) {
+      return 1;
+    }
+    else if (weight <= 100) {
+      return 2;
+    }
+    else if (weight <= 300) {
+      return 3;
+    }
+    else if (weight <= 1000) {
+      return 4;
+    }
+    else if (weight <= 3000) {
+      return 5;
+    }
+    else if (weight <= 10000) { // 5 tons
+      return 6;
+    }
+    else if (weight <= 30000) { // 15 tons
+      return 7;
+    }
+    else if (weight <= 100000) { // 50 tons
+      return 8;
+    }
+    else if (weight <= 300000) { // 150 tons
+      return 9;
+    }
+    else if (weight <= 900000) { // 450 tons
+      return 10;
+    }
+    else if (weight <= 2700000) { // 1350 tons
+      return 11;
+    }
+    else { // More than 1350 tons.
+      return 11 + Math.ceil(weight / 1350 / 2000 / 3); // This probably works?
+    }
+  }
+
+  _setCostByEffectName(effect) {
+    switch (effect) {
+      case "sense":
+        return 2;
+      case "strengthen":
+        return 3;
+      case "restore":
+        return 4;
+      case "control":
+        return 5;
+      case "destroy":
+        return 5;
+      case "create":
+        return 6;
+      case "transform":
+        return 8;
+      default: // not a supported type
+        return -1;
+    }
   }
 
   _prepareCustomWeaponData() {
