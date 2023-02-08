@@ -326,6 +326,24 @@ export class distanceHelpers {
         else if (distance <= (1760 * 300000)){ // Distance from the centre of the earth to the centre of the moon (238,855 miles)
             penalty = -13;
         }
+        else if (distance <= (1760 * 1000000)){
+            penalty = -14;
+        }
+        else if (distance <= (1760 * 3000000)){
+            penalty = -15;
+        }
+        else if (distance <= (1760 * 10000000)){
+            penalty = -16;
+        }
+        else if (distance <= (1760 * 30000000)){
+            penalty = -17;
+        }
+        else if (distance <= (1760 * 100000000)){ // Distance from the earth to the sun 90,000,000 mi
+            penalty = -18;
+        }
+        else if (distance <= (1760 * 300000000)){ // Distance from one edge of Earth's orbit to the other 180,000,000 mi
+            penalty = -19;
+        }
 
         return penalty;
     }
