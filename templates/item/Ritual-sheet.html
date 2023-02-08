@@ -170,8 +170,7 @@
                             <option value="affliction">Affliction</option>
                             <option value="trait">Altered Trait</option>
                             <option value="aoe">Area Of Effect</option>
-                            <option value="bonus">Bestows a Bonus</option>
-                            <option value="penalty">Bestows a Penalty</option>
+                            <option value="modifier">Bestows a Bonus or Penalty</option>
                             <option value="damage">Damage</option>
                             <option value="duration">Duration</option>
                             <option value="energy">Extra Energy</option>
@@ -181,10 +180,157 @@
                             <option value="speed">Speed</option>
                             <option value="weight">Subject Weight</option>
                             <option value="trappings">Traditional Trappings</option>
+                            <option value="crafting">Crafting - Automatic Penalty</option>
+                            <option value="gmCrafting">Crafting - GM Penalty</option>
                             {{/select}}
                         </select>
                     </td>
-                    <td>Effect</td>
+                    <td>
+                        {{#if (eq ritualModifier.modifier "affliction") }}
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.percentage" value="{{ritualModifier.effect.percentage}}" style="text-align:center; width: 90%; margin: unset" min="0" step="5"/>
+                        {{/if}}
+
+                        {{#if (eq ritualModifier.modifier "trait") }}
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.level" value="{{ritualModifier.effect.level}}" style="text-align:center; width: 90%; margin: unset" />
+                        {{/if}}
+
+                        {{#if (eq ritualModifier.modifier "aoe") }}
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.area" value="{{ritualModifier.effect.area}}" style="text-align:center; width: 20%; margin-left: 10%;" /> yards
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.excludes" value="{{ritualModifier.effect.excludes}}" style="text-align:center; width: 20%; margin-left: 10%;" min="0"/> exclusions
+                        {{/if}}
+
+                        {{#if (eq ritualModifier.modifier "modifier") }}
+                        <select name="system.ritualModifier.{{id}}.effect.scope">
+                            {{#select ritualModifier.effect.scope}}
+                            <option value="broad">Broad</option>
+                            <option value="moderate">Moderate</option>
+                            <option value="narrow">Narrow</option>
+                            {{/select}}
+                        </select>
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.modifier" value="{{ritualModifier.effect.modifier}}" style="text-align:center; width: 20%; margin-left: 10%;"/>
+                        {{/if}}
+
+                        {{#if (eq ritualModifier.modifier "damage") }}
+                            <div style="height: 27px">
+                                <label>Damage: </label>
+                                <input type="number" name="system.ritualModifier.{{id}}.effect.dice" value="{{ritualModifier.effect.dice}}" style="text-align:center; width: 20%;"/>
+                                d6 + <input type="number" name="system.ritualModifier.{{id}}.effect.adds" value="{{ritualModifier.effect.adds}}" style="text-align:center; width: 20%;"/>
+                                <select name="system.ritualModifier.{{id}}.effect.woundMod">
+                                    {{#select ritualModifier.effect.woundMod}}
+                                    <option value="burn">burn</option>
+                                    <option value="cor">cor</option>
+                                    <option value="cr">cr</option>
+                                    <option value="cut">cut</option>
+                                    <option value="fat">fat</option>
+                                    <option value="imp">imp</option>
+                                    <option value="pi-">pi-</option>
+                                    <option value="pi">pi</option>
+                                    <option value="pi+">pi+</option>
+                                    <option value="pi++">pi++</option>
+                                    <option value="tox">tox</option>
+                                    {{/select}}
+                                </select>
+                            </div>
+
+                            <div style="height: 27px">
+                                <label for="external">External</label><input id="external" type="checkbox" name="system.ritualModifier.{{id}}.effect.external" {{checked ritualModifier.effect.external}} data-dtype="Boolean"/>
+                            </div>
+                            {{#if ritualModifier.effect.external }}
+                                <div style="height: 27px">
+                                    <label for="explosive">Explosive</label><input id="explosive" type="checkbox" name="system.ritualModifier.{{id}}.effect.explosive" {{checked ritualModifier.effect.explosive}} data-dtype="Boolean"/>
+                                </div>
+                                <div style="height: 27px">
+                                    <label for="enhancementsOn">Total Enhancements</label><input id="enhancementsOn" type="checkbox" name="system.ritualModifier.{{id}}.effect.enhancementsOn" {{checked ritualModifier.effect.enhancementsOn}} data-dtype="Boolean"/>
+                                    {{#if ritualModifier.effect.enhancementsOn }}
+                                        <input type="number" name="system.ritualModifier.{{id}}.effect.enhancements" value="{{ritualModifier.effect.enhancements}}" style="text-align:center; width: 10%;"/>
+                                        <input type="text" name="system.ritualModifier.{{id}}.effect.enhancementNotes" value="{{ritualModifier.effect.enhancementNotes}}" style="width: 50%;" placeholder="Enhancement Notes"/>
+                                    {{/if}}
+                                </div>
+                                <div style="height: 27px">
+                                    <label for="limitationsOn">Total Limitations</label><input id="limitationsOn" type="checkbox" name="system.ritualModifier.{{id}}.effect.limitationsOn" {{checked ritualModifier.effect.limitationsOn}} data-dtype="Boolean"/>
+                                    {{#if ritualModifier.effect.limitationsOn }}
+                                        <input type="number" name="system.ritualModifier.{{id}}.effect.limitations" value="{{ritualModifier.effect.limitations}}" style="text-align:center; width: 10%;"/>
+                                        <input type="text" name="system.ritualModifier.{{id}}.effect.limitationNotes" value="{{ritualModifier.effect.limitationNotes}}" style="width: 50%;" placeholder="Limitation Notes"/>
+                                    {{/if}}
+                                </div>
+                            {{/if}}
+                        {{/if}}
+
+                        {{#if (eq ritualModifier.modifier "duration") }}
+                        <select name="system.ritualModifier.{{id}}.effect.durationUnits">
+                            {{#select ritualModifier.effect.durationUnits}}
+                            <option value="minutes">Minutes</option>
+                            <option value="hours">Hours</option>
+                            <option value="days">Days</option>
+                            <option value="weeks">Weeks</option>
+                            <option value="fortnights">Fortnights</option>
+                            <option value="months">Months</option>
+                            <option value="years">Years</option>
+                            {{/select}}
+                        </select>
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.durationQty" value="{{ritualModifier.effect.durationQty}}" style="text-align:center; width: 20%;"/>
+                        {{/if}}
+
+                        {{#if (or (eq ritualModifier.modifier "energy") (eq ritualModifier.modifier "meta")) }}
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.extraEnergy" value="{{ritualModifier.effect.extraEnergy}}" style="text-align:center; width: 90%; margin: unset" />
+                        {{/if}}
+
+                        {{#if (eq ritualModifier.modifier "healing") }}
+                        <div style="height: 27px">
+                            <label>Healing: </label>
+                            <input type="number" name="system.ritualModifier.{{id}}.effect.dice" value="{{ritualModifier.effect.dice}}" style="text-align:center; width: 20%;"/>
+                            d6 + <input type="number" name="system.ritualModifier.{{id}}.effect.adds" value="{{ritualModifier.effect.adds}}" style="text-align:center; width: 20%;"/>
+                            <select name="system.ritualModifier.{{id}}.effect.resource">
+                                {{#select ritualModifier.effect.resource}}
+                                <option value="hp">HP</option>
+                                <option value="fp">FP</option>
+                                {{/select}}
+                            </select>
+                        </div>
+                        {{/if}}
+
+                        {{#if (eq ritualModifier.modifier "range") }}
+                        {{#if (or (eq ritualModifier.effect.rangeType "normal")  (eq ritualModifier.effect.rangeType "info") ) }}
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.range" value="{{ritualModifier.effect.range}}" style="text-align:center; width: 20%; margin-left: 10%;" /> yards
+                        {{/if}}
+                        {{#if (eq ritualModifier.effect.rangeType "time") }}
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.range" value="{{ritualModifier.effect.range}}" style="text-align:center; width: 20%; margin-left: 10%;" /> days
+                        {{/if}}
+                        {{#if (eq ritualModifier.effect.rangeType "dim") }}
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.range" value="{{ritualModifier.effect.range}}" style="text-align:center; width: 20%; margin-left: 10%;" /> dimensions crossed
+                        {{/if}}
+                        <select name="system.ritualModifier.{{id}}.effect.rangeType">
+                            {{#select ritualModifier.effect.rangeType}}
+                            <option value="normal">Normal</option>
+                            <option value="info">Informational</option>
+                            <option value="time">Cross-Time</option>
+                            <option value="dim">Cross-Dimensional</option>
+                            {{/select}}
+                        </select>
+                        {{/if}}
+
+                        {{#if (eq ritualModifier.modifier "speed") }}
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.speed" value="{{ritualModifier.effect.speed}}" style="text-align:center; width: 20%; margin-left: 10%;" /> yards per second
+                        {{/if}}
+
+                        {{#if (eq ritualModifier.modifier "weight") }}
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.weight" value="{{ritualModifier.effect.weight}}" style="text-align:center; width: 50%; margin-left: 10%;" /> lbs
+                        {{/if}}
+
+                        {{#if (eq ritualModifier.modifier "trappings") }}
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.trappings" value="{{ritualModifier.effect.trappings}}" style="text-align:center; width: 50%; margin-left: 10%;" /> % discount
+                        {{/if}}
+
+                        {{#if (eq ritualModifier.modifier "crafting") }}
+                        Item Cost: <input type="number" name="system.ritualModifier.{{id}}.effect.crafting" value="{{ritualModifier.effect.crafting}}" style="text-align:center; width: 50%;" /> $
+                        <br>Crafting Penalty: {{ritualModifier.effect.craftingPenalty}}
+                        {{/if}}
+
+                        {{#if (eq ritualModifier.modifier "gmCrafting") }}
+                        Modifier: <input type="number" name="system.ritualModifier.{{id}}.effect.craftingPenalty" value="{{ritualModifier.effect.craftingPenalty}}" style="text-align:center; width: 50%; margin-left: 10%;" />
+                        {{/if}}
+
+                    </td>
                     <td style="text-align: center">{{ritualModifier.cost}}</td>
                     <td><input type="text" placeholder="Notes" name="system.ritualModifier.{{id}}.notes" value="{{ritualModifier.notes}}" title="{{ritualModifier.notes}}" style="text-align:left; margin: unset" data-dtype="String"/></td>
                     <td style="text-align: right;"><a class="ritualModifier-delete" id="ritual{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
