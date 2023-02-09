@@ -3162,7 +3162,50 @@
 					</h1>
 					<input style="display: none" id="rpmGrimoire" type="checkbox" name="system.rpm.showGrimoire" {{checked actor.system.rpm.showGrimoire}} data-dtype="Boolean"/>
 					{{#if actor.system.rpm.showGrimoire }}
-					Test
+					<table>
+						<tr>
+							<td class="item-image" style="width: 24px; padding: 0 2px">
+
+							</td>
+							<td class="item-name" style="width: 9em;">
+								Ritual Name
+							</td>
+							<td class="item-notes">
+								{{item.system.shortNotes}}
+							</td>
+							<td class="item-skill" style="width: 3em;">
+								Level
+							</td>
+							<td class="item-controls" style="width: 30px;">
+
+							</td>
+						</tr>
+						{{#each items as |item id|}}
+						{{#if (eq type "Ritual")}}
+						{{log item}}
+						<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item._id}}">
+							<td class="item-image" style="width: 24px; padding: 0 2px">
+								<img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
+							</td>
+							<td class="item-name" style="width: 9em;">
+								{{item.name}}
+							</td>
+							<td class="item-notes">
+								{{item.system.shortNotes}}
+							</td>
+							<td class="item-skill" style="width: 3em;">
+								<label for="actor.system.level" class="fa fa-dice-six rollable" data-level="{{item.system.level}}"
+									   data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
+								{{item.system.level}}
+							</td>
+							<td class="item-controls" style="width: 30px;">
+								<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+								<a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+							</td>
+						</tr>
+						{{/if}}
+						{{/each}}
+					</table>
 					{{/if}}
 					<!-- End of Grimoire block -->
 				</div>
