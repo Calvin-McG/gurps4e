@@ -127,6 +127,12 @@
 							<td class="pointTotal">{{numberFormat actor.system.points.spells decimals=0}}</td>
 						</tr>
 						{{/if}}
+						{{#if actor.system.points.path}}
+						<tr>
+							<td class="">Paths:</td>
+							<td class="pointTotal">{{numberFormat actor.system.points.path decimals=0}}</td>
+						</tr>
+						{{/if}}
 						<tr>
 							<td class="">Unspent:</td>
 							<td><input type="text" name="system.points.unspent" class="pointTotal unspentEntry" value="{{actor.system.points.unspent}}" data-dtype="Number"/></td>

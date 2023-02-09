@@ -86,6 +86,7 @@
           "quirks": 0,
           "skills": 0,
           "spells": 0,
+          "path": 0,
           "unspent": 150
         },
         "reserves": {

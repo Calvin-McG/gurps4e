@@ -474,7 +474,7 @@ export class gurpsItemSheet extends ItemSheet {
             newKey = 0; // Add the new one at the start of the empty list
         }
 
-        let newRow = {  // Init the new path row
+        let newRow = {  // Init the new modifier row
             "modifier": "affliction",
             "effect": {
                 "percentage": 0, // For Affliction

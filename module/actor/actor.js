@@ -38,6 +38,7 @@ export class gurpsActor extends Actor {
 		this.recalcTraitPoints();
 		this.recalcSkillPoints();
 		this.recalcSpellPoints()
+		this.recalcPathPoints();
 		this.recalcPointTotals();
 
 		//Convert spent points into their effective values
@@ -58,7 +59,7 @@ export class gurpsActor extends Actor {
 		// Set status, etc, for reserves
 		this.bodyReserves()
 
-		//Update part specific HP
+		// Update part specific HP
 		this.partHP();
 
 		// Recalculate encumbrance values, along with effective dodge and move. Do this before info but after everything else so move and dodge is correct.
@@ -1125,6 +1126,24 @@ export class gurpsActor extends Actor {
 		this.system.points.skills = skillPoints;
     }
 
+    recalcPathPoints() {
+		if (game.settings.get("gurps4e", "showRPM")) { // If the RPM tab is enabled, total up the points.
+			console.log(this.system.rpm.path);
+			let pathPoints = 0;
+			// Iterate through the list of paths.
+			let keys = Object.keys(this.system.rpm.path);
+			if (keys.length > 0) {
+				for (let k = 0; k < keys.length; k++) {
+					pathPoints = pathPoints + getProperty(this.system.rpm.path, keys[k]).points;
+				}
+			}
+			this.system.points.path = pathPoints;
+		}
+		else { // If the path tab is disabled, set to zero.
+			this.system.points.path = 0;
+		}
+	}
+
 	recalcSpellPoints() {
 		var spellPoints = +0;
 		//Iterate through the list of skills. Advantages and Disadvantages
@@ -1565,7 +1584,7 @@ export class gurpsActor extends Actor {
 	recalcPointTotals() {
 		let unspent;
 		let spent;
-		spent = +this.system.points.attributes + +this.system.points.traits + +this.system.points.skills + +this.system.points.spells;
+		spent = +this.system.points.attributes + +this.system.points.traits + +this.system.points.skills + +this.system.points.spells + +this.system.points.path;
 
 		unspent = +this.system.points.total - +spent;
 
