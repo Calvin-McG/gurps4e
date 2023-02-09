@@ -1128,7 +1128,6 @@ export class gurpsActor extends Actor {
 
     recalcPathPoints() {
 		if (game.settings.get("gurps4e", "showRPM")) { // If the RPM tab is enabled, total up the points.
-			console.log(this.system.rpm.path);
 			let pathPoints = 0;
 			// Iterate through the list of paths.
 			let keys = Object.keys(this.system.rpm.path);
@@ -1146,10 +1145,10 @@ export class gurpsActor extends Actor {
 
 	recalcSpellPoints() {
 		var spellPoints = +0;
-		//Iterate through the list of skills. Advantages and Disadvantages
+		// Iterate through the list of spells.
 		for (let i = 0; i < this.items.length; i++){
-			if (this.items._source[i].type === "Spell"){
-				spellPoints = spellPoints += this.items._source[i].system.points
+			if (this.items.contents[i].type === "Spell"){
+				spellPoints = spellPoints += this.items.contents[i].system.points
 			}
 		}
 		this.system.points.spells = spellPoints;
