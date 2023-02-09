@@ -3111,7 +3111,7 @@
 							<th>Points</th>
 							<th>Modifier</th>
 						</tr>
-						{{#each actor.system.rpm.paths as |path id|}}
+						{{#each actor.system.rpm.path as |path id|}}
 						<tr>
 							<td>
 								{{#if (eq ../actor.system.rpm.showThematic "-1") }}
@@ -3128,10 +3128,10 @@
 								{{path.level}}
 							</td>
 							<td>
-								<input type="number" name="system.rpm.paths.{{id}}.points" value="{{points}}" data-dtype="Number" />
+								<input type="number" name="system.rpm.path.{{id}}.points" value="{{points}}" data-dtype="Number" />
 							</td>
 							<td>
-								<input type="number" name="system.rpm.paths.{{id}}.mod" value="{{mod}}" data-dtype="Number" />
+								<input type="number" name="system.rpm.path.{{id}}.mod" value="{{mod}}" data-dtype="Number" />
 							</td>
 						</tr>
 						{{/each}}

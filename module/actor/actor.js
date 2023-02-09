@@ -403,7 +403,7 @@ export class gurpsActor extends Actor {
 				"showStats": true,
 				"showPaths": true,
 				"showGrimoire": true,
-				"paths": {
+				"path": {
 					"body": {
 						"name": "Body",
 						"theme": "Yesod",
