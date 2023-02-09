@@ -2990,7 +2990,11 @@
 							<td>
 								Magery
 								<input id="hasMagery" type="checkbox" name="system.rpm.hasMagery" {{checked actor.system.rpm.hasMagery}} data-dtype="Boolean"/>
-								<input type="number" style="width: 50%" name="system.rpm.magery" value="{{actor.system.rpm.magery}}" data-dtype="Number" />
+								{{#if actor.system.rpm.hasMagery}}
+									<input type="number" style="width: 50%" name="system.rpm.magery" value="{{actor.system.rpm.magery}}" data-dtype="Number" />
+								{{else}}
+									<input type="number" style="width: 50%" name="system.rpm.magery" value="{{actor.system.rpm.magery}}" data-dtype="Number" disabled />
+								{{/if}}
 							</td>
 							<td>
 								Energy Reserve
