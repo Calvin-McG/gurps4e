@@ -1986,7 +1986,7 @@ export class gurpsActor extends Actor {
 					let path = getProperty(this.system.rpm.path, keys[k]);
 					path.level = skillHelpers.computeSkillLevel(this, path); // Get the base skill level based on the points spent and any buying up from defaults
 					path.level += path.mod; // Add path mod.
-					path.level = Math.min(path.level, this.system.rpm.maxSkill); // Apply the skill cap
+					path.level = Math.min(path.level, this.system.rpm.maxSkill, this.system.rpm.coreSkillLevel); // Apply the skill cap
 				}
 			}
 		}
