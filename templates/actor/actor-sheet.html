@@ -3171,9 +3171,15 @@
 								Ritual Name
 							</td>
 							<td class="item-notes">
-								{{item.system.shortNotes}}
+								Notes
 							</td>
 							<td class="item-skill" style="width: 3em;">
+								Type
+							</td>
+							<td class="item-skill" style="width: 3em; text-align: center">
+								Energy Cost
+							</td>
+							<td class="item-skill" style="width: 3em; text-align: center">
 								Level
 							</td>
 							<td class="item-controls" style="width: 30px;">
@@ -3193,7 +3199,13 @@
 							<td class="item-notes">
 								{{item.system.shortNotes}}
 							</td>
-							<td class="item-skill" style="width: 3em;">
+							<td class="item-skill" style="width: 3em; padding-right: 1em;">
+								{{capitalizeFirst item.system.ritualType}}
+							</td>
+							<td class="item-skill" style="width: 3em; text-align: center">
+								{{item.system.energyCost}}
+							</td>
+							<td class="item-skill" style="width: 3em; text-align: center">
 								<label for="actor.system.level" class="fa fa-dice-six rollable" data-level="{{item.system.level}}"
 									   data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
 								{{item.system.level}}
