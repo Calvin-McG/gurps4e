@@ -36,6 +36,10 @@ Hooks.once('init', async function() {
     return str.toLowerCase();
   });
 
+  Handlebars.registerHelper('capitalizeFirst', function(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  });
+
   Handlebars.registerHelper('isInt', function (value) {
     return Number.isInteger(value);
   });
