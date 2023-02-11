@@ -1650,6 +1650,7 @@ export class gurpsItem extends Item {
     let greaterEffectsMultiplier = 1;
     let costFromPaths = 0;
     let costFromModifiers = 0;
+    let lowestOfPaths = Number.MAX_VALUE; // We're going to be using Math.min later to narrow down to the lowest path value. So set it to max right now.
 
     let keys = Object.keys(this.system.path);
     if (keys.length > 0) {
@@ -1657,6 +1658,20 @@ export class gurpsItem extends Item {
         let path = getProperty(this.system.path, keys[k]);
         path.cost = this._setCostByEffectName(path.effect); // Get the base cost of the spell
         costFromPaths += path.cost;
+
+        if (typeof this.actor !== 'undefined') { // If there is an actor for this item. (As in, the item is on an actor)
+          if (this.actor !== null) { // If there is an actor for this item. (As in, the item is on an actor)
+            if (typeof this.actor.system.rpm !== 'undefined') { // If that actor also has the rpm related info
+              if (typeof this.actor.system.rpm.path !== 'undefined') { // If that actor also has the paths for rpm
+                path.skill = skillHelpers.computeSkillLevel(this.actor, getProperty(this.actor.system.rpm.path, path.path)); // Grab the level from the path on the actor sheet so we can reference it later
+              }
+            }
+          }
+        }
+        else { // There is no actor for this item
+          path.skill = 0 // Set the path skill to zero so nothing breaks if we try to do math later.
+        }
+        lowestOfPaths = Math.min(lowestOfPaths, path.skill); // Compare the skill to the currently stored value and keep the lowest.
 
         if (path.level === "greater") { // If the effect is greater
           greaterEffectsMultiplier += 2; // Start applying the stacking multiplier.
@@ -1808,7 +1823,31 @@ export class gurpsItem extends Item {
 
     this.system.energyCost = Math.ceil((greaterEffectsMultiplier * (costFromPaths + costFromModifiers)) * ((100 - trappingsDiscount) / 100));
 
-    // Do the final skill calculation
+    // Final skill calculation
+
+    // lowestOfPaths was calculated above and has the lowest value of all the path skills included in this ritual
+
+    let runningSkillLevel = lowestOfPaths
+
+    // Apply the -1 penalty per path beyond the first two
+    if (keys.length > 2) { // There are more than two keys
+      runningSkillLevel -= (keys.length - 2); // Apply the penalty to the running total.
+    }
+
+    // If for some reason I need to come back and apply the skill cap on a per-ritual basis, it should go here.
+
+    // Apply the crafting skill modifier, if any
+    runningSkillLevel += totalCraftingModifier;
+
+    // Grimoire bonus
+    runningSkillLevel += this.system.grimBonus;
+
+    // Ritual Mastery
+    if (this.system.ritualMastery) {
+      runningSkillLevel += 2;
+    }
+
+    this.system.level = runningSkillLevel;
 
     this.finalEquipmentCalculation();
   }
@@ -5508,6 +5547,11 @@ export class gurpsItem extends Item {
                         level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items.contents[i].system);
                       }
                     }
+                    else if (this.actor.items.contents[i].type === "Ritual") {
+                      if (this.system.melee[meleeKeys[k]].skill === this.actor.items.contents[i].name) {
+                        level = this.actor.items.contents[i].system.level + +this.system.melee[meleeKeys[k]].skillMod;
+                      }
+                    }
                   }
                 }
 
@@ -5525,7 +5569,7 @@ export class gurpsItem extends Item {
                 } else {//If it's not a number, display the entry
                   parry = this.system.melee[meleeKeys[k]].parryMod;
                 }
-                this.system.melee[meleeKeys[k]].parry = parry//Update parry value
+                this.system.melee[meleeKeys[k]].parry = parry //Update parry value
 
                 if (Number.isInteger(+this.system.melee[meleeKeys[k]].blockMod)) {//If block mod is a number, compute normally
                   block = Math.floor(+(level / 2 + 3) + +this.system.melee[meleeKeys[k]].blockMod);//Calculate the block value
@@ -5567,12 +5611,18 @@ export class gurpsItem extends Item {
 
                 if (this.system.ranged[rangedKeys[k]].skill.toLowerCase() == "dx") {
                   level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity);
-                } else {
+                }
+                else {
                   //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
                   for (let i = 0; i < this.actor.items.contents.length; i++) {
                     if (this.actor.items.contents[i].type === "Rollable") {
                       if (this.system.ranged[rangedKeys[k]].skill === this.actor.items.contents[i].name) {
                         level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items.contents[i].system);
+                      }
+                    }
+                    else if (this.actor.items.contents[i].type === "Ritual") {
+                      if (this.system.ranged[rangedKeys[k]].skill === this.actor.items.contents[i].name) {
+                        level = this.actor.items.contents[i].system.level + +this.system.ranged[rangedKeys[k]].skillMod;
                       }
                     }
                   }
@@ -5620,7 +5670,7 @@ export class gurpsItem extends Item {
               if (this.system.affliction[afflictionKeys[k]].name) { // Check to see if name is filled in. Otherwise don't bother.
                 damage = this.damageParseSwThr(this.system.affliction[afflictionKeys[k]].damageInput); // Update damage value
 
-
+                this.system.affliction[afflictionKeys[k]].level = 0; // Default to zero just in case we don't come up with a value
                 if (this.system.type == "Spell") {
                   this.system.affliction[afflictionKeys[k]].level = this.system.level;
                 }
@@ -5636,6 +5686,11 @@ export class gurpsItem extends Item {
                     if (this.actor.items.contents[i].type === "Rollable") {
                       if (this.system.affliction[afflictionKeys[k]].skill === this.actor.items.contents[i].name) {
                         this.system.affliction[afflictionKeys[k]].level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items.contents[i].system) + +this.system.affliction[afflictionKeys[k]].skillMod;
+                      }
+                    }
+                    else if (this.actor.items.contents[i].type === "Ritual") {
+                      if (this.system.affliction[afflictionKeys[k]].skill === this.actor.items.contents[i].name) {
+                        this.system.affliction[afflictionKeys[k]].level = this.actor.items.contents[i].system.level + +this.system.affliction[afflictionKeys[k]].skillMod;
                       }
                     }
                   }

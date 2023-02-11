@@ -11,12 +11,6 @@
                         <table>
                             <tr>
                                 <td>
-                                    <label class="resource-label" style="flex: 0.5;">Category: </label>
-                                    <input type="text" style="flex: 1;" name="system.subCategory" value="{{item.system.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
                                     <label class="resource-label" style="flex: 0.5;">Ritual Type:</label>
                                     <select name="system.ritualType">
                                         {{#select item.system.ritualType}}
@@ -57,7 +51,7 @@
                     </td>
                     <td style="width: 50%; vertical-align:top"><!-- Right Col -->
                         <table>
-                            {{#if (eq item.system.ritualType "charm") }}
+                            {{#if (or (eq item.system.ritualType "charm") (eq item.system.ritualType "conditionalCharm")) }}
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Safe Threshold:</label>
@@ -103,6 +97,7 @@
                     <td style="width: 90px;">Effect</td>
                     <td style="width: 95px;">Path</td>
                     <td style="width: 35px; text-align: center">Cost</td>
+                    <td style="width: 37px; text-align: center">Skill</td>
                     <td>Notes</td>
                     <td style="width: 65px;"><h3 class="addPathRow" style="text-align: right;">Add Path</h3></td>
                 </tr>
@@ -145,6 +140,7 @@
                         </select>
                     </td>
                     <td style="text-align: center">{{path.cost}}</td>
+                    <td style="text-align: center">{{path.skill}}</td>
                     <td>
                         <input type="text" placeholder="Notes" name="system.path.{{id}}.notes" value="{{path.notes}}" title="{{path.notes}}" style="text-align:left; margin: unset" data-dtype="String"/>
                     </td>
