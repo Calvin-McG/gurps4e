@@ -5502,10 +5502,10 @@ export class gurpsItem extends Item {
                 }
                 else {
                   //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-                  for (let i = 0; i < this.actor.items._source.length; i++) {
-                    if (this.actor.items._source[i].type === "Rollable") {
-                      if (this.system.melee[meleeKeys[k]].skill === this.actor.items._source[i].name) {
-                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items._source[i].system);
+                  for (let i = 0; i < this.actor.items.contents.length; i++) {
+                    if (this.actor.items.contents[i].type === "Rollable") {
+                      if (this.system.melee[meleeKeys[k]].skill === this.actor.items.contents[i].name) {
+                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items.contents[i].system);
                       }
                     }
                   }
@@ -5569,10 +5569,10 @@ export class gurpsItem extends Item {
                   level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity);
                 } else {
                   //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-                  for (let i = 0; i < this.actor.items._source.length; i++) {
-                    if (this.actor.items._source[i].type === "Rollable") {
-                      if (this.system.ranged[rangedKeys[k]].skill === this.actor.items._source[i].name) {
-                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items._source[i].system);
+                  for (let i = 0; i < this.actor.items.contents.length; i++) {
+                    if (this.actor.items.contents[i].type === "Rollable") {
+                      if (this.system.ranged[rangedKeys[k]].skill === this.actor.items.contents[i].name) {
+                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items.contents[i].system);
                       }
                     }
                   }
@@ -5632,10 +5632,10 @@ export class gurpsItem extends Item {
                 }
                 else {
                   // Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-                  for (let i = 0; i < this.actor.items._source.length; i++) {
-                    if (this.actor.items._source[i].type === "Rollable") {
-                      if (this.system.affliction[afflictionKeys[k]].skill === this.actor.items._source[i].name) {
-                        this.system.affliction[afflictionKeys[k]].level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items._source[i].system) + +this.system.affliction[afflictionKeys[k]].skillMod;
+                  for (let i = 0; i < this.actor.items.contents.length; i++) {
+                    if (this.actor.items.contents[i].type === "Rollable") {
+                      if (this.system.affliction[afflictionKeys[k]].skill === this.actor.items.contents[i].name) {
+                        this.system.affliction[afflictionKeys[k]].level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items.contents[i].system) + +this.system.affliction[afflictionKeys[k]].skillMod;
                       }
                     }
                   }

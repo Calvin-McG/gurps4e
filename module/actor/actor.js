@@ -1099,13 +1099,13 @@ export class gurpsActor extends Actor {
 		let perkPoints = +0;
 
 		// Iterate through the list of traits. Advantages and Disadvantages
-        for (let i = 0; i < this.items._source.length; i++){
-            if (this.items._source[i].type === "Trait"){
-                traitPoints = traitPoints += this.items._source[i].system.points;
-				advantagePoints = this.items._source[i].system.category.toLowerCase() === "advantage" ? advantagePoints += this.items._source[i].system.points : advantagePoints;
-                disadvantagePoints = this.items._source[i].system.category.toLowerCase() === "disadv" ? disadvantagePoints += this.items._source[i].system.points : disadvantagePoints;
-				quirkPoints = this.items._source[i].system.category.toLowerCase() === "quirk" ? quirkPoints += this.items._source[i].system.points : quirkPoints;
-				perkPoints = this.items._source[i].system.category.toLowerCase() === "perk" ? perkPoints += this.items._source[i].system.points : perkPoints;
+        for (let i = 0; i < this.items.contents.length; i++){
+            if (this.items.contents[i].type === "Trait"){
+                traitPoints = traitPoints += this.items.contents[i].system.points;
+				advantagePoints = this.items.contents[i].system.category.toLowerCase() === "advantage" ? advantagePoints += this.items.contents[i].system.points : advantagePoints;
+                disadvantagePoints = this.items.contents[i].system.category.toLowerCase() === "disadv" ? disadvantagePoints += this.items.contents[i].system.points : disadvantagePoints;
+				quirkPoints = this.items.contents[i].system.category.toLowerCase() === "quirk" ? quirkPoints += this.items.contents[i].system.points : quirkPoints;
+				perkPoints = this.items.contents[i].system.category.toLowerCase() === "perk" ? perkPoints += this.items.contents[i].system.points : perkPoints;
             }
         }
 		this.system.points.traits = traitPoints;
@@ -1117,10 +1117,10 @@ export class gurpsActor extends Actor {
 
     recalcSkillPoints() {
         var skillPoints = +0;
-        //Iterate through the list of skills. Advantages and Disadvantages
-        for (let i = 0; i < this.items._source.length; i++){
-            if (this.items._source[i].type === "Rollable"){
-                skillPoints = skillPoints += this.items._source[i].system.points
+        // Iterate through the list of skills.
+        for (let i = 0; i < this.items.contents.length; i++){
+            if (this.items.contents[i].type === "Rollable"){
+                skillPoints = skillPoints + this.items.contents[i].system.points
             }
         }
 		this.system.points.skills = skillPoints;
@@ -1601,27 +1601,27 @@ export class gurpsActor extends Actor {
 		this.system.rollableCategories.push("");
 		this.system.spellCategories.push("");
 
-		for (let w = 0; w < this.items._source.length; w++) {
-			if(this.items._source[w].system.subCategory){
-				if(this.items._source[w].system.subCategory.trim() != ""){//If subcategory is not blank
-					if(this.items._source[w].type == "Trait"){
-						if(!this.system.traitCategories.includes(this.items._source[w].system.subCategory.trim())){//Make sure the trait array doesn't already contain the category.
-							this.system.traitCategories.push(this.items._source[w].system.subCategory.trim())
+		for (let w = 0; w < this.items.contents.length; w++) {
+			if(this.items.contents[w].system.subCategory){
+				if(this.items.contents[w].system.subCategory.trim() != ""){//If subcategory is not blank
+					if(this.items.contents[w].type == "Trait"){
+						if(!this.system.traitCategories.includes(this.items.contents[w].system.subCategory.trim())){//Make sure the trait array doesn't already contain the category.
+							this.system.traitCategories.push(this.items.contents[w].system.subCategory.trim())
 						}
 					}
-					else if (this.items._source[w].type == "Rollable"){
-						if (!this.system.rollableCategories.includes(this.items._source[w].system.subCategory.trim())) {//Make sure the rollable array doesn't already contain the category.
-							this.system.rollableCategories.push(this.items._source[w].system.subCategory.trim())
+					else if (this.items.contents[w].type == "Rollable"){
+						if (!this.system.rollableCategories.includes(this.items.contents[w].system.subCategory.trim())) {//Make sure the rollable array doesn't already contain the category.
+							this.system.rollableCategories.push(this.items.contents[w].system.subCategory.trim())
 						}
 					}
-					else if (this.items._source[w].type == "Spell"){
-						if (!this.system.spellCategories.includes(this.items._source[w].system.subCategory.trim())) {//Make sure the spell array doesn't already contain the category.
-							this.system.spellCategories.push(this.items._source[w].system.subCategory.trim())
+					else if (this.items.contents[w].type == "Spell"){
+						if (!this.system.spellCategories.includes(this.items.contents[w].system.subCategory.trim())) {//Make sure the spell array doesn't already contain the category.
+							this.system.spellCategories.push(this.items.contents[w].system.subCategory.trim())
 						}
 					}
-					else if (this.items._source[w].type == "Equipment" || this.items._source[w].type == "Custom Weapon" || this.items._source[w].type == "Custom Armour" || this.items._source[w].type == "Custom Jewelry" || this.items._source[w].type == "Travel Fare"){
-						if (!this.system.equipmentCategories.includes(this.items._source[w].system.subCategory.trim())) {//Make sure the item array doesn't already contain the category.
-							this.system.equipmentCategories.push(this.items._source[w].system.subCategory.trim())
+					else if (this.items.contents[w].type == "Equipment" || this.items.contents[w].type == "Custom Weapon" || this.items.contents[w].type == "Custom Armour" || this.items.contents[w].type == "Custom Jewelry" || this.items.contents[w].type == "Travel Fare"){
+						if (!this.system.equipmentCategories.includes(this.items.contents[w].system.subCategory.trim())) {//Make sure the item array doesn't already contain the category.
+							this.system.equipmentCategories.push(this.items.contents[w].system.subCategory.trim())
 						}
 					}
 				}
@@ -1677,7 +1677,7 @@ export class gurpsActor extends Actor {
 					this.system.bodyType.drTypesOne = getProperty(armour[0], this.system.bodyType.damageTypeOne.toLowerCase());
 					this.system.bodyType.drTypesTwo = getProperty(armour[0], this.system.bodyType.damageTypeTwo.toLowerCase());
 
-					let items = this.items._source.filter(filterArmour); // Get the character's items and filter out anything that isn't armour
+					let items = this.items.contents.filter(filterArmour); // Get the character's items and filter out anything that isn't armour
 					items = items.sort(sortArmourByLayer); // Take the above list and sort by layer. Index 0 is lowest, index infinity is highest.
 
 					for (let l = 0; l < items.length; l++){ // Loop through the characters items and apply any relevant DR.
@@ -1992,6 +1992,7 @@ export class gurpsActor extends Actor {
 			if (typeof this.system.rpm.coreSkillLevel === 'undefined') {
 				this.system.rpm.coreSkillLevel = 0;
 			}
+
 			this.system.rpm.allowTalent = game.settings.get("gurps4e", "allowRPMTalent");
 			this.system.rpm.totalEnergy = (this.system.rpm.magery * 3) + this.system.rpm.er;
 			this.system.rpm.maxSkill = 12 + this.system.rpm.magery;
