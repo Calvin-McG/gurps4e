@@ -985,7 +985,7 @@ export class gurpsActor extends Actor {
 							totalWeightFront += +part.weight; // Use that to set the front and back weights instead
 							totalWeightBack += +part.weight;
 						}
-						console.error(this.system.name + " needs to refresh their body type"); // Print an error to console
+						console.error(this.name + " needs to refresh their body type"); // Print an error to console
 					}
 				}
 				this.system.bodyType.body = bodyObj; // Set the body to the new body type that was just assembled.
@@ -2359,7 +2359,7 @@ export class gurpsActor extends Actor {
 		let affliction;
 
 		actor.items.forEach((item) => {
-			if (item.type == "Trait" || item.type == "Equipment" || item.type == "Spell" || item.type == "Custom Weapon" || item.type == "Custom Armour" || item.type == "Travel Fare"){
+			if (item.type == "Trait" || item.type == "Equipment" || item.type == "Spell" || item.type == "Custom Weapon" || item.type == "Custom Armour" || item.type == "Travel Fare" || item.type == "Ritual"){
 				if (item.system.melee) {
 					let meleeKeys = Object.keys(item.system.melee); // Collect all the melee keys
 					for (let m = 0; m < meleeKeys.length; m++){
@@ -3429,15 +3429,15 @@ export class gurpsActor extends Actor {
 
 		dodges.push(dodge);
 
-		if (target.system.items) {
-			target.system.items.forEach((item) => {
+		if (target.items) {
+			target.items.forEach((item) => {
 				if (item.system.melee) {
 					let keys = Object.keys(item.system.melee)
 					for (let b = 0; b < keys.length; b++){ // Loop through the melee profiles
 						let profile = getProperty(item.system.melee, keys[b])
 						if (Number.isInteger(profile.parry)){
 							let parry = {
-								name: item.system.name,
+								name: item.name,
 								level: profile.parry
 							}
 							parries.push(parry)
@@ -3445,7 +3445,7 @@ export class gurpsActor extends Actor {
 
 						if (Number.isInteger(profile.block)){
 							let block = {
-								name: item.system.name,
+								name: item.name,
 								level: profile.block
 							}
 							blocks.push(block)
@@ -3456,29 +3456,29 @@ export class gurpsActor extends Actor {
 					if (item.system.spellClass == "Blocking"){
 						if (item.system.defenceType == "Dodge") {
 							let dodge = {
-								name: item.system.name,
-								level: item.system.level
+								name:  item.name,
+								level: item.level
 							}
 							dodges.push(dodge);
 						}
 						else if (item.system.defenceType == "Parry") {
 							let parry = {
-								name: item.system.name,
-								level: item.system.level
+								name:  item.name,
+								level: item.level
 							}
 							parries.push(parry)
 						}
 						else if (item.system.defenceType == "Block") {
 							let block = {
-								name: item.system.name,
-								level: item.system.level
+								name:  item.name,
+								level: item.level
 							}
 							blocks.push(block)
 						}
 						else if (item.system.defenceType == "Magic") {
 							let magic = {
-								name: item.system.name,
-								level: item.system.level
+								name:  item.name,
+								level: item.level
 							}
 							magical.push(magic)
 						}
