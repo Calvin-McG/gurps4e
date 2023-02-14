@@ -3711,10 +3711,10 @@ export class gurpsActor extends Actor {
 		let label = "";
 
 		if (mod === "" || mod === undefined){
-			totalModifier = 0;
+			totalModifier = +0;
 		}
 		else {
-			totalModifier = mod;
+			totalModifier = +mod;
 		}
 
 		label += target.name + " attempts a ";
