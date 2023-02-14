@@ -3680,19 +3680,19 @@ export class gurpsActor extends Actor {
 
 		if (type.toLowerCase() === 'parry'){
 			selection = html.find('#parrySelector').val()
-			name = html.find('#parrySelector')[0].innerText.split(":")[0]
+			name = html.find('#parrySelector')[0].innerText.split(":")[1]
 		}
 		else if (type.toLowerCase() === 'block'){
 			selection = html.find('#blockSelector').val()
-			name = html.find('#blockSelector')[0].innerText.split(":")[0]
+			name = html.find('#blockSelector')[0].innerText.split(":")[1]
 		}
 		else if (type.toLowerCase() === 'dodge'){
 			selection = html.find('#dodgeSelector').val()
-			name = html.find('#dodgeSelector')[0].innerText.split(":")[0]
+			name = html.find('#dodgeSelector')[0].innerText.split(":")[1]
 		}
 		else if (type.toLowerCase() === 'magical'){
 			selection = html.find('#magicalSelector').val()
-			name = html.find('#magicalSelector')[0].innerText.split(":")[0]
+			name = html.find('#magicalSelector')[0].innerText.split(":")[1]
 		}
 
 		if (facing <= 0 && !options.timedDefence) { // Attacker is in side or rear hexes and the target is not using a timed defence
