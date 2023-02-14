@@ -305,10 +305,10 @@ export class gurpsActor extends Actor {
 		}
 		else {
 			if (typeof this.system.vision.front == 'undefined' || this.system.vision.front === "") {
-				this.system.enhanced.parry = 180;
+				this.system.vision.front = 180;
 			}
 			if (typeof this.system.vision.side == 'undefined' || this.system.vision.side === "") {
-				this.system.enhanced.block = 240;
+				this.system.vision.side = 240;
 			}
 		}
 
