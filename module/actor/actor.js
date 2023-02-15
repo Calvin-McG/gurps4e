@@ -1996,7 +1996,7 @@ export class gurpsActor extends Actor {
 			this.system.rpm.allowTalent = game.settings.get("gurps4e", "allowRPMTalent");
 			this.system.rpm.totalEnergy = (this.system.rpm.magery * 3) + this.system.rpm.er;
 			this.system.rpm.maxSkill = 12 + this.system.rpm.magery;
-			this.system.rpm.maxConditional = this.system.rpm.magery + this.system.rpm.coreSkillLevel; // TODO plus core skill level
+			this.system.rpm.maxConditional = this.system.rpm.magery + this.system.rpm.coreSkillLevel;
 
 			let keys = Object.keys(this.system.rpm.path);
 
@@ -2007,6 +2007,56 @@ export class gurpsActor extends Actor {
 					path.level += path.mod; // Add path mod.
 					path.level = Math.min(path.level, this.system.rpm.maxSkill, this.system.rpm.coreSkillLevel); // Apply the skill cap
 				}
+			}
+
+			// Alchemy stuff
+			// Set default values for max elixirs and expiry duration
+			this.system.rpm.maxElixirs = 0;
+			this.system.rpm.expiryDuration = 0;
+
+			let rpmLimitAlchemySkillForElixirCap = game.settings.get("gurps4e", "rpmLimitAlchemySkill"); // Get the rule that defines how elixirs are limited
+
+			if (typeof this.system.rpm.alchemySkill === "undefined") { // If the core skill is undefined
+				this.system.rpm.alchemySkill = "Alchemy"; // Default to Alchemy
+			}
+			else if (this.system.rpm.alchemySkill === "") { // If the core skill is blank
+				this.system.rpm.alchemySkill = "Alchemy"; // Default to Alchemy
+			}
+
+			this.system.rpm.uncappedAlchemySkillLevel = skillHelpers.getSkillLevelByName(this.system.rpm.alchemySkill, this) // Get the level of the core skill for this RPM caster
+
+			if (typeof this.system.rpm.uncappedAlchemySkillLevel === 'undefined') { // For some reason the level came back undefined
+				this.system.rpm.uncappedAlchemySkillLevel = 0; // Default to zero
+			}
+
+			if (rpmLimitAlchemySkillForElixirCap) {
+				this.system.rpm.alchemySkillLevel = Math.min(this.system.rpm.uncappedAlchemySkillLevel, this.system.rpm.maxSkill); // Cap the alchemy skill
+				this.system.rpm.alchemySkillLevelForElixirCap = this.system.rpm.alchemySkillLevel; // Then assign the elixir cap skill to be the same as the capped alchemy skill
+			}
+			else {
+				this.system.rpm.alchemySkillLevelForElixirCap = this.system.rpm.uncappedAlchemySkillLevel // Assign the uncapped alchemy skill level to be the same as elixir cap skill.
+				this.system.rpm.alchemySkillLevel = Math.min(this.system.rpm.uncappedAlchemySkillLevel, this.system.rpm.maxSkill); // Only then separately cap the alchemy skill
+			}
+
+			let rpmElixirLimit = game.settings.get("gurps4e", "rpmElixirLimit"); // Get the rule that defines how elixirs are limited
+			if (rpmElixirLimit === "withConditional") {
+				this.system.rpm.withConditional = true;
+				this.system.rpm.byAlchemySkill = false;
+				this.system.rpm.expiration = false;
+			}
+			else if (rpmElixirLimit === "byAlchemySkill") {
+				this.system.rpm.byAlchemySkill = true;
+				this.system.rpm.withConditional = false;
+				this.system.rpm.expiration = false;
+
+				this.system.rpm.maxElixirs = this.system.rpm.magery + this.system.rpm.alchemySkillLevelForElixirCap; // We're limiting elixirs by alchemy skill, so calculate the limit here.
+			}
+			else if (rpmElixirLimit === "expiration") {
+				this.system.rpm.expiration = true;
+				this.system.rpm.withConditional = false;
+				this.system.rpm.byAlchemySkill = false;
+
+				this.system.rpm.expiryDuration = (this.system.rpm.magery + this.system.rpm.uncappedAlchemySkillLevel) * 2; // We're limiting elixirs by expiration date, so calculate it here. Result is number of days
 			}
 		}
 	}
