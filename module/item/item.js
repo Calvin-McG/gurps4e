@@ -1847,7 +1847,64 @@ export class gurpsItem extends Item {
       runningSkillLevel += 2;
     }
 
-    this.system.level = runningSkillLevel;
+    if (isNaN(runningSkillLevel)) {
+      this.system.level = 0;
+    }
+    else {
+      this.system.level = runningSkillLevel;
+    }
+
+    // Charm sale and purchase
+    let charmBaseCost = this.charmSkillToBaseCost(this.system.level) // Get the base cost from skill and monthly pay by TL
+    let charmAvailabilityCostMultiplier = parseFloat(this.system.charm.availability); // Get the multiplier for charm availability from the select
+    let charmEnergyCostMultiplier = Math.max((this.system.energyCost / 5) - 1, 1); // Get the multiplier based on the energy cost of the charm. Make sure it's always at least 1.
+
+    this.system.charm.saleCost = (Math.round((charmBaseCost * charmAvailabilityCostMultiplier * charmEnergyCostMultiplier) * 100) / 100); // Do the final calculation and round to two decimals.
+
+    // Charm safe threshold calculator
+    this.system.charm.safeThreshold = this.charmSafeThreshold(this.system.level);
+    this.system.charm.actorContribution = 0; // Set actor contribution to 0 in case there is no actor
+
+    if (this.actor) { // If there's an actor
+      if (this.actor.system) {
+        if (this.actor.system.rpm) {
+          this.system.charm.actorContribution = ((this.actor.system.rpm.magery * 3) + this.actor.system.rpm.er) // Store their mana reserve
+        }
+      }
+    }
+
+    this.system.charm.totalSafeThreshold = this.system.charm.safeThreshold + this.system.charm.actorContribution // Add the actor's personal mana reserve
+
+    // Charm crafting modifiers
+
+    // Set default values in case of unexpected behaviour.
+    this.system.charm.craftingRollMod = 0;
+    this.system.charm.quirkRollMod = 0;
+
+    if (this.system.charm.actorContribution >= this.system.energyCost) { // The charm can be crafted without any ambient mana
+      this.system.charm.craftingRollMod = -2;
+      this.system.charm.quirkRollMod = +2;
+    }
+    else if ((this.system.energyCost - this.system.charm.actorContribution) <= (this.system.charm.safeThreshold / 2)) { // After subtracting the actor's mana reserve, check to see if the remainder is half or less the safe threshold.
+      this.system.charm.craftingRollMod = -1;
+      this.system.charm.quirkRollMod = +1;
+    }
+    else if ((this.system.energyCost - this.system.charm.actorContribution) <= (this.system.charm.safeThreshold)) { // After subtracting the actor's mana reserve, check to see if the remainder is equal to or less the safe threshold.
+      this.system.charm.craftingRollMod = 0;
+      this.system.charm.quirkRollMod = 0;
+    }
+    else if ((this.system.energyCost - this.system.charm.actorContribution) < (this.system.charm.safeThreshold * 2)) { // After subtracting the actor's mana reserve, check to see if the remainder is more than the safe threshold but not double.
+      this.system.charm.craftingRollMod = +1;
+      this.system.charm.quirkRollMod = -1;
+    }
+    else { // After subtracting the actor's mana reserve, check to see if the remainder is double or more the safe threshold.
+      let remainder = (this.system.energyCost - this.system.charm.actorContribution); // Get the mana cost after subtracting the actor's reserve
+      let multiple = Math.floor(remainder / this.system.charm.safeThreshold); // Get the multiple of the safe threshold that the remainder represents. Round down.
+
+      // Store the multiple above as the modifier, with the sign set accordingly.
+      this.system.charm.craftingRollMod = +multiple;
+      this.system.charm.quirkRollMod = -multiple;
+    }
 
     this.finalEquipmentCalculation();
   }
