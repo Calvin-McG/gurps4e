@@ -1,3 +1,5 @@
+import {rollHelpers} from "../../helpers/rollHelpers.js";
+
 /**
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
@@ -95,14 +97,41 @@ export class gurpsItemSheet extends ItemSheet {
         // Click event handlers
         html.find('.question-container').click(this._showHint.bind(this));
         html.find('.saveItem').click(this._saveItem.bind(this));
+        html.find('.makeCraftingRoll').click(this._makeCraftingRoll.bind(this));
+        html.find('.makeQuirkRoll').click(this._makeQuirkRoll.bind(this));
     }
 
-    _saveItem(event) {
+    _makeCraftingRoll(event) {
+        rollHelpers.charmCraftingRoll(this.item.system.charm.craftingRollMod, "Attempts to craft a " + event.currentTarget.id + " charm.", true);
+    }
+
+    _makeQuirkRoll(event) {
+        rollHelpers.skillRoll(this.item.system.level, this.item.system.charm.quirkRollMod, "Crafts a " + event.currentTarget.id + " charm.", false).then( rollInfo => { // Make the roll
+
+            let html = rollInfo.content;
+
+            if (rollInfo.success) { // Success on the roll, no quirks.
+                html += "The charm has no quirks.";
+            }
+            else { // Failure on the roll, one or more quirks.
+                let extraQuirks = Math.floor(Math.abs(rollInfo.margin) / 2); // One quirk per two points in the margin of failure.
+                if (extraQuirks > 0) {
+                    html += "The charm has " + (extraQuirks + 1) + " quirks.";
+                }
+                else {
+                    html += "The charm has one quirk.";
+                }
+            }
+
+            ChatMessage.create({ content: html, user: game.user.id, type: rollInfo.type });
+        });
+    }
+
+    _saveItem() {
         this.item.update({ ["system"]: this.item.system });
     }
 
-
-    _onAddArrowRow(event) {
+    _onAddArrowRow() {
         // If there's no arrow container, add one
         if(typeof this.item.system.bowDesign.arrows == "undefined") {
             this.item.system.bowDesign.arrows = [];
