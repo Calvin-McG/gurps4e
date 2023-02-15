@@ -122,13 +122,13 @@ export class rollHelpers {
 
         let rollResult = await roll.roll({async: true}) // Make the roll
 
-        let result = rollResult.result; // Get the result
+        let result = rollResult.total; // Get the result
 
         let html = "<div>" + label + "</div>"; // Init the HTML we will output as part of the chat message.
 
         html += "</br>";
 
-        html += "<span class='tooltip'>Rolls a " + result + "</span>";
+        html += "<span class='tooltip'>Rolls a " + rollResult.result + "</span>";
 
 
         // Code block for display of dice
