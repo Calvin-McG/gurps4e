@@ -1852,6 +1852,91 @@ export class gurpsItem extends Item {
     this.finalEquipmentCalculation();
   }
 
+  charmSafeThreshold(skill) {
+    let safeThreshold = 0;
+
+    if (skill === 7) {
+      safeThreshold = 1
+    }
+    else if (skill === 8) {
+      safeThreshold = 2
+    }
+    else if (skill === 9) {
+      safeThreshold = 3
+    }
+    else if (skill === 10) {
+      safeThreshold = 4
+    }
+    else if (skill === 11) {
+      safeThreshold = 5
+    }
+    else if (skill === 12) {
+      safeThreshold = 6
+    }
+    else if (skill === 13) {
+      safeThreshold = 7
+    }
+    else if (skill === 14) {
+      safeThreshold = 9
+    }
+    else if (skill === 15) {
+      safeThreshold = 11
+    }
+    else if (skill === 16) {
+      safeThreshold = 15
+    }
+    else if (skill === 17) {
+      safeThreshold = 29
+    }
+    else if (skill === 18) {
+      safeThreshold = 42
+    }
+    else if (skill >= 19) {
+      safeThreshold = 55 + ((skill - 19) * 10);
+    }
+
+    return safeThreshold;
+  }
+
+  charmSkillToBaseCost(skill) {
+    let monthlyMultiplier = 0;
+
+    if (skill <= 12) {
+      monthlyMultiplier = 0.1;
+    }
+    else if (skill === 13) {
+      monthlyMultiplier = 0.2;
+    }
+    else if (skill === 14) {
+      monthlyMultiplier = 0.3;
+    }
+    else if (skill === 15) {
+      monthlyMultiplier = 0.5;
+    }
+    else if (skill === 16) {
+      monthlyMultiplier = 0.7;
+    }
+    else if (skill === 17) {
+      monthlyMultiplier = 1;
+    }
+    else if (skill === 18) {
+      monthlyMultiplier = 1.5;
+    }
+    else if (skill === 19) {
+      monthlyMultiplier = 2;
+    }
+    else if (skill === 20) {
+      monthlyMultiplier = 3;
+    }
+    else if (skill > 20) {
+      monthlyMultiplier = distanceHelpers.distancePenalty((skill - 19)); // At skill levels above 20, look up the skill - 19 on the SSRT
+    }
+
+    let monthlyPay = economicHelpers.getMonthlyPayByTL(game.settings.get("gurps4e", "campaignTL"));
+
+    return monthlyPay * monthlyMultiplier;
+  }
+
   getRPMModifierCost(scope, modifier) {
     if (typeof scope !== 'undefined') {
       let cost = 2 ** (Math.abs(modifier) - 1);
