@@ -2976,9 +2976,9 @@
 						<label for="rpmStats">
 							<div>
 								{{#if actor.system.rpm.showStats }}
-								Stats
+								Ritual Path Magic Stats
 								{{else}}
-								Stats (Hidden)
+								Ritual Path Magic (Hidden)
 								{{/if}}
 							</div>
 						</label>
@@ -3092,6 +3092,87 @@
 					</table>
 					{{/if}}
 					<!-- End of stats block -->
+
+					<!-- Start of stats block -->
+					<h1 class="bold" style="text-align: center;">
+						<label for="alchStats">
+							<div>
+								{{#if actor.system.rpm.showAlchemy }}
+								Alchemy Related Stats
+								{{else}}
+								Alchemy Related Stats (Hidden)
+								{{/if}}
+							</div>
+						</label>
+					</h1>
+					<input style="display: none" id="alchStats" type="checkbox" name="system.rpm.showAlchemy" {{checked actor.system.rpm.showAlchemy}} data-dtype="Boolean"/>
+					{{#if actor.system.rpm.showAlchemy }}
+					<table>
+						<tr>
+							<td>
+								Alchemy Skill:
+							</td>
+							<td>
+								<input type="text" style="width: 100%" name="system.rpm.alchemySkill" value="{{actor.system.rpm.alchemySkill}}" placeholder="" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Your uncapped Alchemy skill level:
+							</td>
+							<td>
+								{{actor.system.rpm.uncappedAlchemySkillLevel}}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Effective Alchemy skill level for crafting:
+							</td>
+							<td>
+								{{actor.system.rpm.alchemySkillLevel}}
+							</td>
+						</tr>
+						{{#if actor.system.rpm.byAlchemySkill }}
+						<tr>
+							<td>
+								Your Alchemy skill level for the purpose of figuring out how many elixirs you can have ready at once:
+							</td>
+							<td>
+								{{actor.system.rpm.alchemySkillLevelForElixirCap}}
+							</td>
+						</tr>
+						{{/if}}
+						{{#if actor.system.rpm.byAlchemySkill }}
+						<tr>
+							<td>
+								Maximum Elixirs
+							</td>
+							<td>
+								{{actor.system.rpm.maxElixirs}}
+							</td>
+						</tr>
+						{{/if}}
+						<tr>
+							{{#if actor.system.rpm.withConditional }}
+							<td>
+								Elixirs are included in and count against your Conditional Spells limit, which is
+							</td>
+							<td>
+								{{actor.system.rpm.maxConditional}}.
+							</td>
+						</tr>
+						{{/if}}
+						{{#if actor.system.rpm.expiry }}
+						<tr>
+							<td colspan="2">
+								Elixirs will last {{round actor.system.rpm.expiryDuration 1}} days
+							</td>
+						</tr>
+						{{/if}}
+					</table>
+					{{/if}}
+					<!-- End of stats block -->
+
 					<!-- Start of Paths block -->
 					<h1 class="bold" style="text-align: center;">
 						<label for="rpmPaths">
