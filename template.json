@@ -639,6 +639,7 @@
       "grimBonus": 0,
       "path": [],
       "ritualModifier": [],
+      "workspaceMod": 0,
       "charm": {
         "safeThreshold": 6,
         "totalSafeThreshold": 6,

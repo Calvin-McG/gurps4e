@@ -54,6 +54,12 @@
                             {{#if (or (eq item.system.ritualType "charm") (eq item.system.ritualType "conditionalCharm")) }}
                             <tr>
                                 <td>
+                                    <label class="resource-label" style="flex: 0.5;">Workspace Modifier: </label>
+                                    <input type="number" style="width: 50%" name="system.workspaceMod" value="{{item.system.workspaceMod}}" data-dtype="Number" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <label class="resource-label" style="flex: 0.5;">Safe Threshold: </label>
                                     {{item.system.charm.safeThreshold}}
                                 </td>
@@ -105,16 +111,24 @@
 
                             {{#if (eq item.system.ritualType "elixir") }}
                             <tr>
-                                <label class="resource-label" style="flex: 0.5;">Elixir Type:</label>
-                                <select name="system.elixir.type">
-                                    {{#select item.system.elixir.type}}
-                                    <option value="grenade">Grenade</option>
-                                    <option value="ointment">Ointment</option>
-                                    <option value="pastille">Pastille</option>
-                                    <option value="potion">Potion</option>
-                                    <option value="powder">Powder</option>
-                                    {{/select}}
-                                </select>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Workspace Modifier: </label>
+                                    <input type="number" style="width: 50%" name="system.workspaceMod" value="{{item.system.workspaceMod}}" data-dtype="Number" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Elixir Type:</label>
+                                    <select name="system.elixir.type">
+                                        {{#select item.system.elixir.type}}
+                                        <option value="grenade">Grenade</option>
+                                        <option value="ointment">Ointment</option>
+                                        <option value="pastille">Pastille</option>
+                                        <option value="potion">Potion</option>
+                                        <option value="powder">Powder</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
                             </tr>
                             {{/if}}
                         </table>

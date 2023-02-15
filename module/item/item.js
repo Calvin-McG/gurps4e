@@ -1847,6 +1847,11 @@ export class gurpsItem extends Item {
       runningSkillLevel += 2;
     }
 
+    // If it's a charm, conditional charm, or elixir, apply the workspace modifier
+    if ((this.system.ritualType === "charm" || this.system.ritualType === "conditionalCharm" || this.system.ritualType === "elixir") && typeof this.system.workspaceMod === 'number') {
+      runningSkillLevel += this.system.workspaceMod;
+    }
+
     if (isNaN(runningSkillLevel)) {
       this.system.level = 0;
     }
