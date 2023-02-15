@@ -66,6 +66,29 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  game.settings.register("gurps4e", "rpmElixirLimit", {
+    name: "Select limit type on RPM Elixir quantity.",
+    hint: "",
+    scope: "world",
+    config: true,
+    type: String,
+    choices: {
+      "withConditional": "Elixirs count against the normal Conditional Spells limit.",
+      "byAlchemySkill": "Elixirs have their own Conditional Spells limit, based on Alchemy instead of Thaumatology skill.",
+      "expiration": "Elixirs have no limit, but do expire."
+    },
+    default: "byAlchemySkill",
+  });
+
+  game.settings.register("gurps4e", "rpmLimitAlchemySkill", {
+    name: "Cap Alchemy skill for RPM elixirs?",
+    hint: "When using the option that the quantity of ready elixirs is limited by the caster's Alchemy skill, is the Alchemy skill limited to (12 + Magery) like Thaumatology is? By default the answer to this question is no, but the book includes this as an option.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
   // Register option for what counts as 'rear' when it comes to hit locations where that matters
   game.settings.register("gurps4e", "literalRear", {
     name: "Literal rear hit locations",
