@@ -642,6 +642,7 @@
       "workspaceMod": 0,
       "charm": {
         "safeThreshold": 6,
+        "additionalSourcesOfMana": 0,
         "totalSafeThreshold": 6,
         "actorContribution": 0,
         "saleCost": 0,
