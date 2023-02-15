@@ -294,7 +294,6 @@
         "rpm": {
           "magery": 0,
           "hasMagery": false,
-          "naturalCaster": 0,
           "er": 0,
           "ritualAdeptConnection": false,
           "ritualAdeptSpace": false,

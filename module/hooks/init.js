@@ -56,16 +56,6 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  // Register option for whether the RPM magic tab shows up
-  game.settings.register("gurps4e", "allowRPMTalent", {
-    name: "Allow Natural Caster.",
-    hint: "Enable this setting to allow characters to take the Natural Caster Talent from page 12 of Thaumatology - Ritual Path Magic.",
-    scope: "world",
-    config: true,
-    default: true,
-    type: Boolean
-  });
-
   game.settings.register("gurps4e", "rpmElixirLimit", {
     name: "Select limit type on RPM Elixir quantity.",
     hint: "",

@@ -1993,7 +1993,6 @@ export class gurpsActor extends Actor {
 				this.system.rpm.coreSkillLevel = 0;
 			}
 
-			this.system.rpm.allowTalent = game.settings.get("gurps4e", "allowRPMTalent");
 			this.system.rpm.totalEnergy = (this.system.rpm.magery * 3) + this.system.rpm.er;
 			this.system.rpm.maxSkill = 12 + this.system.rpm.magery;
 			this.system.rpm.maxConditional = this.system.rpm.magery + this.system.rpm.coreSkillLevel;

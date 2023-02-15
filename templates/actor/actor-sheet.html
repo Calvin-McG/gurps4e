@@ -2988,6 +2988,13 @@
 					<table>
 						<tr>
 							<td>
+								Core Skill:
+								<input type="text" style="width: 55%" name="system.rpm.coreSkill" value="{{actor.system.rpm.coreSkill}}" placeholder="" />
+								{{actor.system.rpm.coreSkillLevel}}
+							</td>
+						</tr>
+						<tr>
+							<td>
 								Magery
 								<input id="hasMagery" type="checkbox" name="system.rpm.hasMagery" {{checked actor.system.rpm.hasMagery}} data-dtype="Boolean"/>
 								{{#if actor.system.rpm.hasMagery}}
@@ -3074,20 +3081,6 @@
 								<input type="text" style="width: 70%" name="system.rpm.higherPurpose3Name" value="{{actor.system.rpm.higherPurpose3Name}}" placeholder="Higher Purpose 3" />
 								<input type="number" style="width: 20%" name="system.rpm.higherPurpose3level" value="{{actor.system.rpm.higherPurpose3level}}" data-dtype="Number" />
 							</td>
-						</tr>
-
-						<tr>
-							<td>
-								Core Skill:
-								<input type="text" style="width: 55%" name="system.rpm.coreSkill" value="{{actor.system.rpm.coreSkill}}" placeholder="" />
-								 {{actor.system.rpm.coreSkillLevel}}
-							</td>
-							{{#if actor.system.rpm.allowTalent }}
-							<td>
-								Natural Caster Talent:
-								<input type="number" style="width: 20%" name="system.rpm.naturalCaster" value="{{actor.system.rpm.naturalCaster}}" data-dtype="Number" />
-							</td>
-							{{/if}}
 						</tr>
 					</table>
 					{{/if}}
