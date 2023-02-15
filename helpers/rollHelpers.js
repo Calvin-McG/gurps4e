@@ -105,6 +105,70 @@ export class rollHelpers {
         }
     }
 
+    static async charmCraftingRoll(modifier, label, chat){
+        let roll;
+
+        if (typeof modifier !== 'number') {
+            roll = new Roll("3d6"); // Define the roll
+        }
+        else {
+            if(modifier >= 0) { // Modifier is zero or positive
+                roll = new Roll("3d6 + " + modifier.toString()); // Define the roll
+            }
+            else {
+                roll = new Roll("3d6 " + modifier.toString()); // Define the roll
+            }
+        }
+
+        let rollResult = await roll.roll({async: true}) // Make the roll
+
+        let result = rollResult.result; // Get the result
+
+        let html = "<div>" + label + "</div>"; // Init the HTML we will output as part of the chat message.
+
+        html += "</br>";
+
+        html += "<span class='tooltip'>Rolls a " + result + "</span>";
+
+
+        // Code block for display of dice
+        html += "<div>";
+        html += this.dieToIcon(roll.terms[0].results[0].result);
+        html += this.dieToIcon(roll.terms[0].results[1].result);
+        html += this.dieToIcon(roll.terms[0].results[2].result);
+
+        if (modifier >= 0){ // Modifier is positive
+            html += "<label class='damage-dice-adds'>+</label><label class='damage-dice-adds'>" + modifier + "</label>"
+        }
+        else { // Modifier is negative
+            html += "<label class='damage-dice-adds'>-</label><label class='damage-dice-adds'>" + Math.abs(modifier) + "</label>"
+        }
+        html += "</div>"
+
+        if (result >= 17) { // A result of 17 or more is a crit fail based on the spell's full energy
+            html += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Critical Failure based on the spell's full energy.</div>"
+        }
+        else if (result === 16) { // A result of 16 is a crit fail based on half the spell's energy
+            html += "<div style='font-weight: bold; color: rgb(199, 137, 83);'>Critical Failure based on half the spell's energy.</div>"
+        }
+        else { // Anything less than 15 is a success
+            html += "<div style='font-weight: bold; color: rgb(141, 142, 222)'>Success, now roll for Quirks.</div>"
+        }
+
+        if (chat){
+            ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+        }
+        else {
+            return {
+                content: html,
+                crit: crit,
+                success: success,
+                margin: margin,
+                type: CONST.CHAT_MESSAGE_TYPES.OTHER
+            }
+        }
+    }
+
     static async rangedAttackRoll(level, modifier, label, chat, malfInput){
         let effectiveSkill = +level + +modifier;
         let roll = new Roll("3d6");
