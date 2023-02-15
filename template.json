@@ -631,8 +631,13 @@
       "path": [],
       "ritualModifier": [],
       "charm": {
-        "safeThreshold": "6",
-        "saleCost": 0
+        "safeThreshold": 6,
+        "totalSafeThreshold": 6,
+        "actorContribution": 0,
+        "saleCost": 0,
+        "availability": "1",
+        "craftingRollMod": 0,
+        "quirkRollMod": 0
       },
       "elixir": {
         "type": "potion"
