@@ -50,8 +50,8 @@
                         </table>
                     </td>
                     <td style="width: 50%; vertical-align:top"><!-- Right Col -->
+                        {{#if (or (eq item.system.ritualType "charm") (eq item.system.ritualType "conditionalCharm"))}}
                         <table>
-                            {{#if (or (eq item.system.ritualType "charm") (eq item.system.ritualType "conditionalCharm")) }}
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Workspace Modifier: </label>
@@ -113,18 +113,24 @@
                                     {{item.system.charm.saleCost}} $
                                 </td>
                             </tr>
-                            {{/if}}
+                        </table>
+                        {{/if}}
 
-                            {{#if (eq item.system.ritualType "elixir") }}
+                        {{#if (eq item.system.ritualType "elixir") }}
+                        <table>
                             <tr>
                                 <td>
-                                    <label class="resource-label" style="flex: 0.5;">Workspace Modifier: </label>
+                                    <label class="resource-label" style="flex: 0.5;">Workspace Modifier</label>
+                                </td>
+                                <td>
                                     <input type="number" style="width: 50%" name="system.workspaceMod" value="{{item.system.workspaceMod}}" data-dtype="Number" />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <label class="resource-label" style="flex: 0.5;">Elixir Type:</label>
+                                    <label class="resource-label" style="flex: 0.5;">Elixir Type</label>
+                                </td>
+                                <td>
                                     <select name="system.elixir.type">
                                         {{#select item.system.elixir.type}}
                                         <option value="grenade">Grenade</option>
@@ -136,8 +142,116 @@
                                     </select>
                                 </td>
                             </tr>
-                            {{/if}}
                         </table>
+                        <table>
+                            <tr>
+                                <th colspan="4" style="font-size: larger; text-decoration: underline;">Alchemy Ingredients</th>
+                            </tr>
+                            <tr>
+                                <th style="width: 66px;">Rarity</th>
+                                <th>Quantity</th>
+                                <th>Cost</th>
+                                <th>Weight</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Improvised</label>
+                                </td>
+                                <td>
+                                    <input type="number" style="width: 100%" name="system.elixir.ingredientQtys.improvised" value="{{item.system.elixir.ingredientQtys.improvised}}" data-dtype="Number" />
+                                </td>
+                                <td style="text-align: center">
+                                    {{item.system.elixir.ingredientQtys.improvised$}} $
+                                </td>
+                                <td style="text-align: center">
+                                    {{item.system.elixir.ingredientQtys.improvisedLb}} lbs
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Basic</label>
+                                </td>
+                                <td>
+                                    <input type="number" style="width: 100%" name="system.elixir.ingredientQtys.basic" value="{{item.system.elixir.ingredientQtys.basic}}" data-dtype="Number" />
+                                </td>
+                                <td style="text-align: center">
+                                    {{item.system.elixir.ingredientQtys.basic$}} $
+                                </td>
+                                <td style="text-align: center">
+                                    {{item.system.elixir.ingredientQtys.basicLb}} lbs
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Good</label>
+                                </td>
+                                <td>
+                                    <input type="number" style="width: 100%" name="system.elixir.ingredientQtys.good" value="{{item.system.elixir.ingredientQtys.good}}" data-dtype="Number" />
+                                </td>
+                                <td style="text-align: center">
+                                    {{item.system.elixir.ingredientQtys.good$}} $
+                                </td>
+                                <td style="text-align: center">
+                                    {{item.system.elixir.ingredientQtys.goodLb}} lbs
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Fine</label>
+                                </td>
+                                <td>
+                                    <input type="number" style="width: 100%" name="system.elixir.ingredientQtys.fine" value="{{item.system.elixir.ingredientQtys.fine}}" data-dtype="Number" />
+                                </td>
+                                <td style="text-align: center">
+                                    {{item.system.elixir.ingredientQtys.fine$}} $
+                                </td>
+                                <td style="text-align: center">
+                                    {{item.system.elixir.ingredientQtys.fineLb}} lbs
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Legendary</label>
+                                </td>
+                                <td style="text-align: center">
+                                    <input type="number" style="width: 100%" name="system.elixir.ingredientQtys.legendary" value="{{item.system.elixir.ingredientQtys.legendary}}" data-dtype="Number" />
+                                </td>
+                                <td>
+                                    <input type="number" style="width: 50%" name="system.elixir.ingredientQtys.legendary$" value="{{item.system.elixir.ingredientQtys.legendary$}}" data-dtype="Number" />
+                                    $ each
+                                </td>
+                                <td>
+                                    <input type="number" style="width: 50%" name="system.elixir.ingredientQtys.legendaryLb" value="{{item.system.elixir.ingredientQtys.legendaryLb}}" data-dtype="Number" />
+                                    lbs each
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label class="resource-label" style="flex: 0.5;">Total</label>
+                                </th>
+                                <th>
+                                    {{item.system.elixir.ingredientQtys.total}}
+                                </th>
+                                <th>
+                                    {{item.system.elixir.ingredientQtys.total$}} $
+                                </th>
+                                <th>
+                                    {{item.system.elixir.ingredientQtys.totalLb}} lbs
+                                </th>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: right">
+                                    <label class="resource-label" style="flex: 0.5;">Total Discount:</label>
+                                </td>
+                                <td style="text-align: center">
+                                    {{item.system.elixir.discount}} %
+                                </td>
+                                <td style="text-align: center">
+                                    {{item.system.elixir.discountManaValue}} energy
+                                </td>
+                            </tr>
+                        </table>
+                        {{/if}}
                     </td>
                 </tr>
             </table>
