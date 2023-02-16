@@ -651,7 +651,29 @@
         "quirkRollMod": 0
       },
       "elixir": {
-        "type": "potion"
+        "type": "potion",
+        "discount": 0,
+        "discountManaValue": 0,
+        "ingredientQtys": {
+          "improvised": 0,
+          "improvised$": 0,
+          "improvisedLb": 0,
+          "basic": 0,
+          "basic$": 0,
+          "basicLb": 0,
+          "good": 0,
+          "good$": 0,
+          "goodLb": 0,
+          "fine": 0,
+          "fine$": 0,
+          "fineLb": 0,
+          "legendary": 0,
+          "legendary$": 0,
+          "legendaryLb": 0,
+          "total": 0,
+          "total$": 0,
+          "totalLb": 0
+        }
       }
     },
     "Equipment": {
