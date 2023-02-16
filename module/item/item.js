@@ -1866,57 +1866,145 @@ export class gurpsItem extends Item {
       this.system.level = runningSkillLevel;
     }
 
-    // Charm sale and purchase
-    let charmBaseCost = this.charmSkillToBaseCost(this.system.level) // Get the base cost from skill and monthly pay by TL
-    let charmAvailabilityCostMultiplier = parseFloat(this.system.charm.availability); // Get the multiplier for charm availability from the select
-    let charmEnergyCostMultiplier = Math.max((this.system.energyCost / 5) - 1, 1); // Get the multiplier based on the energy cost of the charm. Make sure it's always at least 1.
+    // Charm Stuff
 
-    this.system.charm.saleCost = (Math.round((charmBaseCost * charmAvailabilityCostMultiplier * charmEnergyCostMultiplier) * 100) / 100); // Do the final calculation and round to two decimals.
+    if (this.system.ritualType === "charm" || this.system.ritualType === "conditionalCharm") {
+      // Charm sale and purchase
+      let charmBaseCost = this.charmSkillToBaseCost(this.system.level) // Get the base cost from skill and monthly pay by TL
+      let charmAvailabilityCostMultiplier = parseFloat(this.system.charm.availability); // Get the multiplier for charm availability from the select
+      let charmEnergyCostMultiplier = Math.max((this.system.energyCost / 5) - 1, 1); // Get the multiplier based on the energy cost of the charm. Make sure it's always at least 1.
 
-    // Charm safe threshold calculator
-    this.system.charm.safeThreshold = this.charmSafeThreshold(this.system.level);
-    this.system.charm.actorContribution = 0; // Set actor contribution to 0 in case there is no actor
+      this.system.charm.saleCost = (Math.round((charmBaseCost * charmAvailabilityCostMultiplier * charmEnergyCostMultiplier) * 100) / 100); // Do the final calculation and round to two decimals.
 
-    if (this.actor) { // If there's an actor
-      if (this.actor.system) {
-        if (this.actor.system.rpm) {
-          this.system.charm.actorContribution = ((this.actor.system.rpm.magery * 3) + this.actor.system.rpm.er) // Store their mana reserve
+      // Charm safe threshold calculator
+      this.system.charm.safeThreshold = this.charmSafeThreshold(this.system.level);
+      this.system.charm.actorContribution = 0; // Set actor contribution to 0 in case there is no actor
+
+      if (this.actor) { // If there's an actor
+        if (this.actor.system) {
+          if (this.actor.system.rpm) {
+            this.system.charm.actorContribution = ((this.actor.system.rpm.magery * 3) + this.actor.system.rpm.er) // Store their mana reserve
+          }
         }
       }
-    }
 
-    let nonAmbientMana = this.system.charm.actorContribution + this.system.charm.additionalSourcesOfMana // Total up any sources of non ambient mana for later.
-    this.system.charm.totalSafeThreshold = this.system.charm.safeThreshold + nonAmbientMana // Add the actor's personal mana reserve and any external mana
+      let nonAmbientMana = this.system.charm.actorContribution + this.system.charm.additionalSourcesOfMana // Total up any sources of non ambient mana for later.
+      this.system.charm.totalSafeThreshold = this.system.charm.safeThreshold + nonAmbientMana // Add the actor's personal mana reserve and any external mana
 
-    // Charm crafting modifiers
+      // Charm crafting modifiers
 
-    // Set default values in case of unexpected behaviour.
-    this.system.charm.craftingRollMod = 0;
-    this.system.charm.quirkRollMod = 0;
-
-    if (nonAmbientMana >= this.system.energyCost) { // The charm can be crafted without any ambient mana
-      this.system.charm.craftingRollMod = -2;
-      this.system.charm.quirkRollMod = +2;
-    }
-    else if ((this.system.energyCost - nonAmbientMana) <= (this.system.charm.safeThreshold / 2)) { // After subtracting the actor's mana reserve, check to see if the remainder is half or less the safe threshold.
-      this.system.charm.craftingRollMod = -1;
-      this.system.charm.quirkRollMod = +1;
-    }
-    else if ((this.system.energyCost - nonAmbientMana) <= (this.system.charm.safeThreshold)) { // After subtracting the actor's mana reserve, check to see if the remainder is equal to or less the safe threshold.
+      // Set default values in case of unexpected behaviour.
       this.system.charm.craftingRollMod = 0;
       this.system.charm.quirkRollMod = 0;
-    }
-    else if ((this.system.energyCost - nonAmbientMana) < (this.system.charm.safeThreshold * 2)) { // After subtracting the actor's mana reserve, check to see if the remainder is more than the safe threshold but not double.
-      this.system.charm.craftingRollMod = +1;
-      this.system.charm.quirkRollMod = -1;
-    }
-    else { // After subtracting the actor's mana reserve, check to see if the remainder is double or more the safe threshold.
-      let remainder = (this.system.energyCost - nonAmbientMana); // Get the mana cost after subtracting the actor's reserve
-      let multiple = Math.floor(remainder / this.system.charm.safeThreshold); // Get the multiple of the safe threshold that the remainder represents. Round down.
 
-      // Store the multiple above as the modifier, with the sign set accordingly.
-      this.system.charm.craftingRollMod = +multiple;
-      this.system.charm.quirkRollMod = -multiple;
+      if (nonAmbientMana >= this.system.energyCost) { // The charm can be crafted without any ambient mana
+        this.system.charm.craftingRollMod = -2;
+        this.system.charm.quirkRollMod = +2;
+      }
+      else if ((this.system.energyCost - nonAmbientMana) <= (this.system.charm.safeThreshold / 2)) { // After subtracting the actor's mana reserve, check to see if the remainder is half or less the safe threshold.
+        this.system.charm.craftingRollMod = -1;
+        this.system.charm.quirkRollMod = +1;
+      }
+      else if ((this.system.energyCost - nonAmbientMana) <= (this.system.charm.safeThreshold)) { // After subtracting the actor's mana reserve, check to see if the remainder is equal to or less the safe threshold.
+        this.system.charm.craftingRollMod = 0;
+        this.system.charm.quirkRollMod = 0;
+      }
+      else if ((this.system.energyCost - nonAmbientMana) < (this.system.charm.safeThreshold * 2)) { // After subtracting the actor's mana reserve, check to see if the remainder is more than the safe threshold but not double.
+        this.system.charm.craftingRollMod = +1;
+        this.system.charm.quirkRollMod = -1;
+      }
+      else { // After subtracting the actor's mana reserve, check to see if the remainder is double or more the safe threshold.
+        let remainder = (this.system.energyCost - nonAmbientMana); // Get the mana cost after subtracting the actor's reserve
+        let multiple = Math.floor(remainder / this.system.charm.safeThreshold); // Get the multiple of the safe threshold that the remainder represents. Round down.
+
+        // Store the multiple above as the modifier, with the sign set accordingly.
+        this.system.charm.craftingRollMod = +multiple;
+        this.system.charm.quirkRollMod = -multiple;
+      }
+    }
+    else if (this.system.ritualType === "elixir") {
+      // Alchemy crafting modifiers
+      let monthlyPay = economicHelpers.getMonthlyPayByTL(game.settings.get("gurps4e", "campaignTL"));
+
+      // First, go through all the ingredients and calculate cost and weight
+      this.system.elixir.ingredientQtys.improvised$  = Math.round(this.system.elixir.ingredientQtys.improvised * monthlyPay * 0.01 * 100) / 100;
+      this.system.elixir.ingredientQtys.improvisedLb = Math.round(this.system.elixir.ingredientQtys.improvised * 0.1 * 100) / 100;
+
+      this.system.elixir.ingredientQtys.basic$  = Math.round(this.system.elixir.ingredientQtys.basic * monthlyPay * 0.03 * 100) / 100;
+      this.system.elixir.ingredientQtys.basicLb = Math.round(this.system.elixir.ingredientQtys.basic * 0.3 * 100) / 100;
+
+      this.system.elixir.ingredientQtys.good$  = Math.round(this.system.elixir.ingredientQtys.good * monthlyPay * 0.10 * 100) / 100;
+      this.system.elixir.ingredientQtys.goodLb = Math.round(this.system.elixir.ingredientQtys.good * 1 * 100) / 100;
+
+      this.system.elixir.ingredientQtys.fine$  = Math.round(this.system.elixir.ingredientQtys.fine * monthlyPay * 0.30 * 100) / 100;
+      this.system.elixir.ingredientQtys.fineLb = Math.round(this.system.elixir.ingredientQtys.fine * 3 * 100) / 100;
+
+      // Then get the total of above
+      this.system.elixir.ingredientQtys.total   = Math.round(this.system.elixir.ingredientQtys.improvised + this.system.elixir.ingredientQtys.basic + this.system.elixir.ingredientQtys.good + this.system.elixir.ingredientQtys.fine + this.system.elixir.ingredientQtys.legendary * 100) / 100;
+      this.system.elixir.ingredientQtys.total$  = Math.round(this.system.elixir.ingredientQtys.improvised$ + this.system.elixir.ingredientQtys.basic$ + this.system.elixir.ingredientQtys.good$ + this.system.elixir.ingredientQtys.fine$ + (this.system.elixir.ingredientQtys.legendary$ * this.system.elixir.ingredientQtys.legendary) * 100) / 100;
+      this.system.elixir.ingredientQtys.totalLb = Math.round(this.system.elixir.ingredientQtys.improvisedLb + this.system.elixir.ingredientQtys.basicLb + this.system.elixir.ingredientQtys.goodLb + this.system.elixir.ingredientQtys.fineLb + (this.system.elixir.ingredientQtys.legendaryLb * this.system.elixir.ingredientQtys.legendary) * 100) / 100;
+
+      // Then figure out what the actual discount works out to.
+
+      let baseDiscount = 0; // Set the basic discount before multiple ingredient discounts start to apply
+      let nextHighest = 5; // Set the default value of the next highest discount
+      let relevantQty = 0; // Init a variable to contain the quantity of relevant ingredients.
+
+      // Check to see what the highest quality level is.
+      if (this.system.elixir.ingredientQtys.legendary >= 1) {
+        baseDiscount = 25;
+        nextHighest = 70;
+        relevantQty = this.system.elixir.ingredientQtys.legendary + this.system.elixir.ingredientQtys.fine;
+      }
+      else if (this.system.elixir.ingredientQtys.fine >= 1) {
+        baseDiscount = 20;
+        nextHighest = 25;
+        relevantQty = this.system.elixir.ingredientQtys.fine + this.system.elixir.ingredientQtys.good;
+      }
+      else if (this.system.elixir.ingredientQtys.good >= 1) {
+        baseDiscount = 15;
+        nextHighest = 20;
+        relevantQty = this.system.elixir.ingredientQtys.good + this.system.elixir.ingredientQtys.basic;
+      }
+      else if (this.system.elixir.ingredientQtys.basic >= 1) {
+        baseDiscount = 10;
+        nextHighest = 15;
+        relevantQty = this.system.elixir.ingredientQtys.basic + this.system.elixir.ingredientQtys.improvised;
+      }
+      else if (this.system.elixir.ingredientQtys.improvised >= 1) {
+        baseDiscount = 5;
+        nextHighest = 10;
+        relevantQty = this.system.elixir.ingredientQtys.improvised;
+      }
+
+      let qtyDiscount = 0;
+
+      if (game.settings.get("gurps4e", "rpmSmoothIngredientDiscounts")) {
+        if (relevantQty >= 30) { // 30+, discount is 15%
+          qtyDiscount = 15;
+        }
+        else if (relevantQty >= 8) { // 8+, discount is 15%
+          qtyDiscount = 5;
+        }
+        else { // Anything else, discount is 0%
+          qtyDiscount = 0;
+        }
+      }
+      else {
+        if (relevantQty <= 8) { // At 8 or less, use the formula FLOOR((0.714286 * J12) - 0.714286,0.01)
+          qtyDiscount = Math.floor(((0.714286 * J12) - 0.714286) * +100) / +100;
+        }
+        else { // At 9 or more, use the formula FLOOR((0.454545 * J20) + 1.36365,0.01)
+          qtyDiscount = Math.floor(((0.454545 * J20) + 1.36365) * +100) / +100;
+        }
+      }
+
+      qtyDiscount = Math.min(qtyDiscount, (nextHighest / 2)); // Cap the qty discount to half of the next highest discount tier.
+
+      this.system.elixir.discount = baseDiscount + qtyDiscount;
+      this.system.elixir.discountManaValue = Math.floor(this.system.energyCost * (this.system.elixir.discount / 100)); // Find the mana value of the ingredient discount. This simplifies calculation and allows us to display it to the user.
+
+      this.system.energyCost = this.system.energyCost - this.system.elixir.discountManaValue; // Apply the alchemy discount.
     }
 
     this.finalEquipmentCalculation();
