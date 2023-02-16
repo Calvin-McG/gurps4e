@@ -29,6 +29,30 @@
                                     <input id="rpmStats" type="checkbox" name="system.ritualMastery" {{checked item.system.ritualMastery}} data-dtype="Boolean"/>
                                 </td>
                             </tr>
+                            {{#if item.system.higherPurpose1Present}}
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Higher Purpose ({{item.system.higherPurpose1Name}}) applies for a +{{item.system.higherPurpose1Level}} bonus</label>
+                                    <input id="hp1" type="checkbox" name="system.higherPurpose1Applies" {{checked item.system.higherPurpose1Applies}} data-dtype="Boolean"/>
+                                </td>
+                            </tr>
+                            {{/if}}
+                            {{#if item.system.higherPurpose2Present}}
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Higher Purpose ({{item.system.higherPurpose2Name}}) applies for a +{{item.system.higherPurpose2Level}} bonus</label>
+                                    <input id="hp2" type="checkbox" name="system.higherPurpose2Applies" {{checked item.system.higherPurpose2Applies}} data-dtype="Boolean"/>
+                                </td>
+                            </tr>
+                            {{/if}}
+                            {{#if item.system.higherPurpose3Present}}
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Higher Purpose ({{item.system.higherPurpose3Name}}) applies for a +{{item.system.higherPurpose3Level}} bonus</label>
+                                    <input id="hp3" type="checkbox" name="system.higherPurpose3Applies" {{checked item.system.higherPurpose3Applies}} data-dtype="Boolean"/>
+                                </td>
+                            </tr>
+                            {{/if}}
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Grimoire Bonus:</label>

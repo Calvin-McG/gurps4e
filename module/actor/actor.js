@@ -397,9 +397,9 @@ export class gurpsActor extends Actor {
 				"higherPurpose1Name": "",
 				"higherPurpose2Name": "",
 				"higherPurpose3Name": "",
-				"higherPurpose1level": 0,
-				"higherPurpose2level": 0,
-				"higherPurpose3level": 0,
+				"higherPurpose1Level": 0,
+				"higherPurpose2Level": 0,
+				"higherPurpose3Level": 0,
 				"showThematic": "0", // -1 is no thematic, just name. 0 is both. 1 is thematic only
 				"showStats": true,
 				"showPaths": true,

@@ -1652,6 +1652,47 @@ export class gurpsItem extends Item {
     let costFromModifiers = 0;
     let lowestOfPaths = Number.MAX_VALUE; // We're going to be using Math.min later to narrow down to the lowest path value. So set it to max right now.
 
+    if (typeof this.actor !== 'undefined') { // If there is an actor for this item. (As in, the item is on an actor)
+      if (this.actor !== null) { // If there is an actor for this item. (As in, the item is on an actor)
+        if (typeof this.actor.system.rpm !== 'undefined') { // If that actor also has the rpm related info
+
+          // Store higher purposes on the item
+
+          // For each higher purpose, check that it's not undefined, blank, and that it has a non-zero modifier.
+          if (typeof this.actor.system.rpm.higherPurpose1Name !== "undefined" && this.actor.system.rpm.higherPurpose1Name.length > 0 && typeof this.actor.system.rpm.higherPurpose1Level !== "undefined" && this.actor.system.rpm.higherPurpose1Level > 0) {
+            this.system.higherPurpose1Present = true;
+          }
+          else {
+            this.system.higherPurpose1Present = false;
+          }
+
+          if (typeof this.actor.system.rpm.higherPurpose2Name !== "undefined" && this.actor.system.rpm.higherPurpose2Name.length > 0 && typeof this.actor.system.rpm.higherPurpose2Level !== "undefined" && this.actor.system.rpm.higherPurpose2Level > 0) {
+            this.system.higherPurpose2Present = true;
+          }
+          else {
+            this.system.higherPurpose2Present = false;
+          }
+
+          if (typeof this.actor.system.rpm.higherPurpose3Name !== "undefined" && this.actor.system.rpm.higherPurpose3Name.length > 0 && typeof this.actor.system.rpm.higherPurpose3Level !== "undefined" && this.actor.system.rpm.higherPurpose3Level > 0) {
+            this.system.higherPurpose3Present = true;
+          }
+          else {
+            this.system.higherPurpose3Present = false;
+          }
+
+          // Store the names
+          this.system.higherPurpose1Name = this.actor.system.rpm.higherPurpose1Name;
+          this.system.higherPurpose2Name = this.actor.system.rpm.higherPurpose2Name;
+          this.system.higherPurpose3Name = this.actor.system.rpm.higherPurpose3Name;
+
+          // Store the levels
+          this.system.higherPurpose1Level = this.actor.system.rpm.higherPurpose1Level;
+          this.system.higherPurpose2Level = this.actor.system.rpm.higherPurpose2Level;
+          this.system.higherPurpose3Level = this.actor.system.rpm.higherPurpose3Level;
+        }
+      }
+    }
+
     let keys = Object.keys(this.system.path);
     if (keys.length > 0) {
       for (let k = 0; k < keys.length; k++) {
@@ -1852,6 +1893,17 @@ export class gurpsItem extends Item {
     // Ritual Mastery
     if (this.system.ritualMastery) {
       runningSkillLevel += 2;
+    }
+
+    // Higher Purposes
+    if (this.system.higherPurpose1Applies) {
+      runningSkillLevel += this.system.higherPurpose1Level;
+    }
+    if (this.system.higherPurpose2Applies) {
+      runningSkillLevel += this.system.higherPurpose2Level;
+    }
+    if (this.system.higherPurpose3Applies) {
+      runningSkillLevel += this.system.higherPurpose3Level;
     }
 
     // If it's a charm, conditional charm, or elixir, apply the workspace modifier
