@@ -1834,7 +1834,14 @@ export class gurpsItem extends Item {
       runningSkillLevel -= (keys.length - 2); // Apply the penalty to the running total.
     }
 
-    // If for some reason I need to come back and apply the skill cap on a per-ritual basis, it should go here.
+    // If it's an alchemical mixture, apply the Alchemy skill cap here
+    if (this.actor) {
+      if (this.system.ritualType === "elixir") {
+        if (typeof this.actor.system.rpm.alchemySkillLevel === 'number') {
+          runningSkillLevel = Math.max(runningSkillLevel, this.actor.system.rpm.alchemySkillLevel); // Alchemical mixtures are crafted with the higher of their lowest path and their alchemy skill.
+        }
+      }
+    }
 
     // Apply the crafting skill modifier, if any
     runningSkillLevel += totalCraftingModifier;
