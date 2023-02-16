@@ -79,6 +79,19 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  game.settings.register("gurps4e", "rpmSmoothIngredientDiscounts", {
+    name: "Apply smooth ingredient quantity discounts?",
+    hint: "By default, when making alchemical mixtures you get a discount based on the quantity of ingredients used. Using 30+ ingredients gives -15%, and using 8+ ingredients gives -5%." +
+        "This means there's no reason to use a quantity of ingredients other than 1, 8, or 30, as in every other case you're just wasting weight and money." +
+        "It also interacts strangely with the way that the quantity discount is capped by the quality of the ingredients you are adding." +
+        "Turning this option on interpolates between those fixed values to apply a sliding discount in cost, based on the quantity of ingredients." +
+        "It also corrects for the weirdness caused by how the discount is capped by ingredient quality.",
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
   // Register option for what counts as 'rear' when it comes to hit locations where that matters
   game.settings.register("gurps4e", "literalRear", {
     name: "Literal rear hit locations",
