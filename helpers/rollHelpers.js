@@ -70,12 +70,12 @@ export class rollHelpers {
             crit = true;
             success = true;
         }
-        else if (skillRoll == 5 && effectiveSkill == 15) { //5 is a crit if effective skill is 15
+        else if (skillRoll == 5 && effectiveSkill >= 15) { //5 is a crit if effective skill is 15
             html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Critical Success by " + margin + "</div>"
             crit = true;
             success = true;
         }
-        else if (skillRoll == 6 && effectiveSkill == 16) { //6 is a crit if effective skill is 16
+        else if (skillRoll == 6 && effectiveSkill >= 16) { //6 is a crit if effective skill is 16
             html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Critical Success by " + margin + "</div>"
             crit = true;
             success = true;
