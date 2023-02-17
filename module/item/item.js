@@ -1652,6 +1652,36 @@ export class gurpsItem extends Item {
     let costFromModifiers = 0;
     let lowestOfPaths = Number.MAX_VALUE; // We're going to be using Math.min later to narrow down to the lowest path value. So set it to max right now.
 
+    // Undefined checks
+
+    if (typeof this.system.timeUnitsPerAttempt !== "number") { // If timeUnits isn't a number, default to 5
+      this.system.timeUnitsPerAttempt = 5;
+    }
+    else if (this.system.timeUnitsPerAttempt > 5) { // Cap it at 5
+      this.system.timeUnitsPerAttempt = 5;
+    }
+    else if (this.system.timeUnitsPerAttempt < 0) { // Cap it at 0
+      this.system.timeUnitsPerAttempt = 0;
+    }
+    else { // Remove decimals
+      this.system.timeUnitsPerAttempt = Math.floor(this.system.timeUnitsPerAttempt);
+    }
+
+    if (typeof this.system.gatherMod !== "number") { // If gatherMod isn't a number, default to 0
+      this.system.gatherMod = 0;
+    }
+    else { // Remove decimals
+      this.system.gatherMod = Math.floor(this.system.gatherMod);
+    }
+
+    if (typeof this.system.extraMana !== "number") { // If extraMana isn't a number, default to 0
+      this.system.extraMana = 0;
+    }
+    else { // Remove decimals
+      this.system.extraMana = Math.floor(this.system.extraMana);
+    }
+
+    // Actual calculations
     if (typeof this.actor !== 'undefined') { // If there is an actor for this item. (As in, the item is on an actor)
       if (this.actor !== null) { // If there is an actor for this item. (As in, the item is on an actor)
         if (typeof this.actor.system.rpm !== 'undefined') { // If that actor also has the rpm related info
