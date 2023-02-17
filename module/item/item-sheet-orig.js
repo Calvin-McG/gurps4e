@@ -138,7 +138,6 @@ export class gurpsItemSheet extends ItemSheet {
             energyNeeded = this.item.system.energyCost - (this.item.system.extraMana);
         }
 
-        let label = "Is gathering energy for " + event.currentTarget.id;
         let currentRoll;
         let html = "Gathering energy for " + event.currentTarget.id; // Init the html we're going to display as part of the output for this chat message
 
