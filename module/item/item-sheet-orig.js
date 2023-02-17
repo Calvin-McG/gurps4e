@@ -140,8 +140,9 @@ export class gurpsItemSheet extends ItemSheet {
 
         let label = "Is gathering energy for " + event.currentTarget.id;
         let currentRoll;
-        let html = "<table>"; // Init the html we're going to display as part of the output for this chat message
+        let html = "Gathering energy for " + event.currentTarget.id; // Init the html we're going to display as part of the output for this chat message
 
+        html += "<table>";
         html += "<tr><th>#</th><th>Skill</th><th>Result</th><th>Mana</th><th>MM:SS</th></tr>";
 
         // Keep looping until one of the following happens:
