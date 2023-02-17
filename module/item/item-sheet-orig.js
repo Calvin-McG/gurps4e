@@ -94,11 +94,146 @@ export class gurpsItemSheet extends ItemSheet {
         html.find('.toxDRUp').click(   this._toxDRUp.bind(this));
         html.find('.toxDRDown').click( this._toxDRDown.bind(this));
 
+        // Ritual handlers
+        html.find('.gatherEnergy').click( this._gatherEnergy.bind(this));
+
         // Click event handlers
         html.find('.question-container').click(this._showHint.bind(this));
         html.find('.saveItem').click(this._saveItem.bind(this));
         html.find('.makeCraftingRoll').click(this._makeCraftingRoll.bind(this));
         html.find('.makeQuirkRoll').click(this._makeQuirkRoll.bind(this));
+    }
+
+    async _gatherEnergy(event) {
+        let runningTimeTotalSeconds = 0; // Init the variable that will hold the number of seconds
+        let runningTimeTotalMinutes = 0; // Init the variable that will hold the number of minutes
+        let energyGathered = 0; // Init the variable to store the amount of energy gathered so far
+        let quirkCount = 0;
+        let energyNeeded = 0;
+        let actorContribution = 0;
+        let critFail = false;
+        let previousCrit = false; // This var tracks if the last cycle was a crit
+        let effectiveSkill = this.item.system.level + this.item.system.gatherMod; // For simplicity, just include the gatherMod in the effective skill instead of separating it out
+        let cycleCount = 1;
+
+        // Apply the penalty for taking less than 5 time units to gather energy.
+        if (this.item.system.timeUnitsPerAttempt < 5 && this.item.system.timeUnitsPerAttempt > 0) { // They are taking less than 5 but not 0 time units
+            effectiveSkill = effectiveSkill - (5 - this.item.system.timeUnitsPerAttempt); // Subtract the number of time units skipped from the effective skill
+        }
+        else if (this.item.system.timeUnitsPerAttempt === 0) { // They are attempting to gather instantly.
+            effectiveSkill -= 10; // Apply the -10 penalty
+        }
+
+        if (this.item.actor) { // If there's an actor
+            if (this.item.actor.system) {
+                if (this.item.actor.system.rpm) {
+                    actorContribution = ((this.item.actor.system.rpm.magery * 3) + this.item.actor.system.rpm.er) // Store their mana reserve
+                }
+            }
+        }
+
+        if (this.item.system.usePersonalMana) { // If they've checked the box to use their own mana for the spell
+            energyNeeded = this.item.system.energyCost - (actorContribution + this.item.system.extraMana);
+        } else {
+            energyNeeded = this.item.system.energyCost - (this.item.system.extraMana);
+        }
+
+        let label = "Is gathering energy for " + event.currentTarget.id;
+        let currentRoll;
+        let html = "<table>"; // Init the html we're going to display as part of the output for this chat message
+
+        html += "<tr><th>#</th><th>Skill</th><th>Result</th><th>Mana</th><th>MM:SS</th></tr>";
+
+        // Keep looping until one of the following happens:
+        // They have all the energy they need
+        // Their effective skill hits two
+        // They crit fail
+        while (energyGathered < energyNeeded && effectiveSkill > 2 && !critFail) {
+            currentRoll = await rollHelpers.skillRoll(effectiveSkill, 0, "", false);
+
+            // Add to the time taken (Do this before roll stuff so previousCrit doesn't get triggered early)
+            if (previousCrit) { // If they got a crit on the last cycle, it always takes only a single second, regardless of the level of their time adeptedness
+                runningTimeTotalSeconds += 1;
+                previousCrit = false; // Reset previousCrit to false so it doesn't stick
+            }
+            else if (this.item.system.ritualAdeptTime === 0) { // They are not a ritual adept with respect to time
+                runningTimeTotalMinutes += this.item.system.timeUnitsPerAttempt; // Add the number of time units they have selected to the number of minutes spent casting
+            }
+            else if (this.item.system.ritualAdeptTime === 1) { // They are sorta a ritual adept with respect to time
+                if (cycleCount === 1) { // It's the first cycle, and Time 1 adepts take seconds instead of minutes for the first cycle.
+                    runningTimeTotalSeconds += this.item.system.timeUnitsPerAttempt; // Add the number of time units they have selected to the number of seconds spent casting
+                }
+                else {
+                    runningTimeTotalMinutes += this.item.system.timeUnitsPerAttempt; // Add the number of time units they have selected to the number of minutes spent casting
+                }
+            }
+            else if (this.item.system.ritualAdeptTime === 2) { // They are a full ritual adept with respect to time
+                runningTimeTotalSeconds += this.item.system.timeUnitsPerAttempt; // Add the number of time units they have selected to the number of seconds spent casting
+            }
+
+            // Add roll based results
+
+            if (!currentRoll.success && currentRoll.crit) { // If they failed, and it's a crit
+                critFail = true;
+                html += "<tr><td>" + cycleCount + "</td><td style='text-align: center'>" + effectiveSkill + "</td><td style='background-color: rgb(208, 127, 127)'>Crit Fail by " + currentRoll.margin + "</td><td>" + energyGathered + "</td>"; // Add column details for everything but time
+            }
+            else if (!currentRoll.success && !currentRoll.crit) { // If they failed, and it's not a crit
+                quirkCount += 1; // Failures add a quirk
+                energyGathered += 1; // But still add 1 energy.
+
+                html += "<tr><td>" + cycleCount + "</td><td style='text-align: center'>" + effectiveSkill + "</td><td style='color: rgb(199, 137, 83)'>Failure by " + currentRoll.margin + "</td><td>" + energyGathered + "</td>"; // Add column details for everything but time
+            }
+            else if (currentRoll.success && !currentRoll.crit) { // If they succeeded, and it's not a crit
+                energyGathered += Math.max(1, currentRoll.margin); // Add the margin of success to the energy gathered, but at least 1;
+
+                html += "<tr><td>" + cycleCount + "</td><td style='text-align: center'>" + effectiveSkill + "</td><td style='color: rgb(141, 142, 222)'>Success by " + currentRoll.margin + "</td><td>" + energyGathered + "</td>"; // Add column details for everything but time
+            }
+            else if (currentRoll.success && currentRoll.crit) { // If they succeeded, and it's a crit
+                energyGathered += Math.max(1, currentRoll.margin); // Add the margin of success to the energy gathered, but at least 1;
+                previousCrit = true;
+
+                html += "<tr><td>" + cycleCount + "</td><td style='text-align: center'>" + effectiveSkill + "</td><td style='background-color: rgb(106, 162, 106)'>Critical Success by " + currentRoll.margin + "</td><td>" + energyGathered + "</td>"; // Add column details for everything but time
+            }
+            else {
+                html += "<tr><td>" + cycleCount + "</td><td style='text-align: center'>" + effectiveSkill + "</td><td>Unknown Result by " + currentRoll.margin + "</td><td>" + energyGathered + "</td>"; // Add column details for everything but time
+            }
+
+            html += "<td  style='text-align: right'>" + runningTimeTotalMinutes + ":" + runningTimeTotalSeconds + "</td></tr>"; // Add column details for time
+
+            if ((cycleCount % 3 === 0) && (cycleCount !== 1)) { // If the current cycle is divisible by 3, apply the stacking skill penalty
+                effectiveSkill -= 1;
+            }
+
+            cycleCount += 1; // Add one to the cycle count to track how long we've been doing this;
+        }
+
+        // Convert the time as calculated so far into a more readable HH:MM:SS
+        let totalSeconds = runningTimeTotalSeconds + (runningTimeTotalMinutes * 60); // Convert total to seconds
+        let timeOutput = "HH:MM:SS";
+        if (totalSeconds < 3600) { // It's less than an hour, display as MM:SS
+            timeOutput = new Date(totalSeconds * 1000).toISOString().substring(14, 19)
+        }
+        else { // It's an hour or more, display as HH:MM:SS
+            timeOutput = new Date(totalSeconds * 1000).toISOString().substring(11, 19)
+        }
+
+        html += "</table>"
+
+        html += "<div>" + energyGathered + " energy was gathered over the course of " + timeOutput + ", out of a required " + energyNeeded + "</div>"
+
+        if (critFail) {
+            html += "<div>The energy gathering process ended with a Critical Failure, leading to a " + (energyGathered * 2) + " point botch.</div>"
+        }
+        else if (quirkCount > 0) {
+            html += "<div>The energy gathering process generated " + " quirks</div>"
+        }
+
+        if (game.user.isGM) {
+            ChatMessage.create({ content: html, user: game.user.id, whisper: ChatMessage.getWhisperRecipients('GM') });
+        }
+        else {
+            ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+        }
     }
 
     _makeCraftingRoll(event) {
