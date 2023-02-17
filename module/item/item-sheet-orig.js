@@ -225,8 +225,13 @@ export class gurpsItemSheet extends ItemSheet {
         if (critFail) {
             html += "<div>The energy gathering process ended with a Critical Failure, leading to a " + (energyGathered * 2) + " point botch.</div>"
         }
-        else if (quirkCount > 0) {
-            html += "<div>The energy gathering process generated " + " quirks</div>"
+        else if (quirkCount > 0) { // If there are quirks, tell the user about it
+            if (quirkCount === 1) { // Handle plurals correctly
+                html += "<div style='background: rgb(199,199,83,0.68)'>The energy gathering process generated <span style='font-weight: bold'>one</span> quirk</div>"
+            }
+            else {
+                html += "<div style='background: rgb(199,199,83,0.68)'>The energy gathering process generated <span style='font-weight: bold'>" + quirkCount + "</span> quirks</div>"
+            }
         }
 
         if (game.user.isGM) {
