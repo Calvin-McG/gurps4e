@@ -649,6 +649,10 @@
       "path": [],
       "ritualModifier": [],
       "workspaceMod": 0,
+      "gatherMod": 0,
+      "usePersonalMana": true,
+      "extraMana": 0,
+      "timeUnitsPerAttempt": 5,
       "charm": {
         "safeThreshold": 6,
         "additionalSourcesOfMana": 0,

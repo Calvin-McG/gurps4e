@@ -1656,7 +1656,29 @@ export class gurpsItem extends Item {
       if (this.actor !== null) { // If there is an actor for this item. (As in, the item is on an actor)
         if (typeof this.actor.system.rpm !== 'undefined') { // If that actor also has the rpm related info
 
-          // Store higher purposes on the item
+          // Store the adeptedness on the item for easier reference later
+          if (typeof this.actor.system.rpm.ritualAdeptTime !== "undefined" && this.actor.system.rpm.ritualAdeptTime.length > 0) { // ritualAdeptTime isn't undefined and it does have a non-zero length
+            this.system.ritualAdeptTime = parseInt(this.actor.system.rpm.ritualAdeptTime); // Parse the int out of the string.
+          }
+          else {
+            this.system.ritualAdeptTime = 0; // Default zero
+          }
+
+          if (typeof this.actor.system.rpm.ritualAdeptConnection !== "undefined") { // ritualAdeptConnection isn't undefined
+            this.system.ritualAdeptConnection = this.actor.system.rpm.ritualAdeptConnection;
+          }
+          else {
+            this.system.ritualAdeptConnection = false; // Default false
+          }
+
+          if (typeof this.actor.system.rpm.ritualAdeptSpace !== "undefined") { // ritualAdeptSpace connection isn't undefined
+            this.system.ritualAdeptSpace = this.actor.system.rpm.ritualAdeptSpace;
+          }
+          else {
+            this.system.ritualAdeptSpace = false; // Default false
+          }
+
+          // Store higher purposes on the item for easier reference later
 
           // For each higher purpose, check that it's not undefined, blank, and that it has a non-zero modifier.
           if (typeof this.actor.system.rpm.higherPurpose1Name !== "undefined" && this.actor.system.rpm.higherPurpose1Name.length > 0 && typeof this.actor.system.rpm.higherPurpose1Level !== "undefined" && this.actor.system.rpm.higherPurpose1Level > 0) {
