@@ -17,6 +17,8 @@
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Ritual Type:</label>
+                                </td>
+                                <td>
                                     <select name="system.ritualType">
                                         {{#select item.system.ritualType}}
                                         <option value="standard">Standard</option>
@@ -31,6 +33,8 @@
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Ritual Mastery:</label>
+                                </td>
+                                <td>
                                     <input id="rpmStats" type="checkbox" name="system.ritualMastery" {{checked item.system.ritualMastery}} data-dtype="Boolean"/>
                                 </td>
                             </tr>
@@ -38,6 +42,8 @@
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Higher Purpose ({{item.system.higherPurpose1Name}}) applies for a +{{item.system.higherPurpose1Level}} bonus</label>
+                                </td>
+                                <td>
                                     <input id="hp1" type="checkbox" name="system.higherPurpose1Applies" {{checked item.system.higherPurpose1Applies}} data-dtype="Boolean"/>
                                 </td>
                             </tr>
@@ -46,6 +52,8 @@
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Higher Purpose ({{item.system.higherPurpose2Name}}) applies for a +{{item.system.higherPurpose2Level}} bonus</label>
+                                </td>
+                                <td>
                                     <input id="hp2" type="checkbox" name="system.higherPurpose2Applies" {{checked item.system.higherPurpose2Applies}} data-dtype="Boolean"/>
                                 </td>
                             </tr>
@@ -54,25 +62,33 @@
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Higher Purpose ({{item.system.higherPurpose3Name}}) applies for a +{{item.system.higherPurpose3Level}} bonus</label>
+                                </td>
+                                <td>
                                     <input id="hp3" type="checkbox" name="system.higherPurpose3Applies" {{checked item.system.higherPurpose3Applies}} data-dtype="Boolean"/>
                                 </td>
                             </tr>
                             {{/if}}
                             <tr>
                                 <td>
-                                    <label class="resource-label" style="flex: 0.5;">Grimoire Bonus:</label>
+                                    <label class="resource-label" style="flex: 0.5;">Grimoire Bonus</label>
+                                </td>
+                                <td>
                                     <input type="number" style="width: 50%" name="system.grimBonus" value="{{item.system.grimBonus}}" data-dtype="Number" />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <label class="resource-label" style="flex: 0.5;">Level:</label>
+                                    <label class="resource-label" style="flex: 0.5;">Level</label>
+                                </td>
+                                <td>
                                     {{item.system.level}}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <label class="resource-label" style="flex: 0.5;">Energy Cost:</label>
+                                    <label class="resource-label" style="flex: 0.5;">Energy Cost</label>
+                                </td>
+                                <td>
                                     {{item.system.energyCost}}
                                 </td>
                             </tr>
