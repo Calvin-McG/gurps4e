@@ -320,6 +320,8 @@
           "showAlchemy": false,
           "showPaths": false,
           "showGrimoire": false,
+          "totalConditional": 0,
+          "totalElixir": 0,
           "path": {
             "body": {
               "name": "Body",

@@ -3251,8 +3251,8 @@
 							<td class="item-notes">
 								Notes
 							</td>
-							<td class="item-skill" style="width: 3em;">
-								Type
+							<td class="item-skill" style="width: 4em;">
+								# Ready
 							</td>
 							<td class="item-skill" style="width: 3em; text-align: center">
 								Energy Cost
@@ -3277,7 +3277,7 @@
 								{{item.system.shortNotes}}
 							</td>
 							<td class="item-skill" style="width: 3em; padding-right: 1em;">
-								{{capitalizeFirst item.system.ritualType}}
+								{{item.system.quantity}}
 							</td>
 							<td class="item-skill" style="width: 3em; text-align: center">
 								{{item.system.energyCost}}
@@ -3298,7 +3298,7 @@
 
 					<table>
 						<tr>
-							<th colspan="7" style="font-size: larger; text-decoration: underline;">Conditional Rituals</th>
+							<th colspan="7" style="font-size: larger; text-decoration: underline;">Conditional Rituals ( {{actor.system.rpm.totalConditional}} / {{actor.system.rpm.maxConditional}} )</th>
 						</tr>
 						<tr>
 							<td class="item-image" style="width: 24px; padding: 0 2px">
@@ -3310,8 +3310,8 @@
 							<td class="item-notes">
 								Notes
 							</td>
-							<td class="item-skill" style="width: 3em;">
-								Type
+							<td class="item-skill" style="width: 4em;">
+								# Ready
 							</td>
 							<td class="item-skill" style="width: 3em; text-align: center">
 								Energy Cost
@@ -3336,7 +3336,7 @@
 								{{item.system.shortNotes}}
 							</td>
 							<td class="item-skill" style="width: 3em; padding-right: 1em;">
-								{{capitalizeFirst item.system.ritualType}}
+								{{item.system.quantity}}
 							</td>
 							<td class="item-skill" style="width: 3em; text-align: center">
 								{{item.system.energyCost}}
@@ -3357,7 +3357,7 @@
 
 					<table>
 						<tr>
-							<th colspan="7" style="font-size: larger; text-decoration: underline;">Charms</th>
+							<th colspan="8" style="font-size: larger; text-decoration: underline;">Charms ( {{actor.system.rpm.totalConditional}} / {{actor.system.rpm.maxConditional}} )</th>
 						</tr>
 						<tr>
 							<td class="item-image" style="width: 24px; padding: 0 2px">
@@ -3368,6 +3368,9 @@
 							</td>
 							<td class="item-notes">
 								Notes
+							</td>
+							<td class="item-skill" style="width: 4em;">
+								# Ready
 							</td>
 							<td class="item-skill" style="width: 3em;">
 								Type
@@ -3395,6 +3398,9 @@
 								{{item.system.shortNotes}}
 							</td>
 							<td class="item-skill" style="width: 3em; padding-right: 1em;">
+								{{item.system.quantity}}
+							</td>
+							<td class="item-skill" style="width: 3em; padding-right: 1em;">
 								{{capitalizeFirst item.system.ritualType}}
 							</td>
 							<td class="item-skill" style="width: 3em; text-align: center">
@@ -3416,7 +3422,15 @@
 
 					<table>
 						<tr>
+							{{#if actor.system.rpm.byAlchemySkill }}
+							<th colspan="7" style="font-size: larger; text-decoration: underline;">Elixirs  ( {{actor.system.rpm.totalElixir}} / {{actor.system.rpm.maxElixirs}} )</th>
+							{{/if}}
+							{{#if actor.system.rpm.withConditional }}
+							<th colspan="7" style="font-size: larger; text-decoration: underline;">Elixirs  ( {{actor.system.rpm.totalConditional}} / {{actor.system.rpm.maxConditional}} )</th>
+							{{/if}}
+							{{#if actor.system.rpm.expiry }}
 							<th colspan="7" style="font-size: larger; text-decoration: underline;">Elixirs</th>
+							{{/if}}
 						</tr>
 						<tr>
 							<td class="item-image" style="width: 24px; padding: 0 2px">
@@ -3428,8 +3442,8 @@
 							<td class="item-notes">
 								Notes
 							</td>
-							<td class="item-skill" style="width: 3em;">
-								Type
+							<td class="item-skill" style="width: 4em;">
+								# Ready
 							</td>
 							<td class="item-skill" style="width: 3em; text-align: center">
 								Energy Cost
@@ -3454,7 +3468,7 @@
 								{{item.system.shortNotes}}
 							</td>
 							<td class="item-skill" style="width: 3em; padding-right: 1em;">
-								{{capitalizeFirst item.system.ritualType}}
+								{{item.system.quantity}}
 							</td>
 							<td class="item-skill" style="width: 3em; text-align: center">
 								{{item.system.energyCost}}
