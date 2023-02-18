@@ -2427,7 +2427,7 @@ export class gurpsActor extends Actor {
 		let affliction;
 
 		actor.items.forEach((item) => {
-			if (item.type == "Trait" || item.type == "Equipment" || item.type == "Spell" || item.type == "Custom Weapon" || item.type == "Custom Armour" || item.type == "Travel Fare" || item.type == "Ritual"){
+			if (item.type == "Trait" || item.type == "Equipment" || item.type == "Spell" || item.type == "Custom Weapon" || item.type == "Custom Armour" || item.type == "Travel Fare" || (item.type == "Ritual" && item.system.quantity > 0)){
 				if (item.system.melee) {
 					let meleeKeys = Object.keys(item.system.melee); // Collect all the melee keys
 					for (let m = 0; m < meleeKeys.length; m++){

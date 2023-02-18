@@ -5912,8 +5912,8 @@ export class gurpsItem extends Item {
                   }
                 }
 
-                level = level + mod;//Update the skill level with the skill modifier
-                this.system.melee[meleeKeys[k]].level = level//Update skill level
+                level = level + mod; // Update the skill level with the skill modifier
+                this.system.melee[meleeKeys[k]].level = level // Update skill level
 
                 if (Number.isInteger(+this.system.melee[meleeKeys[k]].parryMod)) {//If parry mod is a number, compute normally
                   parry = Math.floor(+(level / 2 + 3) + +this.system.melee[meleeKeys[k]].parryMod);//Calculate the parry value
@@ -5957,7 +5957,7 @@ export class gurpsItem extends Item {
           }
         }
 
-        //Do logic stuff for ranged profiles
+        // Do logic stuff for ranged profiles
         if (this.system.ranged) {
           let rangedKeys = Object.keys(this.system.ranged);
           if (rangedKeys.length) {//Check to see if there are any ranged profiles
