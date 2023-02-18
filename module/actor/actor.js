@@ -1482,7 +1482,9 @@ export class gurpsActor extends Actor {
 		this.system.encumbrance.heavy.dodge	= Math.ceil((Math.max(dodge + dodgeMod - 3, 1)) * dodgeMultiplier);
 		this.system.encumbrance.xheavy.dodge	= Math.ceil((Math.max(dodge + dodgeMod - 4, 1)) * dodgeMultiplier);
 
-		// Running loop to total up weight and value for the sheet
+		// Running loop to total up weight and value for the sheet, and to gather the total number of RPM stuff prepared
+		this.system.rpm.totalConditional = 0;
+		this.system.rpm.totalElixir = 0;
 		for (let l = 0; l < this.items.contents.length; l++){
 			if (this.items.contents[l].system.equipStatus !== "notCarried" &&
 				(this.items.contents[l].type === "Equipment" ||
@@ -1492,6 +1494,23 @@ export class gurpsActor extends Actor {
 				this.items.contents[l].type === "Travel Fare")){
 				carriedWeight = (+this.items.contents[l].system.weight * +this.items.contents[l].system.quantity) + +carriedWeight;
 				carriedCost = (+this.items.contents[l].system.cost * +this.items.contents[l].system.quantity) + +carriedCost;
+			}
+
+			if (game.settings.get("gurps4e", "showRPM")) { // If the RPM tab is enabled, total up the number of ritual types for each cap.
+				if (this.items.contents[l].type === "Ritual") {
+					if (this.items.contents[l].system.ritualType === "conditional" || this.items.contents[l].system.ritualType === "charm" || this.items.contents[l].system.ritualType === "conditionalCharm") {
+						this.system.rpm.totalConditional += this.items.contents[l].system.quantity;
+					}
+					else if (this.items.contents[l].system.ritualType === "elixir") {
+						let rpmElixirLimit = game.settings.get("gurps4e", "rpmElixirLimit"); // Get the rule that defines how elixirs are limited
+						if (rpmElixirLimit === "withConditional") {
+							this.system.rpm.totalConditional += this.items.contents[l].system.quantity;
+						}
+						else if (rpmElixirLimit === "byAlchemySkill") {
+							this.system.rpm.totalElixir += this.items.contents[l].system.quantity;
+						}
+					}
+				}
 			}
 		}
 
