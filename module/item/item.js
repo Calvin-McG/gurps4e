@@ -1654,6 +1654,16 @@ export class gurpsItem extends Item {
 
     // Undefined checks
 
+    if (typeof this.system.quantity !== "number" || isNaN(this.system.quantity)) { // Make sure it is a number and that number is not not a number
+      this.system.quantity = 0; // If it is, default zero
+    }
+    else if (this.system.quantity < 0) { // If it's less than zero, also default zero
+      this.system.quantity = 0
+    }
+    else { // Otherwise remove any decimals.
+      this.system.quantity = Math.floor(this.system.quantity);
+    }
+
     if (typeof this.system.timeUnitsPerAttempt !== "number") { // If timeUnits isn't a number, default to 5
       this.system.timeUnitsPerAttempt = 5;
     }
