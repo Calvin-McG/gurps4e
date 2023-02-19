@@ -103,17 +103,27 @@
                         </table>
                     </td>
                     <td style="width: 50%; vertical-align:top"><!-- Right Col -->
-                        {{#if (or (eq item.system.ritualType "charm") (eq item.system.ritualType "conditionalCharm"))}}
+                        {{#if (or (eq item.system.ritualType "charm") (eq item.system.ritualType "conditionalCharm") (eq item.system.ritualType "conditional"))}}
                         <table style="background: rgba(255,102,0,0.28)">
                             <tr>
-                                <th colspan="2" style="font-size: larger">Charm Specific Details</th>
+                                {{#if (eq item.system.ritualType "conditional")}}
+                                <th colspan="2" style="font-size: larger">Conditional Ritual Details</th>
+                                {{/if}}
+                                {{#if (eq item.system.ritualType "conditionalCharm")}}
+                                <th colspan="2" style="font-size: larger">Conditional Charm Details</th>
+                                {{/if}}
+                                {{#if (eq item.system.ritualType "charm")}}
+                                <th colspan="2" style="font-size: larger">Charm Details</th>
+                                {{/if}}
                             </tr>
+                            {{#unless (eq item.system.ritualType "conditional")}}
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Workspace Modifier: </label>
                                     <input type="number" style="width: 50%" name="system.workspaceMod" value="{{item.system.workspaceMod}}" data-dtype="Number" />
                                 </td>
                             </tr>
+                            {{/unless}}
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Safe Threshold: </label>
@@ -150,6 +160,7 @@
                                     {{item.system.charm.quirkRollMod}} <input type='button' class='makeQuirkRoll' id="{{item.name}}"  value='Make Quirk Roll'/>
                                 </td>
                             </tr>
+                            {{#unless (eq item.system.ritualType "conditional")}}
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Charm Availability</label>
@@ -169,13 +180,14 @@
                                     {{item.system.charm.saleCost}} $
                                 </td>
                             </tr>
+                            {{/unless}}
                         </table>
                         {{/if}}
 
                         {{#if (eq item.system.ritualType "elixir") }}
                         <table style="background: rgba(0,255,21,0.28)">
                             <tr>
-                                <th colspan="2" style="font-size: larger">Elixir Specific Details</th>
+                                <th colspan="2" style="font-size: larger">Elixir Details</th>
                             </tr>
                             <tr>
                                 <td>
