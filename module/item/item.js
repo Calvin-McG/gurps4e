@@ -1913,8 +1913,8 @@ export class gurpsItem extends Item {
 
     // Ritual Type cost thingy
 
-    if (this.system.ritualType === "conditional") {
-      costFromModifiers += 5; // Add +5 mana for the Lesser Control Magic necessary to make this ritual conditional.
+    if (this.system.ritualType === "conditional" || this.system.ritualType === "charm") {
+      costFromModifiers += 5; // Add +5 mana for the Lesser Control Magic necessary to make this ritual conditional or a charm.
     }
     else if (this.system.ritualType === "conditionalCharm") {
       costFromModifiers += 5; // Add +5 mana for the Lesser Control Magic necessary to make this ritual conditional.
