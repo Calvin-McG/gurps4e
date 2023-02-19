@@ -2202,7 +2202,7 @@ export class gurpsItem extends Item {
       monthlyMultiplier = 3;
     }
     else if (skill > 20) {
-      monthlyMultiplier = distanceHelpers.distancePenalty((skill - 19)); // At skill levels above 20, look up the skill - 19 on the SSRT
+      monthlyMultiplier = distanceHelpers.sizeToDistance((skill - 19)); // At skill levels above 20, look up the skill - 19 on the SSRT
     }
 
     let monthlyPay = economicHelpers.getMonthlyPayByTL(game.settings.get("gurps4e", "campaignTL"));
