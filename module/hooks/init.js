@@ -317,6 +317,16 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  // Register option for whether the RPM magic tab shows up
+  game.settings.register("gurps4e", "expandedTrainingBonuses", {
+    name: "Expanded Training Bonuses.",
+    hint: "Enabling this setting uses the expanded training bonuses table from MA:TG48 which grants further bonuses at DX+4, +7, +10, and so on. Currently applies to the following skills: Throwing.",
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
   // game.settings.register("gurps4e", "armourAsDice", {
   //   name: "Armour As Dice - WIP",
   //   hint: "Pyramid 3/34. DR converts to dice at 1d per 3.5. These dice are subtracted from the the attack, then the remainder is rolled. Makes guns behave better in HT and UT, is less appropriate for fantasy games with melee weapons and muscle powered ranged weapons.",

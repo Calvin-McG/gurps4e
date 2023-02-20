@@ -3611,6 +3611,50 @@
 						{{/if}}
 					</div>
 
+					<div>
+						<h1 class="bold" style="text-align: center;">
+							<label for="infoThrow">
+								<div>
+									{{#if actor.system.info.throw.show }}
+									Throwing
+									{{else}}
+									Throwing (Hidden)
+									{{/if}}
+								</div>
+							</label>
+						</h1>
+						<input style="display: none" id="infoThrow" type="checkbox" name="system.info.throw.show" {{checked actor.system.info.throw.show}} data-dtype="Boolean"/>
+						{{#if actor.system.info.throw.show }}
+
+						<table>
+							<tr class="item">
+								<td>Effective Throwing ST</td>
+								<td style="text-align: center">{{actor.system.info.throw.throwingDistanceST}}</td>
+								<td>This is your Lifting ST, including any modifier for high throwing skill.</td>
+							</tr>
+							<tr class="item">
+								<td>Custom Throwing Selection</td>
+								<td style="text-align: center"><input style="width: 50%" type="number" name="system.info.throw.specificWeight" value="{{actor.system.info.throw.specificWeight}}" data-dtype="Number" /> lbs</td>
+								<td>Throwing Distance: {{actor.system.info.throw.specificWeightBlock.distance}} yards, Throwing Damage: {{actor.system.info.throw.specificWeightBlock.damage}}</td>
+							</tr>
+						</table>
+
+						<table>
+							<tr class="item">
+								<th>Max Weight</th>
+								<th>Distance</th>
+								<th>Damage</th>
+							</tr>
+							{{#each actor.system.info.throw.distanceBlock as |block id|}}
+							<tr class="item">
+								<td>Up to {{block.lbs}} lbs</td>
+								<td>{{block.distance}} yards</td>
+								<td>{{block.damage}}</td>
+							</tr>
+							{{/each}}
+						</table>
+						{{/if}}
+					</div>
 
 					<div>
 						<h1 class="bold" style="text-align: center;">

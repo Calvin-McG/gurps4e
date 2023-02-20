@@ -161,6 +161,9 @@ export class gurpsActor extends Actor {
 				swim: {
 					show: false
 				},
+				throw: {
+					show: false
+				},
 				hiking: {
 					show: false,
 					terrain: "1",
@@ -185,6 +188,12 @@ export class gurpsActor extends Actor {
 			if (typeof this.system.info.runSprint === 'undefined') {
 				this.system.info.runSprint = {
 					show: false
+				}
+			}
+			if (typeof this.system.info.throw === 'undefined') {
+				this.system.info.throw = {
+					show: false,
+					specificWeight: 0
 				}
 			}
 			if (typeof this.system.info.swim === 'undefined') {
@@ -1160,6 +1169,85 @@ export class gurpsActor extends Actor {
 		this.calcRunSprintInfo();
 		this.calcSwimmingInfo();
 		this.calcHikingInfo();
+		this.calcThrowingInfo();
+	}
+
+	calcThrowingInfo() {
+		let st = this.system.primaryAttributes.lifting.value; // Store the lifting ST for later
+
+		let throwingSkill = (skillHelpers.getSkillLevelByName("Throwing", this))
+
+		let relativeToDx = 0
+
+		if (typeof throwingSkill !== "undefined") {
+			relativeToDx = throwingSkill - this.system.primaryAttributes.dexterity.value; // Get the skill's level relative to DX
+		}
+
+		let trainingBonus = 0; // Init the training bonus
+		let expandedTrainingBonus = game.settings.get("gurps4e", "expandedTrainingBonuses") // Get the game setting that controls training bonuses.
+
+		// Calculate the training bonus for Throwing
+		if (relativeToDx < 1) {
+			trainingBonus = 0;
+		}
+		else if (relativeToDx === 1) {
+			trainingBonus = 1;
+		}
+		else if (relativeToDx === 2) {
+			trainingBonus = 2;
+		}
+		else if (expandedTrainingBonus) { // If using expanded training bonuses, carry on. If not, don't.
+			if (relativeToDx < 4) {
+				trainingBonus = 2;
+			}
+			else if (relativeToDx === 4) {
+				trainingBonus = 3;
+			}
+			else {
+				trainingBonus = 3 + ((relativeToDx - 4) / 3);
+			}
+		}
+
+		this.system.info.throw.throwingDistanceST = st + trainingBonus; // The training bonus applies only to distance, not damage
+		this.system.info.throw.effectiveBasicLift = Math.round(((st * st)/5)); // Get basic lift.
+
+		let diceAdds = attributeHelpers.strikingStrengthToThrustDiceAndAdds(this.system.primaryAttributes.striking.value);
+		let dice = diceAdds[0];
+		let adds = diceAdds[1];
+
+		// Calc throwing range and damage
+		this.system.info.throw.distanceBlock = [
+			{ "distance": Math.round((3.50 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(0.050 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + ((adds - (2 * dice)) >= 0 ? "+" : "") + (adds - (2 * dice))},
+			{ "distance": Math.round((2.50 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(0.100 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + ((adds - (2 * dice)) >= 0 ? "+" : "") + (adds - (2 * dice))},
+			{ "distance": Math.round((2.00 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(0.125 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + ((adds - (2 * dice)) >= 0 ? "+" : "") + (adds - (2 * dice))}, // 1/8th
+			{ "distance": Math.round((2.00 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(0.150 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + ((adds - (dice)) >= 0 ? "+" : "") + (adds - (dice))},
+			{ "distance": Math.round((1.50 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(0.200 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + ((adds - (dice)) >= 0 ? "+" : "") + (adds - (dice))},
+			{ "distance": Math.round((1.20 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(0.250 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + ((adds - (dice)) >= 0 ? "+" : "") + (adds - (dice))}, // 1/4th
+			{ "distance": Math.round((1.10 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(0.300 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + (adds >= 0 ? "+" : "") + adds},
+			{ "distance": Math.round((1.00 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(0.400 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + (adds >= 0 ? "+" : "") + adds},
+			{ "distance": Math.round((0.80 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(0.500 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + (adds >= 0 ? "+" : "") + adds}, // 1/2nd
+			{ "distance": Math.round((0.70 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(0.750 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + (adds >= 0 ? "+" : "") + adds},
+			{ "distance": Math.round((0.60 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(1.000 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + (adds >= 0 ? "+" : "") + adds}, // 1x
+			{ "distance": Math.round((0.40 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(1.500 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + (adds >= 0 ? "+" : "") + adds},
+			{ "distance": Math.round((0.30 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(2.000 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + (adds >= 0 ? "+" : "") + adds}, // 2x
+			{ "distance": Math.round((0.25 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(2.500 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + ((adds - Math.floor((dice/2))) >= 0 ? "+" : "") + (adds - Math.floor((dice/2)))},
+			{ "distance": Math.round((0.20 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(3.000 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + ((adds - Math.floor((dice/2))) >= 0 ? "+" : "") + (adds - Math.floor((dice/2)))},
+			{ "distance": Math.round((0.15 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(4.000 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + ((adds - Math.floor((dice/2))) >= 0 ? "+" : "") + (adds - Math.floor((dice/2)))}, // 4x
+			{ "distance": Math.round((0.12 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(5.000 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + ((adds - (dice)) >= 0 ? "+" : "") + (adds - (dice))},
+			{ "distance": Math.round((0.10 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(6.000 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + ((adds - (dice)) >= 0 ? "+" : "") + (adds - (dice))},
+			{ "distance": Math.round((0.09 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(7.000 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + ((adds - (dice)) >= 0 ? "+" : "") + (adds - (dice))},
+			{ "distance": Math.round((0.08 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(8.000 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : dice + "d6" + ((adds - (dice)) >= 0 ? "+" : "") + (adds - (dice))}, // 8x
+			{ "distance": Math.round((0.07 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(9.000 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : "0d6+0"},
+			{ "distance": Math.round((0.06 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(10.00 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : "0d6+0"},
+			{ "distance": Math.round((0.05 * this.system.info.throw.throwingDistanceST) * 100) / 100, "lbs": Math.round(12.00 * this.system.info.throw.effectiveBasicLift * 100) / 100, "damage" : "0d6+0"},
+		]
+
+		for (let l = 0; l < this.system.info.throw.distanceBlock.length; l++) {
+			if (this.system.info.throw.distanceBlock[l].lbs >= this.system.info.throw.specificWeight) {
+				this.system.info.throw.specificWeightBlock = this.system.info.throw.distanceBlock[l];
+				l = this.system.info.throw.distanceBlock.length;
+			}
+		}
 	}
 
 	// Calculates jump based information based on the rules in B352

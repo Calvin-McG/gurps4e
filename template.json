@@ -37,7 +37,10 @@
         "info": {
           "jump": {},
           "breath": {},
-          "runHikeSwim": {}
+          "runSprint": {},
+          "hiking": {},
+          "swim": {},
+          "throw": {}
         },
         "posture": {
           "label": "Posture",
