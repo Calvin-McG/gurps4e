@@ -8,6 +8,10 @@ export class attributeHelpers {
         dice = parseInt(split[0]);
         adds = parseInt(split[1]);
 
+        if (isNaN(adds)) {
+            adds = 0;
+        }
+
         return [dice, adds];
     }
     static strikingStrengthToThrust(sst){
