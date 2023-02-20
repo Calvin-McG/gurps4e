@@ -1,5 +1,15 @@
 export class attributeHelpers {
 
+    static strikingStrengthToThrustDiceAndAdds(sst){
+        let dice = 0;
+        let adds = 0;
+
+        let split = this.strikingStrengthToThrust(sst).split("d6");
+        dice = parseInt(split[0]);
+        adds = parseInt(split[1]);
+
+        return [dice, adds];
+    }
     static strikingStrengthToThrust(sst){
         let thrust = "";
 
@@ -95,7 +105,7 @@ export class attributeHelpers {
                 thrust = "3d6";
                 break;
             case 31:
-                thrust = "3d6-+1";
+                thrust = "3d6+1";
                 break;
             case 32:
                 thrust = "3d6+1";
