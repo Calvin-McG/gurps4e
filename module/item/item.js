@@ -1650,7 +1650,7 @@ export class gurpsItem extends Item {
     let greaterEffectsMultiplier = 1;
     let costFromPaths = 0;
     let costFromModifiers = 0;
-    let lowestOfPaths = Number.MAX_VALUE; // We're going to be using Math.min later to narrow down to the lowest path value. So set it to max right now.
+    let lowestOfPaths = 0;
 
     // Undefined checks
 
@@ -1774,7 +1774,13 @@ export class gurpsItem extends Item {
         else { // There is no actor for this item
           path.skill = 0 // Set the path skill to zero so nothing breaks if we try to do math later.
         }
-        lowestOfPaths = Math.min(lowestOfPaths, path.skill); // Compare the skill to the currently stored value and keep the lowest.
+
+        if (lowestOfPaths === 0) { // If it's zero, it's been freshly initialized, so set it to the path skill we're currently itterating.
+          lowestOfPaths = path.skill;
+        }
+        else {
+          lowestOfPaths = Math.min(lowestOfPaths, path.skill); // Compare the skill to the currently stored value and keep the lowest.
+        }
 
         if (path.level === "greater") { // If the effect is greater
           greaterEffectsMultiplier += 2; // Start applying the stacking multiplier.
