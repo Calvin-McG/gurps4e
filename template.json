@@ -658,15 +658,15 @@
       "usePersonalMana": true,
       "extraMana": 0,
       "timeUnitsPerAttempt": 5,
+      "safeThreshold": 0,
+      "actorContribution": 0,
+      "additionalSourcesOfMana": 0,
+      "totalSafeThreshold": 0,
+      "craftingRollMod": 0,
+      "quirkRollMod": 0,
       "charm": {
-        "safeThreshold": 6,
-        "additionalSourcesOfMana": 0,
-        "totalSafeThreshold": 6,
-        "actorContribution": 0,
         "saleCost": 0,
         "availability": "1",
-        "craftingRollMod": 0,
-        "quirkRollMod": 0
       },
       "elixir": {
         "type": "potion",

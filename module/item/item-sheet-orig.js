@@ -247,11 +247,11 @@ export class gurpsItemSheet extends ItemSheet {
     }
 
     _makeCraftingRoll(event) {
-        rollHelpers.charmCraftingRoll(this.item.system.charm.craftingRollMod, "Attempts to craft a " + event.currentTarget.id + " charm.", true);
+        rollHelpers.charmCraftingRoll(this.item.system.craftingRollMod, "Attempts to craft a " + event.currentTarget.id + " charm.", true);
     }
 
     _makeQuirkRoll(event) {
-        rollHelpers.skillRoll(this.item.system.level, this.item.system.charm.quirkRollMod, "Crafts a " + event.currentTarget.id + " charm.", false).then( rollInfo => { // Make the roll
+        rollHelpers.skillRoll(this.item.system.level, this.item.system.quirkRollMod, "Crafts a " + event.currentTarget.id + " charm.", false).then( rollInfo => { // Make the roll
 
             let html = rollInfo.content;
 

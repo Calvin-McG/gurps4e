@@ -127,37 +127,37 @@
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Safe Threshold: </label>
-                                    {{item.system.charm.safeThreshold}}
+                                    {{item.system.safeThreshold}}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Character's Mana Contribution: </label>
-                                    {{item.system.charm.actorContribution}}
+                                    {{item.system.actorContribution}}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Additional Sources Of Mana: </label>
-                                    <input type="number" style="width: 50%" name="system.charm.additionalSourcesOfMana" value="{{item.system.charm.additionalSourcesOfMana}}" data-dtype="Number" />
+                                    <input type="number" style="width: 50%" name="system.additionalSourcesOfMana" value="{{item.system.additionalSourcesOfMana}}" data-dtype="Number" />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Total Safe Threshold: </label>
-                                    {{item.system.charm.totalSafeThreshold}}
+                                    {{item.system.totalSafeThreshold}}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Crafting Roll Modifier (Higher numbers are bad): </label>
-                                    {{item.system.charm.craftingRollMod}} <input type='button' class='makeCraftingRoll' id="{{item.name}}" value='Make Crafting Roll'/>
+                                    {{item.system.craftingRollMod}} <input type='button' class='makeCraftingRoll' id="{{item.name}}" value='Make Crafting Roll'/>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Quirk Roll Modifier (Higher numbers are good): </label>
-                                    {{item.system.charm.quirkRollMod}} <input type='button' class='makeQuirkRoll' id="{{item.name}}"  value='Make Quirk Roll'/>
+                                    {{item.system.quirkRollMod}} <input type='button' class='makeQuirkRoll' id="{{item.name}}"  value='Make Quirk Roll'/>
                                 </td>
                             </tr>
                             {{#unless (eq item.system.ritualType "conditional")}}
@@ -192,16 +192,12 @@
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Workspace Modifier</label>
-                                </td>
-                                <td>
                                     <input type="number" style="width: 50%" name="system.workspaceMod" value="{{item.system.workspaceMod}}" data-dtype="Number" />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Elixir Type</label>
-                                </td>
-                                <td>
                                     <select name="system.elixir.type">
                                         {{#select item.system.elixir.type}}
                                         <option value="grenade">Grenade</option>
@@ -211,6 +207,42 @@
                                         <option value="powder">Powder</option>
                                         {{/select}}
                                     </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Safe Threshold: </label>
+                                    {{item.system.safeThreshold}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Character's Mana Contribution: </label>
+                                    {{item.system.actorContribution}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Additional Sources Of Mana: </label>
+                                    <input type="number" style="width: 50%" name="system.additionalSourcesOfMana" value="{{item.system.additionalSourcesOfMana}}" data-dtype="Number" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Total Safe Threshold: </label>
+                                    {{item.system.totalSafeThreshold}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Crafting Roll Modifier (Higher numbers are bad): </label>
+                                    {{item.system.craftingRollMod}} <input type='button' class='makeCraftingRoll' id="{{item.name}}" value='Make Crafting Roll'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Quirk Roll Modifier (Higher numbers are good): </label>
+                                    {{item.system.quirkRollMod}} <input type='button' class='makeQuirkRoll' id="{{item.name}}"  value='Make Quirk Roll'/>
                                 </td>
                             </tr>
                         </table>

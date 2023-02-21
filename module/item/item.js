@@ -1992,7 +1992,7 @@ export class gurpsItem extends Item {
     }
 
     // Charms and Conditional rituals
-    if (this.system.ritualType === "charm" || this.system.ritualType === "conditional" || this.system.ritualType === "conditionalCharm") {
+    if (this.system.ritualType === "charm" || this.system.ritualType === "conditional" || this.system.ritualType === "conditionalCharm" || this.system.ritualType === "elixir") {
       // Charm sale and purchase
       if (this.system.ritualType === "charm" || this.system.ritualType === "conditionalCharm") { // Only charms can be bought and sold
         let charmBaseCost = this.charmSkillToBaseCost(this.system.level) // Get the base cost from skill and monthly pay by TL
@@ -2003,49 +2003,49 @@ export class gurpsItem extends Item {
       }
 
       // Charm safe threshold calculator
-      this.system.charm.safeThreshold = this.charmSafeThreshold(this.system.level);
-      this.system.charm.actorContribution = 0; // Set actor contribution to 0 in case there is no actor
+      this.system.safeThreshold = this.charmSafeThreshold(this.system.level);
+      this.system.actorContribution = 0; // Set actor contribution to 0 in case there is no actor
 
       if (this.actor) { // If there's an actor
         if (this.actor.system) {
           if (this.actor.system.rpm) {
-            this.system.charm.actorContribution = ((this.actor.system.rpm.magery * 3) + this.actor.system.rpm.er) // Store their mana reserve
+            this.system.actorContribution = ((this.actor.system.rpm.magery * 3) + this.actor.system.rpm.er) // Store their mana reserve
           }
         }
       }
 
-      let nonAmbientMana = this.system.charm.actorContribution + this.system.charm.additionalSourcesOfMana // Total up any sources of non ambient mana for later.
-      this.system.charm.totalSafeThreshold = this.system.charm.safeThreshold + nonAmbientMana // Add the actor's personal mana reserve and any external mana
+      let nonAmbientMana = this.system.actorContribution + this.system.additionalSourcesOfMana // Total up any sources of non ambient mana for later.
+      this.system.totalSafeThreshold = this.system.safeThreshold + nonAmbientMana // Add the actor's personal mana reserve and any external mana
 
       // Charm crafting modifiers
 
       // Set default values in case of unexpected behaviour.
-      this.system.charm.craftingRollMod = 0;
-      this.system.charm.quirkRollMod = 0;
+      this.system.craftingRollMod = 0;
+      this.system.quirkRollMod = 0;
 
       if (nonAmbientMana >= this.system.energyCost) { // The charm can be crafted without any ambient mana
-        this.system.charm.craftingRollMod = -2;
-        this.system.charm.quirkRollMod = +2;
+        this.system.craftingRollMod = -2;
+        this.system.quirkRollMod = +2;
       }
-      else if ((this.system.energyCost - nonAmbientMana) <= (this.system.charm.safeThreshold / 2)) { // After subtracting the actor's mana reserve, check to see if the remainder is half or less the safe threshold.
-        this.system.charm.craftingRollMod = -1;
-        this.system.charm.quirkRollMod = +1;
+      else if ((this.system.energyCost - nonAmbientMana) <= (this.system.safeThreshold / 2)) { // After subtracting the actor's mana reserve, check to see if the remainder is half or less the safe threshold.
+        this.system.craftingRollMod = -1;
+        this.system.quirkRollMod = +1;
       }
-      else if ((this.system.energyCost - nonAmbientMana) <= (this.system.charm.safeThreshold)) { // After subtracting the actor's mana reserve, check to see if the remainder is equal to or less the safe threshold.
-        this.system.charm.craftingRollMod = 0;
-        this.system.charm.quirkRollMod = 0;
+      else if ((this.system.energyCost - nonAmbientMana) <= (this.system.safeThreshold)) { // After subtracting the actor's mana reserve, check to see if the remainder is equal to or less the safe threshold.
+        this.system.craftingRollMod = 0;
+        this.system.quirkRollMod = 0;
       }
-      else if ((this.system.energyCost - nonAmbientMana) < (this.system.charm.safeThreshold * 2)) { // After subtracting the actor's mana reserve, check to see if the remainder is more than the safe threshold but not double.
-        this.system.charm.craftingRollMod = +1;
-        this.system.charm.quirkRollMod = -1;
+      else if ((this.system.energyCost - nonAmbientMana) < (this.system.safeThreshold * 2)) { // After subtracting the actor's mana reserve, check to see if the remainder is more than the safe threshold but not double.
+        this.system.craftingRollMod = +1;
+        this.system.quirkRollMod = -1;
       }
       else { // After subtracting the actor's mana reserve, check to see if the remainder is double or more the safe threshold.
         let remainder = (this.system.energyCost - nonAmbientMana); // Get the mana cost after subtracting the actor's reserve
-        let multiple = Math.floor(remainder / this.system.charm.safeThreshold); // Get the multiple of the safe threshold that the remainder represents. Round down.
+        let multiple = Math.floor(remainder / this.system.safeThreshold); // Get the multiple of the safe threshold that the remainder represents. Round down.
 
         // Store the multiple above as the modifier, with the sign set accordingly.
-        this.system.charm.craftingRollMod = +multiple;
-        this.system.charm.quirkRollMod = -multiple;
+        this.system.craftingRollMod = +multiple;
+        this.system.quirkRollMod = -multiple;
       }
     }
     else if (this.system.ritualType === "elixir") {
