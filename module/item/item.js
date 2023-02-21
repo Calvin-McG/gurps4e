@@ -1865,7 +1865,7 @@ export class gurpsItem extends Item {
                 energyCost = energyCost + Math.ceil(enhancementPercentage / 5); // Every +5% is worth 1 energy, rounded up.
               }
               else { // Energy cost is equal to or greater than 20
-                energyCost = energyCost * (1 + (enhancementPercentage / 100)); // Just apply the modifier to the base energy cost of this damage section.
+                energyCost = Math.ceil(energyCost * (1 + (enhancementPercentage / 100))); // Just apply the modifier to the base energy cost of this damage section.
               }
             }
           }
