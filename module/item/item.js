@@ -1755,12 +1755,17 @@ export class gurpsItem extends Item {
       }
     }
 
+    let paths = [];
     let keys = Object.keys(this.system.path);
     if (keys.length > 0) {
       for (let k = 0; k < keys.length; k++) {
         let path = getProperty(this.system.path, keys[k]);
         path.cost = this._setCostByEffectName(path.effect); // Get the base cost of the spell
         costFromPaths += path.cost;
+
+        if (!paths.includes(path.path)) { // The current paths array does not yet include the name of the path we are currently looking at.
+          paths.push(path.path);
+        }
 
         if (typeof this.actor !== 'undefined') { // If there is an actor for this item. (As in, the item is on an actor)
           if (this.actor !== null) { // If there is an actor for this item. (As in, the item is on an actor)
@@ -1939,8 +1944,8 @@ export class gurpsItem extends Item {
     let runningSkillLevel = lowestOfPaths
 
     // Apply the -1 penalty per path beyond the first two
-    if (keys.length > 2) { // There are more than two keys
-      runningSkillLevel -= (keys.length - 2); // Apply the penalty to the running total.
+    if (paths.length > 2) { // There are more than two paths
+      runningSkillLevel -= (paths.length - 2); // Apply the penalty to the running total.
     }
 
     // If it's an alchemical mixture, apply the Alchemy skill cap here
