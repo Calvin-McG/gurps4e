@@ -192,6 +192,11 @@ export class gurpsItemSheet extends ItemSheet {
                 energyGathered += Math.max(1, currentRoll.margin); // Add the margin of success to the energy gathered, but at least 1;
                 previousCrit = true;
 
+                // Account for the fact that the roll following a crit is always 1 second, and return any missing bonus
+                if (this.item.system.timeUnitsPerAttempt < 5 && this.item.system.timeUnitsPerAttempt > 0) { // They are taking less than 5 but not zero seconds.
+                    energyGathered += (5 - this.item.system.timeUnitsPerAttempt);
+                }
+
                 html += "<tr><td>" + cycleCount + "</td><td style='text-align: center'>" + effectiveSkill + "</td><td style='background-color: rgb(106, 162, 106)'>Critical Success by " + currentRoll.margin + "</td><td>" + energyGathered + "</td>"; // Add column details for everything but time
             }
             else {
