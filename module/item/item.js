@@ -1820,6 +1820,7 @@ export class gurpsItem extends Item {
         else if (ritualModifier.modifier === "aoe") {
           ritualModifier.cost = Math.max(Math.abs(distanceHelpers.distancePenalty(ritualModifier.effect.area)) * 2, 2); // Add twice the distance penalty, but at least 2.
           ritualModifier.cost += Math.ceil(ritualModifier.effect.excludes / 2); // It's +1 mana per 2 exclusions, rounded up.
+          ritualModifier.hexes = ((3 * ritualModifier.effect.area * ritualModifier.effect.area) - 3 * ritualModifier.effect.area + 1);
         }
         else if (ritualModifier.modifier === "modifier" || ritualModifier.modifier === "bonus" || ritualModifier.modifier === "penalty") {
           ritualModifier.cost = this.getRPMModifierCost(ritualModifier.effect.scope, ritualModifier.effect.modifier);

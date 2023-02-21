@@ -519,8 +519,9 @@
                         {{/if}}
 
                         {{#if (eq ritualModifier.modifier "aoe") }}
-                        <input type="number" name="system.ritualModifier.{{id}}.effect.area" value="{{ritualModifier.effect.area}}" style="text-align:center; width: 20%; margin-left: 10%;" /> yards
-                        <input type="number" name="system.ritualModifier.{{id}}.effect.excludes" value="{{ritualModifier.effect.excludes}}" style="text-align:center; width: 20%; margin-left: 10%;" min="0"/> exclusions
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.area" value="{{ritualModifier.effect.area}}" style="text-align:center; width: 20%; margin-left: 1em;" /> yards
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.excludes" value="{{ritualModifier.effect.excludes}}" style="text-align:center; width: 20%; margin-left: 1em;" min="0"/> exclusions;
+                        Total Hexes: {{ritualModifier.hexes}}
                         {{/if}}
 
                         {{#if (eq ritualModifier.modifier "modifier") }}
