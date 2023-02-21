@@ -2048,7 +2048,8 @@ export class gurpsItem extends Item {
         this.system.quirkRollMod = -multiple;
       }
     }
-    else if (this.system.ritualType === "elixir") {
+
+    if (this.system.ritualType === "elixir") {
       // Alchemy crafting modifiers
       let monthlyPay = economicHelpers.getMonthlyPayByTL(game.settings.get("gurps4e", "campaignTL"));
 
@@ -2066,9 +2067,9 @@ export class gurpsItem extends Item {
       this.system.elixir.ingredientQtys.fineLb = Math.round(this.system.elixir.ingredientQtys.fine * 3 * 100) / 100;
 
       // Then get the total of above
-      this.system.elixir.ingredientQtys.total   = Math.round(this.system.elixir.ingredientQtys.improvised + this.system.elixir.ingredientQtys.basic + this.system.elixir.ingredientQtys.good + this.system.elixir.ingredientQtys.fine + this.system.elixir.ingredientQtys.legendary * 100) / 100;
-      this.system.elixir.ingredientQtys.total$  = Math.round(this.system.elixir.ingredientQtys.improvised$ + this.system.elixir.ingredientQtys.basic$ + this.system.elixir.ingredientQtys.good$ + this.system.elixir.ingredientQtys.fine$ + (this.system.elixir.ingredientQtys.legendary$ * this.system.elixir.ingredientQtys.legendary) * 100) / 100;
-      this.system.elixir.ingredientQtys.totalLb = Math.round(this.system.elixir.ingredientQtys.improvisedLb + this.system.elixir.ingredientQtys.basicLb + this.system.elixir.ingredientQtys.goodLb + this.system.elixir.ingredientQtys.fineLb + (this.system.elixir.ingredientQtys.legendaryLb * this.system.elixir.ingredientQtys.legendary) * 100) / 100;
+      this.system.elixir.ingredientQtys.total   = Math.round((this.system.elixir.ingredientQtys.improvised + this.system.elixir.ingredientQtys.basic + this.system.elixir.ingredientQtys.good + this.system.elixir.ingredientQtys.fine + this.system.elixir.ingredientQtys.legendary) * 100) / 100;
+      this.system.elixir.ingredientQtys.total$  = Math.round((this.system.elixir.ingredientQtys.improvised$ + this.system.elixir.ingredientQtys.basic$ + this.system.elixir.ingredientQtys.good$ + this.system.elixir.ingredientQtys.fine$ + (this.system.elixir.ingredientQtys.legendary$ * this.system.elixir.ingredientQtys.legendary)) * 100) / 100;
+      this.system.elixir.ingredientQtys.totalLb = Math.round((this.system.elixir.ingredientQtys.improvisedLb + this.system.elixir.ingredientQtys.basicLb + this.system.elixir.ingredientQtys.goodLb + this.system.elixir.ingredientQtys.fineLb + (this.system.elixir.ingredientQtys.legendaryLb * this.system.elixir.ingredientQtys.legendary)) * 100) / 100;
 
       // Then figure out what the actual discount works out to.
 
