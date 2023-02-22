@@ -666,7 +666,7 @@
       "quirkRollMod": 0,
       "charm": {
         "saleCost": 0,
-        "availability": "1",
+        "availability": "1"
       },
       "elixir": {
         "type": "potion",
