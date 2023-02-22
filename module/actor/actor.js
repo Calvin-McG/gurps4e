@@ -1125,7 +1125,7 @@ export class gurpsActor extends Actor {
 	}
 
     recalcSkillPoints() {
-        var skillPoints = +0;
+        let skillPoints = +0;
         // Iterate through the list of skills.
         for (let i = 0; i < this.items.contents.length; i++){
             if (this.items.contents[i].type === "Rollable"){
@@ -1664,7 +1664,7 @@ export class gurpsActor extends Actor {
 	}
 
 	setTotalPoints(unspent) {
-		let total = +this.system.points.attributes + +this.system.points.traits + +this.system.points.skills + +unspent;
+		let total = +this.system.points.attributes + +this.system.points.traits + +this.system.points.skills + +this.system.points.path + +unspent;
 		this.update({ ['system.points.total']: total });
 	}
 
