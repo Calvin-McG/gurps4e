@@ -39,22 +39,22 @@ export class skillHelpers {
                 while (defaults[q]) { // While the current entry is not null
                     // Check attributes first, add any results to the array of attribute defaults
                     if (defaults[q].skill.toUpperCase() === 'ST' || defaults[q].skill.toUpperCase() === 'STRENGTH') {
-                        attrDefaultArray.push(st + +defaults[q].mod);
+                        attrDefaultArray.push(Math.min(20, st) + +defaults[q].mod);
                     }
                     else if (defaults[q].skill.toUpperCase() === 'DX' || defaults[q].skill.toUpperCase() === 'DEXTERITY') {
-                        attrDefaultArray.push(dx + +defaults[q].mod);
+                        attrDefaultArray.push(Math.min(20, dx) + +defaults[q].mod);
                     }
                     else if (defaults[q].skill.toUpperCase() === 'IQ' || defaults[q].skill.toUpperCase() === 'INTELLIGENCE') {
-                        attrDefaultArray.push(iq + +defaults[q].mod);
+                        attrDefaultArray.push(Math.min(20, iq) + +defaults[q].mod);
                     }
                     else if (defaults[q].skill.toUpperCase() === 'HT' || defaults[q].skill.toUpperCase() === 'HEALTH') {
-                        attrDefaultArray.push(ht + +defaults[q].mod);
+                        attrDefaultArray.push(Math.min(20, ht) + +defaults[q].mod);
                     }
                     else if (defaults[q].skill.toUpperCase() === 'PER' || defaults[q].skill.toUpperCase() === 'PERCEPTION') {
-                        attrDefaultArray.push(per + +defaults[q].mod);
+                        attrDefaultArray.push(Math.min(20, per) + +defaults[q].mod);
                     }
                     else if (defaults[q].skill.toUpperCase() === 'WILL') {
-                        attrDefaultArray.push(will + +defaults[q].mod);
+                        attrDefaultArray.push(Math.min(20, will) + +defaults[q].mod);
                     }
                     // Then check other skills, add any results to the array of skill defaults
                     else {
