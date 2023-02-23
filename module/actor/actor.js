@@ -2109,7 +2109,6 @@ export class gurpsActor extends Actor {
 			if (keys.length > 0) {
 				for (let k = 0; k < keys.length; k++) {
 					let path = getProperty(this.system.rpm.path, keys[k]);
-					console.log(path.defaults)
 					path.defaults = [
 						{
 							"skill": this.system.rpm.coreSkill,

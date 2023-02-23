@@ -126,7 +126,7 @@ export class skillHelpers {
                         if (actor.items.contents[i].type === "Rollable"){
                             if (actor.items.contents[i].system.category === "skill"){
                                 if (baseSkill === actor.items.contents[i].name.toUpperCase()){
-                                    base = this.computeSkillLevelWithoutDefaults(actor, actor.items.contents[i].system);
+                                    base = this.computeSkillLevelWithoutDefaults(actor, actor.items.contents[i].system.difficulty, actor.items.contents[i].system.baseAttr, actor.items.contents[i].system.points, actor.items.contents[i].system.mod);
                                 }
                             }
                         }
@@ -188,23 +188,23 @@ export class skillHelpers {
 
     static getBaseAttrValue(baseAttr, actor) {
         let base = 0;
-        if (baseAttr.toUpperCase() == 'ST' || baseAttr.toUpperCase() == 'STRENGTH'){
+        if (baseAttr.toUpperCase() === 'ST' || baseAttr.toUpperCase() === 'STRENGTH'){
             let smDiscount = attributeHelpers.calcSMDiscount(actor.system.bio.sm)
             base = attributeHelpers.calcStOrHt(actor.system.primaryAttributes.strength, smDiscount);
         }
-        else if (baseAttr.toUpperCase() == 'DX' || baseAttr.toUpperCase() == 'DEXTERITY') {
+        else if (baseAttr.toUpperCase() === 'DX' || baseAttr.toUpperCase() === 'DEXTERITY') {
             base = attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.dexterity);
         }
-        else if (baseAttr.toUpperCase() == 'IQ' || baseAttr.toUpperCase() == 'INTELLIGENCE') {
+        else if (baseAttr.toUpperCase() === 'IQ' || baseAttr.toUpperCase() === 'INTELLIGENCE') {
             base = attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.intelligence);
         }
-        else if (baseAttr.toUpperCase() == 'HT' || baseAttr.toUpperCase() == 'HEALTH') {
+        else if (baseAttr.toUpperCase() === 'HT' || baseAttr.toUpperCase() === 'HEALTH') {
             base = attributeHelpers.calcStOrHt(actor.system.primaryAttributes.health, 1);
         }
-        else if (baseAttr.toUpperCase() == 'PER' || baseAttr.toUpperCase() == 'PERCEPTION') {
+        else if (baseAttr.toUpperCase() === 'PER' || baseAttr.toUpperCase() === 'PERCEPTION') {
             base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.intelligence), actor.system.primaryAttributes.perception);
         }
-        else if (baseAttr.toUpperCase() == 'WILL') {
+        else if (baseAttr.toUpperCase() === 'WILL') {
             base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.intelligence), actor.system.primaryAttributes.will);
         }
         return base;
