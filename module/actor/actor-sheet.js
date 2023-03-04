@@ -75,6 +75,9 @@ export class gurpsActorSheet extends ActorSheet {
 
 		// Track changes to unspent points
 		html.find('.unspentEntry').change(this._onUnspentPointsChange.bind(this));
+
+		// Track changes to the RPM core skill
+		html.find('.rpmCoreSkill').change(this._onRpmCoreSkillChange.bind(this));
 	}
 
 	/* -------------------------------------------- */
@@ -97,6 +100,11 @@ export class gurpsActorSheet extends ActorSheet {
 	_onUnspentPointsChange(event) {
 		let unspent = event.target.value;
 		this.actor.setTotalPoints(unspent);
+	}
+
+	_onRpmCoreSkillChange(event) {
+		let skillName = event.target.value;
+		this.actor.setRPMCoreSkill(skillName);
 	}
 
 	/**

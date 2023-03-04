@@ -1668,6 +1668,10 @@ export class gurpsActor extends Actor {
 		this.update({ ['system.points.total']: total });
 	}
 
+	setRPMCoreSkill(skillName) {
+		this.update({ ['system.rpm.coreSkill']: skillName });
+	}
+
 	recalcAtrPoints(){
 		//Update point totals
 		let attributePoints = +this.system.primaryAttributes.strength.points +
