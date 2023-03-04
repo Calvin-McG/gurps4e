@@ -1669,7 +1669,26 @@ export class gurpsActor extends Actor {
 	}
 
 	setRPMCoreSkill(skillName) {
-		this.update({ ['system.rpm.coreSkill']: skillName });
+		this.system.rpm.coreSkill = skillName;
+
+		this.system.rpm.coreSkillLevel = skillHelpers.getSkillLevelByName(skillName, this) // Get the level of the core skill for this RPM caster
+
+		let keys = Object.keys(this.system.rpm.path);
+
+		for (let k = 0; k < keys.length; k++) {
+			let path = getProperty(this.system.rpm.path, keys[k]);
+			path.defaults = [
+				{
+					"skill": skillName,
+					"mod": -6
+				}
+			]
+			path.level = skillHelpers.computeSkillLevel(this, path); // Get the base skill level based on the points spent and any buying up from defaults
+			path.level += path.mod; // Add path mod.
+			path.level = Math.min(path.level, this.system.rpm.maxSkill, this.system.rpm.coreSkillLevel); // Apply the skill cap
+		}
+
+		this.update({ ['system.rpm']: this.system.rpm });
 	}
 
 	recalcAtrPoints(){
@@ -2109,6 +2128,8 @@ export class gurpsActor extends Actor {
 			this.system.rpm.maxConditional = this.system.rpm.magery + this.system.rpm.coreSkillLevel;
 
 			let keys = Object.keys(this.system.rpm.path);
+
+			this.system.rpm.coreSkillLevel = skillHelpers.getSkillLevelByName(this.system.rpm.coreSkill, this) // Get the level of the core skill for this RPM caster
 
 			if (keys.length > 0) {
 				for (let k = 0; k < keys.length; k++) {
