@@ -3466,7 +3466,7 @@ export class vehicleHelpers {
             },
             {
                 "tl": "6",
-                "tlMod": "0",
+                "tlMod": "",
                 "name": "Small Steam Launch",
                 "code": "smallSteamLaunch",
                 "hp": "58",
@@ -3502,7 +3502,7 @@ export class vehicleHelpers {
             },
             {
                 "tl": "6",
-                "tlMod": "0",
+                "tlMod": "",
                 "name": "Armed Steam Launch",
                 "code": "armedSteamLaunch",
                 "hp": "94",
@@ -3720,7 +3720,7 @@ export class vehicleHelpers {
             },
             {
                 "tl": "6",
-                "tlMod": "0",
+                "tlMod": "",
                 "name": "B-Class Submarine",
                 "code": "bClassSubmarine",
                 "hp": "335",
