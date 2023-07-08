@@ -563,6 +563,7 @@ export class actorHelpers {
                     penaltyFront: -5,
                     penaltyBack: -5,
                     weightFront: 1/6,
+                    weightBack: 1/6,
                     flexible: false
                 }
             }
