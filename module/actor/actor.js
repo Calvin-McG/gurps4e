@@ -3854,7 +3854,7 @@ export class gurpsActor extends Actor {
 	gatherOptions(html, type, flags, locationIDs, facing){
 		let selection;
 		let name;
-		let mod = html.find('#mod').val()
+		let mod = parseInt(html.find('#mod').val());
 		let options = {
 			feverishDefence: 	html.find('#feverishDefence')[0] ? html.find('#feverishDefence')[0].checked : "",
 			timedDefence: 		html.find('#timedDefence')[0] ? html.find('#timedDefence')[0].checked : "",
@@ -3901,7 +3901,7 @@ export class gurpsActor extends Actor {
 			totalModifier = +0;
 		}
 		else {
-			totalModifier = +mod;
+			totalModifier = parseInt(mod);
 		}
 
 		label += target.name + " attempts a ";
