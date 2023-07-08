@@ -3220,10 +3220,15 @@ export class gurpsActor extends Actor {
 			i += 1; // Itterate the index
 			part = getProperty(targetBody.body, bodyParts[i]); // Get the part for the current index
 			if (relativePosition[1] == 1) { // If the target is facing the attacker
-				roll -= part.weightFront; // Subtract it's weight from the rolled weight
+				if (typeof part.weightFront !== "undefined") { // Make sure this entry is not undefined. If it is undefined we don't need to do anything.
+					roll -= part.weightFront; // Subtract its weight from the rolled weight
+				}
+
 			}
 			else {
-				roll -= part.weightBack; // Subtract it's weight from the rolled weight
+				if (typeof part.weightBack !== "undefined") { // Make sure this entry is not undefined. If it is undefined we don't need to do anything.
+					roll -= part.weightBack; // Subtract its weight from the rolled weight
+				}
 			}
 		} while (roll > 0) // If the roll drops below zero, stop looping
 
