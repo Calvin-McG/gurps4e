@@ -102,32 +102,39 @@ export class actorHelpers {
             eyeHp += 1;
         }
 
-        let totalSubWeight = 6/6;
+        let totalSubWeightFront = 6/6;
+        let totalSubWeightBack = 4/6;
 
         if (bornBiter > 0) { // Having any level of born biter makes it more likely to hit the nose at random, so increase total weight
-            totalSubWeight += 1/6;
+            totalSubWeightFront += 1/6;
         }
 
         if (eyesVulnerable) {
-            totalSubWeight += 1/6
+            totalSubWeightFront += 1/6
+            totalSubWeightBack += 1/6
             if (!eyeL) { // Having no left eye reduces the weight
-                totalSubWeight -= 1/6;
+                totalSubWeightFront -= 1/6;
+                totalSubWeightBack -= 1/6
             }
             if (!eyeR) { // Having no right eye reduces the weight
-                totalSubWeight -= 1/6;
+                totalSubWeightFront -= 1/6;
+                totalSubWeightBack -= 1/6
             }
         }
         else {
             if (!eyeL) { // Having no left eye reduces the weight
-                totalSubWeight -= 1/12;
+                totalSubWeightFront -= 1/12;
+                totalSubWeightBack -= 1/12;
             }
             if (!eyeR) { // Having no right eye reduces the weight
-                totalSubWeight -= 1/12;
+                totalSubWeightFront -= 1/12;
+                totalSubWeightBack -= 1/12;
             }
         }
 
-        if (!ears) { // Having no eye reduces the weight
-            totalSubWeight -= 1/6;
+        if (!ears) { // Having no ears reduces the weight
+            totalSubWeightFront -= 1/6;
+            totalSubWeightBack -= 1/6;
         }
 
         let part = {
@@ -137,8 +144,8 @@ export class actorHelpers {
             penaltyBack: -7,
             weightFront: 0.02777777778,
             weightBack: 0.01851851852,
-            totalSubWeightFront: totalSubWeight,
-            totalSubWeightBack: totalSubWeight,
+            totalSubWeightFront: totalSubWeightFront,
+            totalSubWeightBack: totalSubWeightBack,
             subLocation: {
                 jaw: {
                     label: "Jaw",
@@ -167,7 +174,7 @@ export class actorHelpers {
                     penaltyFront: -6 + +bornBiter, // Add levels of born biter to the penalty to hit the jaw
                     penaltyBack: -6 + +bornBiter,
                     weightFront: 1/6,
-                    weightBack: 1/6,
+                    weightBack: 0,
                     flexible: false
                 },
                 nose: {
@@ -197,7 +204,7 @@ export class actorHelpers {
                     penaltyFront: -7 + +bornBiter, // Add levels of born biter to the penalty to hit the nose
                     penaltyBack: -7 + +bornBiter,
                     weightFront: (bornBiter > 0) ? 2/6 : 1/6, // Having any level of born biter makes it more likely to hit the nose at random
-                    weightBack: (bornBiter > 0) ? 2/6 : 1/6,
+                    weightBack: 0,
                     hp: {
                         max: partHp,
                         state: "Fine",
