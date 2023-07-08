@@ -31,7 +31,6 @@ export class gurpsActor extends Actor {
 		super.prepareData();
 
 		this.checkUndefined();
-		this.bodyTypeUpdate();
 
 		//Total up spent and remaining points
 		this.recalcAtrPoints();
@@ -44,13 +43,16 @@ export class gurpsActor extends Actor {
 		//Convert spent points into their effective values
 		this.recalcAtrValues();
 
+		// Update Body Type
+		this.bodyTypeUpdate();
+
 		// Update magic related stuff
 		this.updateMagic();
 
 		// Sort out the player's senses.
 		this.recalcSenses();
 
-		//Set up categories for each type
+		// Set up categories for each type
 		this.setupCategories();
 
 		// Store the character's armour values for convenient use later.
