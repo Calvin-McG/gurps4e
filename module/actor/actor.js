@@ -896,7 +896,7 @@ export class gurpsActor extends Actor {
 				else if (bodyType == "vermiform"){
 					bodyObj.upperChest 	= actorHelpers.addChest(	actorData, "upperChest","Upper Chest", vitals);
 					bodyObj.lowerChest 	= actorHelpers.addChest(	actorData, "lowerChest","Lower Chest", vitals);
-					bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData, "abdomen","Abdomen", vitals);
+					bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData, "Abdomen","abdomen", vitals);
 				}
 				else if (bodyType == "lamia"){
 					bodyObj.armLeft 	= actorHelpers.addArm(		actorData, "Left Arm", "armLeft");
