@@ -36,6 +36,16 @@ Hooks.once("init", () => {
     type: Number
   });
 
+  game.settings.register("gurps4e", "gravity", {
+    name: "Set the default gravity",
+    hint: "Ideally this would be set per scene, but until that's possible, it is set at the campaign level." +
+        "This value is gravity in Gs, as in, multiples of earth gravity. So Earth is 1. This is currently only used to determine fall speed.",
+    scope: "world",
+    config: true,
+    default: 1,
+    type: Number
+  });
+
   // Register option for whether the vanilla magic tab shows up
   game.settings.register("gurps4e", "showVanillaMagic", {
     name: "Show vanilla magic tab.",

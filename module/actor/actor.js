@@ -179,6 +179,11 @@ export class gurpsActor extends Actor {
 			}
 		}
 		else {
+			if (typeof this.system.info.fall === 'undefined') {
+				this.system.info.fall = {
+					show: false
+				}
+			}
 			if (typeof this.system.info.jump === 'undefined') {
 				this.system.info.jump = {
 					show: false
@@ -1168,6 +1173,7 @@ export class gurpsActor extends Actor {
 	}
 
 	storeInfo() {
+		this.calcFallInfo();
 		this.calcJumpInfo();
 		this.calcBreathHoldingInfo();
 		this.calcRunSprintInfo();
@@ -1252,6 +1258,36 @@ export class gurpsActor extends Actor {
 				l = this.system.info.throw.distanceBlock.length;
 			}
 		}
+	}
+
+	// Calculates fall based information based on the rules in B430
+	calcFallInfo() {
+		// Height validation
+		if (typeof this.system.info.fall.height !== 'number') { // If superJump is something other than a number
+			this.system.info.fall.height = 0;
+		}
+		else if (this.system.info.fall.height < 0){ // If it's less than zero
+			this.system.info.fall.height = 0; // Set it to zero
+		}
+
+		// Get the campaign gravity
+		let gravity = game.settings.get("gurps4e", "gravity");
+
+		if (gravity !== 'number') {
+			gravity = 1;
+		}
+		else if (this.system.info.fall.height < 0){ // If it's less than zero
+			gravity = 1;
+		}
+
+		this.system.info.fall.velocity = Math.sqrt(21.4 * gravity * this.system.info.fall.height);
+		this.system.info.fall.velocityMPH = this.system.info.fall.velocity * 2.04545;
+
+		this.system.info.fall.soft = (this.system.reserves.hp.max * this.system.info.fall.velocity) / 100;
+		this.system.info.fall.hard = this.system.info.fall.soft * 2;
+
+		this.system.info.fall.softDiceAndAdds = generalHelpers.pointsToDiceAndAdds(this.system.info.fall.soft * 3.5);
+		this.system.info.fall.hardDiceAndAdds = generalHelpers.pointsToDiceAndAdds(this.system.info.fall.hard * 3.5);
 	}
 
 	// Calculates jump based information based on the rules in B352

@@ -3504,6 +3504,61 @@
 				<div class="tab">
 					<div>
 						<h1 class="bold" style="text-align: center;">
+							<label for="infoFalls">
+								<div>
+									{{#if actor.system.info.fall.show }}
+									Falls
+									{{else}}
+									Falls (Hidden)
+									{{/if}}
+								</div>
+							</label>
+						</h1>
+						<input style="display: none" id="infoFalls" type="checkbox" name="system.info.fall.show" {{checked actor.system.info.fall.show}} data-dtype="Boolean"/>
+						{{#if actor.system.info.fall.show }}
+						<table>
+							<tr class="item">
+								<td>Height</td>
+								<td>
+									<input type="number" name="system.info.fall.height" value="{{actor.system.info.fall.height}}" data-dtype="Number" />
+								</td>
+								<td>The height of your fall in yards</td>
+							</tr>
+							<tr class="item">
+								<td>Velocity</td>
+								<td style="width: 15%; font-weight: bold; text-align: center">{{round actor.system.info.fall.velocity 100}} yps / {{round actor.system.info.fall.velocityMPH 100}} mph</td>
+								<td>This is the velocity you reach before hitting the ground</td>
+							</tr>
+						</table>
+
+						<table>
+							<tr><td colspan="3">Damage</td></tr>
+							<tr class="item">
+								<td>Hard Surface</td>
+								<td style="width: 15%; font-weight: bold; text-align: center">
+									{{actor.system.info.fall.hardDiceAndAdds.dice}}d+{{actor.system.info.fall.hardDiceAndAdds.adds}}
+									<label for="actor.system.info.fall.hardDiceAndAdds.dice" class="fa fa-dice-six rollable" data-level="{{actor.system.info.fall.hardDiceAndAdds.dice}}d6+{{actor.system.info.fall.hardDiceAndAdds.adds}}"
+										   data-label="Rolls for damage after falling {{actor.system.info.fall.height}} yards." data-type="damage"></label>
+								</td>
+								<td>Clay, concrete, ordinary soil, and sand
+									are all “hard,” as is a building, mountain,
+									or similar obstacle.</td>
+							</tr>
+							<tr class="item">
+								<td>Other Surface</td>
+								<td style="width: 15%; font-weight: bold; text-align: center">
+									{{actor.system.info.fall.softDiceAndAdds.dice}}d+{{actor.system.info.fall.softDiceAndAdds.adds}}
+									<label for="actor.system.info.fall.hardDiceAndAdds.dice" class="fa fa-dice-six rollable" data-level="{{actor.system.info.fall.softDiceAndAdds.dice}}d6+{{actor.system.info.fall.softDiceAndAdds.adds}}"
+										   data-label="Rolls for damage after falling {{actor.system.info.fall.height}} yards." data-type="damage"></label>
+								</td>
+								<td>Forest litter, hay, swamp, or water</td>
+							</tr>
+
+						</table>
+						{{/if}}
+					</div>
+					<div>
+						<h1 class="bold" style="text-align: center;">
 							<label for="infoJumping">
 								<div>
 									{{#if actor.system.info.jump.show }}
