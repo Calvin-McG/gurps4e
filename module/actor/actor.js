@@ -4334,6 +4334,7 @@ export class gurpsActor extends Actor {
 				}
 			}
 
+			// TODO Issue #91
 			if (actualDamage > 0) { // Damage has penetrated DR.
 				actualDamage = Math.floor(actualDamage);
 				html += "<label>" + actualDamage + " damage gets through</label>";
