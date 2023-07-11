@@ -58,6 +58,8 @@ export class gurpsActor extends Actor {
 		// Store the character's armour values for convenient use later.
 		this.storeArmour()
 
+		this.saveLocationalTotalDR()
+
 		// Set status, etc, for reserves
 		this.bodyReserves()
 
@@ -1761,6 +1763,75 @@ export class gurpsActor extends Actor {
 		}
 	}
 
+	saveLocationalTotalDR(){
+		if (this.system) {
+			if (this.system.bodyType) {
+				if (this.system.bodyType.name.length > 0){
+					let object = this.system.bodyType.body;
+					let bodyParts = Object.keys(object); // Collect all the bodypart names
+					for (let i = 0; i < bodyParts.length; i++){ // Loop through all the body parts
+						if (bodyParts[i] == "skull" || bodyParts[i] == "brain"){ // Part has no sub-parts
+							let currentBodyPart = getProperty(object, bodyParts[i]);
+
+							// Clear existing DR for the body part
+							currentBodyPart.drBurn = 0;
+							currentBodyPart.drCor  = 0;
+							currentBodyPart.drCr   = 0;
+							currentBodyPart.drCut  = 0;
+							currentBodyPart.drFat  = 0;
+							currentBodyPart.drImp  = 0;
+							currentBodyPart.drPi   = 0;
+							currentBodyPart.drTox  = 0;
+
+							// Loop through DR layers
+							for (let q = 0; q < Object.keys(getProperty(object, bodyParts[i] + ".dr")).length; q++) {
+								let currentDRLayer = getProperty(object, bodyParts[i] + ".dr")[q]
+								currentBodyPart.drBurn       += currentDRLayer.burn;
+								currentBodyPart.drCor        += currentDRLayer.cor ;
+								currentBodyPart.drCr         += currentDRLayer.cr  ;
+								currentBodyPart.drCut        += currentDRLayer.cut ;
+								currentBodyPart.drFat        += currentDRLayer.fat ;
+								currentBodyPart.drImp        += currentDRLayer.imp ;
+								currentBodyPart.drPi         += currentDRLayer.pi  ;
+								currentBodyPart.drTox        += currentDRLayer.tox ;
+							}
+						}
+						else {
+							let subParts = Object.keys(getProperty(object, bodyParts[i] + ".subLocation")); // Collect all the subpart names
+							for (let n = 0; n < subParts.length; n++){ // Loop through all the subparts
+								let currentBodyPart = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n]);
+
+								// Clear existing DR for the body part
+								currentBodyPart.drBurn = 0;
+								currentBodyPart.drCor  = 0;
+								currentBodyPart.drCr   = 0;
+								currentBodyPart.drCut  = 0;
+								currentBodyPart.drFat  = 0;
+								currentBodyPart.drImp  = 0;
+								currentBodyPart.drPi   = 0;
+								currentBodyPart.drTox  = 0;
+
+								// Loop through DR layers
+								for (let q = 0; q < Object.keys(getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".dr")).length; q++) {
+									let currentDRLayer = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".dr")[q]
+									currentBodyPart.drBurn       += currentDRLayer.burn;
+									currentBodyPart.drCor        += currentDRLayer.cor ;
+									currentBodyPart.drCr         += currentDRLayer.cr  ;
+									currentBodyPart.drCut        += currentDRLayer.cut ;
+									currentBodyPart.drFat        += currentDRLayer.fat ;
+									currentBodyPart.drImp        += currentDRLayer.imp ;
+									currentBodyPart.drPi         += currentDRLayer.pi  ;
+									currentBodyPart.drTox        += currentDRLayer.tox ;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// TODO - Refactor this code to make use of the results from saveLocationalTotalDR to get these values
 	storeArmour(){
 		if (this.system) {
 			if (this.system.bodyType) {
