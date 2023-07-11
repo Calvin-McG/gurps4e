@@ -3399,10 +3399,13 @@ export class gurpsActor extends Actor {
 		return sm; // Return 0 if the above does not retrieve a value
 	}
 
+	// This method handles all attack modifiers for both ranged and melee attacks
 	attackModifiers(target, attacker, attack, relativePosition, rof, location, locationPenalty) {
 		let distanceRaw = Math.round(canvas.grid.measureDistance(attacker, target));
 		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.grid.units);
 		let distancePenalty = distanceHelpers.distancePenalty(distanceYards);
+
+		let damageType = this.extractDamageType(attack);
 
 		let rofBonus = generalHelpers.rofToBonus(rof.rof);
 		if (typeof rofBonus == "undefined") { // RoF is sometimes coming through undefined. Catch that.
@@ -3412,42 +3415,54 @@ export class gurpsActor extends Actor {
 		let sizeModModifier = 0;
 
 		let modModalContent =  "<table>" +
-			"<tr><td>Hit Location</td><td>" + locationPenalty + "</td></tr>"
+			"<tr><td>Hit Location</td><td>" + locationPenalty + "</td><td>The penalty for the selected hit location.</td></tr>"
+
+		let smMessage = "";
 
 		if (attack.type === "ranged") {
 			// Sort out the effective SM modifier based on the game's settings and the attacker/target SM
 			if (game.settings.get("gurps4e", "rangedRelativeSM")) { // Game is using relative SM rules for ranged attacks
 				sizeModModifier = this.getSM(target.actor) - this.getSM(attacker.actor);
+				smMessage = "The modifier for the relative size difference between target and attacker";
 			}
 			else {
 				sizeModModifier = this.getSM(target.actor);
+				smMessage = "The modifier for the target's size";
 			}
 
 			totalModifier = (distancePenalty + locationPenalty + rofBonus + sizeModModifier); // Total up the modifiers
-			modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td></tr>" + // Display the ranged specific modifiers
-								"<tr><td>RoF Bonus:</td><td>" + rofBonus + "</td></tr>";
+			modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance</td></tr>" + // Display the ranged specific modifiers
+								"<tr><td>RoF Bonus:</td><td>" + rofBonus + "</td><td>The bonus for the selected rate of fire</td></tr>";
 		}
 		else if (attack.type === "melee") {
 			// Sort out the effective SM modifier based on the game's settings and the attacker/target SM
 			if (game.settings.get("gurps4e", "meleeRelativeSM")) { // Game is using relative SM rules for melee attacks
 				sizeModModifier = this.getSM(target.actor) - this.getSM(attacker.actor);
+				smMessage = "The modifier for the relative size difference between target and attacker";
 			}
 			else {
 				sizeModModifier = this.getSM(target.actor);
+				smMessage = "The modifier for the target's size";
 			}
 
 			totalModifier = locationPenalty + sizeModModifier; // Total up the modifiers
 		}
 
-		modModalContent += "<tr><td>SM Modifier:</td><td>" + sizeModModifier + "</td></tr>";
+		modModalContent += "<tr><td>SM Modifier:</td><td>" + sizeModModifier + "</td><td>" + smMessage + "</td></tr>";
 
 		let odds = rollHelpers.levelToOdds(+attack.level + +totalModifier)
 
-		modModalContent += "<tr><td>Total Modifier</td><td>" + totalModifier + "</td></tr>" +
-			"<tr><td>Effective Skill</td><td>" + (+attack.level + +totalModifier) + "</td></tr>" +
-			"<tr><td>Odds</td><td><span style='font-weight: bold; color: rgb(208, 127, 127)'>" + odds.critFail + "%</span>/<span style='font-weight: bold; color: rgb(141, 142, 222)'>" + odds.success + "%</span>/<span style='font-weight: bold; color: rgb(106, 162, 106)'>" + odds.critSuccess + "%</span></td></tr>" +
-			"<tr><td>Additional Modifier</td><td><input type='number' id='mod' name='mod' value='0' style='width: 50%'/></td></tr>" +
-			"<tr><td>Move and Attack</td><td><input type='checkbox' class='checkbox' id='moveAndAttack' value='moveAndAttack' name='moveAndAttack' /></td></tr>" +
+		modModalContent += "<tr><td>Total Modifier</td><td>" + totalModifier + "</td><td>This total only includes modifiers listed above</td></tr>" +
+			"<tr><td>Effective Skill</td><td>" + (+attack.level + +totalModifier) + "</td><td>Effective skill before any of the below modifiers</td></tr>" +
+			"<tr><td>Odds</td><td><span style='font-weight: bold; color: rgb(208, 127, 127)'>" + odds.critFail + "%</span>/<span style='font-weight: bold; color: rgb(141, 142, 222)'>" + odds.success + "%</span>/<span style='font-weight: bold; color: rgb(106, 162, 106)'>" + odds.critSuccess + "%</span></td><td>These odds do not factor in any of the below modifiers</td></tr>" +
+			"<tr><td>Move and Attack</td><td><input type='checkbox' class='checkbox' id='moveAndAttack' value='moveAndAttack' name='moveAndAttack' /></td><td>This handles both melee and ranged move and attacks with their respective rules</td></tr>"
+
+		// If the damage type is explosive, allow the user to decide between area targeted and contact targeted attacks
+		if (damageType.explosive) {
+			modModalContent += "<tr><td>Target The Hex</td><td><input type='checkbox' class='checkbox' id='targetHex' value='targetHex' name='contactEx' /></td><td>The macro assumes you're targeting the actual actor. Check this box to claim the +4 bonus for targeting the ground at their feet.</td></tr>"
+		}
+
+		modModalContent += "<tr><td>Additional Modifier</td><td><input type='number' id='mod' name='mod' value='0' style='width: 50%'/></td><td>This is a catchall for anything not included above</td></tr>" +
 			"</table>"
 
 		let modModal = new Dialog({
@@ -3460,7 +3475,8 @@ export class gurpsActor extends Actor {
 					callback: (html) => {
 						let mod = html.find('#mod').val();
 						let moveAndAttack = html.find('#moveAndAttack')[0].checked;
-						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (+totalModifier + +mod), moveAndAttack)
+						let targetHex = (typeof html.find('#targetHex')[0] !== "undefined") ? html.find('#targetHex')[0].checked : false;
+						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (+totalModifier + +mod), moveAndAttack, targetHex)
 					}
 				},
 				noMod: {
@@ -3468,7 +3484,8 @@ export class gurpsActor extends Actor {
 					label: "No Modifier",
 					callback: (html) => {
 						let moveAndAttack = html.find('#moveAndAttack')[0].checked;
-						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, totalModifier, moveAndAttack)
+						let targetHex = (typeof html.find('#targetHex')[0] !== "undefined") ? html.find('#targetHex')[0].checked : false;
+						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, totalModifier, moveAndAttack, targetHex)
 					}
 				},
 				cancel: {
@@ -3486,8 +3503,16 @@ export class gurpsActor extends Actor {
 		modModal.render(true)
 	}
 
-	reportHitResult(target, attacker, attack, relativePosition, rof, locationArray, totalModifiers, moveAndAttack) {
-		let label = attacker.name + " attacks " + target.name + " with a " + attack.weapon + " " + attack.name;
+	reportHitResult(target, attacker, attack, relativePosition, rof, locationArray, totalModifiers, moveAndAttack, targetHex) {
+		let label = "";
+
+		if (targetHex) {
+			label = attacker.name + " attacks the ground at " + target.name + "'s feet with a " + attack.weapon + " " + attack.name;
+		}
+		else { // The attack is not an explosive firing at the target's hex (It might still be an explosive aimed directly at the target)
+			label = attacker.name + " attacks " + target.name + " with a " + attack.weapon + " " + attack.name;
+		}
+
 		let level = attack.level;
 		let mod = totalModifiers;
 
@@ -3503,9 +3528,19 @@ export class gurpsActor extends Actor {
 			if (moveAndAttack) {
 				mod = +mod + +attack.bulk; // Add the bulk penalty to the total modifiers
 			}
+
+			// The actor is targeting the hex at the feet of the person they are attacking. Give a +4
+			if (targetHex) {
+				mod = +mod + 4;
+			}
 		}
 		else if (attack.type === "melee") {
 			label += ".";
+
+			// The actor is targeting the hex at the feet of the person they are attacking. Give a +4
+			if (targetHex) {
+				mod = +mod + 4;
+			}
 
 			// Handle move and attack for melee
 			if (moveAndAttack) {
@@ -3632,7 +3667,8 @@ export class gurpsActor extends Actor {
 					relativePosition: relativePosition,
 					rof: rof,
 					locationIDs: locationIDs,
-					totalModifiers: totalModifiers
+					totalModifiers: totalModifiers,
+					targetHex: targetHex
 				}
 			}
 
@@ -3658,7 +3694,7 @@ export class gurpsActor extends Actor {
 	}
 
 	// The following section relates to the active defence portion of the combat macro.
-
+	// This method is run when the user clicks the "Attempt Active Defences" button
 	attemptActiveDefences(event) {
 		event.preventDefault();
 
@@ -3678,6 +3714,8 @@ export class gurpsActor extends Actor {
 
 		let targetToken = game.scenes.get(flags.scene).tokens.get(flags.target);
 		let attackerToken = game.scenes.get(flags.scene).tokens.get(flags.attacker);
+
+		let targetHex = flags.targetHex;
 
 		let facing = this.getFacing(attackerToken, targetToken);
 		let target = targetToken.actor;
@@ -3763,6 +3801,12 @@ export class gurpsActor extends Actor {
 		else if (facing[0] === -1) { // Attacker is in the target's side or rear hexes, warn them
 			activeDefenceModalContent += "" +
 				"<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>The attacker is in one of your rear hexes. If you can defend, you have a -2 penalty to do so.</div>"
+		}
+
+		// The attack is an explosion targetting your hex
+		if (targetHex) {
+			activeDefenceModalContent += "" +
+				"<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>The attacker is firing an explosive attack at the hex you are standing in. For your defence to be successful you either need to exit the hex you are currently standing in, or otherwise prevent the attacker from striking your hex.</div>"
 		}
 
 		activeDefenceModalContent += "<div class='general-def-mods'>"
@@ -3970,7 +4014,7 @@ export class gurpsActor extends Actor {
 	rollActiveDefence(mod, selection, name, options, flags, locationIDs, type, facing) {
 		let target = game.scenes.get(flags.scene).tokens.get(flags.target).actor;
 
-		// TODO - Get modifiers for posture, encumbrance
+		// TODO - Get modifiers for posture and encumbrance (Dodge has them applied, Fencing parries do not)
 		let totalModifier;
 		let additionalMessageContent = "";
 		let label = "";
@@ -4102,11 +4146,13 @@ export class gurpsActor extends Actor {
 		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;
 		let attack 			= flags.attack;
 		let targetST 		= target.system.primaryAttributes.knockback.value;
+		let targetHex		= flags.targetHex;
 		let totalKnockback 	= 0;
 		let totalInjury 	= 0;
 		let totalFatInj 	= 0;
 		let damageReduction = 1;
 		let largeArea		= false;
+		let largeAreaDR; // Only needed for largeArea attacks, but init here
 		let armourDivisor;
 
 		if (typeof attack.armourDivisor == "undefined" || attack.armourDivisor == ""){ // Armour divisor is undefined or blank
@@ -4119,13 +4165,17 @@ export class gurpsActor extends Actor {
 			armourDivisor = attack.armourDivisor; // Set it to whatever they entered.
 		}
 
-		// The attack is large area attack
-		if (attack.damageType.toString().toLowerCase().includes("area") || attack.damageType.toString().toLowerCase().includes("la") ) {
+		// The attack is an area attack or an explosion, making it a Large Area Attack (Rules for which are on B400)
+		if (attack.damageType.toString().toLowerCase().includes("area") || attack.damageType.toString().toLowerCase().includes("la") || attack.damageType.toString().toLowerCase().includes("ex") ) {
 			largeArea = true; // Set the area flag
 
-			for (let i = 0; i < locationsHit.length; i++){ // Loop through all the locations
-				locationsHit[i] = 'upperChest.subLocation.chest'; // Set them to the upper chest
+			if (!(attack.damageType.toString().toLowerCase().includes("ex") && !targetHex)) { // It's not a contact targeted explosion
+				for (let i = 0; i < locationsHit.length; i++){ // Loop through all the locations
+					locationsHit[i] = 'upperChest.subLocation.chest'; // Set them to the upper chest
+				}
 			}
+
+			largeAreaDR = this.getLargeAreaDR(target.system.bodyType.body); // Get the target's Large Area DR
 		}
 
 		if (target.system.injuryTolerances){
@@ -4146,7 +4196,7 @@ export class gurpsActor extends Actor {
 			let bluntTrauma = 0;
 			let location = getProperty(target.system.bodyType.body, locationsHit[i]);
 
-			// If the attack is not explosive, roll damage for the attack
+			// Roll damage for the attack
 			let roll = new Roll(attack.damage);
 			let damageRoll = await roll.roll({async: true});
 			let adds = 0;
@@ -4172,10 +4222,10 @@ export class gurpsActor extends Actor {
 			html += "<div>" + locationLabel + "</div>";
 			html += "<div>";
 			if(damageRoll.terms[0].results){
-				if(damageRoll.terms[0].results.length){//Take the results of each roll and turn it into a die icon.
+				if(damageRoll.terms[0].results.length){ // Take the results of each roll and turn it into a die icon.
 					for (let k = 0; k < damageRoll.terms[0].results.length; k++){
-						if (damageType.explosive){ // Explosives do max damage on contact
-							html += "<label class='fa fa-dice-six fa-2x' style='color: #d24502'></label>"
+						if (damageType.explosive && !targetHex){ // If it's an explosive attack that is not striking the hex, it's a contact explosion
+							html += "<label class='fa fa-dice-six fa-2x' style='color: #d24502'></label>" // Explosives do max damage on contact, colour the dice all special to draw attention to this
 						}
 						else {
 							html += rollHelpers.dieToSmallIcon(damageRoll.terms[0].results[k].result)
@@ -4188,16 +4238,16 @@ export class gurpsActor extends Actor {
 				adds = +damageRoll._total;
 			}
 
-			if (adds > 0){//Adds are positive
+			if (adds > 0){ // Adds are positive
 				html += "<label class='damage-dice-small-adds'>+</label><label class='damage-dice-small-adds'>" + adds + "</label>"
 			}
-			else if (adds < 0) {//Adds are negative
+			else if (adds < 0) { // Adds are negative
 				html += "<label class='damage-dice-small-adds'>-</label><label class='damage-dice-small-adds'>" + Math.abs(adds) + "</label>"
 			}
 
 			let totalDamage;
 
-			if (damageType.explosive) {
+			if (damageType.explosive && !targetHex) { // The attack is explosive and not targeting the hex, therefore it's a contact explosion
 				totalDamage = (6 * (damageRoll.terms[0].results.length)) + adds;
 			}
 			else {
@@ -4467,6 +4517,146 @@ export class gurpsActor extends Actor {
 
 		target.update({ 'data': target.system });
 		ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+	}
+
+	// This method goes through each hit location on the body to find the lowest for each separate damage type. It then stores that for the final step where it is averaged with the Torso DR
+	getLargeAreaDR(object) {
+		let armour = { // Init the final largeAreaDR object which we will return at the end of the method
+			burn: 	0,
+			cor: 	0,
+			cr: 	0,
+			cut: 	0,
+			fat: 	0,
+			imp: 	0,
+			pi: 	0,
+			tox: 	0,
+		};
+
+		let lowest = { // Init the object to hold the lowest armour for each type
+			burn: 	[0],
+			cor: 	[0],
+			cr: 	[0],
+			cut: 	[0],
+			fat: 	[0],
+			imp: 	[0],
+			pi: 	[0],
+			tox: 	[0],
+		};
+
+		let torso = { // Init the object to hold the torso armour for each type
+			burn: 	[0],
+			cor: 	[0],
+			cr: 	[0],
+			cut: 	[0],
+			fat: 	[0],
+			imp: 	[0],
+			pi: 	[0],
+			tox: 	[0],
+		};
+
+		if (object) { // Make sure they have a body
+			let bodyParts = Object.keys(object); // Collect all the bodypart names
+			for (let i = 0; i < bodyParts.length; i++){ // Loop through all the body parts
+				if (bodyParts[i] == "skull" || bodyParts[i] == "brain"){ // Part has no sub-parts
+					// Check it exists and add it to the lowest array
+					lowest.burn[i] = getProperty(object, bodyParts[i] + ".drBurn") ? +getProperty(object, bodyParts[i] + ".drBurn") : 0;
+					lowest.cor[i] = getProperty(object, bodyParts[i] + ".drCor")  ? +getProperty(object, bodyParts[i] + ".drCor") : 0;
+					lowest.cr[i]  = getProperty(object, bodyParts[i] + ".drCr")   ? +getProperty(object, bodyParts[i] + ".drCr")  : 0;
+					lowest.cut[i]  = getProperty(object, bodyParts[i] + ".drCut")  ? +getProperty(object, bodyParts[i] + ".drCut") : 0;
+					lowest.fat[i]  = getProperty(object, bodyParts[i] + ".drFat")  ? +getProperty(object, bodyParts[i] + ".drFat") : 0;
+					lowest.imp[i]  = getProperty(object, bodyParts[i] + ".drImp")  ? +getProperty(object, bodyParts[i] + ".drImp") : 0;
+					lowest.pi[i]   = getProperty(object, bodyParts[i] + ".drPi")   ? +getProperty(object, bodyParts[i] + ".drPi")  : 0;
+					lowest.tox[i]  = getProperty(object, bodyParts[i] + ".drTox")  ? +getProperty(object, bodyParts[i] + ".drTox") : 0;
+				}
+				else {
+					let subParts = Object.keys(getProperty(object, bodyParts[i] + ".subLocation")); // Collect all the subpart names
+					for (let n = 0; n < subParts.length; n++){ // Loop through all the subparts
+						// Check it exists and add it to the lowest array
+						lowest.burn[i + n] = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") : 0;
+						lowest.cor[i + n]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  : 0;
+						lowest.cr[i + n]   = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   : 0;
+						lowest.cut[i + n]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  : 0;
+						lowest.fat[i + n]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  : 0;
+						lowest.imp[i + n]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  : 0;
+						lowest.pi[i + n]   = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   : 0;
+						lowest.tox[i + n]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  : 0;
+
+						if (subParts[n] === "chest" || (subParts[n] === "abdomen" && game.settings.get("gurps4e", "abdomenForLargeAreaInjury"))) { // Check to see if this part matches subLocation.chest to establish if a body part is a chest section, regardless of animal/humanoid/thorax. Do the same for abdomen after checking the game setting.
+							// Check it exists and add it to the torso array
+							torso.burn[torso.burn.length] = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") : 0;
+							torso.cor[torso.cor.length]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  : 0;
+							torso.cr[torso.cr.length]   = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   : 0;
+							torso.cut[torso.cut.length]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  : 0;
+							torso.fat[torso.fat.length]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  : 0;
+							torso.imp[torso.imp.length]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  : 0;
+							torso.pi[torso.pi.length]   = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   : 0;
+							torso.tox[torso.tox.length]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  : 0;
+						}
+					}
+				}
+			}
+		}
+
+		// Get actual torso DR from the array based on the campaign setting
+
+		let torsoDRForLargeAreaInjury = game.settings.get("gurps4e", "torsoDRForLargeAreaInjury");
+
+		// Init the object to hold the torso armour for each type
+		let selectedTorsoDR;
+
+		if (torsoDRForLargeAreaInjury === "avg") {
+			// For each damage type, add all the entries together and divide by length to get the average
+			selectedTorsoDR = {
+				burn: 	torso.burn.reduce((a, b) => a + b, 0) / torso.burn.length,
+				cor: 	torso.cor.reduce((a, b) => a + b, 0) / torso.cor.length,
+				cr: 	torso.cr.reduce((a, b) => a + b, 0) / torso.cr.length,
+				cut: 	torso.cut.reduce((a, b) => a + b, 0) / torso.cut.length,
+				fat: 	torso.fat.reduce((a, b) => a + b, 0) / torso.fat.length,
+				imp: 	torso.imp.reduce((a, b) => a + b, 0) / torso.imp.length,
+				pi: 	torso.pi.reduce((a, b) => a + b, 0) / torso.pi.length,
+				tox: 	torso.tox.reduce((a, b) => a + b, 0) / torso.tox.length,
+			};
+		}
+		else if (torsoDRForLargeAreaInjury === "lowest") {
+			// Chose the lowest entry from each for the torso DR
+			selectedTorsoDR = {
+				burn: 	Math.min(...torso.burn),
+				cor: 	Math.min(...torso.cor),
+				cr: 	Math.min(...torso.cr),
+				cut: 	Math.min(...torso.cut),
+				fat: 	Math.min(...torso.fat),
+				imp: 	Math.min(...torso.imp),
+				pi: 	Math.min(...torso.pi),
+				tox: 	Math.min(...torso.tox),
+			};
+		}
+		// Else covers "highest" and catches errors.
+		else {
+			// Chose the highest entry from each for the torso DR
+			selectedTorsoDR = {
+				burn: 	Math.max(...torso.burn),
+				cor: 	Math.max(...torso.cor),
+				cr: 	Math.max(...torso.cr),
+				cut: 	Math.max(...torso.cut),
+				fat: 	Math.max(...torso.fat),
+				imp: 	Math.max(...torso.imp),
+				pi: 	Math.max(...torso.pi),
+				tox: 	Math.max(...torso.tox),
+			};
+		}
+
+		armour = { // Init the final largeAreaDR object which we will return at the end of the method
+			burn: 	(Math.min(...lowest.burn)	+ selectedTorsoDR.burn) / 2,
+			cor: 	(Math.min(...lowest.cor)	+ selectedTorsoDR.cor) / 2,
+			cr: 	(Math.min(...lowest.cr)		+ selectedTorsoDR.cr) / 2,
+			cut: 	(Math.min(...lowest.cut)	+ selectedTorsoDR.cut) / 2,
+			fat: 	(Math.min(...lowest.fat)	+ selectedTorsoDR.fat) / 2,
+			imp: 	(Math.min(...lowest.imp)	+ selectedTorsoDR.imp) / 2,
+			pi: 	(Math.min(...lowest.pi)		+ selectedTorsoDR.pi) / 2,
+			tox: 	(Math.min(...lowest.tox)	+ selectedTorsoDR.tox) / 2,
+		};
+
+		return armour;
 	}
 
 	extractDamageType(attack) {
