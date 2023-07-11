@@ -327,6 +327,38 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  game.settings.register("gurps4e", "abdomenForLargeAreaInjury", {
+    name: "Is the abdomen part of the torso for the purposes of determining Large Area Injury?",
+    hint: "In the classic hit location table, slot 11 is the groin, and not part of the torso." +
+        "In the more detailed hit location table, location 11 is the abdomen, and the abdomen is part of the torso." +
+        "That said, the abdomen, particularly at lower TLs, cannot always receive the same sorts of armour as the torso." +
+        "A prime example is the use of segmented plate instead of regular plate since the abdomen needs to flex more." +
+        "The actual effect of this is likely to make Large Area Injury even more effective at bypassing DR, though by percentages, not multiples.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
+  game.settings.register("gurps4e", "torsoDRForLargeAreaInjury", {
+    name: "Method for determining torso dr for the purposes of Large Area Injury",
+    hint: "The rules for Large Area Injury can be found on B400." +
+        "In short, it averages Torso DR and the lowest DR of the target." +
+        "This field decides how that 'Torso' DR is selected." +
+        "This option is only likely to be relevant if players have varying DR across their torso hit locations." +
+        "Highest is likely best in line with the balance established in the Basic Set." +
+        "Average makes Large Area Injury better at penetrating DR for people with mixed DR across the torso, which is a slight disruption to balance, but it is also more realistic in regards to what Large Area Injury is meant to represent.",
+    scope: "world",
+    config: true,
+    type: String,
+    choices: {
+      "high": "Highest - Take the highest DR among all locations",
+      "avg": "Average - Take the average DR among all locations",
+      "lowest": "Lowest - Take the lowest DR among all locations"
+    },
+    default: "high",
+  });
+
   // game.settings.register("gurps4e", "armourAsDice", {
   //   name: "Armour As Dice - WIP",
   //   hint: "Pyramid 3/34. DR converts to dice at 1d per 3.5. These dice are subtracted from the the attack, then the remainder is rolled. Makes guns behave better in HT and UT, is less appropriate for fantasy games with melee weapons and muscle powered ranged weapons.",
