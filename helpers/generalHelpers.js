@@ -1,4 +1,20 @@
 export class generalHelpers {
+
+    // Used for falls and collisions, this method returns the damage for an impact at a given velocity
+    static velocityToDamage(hp, velocity) {
+        let points = ((hp * velocity) / 100) * 3.5; // The formula from B430, multiplied by 3.5 since the original formula gives decimal dice and we want points of damage
+
+        let soft = this.pointsToDiceAndAdds(points);
+        let hard = this.pointsToDiceAndAdds(points * 2);
+
+        let hardSoft = {
+            "hard": hard.dice + "d6+" + hard.adds,
+            "soft": soft.dice + "d6+" + soft.adds
+        }
+
+        return hardSoft;
+    }
+
     static has(obj, key){ // obj is the Object you're checking, key is the nested key you're looking for.
         return key.split(".").every(function(x) {
             if(typeof obj != "object" || obj === null || ! x in obj)
