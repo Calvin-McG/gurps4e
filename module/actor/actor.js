@@ -4610,6 +4610,8 @@ export class gurpsActor extends Actor {
 		totalKnockback = Math.floor(totalKnockback);
 		if (totalKnockback > 0) { // Display total knockback
 			html += "<hr><div>" + target.name + " is knocked back " + totalKnockback + " yards and must roll at -" + (totalKnockback - 1) + " to avoid falling down.</div>";
+			let damageFromVelocity = generalHelpers.velocityToDamage(target.system.reserves.hp.max, totalKnockback)
+			html += "<hr><div>If there is a collision, it causes " + damageFromVelocity.hard + " damage. Striking a soft object instead does " + damageFromVelocity.soft + " damage.</div>"
 		}
 
 		if (totalInjury > 0){
