@@ -359,6 +359,19 @@ Hooks.once("init", () => {
     default: "high",
   });
 
+  game.settings.register("gurps4e", "allowBluntTraumaWithWounding", {
+    name: "Allow blunt trauma to apply even when some injury is dealt",
+    hint: "By default, blunt trauma only applies if no damage gets through the DR. " +
+        "This is simple for bookkeeping, but causes oddities when an attack just barely gets through flexible DR." +
+        "For example, if your target has 75 DR and you do 75 damage, they take 15 blunt trauma." +
+        "But if you do 76 damage then they only take a single point of injury." +
+        "Setting this true makes blunt trauma apply regardless of wounding. If enough blunt trauma stacks up against flexible DR, it gets applied regardless of damage.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
   // game.settings.register("gurps4e", "armourAsDice", {
   //   name: "Armour As Dice - WIP",
   //   hint: "Pyramid 3/34. DR converts to dice at 1d per 3.5. These dice are subtracted from the the attack, then the remainder is rolled. Makes guns behave better in HT and UT, is less appropriate for fantasy games with melee weapons and muscle powered ranged weapons.",

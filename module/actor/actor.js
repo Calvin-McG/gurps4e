@@ -4356,7 +4356,6 @@ export class gurpsActor extends Actor {
 				}
 			}
 
-			// TODO Issue #91
 			if (actualDamage > 0) { // Damage has penetrated DR.
 				actualDamage = Math.floor(actualDamage);
 				html += "<label>" + actualDamage + " damage gets through</label>";
@@ -4457,6 +4456,55 @@ export class gurpsActor extends Actor {
 					totalInjury += actualWounding;
 				}
 				html += "<div>The location takes " + actualWounding + " injury</div>";
+
+				if (game.settings.get("gurps4e", "allowBluntTraumaWithWounding")) {
+					bluntTrauma = Math.floor(bluntTrauma); // Round down blunt trama in preparation for actually applying the damage.
+					if (bluntTrauma > 0) {
+						let bluntInjury = bluntTrauma;
+						html += "<label>The location also takes " + bluntTrauma + " blunt trauma.</label>";
+
+						let woundCap;
+						if (location.id.toLowerCase().includes("sublocation")){ // This is a sub location, check the parent for an HP value
+							let subLocation = location.id.split(".")[0]
+							let parentLocation = getProperty(target.system.bodyType.body, subLocation);
+							if (parentLocation.hp){ // Apply damage to the parent location if it tracks HP
+								woundCap = parentLocation.hp.value; // Damage is capped to however much HP is left in the limb
+								parentLocation.hp.value -= bluntInjury;
+								parentLocation.hp.value = Math.max(parentLocation.hp.value, -parentLocation.hp.max) // Value should be the higher of it's actual value and full negative HP.
+								target.system.bodyType.body[subLocation].hp.value = parentLocation.hp.value;
+								//await target.update({ ['system.bodyType.body.' + subLocation + ".hp.value"]: parentLocation.hp.value });
+							}
+							if (location.hp){ // Apply damage to the child location if it tracks HP
+								location.hp.value -= bluntInjury;
+								location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
+								const splitLocation = location.id.split(".");
+								target.system.bodyType.body[splitLocation[0]][splitLocation[1]][splitLocation[2]].hp.value = location.hp.value;
+								//await target.update({ ['system.bodyType.body.' + location.id + ".hp.value"]: location.hp.value });
+							}
+						}
+						else {
+							if (location.hp){ // Apply damage to the location if it tracks HP
+								woundCap = location.hp.value; // Damage is capped to however much HP is left in the limb
+								location.hp.value -= bluntInjury;
+								location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
+							}
+						}
+
+						if (typeof woundCap !== "undefined" && !( location.id.toLowerCase().includes("nose") || // Apply the wound cap, but only for locations that actually have one
+							location.id.toLowerCase().includes("eye") ||
+							location.id.toLowerCase().includes("spine") ||
+							location.id.toLowerCase().includes("pelvis") ) ){
+							// TODO - Veins, etc.
+
+							if (woundCap < 0){
+								woundCap = 0;
+							}
+
+							bluntInjury = Math.min(woundCap, bluntInjury);
+						}
+						totalInjury += bluntInjury;
+					}
+				}
 			}
 			else if (actualDamage <= 0) { // No damage has penetrated DR
 				bluntTrauma = Math.floor(bluntTrauma); // Round down blunt trama in preparation for actually applying the damage.
@@ -4496,6 +4544,7 @@ export class gurpsActor extends Actor {
 						location.id.toLowerCase().includes("eye") ||
 						location.id.toLowerCase().includes("spine") ||
 						location.id.toLowerCase().includes("pelvis") ) ){
+						// TODO - Veins, etc.
 
 						if (woundCap < 0){
 							woundCap = 0;
