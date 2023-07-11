@@ -4293,17 +4293,15 @@ export class gurpsActor extends Actor {
 
 			let totalLocationDR = 0;
 
-			// Loop through the armour and take DR away from the damage dealt
-			for (let d = 0; d < drLayers.length; d++){
-				let dr = getProperty(location.dr[d], drDamageType);
+			// Large area attacks handle DR differently. We've already calculated the total above, make use of it now.
+			if (largeArea) {
+				// Set the applicable DR to the largeAreaDR
+				let dr = getProperty(largeAreaDR, drDamageType);
 				let effectiveDR = 0;
 				if (armourDivisor.toString().toLowerCase() == "ignores armour") { // If the armour divisor is set to ignore armour then effective DR is zero.
 					effectiveDR = 0
 				}
 				else {
-					if (largeArea) {
-						effectiveDR = Math.ceil(dr / 2); // This should be torso DR averaged with lowest DR. But for now it's just dividing torso DR by 2. Large Area Injury rounds DR up
-					}
 					effectiveDR = Math.floor(dr / armourDivisor); // Get the effective DR after armour divisor. Armour divisors round DR down.
 				}
 
@@ -4312,15 +4310,39 @@ export class gurpsActor extends Actor {
 				// Subtract the dr from the running damage total.
 				actualDamage -= effectiveDR;
 
-				// Check for blunt trauma
-				if (damageType.bluntTraumaCapable && (location.dr.flexible || game.settings.get("gurps4e", "rigidBluntTrauma"))){ // The attack needs to be capable of blunt trauma and either the armour needs to be flexible or the setting to allow blunt trauma to rigid armour needs to be on.
-					bluntTrauma += (drStops / damageType.bluntReq);
-				}
-				else if (!(location.dr.flexible || game.settings.get("gurps4e", "rigidBluntTrauma"))){ // The armour is not flexible, and the setting for rigid blunt trauma is off.
-					bluntTrauma = 0; // The accumulating blunt trauma has hit a rigid layer and is reduced to zero.
-				}
+				// Assume any Large Area attack does blunt trauma
+				bluntTrauma += (drStops / damageType.bluntReq);
 
 				totalLocationDR += +effectiveDR;
+			}
+			// It's not a large area attack, use the default DR application method
+			else {
+				// Loop through the armour and take DR away from the damage dealt
+				for (let d = 0; d < drLayers.length; d++){
+					let dr = getProperty(location.dr[d], drDamageType);
+					let effectiveDR = 0;
+					if (armourDivisor.toString().toLowerCase() == "ignores armour") { // If the armour divisor is set to ignore armour then effective DR is zero.
+						effectiveDR = 0
+					}
+					else {
+						effectiveDR = Math.floor(dr / armourDivisor); // Get the effective DR after armour divisor. Armour divisors round DR down.
+					}
+
+					let drStops = Math.min(actualDamage, effectiveDR); // Get the actual amount of damage stopped by the armour
+
+					// Subtract the dr from the running damage total.
+					actualDamage -= effectiveDR;
+
+					// Check for blunt trauma
+					if (damageType.bluntTraumaCapable && (location.dr.flexible || game.settings.get("gurps4e", "rigidBluntTrauma"))){ // The attack needs to be capable of blunt trauma and either the armour needs to be flexible or the setting to allow blunt trauma to rigid armour needs to be on.
+						bluntTrauma += (drStops / damageType.bluntReq);
+					}
+					else if (!(location.dr.flexible || game.settings.get("gurps4e", "rigidBluntTrauma"))){ // The armour is not flexible, and the setting for rigid blunt trauma is off.
+						bluntTrauma = 0; // The accumulating blunt trauma has hit a rigid layer and is reduced to zero.
+					}
+
+					totalLocationDR += +effectiveDR;
+				}
 			}
 
 			// Add a check for targets with no DR being hit with an attack that has an armour multiplier
