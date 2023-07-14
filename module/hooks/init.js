@@ -47,6 +47,16 @@ Hooks.once("init", () => {
   });
 
   // Register option for whether the vanilla magic tab shows up
+  game.settings.register("gurps4e", "strictInjuryCap", {
+    name: "Strict Injury Cap",
+    hint: "Enable this setting to include injury caps on both the Torso and Abdomen. This is an optional rule and caps torso damage at HPx2, and abdomen damage at HPx1",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
+  // Register option for whether the vanilla magic tab shows up
   game.settings.register("gurps4e", "showVanillaMagic", {
     name: "Show vanilla magic tab.",
     hint: "Enable this setting to show a tab on the character sheet for tracking info related to vanilla GURPS Magic.",

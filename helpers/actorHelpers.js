@@ -32,7 +32,13 @@ export class actorHelpers {
             penaltyBack: -5,
             weightFront: 0.01851851852,
             weightBack: 0.02777777778,
-            flexible: false
+            flexible: false,
+            injuryCap: Infinity,
+            injuryCapStrict: Infinity,
+            stunAuto: true,
+            stunAutoMod: 0,
+            stunMod: -10,
+            bleedRate: 30
         };
         return part;
     }
@@ -66,7 +72,13 @@ export class actorHelpers {
             penaltyBack: -5,
             weightFront: 0.01851851852,
             weightBack: 0.02777777778,
-            flexible: false
+            flexible: false,
+            injuryCap: Infinity,
+            injuryCapStrict: Infinity,
+            stunAuto: true,
+            stunAutoMod: 0,
+            stunMod: -10,
+            bleedRate: 30
         };
         return part;
     }
@@ -175,7 +187,13 @@ export class actorHelpers {
                     penaltyBack: -6 + +bornBiter,
                     weightFront: 1/6,
                     weightBack: 0,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: Infinity,
+                    injuryCapStrict: Infinity,
+                    stunAuto: true,
+                    stunAutoMod: -1,
+                    stunMod: -6,
+                    bleedRate: 60
                 },
                 nose: {
                     label: "Nose",
@@ -210,7 +228,13 @@ export class actorHelpers {
                         state: "Fine",
                         value: actorData.bodyType.body ? (actorData.bodyType.body[id] ? actorData.bodyType.body[id].subLocation.nose.hp.value : partHp) : partHp
                     },
-                    flexible: false
+                    flexible: false,
+                    injuryCap: Infinity,
+                    injuryCapStrict: Infinity,
+                    stunAuto: true,
+                    stunAutoMod: 0,
+                    stunMod: -5,
+                    bleedRate: 60
                 },
                 cheek: {
                     label: "Cheek",
@@ -240,7 +264,13 @@ export class actorHelpers {
                     penaltyBack: -6,
                     weightFront: 2/6,
                     weightBack: 2/6,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: Infinity,
+                    injuryCapStrict: Infinity,
+                    stunAuto: true,
+                    stunAutoMod: 0,
+                    stunMod: -5,
+                    bleedRate: 60
                 }
             }
         }
@@ -279,7 +309,14 @@ export class actorHelpers {
                     state: "Fine",
                     value: actorData.bodyType.body ? actorData.bodyType.body[id] ? actorData.bodyType.body[id].subLocation.eyeLeft.hp.value : partHp : partHp
                 },
-                flexible: false
+                flexible: false,
+                injuryCap: Infinity,
+                injuryCapStrict: Infinity,
+                stunAuto: true,
+                stunAutoMod: 0,
+                stunMod: -10,
+                bleedRate: 30,
+                bleedMod: -3
             }
         }
         if (eyeR) {
@@ -316,7 +353,14 @@ export class actorHelpers {
                     state: "Fine",
                     value: actorData.bodyType.body ? actorData.bodyType.body[id] ? actorData.bodyType.body[id].subLocation.eyeRight.hp.value : partHp : partHp
                 },
-                flexible: false
+                flexible: false,
+                injuryCap: Infinity,
+                injuryCapStrict: Infinity,
+                stunAuto: true,
+                stunAutoMod: 0,
+                stunMod: -10,
+                bleedRate: 30,
+                bleedMod: -3
             }
         }
         if (hasEars) {
@@ -353,7 +397,13 @@ export class actorHelpers {
                         state: "Fine",
                         value: actorData.bodyType.body ? (actorData.bodyType.body[id] ? actorData.bodyType.body[id].subLocation.ears.hp.value : partHp) : partHp
                 },
-                flexible: false
+                flexible: false,
+                injuryCap: Infinity,
+                injuryCapStrict: Infinity,
+                stunAuto: true,
+                stunAutoMod: 0,
+                stunMod: 0,
+                bleedRate: 30
             }
         }
 
@@ -416,7 +466,13 @@ export class actorHelpers {
                     penaltyBack: -4,
                     weightFront: 3/6,
                     weightBack: 3/6,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: partHp,
+                    injuryCapStrict: partHp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60
                 },
                 thigh: {
                     label: "Thigh",
@@ -446,7 +502,13 @@ export class actorHelpers {
                     penaltyBack: -5,
                     weightFront: 1/6,
                     weightBack: 1/6,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: partHp,
+                    injuryCapStrict: partHp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60
                 },
                 insideThigh: {
                     label: "Inside Thigh",
@@ -476,7 +538,13 @@ export class actorHelpers {
                     penaltyBack: -3,
                     weightFront: 0,
                     weightBack: 0,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: partHp,
+                    injuryCapStrict: partHp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60
                 },
                 knee: {
                     label: "Knee",
@@ -511,7 +579,13 @@ export class actorHelpers {
                         state: "Fine",
                         value: actorData.bodyType.body ? actorData.bodyType.body[id] ? actorData.bodyType.body[id].subLocation.knee.hp.value : jointHp : jointHp
                     },
-                    flexible: false
+                    flexible: false,
+                    injuryCap: partHp,
+                    injuryCapStrict: partHp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60
                 },
                 backOfKnee: {
                     label: "Back of Knee",
@@ -541,7 +615,13 @@ export class actorHelpers {
                     penaltyBack: -8,
                     weightFront: 0,
                     weightBack: 0,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: partHp,
+                    injuryCapStrict: partHp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60
                 },
                 artery: {
                     label: "Thigh Artery",
@@ -571,7 +651,14 @@ export class actorHelpers {
                     penaltyBack: -5,
                     weightFront: 1/6,
                     weightBack: 1/6,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: Infinity,
+                    injuryCapStrict: Infinity,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60,
+                    bleedMod: -3
                 }
             }
         }
@@ -630,7 +717,13 @@ export class actorHelpers {
                     penaltyBack: -3,
                     weightFront: 5/6,
                     weightBack: 5/6,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: partHp,
+                    injuryCapStrict: partHp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60
                 },
                 shoulder: {
                     label: "Shoulder",
@@ -660,7 +753,14 @@ export class actorHelpers {
                     drHardening: 1,
                     weightFront: 1/6,
                     weightBack: 1/6,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: Infinity,
+                    injuryCapStrict: Infinity,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 30,
+                    bleedMod: -3
                 }
             }
         }
@@ -724,7 +824,13 @@ export class actorHelpers {
                     penaltyBack: -4,
                     weightFront: 3/6,
                     weightBack: 3/6,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: partHp,
+                    injuryCapStrict: partHp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60
                 },
                 upperArm: {
                     label: "Upper Arm",
@@ -754,7 +860,13 @@ export class actorHelpers {
                     penaltyBack: -5,
                     weightFront: 1/6,
                     weightBack: 1/6,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: partHp,
+                    injuryCapStrict: partHp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60
                 },
                 elbow: {
                     label: "Elbow",
@@ -789,7 +901,13 @@ export class actorHelpers {
                         state: "Fine",
                         value: actorData.bodyType.body ? actorData.bodyType.body[id] ? actorData.bodyType.body[id].subLocation.elbow.hp.value : jointHp : jointHp
                     },
-                    flexible: false
+                    flexible: false,
+                    injuryCap: partHp,
+                    injuryCapStrict: partHp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60
                 },
                 insideElbow: {
                     label: "Inside Elbow",
@@ -819,7 +937,13 @@ export class actorHelpers {
                     penaltyBack: -8,
                     weightFront: 0,
                     weightBack: 0,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: partHp,
+                    injuryCapStrict: partHp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60
                 },
                 shoulder: {
                     label: "Shoulder",
@@ -849,7 +973,14 @@ export class actorHelpers {
                     personalWoundMultTox: 1,
                     personalWoundMultTbb: 1.5,
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: Infinity,
+                    injuryCapStrict: Infinity,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 30,
+                    bleedMod: -3
                 },
                 armpit: {
                     label: "Armpit",
@@ -871,7 +1002,7 @@ export class actorHelpers {
                     personalWoundMultCr     : 1,
                     personalWoundMultCut    : 2,
                     personalWoundMultFat    : 1,
-                    personalWoundMultImp    : 3,
+                    personalWoundMultImp    : actorData.injuryTolerances.homogenous ? 0.5  : 3,
                     personalWoundMultPim    : actorData.injuryTolerances.homogenous ? 1/10 : actorData.injuryTolerances.unliving ? 1/5 : 1,
                     personalWoundMultPi     : actorData.injuryTolerances.homogenous ? 1/5  : actorData.injuryTolerances.unliving ? 1/3 : 1.5,
                     personalWoundMultPip    : actorData.injuryTolerances.homogenous ? 1/3  : actorData.injuryTolerances.unliving ? 1/2 : 2,
@@ -879,7 +1010,14 @@ export class actorHelpers {
                     personalWoundMultTox: 1,
                     personalWoundMultTbb: 1,
                     drHardening: 1,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: Infinity,
+                    injuryCapStrict: Infinity,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 30,
+                    bleedMod: -4
                 }
             }
         }
@@ -934,7 +1072,13 @@ export class actorHelpers {
                     penaltyBack: -1,
                     weightFront: 5/6,
                     weightBack: 5/6,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: Infinity,
+                    injuryCapStrict: hp * 2,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60
                 },
                 spine: {
                     label: "Spine",
@@ -969,7 +1113,13 @@ export class actorHelpers {
                         state: "Fine",
                         value: actorData.bodyType.body ? actorData.bodyType.body[id] ? actorData.bodyType.body[id].subLocation.spine.hp.value : spineHp : spineHp
                     },
-                    flexible: false
+                    flexible: false,
+                    injuryCap: Infinity,
+                    injuryCapStrict: hp * 2,
+                    stunAuto: true,
+                    stunAutoMod: 0,
+                    stunMod: -5,
+                    bleedRate: 60
                 }
             }
         }
@@ -977,33 +1127,40 @@ export class actorHelpers {
         if (vitals) {
             part.subLocation.vitals = {
                 label: "Vitals",
-                    id: id + ".subLocation.vitals",
-                    penaltyFront: -3,
-                    penaltyBack: -3,
-                    drBurn: "",
-                    drCor: "",
-                    drCr: "",
-                    drCut: "",
-                    drFat: "",
-                    drImp: "",
-                    drPi: "",
-                    drTox: "",
-                    personalWoundMultBurn: 1,
-                    personalWoundMultCor: 1,
-                    personalWoundMultCr: 1,
-                    personalWoundMultCut: 1.5,
-                    personalWoundMultFat: 1,
-                    personalWoundMultImp    : actorData.injuryTolerances.homogenous ? 0.5  : 3,
-                    personalWoundMultPim    : actorData.injuryTolerances.homogenous ? 1/10 : 3,
-                    personalWoundMultPi     : actorData.injuryTolerances.homogenous ? 1/5  : 3,
-                    personalWoundMultPip    : actorData.injuryTolerances.homogenous ? 1/3  : 3,
-                    personalWoundMultPipp   : actorData.injuryTolerances.homogenous ? 0.5  : 3,
-                    personalWoundMultTox: 1,
-                    personalWoundMultTbb: 2,
-                    drHardening: 1,
-                    weightFront: 1/6,
-                    weightBack: 0,
-                    flexible: false
+                id: id + ".subLocation.vitals",
+                penaltyFront: -3,
+                penaltyBack: -3,
+                drBurn: "",
+                drCor: "",
+                drCr: "",
+                drCut: "",
+                drFat: "",
+                drImp: "",
+                drPi: "",
+                drTox: "",
+                personalWoundMultBurn   : 1,
+                personalWoundMultCor    : 1,
+                personalWoundMultCr     : 1,
+                personalWoundMultCut    : 1.5,
+                personalWoundMultFat    : 1,
+                personalWoundMultImp    : actorData.injuryTolerances.homogenous ? 0.5  : 3,
+                personalWoundMultPim    : actorData.injuryTolerances.homogenous ? 1/10 : 3,
+                personalWoundMultPi     : actorData.injuryTolerances.homogenous ? 1/5  : 3,
+                personalWoundMultPip    : actorData.injuryTolerances.homogenous ? 1/3  : 3,
+                personalWoundMultPipp   : actorData.injuryTolerances.homogenous ? 0.5  : 3,
+                personalWoundMultTox    : 1,
+                personalWoundMultTbb    : 2,
+                drHardening: 1,
+                weightFront: 1/6,
+                weightBack: 0,
+                flexible: false,
+                injuryCap: Infinity,
+                injuryCapStrict: Infinity,
+                stunAuto: false,
+                stunAutoMod: 0,
+                stunMod: 0,
+                bleedRate: 30,
+                bleedMod: -4
             }
         }
 
@@ -1056,7 +1213,13 @@ export class actorHelpers {
                     penaltyBack: -1,
                     weightFront: 5/6,
                     weightBack: 5/6,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: Infinity,
+                    injuryCapStrict: 2 * hp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 30
                 }
             }
         }
@@ -1090,7 +1253,14 @@ export class actorHelpers {
                 drHardening: 1,
                 weightFront: 1/6,
                 weightBack: 0,
-                flexible: false
+                flexible: false,
+                injuryCap: Infinity,
+                injuryCapStrict: Infinity,
+                stunAuto: true,
+                stunAutoMod: 0,
+                stunMod: -5,
+                bleedRate: 30,
+                bleedMod: -4
             }
         }
 
@@ -1147,7 +1317,14 @@ export class actorHelpers {
                     drHardening: 1,
                     weightFront: 3/6,
                     weightBack: 3/6,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: Infinity,
+                    injuryCapStrict: hp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60,
+                    bleedMod: 0
                 },
                 pelvis: {
                     label: "Pelvis",
@@ -1182,7 +1359,14 @@ export class actorHelpers {
                         state: "Fine",
                         value: actorData.bodyType.body ? actorData.bodyType.body[id] ? actorData.bodyType.body[id].subLocation.pelvis.hp.value : pelvisHp : pelvisHp
                     },
-                    flexible: false
+                    flexible: false,
+                    injuryCap: Infinity,
+                    injuryCapStrict: hp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60,
+                    bleedMod: 0
                 }
             }
         }
@@ -1216,7 +1400,14 @@ export class actorHelpers {
                 drHardening: 1,
                 weightFront: 1/6,
                 weightBack: 0,
-                flexible: false
+                flexible: false,
+                injuryCap: Infinity,
+                injuryCapStrict: Infinity,
+                stunAuto: true,
+                stunAutoMod: 0,
+                stunMod: -5,
+                bleedRate: 30,
+                bleedMod: -3
             }
         }
 
@@ -1273,7 +1464,14 @@ export class actorHelpers {
                     drHardening: 1,
                     weightFront: 3/6,
                     weightBack: 3/6,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: Infinity,
+                    injuryCapStrict: hp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60,
+                    bleedMod: 0
                 },
                 pelvis: {
                     label: "Pelvis",
@@ -1308,7 +1506,14 @@ export class actorHelpers {
                     },
                     weightFront: 1/6,
                     weightBack: 1/6,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: Infinity,
+                    injuryCapStrict: hp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60,
+                    bleedMod: 0
                 },
                 groin: {
                     label: "Groin",
@@ -1338,7 +1543,14 @@ export class actorHelpers {
                     drHardening: 1,
                     weightFront: 1/6,
                     weightBack: 1/6,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: Infinity,
+                    injuryCapStrict: hp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: -5,
+                    bleedRate: 60,
+                    bleedMod: 0
                 }
             }
         }
@@ -1372,7 +1584,14 @@ export class actorHelpers {
                 drHardening: 1,
                 weightFront: 1/6,
                 weightBack: 0,
-                flexible: false
+                flexible: false,
+                injuryCap: Infinity,
+                injuryCapStrict: Infinity,
+                stunAuto: true,
+                stunAutoMod: 0,
+                stunMod: -5,
+                bleedRate: 30,
+                bleedMod: -3
             }
         }
 
@@ -1447,7 +1666,14 @@ export class actorHelpers {
                     drHardening: 1,
                     weightFront: 5/6,
                     weightBack: 5/6,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: partHp,
+                    injuryCapStrict: partHp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60,
+                    bleedMod: 0
                 },
                 extremityInterior: {
                     label: insideName,
@@ -1477,7 +1703,14 @@ export class actorHelpers {
                     drHardening: 1,
                     weightFront: 0,
                     weightBack: 0,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: partHp,
+                    injuryCapStrict: partHp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60,
+                    bleedMod: 0
                 },
                 joint: {
                     label: jointName,
@@ -1512,7 +1745,14 @@ export class actorHelpers {
                     },
                     weightFront: 1/6,
                     weightBack: 1/6,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: partHp,
+                    injuryCapStrict: partHp,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 60,
+                    bleedMod: 0
                 }
             }
         }
@@ -1560,7 +1800,14 @@ export class actorHelpers {
                     drHardening: 1,
                     weightFront: 5/6,
                     weightBack: 5/6,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: Infinity,
+                    injuryCapStrict: Infinity,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 30,
+                    bleedMod: -2
                 },
                 vein: {
                     label: "Vein",
@@ -1590,7 +1837,14 @@ export class actorHelpers {
                     drHardening: 1,
                     weightFront: 1/6,
                     weightBack: 1/6,
-                    flexible: false
+                    flexible: false,
+                    injuryCap: Infinity,
+                    injuryCapStrict: Infinity,
+                    stunAuto: false,
+                    stunAutoMod: 0,
+                    stunMod: 0,
+                    bleedRate: 30,
+                    bleedMod: -3
                 }
             }
         }
