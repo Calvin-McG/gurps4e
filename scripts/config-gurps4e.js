@@ -49,6 +49,8 @@ CONFIG.statusEffects = [
     "systems/gurps4e/icons/conditions/shock6.png",
     "systems/gurps4e/icons/conditions/shock7.png",
     "systems/gurps4e/icons/conditions/shock8.png",
+    "systems/gurps4e/icons/conditions/shock12.png",
+    "systems/gurps4e/icons/conditions/shock16.png",
     "systems/gurps4e/icons/conditions/reeling.png",
     "systems/gurps4e/icons/conditions/tired.png",
     "systems/gurps4e/icons/conditions/collapse.png",
