@@ -4284,7 +4284,12 @@ export class gurpsActor extends Actor {
 			let totalDamage;
 
 			if (damageType.explosive && !targetHex) { // The attack is explosive and not targeting the hex, therefore it's a contact explosion
-				totalDamage = (6 * (damageRoll.terms[0].results.length)) + adds;
+				if (typeof damageRoll.terms[0].results !== "undefined") {
+					totalDamage = (6 * (damageRoll.terms[0].results.length)) + adds;
+				}
+				else {
+					totalDamage = damageRoll.total;
+				}
 			}
 			else {
 				totalDamage = damageRoll.total
