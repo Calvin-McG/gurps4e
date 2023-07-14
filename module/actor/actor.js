@@ -4520,7 +4520,6 @@ export class gurpsActor extends Actor {
 					bluntTrauma = Math.floor(bluntTrauma); // Round down blunt trama in preparation for actually applying the damage.
 					if (bluntTrauma > 0) {
 						let bluntInjury = bluntTrauma;
-						html += "<label>The location also takes " + bluntTrauma + " blunt trauma.</label>";
 
 						if (location.id.toLowerCase().includes("sublocation")){ // This is a sub location, check the parent for an HP value
 							let subLocation = location.id.split(".")[0]
@@ -4552,7 +4551,6 @@ export class gurpsActor extends Actor {
 							}
 						}
 
-
 						// If there's a wound cap, apply it
 						if (typeof woundCap !== "undefined"){
 							// If the wound cap is less than zero for some reason, fix it
@@ -4561,6 +4559,8 @@ export class gurpsActor extends Actor {
 							}
 							bluntInjury = Math.min(woundCap, bluntInjury);
 						}
+
+						html += "<label>The location also takes " + bluntInjury + " blunt trauma.</label>";
 
 						totalInjury += bluntInjury;
 					}
