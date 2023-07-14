@@ -4292,7 +4292,7 @@ export class gurpsActor extends Actor {
 				}
 			}
 			else {
-				totalDamage = damageRoll.total
+				totalDamage = damageRoll.total;
 			}
 
 			if (totalDamage <= 0) { // If damage is 0 or less, account for minimum damage for each type
@@ -4441,7 +4441,11 @@ export class gurpsActor extends Actor {
 					}
 
 					if (parentLocation.hp){// Apply damage to the parent location if it tracks HP
-						woundCap = parentLocation.hp.value; // Damage is capped to however much HP is left in the limb
+						// It's not an artery, vein, or spine, which lack wound caps
+						if (!(location.id.includes('artery') || location.id.includes('vein') || location.id.includes('spine'))) {
+							woundCap = parentLocation.hp.value; // Damage is capped to however much HP is left in the limb
+						}
+
 						parentLocation.hp.value -= actualWounding;
 						parentLocation.hp.value = Math.max(parentLocation.hp.value, -parentLocation.hp.max) // Value should be the higher of it's actual value and full negative HP.
 						target.system.bodyType.body[subLocation].hp.value = parentLocation.hp.value;
