@@ -2963,6 +2963,78 @@ export class gurpsActor extends Actor {
 		this.applyAffliction(flags);
 	}
 
+	knockbackFallRoll(event) {
+		event.preventDefault();
+		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).flags;
+		let target = game.scenes.get(flags.scene).tokens.get(flags.target).actor; // Fetch the target using the appropriate methods
+
+		let judo = skillHelpers.getSkillLevelByName("Judo", target);
+		let acro = skillHelpers.getSkillLevelByName("Acrobatics", target);
+		let dx = skillHelpers.getBaseAttrValue("dx", target);
+
+		judo = typeof judo !== 'undefined' ? judo : 0
+		acro = typeof acro !== 'undefined' ? acro : 0
+		dx = typeof dx !== 'undefined' ? dx : 0
+
+		let skill = 10;
+		let message = "";
+
+		if (judo > acro && judo > dx) { // Judo is highest
+			skill = judo;
+			message = "Judo";
+		} else if (acro > dx) { // Acro is highest
+			skill = acro;
+			message = "Acrobatics";
+		} else { // DX is highest
+			skill = dx;
+			message = "Dexterity";
+		}
+
+
+
+		let modModal = new Dialog({
+			title: "Modifier Dialog",
+			content: "<input type='text' id='mod' name='mod' value='0'/>",
+			buttons: {
+				mod: {
+					icon: '<i class="fas fa-check"></i>',
+					label: "Apply Modifier",
+					callback: (html) => {
+						let mod = html.find('#mod').val()
+						this.makeKnockbackRoll(skill, mod, message, target)
+					}
+				},
+				noMod: {
+					icon: '<i class="fas fa-times"></i>',
+					label: "No Modifier",
+					callback: () => this.makeKnockbackRoll(skill, 0, message, target)
+				}
+			},
+			default: "mod",
+			render: html => console.log("Register interactivity in the rendered dialog"),
+			close: html => console.log("This always is logged no matter which option is chosen")
+		})
+		modModal.render(true)
+	}
+
+	async makeKnockbackRoll(skill, mod, message, target) {
+		let currentRoll = await rollHelpers.skillRoll(skill, mod, "Rolls against " + message + " to not fall down.", false);
+
+		let html = currentRoll.content;
+
+		if (currentRoll.success) {
+			html += "<br/>" + target.name + " doesn't fall down."
+		}
+		else {
+			html += "<br/>" + target.name + " falls down."
+		}
+
+		ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+
+		console.log(target.token.effects);
+		// TODO - V11 target.token.toggleEffect()
+	}
+
 	// This is run when a defender clicks the "Quick Contest" button after being the target of an affliction
 	quickContest(event) {
 		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).flags; // Get the flags which hold all the actual data
@@ -4637,9 +4709,19 @@ export class gurpsActor extends Actor {
 
 		totalKnockback = Math.floor(totalKnockback);
 		if (totalKnockback > 0) { // Display total knockback
-			html += "<hr><div>" + target.name + " is knocked back " + totalKnockback + " yards and must roll at -" + (totalKnockback - 1) + " to avoid falling down.</div>";
+			html += "<hr>" + target.name + " is knocked back " + totalKnockback + " yards and must roll at -" + (totalKnockback - 1) + " to avoid falling down.";
+			html += "<br><input type='button' class='knockbackFall' value='Roll to avoid falling down'/>";
 			let damageFromVelocity = generalHelpers.velocityToDamage(target.system.reserves.hp.max, totalKnockback)
-			html += "<hr><div>If there is a collision, it causes " + damageFromVelocity.hard + " damage. Striking a soft object instead does " + damageFromVelocity.soft + " damage.</div>"
+			html += "<hr>If there is a collision, it causes " + damageFromVelocity.hard + " damage. Striking a soft object instead does " + damageFromVelocity.soft + " damage."
+
+			// flags = { // Compile flags that will be passed along through the chat messages
+			// 	target: target.id,
+			// 	attacker: attacker.id,
+			// 	scene: target.scene.id,
+			// 	attack: attack,
+			// 	margin: rollInfo.margin,
+			// 	effectiveSkill: (+attack.level + +totalModifiers)
+			// }
 		}
 
 		if (totalInjury > 0){
@@ -4647,6 +4729,7 @@ export class gurpsActor extends Actor {
 			target.system.reserves.hp.value = newHP;
 			//await target.update({ 'system.reserves.hp.value': newHP });
 		}
+
 		if (totalFatInj > 0){
 			let newFP = target.system.reserves.fp.value - Math.floor(totalFatInj);
 			target.system.reserves.fp.value = newFP;
@@ -4654,7 +4737,9 @@ export class gurpsActor extends Actor {
 		}
 
 		target.update({ 'data': target.system });
-		ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+		// console.log(target.token.effects);
+		// console.log(typeof target.token.effects);
+		ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER, flags: flags });
 	}
 
 	// This method goes through each hit location on the body to find the lowest for each separate damage type. It then stores that for the final step where it is averaged with the Torso DR

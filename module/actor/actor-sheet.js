@@ -124,13 +124,13 @@ export class gurpsActorSheet extends ActorSheet {
 					label: "Apply Modifier",
 					callback: (html) => {
 						let mod = html.find('#mod').val()
-						this.computeRoll(event, mod)
+						this.computeRollFromEvent(event, mod)
 					}
 				},
 				noMod: {
 					icon: '<i class="fas fa-times"></i>',
 					label: "No Modifier",
-					callback: () => this.computeRoll(event, 0)
+					callback: () => this.computeRollFromEvent(event, 0)
 				}
 			},
 			default: "mod",
@@ -140,11 +140,21 @@ export class gurpsActorSheet extends ActorSheet {
 		modModal.render(true)
 	}
 
-	computeRoll(event, modifier){
+	computeRollFromEvent(event, modifier){
 		event.preventDefault();
 		const element = event.currentTarget;
 		const dataset = element.dataset;
 
+		this.computeRollFromDataset(dataset, modifier);
+	}
+
+	// dataset comes as
+	// dataset = {
+	// 	label: "Makes a <b>Judo</b> roll.",
+	// 	level: "12",
+	// 	type: "skill"
+	// }
+	computeRollFromDataset(dataset, modifier){
 		if (dataset.type === 'skill' || dataset.type === 'defense') {
 			rollHelpers.skillRoll(dataset.level, modifier, dataset.label, true);
 		}
