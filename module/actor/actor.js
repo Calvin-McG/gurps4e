@@ -4013,6 +4013,7 @@ export class gurpsActor extends Actor {
 		let selection;
 		let name;
 		let mod = parseInt(html.find('#mod').val());
+
 		let options = {
 			feverishDefence: 	html.find('#feverishDefence')[0] ? html.find('#feverishDefence')[0].checked : "",
 			timedDefence: 		html.find('#timedDefence')[0] ? html.find('#timedDefence')[0].checked : "",
@@ -4038,6 +4039,11 @@ export class gurpsActor extends Actor {
 		else if (type.toLowerCase() === 'magical'){
 			selection = html.find('#magicalSelector').val()
 			name = html.find('#magicalSelector')[0].innerText.split(":")[1]
+		}
+
+		// Undefined & NaN check for the modifier
+		if (typeof mod !== "number" || !mod.isNaN) {
+			mod = 0;
 		}
 
 		if (facing <= 0 && !options.timedDefence) { // Attacker is in side or rear hexes and the target is not using a timed defence
