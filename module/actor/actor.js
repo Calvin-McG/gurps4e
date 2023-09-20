@@ -4,6 +4,7 @@ import { generalHelpers } from '../../helpers/generalHelpers.js';
 import { rollHelpers } from '../../helpers/rollHelpers.js';
 import { actorHelpers } from "../../helpers/actorHelpers.js";
 import { skillHelpers } from "../../helpers/skillHelpers.js";
+import { postureHelpers } from "../../helpers/postureHelpers.js";
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -3031,8 +3032,7 @@ export class gurpsActor extends Actor {
 
 		ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
 
-		console.log(target.token.effects);
-		// TODO - V11 target.token.toggleEffect()
+		postureHelpers.setPostureTokenDoc(target.token, "lyingback");
 	}
 
 	// This is run when a defender clicks the "Quick Contest" button after being the target of an affliction
