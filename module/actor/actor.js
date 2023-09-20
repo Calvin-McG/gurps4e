@@ -2466,6 +2466,25 @@ export class gurpsActor extends Actor {
 		return noTargetsDialog;
 	}
 
+	//Return a dialog that tells the user to pick only one target
+	tooManyTargetsDialog(){
+		let tooManyTargetsDialogContent = "<div>You have too many targets selected, make sure there is only one</div>";
+
+		let tooManyTargetsDialog = new Dialog({
+			title: "Select a target",
+			content: tooManyTargetsDialogContent,
+			buttons: {
+				ok: {
+					icon: '<i class="fas fa-check"></i>',
+					label: "Ok"
+				}
+			},
+			default: "ok"
+		})
+
+		return tooManyTargetsDialog;
+	}
+
 	singleTargetDialog(selfToken, targetToken){
 		let attacks = this.listAttacks(selfToken.actor);
 
