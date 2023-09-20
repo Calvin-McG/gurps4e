@@ -2860,8 +2860,15 @@ export class gurpsActor extends Actor {
 
 	afflictionOnTarget(attacker, attack, target) {
 		let staffLength = game.scenes.get(target.scene.id).tokens.get(attacker.id).actor.system.magic.staff; // Get the length of the player's staff
+
+		// If it's not a number, or it is a NaN
+		if (typeof staffLength !== "number" || staffLength.isNaN) {
+			staffLength = 0;
+		}
+
 		let distanceRaw = Math.round(canvas.grid.measureDistance(attacker, target)); // Get the raw distance between target and attacker
 		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.grid.units); // Convert the raw distance to the distance in yards
+
 		let modifiedDistanceYards = Math.max(distanceYards - staffLength, 0); // Reduce the distance in yards by the length of the staff
 		let distancePenalty = 0;
 
