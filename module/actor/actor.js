@@ -4185,7 +4185,8 @@ export class gurpsActor extends Actor {
 
 				if (willRoll.crit) {
 					willRollHtml += " and no FP is lost";
-					// TODO - Give 1 FP
+					// Give back the FP that is about to be spent, max checking will be done below
+					target.system.reserves.fp.value = target.system.reserves.fp.value + 1;
 				}
 			}
 			else {
@@ -4193,11 +4194,20 @@ export class gurpsActor extends Actor {
 				feverishWillRollFailed = true;
 				if (willRoll.crit) {
 					willRollHtml += " and one HP is lost";
-					// TODO - Deduct 1 HP
+					target.system.reserves.hp.value = target.system.reserves.hp.value - 1;
 				}
 			}
 
-			// TODO - Deduct 1 FP
+			target.system.reserves.fp.value = target.system.reserves.fp.value - 1;
+
+			// If FP is above max, correct it
+			if (target.system.reserves.fp.value > target.system.reserves.fp.max) {
+				target.system.reserves.fp.value = target.system.reserves.fp.max;
+			}
+			// If FP is below zero, apply HP damage
+			else if (target.system.reserves.fp.value > 0) {
+				target.system.reserves.hp.value = target.system.reserves.hp.value - 1;
+			}
 
 			label += willRollHtml + "<hr>";
 		}
