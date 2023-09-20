@@ -4242,6 +4242,7 @@ export class gurpsActor extends Actor {
 		if (options.drop && type === "dodge") {
 			label += "and drop ";
 			totalModifier += 3;
+			postureHelpers.setPostureTokenDoc(target.token,"lyingprone")
 		}
 		else if (options.retreat) {
 			label += "and retreat ";
