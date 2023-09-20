@@ -4183,7 +4183,8 @@ export class gurpsActor extends Actor {
 			if (willRoll.success) {
 				willRollHtml += "<br/>+2 to this defence";
 
-				if (willRoll.crit) {
+				// It's a crit, and we care about FP for Feverish Defences
+				if (willRoll.crit && feverishFP) {
 					willRollHtml += " and no FP is lost";
 					// Give back the FP that is about to be spent, max checking will be done below
 					target.system.reserves.fp.value = target.system.reserves.fp.value + 1;
@@ -4198,15 +4199,16 @@ export class gurpsActor extends Actor {
 				}
 			}
 
-			target.system.reserves.fp.value = target.system.reserves.fp.value - 1;
-
-			// If FP is above max, correct it
-			if (target.system.reserves.fp.value > target.system.reserves.fp.max) {
-				target.system.reserves.fp.value = target.system.reserves.fp.max;
-			}
-			// If FP is below zero, apply HP damage
-			else if (target.system.reserves.fp.value > 0) {
-				target.system.reserves.hp.value = target.system.reserves.hp.value - 1;
+			if (feverishFP) {
+				target.system.reserves.fp.value = target.system.reserves.fp.value - 1;
+				// If FP is above max, correct it
+				if (target.system.reserves.fp.value > target.system.reserves.fp.max) {
+					target.system.reserves.fp.value = target.system.reserves.fp.max;
+				}
+				// If FP is below zero, apply HP damage
+				else if (target.system.reserves.fp.value > 0) {
+					target.system.reserves.hp.value = target.system.reserves.hp.value - 1;
+				}
 			}
 
 			label += willRollHtml + "<hr>";
