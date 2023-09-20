@@ -392,6 +392,28 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  game.settings.register("gurps4e", "feverishDefenceRequiresWill", {
+    name: "Feverish Defence requires a Will roll",
+    hint: "By default Feverish Defence requires a Will roll or the bonus is not applied." +
+        "With this setting true, the following applies: Success on this roll gives +2 to defence, failure gives nothing, and a crit fail does 1 HP of damage." +
+        "With this setting false, there is no roll and the +2 bonus is always granted." +
+        "The FP cost is part of a separate game setting, see below.",
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
+  game.settings.register("gurps4e", "feverishDefenceCostsFP", {
+    name: "Feverish Defence costs FP",
+    hint: "With this set true, selecting Feverish Defence will cost 1 FP, and if no FP remains, do 1 HP of damage. " +
+        "With this set false, FP is not removed upon making a Feverish Defence roll.",
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
   // game.settings.register("gurps4e", "armourAsDice", {
   //   name: "Armour As Dice - WIP",
   //   hint: "Pyramid 3/34. DR converts to dice at 1d per 3.5. These dice are subtracted from the the attack, then the remainder is rolled. Makes guns behave better in HT and UT, is less appropriate for fantasy games with melee weapons and muscle powered ranged weapons.",

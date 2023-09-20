@@ -4152,7 +4152,7 @@ export class gurpsActor extends Actor {
 		this.rollActiveDefence(mod, selection, name, options, flags, locationIDs, type, facing);
 	}
 
-	rollActiveDefence(mod, selection, name, options, flags, locationIDs, type, facing) {
+	async rollActiveDefence(mod, selection, name, options, flags, locationIDs, type, facing) {
 		let target = game.scenes.get(flags.scene).tokens.get(flags.target).actor;
 
 		// TODO - Get modifiers for posture and encumbrance (Dodge has them applied, Fencing parries do not)
@@ -4167,9 +4167,47 @@ export class gurpsActor extends Actor {
 			totalModifier = parseInt(mod);
 		}
 
+		// This block handles the logic and display for Feverish Defences
+		let feverishWillRoll = game.settings.get("gurps4e", "feverishDefenceRequiresWill");
+		let feverishFP = game.settings.get("gurps4e", "feverishDefenceCostsFP");
+		let willRollHtml = "";
+		let feverishWillRollFailed = false;
+
+		// If Will rolls are required for Feverish Defences
+		if (feverishWillRoll) {
+			console.log(target)
+			let willRoll = await rollHelpers.skillRoll(target.system.primaryAttributes.will.value, 0, "Rolls against Will for a Feverish Defence.", false);
+
+			willRollHtml = willRoll.content;
+
+			if (willRoll.success) {
+				willRollHtml += "<br/>+2 to this defence";
+
+				if (willRoll.crit) {
+					willRollHtml += " and no FP is lost";
+					// TODO - Give 1 FP
+				}
+			}
+			else {
+				willRollHtml += "<br/>No bonus";
+				feverishWillRollFailed = true;
+				if (willRoll.crit) {
+					willRollHtml += " and one HP is lost";
+					// TODO - Deduct 1 HP
+				}
+			}
+
+			// TODO - Deduct 1 FP
+
+			label += willRollHtml + "<hr>";
+		}
+
+		// End Feverish Defences
+
 		label += target.name + " attempts a ";
 
-		if (options.feverishDefence) {
+		// They picked Feverish Defence, and did not fail the roll (Either it wasn't required or the roll passed)
+		if (options.feverishDefence && !feverishWillRollFailed ) {
 			label += "feverish ";
 			totalModifier += 2;
 		}
