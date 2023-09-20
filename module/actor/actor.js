@@ -3948,7 +3948,8 @@ export class gurpsActor extends Actor {
 		// Non-retreat general options
 		activeDefenceModalContent += "<div style='display: flex; flex-direction: column; flex: auto;'>" +
 			"<div class='def-option'><input type='checkbox' name='feverishDefence' id='feverishDefence' value='feverishDefence' /><label for='feverishDefence' style='line-height: 26px;'>Feverish Defence</label></div>" +
-			"<div class='def-option'><input type='number' id='mod' name='mod' placeholder='Modifier'/></div>";
+			"<div class='def-option'><input type='number' name='feverishDefenceMod' id='feverishDefenceMod' placeholder='Feverish Defence Will Roll Modifier'/></div>" +
+			"<div class='def-option'><input type='number' id='mod' name='mod' placeholder='Active Defence Modifier'/></div>";
 
 		if (facing[0] <= 0) { // Attacker is in the target's side or rear hexes, give them the option to use Timed Defence.
 			activeDefenceModalContent += "<div class='tooltip def-option'>" +
@@ -4115,6 +4116,7 @@ export class gurpsActor extends Actor {
 
 		let options = {
 			feverishDefence: 	html.find('#feverishDefence')[0] ? html.find('#feverishDefence')[0].checked : "",
+			feverishDefenceMod: parseInt(html.find('#feverishDefenceMod').val()),
 			timedDefence: 		html.find('#timedDefence')[0] ? html.find('#timedDefence')[0].checked : "",
 			retreat: 			html.find('#retreat')[0] ? html.find('#retreat')[0].checked : "",
 			sideslip: 			html.find('#sideslip')[0] ? html.find('#sideslip')[0].checked : "",
@@ -4167,6 +4169,13 @@ export class gurpsActor extends Actor {
 			totalModifier = parseInt(mod);
 		}
 
+		let feverishDefenceMod = options.feverishDefenceMod;
+
+		// Undefined / NaN check for feverishDefenceMod
+		if (typeof feverishDefenceMod !== "number" || feverishDefenceMod.isNaN) {
+			feverishDefenceMod = 0;
+		}
+
 		// This block handles the logic and display for Feverish Defences
 		let feverishWillRoll = game.settings.get("gurps4e", "feverishDefenceRequiresWill");
 		let feverishFP = game.settings.get("gurps4e", "feverishDefenceCostsFP");
@@ -4175,8 +4184,7 @@ export class gurpsActor extends Actor {
 
 		// If Will rolls are required for Feverish Defences
 		if (feverishWillRoll) {
-			console.log(target)
-			let willRoll = await rollHelpers.skillRoll(target.system.primaryAttributes.will.value, 0, "Rolls against Will for a Feverish Defence.", false);
+			let willRoll = await rollHelpers.skillRoll(target.system.primaryAttributes.will.value, feverishDefenceMod, "Rolls against Will for a Feverish Defence.", false);
 
 			willRollHtml = willRoll.content;
 
