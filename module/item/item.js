@@ -5929,18 +5929,31 @@ export class gurpsItem extends Item {
                 level = level + mod; // Update the skill level with the skill modifier
                 this.system.melee[meleeKeys[k]].level = level // Update skill level
 
-                if (Number.isInteger(+this.system.melee[meleeKeys[k]].parryMod)) {//If parry mod is a number, compute normally
-                  parry = Math.floor(+(level / 2 + 3) + +this.system.melee[meleeKeys[k]].parryMod);//Calculate the parry value
+                if (Number.isInteger(+this.system.melee[meleeKeys[k]].parryMod)) { // If parry mod is a number, compute normally
+                  parry = Math.floor(+(level / 2 + 3) + +this.system.melee[meleeKeys[k]].parryMod); // Calculate the parry value
                   if (this.actor.system.enhanced.parry) {
                     parry += this.actor.system.enhanced.parry;
                   }
                   if (this.actor.system.flag.combatReflexes) {
                     parry += 1;
                   }
-                } else {//If it's not a number, display the entry
+                } else { // If it's not a number, display the entry
                   parry = this.system.melee[meleeKeys[k]].parryMod;
                 }
-                this.system.melee[meleeKeys[k]].parry = parry //Update parry value
+
+                // If it's a fencing parry, apply the enc penalty.
+                if (this.system.melee[meleeKeys[k]].parryType.toUpperCase().includes("F")) {
+
+                  let currentEnc = actorHelpers.fetchCurrentEnc(this.actor);
+
+                  let encPenalty = currentEnc.penalty;
+                  if (typeof encPenalty !== "number" || isNaN(encPenalty)) {
+                    encPenalty = 0;
+                  }
+                  parry += encPenalty;
+                }
+
+                this.system.melee[meleeKeys[k]].parry = parry; // Update parry value
 
                 if (Number.isInteger(+this.system.melee[meleeKeys[k]].blockMod)) {//If block mod is a number, compute normally
                   block = Math.floor(+(level / 2 + 3) + +this.system.melee[meleeKeys[k]].blockMod);//Calculate the block value
