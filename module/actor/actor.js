@@ -4431,6 +4431,8 @@ export class gurpsActor extends Actor {
 			label += " against an attack from the rear"
 		}
 
+		label = generalHelpers.correctAtoAn(label);
+
 		rollHelpers.skillRoll(selection, totalModifier, label, false).then( rollInfo => {
 			let attacksStopped;
 
