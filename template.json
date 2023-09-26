@@ -137,7 +137,8 @@
             "ref": "none",
             "title": "None",
             "mult": 1,
-            "fpCost": 1
+            "fpCost": 1,
+            "penalty": 0
           }
         },
         "baseDamage": {

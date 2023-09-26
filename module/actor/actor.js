@@ -1658,7 +1658,8 @@ export class gurpsActor extends Actor {
 				ref: "none",
 				title: "None",
 				mult: 1,
-				fpCost: 1
+				fpCost: 1,
+				penalty: 0
 			};
 		}
 		else if (carriedWeight <= this.system.encumbrance.light.lbs){
@@ -1667,7 +1668,8 @@ export class gurpsActor extends Actor {
 				ref: "light",
 				title: "Light",
 				mult: 0.8,
-				fpCost: 2
+				fpCost: 2,
+				penalty: -1
 			};
 		}
 		else if (carriedWeight <= this.system.encumbrance.medium.lbs){
@@ -1676,7 +1678,8 @@ export class gurpsActor extends Actor {
 				ref: "medium",
 				title: "Medium",
 				mult: 0.6,
-				fpCost: 3
+				fpCost: 3,
+				penalty: -2
 			};
 		}
 		else if (carriedWeight <= this.system.encumbrance.heavy.lbs){
@@ -1685,7 +1688,8 @@ export class gurpsActor extends Actor {
 				ref: "heavy",
 				title: "Heavy",
 				mult: 0.4,
-				fpCost: 4
+				fpCost: 4,
+				penalty: -3
 			};
 		}
 		else if (carriedWeight <= this.system.encumbrance.xheavy.lbs){
@@ -1694,7 +1698,8 @@ export class gurpsActor extends Actor {
 				ref: "xheavy",
 				title: "X-Heavy",
 				mult: 0.2,
-				fpCost: 5
+				fpCost: 5,
+				penalty: -4
 			};
 		}
 		else {
