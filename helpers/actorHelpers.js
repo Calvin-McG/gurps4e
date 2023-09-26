@@ -1956,9 +1956,6 @@ export class actorHelpers {
         if (hpState.toLowerCase() !== "healthy" && hpState.toLowerCase() !== "injured"){
             st = st / 2
         }
-        console.log(actor.system.reserves.hp.state.toLowerCase(), actor.system.reserves.fp.state.toLowerCase())
-
-        console.log(actor.system.reserves.hp.max, actor.system.reserves.hp.value);
 
         let bl = Math.round(((st * st)/5));
 
