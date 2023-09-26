@@ -414,6 +414,24 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  game.settings.register("gurps4e", "acrobaticParry", {
+    name: "Allow Acrobatic Parries",
+    hint: "With this set true, characters can make acrobatic parries. This is a cinematic rule from MA129",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
+  game.settings.register("gurps4e", "acrobaticBlock", {
+    name: "Allow Acrobatic Blocks",
+    hint: "With this set true, characters can make acrobatic blocks. This is a cinematic rule from MA129",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
   // game.settings.register("gurps4e", "armourAsDice", {
   //   name: "Armour As Dice - WIP",
   //   hint: "Pyramid 3/34. DR converts to dice at 1d per 3.5. These dice are subtracted from the the attack, then the remainder is rolled. Makes guns behave better in HT and UT, is less appropriate for fantasy games with melee weapons and muscle powered ranged weapons.",
