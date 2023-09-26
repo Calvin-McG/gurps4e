@@ -2066,61 +2066,10 @@ export class gurpsActor extends Actor {
 			if (this.system.reserves) { // Make sure reserves exist
 
 				// Handle the calculations for HP
-				let hpMax = this.system.reserves.hp.max;
-				let hpValue = this.system.reserves.hp.value;
-				let hpState = 'Healthy';
-
-				let hpRatio = hpValue / hpMax;
-				if (hpRatio < -5) { // HP is at -5xMax or less
-					hpState = 'Dead';
-				}
-				else if (hpRatio < -4) { // HP is at -4xMax or less
-					hpState = 'Death 4';
-				}
-				else if (hpRatio < -3) { // HP is at -3xMax or less
-					hpState = 'Death 3';
-				}
-				else if (hpRatio < -2) { // HP is at -2xMax or less
-					hpState = 'Death 2';
-				}
-				else if (hpRatio < -1) { // HP is at -1xMax or less
-					hpState = 'Death 1';
-				}
-				else if (hpValue < (hpMax / 3)) { // HP is less than 1/3rd of max.
-					hpState = 'Reeling';
-				}
-				else if (hpValue < hpMax) { // HP is not full, but is higher than 1/3rd of max.
-					hpState = 'Injured';
-				}
-				else { // HP is is not less than max.
-					hpState = 'Healthy';
-				}
-				this.system.reserves.hp.state = hpState;
+				this.system.reserves.hp.state = actorHelpers.fetchHpState(this);
 
 				// Handle the calculations for FP
-				let fpMax = this.system.reserves.fp.max;
-				let fpValue = this.system.reserves.fp.value;
-				let fpState = 'Fresh';
-
-				let fpRatio = fpValue / fpMax;
-
-				if (fpRatio <= -1) { // fp is at -1xMax or less
-					fpState = 'Unconscious';
-				}
-				else if (fpRatio <= 0) { // fp is at zero or less
-					fpState = 'Collapse';
-				}
-				else if (fpValue < (fpMax / 3)) { // fp is less than 1/3rd of max.
-					fpState = 'Very Tired';
-				}
-				else if (fpValue < fpMax) { // fp is not full, but is higher than 1/3rd of max.
-					fpState = 'Tired';
-				}
-				else { // FP is not less than max
-					fpState = 'Fresh';
-				}
-				// update the actor
-				this.system.reserves.fp.state = fpState;
+				this.system.reserves.fp.state = actorHelpers.fetchFpState(this);
 			}
 		}
 	}
