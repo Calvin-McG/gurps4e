@@ -3878,55 +3878,137 @@ export class gurpsActor extends Actor {
 			})
 		}
 
-		let activeDefenceModalContent =
-			"<div>" +
-			"<div style='text-align: center; font-weight: bold'>General Modifiers</div>"
+		let activeDefenceModalContent = "<div>"
 
-		if (facing[0] === 0) { // Attacker is in the target's side or rear hexes, warn them
-			activeDefenceModalContent += "" +
-				"<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>The attacker is in one of your side hexes. You have a -2 penalty to defend.</div>"
+		// Warnings
+		let currentEnc = actorHelpers.fetchCurrentEnc(targetToken.actor);
+		let hpState = actorHelpers.fetchHpState(targetToken.actor);
+		let fpState = actorHelpers.fetchFpState(targetToken.actor);
+
+		// If any facing, target hex, or enc warning applies
+		if (facing[0] === 0 || facing[0] === -1 || targetHex || currentEnc.penalty < 0 || (hpState.toLowerCase() !== "healthy" && hpState.toLowerCase() !== "injured")) {
+
+			activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; text-decoration: underline; font-size: x-large; color: rgb(200, 0, 0)'>Warnings</div>";
+
+			// Attacker is in the target's side hexes, warn them
+			if (facing[0] === 0) {
+				activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>The attacker is in one of your side hexes. You have a -2 penalty to defend.</div>";
+			}
+			// Attacker is in the target's rear hexes, warn them
+			else if (facing[0] === -1) {
+				activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>The attacker is in one of your rear hexes. If you can defend, you have a -2 penalty to do so.</div>";
+			}
+
+			// Defender is facing a rear/side attack, remind them about "Timed Defence"
+			if (facing[0] === 0 || facing[0] === -1) {
+				activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; color: rgb(127, 127, 208)'>If you have the Timed Defence technique for the defence you intend to use, you may use it to offset this penalty. Though Timed Defence (Dodge) may only be used once per turn.</div>";
+			}
+
+			// The attack is an explosion targeting your hex
+			if (targetHex) {
+				activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>The attacker is firing an explosive attack at the hex you are standing in. For your defence to be successful you either need to exit the hex you are currently standing in, or otherwise prevent the attacker from striking your hex.</div>";
+			}
+
+			// If the encumbrance penalty is above zero, warn the user
+			if (currentEnc.penalty < 0) {
+				activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>Your current encumbrance penalty is " + currentEnc.penalty + " which is hampering your dodge and any fencing parries.</div>";
+			}
+
+			// Warn the user that they are both reeling and exhausted
+			if ((hpState.toLowerCase() !== "healthy" && hpState.toLowerCase() !== "injured") && (fpState.toLowerCase() !== "fresh" && fpState.toLowerCase() !=="tired")) {
+				activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; color: rgb(208, 65, 65)'>You are below 1/3rd HP and 1/3rd FP, meaning you are both reeling and exhausted. Aside from quartering your dodge, it also reduces your strength, which means your fencing parries are likely taking encumbrance penalties. You're probably fucked.</div>";
+			}
+
+			// Warn the user about the reeling penalty
+			else if (hpState.toLowerCase() !== "healthy" && hpState.toLowerCase() !== "injured") {
+				activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>You are below 1/3rd HP, meaning you are reeling or worse. Aside from halving your dodge, it also reduces your strength, which means your fencing parries are likely taking encumbrance penalties.</div>";
+			}
+
+			// Warn the user about the exhausted penalty
+			else if (fpState.toLowerCase() !== "fresh" && fpState.toLowerCase() !=="tired") {
+				activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>You are below 1/3rd FP, meaning you are exhausted or worse. Aside from halving your dodge, it also reduces your strength, which means your fencing parries are likely taking encumbrance penalties.</div>";
+			}
+
+			activeDefenceModalContent += "<hr>";
 		}
-		else if (facing[0] === -1) { // Attacker is in the target's side or rear hexes, warn them
-			activeDefenceModalContent += "" +
-				"<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>The attacker is in one of your rear hexes. If you can defend, you have a -2 penalty to do so.</div>"
+
+		// End Warnings
+
+		// General Modifiers
+		activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; text-decoration: underline; font-size: x-large;'>General Modifiers</div>";
+		activeDefenceModalContent += "<div style='display: flex; justify-content: space-between;'>";
+
+		// General active defence modifier
+		activeDefenceModalContent += "<div class='def-option'><input type='number' id='mod' name='mod' placeholder='Active Defence Modifier'/></div>";
+
+		if (facing[0] === 0 || facing[0] === -1) { // Attacker is in the target's side or rear hexes, give them the option to use Timed Defence.
+			activeDefenceModalContent += "<div class='def-option'><input type='checkbox' name='timedDefence' id='timedDefence' value='timedDefence' /><label for='timedDefence' style='line-height: 26px;'>Timed Defence</label></div>"
 		}
-
-		// The attack is an explosion targetting your hex
-		if (targetHex) {
-			activeDefenceModalContent += "" +
-				"<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>The attacker is firing an explosive attack at the hex you are standing in. For your defence to be successful you either need to exit the hex you are currently standing in, or otherwise prevent the attacker from striking your hex.</div>"
-		}
-
-		activeDefenceModalContent += "<div class='general-def-mods'>"
-
-		// Non-retreat general options
-		activeDefenceModalContent += "<div style='display: flex; flex-direction: column; flex: auto;'>" +
-			"<div class='def-option'><input type='checkbox' name='feverishDefence' id='feverishDefence' value='feverishDefence' /><label for='feverishDefence' style='line-height: 26px;'>Feverish Defence</label></div>" +
-			"<div class='def-option'><input type='number' name='feverishDefenceMod' id='feverishDefenceMod' placeholder='Feverish Defence Will Roll Modifier'/></div>" +
-			"<div class='def-option'><input type='number' id='mod' name='mod' placeholder='Active Defence Modifier'/></div>";
-
-		if (facing[0] <= 0) { // Attacker is in the target's side or rear hexes, give them the option to use Timed Defence.
-			activeDefenceModalContent += "<div class='tooltip def-option'>" +
-				"	<span class='tooltiptext'>To use Timed Defence you must have the technique for the specific type of defence you are attempting.<br>" +
-				"							Timed Defence (Dodge) can only be used once per turn</span>" +
-				"	</span>" +
-				"	<input type='checkbox' name='timedDefence' id='timedDefence' value='timedDefence' />" +
-				"	<label for='timedDefence' style='line-height: 26px;'>Timed Defence</label>" +
-				"</div>";
-		}
-
 		activeDefenceModalContent += "</div>";
+		activeDefenceModalContent += "<hr>";
+
+		// End General Modifiers
+
+		// Feverish Defence Modifiers
+		activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; text-decoration: underline; font-size: x-large;'>Feverish Defence</div>";
+		activeDefenceModalContent += "<div style='display: flex; justify-content: space-between; flex: auto;'>" +
+			"<div class='def-option'><input type='checkbox' name='feverishDefence' id='feverishDefence' value='feverishDefence' /><label for='feverishDefence' style='line-height: 26px;'>Attempt Will Roll</label></div>" +
+			"<div class='def-option'><input type='number' name='feverishDefenceMod' id='feverishDefenceMod' placeholder='Will Roll Modifier'/></div>"
+
+		activeDefenceModalContent += "</div>"
+		activeDefenceModalContent += "<hr>";
+		// End Feverish Defence Modifiers
 
 		// Retreat options
-		activeDefenceModalContent += "<div style='display: flex; flex-direction: column; min-width: 50px; flex: auto;'>" +
-			"<div class='def-option'><input type='checkbox' name='retreat' id='retreat' value='retreat' /><label for='retreat' style='line-height: 26px;'>Retreat</label></div>" +
-			"<div class='def-option'><input type='checkbox' name='sideslip' id='sideslip' value='sideslip' /><label for='sideslip' style='line-height: 26px;'>Side Slip</label></div>" +
+		activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; text-decoration: underline; font-size: x-large;'>Retreat Options</div>";
+		activeDefenceModalContent += "<div style='display: flex; min-width: 50px; flex: auto;'>" +
 			"<div class='def-option'><input type='checkbox' name='slip' id='slip' value='slip' /><label for='slip' style='line-height: 26px;'>Slip</label></div>" +
-			"</div>";
+			"<div class='def-option'><input type='checkbox' name='sideslip' id='sideslip' value='sideslip' /><label for='sideslip' style='line-height: 26px;'>Side Slip</label></div>" +
+			"<div class='def-option'><input type='checkbox' name='retreat' id='retreat' value='retreat' /><label for='retreat' style='line-height: 26px;'>Retreat</label></div>";
+
+		activeDefenceModalContent += "</div>";
+		// End Retreat options
+
+		// All Out Defence Options
+
+
+		activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; text-decoration: underline; font-size: x-large;'>All Out Defences</div>";
+		activeDefenceModalContent += "<div style='display: flex; min-width: 50px; flex: auto;'>" +
+			"<div class='def-option'></div>" +
+			"<div class='def-option'><input type='checkbox' name='aodIncreased' id='aodIncreased' value='aodIncreased' /><label for='slip' style='line-height: 26px;'>Increased Defence (+2)</label></div>" +
+			"<div class='def-option'></div>";
 
 		activeDefenceModalContent += "</div>"
 
-		activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; padding-top: 10px;'>Specific Modifiers</div>";
+		activeDefenceModalContent += "<div style='display: flex; min-width: 50px; flex: auto;'>" +
+			"<div class='def-option'><input type='checkbox' name='aodDoubleDodge' id='aodDoubleDodge' value='aodDoubleDodge' /><label for='aodDoubleDodge' style='line-height: 26px;'>Double Defence (Dodge)</label></div>" +
+			"<div class='def-option'><input type='checkbox' name='aodDoubleBlock' id='aodDoubleBlock' value='aodDoubleBlock' /><label for='aodDoubleBlock' style='line-height: 26px;'>Double Defence (Block)</label></div>" +
+			"<div class='def-option'><input type='checkbox' name='aodDoubleParry' id='aodDoubleParry' value='aodDoubleParry' /><label for='aodDoubleParry' style='line-height: 26px;'>Double Defence (Parry)</label></div>";
+
+		activeDefenceModalContent += "</div>"
+		activeDefenceModalContent += "<hr>";
+
+		// End All Out Defence Options
+
+		// Acrobatic Defence Options
+		activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; text-decoration: underline; font-size: x-large;'>Acrobatic Defences</div>";
+
+		activeDefenceModalContent += "<div style='display: flex; min-width: 50px; flex: auto;'>";
+		activeDefenceModalContent += "<div class='def-option'><input type='checkbox' name='acrobatic' id='acrobatic' value='acrobatic' /><label for='acrobatic' style='line-height: 26px;'>Acrobatic Defence</label></div>";
+		activeDefenceModalContent += "<div class='def-option'><input type='checkbox' name='aerobatic' id='aerobatic' value='aerobatic' /><label for='aerobatic' style='line-height: 26px;'>Aerobatic Defence</label></div>";
+		activeDefenceModalContent += "<div class='def-option'><input type='checkbox' name='aquabatic' id='aquabatic' value='aquabatic' /><label for='aquabatic' style='line-height: 26px;'>Aquabatic Defence</label></div>";
+		activeDefenceModalContent += "</div>";
+
+		activeDefenceModalContent += "<div style='display: flex; min-width: 50px; flex: auto;'>" +
+			"<div class='def-option'></div>" +
+			"<div class='def-option' style='flex: 3'><div class='def-option'><input type='number' name='acroMod' id='acroMod' placeholder='Acrobatic Defence Modifier'/></div></div>" +
+			"<div class='def-option'></div>" +
+			"</div>"
+
+		activeDefenceModalContent += "<hr>";
+		// End Acrobatic Defence Options
+
+		activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; text-decoration: underline; font-size: x-large;'>Specific Modifiers</div>";
 
 		activeDefenceModalContent += "<div style='display: flex'>";
 
@@ -4070,13 +4152,21 @@ export class gurpsActor extends Actor {
 
 		let options = {
 			feverishDefence: 	html.find('#feverishDefence')[0] ? html.find('#feverishDefence')[0].checked : "",
-			feverishDefenceMod: parseInt(html.find('#feverishDefenceMod').val()),
+			feverishDefenceMod: html.find('#feverishDefenceMod').val(),
 			timedDefence: 		html.find('#timedDefence')[0] ? html.find('#timedDefence')[0].checked : "",
 			retreat: 			html.find('#retreat')[0] ? html.find('#retreat')[0].checked : "",
 			sideslip: 			html.find('#sideslip')[0] ? html.find('#sideslip')[0].checked : "",
 			slip: 				html.find('#slip')[0] ? html.find('#slip')[0].checked : "",
 			drop: 				html.find('#drop')[0] ? html.find('#drop')[0].checked : "",
-			crossParry: 		html.find('#crossParry')[0] ? html.find('#crossParry')[0].checked : ""
+			crossParry: 		html.find('#crossParry')[0] ? html.find('#crossParry')[0].checked : "",
+			aodIncreased:		html.find('#aodIncreased')[0] ? html.find('#aodIncreased')[0].checked : "",
+			aodDoubleDodge:		html.find('#aodDoubleDodge')[0] ? html.find('#aodDoubleDodge')[0].checked : "",
+			aodDoubleBlock:		html.find('#aodDoubleBlock')[0] ? html.find('#aodDoubleBlock')[0].checked : "",
+			aodDoubleParry:		html.find('#aodDoubleParry')[0] ? html.find('#aodDoubleParry')[0].checked : "",
+			acrobatic:			html.find('#acrobatic')[0] ? html.find('#acrobatic')[0].checked : "",
+			aerobatic:			html.find('#aerobatic')[0] ? html.find('#aerobatic')[0].checked : "",
+			aquabatic:			html.find('#aquabatic')[0] ? html.find('#aquabatic')[0].checked : "",
+			acroMod:			html.find('#acroMod').val()
 		}
 
 		if (type.toLowerCase() === 'parry'){
@@ -4111,7 +4201,7 @@ export class gurpsActor extends Actor {
 	async rollActiveDefence(mod, selection, name, options, flags, locationIDs, type, facing) {
 		let target = game.scenes.get(flags.scene).tokens.get(flags.target).actor;
 
-		// TODO - Get modifiers for posture and encumbrance (Dodge has them applied, Fencing parries do not)
+		// TODO - Get modifiers for posture
 		let totalModifier;
 		let additionalMessageContent = "";
 		let label = "";
@@ -4125,6 +4215,12 @@ export class gurpsActor extends Actor {
 
 		let feverishDefenceMod = options.feverishDefenceMod;
 
+		if (typeof feverishDefenceMod === "string") {
+			if (feverishDefenceMod.length > 0) {
+				feverishDefenceMod = parseInt(feverishDefenceMod);
+			}
+		}
+
 		// Undefined / NaN check for feverishDefenceMod
 		if (typeof feverishDefenceMod !== "number" || feverishDefenceMod.isNaN) {
 			feverishDefenceMod = 0;
@@ -4134,10 +4230,11 @@ export class gurpsActor extends Actor {
 		let feverishWillRoll = game.settings.get("gurps4e", "feverishDefenceRequiresWill");
 		let feverishFP = game.settings.get("gurps4e", "feverishDefenceCostsFP");
 		let willRollHtml = "";
+		let acroRollHtml = "";
 		let feverishWillRollFailed = false;
 
-		// If Will rolls are required for Feverish Defences
-		if (feverishWillRoll) {
+		// If Will rolls are required for Feverish Defences and they've elected to make such a roll
+		if (feverishWillRoll && options.feverishDefence) {
 			let willRoll = await rollHelpers.skillRoll(target.system.primaryAttributes.will.value, feverishDefenceMod, "Rolls against Will for a Feverish Defence.", false);
 
 			willRollHtml = willRoll.content;
@@ -4175,8 +4272,94 @@ export class gurpsActor extends Actor {
 
 			label += willRollHtml + "<hr>";
 		}
-
 		// End Feverish Defences
+
+		// If the user has decided to make an acrobatic defence
+		let acroNotice = "";
+		if (options.acrobatic || options.aerobatic || options.aquabatic) {
+			let acroSkill = "Acrobatics";
+			let acroLabel = "Rolls against Acrobatics";
+			if (options.acrobatic) {
+				acroSkill = "Acrobatics";
+				acroLabel = "Rolls against Acrobatics";
+			}
+			else if (options.aerobatic) {
+				acroSkill = "Aerobatics";
+				acroLabel = "Rolls against Aerobatics";
+			}
+			else if (options.aquabatic) {
+				acroSkill = "Aquabatics";
+				acroLabel = "Rolls against Aquabatics";
+			}
+
+			let acroSkillValue = skillHelpers.getSkillLevelByName(acroSkill, target);
+
+			let acroMod = options.acroMod;
+
+			if (typeof acroMod === "string") {
+				if (acroMod.length > 0) {
+					acroMod = parseInt(acroMod);
+				}
+			}
+
+			// Undefined / NaN check for acroMod
+			if (typeof acroMod !== "number" || acroMod.isNaN) {
+				acroMod = 0;
+			}
+
+			// For whatever reason, an acrobatic defence in this case is not allowed (Not the same as trying but failing)
+			if (acroSkillValue === undefined || typeof acroSkillValue !== "number" || (type === "parry" && !game.settings.get("gurps4e", "acrobaticParry")) || (type === "block" && !game.settings.get("gurps4e", "acrobaticBlock"))) {
+				// TODO - Warn about failed attempt at making an acrobatic defence
+				if (acroSkillValue === undefined || typeof acroSkillValue !== "number") {
+					acroRollHtml += "Attempted an " + acroSkill.slice(0, -1) + " defence but lacks the skill. There is no resulting modifier";
+				}
+				else if (type === "parry" && !game.settings.get("gurps4e", "acrobaticParry")) {
+					acroRollHtml += "Attempted an " + acroSkill.slice(0, -1) + " parry, but the campaign settings do not permit it. There is no resulting modifier";
+				}
+				else if (type === "block" && !game.settings.get("gurps4e", "acrobaticBlock")) {
+					acroRollHtml += "Attempted an " + acroSkill.slice(0, -1) + " block, but the campaign settings do not permit it. There is no resulting modifier";
+				}
+				else {
+					acroRollHtml += "Attempted an " + acroSkill.slice(0, -1) + " defence but some error prevents it from working right now. Bother Calvin about this.";
+				}
+			}
+			// An acrobatic defence is permitted, continue
+			else {
+				let acroRoll = await rollHelpers.skillRoll(acroSkillValue, acroMod, acroLabel, false);
+
+				acroRollHtml = acroRoll.content;
+
+				if (acroRoll.success) {
+					acroRollHtml += "<br/>+2 to this defence";
+
+					if (options.acrobatic) {
+						acroNotice = "acrobatic ";
+					}
+					else if (options.aerobatic) {
+						acroNotice = "aerobatic ";
+					}
+					else if (options.aquabatic) {
+						acroNotice = "aquabatic ";
+					}
+				}
+				else {
+					acroRollHtml += "<br/>-2 to this defence";
+
+					if (options.acrobatic) {
+						acroNotice = "failed acrobatic ";
+					}
+					else if (options.aerobatic) {
+						acroNotice = "failed aerobatic ";
+					}
+					else if (options.aquabatic) {
+						acroNotice = "failed aquabatic ";
+					}
+				}
+			}
+
+			label += acroRollHtml + "<hr>";
+		}
+		// End Acrobatic Defences
 
 		label += target.name + " attempts a ";
 
@@ -4185,6 +4368,17 @@ export class gurpsActor extends Actor {
 			label += "feverish ";
 			totalModifier += 2;
 		}
+
+		// They picked AoD Increased
+		if (options.aodIncreased) {
+			label += "all out ";
+			totalModifier += 2;
+		}
+
+		if (options.acrobatic || options.aerobatic || options.aquabatic) {
+			label += acroNotice;
+		}
+
 		if (options.crossParry && type === "parry") {
 			label += "cross ";
 			totalModifier += 2;
