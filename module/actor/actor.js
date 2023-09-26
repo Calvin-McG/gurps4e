@@ -3991,21 +3991,30 @@ export class gurpsActor extends Actor {
 		// End All Out Defence Options
 
 		// Acrobatic Defence Options
-		activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; text-decoration: underline; font-size: x-large;'>Acrobatic Defences</div>";
+		// Make sure they have at least one acrobatic skill
+		if (skillHelpers.getSkillLevelByName("acrobatics", targetToken.actor) || skillHelpers.getSkillLevelByName("aerobatics", targetToken.actor) || skillHelpers.getSkillLevelByName("aquabatics", targetToken.actor)) {
+			activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; text-decoration: underline; font-size: x-large;'>Acrobatic Defences</div>";
 
-		activeDefenceModalContent += "<div style='display: flex; min-width: 50px; flex: auto;'>";
-		activeDefenceModalContent += "<div class='def-option'><input type='checkbox' name='acrobatic' id='acrobatic' value='acrobatic' /><label for='acrobatic' style='line-height: 26px;'>Acrobatic Defence</label></div>";
-		activeDefenceModalContent += "<div class='def-option'><input type='checkbox' name='aerobatic' id='aerobatic' value='aerobatic' /><label for='aerobatic' style='line-height: 26px;'>Aerobatic Defence</label></div>";
-		activeDefenceModalContent += "<div class='def-option'><input type='checkbox' name='aquabatic' id='aquabatic' value='aquabatic' /><label for='aquabatic' style='line-height: 26px;'>Aquabatic Defence</label></div>";
-		activeDefenceModalContent += "</div>";
+			activeDefenceModalContent += "<div style='display: flex; min-width: 50px; flex: auto;'>";
+			if (skillHelpers.getSkillLevelByName("acrobatics", targetToken.actor)) {
+				activeDefenceModalContent += "<div class='def-option'><input type='checkbox' name='acrobatic' id='acrobatic' value='acrobatic' /><label for='acrobatic' style='line-height: 26px;'>Acrobatic Defence</label></div>";
+			}
+			if (skillHelpers.getSkillLevelByName("aerobatics", targetToken.actor)) {
+				activeDefenceModalContent += "<div class='def-option'><input type='checkbox' name='aerobatic' id='aerobatic' value='aerobatic' /><label for='aerobatic' style='line-height: 26px;'>Aerobatic Defence</label></div>";
+			}
+			if (skillHelpers.getSkillLevelByName("aquabatics", targetToken.actor)) {
+				activeDefenceModalContent += "<div class='def-option'><input type='checkbox' name='aquabatic' id='aquabatic' value='aquabatic' /><label for='aquabatic' style='line-height: 26px;'>Aquabatic Defence</label></div>";
+			}
+			activeDefenceModalContent += "</div>";
 
-		activeDefenceModalContent += "<div style='display: flex; min-width: 50px; flex: auto;'>" +
-			"<div class='def-option'></div>" +
-			"<div class='def-option' style='flex: 3'><div class='def-option'><input type='number' name='acroMod' id='acroMod' placeholder='Acrobatic Defence Modifier'/></div></div>" +
-			"<div class='def-option'></div>" +
-			"</div>"
+			activeDefenceModalContent += "<div style='display: flex; min-width: 50px; flex: auto;'>" +
+				"<div class='def-option'></div>" +
+				"<div class='def-option' style='flex: 3'><div class='def-option'><input type='number' name='acroMod' id='acroMod' placeholder='Acrobatic Defence Modifier'/></div></div>" +
+				"<div class='def-option'></div>" +
+				"</div>"
 
-		activeDefenceModalContent += "<hr>";
+			activeDefenceModalContent += "<hr>";
+		}
 		// End Acrobatic Defence Options
 
 		activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; text-decoration: underline; font-size: x-large;'>Specific Modifiers</div>";
