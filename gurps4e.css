@@ -1735,6 +1735,7 @@ attribute-senses {
 .def-option {
 	display: flex;
 	flex-direction: row;
+	flex: 1;
 }
 
 .general-def-mods {
