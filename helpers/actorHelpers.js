@@ -1881,4 +1881,151 @@ export class actorHelpers {
             return -99
         }
     }
+
+    static fetchHpState(actor) {
+        let hpMax = actor.system.reserves.hp.max;
+        let hpValue = actor.system.reserves.hp.value;
+        let hpState = 'Healthy';
+
+        let hpRatio = hpValue / hpMax;
+        if (hpRatio < -5) { // HP is at -5xMax or less
+            hpState = 'Dead';
+        }
+        else if (hpRatio < -4) { // HP is at -4xMax or less
+            hpState = 'Death 4';
+        }
+        else if (hpRatio < -3) { // HP is at -3xMax or less
+            hpState = 'Death 3';
+        }
+        else if (hpRatio < -2) { // HP is at -2xMax or less
+            hpState = 'Death 2';
+        }
+        else if (hpRatio < -1) { // HP is at -1xMax or less
+            hpState = 'Death 1';
+        }
+        else if (hpValue < (hpMax / 3)) { // HP is less than 1/3rd of max.
+            hpState = 'Reeling';
+        }
+        else if (hpValue < hpMax) { // HP is not full, but is higher than 1/3rd of max.
+            hpState = 'Injured';
+        }
+        else { // HP is not less than max.
+            hpState = 'Healthy';
+        }
+        return hpState;
+    }
+
+    static fetchFpState(actor) {
+        let fpMax = actor.system.reserves.fp.max;
+        let fpValue = actor.system.reserves.fp.value;
+        let fpState = 'Fresh';
+
+        let fpRatio = fpValue / fpMax;
+
+        if (fpRatio <= -1) { // fp is at -1xMax or less
+            fpState = 'Unconscious';
+        }
+        else if (fpRatio <= 0) { // fp is at zero or less
+            fpState = 'Collapse';
+        }
+        else if (fpValue < (fpMax / 3)) { // fp is less than 1/3rd of max.
+            fpState = 'Very Tired';
+        }
+        else if (fpValue < fpMax) { // fp is not full, but is higher than 1/3rd of max.
+            fpState = 'Tired';
+        }
+        else { // FP is not less than max
+            fpState = 'Fresh';
+        }
+
+        return fpState;
+    }
+
+    static fetchCurrentEnc(actor) {
+        let st = actor.system.primaryAttributes.lifting.value;
+        let carriedWeight = 0;
+
+        let hpState = this.fetchHpState(actor);
+        let fpState = this.fetchFpState(actor);
+
+        // Basic 328 - With less than 1/3rd FP remaining your ST is halved, but not for the purposes of HP or damage
+        if (fpState.toLowerCase() !== "fresh" && fpState.toLowerCase() !=="tired") {
+            st = st / 2
+        }
+
+        if (hpState.toLowerCase() !== "healthy" && hpState.toLowerCase() !== "injured"){
+            st = st / 2
+        }
+        console.log(actor.system.reserves.hp.state.toLowerCase(), actor.system.reserves.fp.state.toLowerCase())
+
+        console.log(actor.system.reserves.hp.max, actor.system.reserves.hp.value);
+
+        let bl = Math.round(((st * st)/5));
+
+        for (let l = 0; l < actor.items.contents.length; l++){
+            if (actor.items.contents[l].system.equipStatus !== "notCarried" &&
+                (actor.items.contents[l].type === "Equipment" ||
+                    actor.items.contents[l].type === "Custom Weapon" ||
+                    actor.items.contents[l].type === "Custom Armour" ||
+                    actor.items.contents[l].type === "Custom Jewelry" ||
+                    actor.items.contents[l].type === "Travel Fare")){
+                carriedWeight = (+actor.items.contents[l].system.weight * +actor.items.contents[l].system.quantity) + +carriedWeight;
+            }
+        }
+
+        if (carriedWeight <= bl) {
+            return {
+                ref: "none",
+                title: "None",
+                mult: 1,
+                fpCost: 1,
+                penalty: 0
+            };
+        }
+        else if (carriedWeight <= bl * 2){
+            return {
+                ref: "light",
+                title: "Light",
+                mult: 0.8,
+                fpCost: 2,
+                penalty: -1
+            };
+        }
+        else if (carriedWeight <= bl * 3){
+            return {
+                ref: "medium",
+                title: "Medium",
+                mult: 0.6,
+                fpCost: 3,
+                penalty: -2
+            };
+        }
+        else if (carriedWeight <= bl * 6){
+            return {
+                ref: "heavy",
+                title: "Heavy",
+                mult: 0.4,
+                fpCost: 4,
+                penalty: -3
+            };
+        }
+        else if (carriedWeight <= bl * 10){
+            return {
+                ref: "xheavy",
+                title: "X-Heavy",
+                mult: 0.2,
+                fpCost: 5,
+                penalty: -4
+            };
+        }
+        else {
+            return {
+                ref: "error",
+                title: "Error",
+                mult: 0,
+                fpCost: 99,
+                penalty: -99
+            };
+        }
+    }
 }
