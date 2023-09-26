@@ -52,6 +52,17 @@ export class generalHelpers {
         return diceAndAdds;
     }
 
+    static correctAtoAn(string) {
+        let vowels = ['a', 'e', 'i', 'o', 'u']
+
+        // Loop through all the vowels
+        for (let x = 0; x < vowels.length; x++) {
+            string = string.replace(" a " + vowels[x], " an " + vowels[x]);
+        }
+
+        return string;
+    }
+
     static diceAndAddsToGURPSOutput(dice, adds) {
         let result = "";
         if (dice === 0 && adds === 0) {
