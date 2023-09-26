@@ -4331,7 +4331,7 @@ export class gurpsActor extends Actor {
 
 				if (acroRoll.success) {
 					acroRollHtml += "<br/>+2 to this defence";
-
+					totalModifier += 2;
 					if (options.acrobatic) {
 						acroNotice = "acrobatic ";
 					}
@@ -4344,7 +4344,7 @@ export class gurpsActor extends Actor {
 				}
 				else {
 					acroRollHtml += "<br/>-2 to this defence";
-
+					totalModifier -= 2;
 					if (options.acrobatic) {
 						acroNotice = "failed acrobatic ";
 					}
