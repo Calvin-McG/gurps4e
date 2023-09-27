@@ -3975,17 +3975,27 @@ export class gurpsActor extends Actor {
 		activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; text-decoration: underline; font-size: x-large;'>All Out Defences</div>";
 		activeDefenceModalContent += "<div style='display: flex; min-width: 50px; flex: auto;'>" +
 			"<div class='def-option'></div>" +
-			"<div class='def-option'><input type='checkbox' name='aodIncreased' id='aodIncreased' value='aodIncreased' /><label for='slip' style='line-height: 26px;'>Increased Defence (+2)</label></div>" +
+			"<div class='def-option' style='flex: 2; justify-content: center;'><input type='checkbox' name='aodIncreased' id='aodIncreased' value='aodIncreased' /><label for='slip' style='line-height: 26px;'>Increased Defence (+2)</label></div>" +
 			"<div class='def-option'></div>";
 
 		activeDefenceModalContent += "</div>"
 
-		activeDefenceModalContent += "<div style='display: flex; min-width: 50px; flex: auto;'>" +
-			"<div class='def-option'><input type='checkbox' name='aodDoubleDodge' id='aodDoubleDodge' value='aodDoubleDodge' /><label for='aodDoubleDodge' style='line-height: 26px;'>Double Defence (Dodge)</label></div>" +
-			"<div class='def-option'><input type='checkbox' name='aodDoubleBlock' id='aodDoubleBlock' value='aodDoubleBlock' /><label for='aodDoubleBlock' style='line-height: 26px;'>Double Defence (Block)</label></div>" +
-			"<div class='def-option'><input type='checkbox' name='aodDoubleParry' id='aodDoubleParry' value='aodDoubleParry' /><label for='aodDoubleParry' style='line-height: 26px;'>Double Defence (Parry)</label></div>";
-
-		activeDefenceModalContent += "</div>"
+		// activeDefenceModalContent += "<div style='display: flex; min-width: 50px; flex: auto;'>";
+		//
+		// // Only show double defence options for those defences that have at least one entry
+		// if (dodges.length > 0) {
+		// 	activeDefenceModalContent += "<div class='def-option'><input type='checkbox' name='aodDoubleDodge' id='aodDoubleDodge' value='aodDoubleDodge' /><label for='aodDoubleDodge' style='line-height: 26px;'>Double Defence (Dodge)</label></div>";
+		// }
+		//
+		// if (blocks.length > 0) {
+		// 	activeDefenceModalContent += "<div class='def-option'><input type='checkbox' name='aodDoubleBlock' id='aodDoubleBlock' value='aodDoubleBlock' /><label for='aodDoubleBlock' style='line-height: 26px;'>Double Defence (Block)</label></div>";
+		// }
+		//
+		// if (parries.length > 0) {
+		// 	activeDefenceModalContent += "<div class='def-option'><input type='checkbox' name='aodDoubleParry' id='aodDoubleParry' value='aodDoubleParry' /><label for='aodDoubleParry' style='line-height: 26px;'>Double Defence (Parry)</label></div>";
+		// }
+		//
+		// activeDefenceModalContent += "</div>"
 		activeDefenceModalContent += "<hr>";
 
 		// End All Out Defence Options
