@@ -820,6 +820,11 @@ attribute-senses {
 	padding: 0 0.5em;
 }
 
+.enc-current td {
+	background-color: rgba(0, 0, 0, 0.1) !important;
+	font-weight: bold;
+}
+
 .trait-category-header {
 	background-color: rgba(0, 0, 0, 0.1) !important;
 	text-align: center;
