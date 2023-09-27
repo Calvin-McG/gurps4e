@@ -34,4 +34,91 @@ export class postureHelpers {
         tokenObj.toggleEffect("systems/gurps4e/icons/postures/sittingchair.png",    { active: false });
     }
 
+    static getPosture(tokenEffects) {
+
+        let posture = {
+            name: "standing",
+            defenceMod: 0,
+            meleeAttackMod: 0,
+            rangedToHitMod: 0,
+            movementMultiplier: 1,
+            mpPerHex: 1
+        }
+
+        for (let x = 0; x < tokenEffects.length; x++) {
+            if (tokenEffects[x] === ("systems/gurps4e/icons/postures/sitting.png") || tokenEffects === ("systems/gurps4e/icons/postures/sittingchair.png")) {
+                posture = {
+                    name: "sitting",
+                    defenceMod: -2,
+                    meleeAttackMod: -2,
+                    rangedToHitMod: -2,
+                    movementMultiplier: 0,
+                    mpPerHex: 1000
+                }
+            }
+            else if (tokenEffects[x] === ("systems/gurps4e/icons/postures/crouching.png")) {
+                posture = {
+                    name: "crouching",
+                    defenceMod: 0,
+                    meleeAttackMod: -2,
+                    rangedToHitMod: -2,
+                    movementMultiplier: 2/3,
+                    mpPerHex: 1.5
+                }
+            }
+            else if (tokenEffects[x] === ("systems/gurps4e/icons/postures/crawling.png")) {
+                posture = {
+                    name: "crawling",
+                    defenceMod: -3,
+                    meleeAttackMod: -4,
+                    rangedToHitMod: -2,
+                    movementMultiplier: 1/3,
+                    mpPerHex: 3
+                }
+            }
+            else if (tokenEffects[x] === ("systems/gurps4e/icons/postures/kneeling.png")) {
+                posture = {
+                    name: "kneeling",
+                    defenceMod: -2,
+                    meleeAttackMod: -2,
+                    rangedToHitMod: -2,
+                    movementMultiplier: 1/3,
+                    mpPerHex: 3
+                }
+            }
+            else if (tokenEffects[x] === ("systems/gurps4e/icons/postures/lyingback.png")) {
+                posture = {
+                    name: "lyingback",
+                    defenceMod: -3,
+                    meleeAttackMod: -4,
+                    rangedToHitMod: -2,
+                    movementMultiplier: 0.01,
+                    mpPerHex: 100
+                }
+            }
+            else if (tokenEffects[x] === ("systems/gurps4e/icons/postures/lyingprone.png")) {
+                posture = {
+                    name: "lyingprone",
+                    defenceMod: -3,
+                    meleeAttackMod: -4,
+                    rangedToHitMod: -2,
+                    movementMultiplier: 0.01,
+                    mpPerHex: 100
+                }
+            }
+            else {
+                posture = {
+                    name: "standing",
+                    defenceMod: 0,
+                    meleeAttackMod: 0,
+                    rangedToHitMod: 0,
+                    movementMultiplier: 1,
+                    mpPerHex: 1
+                }
+            }
+        }
+
+        return posture;
+    }
+
 }
