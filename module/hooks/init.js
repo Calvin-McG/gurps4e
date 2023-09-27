@@ -392,6 +392,15 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  game.settings.register("gurps4e", "feverishDefenceAllowed", {
+    name: "Allow Feverish Defences",
+    hint: "Allow feverish defences, this is a semi-realistic optional rule",
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
   game.settings.register("gurps4e", "feverishDefenceRequiresWill", {
     name: "Feverish Defence requires a Will roll",
     hint: "By default Feverish Defence requires a Will roll or the bonus is not applied." +

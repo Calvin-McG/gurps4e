@@ -3950,13 +3950,15 @@ export class gurpsActor extends Actor {
 		// End General Modifiers
 
 		// Feverish Defence Modifiers
-		activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; text-decoration: underline; font-size: x-large;'>Feverish Defence</div>";
-		activeDefenceModalContent += "<div style='display: flex; justify-content: space-between; flex: auto;'>" +
-			"<div class='def-option'><input type='checkbox' name='feverishDefence' id='feverishDefence' value='feverishDefence' /><label for='feverishDefence' style='line-height: 26px;'>Attempt Will Roll</label></div>" +
-			"<div class='def-option'><input type='number' name='feverishDefenceMod' id='feverishDefenceMod' placeholder='Will Roll Modifier'/></div>"
+		if (game.settings.get("gurps4e", "feverishDefenceAllowed")) {
+			activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; text-decoration: underline; font-size: x-large;'>Feverish Defence</div>";
+			activeDefenceModalContent += "<div style='display: flex; justify-content: space-between; flex: auto;'>" +
+				"<div class='def-option'><input type='checkbox' name='feverishDefence' id='feverishDefence' value='feverishDefence' /><label for='feverishDefence' style='line-height: 26px;'>Attempt Will Roll</label></div>" +
+				"<div class='def-option'><input type='number' name='feverishDefenceMod' id='feverishDefenceMod' placeholder='Will Roll Modifier'/></div>"
 
-		activeDefenceModalContent += "</div>"
-		activeDefenceModalContent += "<hr>";
+			activeDefenceModalContent += "</div>"
+			activeDefenceModalContent += "<hr>";
+		}
 		// End Feverish Defence Modifiers
 
 		// Retreat options
