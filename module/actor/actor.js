@@ -3885,8 +3885,10 @@ export class gurpsActor extends Actor {
 		let hpState = actorHelpers.fetchHpState(targetToken.actor);
 		let fpState = actorHelpers.fetchFpState(targetToken.actor);
 
-		// If any facing, target hex, or enc warning applies
-		if (facing[0] === 0 || facing[0] === -1 || targetHex || currentEnc.penalty < 0 || (hpState.toLowerCase() !== "healthy" && hpState.toLowerCase() !== "injured")) {
+		let posture = postureHelpers.getPosture(targetToken.effects);
+
+		// If any facing, target hex, enc warning, hpState, fpState, or posture warning applies
+		if (facing[0] === 0 || facing[0] === -1 || targetHex || currentEnc.penalty < 0 || (hpState.toLowerCase() !== "healthy" && hpState.toLowerCase() !== "injured") || posture.defenceMod < 0) {
 
 			activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; text-decoration: underline; font-size: x-large; color: rgb(200, 0, 0)'>Warnings</div>";
 
@@ -3927,6 +3929,10 @@ export class gurpsActor extends Actor {
 			// Warn the user about the exhausted penalty
 			else if (fpState.toLowerCase() !== "fresh" && fpState.toLowerCase() !=="tired") {
 				activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>You are below 1/3rd FP, meaning you are exhausted or worse. Aside from halving your dodge, it also reduces your strength, which means your fencing parries are likely taking encumbrance penalties.</div>";
+			}
+
+			if (posture.defenceMod < 0) {
+				activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>You are currently " + posture.desc + " which gives you " + posture.defenceMod + " to all non-magical active defences.</div>";
 			}
 
 			activeDefenceModalContent += "<hr>";
@@ -4220,9 +4226,11 @@ export class gurpsActor extends Actor {
 	}
 
 	async rollActiveDefence(mod, selection, name, options, flags, locationIDs, type, facing) {
-		let target = game.scenes.get(flags.scene).tokens.get(flags.target).actor;
+		let targetToken = game.scenes.get(flags.scene).tokens.get(flags.target)
+		let target = targetToken.actor;
 
-		// TODO - Get modifiers for posture
+		let posture = postureHelpers.getPosture(targetToken.effects);
+
 		let totalModifier;
 		let additionalMessageContent = "";
 		let label = "";
@@ -4233,6 +4241,8 @@ export class gurpsActor extends Actor {
 		else {
 			totalModifier = parseInt(mod);
 		}
+
+		totalModifier += posture.defenceMod;
 
 		let feverishDefenceMod = options.feverishDefenceMod;
 
@@ -4439,6 +4449,11 @@ export class gurpsActor extends Actor {
 			else {
 				totalModifier += -1; // Otherwise grant the default.
 			}
+		}
+
+		// If they're not standing, include it in the output string
+		if (posture.name !== "standing") {
+			label += " while " + posture.desc;
 		}
 
 		if (type.toLowerCase() !== "dodge"){
