@@ -49,6 +49,7 @@ export class postureHelpers {
             if (tokenEffects[x] === ("systems/gurps4e/icons/postures/sitting.png") || tokenEffects === ("systems/gurps4e/icons/postures/sittingchair.png")) {
                 posture = {
                     name: "sitting",
+                    desc: "sitting",
                     defenceMod: -2,
                     meleeAttackMod: -2,
                     rangedToHitMod: -2,
@@ -59,6 +60,7 @@ export class postureHelpers {
             else if (tokenEffects[x] === ("systems/gurps4e/icons/postures/crouching.png")) {
                 posture = {
                     name: "crouching",
+                    desc: "crouching",
                     defenceMod: 0,
                     meleeAttackMod: -2,
                     rangedToHitMod: -2,
@@ -69,6 +71,7 @@ export class postureHelpers {
             else if (tokenEffects[x] === ("systems/gurps4e/icons/postures/crawling.png")) {
                 posture = {
                     name: "crawling",
+                    desc: "crawling",
                     defenceMod: -3,
                     meleeAttackMod: -4,
                     rangedToHitMod: -2,
@@ -79,6 +82,7 @@ export class postureHelpers {
             else if (tokenEffects[x] === ("systems/gurps4e/icons/postures/kneeling.png")) {
                 posture = {
                     name: "kneeling",
+                    desc: "kneeling",
                     defenceMod: -2,
                     meleeAttackMod: -2,
                     rangedToHitMod: -2,
@@ -89,6 +93,7 @@ export class postureHelpers {
             else if (tokenEffects[x] === ("systems/gurps4e/icons/postures/lyingback.png")) {
                 posture = {
                     name: "lyingback",
+                    desc: "lying supine",
                     defenceMod: -3,
                     meleeAttackMod: -4,
                     rangedToHitMod: -2,
@@ -99,6 +104,7 @@ export class postureHelpers {
             else if (tokenEffects[x] === ("systems/gurps4e/icons/postures/lyingprone.png")) {
                 posture = {
                     name: "lyingprone",
+                    desc: "lying prone",
                     defenceMod: -3,
                     meleeAttackMod: -4,
                     rangedToHitMod: -2,
@@ -109,6 +115,7 @@ export class postureHelpers {
             else {
                 posture = {
                     name: "standing",
+                    desc: "standing",
                     defenceMod: 0,
                     meleeAttackMod: 0,
                     rangedToHitMod: 0,
