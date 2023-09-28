@@ -5,6 +5,7 @@ export class weatherHelpers {
             {
                 "degree": 0,
                 "category": 0,
+                "f": -1,
                 "description": "Calm",
                 "windMphL": 0,
                 "windMphH": 0,
@@ -16,6 +17,7 @@ export class weatherHelpers {
             {
                 "degree": 1,
                 "category": 0,
+                "f": -1,
                 "description": "Light Air",
                 "windMphL": 1,
                 "windMphH": 3,
@@ -27,6 +29,7 @@ export class weatherHelpers {
             {
                 "degree": 2,
                 "category": 0,
+                "f": -1,
                 "description": "Light Breeze",
                 "windMphL": 4,
                 "windMphH": 7,
@@ -38,6 +41,7 @@ export class weatherHelpers {
             {
                 "degree": 3,
                 "category": 0,
+                "f": -1,
                 "description": "Gentle Breeze",
                 "windMphL": 8,
                 "windMphH": 12,
@@ -49,6 +53,7 @@ export class weatherHelpers {
             {
                 "degree": 4,
                 "category": 0,
+                "f": -1,
                 "description": "Moderate Breeze",
                 "windMphL": 13,
                 "windMphH": 18,
@@ -60,6 +65,7 @@ export class weatherHelpers {
             {
                 "degree": 5,
                 "category": 0,
+                "f": -1,
                 "description": "Fresh Breeze",
                 "windMphL": 19,
                 "windMphH": 24,
@@ -71,6 +77,7 @@ export class weatherHelpers {
             {
                 "degree": 6,
                 "category": 0,
+                "f": -1,
                 "description": "Strong Breeze",
                 "windMphL": 25,
                 "windMphH": 31,
@@ -82,6 +89,7 @@ export class weatherHelpers {
             {
                 "degree": 7,
                 "category": 0,
+                "f": -1,
                 "description": "Near Gale",
                 "windMphL": 32,
                 "windMphH": 38,
@@ -93,6 +101,7 @@ export class weatherHelpers {
             {
                 "degree": 8,
                 "category": 0,
+                "f": 0,
                 "description": "Gale or F0 Tornado",
                 "windMphL": 39,
                 "windMphH": 46,
@@ -104,6 +113,7 @@ export class weatherHelpers {
             {
                 "degree": 9,
                 "category": 0,
+                "f": 0,
                 "description": "Severe Gale or F0 Tornado",
                 "windMphL": 47,
                 "windMphH": 54,
@@ -115,6 +125,7 @@ export class weatherHelpers {
             {
                 "degree": 10,
                 "category": 0,
+                "f": 0,
                 "description": "Storm or F0 Tornado",
                 "windMphL": 55,
                 "windMphH": 63,
@@ -126,6 +137,7 @@ export class weatherHelpers {
             {
                 "degree": 11,
                 "category": 0,
+                "f": 0,
                 "description": "Violent Storm or F0 Tornado",
                 "windMphL": 64,
                 "windMphH": 72,
@@ -137,6 +149,7 @@ export class weatherHelpers {
             {
                 "degree": 12,
                 "category": 1,
+                "f": 1,
                 "description": "Category 1 Hurricane or F1 Tornado",
                 "windMphL": 73,
                 "windMphH": 95,
@@ -148,6 +161,7 @@ export class weatherHelpers {
             {
                 "degree": 13,
                 "category": 2,
+                "f": 1,
                 "description": "Category 2 Hurricane or F1 Tornado",
                 "windMphL": 96,
                 "windMphH": 110,
@@ -159,6 +173,7 @@ export class weatherHelpers {
             {
                 "degree": 14,
                 "category": 3,
+                "f": 2,
                 "description": "Category 3 Hurricane or F2 Tornado",
                 "windMphL": 111,
                 "windMphH": 129,
@@ -170,6 +185,7 @@ export class weatherHelpers {
             {
                 "degree": 15,
                 "category": 4,
+                "f": 3,
                 "description": "Category 4 Hurricane or F3 Tornado",
                 "windMphL": 130,
                 "windMphH": 156,
@@ -181,6 +197,7 @@ export class weatherHelpers {
             {
                 "degree": 16,
                 "category": 5,
+                "f": 4,
                 "description": "Category 5 Hurricane or F4 Tornado",
                 "windMphL": 157,
                 "windMphH": 194,
@@ -192,6 +209,7 @@ export class weatherHelpers {
             {
                 "degree": 17,
                 "category": 6,
+                "f": 5,
                 "description": "Category 6 Hurricane or F5 Tornado",
                 "windMphL": 195,
                 "windMphH": 229,
@@ -203,6 +221,7 @@ export class weatherHelpers {
             {
                 "degree": 18,
                 "category": 7,
+                "f": 6,
                 "description": "Category 7 Hurricane or F6 Tornado",
                 "windMphL": 230,
                 "windMphH": 253,
