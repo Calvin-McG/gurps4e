@@ -163,7 +163,7 @@ Hooks.once("init", () => {
         "      <div class='scene-option-input input-row'>" +
         "        <h2 class='scene-option' style='width: 100%;'>Temperature <span class=\"units\">(°F)</span></h2>" +
         "        <div class='scene-option form-fields'>" +
-        `          <input type="number" value="${app.document.flags?.gurps4e?.f ?? 0}" step="1" name="flags.gurps4e.f" placeholder="Temperature °F" max='100000000000000000000000000000000' min="-460">` +
+        `          <input type="number" value="${app.document.flags?.gurps4e?.f ?? 72}" step="1" name="flags.gurps4e.f" placeholder="Temperature °F" max='100000000000000000000000000000000' min="-460">` +
         "        </div>" +
         "      </div>" +
         "      <div class='scene-option-subtitle'>The temperature of the scene</div>" +
