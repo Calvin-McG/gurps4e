@@ -157,6 +157,23 @@ Hooks.once("init", () => {
     tabContent += "</div><hr>";
     // End Lighting
 
+    // Start Temperature
+    tabContent +=
+        "<div class='form-group-scene form-group'>" +
+        "      <div class='scene-option-input input-row'>" +
+        "        <h2 class='scene-option' style='width: 100%;'>Temperature <span class=\"units\">(°F)</span></h2>" +
+        "        <div class='scene-option form-fields'>" +
+        `          <input type="number" value="${app.document.flags?.gurps4e?.f ?? 0}" step="1" name="flags.gurps4e.f" placeholder="Temperature °F" max='100000000000000000000000000000000' min="-460">` +
+        "        </div>" +
+        "      </div>" +
+        "      <div class='scene-option-subtitle'>The temperature of the scene</div>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;At the moment, there's no distinction between interior and exterior spaces in the same scene. But you don't need to make rolls for everyone if you don't want to, and you can always apply a modifier if it would be appropriate.</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Where appropriate, this setting will apply relevant modifiers for characters who are cold blooded. This starts at 65° or 50° depending on the severity of the disadvantage, and every further 10° will increase the penalty.</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Normal humans have a temperature tolerance that ranges from 35° to 90°. In that range, no rolls are required. Outside that range, rolls are required to avoid FP loss. Every multiple of 10° outside that range adds an extra -1 to the HT roll. Crit fails on these HT rolls typically carry further negative modifiers.</p>";
+
+    tabContent += "</div><hr>";
+    // End Temperature
+
     // Closing div
     tabContent += "</div>"
 
