@@ -104,8 +104,8 @@ Hooks.once("init", () => {
         "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Thin Atmosphere: 0.51 to 0.8 atm - It's gonna suck, but with decent HT rolls, goggles, and frequent resting you can operate here as long as you don't crit fail your HT roll. (Mean time to crit fail is 37 days for HTs less than 12, 149 days for HT 12+)</p>" +
         "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Standard Atmosphere: 0.81 to 1.2 atm - Values in this range give no modifiers. On Earth, 5700ft is the point where the atmosphere shifts from Standard to Thin</p>" +
         "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Dense Atmosphere: 1.21 to 1.5 atm - -1 HT, otherwise it's not a big deal unless you're on some freaky planet with more than double Earth's O2.</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Very Dense Atmosphere: 1.51 to 10 atm</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Superdense Atmosphere: More than 10 atm</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Very Dense Atmosphere: 1.51 to 10 atm - You need equipment or advantages to deal with the pressure or you can't breathe.</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Superdense Atmosphere: More than 10 atm - You will be crushed without protection.</p>" +
         "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Characters with a different native pressure are also correctly accounted for because I am very clever. Though their baseline is different, the same multiples apply and have the same sorts of penalties.</p>" +
         "</div>" +
         "<hr>";
@@ -133,6 +133,8 @@ Hooks.once("init", () => {
     console.log((1-2.25577*(10**-5)* ((app.document.flags?.gurps4e?.alt ?? 0) / 3.28084) )**5.25588);
 
     // End Altitude
+
+
 
     // Closing div
     tabContent += "</div>"
