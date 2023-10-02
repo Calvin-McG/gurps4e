@@ -1882,3 +1882,27 @@ attribute-senses {
 	font-size: large;
 	font-weight: 500;
 }
+
+.form-group-scene {
+	flex-direction: column !important;
+}
+
+.scene-option-input {
+	flex-direction: row;
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.scene-option label h2 div {
+	flex: 1;
+}
+
+.scene-option-subtitle {
+	font-style: italic;
+	font-weight: 500;
+}
+
+.scene-option-notes {
+	width: 100%
+}

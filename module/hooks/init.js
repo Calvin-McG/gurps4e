@@ -5,11 +5,97 @@ import { macroHelpers } from "../../helpers/macroHelpers.js";
 import { materialHelpers } from "../../helpers/materialHelpers.js";
 import { economicHelpers } from "../../helpers/economicHelpers.js";
 import { vehicleHelpers } from "../../helpers/vehicleHelpers.js";
+import {weatherHelpers} from "../../helpers/weatherHelpers.js";
 
 Hooks.once("init", () => {
 
   _setGurps4eInitiative();
   hookAPI();
+
+  Hooks.on('renderSceneConfig', (app, html, options) => {
+    // Add the tab button to the header
+    // First an array containing all tab buttons is found, then we pick the last, then we append our new tab button
+    html.find('a.item').slice(-1).after('<a class="item" data-tab="calvin"><i class="fas fa-cloud-sun"></i> Environmental</a>')
+
+    // Create the tab content
+    let tabContent = "<div class=\"tab active\" data-tab=\"calvin\">";
+
+
+    // Start Gravity
+    tabContent +=
+        "<div class='form-group-scene form-group'>" +
+        "      <div class='scene-option-input input-row'>" +
+        "        <h2 class='scene-option' style='width: 100%;'>Gravity <span class=\"units\">(Gs)</span></h2>" +
+        "        <div class='scene-option form-fields'>" +
+        `          <input type="number" value="${app.document.flags?.gurps4e?.gravity ?? 1}" step="0.01" name="flags.gurps4e.gravity" placeholder="Gravity" min="0">` +
+        "        </div>" +
+        "      </div>" +
+        "      <div class='scene-option-subtitle'>The gravity of the scene, in multiples of Earth gravity.</div>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Rules for gravity can be found on Basic 350.</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Any value is possible and will correcly impact token encumberence, jump distance, falls, and whatever else I remembered to code in.</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;However, if you're concerned with attribute penalties, they apply on multiples of 0.2G for actors without modified G-Tolerance. Once there are actors with modified G-Tolerance, multiples of 0.05G become relevant.</p>" +
+        "</div>" +
+        "<hr>";
+    // End Gravity
+
+    // Start Beaufort
+    tabContent +=
+        "<div class=\"form-group-scene form-group\">" +
+        "      <div class='scene-option-input input-row'>" +
+        "    <h2 class='scene-option' style='width: 100%;'>Beaufort Wind Scale</h2>" +
+        "    <div class=\"scene-option form-fields\">" +
+        `      <select value="${app.document.flags?.gurps4e?.beaufort ?? 1}" name="flags.gurps4e.beaufort" id="flags.gurps4e.beaufort">`;
+
+    let beaufortScale = weatherHelpers.returnBeaufortScale();
+    let forecast = "";
+    for (let y = 0; y < beaufortScale.length; y++){
+      // If the beaufort degree for the scene matches the one we've reached on the loop, mark it selected
+      if (beaufortScale[y].degree === parseInt(app.document.flags.gurps4e.beaufort)) {
+        tabContent += "<option value='" + beaufortScale[y].degree + "' selected>" + beaufortScale[y].degree + " - " + beaufortScale[y].description +"</option>"
+
+        forecast = "<div class='scene-option-forecast'>" +
+            "<h2>Current Forecast (Save and reopen to update)</h2>" +
+            "<p>Wind speeds range from " + beaufortScale[y].windMphL + " to " + beaufortScale[y].windMphH + " mph</p>" +
+            "<p>Wave height ranges from " + beaufortScale[y].windMphL + " to " + beaufortScale[y].windMphH + " feet</p>" +
+            "<p><span style='font-weight: 500; text-decoration: underline'>Sea effect:</span> " + beaufortScale[y].sea + "</p>" +
+            "<p><span style='font-weight: 500; text-decoration: underline'>Land effect:</span> " + beaufortScale[y].land + "</p>" +
+            "</div>";
+      }
+      // Otherwise not
+      else {
+        tabContent += "<option value='" + beaufortScale[y].degree + "'>" + beaufortScale[y].degree + " - " + beaufortScale[y].description +"</option>"
+      }
+    }
+
+    tabContent += "</select>" +
+        "      </div>" +
+        "    </div>";
+
+    tabContent += "<div class='scene-option-subtitle'>A single number used to categorize the effect of wind speed.</div>";
+    tabContent += "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Beaufort scale appears on Magic 194, though the version in use here is slightly tweaked.</p>" +
+        "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;In real life, Beaufort values above 12 are only in use by the PRC and ROC for very powerful typhoons, though they are roughly analagous to hurricane categorizations in use by the rest of the world. For that reason, the scale here follows the Beaufort scale up to 12, at which point it transitions to the hurricaine categorization system.</p>" +
+        "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Theoretical categories 6 and 7 are included, using wind speed values provided by NOAA research scientist Jim Kossin.</p>" +
+        "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Tornado scale is also included for reference, though if an actual tornado is present then the damage is likely to be a worse than listed since the wind is picking stuff up instead of just blowing it around.</p>" +
+        "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;The UI is already pretty cluttered so if you want detailed info, look up the Fujita Scale on Wikipedia.</p>" +
+        "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Some names of beaufort degrees have also been changed to match current NOAA names, though the actual wind and wave values are identical.</p>" +
+        "</div>" +
+        "<hr>";
+    // End Beaufort
+
+    // Start Forecast
+    tabContent += forecast;
+    tabContent += "<hr>";
+    // End Forecast
+
+    // Closing div
+    tabContent += "</div>"
+
+    // Add the tab content
+    // First an array containing all tab divs are found, then we pick the last, then we append our new tab with the tabContent created above.
+    html.find('div.tab').slice(-1).after(tabContent);
+
+    console.log(game.scenes.get(html.find('a.document-id-link').slice(-1)[0].attributes[2].nodeValue.split(" ")[1]))
+  })
 
   function _setGurps4eInitiative() {
     let formula = "@primaryAttributes.speed.value + @primaryAttributes.dexterity.value / 10000 + (1d100 - 1) / 1000000"; // First three digits are (speed), then [DX], then {d100-1}. Example: (5.00)[10]{38} -> 5001038
@@ -439,6 +525,22 @@ Hooks.once("init", () => {
     config: true,
     default: false,
     type: Boolean
+  });
+
+  game.settings.register("gurps4e", "lightingTableType", {
+    name: "Lighting Table Type",
+    hint: "Powers: Enhanced Senses contains a table of lighting levels. Almost everyone except the writer agrees that it's bad and wrong. " +
+        "Not least because it gives you a -3 to shoot someone standing in your living room. " +
+        "It is technically RAW, however, so I include it here as an option. " +
+        "But we default to using the much more sensible optional errata which lines up much more with literally every other book GURPS has ever put out.",
+    scope: "world",
+    config: true,
+    type: String,
+    choices: {
+      "errata": "Powers: Enhanced Senses Illumination Levels Errata",
+      "pes": "Powers: Enhanced Senses"
+    },
+    default: "errata",
   });
 
   // game.settings.register("gurps4e", "armourAsDice", {
