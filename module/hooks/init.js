@@ -72,7 +72,7 @@ Hooks.once("init", () => {
         "    </div>";
 
     tabContent += "<div class='scene-option-subtitle'>A single number used to categorize the effect of wind speed.</div>";
-    tabContent += "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Beaufort scale appears on Magic 194, though the version in use here is slightly tweaked.</p>" +
+    tabContent += "<p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Beaufort scale appears on Magic 194, though the version in use here is slightly tweaked.</p>" +
         "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;In real life, Beaufort values above 12 are only in use by the PRC and ROC for very powerful typhoons, though they are roughly analagous to hurricane categorizations in use by the rest of the world. For that reason, the scale here follows the Beaufort scale up to 12, at which point it transitions to the hurricaine categorization system.</p>" +
         "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Theoretical categories 6 and 7 are included, using wind speed values provided by NOAA research scientist Jim Kossin.</p>" +
         "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Tornado scale is also included for reference, though if an actual tornado is present then the damage is likely to be a worse than listed since the wind is picking stuff up instead of just blowing it around.</p>" +
@@ -86,6 +86,50 @@ Hooks.once("init", () => {
     tabContent += forecast;
     tabContent += "<hr>";
     // End Forecast
+
+    // Start Atmospheric Pressure
+    tabContent +=
+        "<div class='form-group-scene form-group'>" +
+        "      <div class='scene-option-input input-row'>" +
+        "        <h2 class='scene-option' style='width: 100%;'>Atmospheric Pressure <span class=\"units\">(atm)</span></h2>" +
+        "        <div class='scene-option form-fields'>" +
+        `          <input type="number" value="${app.document.flags?.gurps4e?.atm ?? 1}" step="0.01" name="flags.gurps4e.atm" placeholder="Atmospheric Pressure" min="0">` +
+        "        </div>" +
+        "      </div>" +
+        "      <div class='scene-option-subtitle'>The atmospheric pressure of the scene, in multiples of Earth's sea-level atmospheric pressure.</div>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Full rules for atmospheric pressure can be found on Basic 429, but a basic summary is listed below:</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Any value is possible and will correcly impact those cases that can take decimal values (Like laser range and damage) But the below ranges will be most relevant.</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Trace Atmosphere: Less than 0.01 atm - Essentially a vaccum. Without pressure support you can operate for half the time you can hold your breath. (Likely 4 to 7 seconds in combat, or 15 to 30 if walking)</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Very Thin Atmosphere: 0.01 to 0.5 atm - Without some breathing aparatus or appropriate advantage you can operate for however long you can hold your breath.  (Likely 8 to 14 seconds in combat, or 24 to 60 if walking)</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Thin Atmosphere: 0.51 to 0.8 atm - It's gonna suck, but with decent HT rolls, goggles, and frequent resting you can operate here as long as you don't crit fail your HT roll. (Mean time to crit fail is 37 days for HTs less than 12, 149 days for HT 12+)</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Standard Atmosphere: 0.81 to 1.2 atm - Values in this range give no modifiers. On Earth, 5700ft is the point where the atmosphere shifts from Standard to Thin</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Dense Atmosphere: 1.21 to 1.5 atm - -1 HT, otherwise it's not a big deal unless you're on some freaky planet with more than double Earth's O2.</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Very Dense Atmosphere: 1.51 to 10 atm</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Superdense Atmosphere: More than 10 atm</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Characters with a different native pressure are also correctly accounted for because I am very clever. Though their baseline is different, the same multiples apply and have the same sorts of penalties.</p>" +
+        "</div>" +
+        "<hr>";
+    // End Atmospheric Pressure
+
+    // Start Altitude
+    tabContent +=
+        "<div class='form-group-scene form-group'>" +
+        "      <div class='scene-option-input input-row'>" +
+        "        <h2 class='scene-option' style='width: 100%;'>Altitude <span class=\"units\">(ft)</span></h2>" +
+        "        <div class='scene-option form-fields'>" +
+        `          <input type="number" value="${app.document.flags?.gurps4e?.alt ?? 0}" step="1" name="flags.gurps4e.alt" placeholder="Altitude Above Sealevel" min="0">` +
+        "        </div>" +
+        "      </div>" +
+        "      <div class='scene-option-subtitle'>An alternative way of setting atmospheric pressure, by instead specifying altitude above sea-level</div>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;If the value is anything other than zero it overrides any value set above in the Atmospheric Pressure input.</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Any value is possible and will correcly impact those cases that can take decimal values (Like laser range and damage) But the below ranges will be most relevant.</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Trace Atmosphere: More than 84500 ft - Essentially a vaccum. Without pressure support you can operate for half the time you can hold your breath. (Likely 4 to 7 seconds in combat, or 15 to 30 if walking)</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Very Thin Atmosphere: 17470 to 84500 ft - Without some breathing aparatus or appropriate advantage you can operate for however long you can hold your breath.  (Likely 8 to 14 seconds in combat, or 24 to 60 if walking)</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Thin Atmosphere: 5700 to 17470 ft - It's gonna suck, but with decent HT rolls, goggles, and frequent resting you can operate here as long as you don't crit fail your HT roll. (Mean time to crit fail is 37 days for HTs less than 12, 149 days for HT 12+)</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Standard Atmosphere: 0 to 5700 ft - Values in this range give no modifiers. On Earth, 5700ft is the point where the atmosphere shifts from Standard to Thin</p>" +
+        "</div>" +
+        "<hr>";
+    // End Altitude
 
     // Closing div
     tabContent += "</div>"
