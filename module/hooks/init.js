@@ -129,6 +129,9 @@ Hooks.once("init", () => {
         "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Standard Atmosphere: 0 to 5700 ft - Values in this range give no modifiers. On Earth, 5700ft is the point where the atmosphere shifts from Standard to Thin</p>" +
         "</div>" +
         "<hr>";
+
+    console.log((1-2.25577*(10**-5)* ((app.document.flags?.gurps4e?.alt ?? 0) / 3.28084) )**5.25588);
+
     // End Altitude
 
     // Closing div
