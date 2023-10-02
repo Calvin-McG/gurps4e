@@ -6,6 +6,7 @@ import { materialHelpers } from "../../helpers/materialHelpers.js";
 import { economicHelpers } from "../../helpers/economicHelpers.js";
 import { vehicleHelpers } from "../../helpers/vehicleHelpers.js";
 import {weatherHelpers} from "../../helpers/weatherHelpers.js";
+import {lightingHelpers} from "../../helpers/lightingHelpers.js";
 
 Hooks.once("init", () => {
 
@@ -134,7 +135,27 @@ Hooks.once("init", () => {
 
     // End Altitude
 
+    // Start Lighting
+    tabContent +=
+        "<div class='form-group-scene form-group'>" +
+        "      <div class='scene-option-input input-row'>" +
+        "        <h2 class='scene-option' style='width: 100%;'>Lighting</h2>" +
+        "        <div class='scene-option form-fields'>" +
+        `          <input type="number" value="${app.document.flags?.gurps4e?.light ?? 0}" step="1" name="flags.gurps4e.light" placeholder="Lighting Penalty" max='0' min="-10">` +
+        "        </div>" +
+        "      </div>" +
+        "      <div class='scene-option-subtitle'>The base penalty of unlit areas of the scene</div>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;The actual lighting penalty will be the better of this base penalty, and the penalty of any applicable lightsource. Examples of what each lighting penalty mean are below.</p>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Light sources do not add together, so if the base lighting gives a -2 penalty, and they are carrying a light source that grants a -2 penalty, it does not add up to a -1 penalty.</p>";
 
+    // Fetch the lighting table and then print it out
+    let lightingTableContent = lightingHelpers.returnLightingTable();
+    for (let z = 0; z < lightingTableContent.length; z++){
+      tabContent += "<p style='width: 100%'><span style='font-weight: 500; font-style: italic'>Penalty:</span> " + lightingTableContent[z].penalty + ", <span style='font-weight: 500; font-style: italic'>Natural Light:</span> " + lightingTableContent[z].natural + ", <span style='font-weight: 500; font-style: italic'>Artificial Light:</span> " + lightingTableContent[z].artificial + "</p>";
+    }
+
+    tabContent += "</div><hr>";
+    // End Lighting
 
     // Closing div
     tabContent += "</div>"
