@@ -3707,9 +3707,10 @@ export class gurpsItem extends Item {
                 this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = 4;
               }
 
+              // Range calculation
               this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange = projectileDiameter * 5;
 
-              // Aside from minimum bore diametre being different, the only other difference between shot and canister is the max range.
+              // Aside from minimum bore diameter being different, the only other difference between shot and canister is the max range.
               if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "canister") {
                 this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange = projectileDiameter * 50;
               }
@@ -3718,6 +3719,9 @@ export class gurpsItem extends Item {
               }
 
               this.system.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
+
+              // Canister and Shot have a minimum legality class of 3. Apply that.
+              this.system.firearmDesign.ammunition[ammoKeys[i]].lc = Math.min(this.system.firearmDesign.ammunition[ammoKeys[i]].lc, 3);
             }
             else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "mf") {
               this.system.firearmDesign.ammunition[ammoKeys[i]].damage *= (1 / Math.sqrt(this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles));
