@@ -3708,7 +3708,15 @@ export class gurpsItem extends Item {
               }
 
               this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange = projectileDiameter * 5;
-              this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange = projectileDiameter * 100;
+
+              // Aside from minimum bore diametre being different, the only other difference between shot and canister is the max range.
+              if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "canister") {
+                this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange = projectileDiameter * 50;
+              }
+              else {
+                this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange = projectileDiameter * 100;
+              }
+
               this.system.firearmDesign.ammunition[ammoKeys[i]].rcl = 1;
             }
             else if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "mf") {
