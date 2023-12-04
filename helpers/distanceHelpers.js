@@ -150,11 +150,6 @@ export class distanceHelpers {
                 "mult": 1760,
             },
             {
-                "name": "kilometre",
-                "names": "kilometres",
-                "mult": 0.0009144,
-            },
-            {
                 "name": "cable",
                 "names": "cables",
                 "mult": 240,
@@ -200,9 +195,29 @@ export class distanceHelpers {
                 "mult": 5.5,
             },
             {
+                "name": "kilometre",
+                "names": "kilometres",
+                "mult": 1 / 0.9144 * 1000,
+            },
+            {
+                "name": "hectometre",
+                "names": "hectometres",
+                "mult": 1 / 0.9144 * 100,
+            },
+            {
+                "name": "decametre",
+                "names": "decametres",
+                "mult": 1 / 0.9144 * 10,
+            },
+            {
                 "name": "metre",
                 "names": "metres",
                 "mult": 1 / 0.9144,
+            },
+            {
+                "name": "decimetre",
+                "names": "decimetres",
+                "mult": 1 / 0.9144 / 10,
             },
             {
                 "name": "yard",
