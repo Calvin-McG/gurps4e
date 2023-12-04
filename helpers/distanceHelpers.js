@@ -176,10 +176,10 @@ export class distanceHelpers {
                 "mult": 0.75,
             },
             {
-                "possibleNames" : ["link", "li"],
+                "possibleNames" : ["link", "li", "lnk", "l"],
                 "name": "link",
                 "names": "links",
-                "mult": (33 / 50),
+                "mult": (33 / 50 / 3),
             },
             {
                 "possibleNames" : ["'", "foot", "feet", "ft"],
