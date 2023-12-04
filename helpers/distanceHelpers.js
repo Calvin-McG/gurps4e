@@ -107,7 +107,7 @@ export class distanceHelpers {
                 "possibleNames" : ["step", "st"],
                 "name": "step",
                 "names": "steps",
-                "mult": 15,
+                "mult": 2.5 / 3 / 2,
             },
             {
                 "possibleNames" : ["chain", "ch"],
@@ -119,7 +119,7 @@ export class distanceHelpers {
                 "possibleNames" : ["pace", "pc"],
                 "name": "pace",
                 "names": "paces",
-                "mult": 7.5,
+                "mult": 2.5 / 3,
             },
             {
                 "possibleNames" : ["rod", "rd"],
