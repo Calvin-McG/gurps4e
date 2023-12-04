@@ -77,19 +77,19 @@ export class distanceHelpers {
                 "possibleNames" : ["cable", "cb"],
                 "name": "cable",
                 "names": "cables",
-                "mult": 240,
+                "mult": 1760 * 1.151 / 10,
             },
             {
                 "possibleNames" : ["furlong", "fur"],
                 "name": "furlong",
                 "names": "furlongs",
-                "mult": 110,
+                "mult": 220,
             },
             {
-                "possibleNames" : ["rope", "rp"],
+                "possibleNames" : ["rope", "rp"], // Using Byzantine ropes of 60 feet
                 "name": "rope",
                 "names": "ropes",
-                "mult": 60,
+                "mult": 20,
             },
             {
                 "possibleNames" : ["shackle", "sh"],
@@ -113,7 +113,7 @@ export class distanceHelpers {
                 "possibleNames" : ["chain", "ch"],
                 "name": "chain",
                 "names": "chains",
-                "mult": 11,
+                "mult": 22,
             },
             {
                 "possibleNames" : ["pace", "pc"],
@@ -126,6 +126,18 @@ export class distanceHelpers {
                 "name": "rod",
                 "names": "rods",
                 "mult": 5.5,
+            },
+            {
+                "possibleNames" : ["ell", "el"],
+                "name": "ell",
+                "names": "ells",
+                "mult": 1.25,
+            },
+            {
+                "possibleNames" : ["cubit", "cu"],
+                "name": "cubit",
+                "names": "cubits",
+                "mult": 4 / 3, // Using rough value for a Roman Cubit. Royal cubits are the same mult as fathoms
             },
             {
                 "possibleNames" : ["km", "kilometre", "kilometer"],
@@ -173,7 +185,7 @@ export class distanceHelpers {
                 "possibleNames" : ["sp", "span"],
                 "name": "span",
                 "names": "spans",
-                "mult": 0.75,
+                "mult": 0.25,
             },
             {
                 "possibleNames" : ["link", "li", "lnk", "l"],
@@ -190,7 +202,7 @@ export class distanceHelpers {
             {
                 "possibleNames" : ["inch", "in", '"', "''"],
                 "name": "inch",
-                "names": "inchs",
+                "names": "inches",
                 "mult": 1 / 36,
             },
         ]
