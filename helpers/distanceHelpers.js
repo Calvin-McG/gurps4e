@@ -8,106 +8,9 @@ export class distanceHelpers {
             gridUnits = gridUnits.slice(0, -1);
         }
 
-        switch (gridUnits.toLowerCase()) {
-            case undefined:
-            case '':
-            case 'yard':
-            case 'yrd':
-            case 'yd':
-            case 'y':
-                distance = dist;
-                break;
-            case 'mile':
-            case 'mi':
-                distance = dist * 1760;
-                break;
-            case 'foot':
-            case 'feet':
-            case 'ft':
-            case "'":
-                distance = dist / 3;
-                break;
-            case 'inch':
-            case 'in':
-            case '"':
-            case "''":
-                distance = dist / 36;
-                break;
-            case 'cm':
-            case 'centimeter':
-            case 'centimetre':
-                distance = dist / 91.44;
-                break;
-            case 'm':
-            case 'metre':
-            case 'meter':
-                distance = dist / 0.9144;
-                break;
-            case 'km':
-            case 'kilometre':
-            case 'kilometer':
-                distance = dist * 0.0009144;
-                break;
-            case 'link':
-            case 'li':
-                distance = dist * (33/50);
-                break;
-            case 'rod':
-            case 'rd':
-                distance = dist * (16.5/3);
-                break;
-            case 'chain':
-            case 'ch':
-                distance = dist * 11;
-                break;
-            case 'furlong':
-            case 'fur':
-                distance = dist * 110;
-                break;
-            case 'league':
-            case 'lea':
-                distance = dist * 1760 * 3;
-                break;
-            case 'sp':
-            case 'span':
-                distance = dist * 0.75;
-                break;
-            case 'fathom':
-            case 'ftm':
-                distance = dist * 2;
-                break;
-            case 'sh':
-            case 'shackle':
-                distance = dist * 2 * 15;
-                break;
-            case 'cable':
-            case 'cb':
-                distance = dist * 2 * 120;
-                break;
-            case 'nautical mile':
-            case 'nm':
-            case 'nmi':
-                distance = dist * 1760 * 1.151;
-                break;
-            case 'pc':
-            case 'pace':
-                distance = dist * 3 * 2.5;
-                break;
-            case 'gd':
-            case 'st':
-            case 'grade':
-            case 'step':
-                distance = dist * 3 * 2.5 * 2;
-                break;
-            case 'rp':
-            case 'rope':
-                distance = dist * 3 * 2.5 * 2 * 4;
-                break;
-            default:
-                throw new Error("Can't match expression to length and unit of measure");
-        }
+        let selectedUnit = this.getUnitByPossibleNames(gridUnits.toLowerCase())
 
-        return distance;
+        return dist * selectedUnit.mult;
     }
 
     static getUnitByName(name) {
@@ -124,135 +27,173 @@ export class distanceHelpers {
         return result;
     }
 
+    // This method searches through the list of units in the system and checks the provided name against their possible names
+    // It then returns that unit's object
+    static getUnitByPossibleNames(name) {
+        const units = this.listUnits(); // First, fetch the complete list of units
+        let selectedUnit;
+        units.forEach( unit => { // Loop through that list
+            if (unit.possibleNames.includes(name.toLowerCase())) { // If the given name matches a possible name of the current iteration
+                selectedUnit = unit; // Return it, ending the loop early
+            }
+        })
+
+        return selectedUnit
+    }
+
     // Provides a list of units that are useable by the system
     static listUnits() {
-        // Mult is the number of yards in one example of the unit.
+        // possibleNames is an array of any and all possible names someone might use for this unit of measurement
+        // name is the non-plural primary name of the unit of measurement
+        // names is the plural of the primary name
+        // mult is the number of yards in one example of the unit.
         // IE: Multiply the number of units by this multiplier to get the number of yards.
-        let units = [
+        return [
             {
+                "possibleNames" : ["league", "lea"],
                 "name": "league",
                 "names": "leagues",
                 "mult": 1760 * 3,
             },
             {
+                "possibleNames" : ["fathom", "ftm"],
                 "name": "fathom",
                 "names": "fathoms",
                 "mult": 2,
             },
             {
+                "possibleNames" : ["nautical mile", "nm", "nmi"],
                 "name": "nautical mile",
                 "names": "nautical miles",
                 "mult": 1760 * 1.151,
             },
             {
+                "possibleNames" : ["mi", "mile"],
                 "name": "mile",
                 "names": "miles",
                 "mult": 1760,
             },
             {
+                "possibleNames" : ["cable", "cb"],
                 "name": "cable",
                 "names": "cables",
                 "mult": 240,
             },
             {
+                "possibleNames" : ["furlong", "fur"],
                 "name": "furlong",
                 "names": "furlongs",
                 "mult": 110,
             },
             {
+                "possibleNames" : ["rope", "rp"],
                 "name": "rope",
                 "names": "ropes",
                 "mult": 60,
             },
             {
+                "possibleNames" : ["shackle", "sh"],
                 "name": "shackle",
                 "names": "shackles",
                 "mult": 30,
             },
             {
+                "possibleNames" : ["grade", "gd"],
                 "name": "grade",
                 "names": "grades",
                 "mult": 15,
             },
             {
+                "possibleNames" : ["step", "st"],
                 "name": "step",
                 "names": "steps",
                 "mult": 15,
             },
             {
+                "possibleNames" : ["chain", "ch"],
                 "name": "chain",
                 "names": "chains",
                 "mult": 11,
             },
             {
+                "possibleNames" : ["pace", "pc"],
                 "name": "pace",
                 "names": "paces",
                 "mult": 7.5,
             },
             {
+                "possibleNames" : ["rod", "rd"],
                 "name": "rod",
                 "names": "rods",
                 "mult": 5.5,
             },
             {
+                "possibleNames" : ["km", "kilometre", "kilometer"],
                 "name": "kilometre",
                 "names": "kilometres",
                 "mult": 1 / 0.9144 * 1000,
             },
             {
+                "possibleNames" : ["hectometre", "hectometer", "hm"],
                 "name": "hectometre",
                 "names": "hectometres",
                 "mult": 1 / 0.9144 * 100,
             },
             {
+                "possibleNames" : ["decametre", "decameter", "dam"],
                 "name": "decametre",
                 "names": "decametres",
                 "mult": 1 / 0.9144 * 10,
             },
             {
+                "possibleNames" : ["metre", "m", "meter"],
                 "name": "metre",
                 "names": "metres",
                 "mult": 1 / 0.9144,
             },
             {
+                "possibleNames" : ["decimetre", "decimeter", "dm"],
                 "name": "decimetre",
                 "names": "decimetres",
                 "mult": 1 / 0.9144 / 10,
             },
             {
+                "possibleNames" : ["centimetre", "centimeter", "cm"],
+                "name": "centimetre",
+                "names": "centimetres",
+                "mult": 1 / 0.9144 / 100,
+            },
+            {
+                "possibleNames" : [undefined, "", "yard", "yrd", "yd", "y"],
                 "name": "yard",
                 "names": "yards",
                 "mult": 1,
             },
             {
+                "possibleNames" : ["sp", "span"],
                 "name": "span",
                 "names": "spans",
                 "mult": 0.75,
             },
             {
+                "possibleNames" : ["link", "li"],
                 "name": "link",
                 "names": "links",
                 "mult": (33 / 50),
             },
             {
+                "possibleNames" : ["'", "foot", "feet", "ft"],
                 "name": "foot",
                 "names": "feet",
                 "mult": 1 / 3,
             },
             {
+                "possibleNames" : ["inch", "in", '"', "''"],
                 "name": "inch",
                 "names": "inchs",
                 "mult": 1 / 36,
             },
-            {
-                "name": "centimetre",
-                "names": "centimetres",
-                "mult": 1 / 91.44,
-            },
-
         ]
-
-        return units;
     }
 
     // This method returns the normal distance penalty based on the Size/Speed/Range table
