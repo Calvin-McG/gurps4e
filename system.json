@@ -2,10 +2,10 @@
   "name": "gurps4e",
   "title": "GURPS4E",
   "description": "A GURPS4E system that automates as much as possible",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "compatibility": {
     "minimum": 11,
-    "verified": "11.309",
+    "verified": "11.315",
     "maximum": 11
   },
   "templateVersion": 2,
