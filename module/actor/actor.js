@@ -1856,14 +1856,16 @@ export class gurpsActor extends Actor {
 								// Loop through DR layers
 								for (let q = 0; q < Object.keys(getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".dr")).length; q++) {
 									let currentDRLayer = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".dr")[q]
-									currentBodyPart.drBurn       += currentDRLayer.burn;
-									currentBodyPart.drCor        += currentDRLayer.cor ;
-									currentBodyPart.drCr         += currentDRLayer.cr  ;
-									currentBodyPart.drCut        += currentDRLayer.cut ;
-									currentBodyPart.drFat        += currentDRLayer.fat ;
-									currentBodyPart.drImp        += currentDRLayer.imp ;
-									currentBodyPart.drPi         += currentDRLayer.pi  ;
-									currentBodyPart.drTox        += currentDRLayer.tox ;
+									if (typeof currentDRLayer !== "undefined") {
+										currentBodyPart.drBurn       += currentDRLayer.burn;
+										currentBodyPart.drCor        += currentDRLayer.cor ;
+										currentBodyPart.drCr         += currentDRLayer.cr  ;
+										currentBodyPart.drCut        += currentDRLayer.cut ;
+										currentBodyPart.drFat        += currentDRLayer.fat ;
+										currentBodyPart.drImp        += currentDRLayer.imp ;
+										currentBodyPart.drPi         += currentDRLayer.pi  ;
+										currentBodyPart.drTox        += currentDRLayer.tox ;
+									}
 								}
 							}
 						}
