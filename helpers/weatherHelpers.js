@@ -233,4 +233,16 @@ export class weatherHelpers {
         ]
     }
 
+    static returnWeatherTypes() {
+        return [
+            {
+                "type": "rain",
+                "name": "Rain",
+                "light": 500,
+                "medium": 1000,
+                "heavy": 2000
+            }
+        ]
+    }
+
 }
