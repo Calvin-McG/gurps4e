@@ -3928,6 +3928,13 @@
 						{{#if actor.system.info.runSprint.show }}
 						<table>
 							<tr class="item">
+								<td>Encumbrance Level</td>
+								<td style="width: 25%">
+									{{ actor.system.encumbrance.current.title }}
+								</td>
+								<td>This is your current encumbrance level, if it's not "None", your movement is reduced before the sprint multiplier is applied.</td>
+							</tr>
+							<tr class="item">
 								<td>Effective Running Skill</td>
 								<td style="width: 25%">
 									{{ actor.system.info.runSprint.runningSkill }}
