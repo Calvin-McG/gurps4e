@@ -5,8 +5,8 @@ import { macroHelpers } from "../../helpers/macroHelpers.js";
 import { materialHelpers } from "../../helpers/materialHelpers.js";
 import { economicHelpers } from "../../helpers/economicHelpers.js";
 import { vehicleHelpers } from "../../helpers/vehicleHelpers.js";
-import {weatherHelpers} from "../../helpers/weatherHelpers.js";
-import {lightingHelpers} from "../../helpers/lightingHelpers.js";
+import { weatherHelpers } from "../../helpers/weatherHelpers.js";
+import { lightingHelpers } from "../../helpers/lightingHelpers.js";
 
 Hooks.once("init", () => {
 

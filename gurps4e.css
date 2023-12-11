@@ -825,6 +825,12 @@ attribute-senses {
 	font-weight: bold;
 }
 
+.enc-inactive td {
+	background-color: rgba(0, 0, 0, 0.0) !important;
+	font-weight: 100;
+	color: rgba(0,0,0,0.5);
+}
+
 .trait-category-header {
 	background-color: rgba(0, 0, 0, 0.1) !important;
 	text-align: center;
