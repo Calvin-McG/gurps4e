@@ -463,6 +463,40 @@
                             </tr>
                         </table>
 
+                        {{#if (and (eq item.system.bowDesign.type "xbow") item.system.bowDesign.repeatingAllowed)}}
+                        <h2 class="bold" style="text-align: center;">
+                            Repeating Crossbows
+                        </h2>
+                        <table>
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Is this a repeating crossbow?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="system.bowDesign.repeating" {{checked item.system.bowDesign.repeating}} data-dtype="Boolean"/>
+                                </td>
+                                <td class="question-container" id="repeating">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 150px">
+                                    Magazine Size
+                                </td>
+                                <td>
+                                    <input type="number" name="system.bowDesign.repeatingMagSize" value="{{item.system.bowDesign.repeatingMagSize}}" data-dtype="Number"/>
+                                </td>
+                                <td class="question-container" id="repeating-mag-size" rowspan="3">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        {{/if}}
                         {{#if (eq item.system.bowDesign.type "xbow")}}
                             <h2 class="bold" style="text-align: center;">
                                 Stock Construction
