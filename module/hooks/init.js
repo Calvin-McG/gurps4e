@@ -466,6 +466,19 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  game.settings.register("gurps4e", "repeatingCrossbows", {
+    name: "Allow Repeating Crossbows",
+    hint: "Crossbows are in Fantasy 141, but are not marked Superscience and did exist historically. " +
+        "They remove the time required to fetch a bolt, in effect, this means an automatic success at fast draw. " +
+        "This is in line with their historical use, which was to hand them out to low-skilled conscripts. " +
+        "They also make Bulk worse by at least one step, and the time to replace a magazine is tremendous." +
+        "Most reloading tools are also blocked by the magazine, effectively limiting the max damage possible out of a repeating crossbow. Again, this is inline with real life examples.",
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
   game.settings.register("gurps4e", "realisticFootTravel", {
     name: "Realistic Foot Travel (LTC 2)",
     hint: "Enable this setting to use the 'Realistic Foot Travel' rules from Low Tech Companion 2 instead of those from the Basic Set. " +
