@@ -6619,8 +6619,8 @@ export class gurpsItem extends Item {
           "<td>1 sec</td>" +
           "<td>" + (3 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
           "<td>" + (4 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-          "<td>" + (2 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-          "<td>" + (3 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
+          "<td>" + (2 - cinematicReloadReduction) + " secs</td>" +
+          "<td>" + (3 - cinematicReloadReduction) + " secs</td>" +
           "<td>" + Math.floor(this.system.bowDesign.userBL*2*100)/100 + "lbs</td>" +
           "</tr>"
 
@@ -6630,8 +6630,8 @@ export class gurpsItem extends Item {
             "<td>2 secs</td>" +
             "<td>" + (4 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
             "<td>" + (5 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-            "<td>" + (3 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-            "<td>" + (4 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
+            "<td>" + (3 - cinematicReloadReduction) + " secs</td>" +
+            "<td>" + (4 - cinematicReloadReduction) + " secs</td>" +
             "<td>" + Math.floor(this.system.bowDesign.userBL*2.5*100)/100 + "lbs</td>" +
             "</tr>"
       }
@@ -6641,8 +6641,8 @@ export class gurpsItem extends Item {
             "<td>2 secs</td>" +
             "<td>" + (4 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
             "<td>" + (5 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-            "<td>" + (3 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-            "<td>" + (4 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
+            "<td>" + (3 - cinematicReloadReduction) + " secs</td>" +
+            "<td>" + (4 - cinematicReloadReduction) + " secs</td>" +
             "<td>" + Math.floor(this.system.bowDesign.userBL*4*100)/100 + "lbs</td>" +
             "</tr>"
         info += "<tr class='bow-hand'>" +
@@ -6650,8 +6650,8 @@ export class gurpsItem extends Item {
             "<td>3 secs</td>" +
             "<td>" + (5 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
             "<td>" + (6 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-            "<td>" + (4 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-            "<td>" + (5 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
+            "<td>" + (4 - cinematicReloadReduction) + " secs</td>" +
+            "<td>" + (5 - cinematicReloadReduction) + " secs</td>" +
             "<td>" + Math.floor(this.system.bowDesign.userBL*6*100)/100 + "lbs</td>" +
             "</tr>"
         info += "<tr class='bow-hand'>" +
@@ -6659,8 +6659,8 @@ export class gurpsItem extends Item {
             "<td>4 secs</td>" +
             "<td>" + (6 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
             "<td>" + (7 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-            "<td>" + (5 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-            "<td>" + (6 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
+            "<td>" + (5 - cinematicReloadReduction) + " secs</td>" +
+            "<td>" + (6 - cinematicReloadReduction) + " secs</td>" +
             "<td>" + Math.floor(this.system.bowDesign.userBL*8*100)/100 + "lbs</td>" +
             "</tr>"
 
@@ -6670,8 +6670,8 @@ export class gurpsItem extends Item {
               "<td>1 secs</td>" +
               "<td>" + (3 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
               "<td>" + (4 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-              "<td>" + (2 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-              "<td>" + (3 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
+              "<td>" + (2 - cinematicReloadReduction) + " secs</td>" +
+              "<td>" + (3 - cinematicReloadReduction) + " secs</td>" +
               "<td>" + Math.floor(this.system.bowDesign.userBL*4*100)/100 + "lbs</td>" +
               "</tr>"
           info += "<tr class='bow-hook'>" +
@@ -6679,8 +6679,8 @@ export class gurpsItem extends Item {
               "<td>2 secs</td>" +
               "<td>" + (4 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
               "<td>" + (5 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-              "<td>" + (3 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-              "<td>" + (4 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
+              "<td>" + (3 - cinematicReloadReduction) + " secs</td>" +
+              "<td>" + (4 - cinematicReloadReduction) + " secs</td>" +
               "<td>" + Math.floor(this.system.bowDesign.userBL*8*100)/100 + "lbs</td>" +
               "</tr>"
 
@@ -6690,24 +6690,24 @@ export class gurpsItem extends Item {
                 "<td>7 secs</td>" +
                 "<td>" + (9  - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
                 "<td>" + (10 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-                "<td>" + (8  - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-                "<td>" + (9  - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
+                "<td>" + (8  - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (9  - cinematicReloadReduction) + " secs</td>" +
                 "<td>" + Math.floor(this.system.bowDesign.userBL*5*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-mech'>" +
                 "<td>8 secs</td>" +
                 "<td>" + (10 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
                 "<td>" + (11 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-                "<td>" + (9  - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-                "<td>" + (10 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
+                "<td>" + (9  - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (10 - cinematicReloadReduction) + " secs</td>" +
                 "<td>" + Math.floor(this.system.bowDesign.userBL*6*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-mech'>" +
                 "<td>9 secs</td>" +
                 "<td>" + (11 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
                 "<td>" + (12 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-                "<td>" + (10 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-                "<td>" + (11 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
+                "<td>" + (10 - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (11 - cinematicReloadReduction) + " secs</td>" +
                 "<td>" + Math.floor(this.system.bowDesign.userBL*7*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-mech'>" +
@@ -6715,8 +6715,8 @@ export class gurpsItem extends Item {
                 "<td>10 secs</td>" +
                 "<td>" + (12 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
                 "<td>" + (13 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-                "<td>" + (11 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-                "<td>" + (12 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
+                "<td>" + (11 - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (12 - cinematicReloadReduction) + " secs</td>" +
                 "<td>" + Math.floor(this.system.bowDesign.userBL*8*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-wind'>" +
@@ -6724,8 +6724,8 @@ export class gurpsItem extends Item {
                 "<td>8 secs</td>" +
                 "<td>" + (10 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
                 "<td>" + (11 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-                "<td>" + (9  - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-                "<td>" + (10 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
+                "<td>" + (9  - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (10 - cinematicReloadReduction) + " secs</td>" +
                 "<td>" + Math.floor(this.system.bowDesign.userBL*8*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-wind'>" +
@@ -6733,8 +6733,8 @@ export class gurpsItem extends Item {
                 "<td>12 secs</td>" +
                 "<td>" + (14 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
                 "<td>" + (15 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-                "<td>" + (13 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-                "<td>" + (14 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
+                "<td>" + (13 - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (14 - cinematicReloadReduction) + " secs</td>" +
                 "<td>" + Math.floor(this.system.bowDesign.userBL*8*3*100)/100 + "lbs</td>" +
                 "</tr>"
 
@@ -6744,8 +6744,8 @@ export class gurpsItem extends Item {
                   "<td>24 secs</td>" +
                   "<td>" + (26 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
                   "<td>" + (27 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-                  "<td>" + (25 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
-                  "<td>" + (26 - cinematicReloadReduction - repeatingReloadReduction) + " secs</td>" +
+                  "<td>" + (25 - cinematicReloadReduction) + " secs</td>" +
+                  "<td>" + (26 - cinematicReloadReduction) + " secs</td>" +
                   "<td>" + Math.floor(this.system.bowDesign.userBL * 8 * 3*100)/100 + "lbs</td>" +
                   "</tr>"
             }
