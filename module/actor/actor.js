@@ -1692,6 +1692,13 @@ export class gurpsActor extends Actor {
 		carriedWeight = Math.round(carriedWeight * 100) / 100;
 		carriedCost = Math.round(carriedCost * 100) / 100;
 
+		if (isNaN(carriedWeight)) {
+			carriedWeight = 0;
+		}
+		if (isNaN(carriedCost)) {
+			carriedCost = 0;
+		}
+
 		// Assign total weight and cost
 		this.system.bio.carriedWeight = carriedWeight;
 		this.system.bio.carriedValue = carriedCost

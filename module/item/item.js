@@ -103,8 +103,8 @@ export class gurpsItem extends Item {
       this.system.quantity = 0;
     }
 
-    this.system.cost = Math.round(+this.system.cost * 100) / 100;
-    this.system.weight = Math.round(+this.system.weight * 100000) / 100000;
+    this.system.cost = (isNaN(this.system.cost) ? 0 : Math.round(+this.system.cost * 100) / 100);
+    this.system.weight = (isNaN(this.system.weight) ? 0 : Math.round(+this.system.weight * 100000) / 100000);
     this.system.quantity = Math.round(+this.system.quantity);
 
     // Calculated total weight and cost
@@ -4902,7 +4902,7 @@ export class gurpsItem extends Item {
       // Calculate the loaded weight
       this.system.laserDesign.loadedWeight = (Math.round(((Math.round(this.system.laserDesign.emptyWeight * 100) / 100) + (this.system.laserDesign.powerCellQty * this.system.laserDesign.powerCellWeight)) * 100) / 100);
 
-      this.system.weight = this.system.laserDesign.loadedWeight
+      this.system.weight = (isNaN(this.system.laserDesign.loadedWeight) ? 0 : this.system.laserDesign.loadedWeight);
       this.system.ttlWeight = this.system.weight * this.system.quantity;
 
       // Calculate the output weight
@@ -4958,7 +4958,7 @@ export class gurpsItem extends Item {
         cf += 1
       }
 
-      this.system.cost = this.system.cost * cf;
+      this.system.cost = (isNaN(this.system.cost) ? 0 : this.system.cost * cf)
 
       this.system.ttlCost = this.system.cost * this.system.quantity;
 
@@ -5318,9 +5318,13 @@ export class gurpsItem extends Item {
       this.system.bowDesign.stockLength = 0;
     }
 
-    // Cross section must not be zero or negative
+    // Cross-section must not be zero or negative
     if (!(this.system.bowDesign.crossSection > 0)) {
       this.system.bowDesign.crossSection = 1;
+    }
+
+    if (typeof this.system.bowDesign.stockWidth !== 'number' || this.system.bowDesign.stockWidth <= 0) {
+      this.system.bowDesign.stockWidth = 1
     }
 
     if (this.system.bowDesign.workingPercentage < 100) { // If working percent is not 100 then there must be a riser.
@@ -5770,9 +5774,9 @@ export class gurpsItem extends Item {
     this.system.bowDesign.deflection = Math.round(this.system.bowDesign.deflection * 1000) / 1000 * 100;
     this.system.bowDesign.stockThickness = Math.round(this.system.bowDesign.stockThickness * 100) / 100;
     this.system.bowDesign.riserThickness = Math.round(this.system.bowDesign.riserThickness * 100) / 100;
-    this.system.weight = Math.round(this.system.weight * 100000) / 100000;
+    this.system.weight = (isNaN(this.system.weight) ? 0 : Math.round(this.system.weight * 100000) / 100000) ;
     this.system.ttlWeight = this.system.weight * this.system.quantity;
-    this.system.cost = Math.round(this.system.cost * 100) / 100;
+    this.system.cost = (isNaN(this.system.cost) ? 0 : Math.round(this.system.cost * 100) / 100);
     this.system.ttlCost = this.system.cost * this.system.quantity;
   }
 
