@@ -447,9 +447,19 @@ Hooks.once("init", () => {
   });
 
   game.settings.register("gurps4e", "realisticBowScale", {
-    name: "Realistic Scale Bows",
-    hint: "The default is Cinematic scale, which is designed to match the bows seen in Basic and Low Tech. " +
-        "Realistic scale instead reduces the damage to better reflect the difference between bows and firearms. ",
+    name: "Realistic Scale Bow Damage",
+    hint: "The default is Cinematic scale damage, which is designed to match the bows seen in Basic and Low Tech. " +
+        "Realistic scale damage instead reduces the damage to better reflect the difference between bows and firearms.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
+  game.settings.register("gurps4e", "realisticBowReloadScale", {
+    name: "Realistic Scale Bow Reloading",
+    hint: "The default is Cinematic scale reloading, which is designed to match the reload speed for bows seen in Basic and Low Tech. " +
+        "Realistic scale increases the reload time for most bows by 1 second, and means even relatively small bows have a reload of (3) instead of (2). ",
     scope: "world",
     config: true,
     default: false,

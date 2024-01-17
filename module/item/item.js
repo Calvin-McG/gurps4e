@@ -6198,6 +6198,7 @@ export class gurpsItem extends Item {
 
   showInfo(id) {
     let info = "";
+    let cinematicReloadReduction = (game.settings.get("gurps4e", "realisticBowReloadScale") ? 0 : 1); // If it's set to true, then we're using realistic reload so don't change the value. If it's false we're cinematic and are changing the value.
     if (id === "laser-configuration") {
       info = "<table>" +
           "<tr>" +
@@ -6578,23 +6579,27 @@ export class gurpsItem extends Item {
       info += "<table class='bow-draw-table'>"
       info += "<tr>" +
           "<td></td>" +
-          "<td colspan='3' style='text-align: center'>Time to...</td>" +
+          "<td colspan='5' style='text-align: center'>Time to...</td>" +
           "<td></td>" +
           "</tr>"
 
       info += "<tr>" +
           "<td>Note</td>" +
           "<td>Draw</td>" +
-          "<td>Fire</td>" +
-          "<td>Fire (Fast-Draw)</td>" +
+          "<td>Make Ready</td>" +
+          "<td>Attack</td>" +
+          "<td>Make Ready (Fast-Draw)</td>" +
+          "<td>Attack (Fast-Draw)</td>" +
           "<td>Draw Weight</td>" +
           "</tr>"
 
       info += "<tr class='bow-hand'>" +
           "<td>This is the highest weight you are capable of drawing by hand in a single round.</td>" +
           "<td>1 sec</td>" +
-          "<td>3 secs</td>" +
-          "<td>2 secs</td>" +
+          "<td>" + (3 - cinematicReloadReduction) + " secs</td>" +
+          "<td>" + (4 - cinematicReloadReduction) + " secs</td>" +
+          "<td>" + (2 - cinematicReloadReduction) + " secs</td>" +
+          "<td>" + (3 - cinematicReloadReduction) + " secs</td>" +
           "<td>" + Math.floor(this.system.bowDesign.userBL*2*100)/100 + "lbs</td>" +
           "</tr>"
 
@@ -6602,8 +6607,10 @@ export class gurpsItem extends Item {
         info += "<tr class='bow-hand'>" +
             "<td>This is the highest weight you are capable of drawing.</td>" +
             "<td>2 secs</td>" +
-            "<td>4 secs</td>" +
-            "<td>3 secs</td>" +
+            "<td>" + (4 - cinematicReloadReduction) + " secs</td>" +
+            "<td>" + (5 - cinematicReloadReduction) + " secs</td>" +
+            "<td>" + (3 - cinematicReloadReduction) + " secs</td>" +
+            "<td>" + (4 - cinematicReloadReduction) + " secs</td>" +
             "<td>" + Math.floor(this.system.bowDesign.userBL*2.5*100)/100 + "lbs</td>" +
             "</tr>"
       }
@@ -6611,22 +6618,28 @@ export class gurpsItem extends Item {
         info += "<tr class='bow-hand'>" +
             "<td>This is the highest weight you are capable of drawing by hand in two rounds.</td>" +
             "<td>2 secs</td>" +
-            "<td>4 secs</td>" +
-            "<td>3 secs</td>" +
+            "<td>" + (4 - cinematicReloadReduction) + " secs</td>" +
+            "<td>" + (5 - cinematicReloadReduction) + " secs</td>" +
+            "<td>" + (3 - cinematicReloadReduction) + " secs</td>" +
+            "<td>" + (4 - cinematicReloadReduction) + " secs</td>" +
             "<td>" + Math.floor(this.system.bowDesign.userBL*4*100)/100 + "lbs</td>" +
             "</tr>"
         info += "<tr class='bow-hand'>" +
             "<td>This is the highest weight you are capable of drawing by hand in three rounds.</td>" +
             "<td>3 secs</td>" +
-            "<td>5 secs</td>" +
-            "<td>4 secs</td>" +
+            "<td>" + (5 - cinematicReloadReduction) + " secs</td>" +
+            "<td>" + (6 - cinematicReloadReduction) + " secs</td>" +
+            "<td>" + (4 - cinematicReloadReduction) + " secs</td>" +
+            "<td>" + (5 - cinematicReloadReduction) + " secs</td>" +
             "<td>" + Math.floor(this.system.bowDesign.userBL*6*100)/100 + "lbs</td>" +
             "</tr>"
         info += "<tr class='bow-hand'>" +
             "<td>This is the highest weight you are capable of drawing by hand.</td>" +
             "<td>4 secs</td>" +
-            "<td>6 secs</td>" +
-            "<td>5 secs</td>" +
+            "<td>" + (6 - cinematicReloadReduction) + " secs</td>" +
+            "<td>" + (7 - cinematicReloadReduction) + " secs</td>" +
+            "<td>" + (5 - cinematicReloadReduction) + " secs</td>" +
+            "<td>" + (6 - cinematicReloadReduction) + " secs</td>" +
             "<td>" + Math.floor(this.system.bowDesign.userBL*8*100)/100 + "lbs</td>" +
             "</tr>"
 
@@ -6634,15 +6647,19 @@ export class gurpsItem extends Item {
           info += "<tr class='bow-hook'>" +
               "<td>This is the highest weight you are capable of drawing with a belt hook in a single round (Or by hand in two rounds)</td>" +
               "<td>1 secs</td>" +
-              "<td>3 secs</td>" +
-              "<td>2 secs</td>" +
+              "<td>" + (3 - cinematicReloadReduction) + " secs</td>" +
+              "<td>" + (4 - cinematicReloadReduction) + " secs</td>" +
+              "<td>" + (2 - cinematicReloadReduction) + " secs</td>" +
+              "<td>" + (3 - cinematicReloadReduction) + " secs</td>" +
               "<td>" + Math.floor(this.system.bowDesign.userBL*4*100)/100 + "lbs</td>" +
               "</tr>"
           info += "<tr class='bow-hook'>" +
               "<td>This is the highest weight you are capable of drawing with a belt hook in two rounds (Or by hand in four rounds)</td>" +
               "<td>2 secs</td>" +
-              "<td>4 secs</td>" +
-              "<td>3 secs</td>" +
+              "<td>" + (4 - cinematicReloadReduction) + " secs</td>" +
+              "<td>" + (5 - cinematicReloadReduction) + " secs</td>" +
+              "<td>" + (3 - cinematicReloadReduction) + " secs</td>" +
+              "<td>" + (4 - cinematicReloadReduction) + " secs</td>" +
               "<td>" + Math.floor(this.system.bowDesign.userBL*8*100)/100 + "lbs</td>" +
               "</tr>"
 
@@ -6650,41 +6667,53 @@ export class gurpsItem extends Item {
             info += "<tr class='bow-mech'>" +
                 "<td rowspan='3'>Using a goat's foot lets you go over the normal draw limit, but using the device takes extra time, so it's really only useful if it lets you exceede what you could do by hand.</td>" +
                 "<td>7 secs</td>" +
-                "<td>9 secs</td>" +
-                "<td>8 secs</td>" +
+                "<td>" + (9  - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (10 - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (8  - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (9  - cinematicReloadReduction) + " secs</td>" +
                 "<td>" + Math.floor(this.system.bowDesign.userBL*5*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-mech'>" +
                 "<td>8 secs</td>" +
-                "<td>10 secs</td>" +
-                "<td>9 secs</td>" +
+                "<td>" + (10 - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (11 - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (9  - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (10 - cinematicReloadReduction) + " secs</td>" +
                 "<td>" + Math.floor(this.system.bowDesign.userBL*6*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-mech'>" +
                 "<td>9 secs</td>" +
-                "<td>11 secs</td>" +
-                "<td>10 secs</td>" +
+                "<td>" + (11 - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (12 - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (10 - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (11 - cinematicReloadReduction) + " secs</td>" +
                 "<td>" + Math.floor(this.system.bowDesign.userBL*7*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-mech'>" +
                 "<td>This is the draw limit with a goat's foot.</td>" +
                 "<td>10 secs</td>" +
-                "<td>12 secs</td>" +
-                "<td>11 secs</td>" +
+                "<td>" + (12 - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (13 - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (11 - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (12 - cinematicReloadReduction) + " secs</td>" +
                 "<td>" + Math.floor(this.system.bowDesign.userBL*8*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-wind'>" +
                 "<td>With a windlass you can draw a bow of pretty much any weight. It just takes a long fucking time. This is as fast as it gets, and it only gets slower.</td>" +
                 "<td>8 secs</td>" +
-                "<td>10 secs</td>" +
-                "<td>9 secs</td>" +
+                "<td>" + (10 - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (11 - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (9  - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (10 - cinematicReloadReduction) + " secs</td>" +
                 "<td>" + Math.floor(this.system.bowDesign.userBL*8*2*100)/100 + "lbs</td>" +
                 "</tr>"
             info += "<tr class='bow-wind'>" +
                 "<td>Windlasses also get heavier the higher the draw weight multiplier gets.</td>" +
                 "<td>12 secs</td>" +
-                "<td>14 secs</td>" +
-                "<td>13 secs</td>" +
+                "<td>" + (14 - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (15 - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (13 - cinematicReloadReduction) + " secs</td>" +
+                "<td>" + (14 - cinematicReloadReduction) + " secs</td>" +
                 "<td>" + Math.floor(this.system.bowDesign.userBL*8*3*100)/100 + "lbs</td>" +
                 "</tr>"
 
@@ -6692,8 +6721,10 @@ export class gurpsItem extends Item {
               info += "<tr class='bow-cranq'>" +
                   "<td>Cranequins are half the weight, but are twice as slow.</td>" +
                   "<td>24 secs</td>" +
-                  "<td>26 secs</td>" +
-                  "<td>25 secs</td>" +
+                  "<td>" + (26 - cinematicReloadReduction) + " secs</td>" +
+                  "<td>" + (27 - cinematicReloadReduction) + " secs</td>" +
+                  "<td>" + (25 - cinematicReloadReduction) + " secs</td>" +
+                  "<td>" + (26 - cinematicReloadReduction) + " secs</td>" +
                   "<td>" + Math.floor(this.system.bowDesign.userBL * 8 * 3*100)/100 + "lbs</td>" +
                   "</tr>"
             }
@@ -6702,7 +6733,8 @@ export class gurpsItem extends Item {
       }
 
       info += "<tr>" +
-          "<td colspan='5'>Time to fire does not include the round you're actually firing on. So it takes that many rounds to make the weapon ready to fire on the following turn.</td>" +
+          "<td colspan='7'>\"Make Ready\" is the total number of turns it takes to put the weapon in a state where you can either Aim or Attack, meaning you would make the actual Attack action on the following turn.</br>" +
+          "The \"Attack\" column lists the turn number upon which you area actually making your Attack maneuver.</td>" +
           "</tr>"
       info += "</table>"
     }
