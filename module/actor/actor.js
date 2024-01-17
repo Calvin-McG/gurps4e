@@ -218,7 +218,24 @@ export class gurpsActor extends Actor {
 					weather: "none",
 					ice: false,
 					hours: 16,
+					enhancedMove: 0,
 					fpRecovery: 10,
+				}
+			}
+
+			if (typeof this.system.info.learning === 'undefined') {
+				this.system.info.learning = {
+					show: false,
+					will: 10,
+					style: "1",
+					lang: "0",
+					missedDays: 0,
+					studyWeekday: 0,
+					studyWeekend: 0,
+					mod: 0,
+					gmBonus: game.settings.get("gurps4e", "gmLearningBonus"),
+					finalEffective: 14,
+					extraHours: 0
 				}
 			}
 		}
@@ -1181,6 +1198,33 @@ export class gurpsActor extends Actor {
 		this.calcSwimmingInfo();
 		this.calcHikingInfo();
 		this.calcThrowingInfo();
+		this.calcLearningInfo();
+	}
+
+	calcLearningInfo() {
+		this.system.info.learning.will = this.system.primaryAttributes.will.value;
+		this.system.info.learning.gmBonus = game.settings.get("gurps4e", "gmLearningBonus"); // Set the bonus from the GM
+
+		let runningHourCount = 25 * 6; // This is the base number of hours, converted to hours of proper guided study, which we will later convert into a final numerical modifier on the Learning roll
+
+		runningHourCount -= parseInt(this.system.info.learning.missedDays) * 6; // A missed day of instruction works out to 6 hours.
+
+		runningHourCount += parseInt(this.system.info.learning.studyWeekday) * 6 / 2; // A weekday has 6 hours of free time, but counts at half value.
+
+		runningHourCount += parseInt(this.system.info.learning.studyWeekend) * 15 / 2; // A weekend has 15 hours of free time, but counts at half value.
+
+		runningHourCount += parseInt(this.system.info.learning.mod) * 15 ; // +1 is worth 15 hours.
+
+		runningHourCount -= parseInt(this.system.info.learning.lang) * 15 ; // +1 is worth 15 hours, and the lang dropdown spits out a number from 0 to 2
+
+		runningHourCount += game.settings.get("gurps4e", "gmLearningBonus") * 15 ; // +1 is worth 15 hours
+
+		let finalMod = (runningHourCount - 150) / 15; // Subtract 150 hours, which is the baseline. Divide the remainder by 15 to get the modifier.
+
+		this.system.info.learning.extraHours = (finalMod - Math.floor(finalMod)) * 15; // Get any remainder when converting the hours back into a modifier. This is used to give back a decimal bonus as a small number of hours (Less than 15).
+
+		this.system.info.learning.finalEffective = Math.floor(finalMod) + this.system.info.learning.will; // Get an actual numerical modifier. (Learning is Will+4)
+
 	}
 
 	calcThrowingInfo() {

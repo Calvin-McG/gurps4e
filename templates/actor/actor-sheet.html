@@ -4088,6 +4088,101 @@
 						</table>
 						{{/if}}
 					</div>
+					<div>
+						<h1 class="bold" style="text-align: center;">
+							<label for="infoLearning">
+								<div>
+									{{#if actor.system.info.learning.show }}
+									Learning Rolls
+									{{else}}
+									Learning Rolls (Hidden)
+									{{/if}}
+								</div>
+							</label>
+						</h1>
+						<input style="display: none" id="infoLearning" type="checkbox" name="system.info.learning.show" {{checked actor.system.info.learning.show}} data-dtype="Boolean"/>
+						{{#if actor.system.info.learning.show }}
+						<table>
+							<tr class="item">
+								<td>Will</td>
+								<td style="width: 5%; font-weight: bold; text-align: center">{{actor.system.info.learning.will}}</td>
+								<td>Your character's base Will</td>
+							</tr>
+							<tr class="item">
+								<td>Learning Style</td>
+								<td>
+									<select name="system.info.learning.style">
+										{{#select actor.system.info.learning.style}}
+										<option value="1">Normal Training (x1)</option>
+										<option value="0.5">Self Study (x0.5)</option>
+										<option value="0.25">On the job (x0.25)</option>
+										{{/select}}
+									</select>
+								</td>
+								<td>Normal Training is any training guided by a teacher. Self Study is any time you dedicate to learning on your own.
+									On the job covers passive skill gain you receive by doing a job that makes use of said skill. Intensive Training is handled by a different mechanism.</td>
+							</tr>
+							<tr class="item">
+								<td>Language</td>
+								<td>
+									<select name="system.info.learning.lang">
+										{{#select actor.system.info.learning.lang}}
+										<option value="0">Fluent</option>
+										<option value="1">Accented</option>
+										<option value="2">Broken</option>
+										{{/select}}
+									</select>
+								</td>
+								<td>What is your skill with the language your instructor is using? Accented gives a -1, and Broken gives a -2.</td>
+							</tr>
+							<tr class="item">
+								<td>Missed days of instruction</td>
+								<td>
+									<input type="number" min="0" max="25" step="1" name="system.info.learning.missedDays" value="{{actor.system.info.learning.missedDays}}" data-dtype="Number" />
+								</td>
+								<td>The learning rules assume a month of study, which constitutes 5 weeks of 5 days each. Enter here the number of days missed.</td>
+							</tr>
+							<tr class="item">
+								<td>Extra study on weekdays</td>
+								<td>
+									<input type="number" min="0" max="25" step="1" name="system.info.learning.studyWeekday" value="{{actor.system.info.learning.studyWeekday}}" data-dtype="Number" />
+								</td>
+								<td>This is the number of weekdays where you spend the majority of your free time (6 hours) studying. Five days of this work out to a +1. (Fractional bonuses do count! So you don't need to allocate this in blocks of 5 days.)</td>
+							</tr>
+							<tr class="item">
+								<td>Extra study on weekends</td>
+								<td>
+									<input type="number" min="0" max="10" step="1" name="system.info.learning.studyWeekend" value="{{actor.system.info.learning.studyWeekend}}" data-dtype="Number" />
+								</td>
+								<td>This is the number of weekends where you spend the majority of your free time (15 hours) studying. Two days of this work out to a +1. (Fractional bonuses do count! So you don't need to allocate this in blocks of 2 days.)</td>
+							</tr>
+							<tr class="item">
+								<td>Modifier</td>
+								<td>
+									<input type="number" step="1" name="system.info.learning.mod" value="{{actor.system.info.learning.mod}}" data-dtype="Number" />
+								</td>
+								<td>This is a modifier on the final learning roll</td>
+							</tr>
+							<tr class="item">
+								<td>GM Bonus</td>
+								<td style="width: 5%; font-weight: bold; text-align: center">{{actor.system.info.learning.gmBonus}}</td>
+								<td>This is a modifier given by the GM to represent teacher quality, available technology, and so on.</td>
+							</tr>
+							<tr class="item">
+								<td>Effective Learning roll</td>
+								<td style="width: 5%; font-weight: bold; text-align: center">
+									{{actor.system.info.learning.finalEffective}}
+								</td>
+								<td>This is your final effective Learning roll</td>
+							</tr>
+							<tr class="item">
+								<td colspan="3" style="width: 5%; font-weight: bold; text-align: center">
+									<input type='button' class='makeLearningRoll' id="{{actor.system.info.learning.finalEffective}}" value='Make Learning Roll'/>
+								</td>
+							</tr>
+						</table>
+						{{/if}}
+					</div>
 				</div>
 			</div>
 		</section>

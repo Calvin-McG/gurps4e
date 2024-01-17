@@ -78,9 +78,45 @@ export class gurpsActorSheet extends ActorSheet {
 
 		// Track changes to the RPM core skill
 		html.find('.rpmCoreSkill').change(this._onRpmCoreSkillChange.bind(this));
+
+		html.find('.makeLearningRoll').click(this._makeLearningRoll.bind(this));
 	}
 
 	/* -------------------------------------------- */
+
+	async _makeLearningRoll() {
+		rollHelpers.skillRoll(this.actor.system.info.learning.finalEffective, 0, "LABEL!", false).then( rollInfo => { // Make the roll
+
+			let html = rollInfo.content;
+
+			let hours = 150 + (rollInfo.margin * 15);
+
+			if (rollInfo.crit) { // User got a crit
+				if (rollInfo.success) { // It was a crit success
+					html += "Breakthrough!";
+					// By default, a crit on a learning roll sets your learning to 400 hours, but you get no benefit if you're already at or past that.
+					// Instead, this logic adds 50 hours if you're at 350 or more. So 350 becomes 400 as usual, but everyone else gets a +50 hour bonus for critting.
+					if (hours >= 350) {
+						hours += 50;
+					}
+					else { // If the user wasn't anywhere close to 400 hours, still set it to 400.
+						hours = 400;
+					}
+				}
+				else { // It was a crit fail.
+					html += "Overwork and collapse! Take 3d FP damage.";
+				}
+			}
+			html += "</br>";
+
+			hours += +this.actor.system.info.learning.extraHours; // Add back in the bonus hours.
+			hours *= +this.actor.system.info.learning.style; // Apply the multiplier for learning style
+
+			html += "You gain " + hours + " hours of training time to distribute among your skills.";
+
+			ChatMessage.create({ content: html, user: game.user.id, type: rollInfo.type });
+		});
+	}
 
 	_onAccordionToggle(event) {
 		event.preventDefault();

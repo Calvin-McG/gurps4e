@@ -653,6 +653,16 @@ Hooks.once("init", () => {
     default: "errata",
   });
 
+  game.settings.register("gurps4e", "gmLearningBonus", {
+    name: "Set the default bonus for Learning rolls",
+    hint: "It's sometimes wise to offer a bonus to Learning rolls made on the info tab. For example, the base rules assume an exact success gives 150 hours of training in a skill." +
+        "But if you'd really prefer a month of study give 200 hours on average then set this to a +4.",
+    scope: "world",
+    config: true,
+    default: 0,
+    type: Number
+  });
+
   // game.settings.register("gurps4e", "armourAsDice", {
   //   name: "Armour As Dice - WIP",
   //   hint: "Pyramid 3/34. DR converts to dice at 1d per 3.5. These dice are subtracted from the the attack, then the remainder is rolled. Makes guns behave better in HT and UT, is less appropriate for fantasy games with melee weapons and muscle powered ranged weapons.",
