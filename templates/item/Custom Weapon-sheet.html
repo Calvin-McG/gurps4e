@@ -729,6 +729,25 @@
                             </tr>
                         </table>
 
+                        {{#if (or (eq item.system.customType "xbow") (eq item.system.customType "footbow") (eq item.system.customType "bow")) }}
+                        <h2 class="bold" style="text-align: center; margin-top: 20px">Misc</h2>
+                        <table>
+                            <tr class="design-row">
+                                <td style="width: 160px">
+                                    Bulk
+                                </td>
+                                <td>
+                                    {{item.system.bowDesign.bulk}}
+                                </td>
+                                <td class="question-container" id="bulk">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        {{/if}}
+
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Projectile Designs</h2>
                         {{#each item.system.bowDesign.arrows as |arrow id|}}
                         <h2 class="bold" style="text-align: center; margin-top: 20px">Projectile {{id}} <a class="deleteArrowRow" id="arroww{{id}}" title="Delete Row"><i class="fas fa-trash"></i></a></h2>
