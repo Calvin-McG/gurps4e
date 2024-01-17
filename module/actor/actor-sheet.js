@@ -85,7 +85,7 @@ export class gurpsActorSheet extends ActorSheet {
 	/* -------------------------------------------- */
 
 	async _makeLearningRoll() {
-		rollHelpers.skillRoll(this.actor.system.info.learning.finalEffective, 0, "LABEL!", false).then( rollInfo => { // Make the roll
+		rollHelpers.skillRoll(this.actor.system.info.learning.finalEffective, 0, this.actor.name + " makes a learning roll.", false).then( rollInfo => { // Make the roll
 
 			let html = rollInfo.content;
 
