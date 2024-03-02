@@ -2682,7 +2682,9 @@ export class gurpsActor extends Actor {
 		let affliction;
 
 		actor.items.forEach((item) => {
-			if ((item.type == "Trait" || (item.type == "Equipment" && item.system.equipStatus === "equipped") || item.type == "Spell" || (item.type == "Custom Weapon" && item.system.equipStatus === "equipped") || (item.type == "Custom Armour" && item.system.equipStatus === "equipped") || item.type == "Travel Fare" || (item.type == "Ritual" && item.system.quantity > 0))){
+			// This if statement keeps out any attack entries we are not interested
+			if (!((item.type == "Ritual" && item.system.quantity > 0) || // It's a ritual with a zero quantity, don't show it.
+				(typeof item.system.equipStatus !== "undefined" && item.system.equipStatus !== "equipped"))){ // If it's part of an item that has an equipped status, but it's not equipped, don't show it.
 				if (item.system.melee) {
 					let meleeKeys = Object.keys(item.system.melee); // Collect all the melee keys
 					for (let m = 0; m < meleeKeys.length; m++){
