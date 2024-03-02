@@ -160,27 +160,6 @@
                                     {{item.system.quirkRollMod}} <input type='button' class='makeQuirkRoll' id="{{item.name}}"  value='Make Quirk Roll'/>
                                 </td>
                             </tr>
-                            {{#unless (eq item.system.ritualType "conditional")}}
-                            <tr>
-                                <td>
-                                    <label class="resource-label" style="flex: 0.5;">Charm Availability</label>
-                                    <select name="system.charm.availability">
-                                        {{#select item.system.charm.availability}}
-                                        <option value="0.5">Common (Wards, healing, lucky charms)</option>
-                                        <option value="1">Uncommon</option>
-                                        <option value="2">Rare (Strange, overly specific)</option>
-                                        <option value="2.0">Custom Order</option>
-                                        {{/select}}
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label class="resource-label" style="flex: 0.5;">Sale / Purchase Cost:</label>
-                                    {{item.system.charm.saleCost}} $
-                                </td>
-                            </tr>
-                            {{/unless}}
                         </table>
                         {{/if}}
 
@@ -355,6 +334,32 @@
                             </tr>
                         </table>
                         {{/if}}
+
+                        <table style="background: rgb(215,172,17,0.28)">
+                            <tr>
+                                <th colspan="4" style="font-size: larger; text-decoration: underline;">Economics</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Charm Availability</label>
+                                    <select name="system.charm.availability">
+                                        {{#select item.system.charm.availability}}
+                                        <option value="0.5">Common (Wards, healing, lucky charms)</option>
+                                        <option value="1">Uncommon</option>
+                                        <option value="2">Rare (Strange, overly specific)</option>
+                                        <option value="2.0">Custom Order</option>
+                                        {{/select}}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="resource-label" style="flex: 0.5;">Sale / Purchase Cost:</label>
+                                    {{item.system.charm.saleCost}} $
+                                </td>
+                            </tr>
+                        </table>
+
                     </td>
                 </tr>
             </table>
