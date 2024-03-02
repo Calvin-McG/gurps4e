@@ -287,8 +287,10 @@ Hooks.once("init", () => {
   });
 
   game.settings.register("gurps4e", "rpmLimitAlchemySkill", {
-    name: "Cap Alchemy skill for RPM elixirs?",
-    hint: "When using the option that the quantity of ready elixirs is limited by the caster's Alchemy skill, is the Alchemy skill limited to (12 + Magery) like Thaumatology is? By default the answer to this question is no, but the book includes this as an option.",
+    name: "Cap RPM Alchemy skill when determining max elixir count?",
+    hint: "Thaumatology: Ritual Path Magic page 30: This option is only relevant when using the option that the quantity of ready elixirs is limited by the caster's Alchemy skill. " +
+        "When crafting elixirs, your Alchemy skill is capped at 12 + Magery, but by default, that same cap does not apply when determining how many of those elixirs you can have." +
+        "Setting this to true means that the 12 + Magery cap applies to max count as well.",
     scope: "world",
     config: true,
     default: false,
