@@ -1912,3 +1912,31 @@ attribute-senses {
 .scene-option-notes {
 	width: 100%
 }
+
+.melee-st {
+	max-width: 30px;
+}
+
+.melee-reach {
+	max-width: 45px;
+}
+
+.melee-ad {
+	max-width: 30px;
+}
+
+.melee-block {
+	max-width: 40px;
+}
+
+.melee-id {
+	display: none;
+}
+
+.melee-parryType {
+	max-width: 30px;
+}
+
+.melee-skillMod {
+	max-width: 30px;
+}

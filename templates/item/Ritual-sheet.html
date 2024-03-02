@@ -698,38 +698,38 @@
             <h3 class="addRow" style="text-align: right;">Add Row</h3>
             <div class="tab">
                 <table>
-                <tr class="equipment-header">
-                    <td class="resource-label">ID</td>
-                    <td class="resource-label">Name</td>
-                    <td class="resource-label">Level</td>
-                    <td class="resource-label">Skill Name / Mod</td>
-                    <td class="resource-label">Parry - Type</td>
-                    <td class="resource-label">Block</td>
-                    <td class="resource-label">Damage</td>
-                    <td class="resource-label">Type</td>
-                    <td class="resource-label">Divisor</td>
-                    <td class="resource-label">Reach</td>
-                    <td class="resource-label">ST</td>
-                    <td class="resource-label"></td>
-                </tr>
-                {{#each item.system.melee as |melee id|}}
-                <tr class="equipment-entry">
-                    <td class="resource-label">{{id}}</td>
-                    <td><input type="text" name="system.melee.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
-                    <td class="resource-label">{{melee.level}}</td>
-                    <td class="equipmentInputInput">
-                        <input type="text" name="system.melee.{{id}}.skill" value="{{melee.skill}}" title="{{melee.skill}}" style="text-align:left;" />/
-                        <input type="text" name="system.melee.{{id}}.skillMod" value="{{melee.skillMod}}" data-dtype="Number"/>
-                    </td>
-                    <td>
-                        <input type="text" name="system.melee.{{id}}.parryMod" value="{{melee.parryMod}}" style="width: 50%"/>
-                        <input type="text" name="system.melee.{{id}}.parryType" value="{{melee.parryType}}" style="width: 20%"/>
-                    </td>
-                    <td>
-                        <input type="text" name="system.melee.{{id}}.blockMod" value="{{melee.blockMod}}"/>
-                    </td>
-                    <td><input type="text" name="system.melee.{{id}}.damageInput" value="{{melee.damageInput}}" title="{{melee.damageInput}}" style="text-align:left;" /></td>
-                    <td>
+                    <tr class="equipment-header">
+                        <td class="resource-label melee-id">ID</td>
+                        <td class="resource-label">Name</td>
+                        <td class="resource-label">Level</td>
+                        <td class="resource-label">Skill Name / Mod</td>
+                        <td class="resource-label">Parry - Type</td>
+                        <td class="resource-label">Block</td>
+                        <td class="resource-label">Damage</td>
+                        <td class="resource-label">Type</td>
+                        <td class="resource-label">AD</td>
+                        <td class="resource-label">Reach</td>
+                        <td class="resource-label">ST</td>
+                        <td class="resource-label"></td>
+                    </tr>
+                    {{#each item.system.melee as |melee id|}}
+                    <tr class="equipment-entry">
+                        <td class="resource-label melee-id">{{id}}</td>
+                        <td><input type="text" name="system.melee.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
+                        <td class="resource-label">{{melee.level}}</td>
+                        <td class="equipmentInputInput">
+                            <input type="text" name="system.melee.{{id}}.skill" value="{{melee.skill}}" title="{{melee.skill}}" style="text-align:left;" />/
+                            <input type="text" name="system.melee.{{id}}.skillMod" value="{{melee.skillMod}}" data-dtype="Number" class="melee-skillMod"/>
+                        </td>
+                        <td>
+                            <input type="text" name="system.melee.{{id}}.parryMod" value="{{melee.parryMod}}" style="width: 50%"/>
+                            <input type="text" name="system.melee.{{id}}.parryType" value="{{melee.parryType}}" class="melee-parryType"/>
+                        </td>
+                        <td class="melee-block">
+                            <input type="text" name="system.melee.{{id}}.blockMod" value="{{melee.blockMod}}"/>
+                        </td>
+                        <td><input type="text" name="system.melee.{{id}}.damageInput" value="{{melee.damageInput}}" title="{{melee.damageInput}}" style="text-align:left;" /></td>
+                        <td>
                         <span class="tooltip">
                             <input type="text" name="system.melee.{{id}}.damageType" value="{{melee.damageType}}" title="{{melee.damageType}}" style="text-align:left;" />
                             <span class="tooltiptext" style="margin-left: -100px">
@@ -756,8 +756,8 @@
                                 </div>
                             </span>
                         </span>
-                    </td>
-                    <td>
+                        </td>
+                        <td class="melee-ad">
                         <span class="tooltip">
                             <input type="text" name="system.melee.{{id}}.armourDivisor" value="{{melee.armourDivisor}}" title="{{melee.armourDivisor}}" style="text-align:left;" />
                             <span class="tooltiptext" style="margin-left: -100px">
@@ -769,12 +769,12 @@
                                 </div>
                             </span>
                         </span>
-                    </td>
-                    <td><input type="text" name="system.melee.{{id}}.reach" value="{{melee.reach}}" title="{{melee.reach}}" style="text-align:left;" /></td>
-                    <td><input type="text" name="system.melee.{{id}}.st" value="{{melee.st}}"/></td>
-                    <td><a class="attack-delete" id="meleee{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
-                </tr>
-                {{/each}}
+                        </td>
+                        <td class="melee-reach"><input type="text" name="system.melee.{{id}}.reach" value="{{melee.reach}}" title="{{melee.reach}}" style="text-align:left;" /></td>
+                        <td class="melee-st"><input type="text" name="system.melee.{{id}}.st" value="{{melee.st}}"/></td>
+                        <td><a class="attack-delete" id="meleee{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
+                    </tr>
+                    {{/each}}
                 </table>
             </div>
         </div>
@@ -785,7 +785,7 @@
             <div class="tab">
                 <table>
                     <tr class="equipment-header">
-                        <td class="resource-label">ID</td>
+                        <td class="resource-label melee-id">ID</td>
                         <td class="resource-label">Name</td>
                         <td class="resource-label">Level</td>
                         <td class="resource-label">Skill Name / Mod</td>
@@ -798,18 +798,18 @@
                         <td class="resource-label">Shots</td>
                         <td class="resource-label">Bulk</td>
                         <td class="resource-label">Rcl</td>
-                        <td class="resource-label">ST</td>
+                        <td class="resource-label melee-st">ST</td>
                         <td class="resource-label">Malf</td>
                         <td class="resource-label"></td>
                     </tr>
                     {{#each item.system.ranged as |ranged id|}}
                     <tr class="equipment-entry">
-                        <td class="resource-label">{{id}}</td>
+                        <td class="resource-label melee-id">{{id}}</td>
                         <td><input type="text" name="system.ranged.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
                         <td class="resource-label">{{ranged.level}}</td>
                         <td class="equipmentInputInput">
                             <input type="text" name="system.ranged.{{id}}.skill" value="{{ranged.skill}}" title="{{ranged.skill}}" style="text-align:left;" />/
-                            <input type="text" name="system.ranged.{{id}}.skillMod" value="{{ranged.skillMod}}" data-dtype="Number"/>
+                            <input type="text" name="system.ranged.{{id}}.skillMod" value="{{ranged.skillMod}}" data-dtype="Number" class="melee-skillMod"/>
                         </td>
                         <td><input type="text" name="system.ranged.{{id}}.acc" value="{{ranged.acc}}" data-dtype="Number"/></td>
                         <td><input type="text" name="system.ranged.{{id}}.damageInput" value="{{ranged.damageInput}}" title="{{ranged.damageInput}}" style="text-align:left;" /></td>
@@ -841,7 +841,7 @@
                                 </span>
                             </span>
                         </td>
-                        <td>
+                        <td class="melee-ad">
                             <span class="tooltip">
                                 <input type="text" name="system.ranged.{{id}}.armourDivisor" value="{{ranged.armourDivisor}}" title="{{ranged.armourDivisor}}" style="text-align:left;" />
                                 <span class="tooltiptext" style="margin-left: -100px">
@@ -859,7 +859,7 @@
                         <td><input type="text" name="system.ranged.{{id}}.shots" value="{{ranged.shots}}" title="{{ranged.shots}}" style="text-align:left;" /></td>
                         <td><input type="text" name="system.ranged.{{id}}.bulk" value="{{ranged.bulk}}" title="{{ranged.bulk}}" style="text-align:left;" /></td>
                         <td><input type="text" name="system.ranged.{{id}}.rcl" value="{{ranged.rcl}}" title="{{ranged.rcl}}" style="text-align:left;" /></td>
-                        <td><input type="text" name="system.ranged.{{id}}.st" value="{{ranged.st}}"/></td>
+                        <td class="melee-st"><input type="text" name="system.ranged.{{id}}.st" value="{{ranged.st}}"/></td>
                         <td><input type="text" name="system.ranged.{{id}}.malf" value="{{ranged.malf}}"/></td>
                         <td><a class="ranged-delete" id="ranged{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
                     </tr>
