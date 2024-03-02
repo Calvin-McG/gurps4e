@@ -3411,7 +3411,11 @@
 								{{item.system.quantity}}
 							</td>
 							<td class="item-skill" style="width: 3em; padding-right: 1em;">
-								{{capitalizeFirst item.system.ritualType}}
+								{{#if (eq item.system.ritualType "conditionalCharm")}}
+									Conditional Charm
+								{{else}}
+									Charm
+								{{/if}}
 							</td>
 							<td class="item-skill" style="width: 3em; text-align: center">
 								{{item.system.energyCost}}
