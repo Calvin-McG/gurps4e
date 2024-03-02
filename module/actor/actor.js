@@ -3556,11 +3556,22 @@ export class gurpsActor extends Actor {
 		}
 		let totalModifier;
 		let sizeModModifier = 0;
-
-		let modModalContent =  "<table>" +
-			"<tr><td>Hit Location</td><td>" + locationPenalty + "</td><td>The penalty for the selected hit location.</td></tr>"
-
 		let smMessage = "";
+
+		let modModalContent = "<table>";
+
+		// Homing specific logic
+		if (typeof attack.flags !== undefined) {
+			if (attack.flags.toLowerCase().includes("hom") && attack.type === "ranged") { // If it's a homing weapon and ranged
+				let homSkill = 10 + attack.acc
+				modModalContent += "<tr><td>Skill</td><td>" + homSkill + "</td><td>Homing weapons have a skill of 10 + Acc</td></tr>"; // Applies homing skill correctly
+			}
+			else { // If it's anything else
+				modModalContent += "<tr><td>Skill</td><td>" + attack.skill + "</td><td>Your base skill</td></tr>"; // Default string
+			}
+		}
+
+		modModalContent += "<tr><td>Hit Location</td><td>" + locationPenalty + "</td><td>The penalty for the selected hit location.</td></tr>";
 
 		if (attack.type === "ranged") {
 			// Sort out the effective SM modifier based on the game's settings and the attacker/target SM
@@ -3573,9 +3584,20 @@ export class gurpsActor extends Actor {
 				smMessage = "The modifier for the target's size";
 			}
 
+			// Display the ranged specific modifiers
+			if (typeof attack.flags !== undefined) {
+				if (attack.flags.toLowerCase().includes("gui") || attack.flags.toLowerCase().includes("hom")) {
+					distancePenalty = 0;
+					modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>There is no distance penalty for guided and homing attacks</td></tr>";
+				}
+				else {
+					modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance</td></tr>";
+				}
+			}
+
 			totalModifier = (distancePenalty + locationPenalty + rofBonus + sizeModModifier); // Total up the modifiers
-			modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance</td></tr>" + // Display the ranged specific modifiers
-								"<tr><td>RoF Bonus:</td><td>" + rofBonus + "</td><td>The bonus for the selected rate of fire</td></tr>";
+
+			modModalContent += "<tr><td>RoF Bonus:</td><td>" + rofBonus + "</td><td>The bonus for the selected rate of fire</td></tr>";
 		}
 		else if (attack.type === "melee") {
 			// Sort out the effective SM modifier based on the game's settings and the attacker/target SM
@@ -3593,10 +3615,18 @@ export class gurpsActor extends Actor {
 
 		modModalContent += "<tr><td>SM Modifier:</td><td>" + sizeModModifier + "</td><td>" + smMessage + "</td></tr>";
 
-		let odds = rollHelpers.levelToOdds(+attack.level + +totalModifier)
+		let oddsEffectiveSkill = +attack.level + +totalModifier
+
+		if (typeof attack.flags !== undefined) {
+			if (attack.flags.toLowerCase().includes("hom") && attack.type === "ranged") { // If it's a homing weapon and ranged
+				oddsEffectiveSkill = 10 + +attack.acc + +totalModifier
+			}
+		}
+
+		let odds = rollHelpers.levelToOdds(oddsEffectiveSkill)
 
 		modModalContent += "<tr><td>Total Modifier</td><td>" + totalModifier + "</td><td>This total only includes modifiers listed above</td></tr>" +
-			"<tr><td>Effective Skill</td><td>" + (+attack.level + +totalModifier) + "</td><td>Effective skill before any of the below modifiers</td></tr>" +
+			"<tr><td>Effective Skill</td><td>" + oddsEffectiveSkill + "</td><td>Effective skill before any of the below modifiers</td></tr>" +
 			"<tr><td>Odds</td><td><span style='font-weight: bold; color: rgb(208, 127, 127)'>" + odds.critFail + "%</span>/<span style='font-weight: bold; color: rgb(141, 142, 222)'>" + odds.success + "%</span>/<span style='font-weight: bold; color: rgb(106, 162, 106)'>" + odds.critSuccess + "%</span></td><td>These odds do not factor in any of the below modifiers</td></tr>" +
 			"<tr><td>Move and Attack</td><td><input type='checkbox' class='checkbox' id='moveAndAttack' value='moveAndAttack' name='moveAndAttack' /></td><td>This handles both melee and ranged move and attacks with their respective rules</td></tr>"
 
@@ -3657,6 +3687,14 @@ export class gurpsActor extends Actor {
 		}
 
 		let level = attack.level;
+
+		// Homing specific logic
+		if (typeof attack.flags !== undefined) { // If there are flags
+			if (attack.flags.toLowerCase().includes("hom") && attack.type === "ranged") { // If it's a homing weapon and ranged
+				level = 10 + attack.acc; // Apply skill the way homing does it.
+			}
+		}
+
 		let mod = totalModifiers;
 
 		if (attack.type == "ranged"){

@@ -84,6 +84,7 @@
                         <td class="resource-label">AD</td>
                         <td class="resource-label">Reach</td>
                         <td class="resource-label">ST</td>
+                        <td class="resource-label">Flags</td>
                         <td class="resource-label"></td>
                     </tr>
                     {{#each item.system.melee as |melee id|}}
@@ -146,6 +147,19 @@
                         </td>
                         <td class="melee-reach"><input type="text" name="system.melee.{{id}}.reach" value="{{melee.reach}}" title="{{melee.reach}}" style="text-align:left;" /></td>
                         <td class="melee-st"><input type="text" name="system.melee.{{id}}.st" value="{{melee.st}}"/></td>
+                        <td>
+                            <span class="tooltip">
+                                <input type="text" name="system.melee.{{id}}.flags" value="{{melee.flags}}" title="{{melee.flags}}" style="text-align:left;" />
+                                <span class="tooltiptext" style="margin-left: -100px">
+                                    <div>
+                                        <span style="text-decoration: underline">Valid entries are:</span><br>
+                                        una: Unarmed (Vulnerable to damage following a failed parry)<br>
+                                        gui: Guided<br>
+                                        hom: Homing<br>
+                                    </div>
+                                </span>
+                            </span>
+                        </td>
                         <td><a class="attack-delete" id="meleee{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
                     </tr>
                     {{/each}}
@@ -174,6 +188,7 @@
                         <td class="resource-label">Rcl</td>
                         <td class="resource-label melee-st">ST</td>
                         <td class="resource-label">Malf</td>
+                        <td class="resource-label">Flags</td>
                         <td class="resource-label"></td>
                     </tr>
                     {{#each item.system.ranged as |ranged id|}}
@@ -235,6 +250,19 @@
                         <td><input type="text" name="system.ranged.{{id}}.rcl" value="{{ranged.rcl}}" title="{{ranged.rcl}}" style="text-align:left;" /></td>
                         <td class="melee-st"><input type="text" name="system.ranged.{{id}}.st" value="{{ranged.st}}"/></td>
                         <td><input type="text" name="system.ranged.{{id}}.malf" value="{{ranged.malf}}"/></td>
+                        <td>
+                            <span class="tooltip">
+                                <input type="text" name="system.ranged.{{id}}.flags" value="{{ranged.flags}}" title="{{ranged.flags}}" style="text-align:left;" />
+                                <span class="tooltiptext" style="margin-left: -100px">
+                                    <div>
+                                        <span style="text-decoration: underline">Valid entries are:</span><br>
+                                        una: Unarmed (Vulnerable to damage following a failed parry)<br>
+                                        gui: Guided<br>
+                                        hom: Homing<br>
+                                    </div>
+                                </span>
+                            </span>
+                        </td>
                         <td><a class="ranged-delete" id="ranged{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
                     </tr>
                     {{/each}}
@@ -269,6 +297,7 @@
                                 <span class="tooltiptext" style="margin-left: -100px;">This should be 13 for Fright and 16 for everything else except in special cases.</span>
                             </span>
                         </td>
+                        <td class="resource-label">Flags</td>
                         <td class="resource-label"></td>
                     </tr>
                     {{#each item.system.affliction as |affliction id|}}
@@ -359,6 +388,19 @@
                             <input type="text" placeholder="-0" name="system.affliction.{{id}}.resistanceRollPenalty" value="{{affliction.resistanceRollPenalty}}" title="{{affliction.resistanceRollPenalty}}" style="text-align:left; width: 40px; margin: unset" />
                         </td>
                         <td><input type="text" name="system.affliction.{{id}}.ruleOf" value="{{affliction.ruleOf}}" title="{{affliction.ruleOf}}" style="text-align:left; width: 40px;" /></td>
+                        <td>
+                            <span class="tooltip">
+                                <input type="text" name="system.affliction.{{id}}.flags" value="{{affliction.flags}}" title="{{affliction.flags}}" style="text-align:left;" />
+                                <span class="tooltiptext" style="margin-left: -100px">
+                                    <div>
+                                        <span style="text-decoration: underline">Valid entries are:</span><br>
+                                        una: Unarmed (Vulnerable to damage following a failed parry)<br>
+                                        gui: Guided<br>
+                                        hom: Homing<br>
+                                    </div>
+                                </span>
+                            </span>
+                        </td>
                         <td><a class="affliction-delete" id="affliction{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
                     </tr>
                     {{/each}}
