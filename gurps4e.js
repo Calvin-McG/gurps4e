@@ -44,6 +44,18 @@ Hooks.once('init', async function() {
     return Number.isInteger(value);
   });
 
+  // This helper handles the logic to display or not display a given attack profile in the combat tab
+  Handlebars.registerHelper('showAttackInCombatTab', function (item, options) {
+    let show = true;
+    if (item.type.toLowerCase() === "ritual" && item.system.quantity === 0) { // If it's a ritual, but quantity is zero, don't show.
+      show = false;
+    }
+    else if (typeof item.system.equipStatus !== "undefined" && item.system.equipStatus !== "equipped") { // If it's something that can be equipped, but it's not, don't show
+      show = false;
+    }
+    return (show) ? options.fn(this) : options.inverse(this);
+  });
+
   // This helper introduces conditional operators. It is used like this:
   // {{#ifCond  system.tl '>=' 9 }}
   //  <div class="header">

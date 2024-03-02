@@ -511,7 +511,7 @@
 					</tr>
 					{{#each actor.items as |item id|}}
 					{{#each item.system.melee as |melee mid|}}
-					{{#unless (and (eq item.type "Ritual") (eq item.system.quantity 0))}}
+					{{#showAttackInCombatTab item}}
 					<tr>
 						<td>{{item.name}}</td>
 						<td>{{melee.name}}</td>
@@ -542,7 +542,7 @@
 						<td>{{melee.reach}}</td>
 						<td>{{melee.st}}</td>
 					</tr>
-					{{/unless}}
+					{{/showAttackInCombatTab}}
 					{{/each}}
 					{{/each}}
 				</table>
@@ -565,7 +565,7 @@
 					</tr>
 					{{#each actor.items as |item id|}}
 					{{#each item.system.ranged as |ranged rid|}}
-					{{#unless (and (eq item.type "Ritual") (eq item.system.quantity 0))}}
+					{{#showAttackInCombatTab item}}
 					<tr>
 						<td>{{item.name}}</td>
 						<td>{{ranged.name}}</td>
@@ -587,7 +587,7 @@
 						<td>{{ranged.rcl}}</td>
 						<td>{{ranged.st}}</td>
 					</tr>
-					{{/unless}}
+					{{/showAttackInCombatTab}}
 					{{/each}}
 					{{/each}}
 				</table>
@@ -605,7 +605,7 @@
 					</tr>
 					{{#each actor.items as |item id|}}
 					{{#each item.system.affliction as |affliction mid|}}
-					{{#unless (and (eq item.type "Ritual") (eq item.system.quantity 0))}}
+					{{#showAttackInCombatTab item}}
 					<tr>
 						<td>{{item.name}}</td>
 						<td>{{affliction.name}}</td>
@@ -622,7 +622,7 @@
 						<td>{{affliction.resistanceRoll}} {{affliction.resistanceRollPenalty}}</td>
 						<td>{{affliction.ruleOf}}</td>
 					</tr>
-					{{/unless}}
+					{{/showAttackInCombatTab}}
 					{{/each}}
 					{{/each}}
 				</table>
