@@ -1930,7 +1930,7 @@ attribute-senses {
 }
 
 .melee-id {
-	/*display: none;*/
+	display: none;
 }
 
 .melee-parryType {
