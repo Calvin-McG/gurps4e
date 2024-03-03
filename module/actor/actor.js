@@ -2494,21 +2494,21 @@ export class gurpsActor extends Actor {
 		return tooManyTargetsDialog;
 	}
 
-	singleTargetDialog(selfToken, targetToken, attackType){
+	singleTargetDialog(selfToken, targetToken, attackType, itemName, attackName){
 		let attacks;
 
 		// Narrow displayed attacks by attack type.
 		if (attackType === "melee") {
-			attacks = this.listAttacks(selfToken.actor, "melee");
+			attacks = this.listAttacks(selfToken.actor, "melee", itemName, attackName);
 		}
 		else if (attackType === "range" || attackType === "ranged") {
-			attacks = this.listAttacks(selfToken.actor, "ranged");
+			attacks = this.listAttacks(selfToken.actor, "ranged", itemName, attackName);
 		}
 		else if (attackType === "affliction") {
-			attacks = this.listAttacks(selfToken.actor, "affliction");
+			attacks = this.listAttacks(selfToken.actor, "affliction", itemName, attackName);
 		}
 		else {
-			attacks = this.listAttacks(selfToken.actor);
+			attacks = this.listAttacks(selfToken.actor, "all", itemName, attackName);
 		}
 
 		let htmlContent = "<div>";
@@ -2652,7 +2652,7 @@ export class gurpsActor extends Actor {
 				htmlContent += "<td>" + attacks.affliction[q].weapon + "</td>";
 				htmlContent += "<td>" + attacks.affliction[q].name + "</td>";
 				htmlContent += "<td>" + attacks.affliction[q].level + "</td>";
-				if(attacks.affliction[q].armourDivisor == 1){//Only show armour divisor if it's something other than 1
+				if(attacks.affliction[q].armourDivisor == 1){ // Only show armour divisor if it's something other than 1
 					htmlContent += "<td>" + attacks.affliction[q].damage + " " + attacks.affliction[q].damageType + "</td>";
 				}
 				else {
@@ -2689,7 +2689,7 @@ export class gurpsActor extends Actor {
 		return singleTargetModal;
 	}
 
-	listAttacks(actor, attackType){
+	listAttacks(actor, attackType, itemName, attackName){
 		// Narrow displayed attacks by attack type.
 		let showMelee 		= true;
 		let showRange 		= true;
@@ -2708,6 +2708,22 @@ export class gurpsActor extends Actor {
 			showRange 		= false;
 		}
 
+		// Decide if we are to filter by the name of the item
+		let filterByName = false;
+		if (typeof itemName !== "undefined"){
+			if (itemName !== ""){
+				filterByName = true;
+			}
+		}
+
+		// Decide if we are to filter by the name of the attack
+		let filterByAttackName = false;
+		if (typeof attackName !== "undefined"){
+			if (attackName !== ""){
+				filterByAttackName = true;
+			}
+		}
+
 		let meleeAttacks = [];
 		let rangedAttacks = [];
 		let afflictionAttacks = [];
@@ -2717,35 +2733,86 @@ export class gurpsActor extends Actor {
 
 		actor.items.forEach((item) => {
 			// This if statement keeps out any attack entries we are not interested
-			if (!((item.type == "Ritual" && item.system.quantity > 0) || // It's a ritual with a zero quantity, don't show it.
+			if (!((item.type === "Ritual" && item.system.quantity > 0) || // It's a ritual with a zero quantity, don't show it.
 				(typeof item.system.equipStatus !== "undefined" && item.system.equipStatus !== "equipped"))){ // If it's part of an item that has an equipped status, but it's not equipped, don't show it.
 				if (item.system.melee && showMelee) {
 					let meleeKeys = Object.keys(item.system.melee); // Collect all the melee keys
 					for (let m = 0; m < meleeKeys.length; m++){
-						melee = getProperty(item.system.melee, meleeKeys[m]);
-						melee.weapon = item.name
-						meleeAttacks.push(melee);
+						if (filterByName && typeof itemName !== "undefined") { // If we're filtering by name, and there is a name to filter by
+							if (item.name.replace(/\s/g,'') === itemName.replace(/\s/g,'')) { // If the name matches
+								melee = getProperty(item.system.melee, meleeKeys[m]);
+								if (filterByAttackName && typeof attackName !== "undefined") { // If we're filtering by attack name, and there is a name to filter by
+									if (melee.name.replace(/\s/g,'') === attackName.replace(/\s/g,'')) { // If the name matches
+										melee.weapon = item.name
+										meleeAttacks.push(melee);
+									}
+								}
+								else { // Otherwise just add the profile
+									melee.weapon = item.name
+									meleeAttacks.push(melee);
+								}
+							}
+						}
+						else { // Otherwise just add the profile
+							melee = getProperty(item.system.melee, meleeKeys[m]);
+							melee.weapon = item.name
+							meleeAttacks.push(melee);
+						}
 					}
 				}
 
 				if (item.system.ranged && showRange) {
 					let rangedKeys = Object.keys(item.system.ranged); // Collect all the ranged keys
 					for (let r = 0; r < rangedKeys.length; r++){
-						ranged = getProperty(item.system.ranged, rangedKeys[r]);
-						ranged.weapon = item.name
-
-						rangedAttacks.push(ranged);
+						if (filterByName && typeof itemName !== "undefined") { // If we're filtering by name, and there is a name to filter by
+							if (item.name.replace(/\s/g,'') === itemName.replace(/\s/g,'')) { // If the name matches
+								ranged = getProperty(item.system.ranged, rangedKeys[r]);
+								if (filterByAttackName && typeof attackName !== "undefined") { // If we're filtering by attack name, and there is a name to filter by
+									if (ranged.name.replace(/\s/g,'') === attackName.replace(/\s/g,'')) { // If the name matches
+										ranged.weapon = item.name
+										rangedAttacks.push(ranged);
+									}
+								}
+								else { // Otherwise just add the profile
+									ranged.weapon = item.name
+									rangedAttacks.push(ranged);
+								}
+							}
+						}
+						else { // Otherwise just add the profile
+							ranged = getProperty(item.system.ranged, rangedKeys[r]);
+							ranged.weapon = item.name
+							rangedAttacks.push(ranged);
+						}
 					}
 				}
 
 				if (item.system.affliction && showAffliction) {
 					let afflictionKeys = Object.keys(item.system.affliction); // Collect all the affliction keys
 					for (let a = 0; a < afflictionKeys.length; a++){
-						affliction = getProperty(item.system.affliction, afflictionKeys[a]);
-						affliction.weapon = item.name;
-						affliction.type = "affliction";
-
-						afflictionAttacks.push(affliction);
+						if (filterByName && typeof itemName !== "undefined") { // If we're filtering by name, and there is a name to filter by
+							if (item.name.replace(/\s/g,'') === itemName.replace(/\s/g,'')) { // If the name matches
+								affliction = getProperty(item.system.affliction, afflictionKeys[a]);
+								if (filterByAttackName && typeof attackName !== "undefined") { // If we're filtering by attack name, and there is a name to filter by
+									if (affliction.name.replace(/\s/g,'') === attackName.replace(/\s/g,'')) { // If the name matches
+										affliction.weapon = item.name
+										affliction.type = "affliction";
+										afflictionAttacks.push(affliction);
+									}
+								}
+								else { // Otherwise just add the profile
+									affliction.weapon = item.name
+									affliction.type = "affliction";
+									afflictionAttacks.push(affliction);
+								}
+							}
+						}
+						else { // Otherwise just add the profile
+							affliction = getProperty(item.system.affliction, afflictionKeys[a]);
+							affliction.weapon = item.name
+							affliction.type = "affliction";
+							afflictionAttacks.push(affliction);
+						}
 					}
 				}
 			}
@@ -3595,7 +3662,7 @@ export class gurpsActor extends Actor {
 		let modModalContent = "<table>";
 
 		// Homing specific logic
-		if (typeof attack.flags !== undefined) {
+		if (typeof attack.flags !== "undefined") {
 			if (attack.flags.toLowerCase().includes("hom") && attack.type === "ranged") { // If it's a homing weapon and ranged
 				let homSkill = 10 + attack.acc + attack.scopeAcc;
 				modModalContent += "<tr><td>Skill</td><td>" + homSkill + "</td><td>Homing weapons have a skill of 10 + Acc</td></tr>"; // Applies homing skill correctly
@@ -3619,7 +3686,7 @@ export class gurpsActor extends Actor {
 			}
 
 			// Display the ranged specific modifiers
-			if (typeof attack.flags !== undefined) {
+			if (typeof attack.flags !== "undefined") {
 				if (attack.flags.toLowerCase().includes("gui") || attack.flags.toLowerCase().includes("hom")) {
 					distancePenalty = 0;
 					modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>There is no distance penalty for guided and homing attacks</td></tr>";
@@ -3651,7 +3718,7 @@ export class gurpsActor extends Actor {
 
 		let oddsEffectiveSkill = +attack.level + +totalModifier
 
-		if (typeof attack.flags !== undefined) {
+		if (typeof attack.flags !== "undefined") {
 			if (attack.flags.toLowerCase().includes("hom") && attack.type === "ranged") { // If it's a homing weapon and ranged
 				oddsEffectiveSkill = 10 + +attack.acc + +attack.scopeAcc + +totalModifier
 			}
@@ -3741,7 +3808,7 @@ export class gurpsActor extends Actor {
 		let level = attack.level;
 
 		// Homing specific logic
-		if (typeof attack.flags !== undefined) { // If there are flags
+		if (typeof attack.flags !== "undefined") { // If there are flags
 			if (attack.flags.toLowerCase().includes("hom") && attack.type === "ranged") { // If it's a homing weapon and ranged
 				level = 10 + +attack.acc + +attack.scopeAcc; // Apply skill the way homing does it.
 			}
@@ -3918,7 +3985,7 @@ export class gurpsActor extends Actor {
 
 	getAimingBonus(attack, aimTime, exactRange){
 		let aimingBonus = 0;
-		if (typeof aimTime !== undefined && aimTime > 0) { // They are aiming for any amount of time
+		if (typeof aimTime !== "undefined" && aimTime > 0) { // They are aiming for any amount of time
 			let accLevels = this.getScopeAccLevels(attack);
 			let deadEyeLevel = this.getDeadEyeLevel();
 			let additionalAimBonus = this.getAdditionalAimBonus(aimTime, deadEyeLevel);
@@ -3945,7 +4012,7 @@ export class gurpsActor extends Actor {
 	// This method scans an attack for all possible Acc levels
 	getScopeAccLevels(attack) {
 		let accLevels = [];
-		if (typeof attack.scopeAcc !== undefined) { // Scope Acc is present
+		if (typeof attack.scopeAcc !== "undefined") { // Scope Acc is present
 			accLevels.push(attack.scopeAcc); // Add the base scope accuracy
 		}
 		if (attack.flags.includes("va")){ // There are variable acc levels defined in the flags.

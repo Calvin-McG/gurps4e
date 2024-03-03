@@ -48,7 +48,7 @@ Hooks.once('init', async function() {
   Handlebars.registerHelper('showFullAcc', function (acc, scopeAcc) {
     let returnString = acc;
 
-    if (typeof scopeAcc !== undefined) { // Scope Acc exists
+    if (typeof scopeAcc !== "undefined") { // Scope Acc exists
       if (scopeAcc > 0) { // Scope Acc is greater than zero
         returnString += "+" + scopeAcc;
       }
