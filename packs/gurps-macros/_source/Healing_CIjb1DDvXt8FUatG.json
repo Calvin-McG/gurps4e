@@ -1,0 +1,19 @@
+{
+  "name": "Healing",
+  "sorting": "a",
+  "folder": null,
+  "type": "Macro",
+  "_id": "CIjb1DDvXt8FUatG",
+  "sort": 0,
+  "color": "#0000ff",
+  "flags": {},
+  "_stats": {
+    "systemId": "gurps4e",
+    "systemVersion": "5.4.0",
+    "coreVersion": "11.315",
+    "createdTime": 1709449537744,
+    "modifiedTime": 1709449537744,
+    "lastModifiedBy": "3ARa5OvvYyDqT05C"
+  },
+  "_key": "!folders!CIjb1DDvXt8FUatG"
+}

@@ -3,9 +3,13 @@
   "type": "script",
   "scope": "global",
   "author": "3ARa5OvvYyDqT05C",
-  "img": "icons/svg/dice-target.svg",
+  "img": "icons/svg/target.svg",
   "command": "// This macro allows the user to select an attack from their sheet to use against their target(s)\n\nlet selfToken = token; // Get owned token\n\nif (typeof selfToken == \"undefined\") {\n    game.gurpsAPI.noSelectionsDialog(1);\n}\n\nelse {\n    let targetSet = game.user.targets // Get set of targets\n    let targetArray = Array.from(targetSet); // Convert to an actually useable data type\n    let selfActor = selfToken.actor // Get owned actor from token\n\n    if(targetArray.length == 0){ // There were no targets, show an error.\n        let noTargetsDialogContent = selfActor.noTargetsDialog();\n\n        noTargetsDialogContent.render(true);\n    }\n\n    else if(targetArray.length == 1){ // There is one target.\n        let singleTargetDialogContent = selfActor.singleTargetDialog(selfToken, targetArray[0]);\n\n        singleTargetDialogContent.render(true);\n    }\n\n    else if(targetArray.length > 1){ // There is more than one target.\n\n    }\n}",
-  "folder": null,
+  "folder": "QU9mXRgN1FP4swP5",
+  "ownership": {
+    "default": 0,
+    "3ARa5OvvYyDqT05C": 3
+  },
   "flags": {
     "core": {}
   },
@@ -14,14 +18,10 @@
     "systemVersion": "5.4.0",
     "coreVersion": "11.315",
     "createdTime": 1709273373917,
-    "modifiedTime": 1709439724464,
+    "modifiedTime": 1709449524667,
     "lastModifiedBy": "3ARa5OvvYyDqT05C"
   },
-  "_id": "4arGbuXFqLk5fUbL",
-  "sort": 0,
-  "ownership": {
-    "default": 0,
-    "3ARa5OvvYyDqT05C": 3
-  },
-  "_key": "!macros!4arGbuXFqLk5fUbL"
+  "_id": "1CHeUjWm3nTZjPjr",
+  "sort": 100000,
+  "_key": "!macros!1CHeUjWm3nTZjPjr"
 }

@@ -4,9 +4,3 @@
 
 # Node Modules
 npm-debug.log
-/packs/gurps-macros/
-
-# Macro DB Shit
-/packs/**/*
-!/packs/**/*/
-!/packs/**/*.json

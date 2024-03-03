@@ -1,0 +1,19 @@
+{
+  "name": "Vehicle Catalogues",
+  "sorting": "a",
+  "folder": null,
+  "type": "Macro",
+  "_id": "MrY4Yfz1NEKBD02r",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "gurps4e",
+    "systemVersion": "5.4.0",
+    "coreVersion": "11.315",
+    "createdTime": 1709449504268,
+    "modifiedTime": 1709449504268,
+    "lastModifiedBy": "3ARa5OvvYyDqT05C"
+  },
+  "_key": "!folders!MrY4Yfz1NEKBD02r"
+}

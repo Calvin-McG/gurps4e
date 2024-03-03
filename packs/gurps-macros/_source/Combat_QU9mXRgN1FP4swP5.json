@@ -1,0 +1,19 @@
+{
+  "name": "Combat",
+  "sorting": "a",
+  "folder": null,
+  "type": "Macro",
+  "_id": "QU9mXRgN1FP4swP5",
+  "sort": 0,
+  "color": "#ff0000",
+  "flags": {},
+  "_stats": {
+    "systemId": "gurps4e",
+    "systemVersion": "5.4.0",
+    "coreVersion": "11.315",
+    "createdTime": 1709449523191,
+    "modifiedTime": 1709449523191,
+    "lastModifiedBy": "3ARa5OvvYyDqT05C"
+  },
+  "_key": "!folders!QU9mXRgN1FP4swP5"
+}

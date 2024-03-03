@@ -1,0 +1,27 @@
+{
+  "name": "Ground Vehicle Catalogue",
+  "type": "script",
+  "scope": "global",
+  "author": "3ARa5OvvYyDqT05C",
+  "img": "systems/gurps4e/icons/vehicles/car-side-svgrepo-com.svg",
+  "command": "game.vehicleAPI.showVehicleCatalogue(\"ground\",game.settings.get(\"gurps4e\", \"campaignTL\"));",
+  "folder": "MrY4Yfz1NEKBD02r",
+  "ownership": {
+    "default": 0,
+    "3ARa5OvvYyDqT05C": 3
+  },
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "gurps4e",
+    "systemVersion": "5.4.0",
+    "coreVersion": "11.315",
+    "createdTime": 1709443062233,
+    "modifiedTime": 1709449509124,
+    "lastModifiedBy": "3ARa5OvvYyDqT05C"
+  },
+  "_id": "U2Mcb5FPKZENTWYh",
+  "sort": 300000,
+  "_key": "!macros!U2Mcb5FPKZENTWYh"
+}
