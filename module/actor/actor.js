@@ -4054,7 +4054,8 @@ export class gurpsActor extends Actor {
 
 		dodges.push(dodge);
 
-		let unarmedParryVsArmedSwingWarn = false;
+		let unarmedParryVsArmedSwingWarn = false; // The flag for unarmed parries against armed swings is true/false as it's either -3 or nothing
+		let boxingOrSumoParryVsKickWarn = 0; // The flag for boxing and sumo parrying kicks is the numerical penalty, as low line defence can get rid of the penalty.
 
 		if (target.items) {
 			target.items.forEach((item) => {
@@ -4070,6 +4071,28 @@ export class gurpsActor extends Actor {
 									if (((flags.attack.damageInput.toLowerCase().includes("sw") || flags.attack.flags.toLowerCase().includes("sw")) && !flags.attack.flags.toLowerCase().includes("una"))) { // And the attacker is armed, and using a swing attack
 										effectiveParry -= 3; // Apply the appropriate penalty
 										unarmedParryVsArmedSwingWarn = true; // Set the flag so we warn the user
+									}
+									if (profile.skill.toLowerCase().includes("sumo") || profile.skill.toLowerCase().includes("boxing")) { // And it is sumo or boxing
+										if (flags.attack.flags.toLowerCase().includes("kik")) { // And the attacker is kicking
+											effectiveParry -= 2; // Apply the appropriate penalty
+											boxingOrSumoParryVsKickWarn = 2; // Set the flag so we warn the user
+
+											// This block checks for Low-Line Defence and updates the parry penalty accordingly.
+											for (let i = 0; i < this.items.contents.length; i++){ // Loop through the list of items
+												if (this.items.contents[i].type === "Rollable"){ // Finding only Rollables
+													if (this.items.contents[i].system.category.toLowerCase() === "technique"){ // And among them only Techniques
+														if (this.items.contents[i].system.baseSkill.toLowerCase() === profile.skill.toLowerCase()) { // And the technique has the same base skill as the parry profile we are currently looking at
+															if (this.items.contents[i].name.toLowerCase().replace(/[^0-9a-z]/gi, '').includes("lowlinedefen")) { // And the technique's name matches low-line defence
+																effectiveParry -= Math.abs(this.items.contents[i].system.baseSkillLevel - this.items.contents[i].system.level); // Apply the appropriate penalty
+																boxingOrSumoParryVsKickWarn = Math.abs(this.items.contents[i].system.baseSkillLevel - this.items.contents[i].system.level); // Set the flag so we warn the user
+															}
+														}
+													}
+												}
+											}
+
+
+										}
 									}
 								}
 							}
@@ -4184,6 +4207,10 @@ export class gurpsActor extends Actor {
 
 			if (unarmedParryVsArmedSwingWarn) {
 				activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>Your attacker is making an armed swing against you. Unarmed parries that don't use Karate or Judo are at -3.</div>";
+			}
+
+			if (boxingOrSumoParryVsKickWarn > 0) {
+				activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>Your attacker is kicking you. Boxing and Sumo parries are at -" + boxingOrSumoParryVsKickWarn + ".</div>";
 			}
 
 			activeDefenceModalContent += "<hr>";
