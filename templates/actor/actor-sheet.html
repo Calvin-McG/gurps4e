@@ -574,7 +574,7 @@
 							<label for="ranged.skill" class="fa fa-dice-six rollable" data-level="{{ranged.level}}"
 								   data-label="Makes a &lt;b&gt;{{item.name}} {{ranged.name}}&lt;/b&gt; Skill roll." data-type="skill"></label>
 						</td>
-						<td>{{ranged.acc}}</td>
+						<td>{{showFullAcc ranged.acc ranged.scopeAcc}}</td>
 						<td>
 							{{ranged.damage}} {{ranged.damageType}} ({{ranged.armourDivisor}})
 							<label for="ranged.damage" class="fa fa-dice-six rollable" data-level="{{ranged.damage}}"
