@@ -6063,6 +6063,9 @@ export class gurpsItem extends Item {
                 if (typeof this.system.ranged[rangedKeys[k]].acc == "undefined" || this.system.ranged[rangedKeys[k]].acc < 0) { // Catch invalid values for Acc. Value must exist and be at least zero.
                   this.system.ranged[rangedKeys[k]].acc = 0;
                 }
+                if (typeof this.system.ranged[rangedKeys[k]].scopeAcc == "undefined" || this.system.ranged[rangedKeys[k]].scopeAcc < 0) { // Catch invalid values for Acc. Value must exist and be at least zero.
+                  this.system.ranged[rangedKeys[k]].scopeAcc = 0;
+                }
 
                 // Validation for bulk
                 if (typeof this.system.ranged[rangedKeys[k]].bulk == "undefined" || this.system.ranged[rangedKeys[k]].bulk == "") { // Must exist.

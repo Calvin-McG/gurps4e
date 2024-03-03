@@ -1940,3 +1940,11 @@ attribute-senses {
 .melee-skillMod {
 	max-width: 30px;
 }
+
+.ranged-acc {
+	min-width: 70px;
+}
+
+.ranged-acc input {
+	max-width: 25px;
+}
