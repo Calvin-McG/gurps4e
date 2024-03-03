@@ -44,6 +44,19 @@ Hooks.once('init', async function() {
     return Number.isInteger(value);
   });
 
+  // This helper takes in the base acc and scope acc of a weapon and displays them in the standard GURPS format.
+  Handlebars.registerHelper('showFullAcc', function (acc, scopeAcc) {
+    let returnString = acc;
+
+    if (typeof scopeAcc !== undefined) { // Scope Acc exists
+      if (scopeAcc > 0) { // Scope Acc is greater than zero
+        returnString += "+" + scopeAcc;
+      }
+    }
+
+    return returnString;
+  });
+
   // This helper handles the logic to display or not display a given attack profile in the combat tab
   Handlebars.registerHelper('showAttackInCombatTab', function (item, options) {
     let show = true;
