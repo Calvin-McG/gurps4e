@@ -1,0 +1,27 @@
+{
+  "name": "Make An Attack",
+  "type": "script",
+  "scope": "global",
+  "author": "3ARa5OvvYyDqT05C",
+  "img": "icons/svg/target.svg",
+  "command": "// This macro allows the user to select an attack from their sheet to use against their target(s)\n\nlet selfToken = token; // Get owned token\n\nif (typeof selfToken == \"undefined\") {\n    game.gurpsAPI.noSelectionsDialog(1);\n}\n\nelse {\n    let targetSet = game.user.targets // Get set of targets\n    let targetArray = Array.from(targetSet); // Convert to an actually useable data type\n    let selfActor = selfToken.actor // Get owned actor from token\n\n    if(targetArray.length == 0){ // There were no targets, show an error.\n        selfActor.noTargetsDialog();\n    }\n\n    else if(targetArray.length == 1){ // There is one target.\n        selfActor.singleTargetDialog(selfToken, targetArray[0]);\n    }\n\n    else if(targetArray.length > 1){ // There is more than one target.\n        selfActor.tooManyTargetsDialog();\n    }\n}",
+  "folder": "QU9mXRgN1FP4swP5",
+  "ownership": {
+    "default": 0,
+    "3ARa5OvvYyDqT05C": 3
+  },
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "gurps4e",
+    "systemVersion": "5.4.0",
+    "coreVersion": "11.315",
+    "createdTime": 1709273373917,
+    "modifiedTime": 1709456788720,
+    "lastModifiedBy": "3ARa5OvvYyDqT05C"
+  },
+  "_id": "vptPWkZy5lc9cuhz",
+  "sort": 200000,
+  "_key": "!macros!vptPWkZy5lc9cuhz"
+}

@@ -1,0 +1,27 @@
+{
+  "name": "Attack With [Name Here]",
+  "type": "script",
+  "scope": "global",
+  "author": "3ARa5OvvYyDqT05C",
+  "img": "icons/svg/combat.svg",
+  "command": "// This macro allows you to attack with a specific item/trait/spell/etc. It shows only the attack profiles for the thing you name\n\nlet name = \"Natural Weapons\" // Edit the value within the quotes to exactly match the name of your item/spell/trait/etc.\n\nlet selfToken = token; // Get owned token\n\nif (typeof selfToken == \"undefined\") {\n    game.gurpsAPI.noSelectionsDialog(1);\n}\n\nelse {\n    let targetSet = game.user.targets // Get set of targets\n    let targetArray = Array.from(targetSet); // Convert to an actually useable data type\n    let selfActor = selfToken.actor // Get owned actor from token\n\n    if(targetArray.length == 0){ // There were no targets, show an error.\n        selfActor.noTargetsDialog();\n    }\n\n    else if(targetArray.length == 1){ // There is one target.\n        selfActor.singleTargetDialog(selfToken, targetArray[0], \"all\", name);\n    }\n\n    else if(targetArray.length > 1){ // There is more than one target.\n        selfActor.tooManyTargetsDialog();\n    }\n}",
+  "folder": "QU9mXRgN1FP4swP5",
+  "ownership": {
+    "default": 0,
+    "3ARa5OvvYyDqT05C": 3
+  },
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "gurps4e",
+    "systemVersion": "5.4.0",
+    "coreVersion": "11.315",
+    "createdTime": 1709452339923,
+    "modifiedTime": 1709456788720,
+    "lastModifiedBy": "3ARa5OvvYyDqT05C"
+  },
+  "_id": "1sGQNQzPEGwGb3AS",
+  "sort": 100000,
+  "_key": "!macros!1sGQNQzPEGwGb3AS"
+}
