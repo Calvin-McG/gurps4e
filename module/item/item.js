@@ -2112,10 +2112,10 @@ export class gurpsItem extends Item {
       }
       else {
         if (relevantQty <= 8) { // At 8 or less, use the formula FLOOR((0.714286 * J12) - 0.714286,0.01)
-          qtyDiscount = Math.floor(((0.714286 * J12) - 0.714286) * +100) / +100;
+          qtyDiscount = Math.floor(((0.714286 * relevantQty) - 0.714286) * +100) / +100;
         }
         else { // At 9 or more, use the formula FLOOR((0.454545 * J20) + 1.36365,0.01)
-          qtyDiscount = Math.floor(((0.454545 * J20) + 1.36365) * +100) / +100;
+          qtyDiscount = Math.floor(((0.454545 * relevantQty) + 1.36365) * +100) / +100;
         }
       }
 
