@@ -2494,8 +2494,22 @@ export class gurpsActor extends Actor {
 		return tooManyTargetsDialog;
 	}
 
-	singleTargetDialog(selfToken, targetToken){
-		let attacks = this.listAttacks(selfToken.actor);
+	singleTargetDialog(selfToken, targetToken, attackType){
+		let attacks;
+
+		// Narrow displayed attacks by attack type.
+		if (attackType === "melee") {
+			attacks = this.listAttacks(selfToken.actor, "melee");
+		}
+		else if (attackType === "range" || attackType === "ranged") {
+			attacks = this.listAttacks(selfToken.actor, "ranged");
+		}
+		else if (attackType === "affliction") {
+			attacks = this.listAttacks(selfToken.actor, "affliction");
+		}
+		else {
+			attacks = this.listAttacks(selfToken.actor);
+		}
 
 		let htmlContent = "<div>";
 
@@ -2675,7 +2689,25 @@ export class gurpsActor extends Actor {
 		return singleTargetModal;
 	}
 
-	listAttacks(actor){
+	listAttacks(actor, attackType){
+		// Narrow displayed attacks by attack type.
+		let showMelee 		= true;
+		let showRange 		= true;
+		let showAffliction 	= true;
+
+		if (attackType === "melee") {
+			showRange 		= false;
+			showAffliction 	= false;
+		}
+		else if (attackType === "range" || attackType === "ranged") {
+			showMelee 		= false;
+			showAffliction 	= false;
+		}
+		else if (attackType === "affliction") {
+			showMelee 		= false;
+			showRange 		= false;
+		}
+
 		let meleeAttacks = [];
 		let rangedAttacks = [];
 		let afflictionAttacks = [];
@@ -2687,7 +2719,7 @@ export class gurpsActor extends Actor {
 			// This if statement keeps out any attack entries we are not interested
 			if (!((item.type == "Ritual" && item.system.quantity > 0) || // It's a ritual with a zero quantity, don't show it.
 				(typeof item.system.equipStatus !== "undefined" && item.system.equipStatus !== "equipped"))){ // If it's part of an item that has an equipped status, but it's not equipped, don't show it.
-				if (item.system.melee) {
+				if (item.system.melee && showMelee) {
 					let meleeKeys = Object.keys(item.system.melee); // Collect all the melee keys
 					for (let m = 0; m < meleeKeys.length; m++){
 						melee = getProperty(item.system.melee, meleeKeys[m]);
@@ -2696,7 +2728,7 @@ export class gurpsActor extends Actor {
 					}
 				}
 
-				if (item.system.ranged) {
+				if (item.system.ranged && showRange) {
 					let rangedKeys = Object.keys(item.system.ranged); // Collect all the ranged keys
 					for (let r = 0; r < rangedKeys.length; r++){
 						ranged = getProperty(item.system.ranged, rangedKeys[r]);
@@ -2706,7 +2738,7 @@ export class gurpsActor extends Actor {
 					}
 				}
 
-				if (item.system.affliction) {
+				if (item.system.affliction && showAffliction) {
 					let afflictionKeys = Object.keys(item.system.affliction); // Collect all the affliction keys
 					for (let a = 0; a < afflictionKeys.length; a++){
 						affliction = getProperty(item.system.affliction, afflictionKeys[a]);
