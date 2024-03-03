@@ -4054,6 +4054,8 @@ export class gurpsActor extends Actor {
 
 		dodges.push(dodge);
 
+		let unarmedParryVsArmedSwingWarn = false;
+
 		if (target.items) {
 			target.items.forEach((item) => {
 				if (item.system.melee) {
@@ -4061,9 +4063,20 @@ export class gurpsActor extends Actor {
 					for (let b = 0; b < keys.length; b++){ // Loop through the melee profiles
 						let profile = getProperty(item.system.melee, keys[b])
 						if (Number.isInteger(profile.parry)){
+							let effectiveParry = profile.parry
+
+							if (profile.flags.toLowerCase().includes("una")) { // If the defence is unarmed
+								if (!(profile.skill.toLowerCase().includes("karate") || profile.skill.toLowerCase().includes("judo"))) { // And it's not karate or judo
+									if (((flags.attack.damageInput.toLowerCase().includes("sw") || flags.attack.flags.toLowerCase().includes("sw")) && !flags.attack.flags.toLowerCase().includes("una"))) { // And the attacker is armed, and using a swing attack
+										effectiveParry -= 3; // Apply the appropriate penalty
+										unarmedParryVsArmedSwingWarn = true; // Set the flag so we warn the user
+									}
+								}
+							}
+
 							let parry = {
 								name: item.name,
-								level: profile.parry
+								level: effectiveParry
 							}
 							parries.push(parry)
 						}
@@ -4122,7 +4135,7 @@ export class gurpsActor extends Actor {
 		let posture = postureHelpers.getPosture(targetToken.effects);
 
 		// If any facing, target hex, enc warning, hpState, fpState, or posture warning applies
-		if (facing[0] === 0 || facing[0] === -1 || targetHex || currentEnc.penalty < 0 || (hpState.toLowerCase() !== "healthy" && hpState.toLowerCase() !== "injured") || posture.defenceMod < 0) {
+		if (facing[0] === 0 || facing[0] === -1 || targetHex || currentEnc.penalty < 0 || (hpState.toLowerCase() !== "healthy" && hpState.toLowerCase() !== "injured") || posture.defenceMod < 0 || unarmedParryVsArmedSwingWarn) {
 
 			activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; text-decoration: underline; font-size: x-large; color: rgb(200, 0, 0)'>Warnings</div>";
 
@@ -4167,6 +4180,10 @@ export class gurpsActor extends Actor {
 
 			if (posture.defenceMod < 0) {
 				activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>You are currently " + posture.desc + " which gives you " + posture.defenceMod + " to all non-magical active defences.</div>";
+			}
+
+			if (unarmedParryVsArmedSwingWarn) {
+				activeDefenceModalContent += "<div style='text-align: center; font-weight: bold; color: rgb(208, 127, 127)'>Your attacker is making an armed swing against you. Unarmed parries that don't use Karate or Judo are at -3.</div>";
 			}
 
 			activeDefenceModalContent += "<hr>";
@@ -4327,6 +4344,8 @@ export class gurpsActor extends Actor {
 			"</div>" +
 			"</div>";
 
+		console.log(flags)
+
 		let buttons = {};
 		let width = 0; // Variable for dialog width
 		if (dodges.length > 0) {
@@ -4410,6 +4429,8 @@ export class gurpsActor extends Actor {
 		let selection;
 		let name;
 		let mod = parseInt(html.find('#mod').val());
+
+		console.log(flags)
 
 		let options = {
 			feverishDefence: 	html.find('#feverishDefence')[0] ? html.find('#feverishDefence')[0].checked : "",
