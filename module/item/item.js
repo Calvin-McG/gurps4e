@@ -1994,14 +1994,6 @@ export class gurpsItem extends Item {
 
     // Charms and Conditional rituals
     if (this.system.ritualType === "charm" || this.system.ritualType === "conditional" || this.system.ritualType === "conditionalCharm" || this.system.ritualType === "elixir") {
-      // Charm sale and purchase
-      if (this.system.ritualType === "charm" || this.system.ritualType === "conditionalCharm") { // Only charms can be bought and sold
-        let charmBaseCost = this.charmSkillToBaseCost(this.system.level) // Get the base cost from skill and monthly pay by TL
-        let charmAvailabilityCostMultiplier = parseFloat(this.system.charm.availability); // Get the multiplier for charm availability from the select
-        let charmEnergyCostMultiplier = Math.max((this.system.energyCost / 5) - 1, 1); // Get the multiplier based on the energy cost of the charm. Make sure it's always at least 1.
-
-        this.system.charm.saleCost = (Math.round((charmBaseCost * charmAvailabilityCostMultiplier * charmEnergyCostMultiplier) * 100) / 100); // Do the final calculation and round to two decimals.
-      }
 
       // Charm safe threshold calculator
       this.system.safeThreshold = this.charmSafeThreshold(this.system.level);
@@ -2134,6 +2126,19 @@ export class gurpsItem extends Item {
 
       this.system.energyCost = this.system.energyCost - this.system.elixir.discountManaValue; // Apply the alchemy discount.
     }
+
+    // Here we apply the rules for charm purchase price to all ritual types. Not technically RAW, but there's not reason the info shouldn't be provided.
+    let charmBaseCost = this.charmSkillToBaseCost(this.system.level) // Get the base cost from skill and monthly pay by TL
+    let charmAvailabilityCostMultiplier = parseFloat(this.system.charm.availability); // Get the multiplier for charm availability from the select
+    let charmEnergyCostMultiplier = Math.max((this.system.energyCost / 5) - 1, 1); // Get the multiplier based on the energy cost of the charm. Make sure it's always at least 1.
+
+    this.system.charm.saleCost = (Math.round((charmBaseCost * charmAvailabilityCostMultiplier * charmEnergyCostMultiplier) * 100) / 100); //  Multiply everything together
+
+    if (this.system.ritualType === "elixir") { // If it's an elixir, add the cost of ingredients.
+      this.system.charm.saleCost += this.system.elixir.ingredientQtys.total$;
+    }
+
+    this.system.charm.saleCost = (Math.round((this.system.charm.saleCost) * 100) / 100);// Round to two decimals.
 
     this.finalEquipmentCalculation();
   }
