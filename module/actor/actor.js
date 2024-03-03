@@ -2592,7 +2592,7 @@ export class gurpsActor extends Actor {
 				else {
 					htmlContent += "<td>" + attacks.ranged[q].damage + " " + attacks.ranged[q].damageType + " " + "(" + attacks.ranged[q].armourDivisor + ")</td>";
 				}
-				htmlContent += "<td>" + (attacks.ranged[q].acc ? attacks.ranged[q].acc : 0) + "</td>";
+				htmlContent += "<td>" + (attacks.ranged[q].acc ? attacks.ranged[q].acc : 0) + (attacks.ranged[q].scopeAcc ? "+" + attacks.ranged[q].scopeAcc : "") + "</td>";
 				htmlContent += "<td>" + attacks.ranged[q].range + "</td>";
 				htmlContent += "<td>" + attacks.ranged[q].rof + "</td>";
 				htmlContent += "<td>" + attacks.ranged[q].shots + "</td>";
@@ -3565,7 +3565,7 @@ export class gurpsActor extends Actor {
 		// Homing specific logic
 		if (typeof attack.flags !== undefined) {
 			if (attack.flags.toLowerCase().includes("hom") && attack.type === "ranged") { // If it's a homing weapon and ranged
-				let homSkill = 10 + attack.acc
+				let homSkill = 10 + attack.acc + attack.scopeAcc;
 				modModalContent += "<tr><td>Skill</td><td>" + homSkill + "</td><td>Homing weapons have a skill of 10 + Acc</td></tr>"; // Applies homing skill correctly
 			}
 			else { // If it's anything else
@@ -3621,16 +3621,26 @@ export class gurpsActor extends Actor {
 
 		if (typeof attack.flags !== undefined) {
 			if (attack.flags.toLowerCase().includes("hom") && attack.type === "ranged") { // If it's a homing weapon and ranged
-				oddsEffectiveSkill = 10 + +attack.acc + +totalModifier
+				oddsEffectiveSkill = 10 + +attack.acc + +attack.scopeAcc + +totalModifier
 			}
 		}
 
 		let odds = rollHelpers.levelToOdds(oddsEffectiveSkill)
 
-		modModalContent += "<tr><td>Total Modifier</td><td>" + totalModifier + "</td><td>This total only includes modifiers listed above</td></tr>" +
-			"<tr><td>Effective Skill</td><td>" + oddsEffectiveSkill + "</td><td>Effective skill before any of the below modifiers</td></tr>" +
-			"<tr><td>Odds</td><td><span style='font-weight: bold; color: rgb(208, 127, 127)'>" + odds.critFail + "%</span>/<span style='font-weight: bold; color: rgb(141, 142, 222)'>" + odds.success + "%</span>/<span style='font-weight: bold; color: rgb(106, 162, 106)'>" + odds.critSuccess + "%</span></td><td>These odds do not factor in any of the below modifiers</td></tr>" +
-			"<tr><td>Move and Attack</td><td><input type='checkbox' class='checkbox' id='moveAndAttack' value='moveAndAttack' name='moveAndAttack' /></td><td>This handles both melee and ranged move and attacks with their respective rules</td></tr>"
+		modModalContent += "<tr><td>Total Modifier</td><td>" + totalModifier + "</td><td>This total only includes modifiers listed above</td></tr>";
+		modModalContent += "<tr><td>Effective Skill</td><td>" + oddsEffectiveSkill + "</td><td>Effective skill before any of the below modifiers</td></tr>";
+		modModalContent += "<tr><td>Odds</td><td><span style='font-weight: bold; color: rgb(208, 127, 127)'>" + odds.critFail + "%</span>/<span style='font-weight: bold; color: rgb(141, 142, 222)'>" + odds.success + "%</span>/<span style='font-weight: bold; color: rgb(106, 162, 106)'>" + odds.critSuccess + "%</span></td><td>These odds do not factor in any of the below modifiers</td></tr>";
+
+		if (attack.type === "ranged") {
+			modModalContent += "<tr><td>Aiming seconds</td><td><input type='number' id='aimTime' name='aimTime' value='0' step='1' min='0' style='width: 50%'/></td><td>The amount of time spent aiming.</td></tr>";
+			modModalContent += "<tr><td>Know exact range</td><td><input type='checkbox' class='checkbox' id='exactRange' value='exactRange' name='exactRange' /></td><td>You are using a range finder, have it targeted with a targeting sense, or the target is standing on a hex you have pre-ranged.</td></tr>";
+			modModalContent += "<tr><td>Know very close range</td><td><input type='checkbox' class='checkbox' id='closeRange' value='closeRange' name='closeRange' /></td><td>The target is standing next to a landmark you have pre-ranged.</td></tr>";
+		}
+		else if (attack.type === "melee") {
+			modModalContent += "<tr><td>Evaluate</td><td><input type='checkbox' class='checkbox' id='evaluate' value='evaluate' name='evaluate' /></td><td>You took an Evaluate maneuver immediately previous to this action.</td></tr>";
+		}
+
+		modModalContent += "<tr><td>Move and Attack</td><td><input type='checkbox' class='checkbox' id='moveAndAttack' value='moveAndAttack' name='moveAndAttack' /></td><td>This handles both melee and ranged move and attacks with their respective rules</td></tr>";
 
 		// If the damage type is explosive, allow the user to decide between area targeted and contact targeted attacks
 		if (damageType.explosive) {
@@ -3650,8 +3660,12 @@ export class gurpsActor extends Actor {
 					callback: (html) => {
 						let mod = html.find('#mod').val();
 						let moveAndAttack = html.find('#moveAndAttack')[0].checked;
+						let aimTime = html.find('#aimTime') ? html.find('#aimTime').val() : undefined;
+						let evaluate = html.find('#evaluate')[0] ? html.find('#evaluate')[0].checked : undefined;
+						let exactRange = html.find('#exactRange')[0] ? html.find('#exactRange')[0].checked : undefined;
+						let closeRange = html.find('#closeRange')[0] ? html.find('#closeRange')[0].checked : undefined;
 						let targetHex = (typeof html.find('#targetHex')[0] !== "undefined") ? html.find('#targetHex')[0].checked : false;
-						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (+totalModifier + +mod), moveAndAttack, targetHex)
+						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (+totalModifier + +mod), moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange)
 					}
 				},
 				noMod: {
@@ -3659,8 +3673,12 @@ export class gurpsActor extends Actor {
 					label: "No Modifier",
 					callback: (html) => {
 						let moveAndAttack = html.find('#moveAndAttack')[0].checked;
+						let aimTime = html.find('#aimTime') ? html.find('#aimTime').val() : undefined;
+						let evaluate = html.find('#evaluate')[0] ? html.find('#evaluate')[0].checked : undefined;
+						let exactRange = html.find('#exactRange')[0] ? html.find('#exactRange')[0].checked : undefined;
+						let closeRange = html.find('#closeRange')[0] ? html.find('#closeRange')[0].checked : undefined;
 						let targetHex = (typeof html.find('#targetHex')[0] !== "undefined") ? html.find('#targetHex')[0].checked : false;
-						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, totalModifier, moveAndAttack, targetHex)
+						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, totalModifier, moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange)
 					}
 				},
 				cancel: {
@@ -3678,7 +3696,7 @@ export class gurpsActor extends Actor {
 		modModal.render(true)
 	}
 
-	reportHitResult(target, attacker, attack, relativePosition, rof, locationArray, totalModifiers, moveAndAttack, targetHex) {
+	reportHitResult(target, attacker, attack, relativePosition, rof, locationArray, totalModifiers, moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange) {
 		let label = "";
 
 		if (targetHex) {
@@ -3693,14 +3711,14 @@ export class gurpsActor extends Actor {
 		// Homing specific logic
 		if (typeof attack.flags !== undefined) { // If there are flags
 			if (attack.flags.toLowerCase().includes("hom") && attack.type === "ranged") { // If it's a homing weapon and ranged
-				level = 10 + attack.acc; // Apply skill the way homing does it.
+				level = 10 + +attack.acc + +attack.scopeAcc; // Apply skill the way homing does it.
 			}
 		}
 
 		let mod = totalModifiers;
 
-		if (attack.type == "ranged"){
-			if (rof.shots == rof.rof){ // It is not a multiple projectile weapon
+		if (attack.type === "ranged"){
+			if (rof.shots === rof.rof){ // It is not a multiple projectile weapon
 				label += " and fires " + rof.shots + " times.";
 			}
 			else { // It is a multiple projectile weapon
@@ -3716,6 +3734,8 @@ export class gurpsActor extends Actor {
 			if (targetHex) {
 				mod = +mod + 4;
 			}
+
+			mod += this.getAimingBonus(attack, aimTime, exactRange, closeRange) // Add the bonus from aiming, if any.
 		}
 		else if (attack.type === "melee") {
 			label += ".";
@@ -3730,6 +3750,10 @@ export class gurpsActor extends Actor {
 				level = level + mod - 4; // Add the modifier and the move and attack penalty to the level so we can cap it
 				mod = 0; // Blank the modifier so it doesn't mess with the macro
 				level = Math.min(level, 9); // Melee move and attacks are at -4, with a skill cap of 9
+			}
+
+			if (evaluate) {
+				mod = +mod + 1; // Add the modifier for evaluating
 			}
 		}
 
@@ -3858,6 +3882,121 @@ export class gurpsActor extends Actor {
 			// Everything is assembled, send the message
 			ChatMessage.create({ content: messageContent, user: game.user.id, type: rollInfo.type, flags: flags});
 		})
+	}
+
+	getAimingBonus(attack, aimTime, exactRange){
+		let aimingBonus = 0;
+		if (typeof aimTime !== undefined && aimTime > 0) { // They are aiming for any amount of time
+			let accLevels = this.getScopeAccLevels(attack);
+			let deadEyeLevel = this.getDeadEyeLevel();
+			let additionalAimBonus = this.getAdditionalAimBonus(aimTime, deadEyeLevel);
+			let rangingBonus = exactRange ? 3 : closeRange ? 1 : 0; // The bonus for knowing the exact range to a target is +3, and the bonus for knowing it very closely is +1.
+
+			// TS26: The additional aiming bonus past Acc+2 is capped by the lower of the scope's acc, and the gun's acc.
+			let highestScopeAccLevel = accLevels[accLevels.length - 1] + rangingBonus; // First, get the highest scope Acc available on the attack, and include the ranging bonus.
+			additionalAimBonus = Math.min(additionalAimBonus, highestScopeAccLevel+2, attack.acc+2) // Then get the lowest of all three options
+
+			let scopeBonus = 0;
+
+			// Get the maximum scope bonus we can claim
+			for (let a = 0; a < accLevels.length; a++) { // Loop through the list of acc levels for our scope.
+				if (accLevels[a] > scopeBonus && aimTime >= accLevels[a]) { // Current itterant is higher than the scope bonus AND our aim time is higher or equal to that bonus
+					scopeBonus = accLevels[a] // Set the bonus to the current itterant.
+				}
+			}
+
+			aimingBonus = +attack.acc + +scopeBonus + +additionalAimBonus +rangingBonus; // Total aiming bonus is the attack's base Acc, the scope's currently claimed Acc, any additional bonus for extra time, and any bonus for knowing the range.
+		}
+		return aimingBonus;
+	}
+
+	// This method scans an attack for all possible Acc levels
+	getScopeAccLevels(attack) {
+		let accLevels = [];
+		if (typeof attack.scopeAcc !== undefined) { // Scope Acc is present
+			accLevels.push(attack.scopeAcc); // Add the base scope accuracy
+		}
+		if (attack.flags.includes("va")){ // There are variable acc levels defined in the flags.
+			for (let x = 0; x < attack.flags.length;) { // Loop through the flags
+				if (attack.flags.indexOf("va", x) !== -1){ // Find any instance of va
+					x = attack.flags.indexOf("va", x)+2; // Move the cursor to the number following va
+					accLevels.push(+attack.flags.charAt(x)); // Get that number
+				}
+				else { // There are no further instances of va
+					x = attack.flags.length + 99; // Exit the loop
+				}
+			}
+		}
+		return accLevels.sort(function(a, b){return a - b}); // Returns the list of accuracy levels, sorted smallest to largest.
+	}
+
+	// This method searches the players traits for DeadEye and returns its level.
+	getDeadEyeLevel() {
+		let deadEyeLevel = 0;
+
+		// Loop through the list of traits and find any examples of deadeye
+		for (let i = 0; i < this.items.contents.length; i++){
+			if (this.items.contents[i].type === "Trait"){
+				if (this.items.contents[i].name.toLowerCase().replace(/\s/g,'').includes("deadeye") ) { // Does it include the text deadeye after stripping capitals and whitespace?
+					if (this.items.contents[i].name.includes("1")) {
+						deadEyeLevel = 1;
+					}
+					else if (this.items.contents[i].name.includes("2")) {
+						deadEyeLevel = 2;
+					}
+					else if (this.items.contents[i].name.includes("3")) {
+						deadEyeLevel = 3;
+					}
+				}
+			}
+		}
+
+		return deadEyeLevel;
+	}
+
+	getAdditionalAimBonus(aimTime, deadEyeLevel) {
+		let additionalAimBonus = 0;
+
+		if  (aimTime >= 90 ||
+			(aimTime >= 81 && deadEyeLevel === 1) ||
+			(aimTime >= 72 && deadEyeLevel === 2) ||
+			(aimTime >= 63 && deadEyeLevel === 3)) {
+			additionalAimBonus = 7;
+		}
+		else if (aimTime >= 45 ||
+			(aimTime >= 41 && deadEyeLevel === 1) ||
+			(aimTime >= 36 && deadEyeLevel === 2) ||
+			(aimTime >= 32 && deadEyeLevel === 3)) {
+			additionalAimBonus = 6;
+		}
+		else if (aimTime >= 24 ||
+			(aimTime >= 22 && deadEyeLevel === 1) ||
+			(aimTime >= 20 && deadEyeLevel === 2) ||
+			(aimTime >= 17 && deadEyeLevel === 3)) {
+			additionalAimBonus = 5;
+		}
+		else if (aimTime >= 12 ||
+			(aimTime >= 11 && deadEyeLevel === 1) ||
+			(aimTime >= 10 && deadEyeLevel === 2) ||
+			(aimTime >= 9 && deadEyeLevel === 3)) {
+			additionalAimBonus = 4;
+		}
+		else if (aimTime >= 6 ||
+			(aimTime >= 6 && deadEyeLevel === 1) ||
+			(aimTime >= 5 && deadEyeLevel === 2) ||
+			(aimTime >= 5 && deadEyeLevel === 3)) {
+			additionalAimBonus = 3;
+		}
+		else if (aimTime === 3) {
+			additionalAimBonus = 2;
+		}
+		else if (aimTime === 2) {
+			additionalAimBonus = 1;
+		}
+		else { // They are only aiming for a single second, or other catchall.
+			additionalAimBonus = 0;
+		}
+		return additionalAimBonus;
 	}
 
 	numToWords(hits){ // Returns a number as a string with no leading or trailing whitespace
