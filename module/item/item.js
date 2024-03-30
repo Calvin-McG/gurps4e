@@ -2689,10 +2689,10 @@ export class gurpsItem extends Item {
       // Begin calculations proper
 
       // Burn length calculations
-      if (this.system.firearmDesign.cartridgeType == "pistol") {
+      if (this.system.firearmDesign.cartridgeType === "pistol") {
         this.system.firearmDesign.burnRatio = 7 / 24;
       }
-      else if (this.system.firearmDesign.cartridgeType == "rifle") {
+      else if (this.system.firearmDesign.cartridgeType === "rifle") {
         this.system.firearmDesign.burnRatio = 7 / 16
       }
 
@@ -2715,8 +2715,8 @@ export class gurpsItem extends Item {
 
       // Actually useful calculations
 
-      // Kinetic Energy
-      let kineticEnergy = Math.abs( chamberPressurePascals * ( boreCrossSection * burnLengthMeters + fallOffVolume * Math.log( boreCrossSection * acclerationDistance / fallOffVolume + 1) ) ); // D27 or K12 - Measured in joules
+      // Kinetic Energy in Joules
+      let kineticEnergy = Math.abs( chamberPressurePascals * ( boreCrossSection * burnLengthMeters + fallOffVolume * Math.log( boreCrossSection * acclerationDistance / fallOffVolume + 1) ) ); //Measured in joules - D27 or K12
 
       // Velocity
       let metresPerSecond = Math.sqrt((2* Math.abs(kineticEnergy) / totalAcceleratedKgs )); // D25
@@ -2870,7 +2870,7 @@ export class gurpsItem extends Item {
       this.system.firearmDesign.weight = this.system.firearmDesign.weightKgs * 2.205;
 
       // Add weight for ammo
-      let projectileWeight = this.system.firearmDesign.projectileMass * 0.000142857;
+      let projectileWeight = this.system.firearmDesign.projectileMass * 0.000142857; // Take the projectile mass above (measured in grams) and convert to pounds.
 
       let propellantREF = 1;
       let propellantCost = 1; // We'll use this later to determine cost per shot
@@ -2928,9 +2928,11 @@ export class gurpsItem extends Item {
           break;
       }
 
-      let powderWeight = kineticEnergy / 4.184; // This is the required mass of TNT in grams
-      powderWeight = powderWeight * 0.00220462; // This is the required mass of TNT in pounds
-      powderWeight = powderWeight / propellantREF; // This is the required mass of propellant, corrected for the REF of the propellant
+      let powderWeight = kineticEnergy / 4184; // Dividing the kinetic energy by the number of joules in a single gram of TnT gives us the powder weight, assuming that powder is TnT or an equivalent
+      powderWeight = powderWeight * 0.00220462; // Convert the above number to pounds
+      powderWeight = powderWeight / propellantREF; // Correct the above number for the REF of the propellant
+
+      powderWeight *= 18; // This number is entirely arbitrary, based on the fact that running the above calculations for a 5.56mm cartridge gives a powder weight roughly 1/18th what it should be.
 
       this.system.firearmDesign.baseWeightPerShot = projectileWeight + powderWeight;
 
