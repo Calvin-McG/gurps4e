@@ -2835,7 +2835,10 @@ export class gurpsItem extends Item {
       // Weight
       let configWeightModifier = 45;
 
-      if (this.system.firearmDesign.action === "semi") {
+      if (this.system.firearmDesign.action === "auto") {
+        // Do nothing.
+      }
+      else if (this.system.firearmDesign.action === "semi") {
         configWeightModifier = 1.5 / 0.9 * configWeightModifier;
       }
       else if (this.system.firearmDesign.action === "revolverSA" || this.system.firearmDesign.action === "revolverDA") {
@@ -2848,26 +2851,31 @@ export class gurpsItem extends Item {
       // Calculate the base receiver weight
       let receiverWeight = ((kineticEnergy ** 0.66) / configWeightModifier / 1.4 ** (this.system.tl - 7))
 
-      if (this.system.firearmDesign.essentialMaterials) { // The gun is made of essential materials, modify receiverWeight weight accordingly.
-        receiverWeight = receiverWeight / 3;
-      }
-
       // Add weight for revolver cylinder
       if (this.system.firearmDesign.action === "revolverSA" || this.system.firearmDesign.action === "revolverDA") {
         receiverWeight = (receiverWeight) + ((receiverWeight * (this.system.firearmDesign.capacity-1)) * 0.132)
       }
 
-      let wallThickness = this.system.firearmDesign.chamberPressure * this.system.firearmDesign.projectileCalibre / 2 / 44000000 * (1.4) ** (this.system.tl - 7); // H27
+      if (this.system.firearmDesign.essentialMaterials) { // The gun is made of essential materials, modify receiverWeight weight accordingly.
+        receiverWeight = receiverWeight / 3;
+      }
+
+      let h25 = 44000000 * ((1.4) ** (this.system.tl - 7));
+
+      let wallThickness = this.system.firearmDesign.chamberPressure * this.system.firearmDesign.projectileCalibre / 2 / h25; // H27
+
       let barrelDiameter = 2 * (wallThickness) + barrelBoreMetres;
 
-      let barrelWeight = (Math.PI * (barrelBoreMetres / 2 + barrelDiameter) ** 2 - Math.PI * (barrelBoreMetres / 2) ** 2) * barrelLengthMetres * 7860
+      let barrelWeight = (Math.PI * (barrelBoreMetres / 2 + wallThickness) ** 2 - Math.PI * (barrelBoreMetres / 2) ** 2) * barrelLengthMetres * 7860
 
       if (this.system.firearmDesign.essentialMaterials) { // The gun is made of essential materials, modify barrelWeight accordingly.
         barrelWeight = barrelWeight / 3;
       }
 
-      this.system.firearmDesign.weightKgs = ((receiverWeight + barrelWeight) + (((receiverWeight + barrelWeight) * 0.8) * (this.system.firearmDesign.barrels - 1))) * this.system.firearmDesign.weightTweak;
-      this.system.firearmDesign.weight = this.system.firearmDesign.weightKgs * 2.205;
+      this.system.firearmDesign.weightKgs = (receiverWeight + barrelWeight); // The base weight of the gun.
+      this.system.firearmDesign.weightKgs += (((receiverWeight + barrelWeight) * 0.8) * (this.system.firearmDesign.barrels - 1)); // Add the weight of any extra barrels.
+      this.system.firearmDesign.weightKgs *= this.system.firearmDesign.weightTweak; // Multiply by the weight tweak
+      this.system.firearmDesign.weight = this.system.firearmDesign.weightKgs * 2.205; // Convert from kgs to lbs.
 
       // Add weight for ammo
       let projectileWeight = this.system.firearmDesign.projectileMass * 0.000142857; // Take the projectile mass above (measured in grams) and convert to pounds.
