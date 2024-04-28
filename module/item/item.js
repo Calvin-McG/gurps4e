@@ -3020,8 +3020,11 @@ export class gurpsItem extends Item {
 
       // Bulk and ST
       let bulkConfigLengthModifier = 304;
-      if (this.system.firearmDesign.configuration === "pistol" || this.system.firearmDesign.configuration === "bullpup") {
+      if (this.system.firearmDesign.configuration === "pistol") {
         bulkConfigLengthModifier = 76;
+      }
+      else if (this.system.firearmDesign.configuration === "bullpup") {
+        bulkConfigLengthModifier = 0;
       }
 
       let bulkLength = (this.system.firearmDesign.barrelLength+(this.system.firearmDesign.caseLength*2)+bulkConfigLengthModifier)/1000*1.09361*3*12
@@ -3039,7 +3042,7 @@ export class gurpsItem extends Item {
         this.system.firearmDesign.stOutput = Math.round(this.system.firearmDesign.st);
       }
       else if (this.system.firearmDesign.configuration === "bullpup") {
-        bulkConfigMod = 3;
+        bulkConfigMod = 0.5;
         this.system.firearmDesign.st = (Math.sqrt(this.system.weight) * 2.2);
         this.system.firearmDesign.stOutput = Math.round(this.system.firearmDesign.st);
         this.system.firearmDesign.stCode = "†";
@@ -3057,7 +3060,7 @@ export class gurpsItem extends Item {
         this.system.firearmDesign.stCode = "†";
       }
 
-      this.system.firearmDesign.bulk = 0.1-Math.log10(bulkConfigMod) -Math.log10(this.system.weight) - (2*Math.log10(bulkLength))
+      this.system.firearmDesign.bulk = 0.1 - Math.log10(bulkConfigMod) - Math.log10(this.system.weight) - (2*Math.log10(bulkLength))
 
       // Rcl
       let mv = totalAcceleratedKgs * metresPerSecond;
