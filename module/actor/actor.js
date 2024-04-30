@@ -5,6 +5,7 @@ import { rollHelpers } from '../../helpers/rollHelpers.js';
 import { actorHelpers } from "../../helpers/actorHelpers.js";
 import { skillHelpers } from "../../helpers/skillHelpers.js";
 import { postureHelpers } from "../../helpers/postureHelpers.js";
+import { cypherHelpers } from "../../helpers/cypherHelpers.js";
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -72,6 +73,8 @@ export class gurpsActor extends Actor {
 
 		// Store stuff for the info tab. Do this after Enc so we can reference it for swimming, running, etc.
 		this.storeInfo();
+
+        // cypherHelpers.characterList();
 	}
 
 	checkUndefined(){
