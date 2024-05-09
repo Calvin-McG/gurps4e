@@ -4,7 +4,7 @@
       "fullchar"
     ],
     "templates": {
-      "base": {
+      "bio" : {
         "bio" : {
           "race": {
             "label": "Race",
@@ -33,156 +33,9 @@
             "points": 0
           },
           "money": 0
-        },
-        "info": {
-          "jump": {},
-          "breath": {},
-          "runSprint": {},
-          "hiking": {},
-          "swim": {},
-          "throw": {}
-        },
-        "posture": {
-          "label": "Posture",
-          "value": "Standing"
-        },
-        "bodyType": {
-          "name": ""
-        },
-        "injuryTolerances": {
-          "diffuse": false,
-          "homogenous": false,
-          "noBrain": false,
-          "noVitals": false,
-          "unliving": false,
-          "noBlood": false,
-          "noEyes": false,
-          "noHead": false,
-          "noNeck": false,
-          "unbreakableBones": false,
-          "damageReduction": 1,
-          "supernaturalDurability": false,
-          "highPainThreshold": false,
-          "lowPainThreshold": false
-        },
-        "flag": {
-          "combatReflexes": false,
-          "showSenses": false
-        },
-        "enhanced": {
-          "parry": 0,
-          "block": 0,
-          "dodge": 0
-        },
-        "vision": {
-          "front": 180,
-          "side": 240
-        },
-        "biography": "",
-        "points": {
-          "total": 150,
-          "attributes": 0,
-          "traits": 0,
-          "advantages": 0,
-          "disadvantages": 0,
-          "perks": 0,
-          "quirks": 0,
-          "skills": 0,
-          "spells": 0,
-          "path": 0,
-          "unspent": 150
-        },
-        "reserves": {
-          "hp": {
-            "abbr": "HP",
-            "state": "Healthy",
-            "value": 10,
-            "mod": 0,
-            "max": 10,
-            "points": 0
-          },
-          "fp": {
-            "abbr": "FP",
-            "state": "Fresh",
-            "value": 10,
-            "mod": 0,
-            "max": 10,
-            "points": 0
-          },
-          "er": {
-            "abbr": "ER",
-            "value": 0,
-            "mod": 0,
-            "max": 0,
-            "points": 0
-          }
-        },
-        "encumbrance" : {
-          "none" : {
-            "title": "None"
-          },
-          "light" : {
-            "title": "Light"
-          },
-          "medium" : {
-            "title": "Medium"
-          },
-          "heavy" : {
-            "title": "Heavy"
-          },
-          "xheavy" : {
-            "title": "X-Heavy"
-          },
-          "current": {
-            "ref": "none",
-            "title": "None",
-            "mult": 1,
-            "fpCost": 1,
-            "penalty": 0
-          }
-        },
-        "baseDamage": {
-          "swing": "1d6",
-          "thrust": "1d6-2"
-        },
-        "senses": {
-          "vis": {
-            "id": "vis",
-            "abbr": "Vision",
-            "value": 10,
-            "mod": 0
-          },
-          "hear": {
-            "id": "hear",
-            "abbr": "Hearing",
-            "value": 10,
-            "mod": 0
-          },
-          "smell": {
-            "id": "smell",
-            "abbr": "Smell & Taste",
-            "value": 10,
-            "mod": 0
-          },
-          "touch": {
-            "id": "touch",
-            "abbr": "Touch",
-            "value": 10,
-            "mod": 0
-          },
-          "extra1": {
-            "id": "extra1",
-            "abbr": "",
-            "value": 10,
-            "mod": 0
-          },
-          "extra2": {
-            "id": "extra2",
-            "abbr": "",
-            "value": 10,
-            "mod": 0
-          }
-        },
+        }
+      },
+      "primaryAttributes": {
         "primaryAttributes": {
           "strength": {
             "id": "st",
@@ -288,13 +141,192 @@
             "mod": 0,
             "points": 0
           }
-        },
+        }
+      },
+      "info": {
+        "info": {
+          "jump": {},
+          "breath": {},
+          "runSprint": {},
+          "hiking": {},
+          "swim": {},
+          "throw": {}
+        }
+      },
+      "posture": {
+        "posture": {
+          "label": "Posture",
+          "value": "Standing"
+        }
+      },
+      "bodyType": {
+        "bodyType": {
+          "name": ""
+        }
+      },
+      "injuryTolerances": {
+        "injuryTolerances": {
+          "diffuse": false,
+          "homogenous": false,
+          "noBrain": false,
+          "noVitals": false,
+          "unliving": false,
+          "noBlood": false,
+          "noEyes": false,
+          "noHead": false,
+          "noNeck": false,
+          "unbreakableBones": false,
+          "damageReduction": 1,
+          "supernaturalDurability": false,
+          "highPainThreshold": false,
+          "lowPainThreshold": false
+        }
+      },
+      "flag": {
+        "flag": {
+          "combatReflexes": false,
+          "showSenses": false
+        }
+      },
+      "enhanced": {
+        "enhanced": {
+          "parry": 0,
+          "block": 0,
+          "dodge": 0
+        }
+      },
+      "vision": {
+        "vision": {
+          "front": 180,
+          "side": 240
+        }
+      },
+      "biography": {
+        "biography": ""
+      },
+      "points": {
+        "points": {
+          "total": 150,
+          "attributes": 0,
+          "traits": 0,
+          "advantages": 0,
+          "disadvantages": 0,
+          "perks": 0,
+          "quirks": 0,
+          "skills": 0,
+          "spells": 0,
+          "path": 0,
+          "unspent": 150
+        }
+      },
+      "reserves": {
+        "reserves": {
+          "hp": {
+            "abbr": "HP",
+            "state": "Healthy",
+            "value": 10,
+            "mod": 0,
+            "max": 10,
+            "points": 0
+          },
+          "fp": {
+            "abbr": "FP",
+            "state": "Fresh",
+            "value": 10,
+            "mod": 0,
+            "max": 10,
+            "points": 0
+          },
+          "er": {
+            "abbr": "ER",
+            "value": 0,
+            "mod": 0,
+            "max": 0,
+            "points": 0
+          }
+        }
+      },
+      "encumbrance" : {
+        "encumbrance" : {
+          "none" : {
+            "title": "None"
+          },
+          "light" : {
+            "title": "Light"
+          },
+          "medium" : {
+            "title": "Medium"
+          },
+          "heavy" : {
+            "title": "Heavy"
+          },
+          "xheavy" : {
+            "title": "X-Heavy"
+          },
+          "current": {
+            "ref": "none",
+            "title": "None",
+            "mult": 1,
+            "fpCost": 1,
+            "penalty": 0
+          }
+        }
+      },
+      "baseDamage": {
+        "baseDamage": {
+          "swing": "1d6",
+          "thrust": "1d6-2"
+        }
+      },
+      "senses": {
+        "senses": {
+          "vis": {
+            "id": "vis",
+            "abbr": "Vision",
+            "value": 10,
+            "mod": 0
+          },
+          "hear": {
+            "id": "hear",
+            "abbr": "Hearing",
+            "value": 10,
+            "mod": 0
+          },
+          "smell": {
+            "id": "smell",
+            "abbr": "Smell & Taste",
+            "value": 10,
+            "mod": 0
+          },
+          "touch": {
+            "id": "touch",
+            "abbr": "Touch",
+            "value": 10,
+            "mod": 0
+          },
+          "extra1": {
+            "id": "extra1",
+            "abbr": "",
+            "value": 10,
+            "mod": 0
+          },
+          "extra2": {
+            "id": "extra2",
+            "abbr": "",
+            "value": 10,
+            "mod": 0
+          }
+        }
+      },
+      "magic": {
         "magic": {
           "attribute": "Intelligence",
           "attributeMod": 0,
           "magery": 0,
           "totalMagicAttribute": 0
-        },
+        }
+      },
+      "rpm": {
         "rpm": {
           "magery": 0,
           "hasMagery": false,
@@ -477,7 +509,23 @@
     },
     "fullchar": {
       "templates": [
-        "base"
+        "bio",
+        "primaryAttributes",
+        "info",
+        "posture",
+        "bodyType",
+        "injuryTolerances",
+        "flag",
+        "enhanced",
+        "vision",
+        "biography",
+        "points",
+        "reserves",
+        "encumbrance",
+        "baseDamage",
+        "senses",
+        "magic",
+        "rpm"
       ]
     }
   },
