@@ -10,11 +10,26 @@ export class gurpsActorSheet extends ActorSheet {
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
 			classes: ["gurps4e", "sheet", "actor"],
-			template: "systems/gurps4e/templates/actor/actor-sheet.html",
 			width: 780,
 			height: 780,
 			tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "stats" }]
 		});
+	}
+
+	/** @override */
+	get template() {
+		const path = "systems/gurps4e/templates/actor";
+		// Return a single sheet for all actor types.
+		// return `${path}/actor-sheet.html`;
+		// Alternatively, you could use the following return statement to do a
+		// unique actor sheet by type, like `actor-sheet.html`.
+
+		if (this.actor.type.toLowerCase() === "fullchar") {
+			return `${path}/actor-sheet.html`;
+		}
+		else {
+			return `${path}/${this.actor.type}-sheet.html`;
+		}
 	}
 
 	/* -------------------------------------------- */

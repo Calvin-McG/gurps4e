@@ -1,7 +1,8 @@
 {
   "Actor": {
     "types": [
-      "fullchar"
+      "fullchar",
+      "Simple Vehicle"
     ],
     "templates": {
       "bio" : {
@@ -526,6 +527,11 @@
         "senses",
         "magic",
         "rpm"
+      ]
+    },
+    "simple-vehicle": {
+      "templates": [
+        "info"
       ]
     }
   },
