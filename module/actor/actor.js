@@ -1770,6 +1770,10 @@ export class gurpsActor extends Actor {
 
 		this.system.rpm.coreSkillLevel = skillHelpers.getSkillLevelByName(skillName, this) // Get the level of the core skill for this RPM caster
 
+		if (typeof this.system.rpm.coreSkillLevel === "undefined") { // If the previous came back undefined, it may be because an attribute was entered
+			this.system.rpm.coreSkillLevel = skillHelpers.getBaseAttrValue(skillName, this); // Check it.
+		}
+
 		let keys = Object.keys(this.system.rpm.path);
 
 		for (let k = 0; k < keys.length; k++) {
