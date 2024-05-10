@@ -186,7 +186,12 @@ export class gurpsItemSheet extends ItemSheet {
             else if (currentRoll.success && !currentRoll.crit) { // If they succeeded, and it's not a crit
                 energyGathered += Math.max(1, currentRoll.margin); // Add the margin of success to the energy gathered, but at least 1;
 
-                html += "<tr><td>" + cycleCount + "</td><td style='text-align: center'>" + effectiveSkill + "</td><td style='color: rgb(141, 142, 222)'>Success by " + currentRoll.margin + "</td><td>" + energyGathered + "</td>"; // Add column details for everything but time
+                if (currentRoll.margin === 0) {
+                    html += "<tr><td>" + cycleCount + "</td><td style='text-align: center'>" + effectiveSkill + "</td><td style='color: rgb(141, 142, 222)'>Exact Success</td><td>" + energyGathered + "</td>"; // Add column details for everything but time
+                }
+                else {
+                    html += "<tr><td>" + cycleCount + "</td><td style='text-align: center'>" + effectiveSkill + "</td><td style='color: rgb(141, 142, 222)'>Success by " + currentRoll.margin + "</td><td>" + energyGathered + "</td>"; // Add column details for everything but time
+                }
             }
             else if (currentRoll.success && currentRoll.crit) { // If they succeeded, and it's a crit
                 energyGathered += Math.max(1, currentRoll.margin); // Add the margin of success to the energy gathered, but at least 1;

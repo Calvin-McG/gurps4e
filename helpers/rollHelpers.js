@@ -80,7 +80,12 @@ export class rollHelpers {
             crit = true;
             success = true;
         }
-        else if (margin >= 0) { //Regular success
+        else if (margin == 0) { // Regular success
+            html += "<div style='font-weight: bold; color: rgb(141, 142, 222)'>Exact Success</div>"
+            crit = false;
+            success = true;
+        }
+        else if (margin > 0) { // Regular success
             html += "<div style='font-weight: bold; color: rgb(141, 142, 222)'>Success by " + margin + "</div>"
             crit = false;
             success = true;
