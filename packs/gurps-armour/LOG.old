@@ -1,0 +1,5 @@
+2024/05/10-17:00:04.592 ee90 Recovering log #3
+2024/05/10-17:00:04.595 ee90 Level-0 table #5: started
+2024/05/10-17:00:04.600 ee90 Level-0 table #5: 194312 bytes OK
+2024/05/10-17:00:04.603 ee90 Delete type=0 #3
+2024/05/10-17:00:04.603 ee90 Delete type=3 #2

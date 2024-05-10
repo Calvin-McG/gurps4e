@@ -22,12 +22,84 @@
   "styles": ["./gurps4e.css"],
   "packs": [
     {
+      "name": "gurps-armour",
+      "label": "GURPS Armour",
+      "system": "gurps4e",
+      "module": "gurps4e",
+      "path": "packs/gurps-armour.db",
+      "type": "Item"
+    },
+    {
+      "name": "gurps-equipment",
+      "label": "GURPS Equipment",
+      "system": "gurps4e",
+      "module": "gurps4e",
+      "path": "packs/gurps-equipment.db",
+      "type": "Item"
+    },
+    {
       "name": "gurps-macros",
       "label": "GURPS Macros",
       "system": "gurps4e",
       "module": "gurps4e",
       "path": "packs/gurps-macros.db",
       "type": "Macro"
+    },
+    {
+      "name": "gurps-rules",
+      "label": "GURPS Rules",
+      "system": "gurps4e",
+      "module": "gurps4e",
+      "path": "packs/gurps-rules.db",
+      "type": "JournalEntry"
+    },
+    {
+      "name": "gurps-skills-and-techniques",
+      "label": "GURPS Skills and Techniques",
+      "system": "gurps4e",
+      "module": "gurps4e",
+      "path": "packs/gurps-skills-and-techniques.db",
+      "type": "Item"
+    },
+    {
+      "name": "gurps-spells",
+      "label": "GURPS Spells",
+      "system": "gurps4e",
+      "module": "gurps4e",
+      "path": "packs/gurps-spells.db",
+      "type": "Item"
+    },
+    {
+      "name": "gurps-stock-scenes",
+      "label": "GURPS Stock Scenes",
+      "system": "gurps4e",
+      "module": "gurps4e",
+      "path": "packs/gurps-stock-scenes.db",
+      "type": "Scene"
+    },
+    {
+      "name": "gurps-tables",
+      "label": "GURPS Tables",
+      "system": "gurps4e",
+      "module": "gurps4e",
+      "path": "packs/gurps-tables.db",
+      "type": "RollTable"
+    },
+    {
+      "name": "gurps-traits",
+      "label": "GURPS Traits",
+      "system": "gurps4e",
+      "module": "gurps4e",
+      "path": "packs/gurps-traits.db",
+      "type": "Item"
+    },
+    {
+      "name": "gurps-weapons",
+      "label": "GURPS Weapons",
+      "system": "gurps4e",
+      "module": "gurps4e",
+      "path": "packs/gurps-weapons.db",
+      "type": "Item"
     }
   ],
   "scripts": [
