@@ -1,1 +1,4 @@
-2024/05/10-16:13:30.814 cf2c Delete type=3 #1
+2024/05/10-17:14:36.100 c984 Log #5: 0 ops saved to Table #6 OK
+2024/05/10-17:14:36.101 c984 Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-spells/000005.log: OK
+2024/05/10-17:14:36.102 c984 Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-spells/MANIFEST-000004: OK
+2024/05/10-17:14:36.105 c984 **** Repaired leveldb C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-spells; recovered 0 files; 0 bytes. Some data may have been lost. ****

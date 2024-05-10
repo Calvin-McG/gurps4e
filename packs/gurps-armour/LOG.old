@@ -1,5 +1,5 @@
-2024/05/10-17:00:04.592 ee90 Recovering log #3
-2024/05/10-17:00:04.595 ee90 Level-0 table #5: started
-2024/05/10-17:00:04.600 ee90 Level-0 table #5: 194312 bytes OK
-2024/05/10-17:00:04.603 ee90 Delete type=0 #3
-2024/05/10-17:00:04.603 ee90 Delete type=3 #2
+2024/05/10-17:14:35.979 c9c0 Log #8: 0 ops saved to Table #9 OK
+2024/05/10-17:14:35.980 c9c0 Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-armour/000008.log: OK
+2024/05/10-17:14:35.982 c9c0 Table #5: 104 entries OK
+2024/05/10-17:14:35.984 c9c0 Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-armour/MANIFEST-000007: OK
+2024/05/10-17:14:35.987 c9c0 **** Repaired leveldb C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-armour; recovered 1 files; 194312 bytes. Some data may have been lost. ****
