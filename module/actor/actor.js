@@ -30,7 +30,21 @@ export class gurpsActor extends Actor {
 	 */
 	prepareData() {
 		super.prepareData();
+		switch (this.type) {
+			case "fullchar":
+				this.prepareActorData();
+				break;
+			case "Simple Vehicle":
+				this.prepareSimpleVehicleData();
+				break;
+		}
+	}
 
+	prepareSimpleVehicleData() {
+		console.log("Test")
+	}
+
+	prepareActorData() {
 		this.checkUndefined();
 
 		//Total up spent and remaining points
