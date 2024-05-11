@@ -6239,8 +6239,12 @@ export class gurpsItem extends Item {
 
   showInfo(id) {
     let info = "";
-    let cinematicReloadReduction = (game.settings.get("gurps4e", "realisticBowReloadScale") ? 0 : 1); // If it's set to true, then we're using realistic reload so don't change the value. If it's false we're cinematic and are changing the value.
-    let repeatingReloadReduction = (game.settings.get("gurps4e", "realisticBowReloadScale") ? 2 : 1) * (this.system.bowDesign.repeating && this.system.bowDesign.repeatingAllowed && (this.system.bowDesign.type === "xbow") ? 1 : 0); // Repeating crossbows save 2 seconds at realistic scale, and 1 second at cinematic scale
+    let cinematicReloadReduction = 0;
+    let repeatingReloadReduction = 0;
+    if (typeof this.system.bowDesign !== "undefined") {
+      cinematicReloadReduction = (game.settings.get("gurps4e", "realisticBowReloadScale") ? 0 : 1); // If it's set to true, then we're using realistic reload so don't change the value. If it's false we're cinematic and are changing the value.
+      repeatingReloadReduction = (game.settings.get("gurps4e", "realisticBowReloadScale") ? 2 : 1) * (this.system.bowDesign.repeating && this.system.bowDesign.repeatingAllowed && (this.system.bowDesign.type === "xbow") ? 1 : 0); // Repeating crossbows save 2 seconds at realistic scale, and 1 second at cinematic scale
+    }
     if (id === "laser-configuration") {
       info = "<table>" +
           "<tr>" +
