@@ -11,19 +11,22 @@ import { postureHelpers } from "../../helpers/postureHelpers.js";
  * @extends {Actor}
  */
 export class gurpsActor extends Actor {
-	//
-	// /**
-	//  * Override the create() function to provide additional GURPS4e functionality.
-	//  *
-	//  * This overridden create() function adds flags to an actor upon creation.
-	//  *
-	//  * @param {Object} data				Barebones actor data which this function adds onto.
-	//  * @param {Object} options		 (Unused) Additional options which customize the creation workflow.
-	//  *
-	//  */
-	// static async create(data, options) {
-	// 	super.create(data, options); // Follow through the the rest of the Actor creation process upstream
-	// }
+
+	_onCreate(data, options, userId) {
+		super._onCreate(data, options, userId);
+
+		switch (this.type) {
+			case "fullchar":
+				console.log("An Actor is being created.");
+				this.img = "icons/svg/mystery-man.svg"; // This icon comes from the foundry default set
+				break;
+			case "Simple Vehicle":
+				console.log("A Simple Vehicle is being created.");
+				this.img = "systems/gurps4e/icons/svg/car.svg"; // This icon comes from the GURPS set
+				break;
+		}
+		console.log(this.img)
+	}
 
 	/**
 	 * Augment the basic actor data with additional dynamic system.
