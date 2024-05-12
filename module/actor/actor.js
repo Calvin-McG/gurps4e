@@ -5733,4 +5733,44 @@ export class gurpsActor extends Actor {
 
 		this.update({ 'data': this.system });
 	}
+
+	showInfo(id) {
+		console.log(id)
+		let info = "";
+		if (id === "craft-type") {
+			info = "<table>";
+
+			info += "<tr>" +
+				"<td>" +
+				"<p>Amphibious vehicles should be stated as land.</p>" +
+				"</td>" +
+				"</tr>";
+
+			info += "</table>"
+		}
+		else if (id === "shaft-material-essential") {
+			info = "<table>";
+
+			info += "<tr>" +
+				"<td>" +
+				"<p>Rather than use a specific essential material, this checkbox makes whatever material you've selected essential, making it three times as strong.</p>" +
+				"</td>" +
+				"</tr>";
+
+			info += "<tr>" +
+				"<td>" +
+				"<p>This is not terribly useful for arrows. Once you reach a certain point, the arrow is plenty strong enough as is. " +
+				"Unless you're trying to design ultra-light arrows this is really not worth the trouble or expense.</p>" +
+				"</td>" +
+				"</tr>";
+
+			info += "</table>"
+		}
+
+		this.system.info = info;
+
+		this.update({ 'system.info': this.system.info });
+
+		console.log(this.system)
+	}
 }

@@ -5,6 +5,21 @@
       "Simple Vehicle"
     ],
     "templates": {
+      "vehicle": {
+        "vehicle": {
+          "craftType": "land"
+        }
+      },
+      "lc": {
+        "lc": 4
+      },
+      "cost": {
+        "cost": {
+          "baseCost": 0,
+          "costFactor": 1,
+          "finalCost": 0
+        }
+      },
       "bio" : {
         "bio" : {
           "race": {
@@ -531,7 +546,10 @@
     },
     "simple-vehicle": {
       "templates": [
-        "info"
+        "bio",
+        "cost",
+        "lc",
+        "vehicle"
       ]
     }
   },

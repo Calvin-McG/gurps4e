@@ -95,10 +95,16 @@ export class gurpsActorSheet extends ActorSheet {
 		html.find('.rpmCoreSkill').change(this._onRpmCoreSkillChange.bind(this));
 
 		html.find('.makeLearningRoll').click(this._makeLearningRoll.bind(this));
+
+		html.find('.question-container').click(this._showHint.bind(this));
 	}
 
 	/* -------------------------------------------- */
 
+	_showHint(event) {
+		console.log(event)
+		this.actor.showInfo(event.currentTarget.id);
+	}
 	async _makeLearningRoll() {
 		rollHelpers.skillRoll(this.actor.system.info.learning.finalEffective, 0, this.actor.name + " makes a learning roll.", false).then( rollInfo => { // Make the roll
 

@@ -250,6 +250,10 @@ Hooks.once('init', async function() {
     return Math.round(+inches / 25.4 * +decimals) / +decimals;
   });
 
+  Handlebars.registerHelper("lbsToTons", function(lbs, decimals) { // Decimals is entered as a whole numbered power of 10 (1, 10, 100, etc)
+    return Math.round(+lbs / 2000 * +decimals) / +decimals;
+  });
+
   Handlebars.registerHelper("grainsToGrams", function(grains, decimals) { // Decimals is entered as a whole numbered power of 10 (1, 10, 100, etc)
     return Math.round(+grains / 15.4324 * +decimals) / +decimals;
   });
