@@ -12,20 +12,19 @@ import { postureHelpers } from "../../helpers/postureHelpers.js";
  */
 export class gurpsActor extends Actor {
 
+	// This method is called only upon actor creation
 	_onCreate(data, options, userId) {
 		super._onCreate(data, options, userId);
 
+		// Set default image by type of actor
 		switch (this.type) {
 			case "fullchar":
-				console.log("An Actor is being created.");
 				this.img = "icons/svg/mystery-man.svg"; // This icon comes from the foundry default set
 				break;
 			case "Simple Vehicle":
-				console.log("A Simple Vehicle is being created.");
 				this.img = "systems/gurps4e/icons/svg/car.svg"; // This icon comes from the GURPS set
 				break;
 		}
-		console.log(this.img)
 	}
 
 	/**
