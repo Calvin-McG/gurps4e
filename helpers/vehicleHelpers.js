@@ -3760,6 +3760,23 @@ export class vehicleHelpers {
         return vehicles;
     }
 
+    static fetchVehiclesByTypeAndTLRange(type, tlLo, tlHi) {
+        let vehicles = this.fetchVehicles();
+
+        let returnSet = [];
+
+        vehicles.forEach( vehicle => {
+            if (((vehicle.naval && (type === "naval" || type === "water")) ||
+                (vehicle.ground && (type === "ground" || type === "land")) ||
+                (vehicle.air && (type === "air" || type === "air")))
+                && vehicle.tl <= tlHi && vehicle.tl >= tlLo) {
+                returnSet.push(vehicle);
+            }
+        })
+
+        return returnSet;
+    }
+
     static fetchVehicleCatalogue(type, tl, tlRange) {
         let vehicles = this.fetchVehicles();
         let htmlContent = "<div>"
