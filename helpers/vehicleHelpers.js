@@ -3769,7 +3769,7 @@ export class vehicleHelpers {
 
         htmlContent += "<table class='vehicle-catalogue-table'>"
 
-        if (type.toLowerCase() === "naval") {
+        if (type.toLowerCase() === "naval" || type.toLowerCase() === "water") {
             htmlContent += "<tr>" +
                 "<td style='text-align: center;'>TL</td>" +
                 "<td style='text-align: center;'>Vehicle</td>" +
@@ -3823,7 +3823,7 @@ export class vehicleHelpers {
                 }
             })
         }
-        else if (type.toLowerCase() === "ground") {
+        else if (type.toLowerCase() === "ground" || type.toLowerCase() === "land") {
             htmlContent += "<tr>" +
                 "<td style='text-align: center;'>TL</td>" +
                 "<td style='text-align: center;'>Vehicle</td>" +
@@ -3876,7 +3876,7 @@ export class vehicleHelpers {
                 }
             })
         }
-        else if (type.toLowerCase() === "air") {
+        else if (type.toLowerCase() === "air" || type.toLowerCase() === "air") {
             htmlContent += "<tr>" +
                 "<td style='text-align: center;'>TL</td>" +
                 "<td style='text-align: center;'>Vehicle</td>" +
