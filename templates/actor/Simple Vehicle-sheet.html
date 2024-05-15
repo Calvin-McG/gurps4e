@@ -7,9 +7,10 @@
         <img class="portrait" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
       </div>
       <div style="flex: 5 !important;">
-        <div>
-          <input class="charname" name="name" type="text" value="{{actor.name}}" placeholder="Name" />
-        </div>
+        <h1 style="text-align: center; font-size: xx-large; font-weight: bold; text-decoration: underline;">
+          {{actor.name}}
+        </h1>
+        <hr>
         <div style="display: flex; flex-direction: column">
           <div style="display: flex">
             <div class="bold" style="flex: 1;">
@@ -72,7 +73,7 @@
       <div class="tab stats" data-tab="stats" data-group="primary">
         <div class="design-block">
           <div style="width: 50%;">
-            <h2 class="bold" style="text-align: center;">User Options</h2>
+            <h2 class="bold" style="text-align: center;">Vehicle Basics</h2>
             <table>
               <tr class="design-row">
                 <td>Craft Type</td>
@@ -91,7 +92,307 @@
                   </div>
                 </td>
               </tr>
+              <tr class="design-row">
+                <td>Method for Describing the Vehicle</td>
+                <td>
+                  <select name="system.vehicle.method" class="craftType">
+                    {{#select actor.system.vehicle.method}}
+                    <option value="pick">Pick & Modify</option>
+                    <option value="custom">Full Custom</option>
+                    {{/select}}
+                  </select>
+                </td>
+                <td class="question-container" id="vehicle-method">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
             </table>
+
+            {{#if (eq actor.system.vehicle.method "pick")}}
+            <h1 class="bold" style="text-align: center;">Pick & Modify</h1>
+            <table>
+              <tr class="design-row">
+                <td>TL Filtering</td>
+                <td>
+                  <input style="width: 45%" type="number" placeholder="Low"  name="system.vehicle.tlFilter.lo" value="{{actor.system.vehicle.tlFilter.lo}}" min="0" max="12" step="1"/>
+                  <input style="width: 45%" type="number" placeholder="High" name="system.vehicle.tlFilter.hi" value="{{actor.system.vehicle.tlFilter.hi}}" min="0" max="12" step="1"/>
+                </td>
+                <td class="question-container" id="tl-filter">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Base Vehicle</td>
+                <td>
+                  <select name="system.vehicle.baseVehicle.code" class="craftType">
+                    {{#select actor.system.vehicle.baseVehicle.code}}
+                      {{#each actor.system.vehicle.baseVehicles as |vehicle id|}}
+                        <option value="{{vehicle.code}}">{{vehicle.name}}</option>
+                      {{/each}}
+                    {{/select}}
+                  </select>
+                </td>
+                <td class="question-container" id="base-vehicle-name">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+            </table>
+            {{/if}}
+
+            {{#if (eq actor.system.vehicle.method "custom")}}
+            <h1 class="bold" style="text-align: center;">Full Custom</h1>
+            <h2 class="bold" style="text-align: center;">Basics</h2>
+            <table>
+              <tr class="design-row">
+                <td style="width: 100%">Name</td>
+                <td>
+                  <input name="name" type="text" value="{{actor.name}}" placeholder="Name" />
+                </td>
+                <td class="question-container" id="vehicle-name">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>ST/HP</td>
+                <td style="display: flex">
+                  <input name="system.vehicle.sthp" type="number" value="{{actor.system.vehicle.sthp}}" placeholder="10" />
+                  <select name="system.vehicle.sthpCode" class="craftType" style="height: unset">
+                    {{#select actor.system.vehicle.sthpCode}}
+                    <option value=""></option>
+                    <option value="T">† - Unpowered</option>
+                    {{/select}}
+                  </select>
+                </td>
+                <td class="question-container" id="sthp">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Hnd/SR</td>
+                <td style="display: flex">
+                  <input name="system.vehicle.hnd" type="number" value="{{actor.system.vehicle.hnd}}" placeholder="1" />
+                  <span style="font-size: xx-large; padding: 0 0.2em;">/</span>
+                  <input name="system.vehicle.sr" type="number" value="{{actor.system.vehicle.sr}}" placeholder="3" />
+                </td>
+                <td class="question-container" id="hndSr">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>HT</td>
+                <td style="display: flex">
+                  <input name="system.vehicle.ht" type="number" value="{{actor.system.vehicle.ht}}" placeholder="10" style="min-width: 30px;" />
+                  <select name="system.vehicle.htCode" class="craftType" style="height: unset">
+                    {{#select actor.system.vehicle.htCode}}
+                    <option value=""></option>
+                    <option value="c">c - Combustible</option>
+                    <option value="f">f - Flammable</option>
+                    <option value="x">x - Explosive</option>
+                    <option value="cx">c - Combustible & Explosive</option>
+                    <option value="fx">f - Flammable & Explosive</option>
+                    {{/select}}
+                  </select>
+                </td>
+                <td class="question-container" id="vehicleHT">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Move</td>
+                <td style="display: flex">
+                  <input name="system.vehicle.hnd" type="number" value="{{actor.system.vehicle.accelerationInput}}" placeholder="3" />
+                  <span style="font-size: xx-large; padding: 0 0.2em;">/</span>
+                  <input name="system.vehicle.hnd" type="number" value="{{actor.system.vehicle.moveInput}}" placeholder="30" />
+                  <select name="system.vehicle.moveCode" class="craftType" style="height: unset">
+                    {{#select actor.system.vehicle.moveCode}}
+                    <option value=""></option>
+                    <option value="A">* - Road-bound</option>
+                    <option value="H">‡ - Rail-bound</option>
+                    {{/select}}
+                  </select>
+                </td>
+                <td class="question-container" id="moveInput">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Loaded Weight (Lwt.)</td>
+                <td style="display: flex">
+                  <input name="system.vehicle.lwt" type="number" value="{{actor.system.vehicle.lwt}}" placeholder="1" />
+                  <span style="font-weight: bold; font-size: large; padding-left: 1em;"> tons</span>
+                </td>
+                <td class="question-container" id="lwt">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Load</td>
+                <td style="display: flex">
+                  <input name="system.vehicle.load" type="number" value="{{actor.system.vehicle.load}}" placeholder="1" />
+                  <span style="font-weight: bold; font-size: large; padding-left: 1em;"> tons</span>
+                </td>
+                <td class="question-container" id="load">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Empty Weight</td>
+                <td style="display: flex">
+                  <span style="font-weight: bold; font-size: large; margin: auto;">{{actor.system.vehicle.emptyWeight}} tons</span>
+                </td>
+                <td class="question-container" id="empty-weight">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Crew & Passengers</td>
+                <td style="display: flex">
+                  <input name="system.vehicle.crew" type="number" value="{{actor.system.vehicle.crew}}" placeholder="1" />
+                  <span style="font-size: xx-large; padding: 0 0.2em;">/</span>
+                  <input name="system.vehicle.passengers" type="number" value="{{actor.system.vehicle.passengers}}" placeholder="3" />
+                  <select name="system.vehicle.occCode" style="height: unset">
+                    {{#select actor.system.vehicle.occCode}}
+                    <option value=""></option>
+                    <option value="S">S - Sealed</option>
+                    <option value="P">P - Pressure Support</option>
+                    <option value="V">V - Vacuum Support</option>
+                    {{/select}}
+                  </select>
+                </td>
+                <td class="question-container" id="crew-passengers">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Size Modifier</td>
+                <td style="display: flex">
+                  <input name="system.vehicle.sm" type="number" value="{{actor.system.vehicle.sm}}" placeholder="2" />
+                </td>
+                <td class="question-container" id="sm">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Range</td>
+                <td style="display: flex">
+                  <input name="system.vehicle.range" type="number" value="{{actor.system.vehicle.range}}" placeholder="300" />
+                  <span style="font-weight: bold; font-size: large; padding-left: 1em;"> miles</span>
+                </td>
+                <td class="question-container" id="range">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Base Cost</td>
+                <td style="display: flex">
+                  <input name="system.vehicle.baseCost" type="number" value="{{actor.system.vehicle.baseCost}}" placeholder="10000" />
+                  <span style="font-weight: bold; font-size: large; padding-left: 1em;"> $</span>
+                </td>
+                <td class="question-container" id="base-cost">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td style="width: 100%">Locations</td>
+                <td>
+                  <input name="system.vehicle.locations" type="text" value="{{actor.system.vehicle.locations}}" placeholder="G4W" />
+                </td>
+                <td class="question-container" id="locations">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+            </table>
+
+            <h2 class="bold" style="text-align: center;">Damage Resistance</h2>
+            <table>
+              <tr class="design-row">
+                <td style="width: 100%">Entry Method</td>
+                <td>
+                  <select name="system.vehicle.drMethod">
+                    {{#select actor.system.vehicle.drMethod}}
+                    <option value="single">Single Value</option>
+                    <option value="facing">Facing</option>
+                    <option value="facingPlus">Facing Plus Locations</option>
+                    {{/select}}
+                  </select>
+                </td>
+                <td class="question-container" id="dr-method">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+
+              {{#if (eq actor.system.vehicle.drMethod "single")}}
+              <tr class="design-row">
+                <td style="width: 100%">Damage Resistance</td>
+                <td>
+                  <input name="system.vehicle.dr" type="number" value="{{actor.system.vehicle.dr}}" placeholder="2" />
+                </td>
+                <td class="question-container" id="dr-single">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              {{else}}
+              <tr>
+                <td></td>
+                <td>
+                  <div style="text-align: center; font-weight: bold; text-decoration: underline;">Front</div>
+                  <input name="system.vehicle.drFacing.drFront" type="number" value="{{actor.system.vehicle.drFacing.drFront}}" placeholder="2" />
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td><td></td><td></td>
+              </tr>
+              <tr>
+                <td></td><td></td><td></td>
+              </tr>
+              <tr>
+                <td></td><td></td><td></td>
+              </tr>
+              <tr>
+                <td></td><td></td><td></td>
+              </tr>
+
+              {{/if}}
+            </table>
+            {{/if}}
+
           </div>
           <div style="width: 50%;">
             <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>

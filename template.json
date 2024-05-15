@@ -7,7 +7,37 @@
     "templates": {
       "vehicle": {
         "vehicle": {
-          "craftType": "land"
+          "craftType": "land",
+          "method": "pick",
+          "tlFilter": {
+            "lo": 0,
+            "hi": 12
+          },
+          "baseVehicle": {
+            "code": "subcompactCar"
+          },
+          "baseVehicles": [],
+          "sthp": 10,
+          "sthpCode": "",
+          "hnd": 1,
+          "sr": 3,
+          "ht": 11,
+          "htCode": "",
+          "accelerationInput": 3,
+          "moveInput": 30,
+          "moveCode": "",
+          "lwt": 1,
+          "load": 1,
+          "emptyWeight": 0,
+          "crew": 1,
+          "passengers": 3,
+          "occCode": "",
+          "sm": 2,
+          "range": 300,
+          "baseCost": 10000,
+          "locations": "G4W",
+          "drMethod": "single",
+          "drFacing": {}
         }
       },
       "lc": {
