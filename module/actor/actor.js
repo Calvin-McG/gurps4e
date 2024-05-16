@@ -111,8 +111,286 @@ export class gurpsActor extends Actor {
 					"baseCost": 10000,
 					"locations": "G4W",
 					"drMethod": "single",
-					"dr": undefined,
-					"drFacing": {}
+					"dr": 2,
+					"drFacing": {
+						"drFront":  -1,
+						"drRear":   -1,
+						"drSide":   -1,
+						"drTop":    -1,
+						"drBottom": -1
+					},
+					"loc": {
+						"A": {
+							"code": "A",
+							"name": "arm",
+							"Name": "Arm",
+							"dr": -1,
+							"drFacing": {
+								"drFront":  -1,
+								"drRear":   -1,
+								"drSide":   -1,
+								"drTop":    -1,
+								"drBottom": -1
+							},
+							"count": 0,
+							"retractable": false
+						},
+						"C": {
+							"code": "C",
+							"name": "caterpillar tracks",
+							"Name": "Caterpillar Tracks",
+							"dr": -1,
+							"drFacing": {
+								"drFront":  -1,
+								"drRear":   -1,
+								"drSide":   -1,
+								"drTop":    -1,
+								"drBottom": -1
+							},
+							"count": 0,
+							"retractable": false
+						},
+						"D": {
+							"code": "D",
+							"name": "draft animals",
+							"Name": "Draft Animals",
+							"dr": 0,
+							"drFacing": {
+								"drFront":  0,
+								"drRear":   0,
+								"drSide":   0,
+								"drTop":    0,
+								"drBottom": 0
+							},
+							"count": 0,
+							"retractable": false
+						},
+						"E": {
+							"code": "E",
+							"name": "exposed rider",
+							"Name": "Exposed Rider",
+							"dr": 0,
+							"drFacing": {
+								"drFront":  0,
+								"drRear":   0,
+								"drSide":   0,
+								"drTop":    0,
+								"drBottom": 0
+							},
+							"count": 0,
+							"retractable": false
+						},
+						"G": {
+							"code": "G",
+							"name": "large glass windows",
+							"Name": "Large Glass Windows",
+							"dr": 2,
+							"drFacing": {
+								"drFront":  2,
+								"drRear":   2,
+								"drSide":   2,
+								"drTop":    2,
+								"drBottom": 2
+							},
+							"count": 0,
+							"retractable": false
+						},
+						"g": {
+							"code": "g",
+							"name": "small glass windows",
+							"Name": "Small Glass Windows",
+							"dr": 2,
+							"drFacing": {
+								"drFront":  2,
+								"drRear":   2,
+								"drSide":   2,
+								"drTop":    2,
+								"drBottom": 2
+							},
+							"count": 0,
+							"retractable": false
+						},
+						"H": {
+							"code": "H",
+							"name": "helicopter rotors",
+							"Name": "Helicopter Rotors",
+							"dr": -1,
+							"drFacing": {
+								"drFront":  -1,
+								"drRear":   -1,
+								"drSide":   -1,
+								"drTop":    -1,
+								"drBottom": -1
+							},
+							"count": 0,
+							"retractable": false
+						},
+						"L": {
+							"code": "L",
+							"name": "legs",
+							"Name": "Legs",
+							"dr": -1,
+							"drFacing": {
+								"drFront":  -1,
+								"drRear":   -1,
+								"drSide":   -1,
+								"drTop":    -1,
+								"drBottom": -1
+							},
+							"count": 0,
+							"retractable": false
+						},
+						"M": {
+							"code": "M",
+							"name": "mast and rigging",
+							"Name": "Mast and Rigging",
+							"dr": -1,
+							"drFacing": {
+								"drFront":  -1,
+								"drRear":   -1,
+								"drSide":   -1,
+								"drTop":    -1,
+								"drBottom": -1
+							},
+							"count": 0,
+							"retractable": false
+						},
+						"O": {
+							"code": "O",
+							"name": "open cabin",
+							"Name": "Open Cabin",
+							"dr": 0,
+							"drFacing": {
+								"drFront":  0,
+								"drRear":   0,
+								"drSide":   0,
+								"drTop":    0,
+								"drBottom": 0
+							},
+							"count": 0,
+							"retractable": false
+						},
+						"R": {
+							"code": "R",
+							"name": "runners and skids",
+							"Name": "Runners and Skids",
+							"dr": -1,
+							"drFacing": {
+								"drFront":  -1,
+								"drRear":   -1,
+								"drSide":   -1,
+								"drTop":    -1,
+								"drBottom": -1
+							},
+							"count": 0,
+							"retractable": false
+						},
+						"S": {
+							"code": "S",
+							"name": "large superstructure or gondola",
+							"Name": "Large Superstructure or Gondola",
+							"dr": -1,
+							"drFacing": {
+								"drFront":  -1,
+								"drRear":   -1,
+								"drSide":   -1,
+								"drTop":    -1,
+								"drBottom": -1
+							},
+							"count": 0,
+							"retractable": false
+						},
+						"s": {
+							"code": "s",
+							"name": "small superstructure",
+							"Name": "Small Superstructure",
+							"dr": -1,
+							"drFacing": {
+								"drFront":  -1,
+								"drRear":   -1,
+								"drSide":   -1,
+								"drTop":    -1,
+								"drBottom": -1
+							},
+							"count": 0,
+							"retractable": false
+						},
+						"T": {
+							"code": "T",
+							"name": "main turret",
+							"Name": "Main Turret",
+							"dr": -1,
+							"drFacing": {
+								"drFront":  -1,
+								"drRear":   -1,
+								"drSide":   -1,
+								"drTop":    -1,
+								"drBottom": -1
+							},
+							"count": 0,
+							"retractable": false
+						},
+						"t": {
+							"code": "t",
+							"name": "independent turret",
+							"Name": "Independent Turret",
+							"dr": -1,
+							"drFacing": {
+								"drFront":  -1,
+								"drRear":   -1,
+								"drSide":   -1,
+								"drTop":    -1,
+								"drBottom": -1
+							},
+							"count": 0,
+							"retractable": false
+						},
+						"W": {
+							"code": "W",
+							"name": "wheel",
+							"Name": "Wheel",
+							"dr": -1,
+							"drFacing": {
+								"drFront":  -1,
+								"drRear":   -1,
+								"drSide":   -1,
+								"drTop":    -1,
+								"drBottom": -1
+							},
+							"count": 0,
+							"retractable": false
+						},
+						"Wi": {
+							"code": "Wi",
+							"name": "wings",
+							"Name": "Wings",
+							"dr": -1,
+							"drFacing": {
+								"drFront":  -1,
+								"drRear":   -1,
+								"drSide":   -1,
+								"drTop":    -1,
+								"drBottom": -1
+							},
+							"count": 0,
+							"retractable": false
+						},
+						"X": {
+							"code": "X",
+							"name": "exposed weapon mount",
+							"Name": "Exposed Weapon Mount",
+							"dr": 0,
+							"drFacing": {
+								"drFront":  0,
+								"drRear":   0,
+								"drSide":   0,
+								"drTop":    0,
+								"drBottom": 0
+							},
+							"count": 0,
+							"retractable": false
+						}
+					}
 				}
 		}
 		if (typeof this.system.vehicle.craftType === "undefined") {
@@ -192,16 +470,281 @@ export class gurpsActor extends Actor {
 		if (typeof this.system.vehicle.locations === "undefined") {
 			this.system.vehicle.locations = "G4W"
 		}
-		if (typeof this.system.vehicle.drMethod === "undefined") {
-			this.system.vehicle.drMethod = "single"
+		if (typeof this.system.vehicle.dr === "undefined") {
+			this.system.vehicle.dr = 2
 		}
-		if (typeof this.system.vehicle.drFacing === "undefined") {
-			this.system.vehicle.drFacing = {
-				"drFront":  undefined,
-				"drRear":   undefined,
-				"drSide":   undefined,
-				"drTop":    undefined,
-				"drBottom": undefined
+		if (typeof this.system.vehicle.loc === "undefined") {
+			this.system.vehicle.loc = {
+				"A": {
+					"code": "A",
+					"name": "arm",
+					"Name": "Arm",
+					"dr": -1,
+					"drFacing": {
+						"drFront":  -1,
+						"drRear":   -1,
+						"drSide":   -1,
+						"drTop":    -1,
+						"drBottom": -1
+					},
+					"count": 0,
+					"retractable": false
+				},
+				"C": {
+					"code": "C",
+					"name": "caterpillar tracks",
+					"Name": "Caterpillar Tracks",
+					"dr": -1,
+					"drFacing": {
+						"drFront":  -1,
+						"drRear":   -1,
+						"drSide":   -1,
+						"drTop":    -1,
+						"drBottom": -1
+					},
+					"count": 0,
+					"retractable": false
+				},
+				"D": {
+					"code": "D",
+					"name": "draft animals",
+					"Name": "Draft Animals",
+					"dr": 0,
+					"drFacing": {
+						"drFront":  0,
+						"drRear":   0,
+						"drSide":   0,
+						"drTop":    0,
+						"drBottom": 0
+					},
+					"count": 0,
+					"retractable": false
+				},
+				"E": {
+					"code": "E",
+					"name": "exposed rider",
+					"Name": "Exposed Rider",
+					"dr": 0,
+					"drFacing": {
+						"drFront":  0,
+						"drRear":   0,
+						"drSide":   0,
+						"drTop":    0,
+						"drBottom": 0
+					},
+					"count": 0,
+					"retractable": false
+				},
+				"G": {
+					"code": "G",
+					"name": "large glass windows",
+					"Name": "Large Glass Windows",
+					"dr": 2,
+					"drFacing": {
+						"drFront":  2,
+						"drRear":   2,
+						"drSide":   2,
+						"drTop":    2,
+						"drBottom": 2
+					},
+					"count": 0,
+					"retractable": false
+				},
+				"g": {
+					"code": "g",
+					"name": "small glass windows",
+					"Name": "Small Glass Windows",
+					"dr": 2,
+					"drFacing": {
+						"drFront":  2,
+						"drRear":   2,
+						"drSide":   2,
+						"drTop":    2,
+						"drBottom": 2
+					},
+					"count": 0,
+					"retractable": false
+				},
+				"H": {
+					"code": "H",
+					"name": "helicopter rotors",
+					"Name": "Helicopter Rotors",
+					"dr": -1,
+					"drFacing": {
+						"drFront":  -1,
+						"drRear":   -1,
+						"drSide":   -1,
+						"drTop":    -1,
+						"drBottom": -1
+					},
+					"count": 0,
+					"retractable": false
+				},
+				"L": {
+					"code": "L",
+					"name": "legs",
+					"Name": "Legs",
+					"dr": -1,
+					"drFacing": {
+						"drFront":  -1,
+						"drRear":   -1,
+						"drSide":   -1,
+						"drTop":    -1,
+						"drBottom": -1
+					},
+					"count": 0,
+					"retractable": false
+				},
+				"M": {
+					"code": "M",
+					"name": "mast and rigging",
+					"Name": "Mast and Rigging",
+					"dr": -1,
+					"drFacing": {
+						"drFront":  -1,
+						"drRear":   -1,
+						"drSide":   -1,
+						"drTop":    -1,
+						"drBottom": -1
+					},
+					"count": 0,
+					"retractable": false
+				},
+				"O": {
+					"code": "O",
+					"name": "open cabin",
+					"Name": "Open Cabin",
+					"dr": 0,
+					"drFacing": {
+						"drFront":  0,
+						"drRear":   0,
+						"drSide":   0,
+						"drTop":    0,
+						"drBottom": 0
+					},
+					"count": 0,
+					"retractable": false
+				},
+				"R": {
+					"code": "R",
+					"name": "runners and skids",
+					"Name": "Runners and Skids",
+					"dr": -1,
+					"drFacing": {
+						"drFront":  -1,
+						"drRear":   -1,
+						"drSide":   -1,
+						"drTop":    -1,
+						"drBottom": -1
+					},
+					"count": 0,
+					"retractable": false
+				},
+				"S": {
+					"code": "S",
+					"name": "large superstructure or gondola",
+					"Name": "Large Superstructure or Gondola",
+					"dr": -1,
+					"drFacing": {
+						"drFront":  -1,
+						"drRear":   -1,
+						"drSide":   -1,
+						"drTop":    -1,
+						"drBottom": -1
+					},
+					"count": 0,
+					"retractable": false
+				},
+				"s": {
+					"code": "s",
+					"name": "small superstructure",
+					"Name": "Small Superstructure",
+					"dr": -1,
+					"drFacing": {
+						"drFront":  -1,
+						"drRear":   -1,
+						"drSide":   -1,
+						"drTop":    -1,
+						"drBottom": -1
+					},
+					"count": 0,
+					"retractable": false
+				},
+				"T": {
+					"code": "T",
+					"name": "main turret",
+					"Name": "Main Turret",
+					"dr": -1,
+					"drFacing": {
+						"drFront":  -1,
+						"drRear":   -1,
+						"drSide":   -1,
+						"drTop":    -1,
+						"drBottom": -1
+					},
+					"count": 0,
+					"retractable": false
+				},
+				"t": {
+					"code": "t",
+					"name": "independent turret",
+					"Name": "Independent Turret",
+					"dr": -1,
+					"drFacing": {
+						"drFront":  -1,
+						"drRear":   -1,
+						"drSide":   -1,
+						"drTop":    -1,
+						"drBottom": -1
+					},
+					"count": 0,
+					"retractable": false
+				},
+				"W": {
+					"code": "W",
+					"name": "wheel",
+					"Name": "Wheel",
+					"dr": -1,
+					"drFacing": {
+						"drFront":  -1,
+						"drRear":   -1,
+						"drSide":   -1,
+						"drTop":    -1,
+						"drBottom": -1
+					},
+					"count": 0,
+					"retractable": false
+				},
+				"Wi": {
+					"code": "Wi",
+					"name": "wings",
+					"Name": "Wings",
+					"dr": -1,
+					"drFacing": {
+						"drFront":  -1,
+						"drRear":   -1,
+						"drSide":   -1,
+						"drTop":    -1,
+						"drBottom": -1
+					},
+					"count": 0,
+					"retractable": false
+				},
+				"X": {
+					"code": "X",
+					"name": "exposed weapon mount",
+					"Name": "Exposed Weapon Mount",
+					"dr": 0,
+					"drFacing": {
+						"drFront":  0,
+						"drRear":   0,
+						"drSide":   0,
+						"drTop":    0,
+						"drBottom": 0
+					},
+					"count": 0,
+					"retractable": false
+				}
 			}
 		}
 
@@ -6203,7 +6746,5 @@ export class gurpsActor extends Actor {
 		this.system.info = info;
 
 		this.update({ 'system.info': this.system.info });
-
-		console.log(this.system)
 	}
 }
