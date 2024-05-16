@@ -2198,11 +2198,11 @@ export class vehicleHelpers {
                     "drTop": 5,
                     "drBottom": 5,
                 },
-                "drLoc": [ {
-                    "loc": "S",
+                "loc": [ {
+                    "code": "S",
                     "dr": 3
                 }, {
-                    "loc": "W",
+                    "code": "W",
                     "dr": 5
                 } ],
                 "range": "12",
@@ -2364,11 +2364,11 @@ export class vehicleHelpers {
                     "drTop": 100,
                     "drBottom": 100,
                 },
-                "drLoc": [ {
-                    "loc": "s",
+                "loc": [ {
+                    "code": "s",
                     "dr": 50
                 }, {
-                    "loc": "W",
+                    "code": "W",
                     "dr": 50
                 } ],
                 "range": "100",
@@ -2446,8 +2446,9 @@ export class vehicleHelpers {
                 "crew": "3",
                 "passengers": "1",
                 "dr": 40,
-                "drLoc": [ {
-                    "loc": "T",
+                "loc": [ {
+                    "code": "T",
+                    "dr": 60,
                     "drFront":  80,
                     "drRear":   60,
                     "drSide":   60,
@@ -2649,8 +2650,8 @@ export class vehicleHelpers {
                 "crew": "6",
                 "passengers": "5",
                 "dr": 18,
-                "drLoc": [ {
-                    "loc": "S",
+                "loc": [ {
+                    "code": "S",
                     "dr": 10
                 }],
                 "range": "950",
@@ -2717,14 +2718,14 @@ export class vehicleHelpers {
                     "drTop":    290,
                     "drBottom": 740,
                 },
-                "drLoc": [ {
-                    "loc": "S",
+                "loc": [ {
+                    "code": "S",
                     "dr": 1150
                 }, {
-                    "loc": "T",
+                    "code": "T",
                     "dr": 1150
                 }, {
-                    "loc": "t",
+                    "code": "t",
                     "dr": 490
                 } ],
                 "range": "8100",
