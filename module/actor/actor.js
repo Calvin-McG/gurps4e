@@ -20,9 +20,15 @@ export class gurpsActor extends Actor {
 		// Set default image by type of actor
 		switch (this.type) {
 			case "fullchar":
+				if (this.name.match("^New Actor.*")) {
+					this.name = "New Actor " + Math.floor(Math.random() * 101);
+				}
 				this.img = "icons/svg/mystery-man.svg"; // This icon comes from the foundry default set
 				break;
 			case "Simple Vehicle":
+				if (this.name.match("^New Actor.*")) {
+					this.name = "New Simple Vehicle " + Math.floor(Math.random() * 101);
+				}
 				this.img = "systems/gurps4e/icons/svg/car.svg"; // This icon comes from the GURPS set
 				break;
 		}
