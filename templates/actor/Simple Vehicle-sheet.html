@@ -340,7 +340,7 @@
               <tr class="design-row">
                 <td style="width: 100%">Entry Method</td>
                 <td>
-                  <select name="system.vehicle.drMethod">
+                  <select name="system.vehicle.drMethod" class="dr-entry-select">
                     {{#select actor.system.vehicle.drMethod}}
                     <option value="single">Single Value</option>
                     <option value="facing">Facing</option>
@@ -367,32 +367,76 @@
                   </div>
                 </td>
               </tr>
-              {{else}}
+              {{/if}}
+            </table>
+            {{#unless (eq actor.system.vehicle.drMethod "single")}}
+            <h2 class="bold" style="text-align: center;">Facing DR</h2>
+            <table style="background-image: url('systems/gurps4e/icons/svg/car-side.svg'); background-size: contain; background-repeat: no-repeat; background-position: center;">
               <tr>
                 <td></td>
                 <td>
-                  <div style="text-align: center; font-weight: bold; text-decoration: underline;">Front</div>
-                  <input name="system.vehicle.drFacing.drFront" type="number" value="{{actor.system.vehicle.drFacing.drFront}}" placeholder="2" />
+                  <div style="text-align: center; font-weight: bold; text-decoration: underline;">Top</div>
+                  <input name="system.vehicle.drFacing.drTop" type="number" value="{{actor.system.vehicle.drFacing.drTop}}" placeholder="2" />
                 </td>
                 <td></td>
               </tr>
               <tr>
-                <td></td><td></td><td></td>
+                <td>
+                  <div style="text-align: center; font-weight: bold; text-decoration: underline;">Rear</div>
+                  <input name="system.vehicle.drFacing.drRear" type="number" value="{{actor.system.vehicle.drFacing.drRear}}" placeholder="2" />
+                </td>
+                <td>
+                  <div style="text-align: center; font-weight: bold; text-decoration: underline;">Sides</div>
+                  <input name="system.vehicle.drFacing.drSide" type="number" value="{{actor.system.vehicle.drFacing.drSide}}" placeholder="2" />
+                </td>
+                <td>
+                  <div style="text-align: center; font-weight: bold; text-decoration: underline;">Front</div>
+                  <input name="system.vehicle.drFacing.drFront" type="number" value="{{actor.system.vehicle.drFacing.drFront}}" placeholder="2" />
+                </td>
               </tr>
               <tr>
-                <td></td><td></td><td></td>
+                <td></td>
+                <td>
+                  <div style="text-align: center; font-weight: bold; text-decoration: underline;">Bottom</div>
+                  <input name="system.vehicle.drFacing.drBottom" type="number" value="{{actor.system.vehicle.drFacing.drBottom}}" placeholder="2" />
+                </td>
+                <td></td>
               </tr>
-              <tr>
-                <td></td><td></td><td></td>
-              </tr>
-              <tr>
-                <td></td><td></td><td></td>
-              </tr>
-
-              {{/if}}
             </table>
-            {{/if}}
 
+            <h2 class="bold" style="text-align: center;">Location DR</h2>
+            <table>
+              {{#each actor.system.vehicle.loc as |location id|}}
+              <tr>
+                <td>
+                  {{loc.Name}} ({{loc.code}})
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Does this location have it's own DR?</td>
+                <td>
+                  <input type="checkbox" name="system.vehicle.loc.{{id}}.locationDR" {{checked location.locationDR}} data-dtype="Boolean" style="width: 100%;"/>
+                </td>
+              </tr>
+              <tr>
+                <td>Is that DR facing specific?</td>
+                <td>
+                  <input type="checkbox" name="system.vehicle.loc.{{id}}.facingDR" {{checked location.facingDR}} data-dtype="Boolean" style="width: 100%;"/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Base DR
+                </td>
+                <td>
+                  <input name="system.vehicle.loc.{{id}}.dr" type="number" value="{{location.dr}}" placeholder="2" />
+                </td>
+              </tr>
+              {{/each}}
+            </table>
+            {{/unless}}
+            {{/if}}
           </div>
           <div style="width: 50%;">
             <h2 class="bold" style="text-align: center;">What The Fuck Is This Shit?</h2>
