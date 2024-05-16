@@ -51,7 +51,6 @@ export class gurpsActor extends Actor {
 
 	prepareSimpleVehicleData() {
 		this.checkUndefinedVehicles();
-
 		// This section splits up the logic between Pick and Custom
 		if (this.system.vehicle.method.toLowerCase() === "pick") {
 			this.loadBaseVehicles();
@@ -63,8 +62,6 @@ export class gurpsActor extends Actor {
 
 		// This section is for logic that applies to both methods
 		this.vehicleWeightHandling();
-
-		console.log(this.system.vehicle);
 	}
 
 	loadBaseVehicles() {
