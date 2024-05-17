@@ -13,11 +13,11 @@ import { vehicleHelpers } from "../../helpers/vehicleHelpers.js";
  */
 export class gurpsActor extends Actor {
 
-	// This method is called only upon actor creation
-	_onCreate(data, options, userId) {
-		super._onCreate(data, options, userId);
+	// Prior to creation, set the name and image by actor type.
+	// for some reason, onCreate was not working for actors.
+	async _preCreate(data, options, user) {
+		await super._preCreate(data, options, user);
 
-		// Set default image by type of actor
 		switch (this.type) {
 			case "fullchar":
 				if (this.name.match("^New Actor.*")) {
@@ -32,6 +32,11 @@ export class gurpsActor extends Actor {
 				this.img = "systems/gurps4e/icons/svg/car.svg"; // This icon comes from the GURPS set
 				break;
 		}
+
+		// update the document's source
+		// this is a synchronous operation
+		// because it's executed locally BEFORE the item data is sent to the database
+		return this.updateSource({ name: this.name, img: this.img });
 	}
 
 	/**
