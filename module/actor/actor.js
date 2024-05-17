@@ -6438,7 +6438,6 @@ export class gurpsActor extends Actor {
 	}
 
 	showInfo(id) {
-		console.log(id)
 		let info = "";
 		if (id === "craft-type") {
 			info = "<table>";
