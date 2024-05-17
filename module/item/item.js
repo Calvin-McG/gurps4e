@@ -75,8 +75,7 @@ export class gurpsItem extends Item {
       default: // not a supported type
         console.error("This type of item is not supported in the system!");
         this.name = "New Unknown Item " + Math.floor(Math.random() * 101);
-        this.img = "icons/svg/cancel.svgg"; // This icon comes from the foundry default set
-
+        this.img = "icons/svg/cancel.svg"; // This icon comes from the foundry default set
     }
   }
 
