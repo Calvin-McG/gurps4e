@@ -172,29 +172,34 @@ export class gurpsActorSheet extends ActorSheet {
 	_onRoll(event) {
 		event.preventDefault();
 
-		let modModal = new Dialog({
-			title: "Modifier Dialog",
-			content: "<input type='text' id='mod' name='mod' value='0'/>",
-			buttons: {
-				mod: {
-					icon: '<i class="fas fa-check"></i>',
-					label: "Apply Modifier",
-					callback: (html) => {
-						let mod = html.find('#mod').val()
-						this.computeRollFromEvent(event, mod)
+		if (event.altKey || event.ctrlKey || event.shiftKey) { // If any modifier key were pressed.
+			this.computeRollFromEvent(event, 0); // Make the roll directly without bringing up the modal.
+		}
+		else { // Otherwise
+			let modModal = new Dialog({ // Bring up a modal to allow them to input a modifier on the roll.
+				title: "Modifier Dialog",
+				content: "<input type='text' id='mod' name='mod' value='0'/>",
+				buttons: {
+					mod: {
+						icon: '<i class="fas fa-check"></i>',
+						label: "Apply Modifier",
+						callback: (html) => {
+							let mod = html.find('#mod').val()
+							this.computeRollFromEvent(event, mod)
+						}
+					},
+					noMod: {
+						icon: '<i class="fas fa-times"></i>',
+						label: "No Modifier",
+						callback: () => this.computeRollFromEvent(event, 0)
 					}
 				},
-				noMod: {
-					icon: '<i class="fas fa-times"></i>',
-					label: "No Modifier",
-					callback: () => this.computeRollFromEvent(event, 0)
-				}
-			},
-			default: "mod",
-			render: html => console.log("Register interactivity in the rendered dialog"),
-			close: html => console.log("This always is logged no matter which option is chosen")
-		})
-		modModal.render(true)
+				default: "mod",
+				render: html => console.log("Register interactivity in the rendered dialog"),
+				close: html => console.log("This always is logged no matter which option is chosen")
+			})
+			modModal.render(true)
+		}
 	}
 
 	computeRollFromEvent(event, modifier){
