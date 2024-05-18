@@ -154,6 +154,46 @@ export class skillHelpers {
         return level;
     }
 
+    // Actor is the actor object, baseSkill is the string we have been passed, which might also be an attribute
+    static getBaseSkillOrAttributeLevel(actor, baseSkill) {
+        let base = 0;
+
+        baseSkill = baseSkill.toUpperCase();
+        // TODO - Use fetchStat from actorHelpers 1855
+        // First, check to see if they're basing the defence off of an attribute
+        if (baseSkill === 'ST' || baseSkill=== 'STRENGTH') {
+            base = attributeHelpers.calcStOrHt(actor.system.primaryAttributes.strength, attributeHelpers.calcSMDiscount(actor.system.bio.sm));
+        }
+        else if (baseSkill === 'DX' || baseSkill === 'DEXTERITY') {
+            base = attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.dexterity);
+        }
+        else if (baseSkill === 'IQ' || baseSkill === 'INTELLIGENCE') {
+            base = attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.intelligence);
+        }
+        else if (baseSkill === 'HT' || baseSkill === 'HEALTH') {
+            base = attributeHelpers.calcStOrHt(actor.system.primaryAttributes.health, 1);
+        }
+        else if (baseSkill === 'PER' || baseSkill === 'PERCEPTION') {
+            base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.intelligence), actor.system.primaryAttributes.perception);
+        }
+        else if (baseSkill === 'WILL') {
+            base = attributeHelpers.calcPerOrWill(attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.intelligence), actor.system.primaryAttributes.will);
+        }
+        else { // Only then check the skills to see if any match.
+            for (let i = 0; i < actor.items.contents.length; i++){
+                if (actor.items.contents[i].type === "Rollable"){
+                    if (actor.items.contents[i].system.category === "skill"){
+                        if (baseSkill === actor.items.contents[i].name.toUpperCase()){
+                            base = this.computeSkillLevelWithoutDefaults(actor, actor.items.contents[i].system.difficulty, actor.items.contents[i].system.baseAttr, actor.items.contents[i].system.points, actor.items.contents[i].system.mod);
+                        }
+                    }
+                }
+            }
+        }
+
+        return base;
+    }
+
     static computeSkillLevelWithoutDefaults(actor, difficulty, baseAttr, points, mod) {
         let level = 0;
         if (actor.system) { // Make sure there's an actor before computing skill level
