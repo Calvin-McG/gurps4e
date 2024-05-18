@@ -681,6 +681,34 @@ export class attributeHelpers {
         return Math.floor(speed) + +3 + +dodge.mod + +Math.floor(dodge.points/15);
     }
 
+    // This method takes in only an actor object and returns their speed
+    static getActorSpeed(actor) {
+        let dx = this.calcDxOrIq(actor.system.primaryAttributes.dexterity)
+        let ht = this.calcStOrHt(actor.system.primaryAttributes.health, 1);
+        return this.calcSpeed(dx, ht, actor.system.primaryAttributes.speed);
+    }
+
+    // This method takes in only an actor object and returns their dodge
+    // mod is optional
+    static getActorDodge(actor, mod) {
+        let speed = this.getActorSpeed(actor)
+        let dodge = this.calcDodge(speed, actor.system.primaryAttributes.dodge)
+
+        if (typeof mod !== "undefined") {
+            dodge += mod;
+        }
+
+        if (actor.system.flag.combatReflexes) {
+            dodge += 1;
+        }
+
+        if (actor.system.enhanced.dodge){
+            dodge += actor.system.enhanced.dodge;
+        }
+
+        return dodge;
+    }
+
     static calcLiftingSt(st, lifting, smDiscount){
         if (smDiscount) {
             return +st + +lifting.mod + +Math.floor(lifting.points / +( +3 * +smDiscount));
