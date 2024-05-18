@@ -6291,8 +6291,20 @@ export class gurpsItem extends Item {
   }
 
   _prepareRollableData() {
-    if (this.system.category == ""){//The category will be blank upon initialization. Set it to skill so that the form's dynamic elements display correctly the first time it's opened.
+    if (typeof this.system.category === "undefined" || this.system.category === ""){ // The category will be blank upon initialization. Set it to skill so that the form's dynamic elements display correctly the first time it's opened.
       this.system.category = "skill";
+    }
+
+    if (typeof this.system.defenceTechnique === "undefined") {
+      this.system.defenceTechnique = "";
+    }
+
+    if (typeof this.system.halfPriceTechnique === "undefined") {
+      this.system.halfPriceTechnique = false;
+    }
+
+    if (typeof this.system.defenceTechniqueMod === "undefined") {
+      this.system.defenceTechniqueMod = 0;
     }
 
     if(this.system && this.actor){

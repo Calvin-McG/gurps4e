@@ -81,12 +81,56 @@
                 {{else}}
                     <tr>
                         <td>
+                            <label class="resource-label">Is this technique half price?</label>
+                        </td>
+                        <td style="display: flex">
+                            <input type="checkbox" name="system.halfPriceTechnique" {{checked item.system.halfPriceTechnique}} data-dtype="Boolean"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="resource-label">Is this technique based on an active defence</label>
+                        </td>
+                        <td>
+                            <select name="system.defenceTechnique">
+                                {{#select item.system.defenceTechnique}}
+                                <option value="">No</option>
+                                <option value="block">Block</option>
+                                <option value="parry">Parry</option>
+                                <option value="dodge">Dodge</option>
+                                {{/select}}
+                            </select>
+                        </td>
+                    </tr>
+                    {{#if (or (eq item.system.defenceTechnique "block") (eq item.system.defenceTechnique "parry"))}}
+                        <tr>
+                            <td>
+                                {{#if (eq item.system.defenceTechnique "parry")}}
+                                <label class="resource-label">The Parry's underlying modifier, like the +2 for a staff</label>
+                                {{else}}
+                                <label class="resource-label">The Block's underlying modifier, like the +3 for a large shield</label>
+                                {{/if}}
+                            </td>
+                            <td>
+                                <input type="text" name="system.defenceTechniqueMod" value="{{item.system.defenceTechniqueMod}}" data-dtype="Number"/>
+                            </td>
+                        </tr>
+                    {{/if}}
+                    <tr>
+                        <td>
                             <label id="baseSkillLabel" class="resource-label">Base Skill</label>
                         </td>
+                        {{#unless (eq item.system.defenceTechnique "dodge")}}
                         <td style="display: flex">
                             <input id="baseSkillText" type="text" name="system.baseSkill" value="{{item.system.baseSkill}}" data-dtype="String" style="flex:3;"/>
                             <label id="baseSkillLevel" style="flex: 1; text-align: center; line-height: 18px; font-weight: bold;">{{item.system.baseSkillLevel}}</label>
                         </td>
+                        {{else}}
+                        <td style="display: flex">
+                            <label style="flex: 1; text-align: right; line-height: 18px; padding-right: 0.5em; text-decoration: underline">Dodge: </label>
+                            <label id="baseSkillLevel" style="flex: 1; text-align: left; line-height: 18px; font-weight: bold;">{{item.system.baseSkillLevel}}</label>
+                        </td>
+                        {{/unless}}
                     </tr>
                     <tr>
                         <td>

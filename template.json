@@ -1023,6 +1023,11 @@
         "maxLevel": 0,
         "minLevel": 0
       },
+      "techniqueFlags": {
+        "defenceTechnique": "",
+        "defenceTechniqueMod": 0,
+        "halfPriceTechnique": false
+      },
       "mod": {
         "mod": 0
       },

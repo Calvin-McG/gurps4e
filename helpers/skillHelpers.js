@@ -52,6 +52,9 @@ export class skillHelpers {
             if (typeof item.dabblerPoints !== 'undefined') {
                 dabblerPoints = item.dabblerPoints;
             }
+            let defenceTechnique = typeof item.defenceTechnique !== "undefined" ? item.defenceTechnique : ""; // If we have a defenceTechnique value, use it. Otherwise default to ""
+            let defenceTechniqueMod = defenceTechnique === "block" || defenceTechnique === "parry" ? item.defenceTechniqueMod : 0; // If it's a defence technique, store the mod. Otherwise set to zero.
+            let halfPriceTechnique = item.halfPriceTechnique;
             let pts = item.points;
             let mod = item.mod;
             let base = 0;
@@ -68,6 +71,7 @@ export class skillHelpers {
             let will = attributeHelpers.calcPerOrWill(iq, actor.system.primaryAttributes.will);
 
             if (category === 'skill') { // It's a skill
+
                 // Figure out defaults
                 let q = 0;
                 while (defaults[q]) { // While the current entry is not null
@@ -135,51 +139,39 @@ export class skillHelpers {
             }
 
             else { // It's a technique
-                // Loop through all the skills on the sheet, find the one they picked and set that as the base
-                // Check attributes first, add any results to the array of attribute defaults
-                if (baseSkill === 'ST' || baseSkill=== 'STRENGTH') {
-                    base = st;
+                if (typeof defenceTechnique !== "undefined" && defenceTechnique === "") { // If it's not a defence technique, calculate base as for a skill.
+                    base = this.getBaseSkillOrAttributeLevel(actor, baseSkill);
                 }
-                else if (baseSkill === 'DX' || baseSkill === 'DEXTERITY') {
-                    base = dx;
+                else if (defenceTechnique === "parry") {
+                    base = this.computeParryOrBlockLevel(actor, baseSkill, defenceTechniqueMod, false);
                 }
-                else if (baseSkill === 'IQ' || baseSkill === 'INTELLIGENCE') {
-                    base = iq;
+                else if (defenceTechnique === "block") {
+                    base = this.computeParryOrBlockLevel(actor, baseSkill, defenceTechniqueMod, true);
                 }
-                else if (baseSkill === 'HT' || baseSkill === 'HEALTH') {
-                    base = ht;
+                else { // It's a dodge
+                    base = attributeHelpers.getActorDodge(actor, defenceTechniqueMod);
                 }
-                else if (baseSkill === 'PER' || baseSkill === 'PERCEPTION') {
-                    base = per;
-                }
-                else if (baseSkill === 'WILL') {
-                    base = will;
-                }
-                else {
-                    for (let i = 0; i < actor.items.contents.length; i++){
-                        if (actor.items.contents[i].type === "Rollable"){
-                            if (actor.items.contents[i].system.category === "skill"){
-                                if (baseSkill === actor.items.contents[i].name.toUpperCase()){
-                                    base = this.computeSkillLevelWithoutDefaults(actor, actor.items.contents[i].system.difficulty, actor.items.contents[i].system.baseAttr, actor.items.contents[i].system.points, actor.items.contents[i].system.mod);
-                                }
-                            }
-                        }
-                    }
-                }
+
                 item.baseSkillLevel = base;
 
                 //Modify Base Skill with Base Penalty
                 level = base + minLevel;
 
                 //Adjust for difficulty
-                if (difficulty == 'A') {
-                    if (points > 0){//They have spent points
+                if (difficulty === 'A') {
+                    if (points > 0){ // They have spent points
                         level = level + points;
+                        if (halfPriceTechnique) {
+                            level += points; // If it's a half price technique, add the value from the points a second time.
+                        }
                     }
                 }
-                else if (difficulty == 'H') {
+                else if (difficulty === 'H') {
                     if (points >= 2){//They have spent enough points to matter
                         level = level + points - 1;//First level costs 2, every other costs 1
+                    }
+                    if (halfPriceTechnique) {
+                        level += points; // If it's a half price technique, add the value from the points a second time.
                     }
                 }
                 level = Math.min((level + mod), (maxLevel + base));
