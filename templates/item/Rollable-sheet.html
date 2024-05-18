@@ -13,92 +13,140 @@
                     </td>
                 </tr>
             </table>
-            <div class="">
-                <div class="flexrow">
-                    <label class="resource-label">Category</label>
-                    <select name="system.category">
-                        {{#select item.system.category}}
-                        <option value="skill">Skill</option>
-                        <option value="technique">Technique</option>
-                        {{/select}}
-                    </select>
-                </div>
+            <table class="">
+                <tr>
+                    <td>
+                        <label class="resource-label">Category</label>
+                    </td>
+                    <td>
+                        <select name="system.category">
+                            {{#select item.system.category}}
+                            <option value="skill">Skill</option>
+                            <option value="technique">Technique</option>
+                            {{/select}}
+                        </select>
+                    </td>
+                </tr>
                 {{#if (eq item.system.category "skill") }}
-                    <div class="flexrow">
-                        <label class="resource-label">Skill Difficulty</label>
-                        <select name="system.difficulty">
-                            {{#select item.system.difficulty}}
-                            <option value="E">Easy</option>
-                            <option value="A">Average</option>
-                            <option value="H">Hard</option>
-                            <option value="VH">Very Hard</option>
-                            <option value="W">Wildcard</option>
-                            {{/select}}
-                        </select>
-                    </div>
+                    <tr>
+                        <td>
+                            <label class="resource-label">Skill Difficulty</label>
+                        </td>
+                        <td>
+                            <select name="system.difficulty">
+                                {{#select item.system.difficulty}}
+                                <option value="E">Easy</option>
+                                <option value="A">Average</option>
+                                <option value="H">Hard</option>
+                                <option value="VH">Very Hard</option>
+                                <option value="W">Wildcard</option>
+                                {{/select}}
+                            </select>
+                        </td>
+                    </tr>
                 {{else}}
-                    <div class="flexrow">
-                        <label class="resource-label">Technique Difficulty</label>
-                        <select name="system.difficulty">
-                            {{#select item.system.difficulty}}
-                            <option value="A">Average</option>
-                            <option value="H">Hard</option>
-                            {{/select}}
-                        </select>
-                    </div>
+                    <tr>
+                        <td>
+                            <label class="resource-label">Technique Difficulty</label>
+                        </td>
+                        <td>
+                            <select name="system.difficulty">
+                                {{#select item.system.difficulty}}
+                                <option value="A">Average</option>
+                                <option value="H">Hard</option>
+                                {{/select}}
+                            </select>
+                        </td>
+                    </tr>
                 {{/if}}
 
                 {{#if (eq item.system.category "skill") }}
-                    <div class="flexrow">
-                        <label class="resource-label">Base Attribute</label>
-                        <select name="system.baseAttr">
-                            {{#select item.system.baseAttr}}
-                            <option value="ST">ST</option>
-                            <option value="DX">DX</option>
-                            <option value="IQ">IQ</option>
-                            <option value="HT">HT</option>
-                            <option value="Per">Per</option>
-                            <option value="Will">Will</option>
-                            {{/select}}
-                        </select>
-                    </div>
+                    <tr>
+                        <td>
+                            <label class="resource-label">Base Attribute</label>
+                        </td>
+                        <td>
+                            <select name="system.baseAttr">
+                                {{#select item.system.baseAttr}}
+                                <option value="ST">ST</option>
+                                <option value="DX">DX</option>
+                                <option value="IQ">IQ</option>
+                                <option value="HT">HT</option>
+                                <option value="Per">Per</option>
+                                <option value="Will">Will</option>
+                                {{/select}}
+                            </select>
+                        </td>
+                    </tr>
                 {{else}}
-                    <div class="flexrow baseSkillRow" id="baseSkillRow">
-                        <label id="baseSkillLabel" class="resource-label">Base Skill</label>
-                        <input id="baseSkillText" type="text" name="system.baseSkill" value="{{item.system.baseSkill}}" data-dtype="String"/>
-                        <label id="baseSkillLevel" style="margin: auto">{{item.system.baseSkillLevel}}</label>
-                    </div>
-                    <div class="flexrow">
-                        <label class="resource-label">Base Penalty</label>
-                        <input type="text" name="system.minLevel" value="{{item.system.minLevel}}" data-dtype="Number"/>
-                    </div>
-                    <div class="flexrow">
-                        <label class="resource-label">Max Bonus</label>
-                        <input type="text" name="system.maxLevel" value="{{item.system.maxLevel}}" data-dtype="Number"/>
-                    </div>
+                    <tr>
+                        <td>
+                            <label id="baseSkillLabel" class="resource-label">Base Skill</label>
+                        </td>
+                        <td style="display: flex">
+                            <input id="baseSkillText" type="text" name="system.baseSkill" value="{{item.system.baseSkill}}" data-dtype="String" style="flex:3;"/>
+                            <label id="baseSkillLevel" style="flex: 1; text-align: center; line-height: 18px; font-weight: bold;">{{item.system.baseSkillLevel}}</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="resource-label">Base Penalty</label>
+                        </td>
+                        <td>
+                            <input type="text" name="system.minLevel" value="{{item.system.minLevel}}" data-dtype="Number"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="resource-label">Max Bonus</label>
+                        </td>
+                        <td>
+                            <input type="text" name="system.maxLevel" value="{{item.system.maxLevel}}" data-dtype="Number"/>
+                        </td>
+                    </tr>
                 {{/if}}
 
-                <div class="flexrow">
-                    <label class="resource-label">Modifier</label>
-                    <input type="text" name="system.mod" value="{{item.system.mod}}" data-dtype="Number"/>
-                </div>
-                <div class="flexrow">
-                    <label class="resource-label">Level</label>
-                    {{item.system.level}}
-                </div>
-                <div class="flexrow">
-                    <label class="resource-label">Points</label>
-                    <input type="text" name="system.points" value="{{item.system.points}}" data-dtype="Number"/>
-                </div>
-                <div id="subCategory" class="flexrow">
-                    <label class="resource-label">Race / Meta Trait / Etc:</label>
-                    <input type="text" name="system.subCategory" value="{{item.system.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
-                </div>
-                <div class="flexrow">
-                    <label class="resource-label">Notes</label>
-                    <input type="text" name="system.shortNotes" value="{{item.system.shortNotes}}"/>
-                </div>
-            </div>
+                <tr>
+                    <td>
+                        <label class="resource-label">Modifier</label>
+                    </td>
+                    <td>
+                        <input type="text" name="system.mod" value="{{item.system.mod}}" data-dtype="Number"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="resource-label">Level</label>
+                    </td>
+                    <td>
+                        <label style="text-align: center; line-height: 18px; font-weight: bold; display: block;">{{item.system.level}}</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="resource-label">Points</label>
+                    </td>
+                    <td>
+                        <input type="text" name="system.points" value="{{item.system.points}}" data-dtype="Number"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="resource-label">Race / Meta Trait / Etc:</label>
+                    </td>
+                    <td>
+                        <input type="text" name="system.subCategory" value="{{item.system.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="resource-label">Notes</label>
+                    </td>
+                    <td>
+                        <input type="text" name="system.shortNotes" value="{{item.system.shortNotes}}"/>
+                    </td>
+                </tr>
+            </table>
         </div>
     </header>
 
