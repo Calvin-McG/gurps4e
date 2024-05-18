@@ -1,6 +1,40 @@
 import { attributeHelpers } from "./attributeHelpers.js";
 
 export class skillHelpers {
+
+    // This method computes the parry level
+    // actor is the actor who has the parry
+    // baseSkill is the name of the skill for which we are computing the parry
+    // defenceMod is the modifier on the final parry, like the +2 on a staff or +3 on large shields.
+    // block is a boolean, when true, calculate as for a block. Otherwise assume it's a parry
+    static computeParryOrBlockLevel(actor, baseSkill, defenceMod, block) {
+        let base = this.getBaseSkillOrAttributeLevel(actor, baseSkill);
+
+        // Run the logic to convert a skill to a parry or block
+        base = (+base / 2); // Half skill...
+        base = +base + 3; // ...plus three.
+        if (typeof defenceMod !== "undefined") {
+            base = +base + +defenceMod; // Apply any further modifier, like the +2 from a staff or +3 for large shields.
+        }
+
+        if (actor.system.flag.combatReflexes) { // Apply combat reflexes if present
+            base += 1;
+        }
+
+        if (block) { // If it's a block, apply any enhanced block. If it's a parry, apply any enhanced parry.
+            if (actor.system.enhanced.block) {
+                base += actor.system.enhanced.block;
+            }
+        }
+        else {
+            if (actor.system.enhanced.parry) {
+                base += actor.system.enhanced.parry;
+            }
+        }
+
+        return Math.floor(base); // Round down in case the division above left us with a decimal
+    }
+
     static computeSkillLevel(actor, item, blockBuyingUpFromDefaults) {
         let level = 0;
         if (actor.system) { // Make sure there's an actor before computing skill level
