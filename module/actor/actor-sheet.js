@@ -49,37 +49,7 @@ export class gurpsActorSheet extends ActorSheet {
 		});
 
 		// Delete Inventory Item
-		html.find('.item-delete').click(ev => {
-			let confirmationModal = new Dialog({
-				title: "Are you sure?",
-				content: "<div style='width: 100%; text-align: center'>Are you sure?</div>",
-				buttons: {
-					delete: {
-						icon: '<i class="fas fa-trash"></i>',
-						label: "Delete",
-						callback: () => {
-							const li = $(ev.currentTarget).parents(".item");
-							const item = this.actor.items.get(li.data("itemId"));
-							item.delete();
-							li.slideUp(200, () => this.render(false));
-						}
-					},
-					cancel: {
-						icon: '<i class="fas fa-times"></i>',
-						label: "Cancel",
-						callback: () => {}
-					},
-				},
-				default: "cancel",
-				render: html => console.info("Register interactivity in the rendered dialog"),
-				close: html => console.info("This always is logged no matter which option is chosen")
-			},{
-				resizable: true,
-				width: "250"
-			})
-
-			confirmationModal.render(true);
-		});
+		html.find('.item-delete').click(this._onDelete.bind(this));
 
 		// Rollable checks.
 		html.find('.rollable').click(this._onRoll.bind(this));
@@ -101,8 +71,48 @@ export class gurpsActorSheet extends ActorSheet {
 
 	/* -------------------------------------------- */
 
+	_onDelete(event) {
+		if (event.ctrlKey && event.shiftKey) { // If both control and shift were held when clicking the button
+			this.deleteItem(event); // Go straight to the method to delete the item
+		}
+		else { // Otherwise, bring up the confirmation modal
+			let confirmationModal = new Dialog({
+				title: "Are you sure?",
+				content: "<div style='width: 100%; text-align: center'>Are you sure?</div>",
+				buttons: {
+					delete: {
+						icon: '<i class="fas fa-trash"></i>',
+						label: "Delete",
+						callback: () => {
+							this.deleteItem(event);
+						}
+					},
+					cancel: {
+						icon: '<i class="fas fa-times"></i>',
+						label: "Cancel",
+						callback: () => {}
+					},
+				},
+				default: "cancel",
+				render: html => console.info("Register interactivity in the rendered dialog"),
+				close: html => console.info("This always is logged no matter which option is chosen")
+			},{
+				resizable: true,
+				width: "250"
+			})
+
+			confirmationModal.render(true);
+		}
+	}
+
+	deleteItem(event) {
+		const li = $(event.currentTarget).parents(".item"); // Get the list item for the thing we just clicked
+		const item = this.actor.items.get(li.data("itemId")); // Get the item by looking at the list item's id
+		item.delete(); // Delete that item
+		li.slideUp(200, () => this.render(false)); // Do an animation to make it smoothly remove the item from the UI
+	}
+
 	_showHint(event) {
-		console.log(event)
 		this.actor.showInfo(event.currentTarget.id);
 	}
 	async _makeLearningRoll() {
