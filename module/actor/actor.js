@@ -4586,7 +4586,7 @@ export class gurpsActor extends Actor {
 
 		if (attack.type === "ranged"){
 			if (rof.shots === rof.rof){ // It is not a multiple projectile weapon
-				label += " and fires " + rof.shots + " times.";
+				label += " and fires " + this.numToWords(rof.shots);
 			}
 			else { // It is a multiple projectile weapon
 				label += " and fires " + rof.shots + " times for " + rof.rof + " shots.";
