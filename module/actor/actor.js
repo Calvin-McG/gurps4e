@@ -3338,7 +3338,7 @@ export class gurpsActor extends Actor {
 						htmlContent += "<td>" + attacks.ranged[q].damage + " " + attacks.ranged[q].damageType + " " + "(" + attacks.ranged[q].armourDivisor + ")</td>";
 					}
 					htmlContent += "<td>" + (attacks.ranged[q].acc ? attacks.ranged[q].acc : 0) + (attacks.ranged[q].scopeAcc ? "+" + attacks.ranged[q].scopeAcc : "") + "</td>";
-					htmlContent += "<td>" + attacks.ranged[q].range + "</td>";
+					htmlContent += "<td>" + attacks.ranged[q].halfRange + " / " + attacks.ranged[q].maxRange + "</td>";
 					htmlContent += "<td>" + attacks.ranged[q].rof + "</td>";
 					htmlContent += "<td>" + attacks.ranged[q].shots + "</td>";
 					htmlContent += "<td>" + attacks.ranged[q].st + "</td>";
