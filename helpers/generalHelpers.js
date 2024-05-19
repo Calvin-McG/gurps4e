@@ -41,6 +41,7 @@ export class generalHelpers {
         return bonus;
     }
 
+    // This method takes in a number of points of damage and converts it to the maximum number of dice and minimum number of adds
     static pointsToDiceAndAdds(points) {
         let diceAndAdds = {
             "dice": 1,
@@ -50,6 +51,29 @@ export class generalHelpers {
         diceAndAdds.dice = Math.floor(points/3.5);
         diceAndAdds.adds = Math.floor(3.5*(points/3.5-Math.floor(points/3.5)));
         return diceAndAdds;
+    }
+
+    // This method returns the above, except formatted as a string that Foundry can parse.
+    static pointsToDiceAndAddsString(points) {
+        let diceAndAdds = this.pointsToDiceAndAdds(points); // First, get the object with our values
+        let sign = diceAndAdds.adds > 0 ? "+" : ""; // Then check to see if we will need to manually add a '+' sign for the adds
+        let returnString = "";
+
+        if (diceAndAdds.dice !== 0) { // If we ended up with a non-zero amount of dice
+            returnString = diceAndAdds.dice + "d6"; // Include them
+        }
+
+        if (diceAndAdds.adds !== 0) { // If we ended up with a non-zero amount of adds.
+            returnString += sign + diceAndAdds.adds; // Append the sign if necessary, and any adds.
+        }
+
+        if (returnString.length === 0) { // If we somehow ended up with neither adds nor dice
+            returnString = "0"; // Make sure to at least return a zero.
+        }
+
+        console.log(returnString)
+
+        return returnString;
     }
 
     static correctAtoAn(string) {
