@@ -247,7 +247,11 @@
                                 </span>
                             </span>
                         </td>
-                        <td><input type="text" name="system.ranged.{{id}}.range" value="{{ranged.range}}" title="{{ranged.range}}" style="text-align:left;" /></td>
+                        <td>
+                            <input type="text" name="system.ranged.{{id}}.halfRangeInput" value="{{ranged.halfRangeInput}}" title="{{ranged.halfRangeInput}}" style="text-align:center; width: 40%" placeholder="1/2 D" />
+                            <span style="font-weight: bold">/</span>
+                            <input type="text" name="system.ranged.{{id}}.maxRangeInput" value="{{ranged.maxRangeInput}}" title="{{ranged.maxRangeInput}}" style="text-align:center; width: 40%" placeholder="Max" />
+                        </td>
                         <td><input type="text" name="system.ranged.{{id}}.rof" value="{{ranged.rof}}" title="{{ranged.rof}}" style="text-align:left;" /></td>
                         <td><input type="text" name="system.ranged.{{id}}.shots" value="{{ranged.shots}}" title="{{ranged.shots}}" style="text-align:left;" /></td>
                         <td><input type="text" name="system.ranged.{{id}}.bulk" value="{{ranged.bulk}}" title="{{ranged.bulk}}" style="text-align:left;" /></td>
