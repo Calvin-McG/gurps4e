@@ -598,6 +598,22 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  game.settings.register("gurps4e", "contactExplosionsFromAttacks", {
+    name: "Is it possible for attacks to result in contact explosions?",
+    hint: "With this set true, explosive attacks can cause contact explosions. " +
+        "The book gives only one example of a contact explosion, and it's when someone throws themselves on a grenade. " +
+        "This sometimes gets interpreted to mean that only such an extreme example would count as a contact explosion. " +
+        "So someone throwing themselves on a grenade, or tripping and landing on a mine would count. " +
+        "But someone getting hit directly with an explosive projectile would not. " +
+        "There is some debate as to whether such a strict interpretation should be used, " +
+        "and checking this box allows you to use the less strict interpretation, which is that any explosion that goes off in contact " +
+        "counts as a contact explosion. Like you might get from a contact-fused explosive going off after striking someone.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
   game.settings.register("gurps4e", "abdomenForLargeAreaInjury", {
     name: "Is the abdomen part of the torso for the purposes of determining Large Area Injury?",
     hint: "In the classic hit location table, slot 11 is the groin, and not part of the torso." +

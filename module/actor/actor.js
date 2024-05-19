@@ -5764,7 +5764,7 @@ export class gurpsActor extends Actor {
 			if(damageRoll.terms[0].results){
 				if(damageRoll.terms[0].results.length){ // Take the results of each roll and turn it into a die icon.
 					for (let k = 0; k < damageRoll.terms[0].results.length; k++){
-						if (damageType.explosive && !targetHex){ // If it's an explosive attack that is not striking the hex, it's a contact explosion
+						if (damageType.explosive && !targetHex && game.settings.get("gurps4e", "contactExplosionsFromAttacks")){ // If it's an explosive attack that is not striking the hex, it's a contact explosion
 							html += "<label class='fa fa-dice-six fa-2x' style='color: #d24502'></label>" // Explosives do max damage on contact, colour the dice all special to draw attention to this
 						}
 						else {
@@ -5787,7 +5787,7 @@ export class gurpsActor extends Actor {
 
 			let totalDamage;
 
-			if (damageType.explosive && !targetHex) { // The attack is explosive and not targeting the hex, therefore it's a contact explosion
+			if (damageType.explosive && !targetHex && game.settings.get("gurps4e", "contactExplosionsFromAttacks")) { // The attack is explosive and not targeting the hex, therefore it's a contact explosion
 				if (typeof damageRoll.terms[0].results !== "undefined") {
 					totalDamage = (6 * (damageRoll.terms[0].results.length)) + adds;
 				}
