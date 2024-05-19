@@ -561,7 +561,37 @@ Hooks.once("init", () => {
   // Register option for whether the RPM magic tab shows up
   game.settings.register("gurps4e", "expandedTrainingBonuses", {
     name: "Expanded Training Bonuses.",
-    hint: "Enabling this setting uses the expanded training bonuses table from MA:TG48 which grants further bonuses at DX+4, +7, +10, and so on. Currently applies to the following skills: Throwing.",
+    hint: "Enabling this setting uses the expanded training bonuses table from MA:TG48 which grants further bonuses at DX+4, +7, +10, and so on. Currently applies to the following skills: Throwing, Thrown Weapon, and Throwing Art.",
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
+  // Register option for whether the RPM magic tab shows up
+  game.settings.register("gurps4e", "percentageBasedTrainingBonuses", {
+    name: "Percentage Based Training Bonuses.",
+    hint: "Enabling this setting makes training bonuses percentage based, rather than strict breakpoints at 20, 30, etc. Currently applies to the following skills: Throwing, Thrown Weapon, and Throwing Art.",
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
+  // Register option for whether the RPM magic tab shows up
+  game.settings.register("gurps4e", "cinematicTrainingBonusAccrual", {
+    name: "Cinematic Training Bonus Accrual.",
+    hint: "Enabling this setting makes training bonuses accrue at twice the rate. As in, where you'd normally get +1, you'd instead get +2, or +20% when using the percentage based bonuses. Currently applies to the following skills: Throwing, Thrown Weapon, and Throwing Art.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
+
+  // Register option for whether the RPM magic tab shows up
+  game.settings.register("gurps4e", "cinematicTrainingBonusCap", {
+    name: "Cinematic Training Bonus Cap.",
+    hint: "Enabling this setting makes the maximum training bonus +10, or +100% when using the percentage based bonuses. Currently applies to the following skills: Throwing, Thrown Weapon, and Throwing Art.",
     scope: "world",
     config: true,
     default: true,
