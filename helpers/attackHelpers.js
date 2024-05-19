@@ -39,40 +39,42 @@ export class attackHelpers {
             adjustment = -2;
         }
 
-        if ((dxDifference + adjustment) === -1) {
-            trainingSTBonus = 1;
-        }
-        else if ((dxDifference + adjustment) === 0) {
-            trainingSTBonus = 2;
-        }
-        else if ((dxDifference + adjustment) === 1) {
-            trainingSTBonus = 3;
-        }
-        else if ((dxDifference + adjustment) === 2 || (dxDifference + adjustment) === 3) {
-            trainingSTBonus = 4;
-        }
-        else if ((dxDifference + adjustment) >= 4) {
-            trainingSTBonus = 5 + Math.floor(((dxDifference + adjustment) - 4)/3) // Every full +3 gives an extra +1. So 4 gives a +5, and 7 gives a +6
-        }
-
-        if (!expandedTrainingBonus) { // If we're not using expanded training bonuses
-            trainingSTBonus = Math.min(trainingSTBonus, 2) // Then the cap is 2
-        }
-        else { // If we are using expanded training bonuses then we can check for cinematic vs realistic cap
-            if (cinematicTrainingBonusCap) { // If we're using the cinematic training bonus cap.
-                trainingSTBonus = Math.min(trainingSTBonus, 10) // Then the training bonus cannot be more than 10.
+        if (progression !== "none") {
+            if ((dxDifference + adjustment) === -1) {
+                trainingSTBonus = 1;
             }
-            else { // Otherwise we're using the realistic cap.
-                trainingSTBonus = Math.min(trainingSTBonus, 5) // Then the training bonus cannot be more than 5.
+            else if ((dxDifference + adjustment) === 0) {
+                trainingSTBonus = 2;
             }
-        }
+            else if ((dxDifference + adjustment) === 1) {
+                trainingSTBonus = 3;
+            }
+            else if ((dxDifference + adjustment) === 2 || (dxDifference + adjustment) === 3) {
+                trainingSTBonus = 4;
+            }
+            else if ((dxDifference + adjustment) >= 4) {
+                trainingSTBonus = 5 + Math.floor(((dxDifference + adjustment) - 4)/3) // Every full +3 gives an extra +1. So 4 gives a +5, and 7 gives a +6
+            }
 
-        if (cinematicTrainingBonusAccrual) { // If we're using the cinematic training bonus accrual.
-            trainingSTBonus *= 2; // Then each +1 is worth double.
-        }
+            if (!expandedTrainingBonus) { // If we're not using expanded training bonuses
+                trainingSTBonus = Math.min(trainingSTBonus, 2) // Then the cap is 2
+            }
+            else { // If we are using expanded training bonuses then we can check for cinematic vs realistic cap
+                if (cinematicTrainingBonusCap) { // If we're using the cinematic training bonus cap.
+                    trainingSTBonus = Math.min(trainingSTBonus, 10) // Then the training bonus cannot be more than 10.
+                }
+                else { // Otherwise we're using the realistic cap.
+                    trainingSTBonus = Math.min(trainingSTBonus, 5) // Then the training bonus cannot be more than 5.
+                }
+            }
 
-        if (percentageBasedTrainingBonuses) { // If we're using the percentage based training bonuses
-            trainingSTBonus = Math.round(st * (trainingSTBonus * 0.1)); // Work out what the difference in value would be so we can return a consistently formatted value for the bonus.
+            if (cinematicTrainingBonusAccrual) { // If we're using the cinematic training bonus accrual.
+                trainingSTBonus *= 2; // Then each +1 is worth double.
+            }
+
+            if (percentageBasedTrainingBonuses) { // If we're using the percentage based training bonuses
+                trainingSTBonus = Math.round(st * (trainingSTBonus * 0.1)); // Work out what the difference in value would be so we can return a consistently formatted value for the bonus.
+            }
         }
 
         return trainingSTBonus;
