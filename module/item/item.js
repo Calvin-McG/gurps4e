@@ -6182,20 +6182,28 @@ export class gurpsItem extends Item {
                 if (typeof this.system.ranged[rangedKeys[k]].halfRangeInput !== "undefined") {
                   if (this.system.ranged[rangedKeys[k]].halfRangeInput.toLowerCase().includes("x")){ // If the range includes an x, assume it is an ST multiplier
                     let halfMult = parseFloat(this.system.ranged[rangedKeys[k]].halfRangeInput.split("x")[1]);
-                    this.system.ranged[rangedKeys[k]].halfRange = attackHelpers.calcThrowingRange(dx, level, st, this.system.ranged[rangedKeys[k]].skill.toLowerCase(), halfMult);
+                    this.system.ranged[rangedKeys[k]].halfRange =  parseInt(attackHelpers.calcThrowingRange(dx, level, st, this.system.ranged[rangedKeys[k]].skill.toLowerCase(), halfMult));
                   }
                   else { // Otherwise it's probably just a number so we can take it as is.
                     this.system.ranged[rangedKeys[k]].halfRange = parseInt(this.system.ranged[rangedKeys[k]].halfRangeInput);
+                  }
+
+                  if (Number.isNaN(this.system.ranged[rangedKeys[k]].halfRange)){ // If something we did above somehow resulted in NaN range, set it to Infinity.
+                    this.system.ranged[rangedKeys[k]].halfRange = Infinity;
                   }
                 }
 
                 if (typeof this.system.ranged[rangedKeys[k]].maxRangeInput !== "undefined") {
                   if (this.system.ranged[rangedKeys[k]].maxRangeInput.toLowerCase().includes("x")){ // If the range includes an x, assume it is an ST multiplier
                     let maxMult = parseFloat(this.system.ranged[rangedKeys[k]].maxRangeInput.split("x")[1]);
-                    this.system.ranged[rangedKeys[k]].maxRange = attackHelpers.calcThrowingRange(dx, level, st, this.system.ranged[rangedKeys[k]].skill.toLowerCase(), maxMult);
+                    this.system.ranged[rangedKeys[k]].maxRange =  parseInt(attackHelpers.calcThrowingRange(dx, level, st, this.system.ranged[rangedKeys[k]].skill.toLowerCase(), maxMult));
                   }
                   else { // Otherwise it's probably just a number so we can take it as is.
-                    this.system.ranged[rangedKeys[k]].maxRange = this.system.ranged[rangedKeys[k]].maxRangeInput;
+                    this.system.ranged[rangedKeys[k]].maxRange = parseInt(this.system.ranged[rangedKeys[k]].maxRangeInput);
+                  }
+
+                  if (Number.isNaN(this.system.ranged[rangedKeys[k]].maxRange)){ // If something we did above somehow resulted in NaN range, set it to Infinity.
+                    this.system.ranged[rangedKeys[k]].maxRange = Infinity;
                   }
                 }
               }
