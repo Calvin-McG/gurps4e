@@ -6,6 +6,7 @@ import { economicHelpers } from "../../helpers/economicHelpers.js";
 import { actorHelpers } from "../../helpers/actorHelpers.js";
 import { generalHelpers } from "../../helpers/generalHelpers.js";
 import { vehicleHelpers } from "../../helpers/vehicleHelpers.js";
+import { attackHelpers } from "../../helpers/attackHelpers.js";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -3470,7 +3471,6 @@ export class gurpsItem extends Item {
             this.system.firearmDesign.ammunition[ammoKeys[i]].st = this.system.firearmDesign.st;
             this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange = this.system.firearmDesign.halfRange;
             this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange = this.system.firearmDesign.maxRange;
-            this.system.firearmDesign.ammunition[ammoKeys[i]].range = this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange + "/" + this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange;
             this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = this.system.firearmDesign.baseWoundMod;
             this.system.firearmDesign.ammunition[ammoKeys[i]].lc = 3;
 
@@ -3909,7 +3909,7 @@ export class gurpsItem extends Item {
 
             this.system.firearmDesign.ammunition[ammoKeys[i]].cps = Math.round((this.system.firearmDesign.ammunition[ammoKeys[i]].cps * this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF) * 100) / 100
 
-            if (this.system.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent == 0) {
+            if (this.system.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent === 0) {
               this.system.firearmDesign.ammunition[ammoKeys[i]].explosivePercent = 0;
             }
 
@@ -5079,7 +5079,8 @@ export class gurpsItem extends Item {
         "damageInput": this.system.laserDesign.outputDamage,
         "damageType": this.system.laserDesign.damageType,
         "armourDivisor": this.system.laserDesign.armourDivisor,
-        "range": this.system.laserDesign.halfRange + " " + this.system.laserDesign.maxRange,
+        "halfRange": this.system.laserDesign.halfRange,
+        "maxRange": this.system.laserDesign.maxRange,
         "rof": this.system.laserDesign.outputRoF,
         "shots": this.system.laserDesign.shots,
         "bulk": this.system.laserDesign.bulk,
@@ -5099,7 +5100,8 @@ export class gurpsItem extends Item {
         "damageInput": this.system.laserDesign.outputDamage,
         "damageType": this.system.laserDesign.damageType,
         "armourDivisor": this.system.laserDesign.armourDivisorSpace,
-        "range": this.system.laserDesign.halfRangeSpace + " " + this.system.laserDesign.maxRangeSpace,
+        "halfRange": this.system.laserDesign.halfRangeSpace,
+        "maxRange": this.system.laserDesign.maxRangeSpace,
         "rof": this.system.laserDesign.outputRoF,
         "shots": this.system.laserDesign.shots,
         "bulk": this.system.laserDesign.bulk,
@@ -5119,7 +5121,8 @@ export class gurpsItem extends Item {
         "damageInput": this.system.laserDesign.outputDamage,
         "damageType": this.system.laserDesign.damageType,
         "armourDivisor": this.system.laserDesign.armourDivisorWater,
-        "range": this.system.laserDesign.halfRangeWater + " " + this.system.laserDesign.maxRangeWater,
+        "halfRange": this.system.laserDesign.halfRangeWater,
+        "maxRange": this.system.laserDesign.maxRangeWater,
         "rof": this.system.laserDesign.outputRoF,
         "shots": this.system.laserDesign.shots / 2,
         "bulk": this.system.laserDesign.bulk,
@@ -5139,7 +5142,8 @@ export class gurpsItem extends Item {
         "damageInput": this.system.laserDesign.outputDamageHotshots,
         "damageType": this.system.laserDesign.damageType,
         "armourDivisor": this.system.laserDesign.armourDivisor,
-        "range": this.system.laserDesign.halfRange + " " + this.system.laserDesign.maxRange,
+        "halfRange": this.system.laserDesign.halfRange,
+        "maxRange": this.system.laserDesign.maxRange,
         "rof": this.system.laserDesign.outputRoF,
         "shots": this.system.laserDesign.shots / 2,
         "bulk": this.system.laserDesign.bulk,
@@ -5159,7 +5163,8 @@ export class gurpsItem extends Item {
         "damageInput": this.system.laserDesign.outputDamageHotshots,
         "damageType": this.system.laserDesign.damageType,
         "armourDivisor": this.system.laserDesign.armourDivisorSpace,
-        "range": this.system.laserDesign.halfRangeSpace + " " + this.system.laserDesign.maxRangeSpace,
+        "halfRange": this.system.laserDesign.halfRangeSpace,
+        "maxRange": this.system.laserDesign.maxRangeSpace,
         "rof": this.system.laserDesign.outputRoF,
         "shots": this.system.laserDesign.shots / 2,
         "bulk": this.system.laserDesign.bulk,
@@ -5179,7 +5184,8 @@ export class gurpsItem extends Item {
         "damageInput": this.system.laserDesign.outputDamageHotshots,
         "damageType": this.system.laserDesign.damageType,
         "armourDivisor": this.system.laserDesign.armourDivisorWater,
-        "range": this.system.laserDesign.halfRangeWater + " " + this.system.laserDesign.maxRangeWater,
+        "halfRange": this.system.laserDesign.halfRangeWater,
+        "maxRange": this.system.laserDesign.maxRangeWater,
         "rof": this.system.laserDesign.outputRoF,
         "shots": this.system.laserDesign.shots / 2,
         "bulk": this.system.laserDesign.bulk,
@@ -5892,7 +5898,8 @@ export class gurpsItem extends Item {
             "damageInput": this.system.bowDesign.arrows[arrowKeys[i]].dice,
             "damageType": this.system.bowDesign.arrows[arrowKeys[i]].arrowhead.damageType,
             "armourDivisor": this.system.bowDesign.arrows[arrowKeys[i]].arrowhead.ad,
-            "range": this.system.bowDesign.arrows[arrowKeys[i]].halfRange + "/" + this.system.bowDesign.arrows[arrowKeys[i]].range,
+            "halfRange": this.system.bowDesign.arrows[arrowKeys[i]].halfRange,
+            "maxRange": this.system.bowDesign.arrows[arrowKeys[i]].range,
             "rof": "1",
             "shots": (this.system.bowDesign.repeating ? this.system.bowDesign.repeatingMagSize + "(" + (this.system.bowDesign.repeatingMagSize * 2) + ")" : "1"),
             "bulk": this.system.bowDesign.bulk,
@@ -5940,7 +5947,8 @@ export class gurpsItem extends Item {
             "damageInput": this.system.firearmDesign.ammunition[ammoKeys[i]].damageDice,
             "damageType": this.system.firearmDesign.ammunition[ammoKeys[i]].woundModOut,
             "armourDivisor": this.system.firearmDesign.ammunition[ammoKeys[i]].ad,
-            "range": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange) + "/" + Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange),
+            "halfRange": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange),
+            "maxRange": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange),
             "rof": rof,
             "shots": this.system.firearmDesign.shots,
             "bulk": Math.round(this.system.firearmDesign.bulk),
@@ -5962,7 +5970,8 @@ export class gurpsItem extends Item {
               "damageInput": this.system.firearmDesign.ammunition[ammoKeys[i]].explosiveDamageDice,
               "damageType": "cr ex",
               "armourDivisor": 1,
-              "range": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange) + "/" + Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange),
+              "halfRange": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange),
+              "maxRange": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange),
               "rof": rof,
               "shots": this.system.firearmDesign.shots,
               "bulk": Math.round(this.system.firearmDesign.bulk),
@@ -5985,7 +5994,8 @@ export class gurpsItem extends Item {
               "damageInput": this.system.firearmDesign.ammunition[ammoKeys[i]].fragDamageDice,
               "damageType": "cut",
               "armourDivisor": 1,
-              "range": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange) + "/" + Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange),
+              "halfRange": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange),
+              "maxRange": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange),
               "rof": rof,
               "shots": this.system.firearmDesign.shots,
               "bulk": Math.round(this.system.firearmDesign.bulk),
@@ -6005,6 +6015,7 @@ export class gurpsItem extends Item {
     }
   }
 
+  // This method prepares the data for all of the attacks present on the sheet.
   prepareAttackData() {
     //Check to see if there is an actor yet
     if (this.actor){
@@ -6021,10 +6032,10 @@ export class gurpsItem extends Item {
                 let parry = 0;
                 let block = 0;
 
-                if (this.system.melee[meleeKeys[k]].skill.toLowerCase() == "dx") {
+                if (this.system.melee[meleeKeys[k]].skill.toLowerCase() === "dx") {
                   level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity);
                 }
-                else if (this.system.melee[meleeKeys[k]].skill.toLowerCase() == "iq") {
+                else if (this.system.melee[meleeKeys[k]].skill.toLowerCase() === "iq") {
                   level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.intelligence);
                 }
                 else {
@@ -6110,11 +6121,14 @@ export class gurpsItem extends Item {
                 let level = 0;
                 let mod = +this.system.ranged[rangedKeys[k]].skillMod;
 
-                if (this.system.ranged[rangedKeys[k]].skill.toLowerCase() == "dx") {
-                  level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity);
+                let dx = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity);
+                let st = attributeHelpers.calcStOrHt(this.actor.system.primaryAttributes.strength, attributeHelpers.calcSMDiscount(this.actor.system.bio.sm));
+
+                if (this.system.ranged[rangedKeys[k]].skill.toLowerCase() === "dx") {
+                  level = dx
                 }
                 else {
-                  //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
+                  // Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
                   for (let i = 0; i < this.actor.items.contents.length; i++) {
                     if (this.actor.items.contents[i].type === "Rollable") {
                       if (this.system.ranged[rangedKeys[k]].skill === this.actor.items.contents[i].name) {
@@ -6128,7 +6142,8 @@ export class gurpsItem extends Item {
                     }
                   }
                 }
-                level = level + mod;//Update the skill level with the skill modifier
+                level = level + mod; // Update the skill level with the skill modifier
+
                 this.system.ranged[rangedKeys[k]].level = level;
                 this.system.ranged[rangedKeys[k]].type = "ranged"; // Update attack type
                 damage = this.damageParseSwThr(this.system.ranged[rangedKeys[k]].damageInput);
@@ -6148,7 +6163,7 @@ export class gurpsItem extends Item {
                 }
 
                 // Validation for bulk
-                if (typeof this.system.ranged[rangedKeys[k]].bulk == "undefined" || this.system.ranged[rangedKeys[k]].bulk == "") { // Must exist.
+                if (typeof this.system.ranged[rangedKeys[k]].bulk === "undefined" || this.system.ranged[rangedKeys[k]].bulk === "") { // Must exist.
                   this.system.ranged[rangedKeys[k]].bulk = -2;
                 } else if (this.system.ranged[rangedKeys[k]].bulk > 0) { // Must be less than zero. Set positive values to negative equivilent
                   this.system.ranged[rangedKeys[k]].bulk = -this.system.ranged[rangedKeys[k]].bulk;
@@ -6161,6 +6176,27 @@ export class gurpsItem extends Item {
                     this.system.ranged[rangedKeys[k]].armourDivisor >= 0)
                 ) {
                   this.system.ranged[rangedKeys[k]].armourDivisor = 1;
+                }
+
+                // Validation for halfRange and maxRange
+                if (typeof this.system.ranged[rangedKeys[k]].halfRangeInput !== "undefined") {
+                  if (this.system.ranged[rangedKeys[k]].halfRangeInput.toLowerCase().includes("x")){ // If the range includes an x, assume it is an ST multiplier
+                    let halfMult = parseFloat(this.system.ranged[rangedKeys[k]].halfRangeInput.split("x")[1]);
+                    this.system.ranged[rangedKeys[k]].halfRange = attackHelpers.calcThrowingRange(dx, level, st, this.system.ranged[rangedKeys[k]].skill.toLowerCase(), halfMult);
+                  }
+                  else { // Otherwise it's probably just a number so we can take it as is.
+                    this.system.ranged[rangedKeys[k]].halfRange = parseInt(this.system.ranged[rangedKeys[k]].halfRangeInput);
+                  }
+                }
+
+                if (typeof this.system.ranged[rangedKeys[k]].maxRangeInput !== "undefined") {
+                  if (this.system.ranged[rangedKeys[k]].maxRangeInput.toLowerCase().includes("x")){ // If the range includes an x, assume it is an ST multiplier
+                    let maxMult = parseFloat(this.system.ranged[rangedKeys[k]].maxRangeInput.split("x")[1]);
+                    this.system.ranged[rangedKeys[k]].maxRange = attackHelpers.calcThrowingRange(dx, level, st, this.system.ranged[rangedKeys[k]].skill.toLowerCase(), maxMult);
+                  }
+                  else { // Otherwise it's probably just a number so we can take it as is.
+                    this.system.ranged[rangedKeys[k]].maxRange = this.system.ranged[rangedKeys[k]].maxRangeInput;
+                  }
                 }
               }
             }
