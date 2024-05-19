@@ -3320,6 +3320,9 @@ export class gurpsActor extends Actor {
 				htmlContent += "<tr><td colspan='12' class='trait-category-header' style='text-align: center;'>Ranged Attacks</td></tr>";
 				htmlContent += "<tr><td></td><td>Weapon</td><td>Attack</td><td>Level</td><td>Damage</td><td>Acc</td><td>Range</td><td>RoF</td><td>Shots</td><td>ST</td><td>Bulk</td><td>Rcl</td></tr>";
 
+				let distanceRaw = Math.round(canvas.grid.measureDistance(selfToken, targetToken));
+				let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.grid.units);
+
 				for (let q = 0; q < attacks.ranged.length; q++){
 					htmlContent += "<tr>";
 					if (q == 0) {
@@ -3338,7 +3341,16 @@ export class gurpsActor extends Actor {
 						htmlContent += "<td>" + attacks.ranged[q].damage + " " + attacks.ranged[q].damageType + " " + "(" + attacks.ranged[q].armourDivisor + ")</td>";
 					}
 					htmlContent += "<td>" + (attacks.ranged[q].acc ? attacks.ranged[q].acc : 0) + (attacks.ranged[q].scopeAcc ? "+" + attacks.ranged[q].scopeAcc : "") + "</td>";
-					htmlContent += "<td>" + attacks.ranged[q].halfRange + " / " + attacks.ranged[q].maxRange + "</td>";
+
+					if (distanceYards > attacks.ranged[q].maxRange) { // Target is beyond max range
+						htmlContent += "<td style='font-weight: bold; background-color: rgb(208, 127, 127)'>" + attacks.ranged[q].halfRange + " / " + attacks.ranged[q].maxRange + "</td>";
+					}
+					else if (distanceYards <= attacks.ranged[q].halfRange) { // Target is within half range
+						htmlContent += "<td>" + attacks.ranged[q].halfRange + " / " + attacks.ranged[q].maxRange + "</td>";
+					}
+					else { // Target is between max and half range
+						htmlContent += "<td style='font-weight: bold; background-color: rgb(213, 153, 102)'>" + attacks.ranged[q].halfRange + " / " + attacks.ranged[q].maxRange + "</td>";
+					}
 					htmlContent += "<td>" + attacks.ranged[q].rof + "</td>";
 					htmlContent += "<td>" + attacks.ranged[q].shots + "</td>";
 					htmlContent += "<td>" + attacks.ranged[q].st + "</td>";
