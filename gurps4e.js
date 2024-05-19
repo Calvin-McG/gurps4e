@@ -3,6 +3,7 @@ import { gurpsActor } from "./module/actor/actor.js";
 import { gurpsActorSheet } from "./module/actor/actor-sheet.js";
 import { gurpsItem } from "./module/item/item.js";
 import { gurpsItemSheet } from "./module/item/item-sheet-orig.js";
+import { attackHelpers } from "./helpers/attackHelpers.js";
 
 Hooks.once('init', async function() {
 
@@ -42,6 +43,11 @@ Hooks.once('init', async function() {
 
   Handlebars.registerHelper('isInt', function (value) {
     return Number.isInteger(value);
+  });
+
+  // This helper takes in the 1/2D and max range of an attack and formats them sensibly.
+  Handlebars.registerHelper('formatRange', function (halfRange, maxRange) {
+    return attackHelpers.formatRange(halfRange, maxRange);
   });
 
   // This helper takes in the base acc and scope acc of a weapon and displays them in the standard GURPS format.
