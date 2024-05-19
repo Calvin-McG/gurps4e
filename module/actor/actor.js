@@ -1104,7 +1104,7 @@ export class gurpsActor extends Actor {
 		}
 		else { // If there is an injury tolerance block, make sure damage reduction exists.
 			if (typeof this.system.injuryTolerances.damageReduction == 'undefined' ||
-				this.system.injuryTolerances.damageReduction == "" ||
+				this.system.injuryTolerances.damageReduction === "" ||
 				this.system.injuryTolerances.damageReduction == null) {
 				this.system.injuryTolerances.damageReduction = 1;
 			}
@@ -1123,7 +1123,7 @@ export class gurpsActor extends Actor {
 			}
 		}
 		else { // If there is an injury tolerance block, make sure bornBiter exists.
-			if (typeof this.system.bodyModifiers.bornBiter == 'undefined' || this.system.bodyModifiers.bornBiter == "" || this.system.bodyModifiers.bornBiter == null) { // bornBiter is blank, null, or undefined
+			if (typeof this.system.bodyModifiers.bornBiter == 'undefined' || this.system.bodyModifiers.bornBiter === "" || this.system.bodyModifiers.bornBiter == null) { // bornBiter is blank, null, or undefined
 				this.system.bodyModifiers.bornBiter = 0; // Set to default value
 			}
 			else { // bornBiter is not blank, null, or undefined
@@ -1133,7 +1133,7 @@ export class gurpsActor extends Actor {
 			}
 		}
 
-		if (this.system.bio.sm.value == "" || this.system.bio.sm.value == null || typeof this.system.bio.sm.value == "undefined") {
+		if (this.system.bio.sm.value === "" || this.system.bio.sm.value == null || typeof this.system.bio.sm.value == "undefined") {
 			this.system.bio.sm.value = 0;
 		}
 
@@ -1468,12 +1468,12 @@ export class gurpsActor extends Actor {
 				let actorData = this.system;
 				let bodyObj = {};
 
-				if(bodyType == ""){ // If the body is blank, default to humanoid
+				if(bodyType === ""){ // If the body is blank, default to humanoid
 					bodyType = "humanoid";
 				}
 
 				// Spoders and squids have a brain instead of a skull. Everyone else has a skull
-				if (bodyType == "arachnoid" || bodyType == "octopod"){
+				if (bodyType === "arachnoid" || bodyType === "octopod"){
 					if (!(this.system.bodyModifiers.noHead || this.system.bodyModifiers.noBrain)) { // The user has set neither noHead nor noBrain
 						bodyObj.brain = actorHelpers.addBrain(actorData,"brain");
 					}
@@ -1516,7 +1516,7 @@ export class gurpsActor extends Actor {
 				}
 
 				//The following body parts are specific to said body types
-				if (bodyType == "humanoid"){
+				if (bodyType === "humanoid"){
 					bodyObj.legLeft 	= actorHelpers.addLeg(		actorData, 	"Left Leg"		,"legLeft");
 					bodyObj.legRight 	= actorHelpers.addLeg(		actorData, 	"Right Leg"	,"legRight");
 					bodyObj.armLeft 	= actorHelpers.addArm(		actorData, 	"Left Arm"		,"armLeft");
@@ -1529,7 +1529,7 @@ export class gurpsActor extends Actor {
 					bodyObj.footLeft 	= actorHelpers.addExtremity(actorData,	"Left Foot"	,"footLeft", "Foot", "Ankle", "Sole");
 					bodyObj.footRight 	= actorHelpers.addExtremity(actorData,	"Right Foot"	,"footRight", "Foot", "Ankle", "Sole");
 				}
-				if (bodyType == "wingedHumanoid"){
+				if (bodyType === "wingedHumanoid"){
 					bodyObj.legLeft 	= actorHelpers.addLeg(		actorData, 		"Left Leg"		,"legLeft");
 					bodyObj.legRight 	= actorHelpers.addLeg(		actorData, 		"Right Leg"	,"legRight");
 					bodyObj.armLeft 	= actorHelpers.addArm(		actorData, 		"Left Arm"		,"armLeft");
@@ -1544,7 +1544,7 @@ export class gurpsActor extends Actor {
 					bodyObj.wingLeft 	= actorHelpers.addArm(		actorData, "Left Wing", "wingLeft");
 					bodyObj.wingRight 	= actorHelpers.addArm(		actorData, "Right Wing", "wingRight");
 				}
-				else if (bodyType == "quadruped"){
+				else if (bodyType === "quadruped"){
 					bodyObj.hindlegLeft 	= actorHelpers.addLeg(		actorData, "Left Hind Leg", "hindlegLeft");
 					bodyObj.hindlegRight 	= actorHelpers.addLeg(		actorData, "Right Hind Leg", "hindlegRight");
 					bodyObj.legLeft 		= actorHelpers.addLeg(		actorData, "Left Foreleg", "legLeft");
@@ -1557,7 +1557,7 @@ export class gurpsActor extends Actor {
 					bodyObj.hindFootLeft 	= actorHelpers.addExtremity(actorData,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
 					bodyObj.hindFootRight 	= actorHelpers.addExtremity(actorData,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
 				}
-				else if (bodyType == "wingedQuadruped"){
+				else if (bodyType === "wingedQuadruped"){
 					bodyObj.hindlegLeft 	= actorHelpers.addLeg(		actorData, "Left Hind Leg", "hindlegLeft");
 					bodyObj.hindlegRight 	= actorHelpers.addLeg(		actorData, "Right Hind Leg", "hindlegRight");
 					bodyObj.legLeft 		= actorHelpers.addLeg(		actorData, "Left Foreleg", "legLeft");
@@ -1572,7 +1572,7 @@ export class gurpsActor extends Actor {
 					bodyObj.wingLeft 		= actorHelpers.addArm(		actorData, "Left Wing", "wingLeft");
 					bodyObj.wingRight 		= actorHelpers.addArm(		actorData, "Right Wing", "wingRight");
 				}
-				else if (bodyType == "hexapod"){
+				else if (bodyType === "hexapod"){
 					bodyObj.legLeft 		= actorHelpers.addLeg(		actorData, 		"Left Leg"		,"legLeft");
 					bodyObj.legRight 		= actorHelpers.addLeg(		actorData, 		"Right Leg"	,"legRight");
 					bodyObj.armLeft 		= actorHelpers.addArm(		actorData, "Left Upper Thorax Arm", "armLeft");
@@ -1589,7 +1589,7 @@ export class gurpsActor extends Actor {
 					bodyObj.footLeft 		= actorHelpers.addExtremity(actorData,"Left Foot", "footLeft", "Foot", "Ankle", "Sole");
 					bodyObj.footRight 		= actorHelpers.addExtremity(actorData,"Right Foot", "footRight", "Foot", "Ankle", "Sole");
 				}
-				else if (bodyType == "wingedHexapod"){
+				else if (bodyType === "wingedHexapod"){
 					bodyObj.legLeft 		= actorHelpers.addLeg(		actorData, 		"Left Leg"		,"legLeft");
 					bodyObj.legRight 		= actorHelpers.addLeg(		actorData, 		"Right Leg"	,"legRight");
 					bodyObj.armLeft 		= actorHelpers.addArm(		actorData, "Left Upper Thorax Arm", "armLeft");
@@ -1608,7 +1608,7 @@ export class gurpsActor extends Actor {
 					bodyObj.wingLeft 		= actorHelpers.addArm(		actorData, "Left Wing", "wingLeft");
 					bodyObj.wingRight 		= actorHelpers.addArm(		actorData, "Right Wing", "wingRight");
 				}
-				else if (bodyType == "centaur"){
+				else if (bodyType === "centaur"){
 					bodyObj.hindlegLeft 	= actorHelpers.addLeg(				actorData, "Left Hind Leg", "hindlegLeft");
 					bodyObj.hindlegRight 	= actorHelpers.addLeg(				actorData, "Right Hind Leg", "hindlegRight");
 					bodyObj.legLeft 		= actorHelpers.addLeg(				actorData, "Left Foreleg", "legLeft");
@@ -1627,7 +1627,7 @@ export class gurpsActor extends Actor {
 					bodyObj.hindFootLeft 	= actorHelpers.addExtremity(		actorData,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
 					bodyObj.hindFootRight 	= actorHelpers.addExtremity(		actorData,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
 				}
-				else if (bodyType == "avian"){
+				else if (bodyType === "avian"){
 					bodyObj.legLeft 	= actorHelpers.addLeg(		actorData, "Left Leg", "legLeft");
 					bodyObj.legRight 	= actorHelpers.addLeg(		actorData, "Right Leg", "legRight");
 					bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
@@ -1641,12 +1641,12 @@ export class gurpsActor extends Actor {
 					bodyObj.wingLeft 	= actorHelpers.addArm(		actorData, "Left Wing", "wingLeft");
 					bodyObj.wingRight 	= actorHelpers.addArm(		actorData, "Right Wing", "wingRight");
 				}
-				else if (bodyType == "vermiform"){
+				else if (bodyType === "vermiform"){
 					bodyObj.upperChest 	= actorHelpers.addChest(	actorData, "upperChest","Upper Chest", vitals);
 					bodyObj.lowerChest 	= actorHelpers.addChest(	actorData, "lowerChest","Lower Chest", vitals);
 					bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData, "Abdomen","abdomen", vitals);
 				}
-				else if (bodyType == "lamia"){
+				else if (bodyType === "lamia"){
 					bodyObj.armLeft 	= actorHelpers.addArm(		actorData, "Left Arm", "armLeft");
 					bodyObj.armRight 	= actorHelpers.addArm(		actorData, "Right Arm", "armRight");
 					bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
@@ -1656,7 +1656,7 @@ export class gurpsActor extends Actor {
 					bodyObj.handLeft 	= actorHelpers.addExtremity(actorData,"Left Hand", "handLeft", "Hand", "Wrist", "Palm");
 					bodyObj.handRight 	= actorHelpers.addExtremity(actorData,"Right Hand", "handRight", "Hand", "Wrist", "Palm");
 				}
-				else if (bodyType == "wingedLamia"){
+				else if (bodyType === "wingedLamia"){
 					bodyObj.armLeft 	= actorHelpers.addArm(		actorData, "Left Arm", "armLeft");
 					bodyObj.armRight 	= actorHelpers.addArm(		actorData, "Right Arm", "armRight");
 					bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
@@ -1668,7 +1668,7 @@ export class gurpsActor extends Actor {
 					bodyObj.wingLeft 	= actorHelpers.addArm(		actorData, "Left Wing", "wingLeft");
 					bodyObj.wingRight 	= actorHelpers.addArm(		actorData, "Right Wing", "wingRight");
 				}
-				else if (bodyType == "octopod"){
+				else if (bodyType === "octopod"){
 					bodyObj.upperChest 		= actorHelpers.addInvertebrateChest(actorData,"Upper Chest", "upperChest", vitals);
 					bodyObj.lowerChest 		= actorHelpers.addInvertebrateChest(actorData,"Lower Chest", "lowerChest", vitals);
 					bodyObj.abdomen 		= actorHelpers.addAbdomen(			actorData,"Abdomen", "abdomen", vitals);
@@ -1681,7 +1681,7 @@ export class gurpsActor extends Actor {
 					bodyObj.tentacleRight3 	= actorHelpers.addArm(				actorData, "Right Tentacle 3", "tentacleRight3");
 					bodyObj.tentacleRight4 	= actorHelpers.addArm(				actorData, "Right Tentacle 4", "tentacleRight4");
 				}
-				else if (bodyType == "cancroid"){
+				else if (bodyType === "cancroid"){
 					bodyObj.hindlegLeft 	= actorHelpers.addLeg(		actorData, "Left Hind Leg", "hindlegLeft");
 					bodyObj.hindlegRight 	= actorHelpers.addLeg(		actorData, "Right Hind Leg", "hindlegRight");
 					bodyObj.legLeft 		= actorHelpers.addLeg(		actorData, "Left Foreleg", "legLeft");
@@ -1698,7 +1698,7 @@ export class gurpsActor extends Actor {
 					bodyObj.hindFootLeft 	= actorHelpers.addExtremity(actorData,"Left Hind Foot", "hindFootLeft", "Foot", "Ankle", "Sole");
 					bodyObj.hindFootRight 	= actorHelpers.addExtremity(actorData,"Right Hind Foot", "hindFootRight", "Foot", "Ankle", "Sole");
 				}
-				else if (bodyType == "ichthyoid"){
+				else if (bodyType === "ichthyoid"){
 					bodyObj.upperChest 	= actorHelpers.addChest(	actorData,"Upper Chest", "upperChest", vitals);
 					bodyObj.lowerChest 	= actorHelpers.addChest(	actorData,"Lower Chest", "lowerChest", vitals);
 					bodyObj.abdomen 	= actorHelpers.addAbdomen(	actorData,"Abdomen", "abdomen", vitals);
@@ -1707,7 +1707,7 @@ export class gurpsActor extends Actor {
 					bodyObj.fin2 		= actorHelpers.addExtremity(actorData,"Left Fin", "fin2", "Fin", "Joint");
 					bodyObj.fin3 		= actorHelpers.addExtremity(actorData,"Right Fin", "fin3", "Fin", "Joint");
 				}
-				else if (bodyType == "arachnoid"){
+				else if (bodyType === "arachnoid"){
 					bodyObj.hindlegLeft 		= actorHelpers.addLeg(		actorData, "Left Hind Leg", "hindlegLeft");
 					bodyObj.hindlegRight 		= actorHelpers.addLeg(		actorData, "Right Hind Leg", "hindlegRight");
 					bodyObj.hindmidlegLeft 		= actorHelpers.addLeg(		actorData, "Left Mid Hind Leg", "hindmidlegLeft");
@@ -3334,7 +3334,7 @@ export class gurpsActor extends Actor {
 					htmlContent += "<td>" + attacks.ranged[q].weapon + "</td>";
 					htmlContent += "<td>" + attacks.ranged[q].name + "</td>";
 					htmlContent += "<td>" + attacks.ranged[q].level + "</td>";
-					if(attacks.ranged[q].armourDivisor == 1){//Only show armour divisor if it's something other than 1
+					if(attacks.ranged[q].armourDivisor === 1){ // Only show armour divisor if it's something other than 1
 						htmlContent += "<td>" + attacks.ranged[q].damage + " " + attacks.ranged[q].damageType + "</td>";
 					}
 					else {
@@ -3386,7 +3386,7 @@ export class gurpsActor extends Actor {
 
 				for (let q = 0; q < attacks.affliction.length; q++){
 					htmlContent += "<tr>";
-					if (q == 0) {
+					if (q === 0) {
 						htmlContent += "<td><input checked type='radio' id='affliction" + q + "' name='affliction' value='" + q + "'></td>";
 					}
 					else {
@@ -3395,7 +3395,7 @@ export class gurpsActor extends Actor {
 					htmlContent += "<td>" + attacks.affliction[q].weapon + "</td>";
 					htmlContent += "<td>" + attacks.affliction[q].name + "</td>";
 					htmlContent += "<td>" + attacks.affliction[q].level + "</td>";
-					if(attacks.affliction[q].armourDivisor == 1){ // Only show armour divisor if it's something other than 1
+					if(attacks.affliction[q].armourDivisor === 1){ // Only show armour divisor if it's something other than 1
 						htmlContent += "<td>" + attacks.affliction[q].damage + " " + attacks.affliction[q].damageType + "</td>";
 					}
 					else {
