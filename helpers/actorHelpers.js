@@ -1854,32 +1854,48 @@ export class actorHelpers {
 
     static fetchStat(actor, stat) { // Actor should be the actor object, stat should be the string name of the stat in question.
 
-        if (stat.toLowerCase() == "strength" || stat.toLowerCase() == "st") {
+        if (stat.toLowerCase() === "strength" || stat.toLowerCase() === "st") {
             let smDiscount = attributeHelpers.calcSMDiscount(actor.system.bio.sm)
             return attributeHelpers.calcStOrHt(actor.system.primaryAttributes.strength, smDiscount);
         }
-        else if (stat.toLowerCase() == "dexterity" || stat.toLowerCase() == "dx") {
+        else if (stat.toLowerCase() === "dexterity" || stat.toLowerCase() == "dx") {
             return attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.dexterity);
         }
-        else if (stat.toLowerCase() == "intelligence" || stat.toLowerCase() == "iq") {
+        else if (stat.toLowerCase() === "intelligence" || stat.toLowerCase() === "iq") {
             return attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.intelligence);
         }
-        else if (stat.toLowerCase() == "health" || stat.toLowerCase() == "ht") {
+        else if (stat.toLowerCase() === "health" || stat.toLowerCase() === "ht") {
             return attributeHelpers.calcStOrHt(actor.system.primaryAttributes.health);
         }
-        else if (stat.toLowerCase() == "will") {
+        else if (stat.toLowerCase() === "will") {
             return attributeHelpers.calcPerOrWill(actor.system.primaryAttributes.will);
         }
-        else if (stat.toLowerCase() == "perception" || stat.toLowerCase() == "per") {
+        else if (stat.toLowerCase() === "perception" || stat.toLowerCase() === "per") {
             return attributeHelpers.calcPerOrWill(actor.system.primaryAttributes.perception);
         }
-        else if (stat.toLowerCase() == "fright" || stat.toLowerCase() == "fr") {
+        else if (stat.toLowerCase() === "fright" || stat.toLowerCase() === "fr") {
             return attributeHelpers.calcFright(actor.system.primaryAttributes.fright);
         }
         else {
             console.error("actorHelpers.fetchStat found an incorrect stat name");
             return -99
         }
+    }
+
+    static fetchStatePenalty(actor) {
+        let hpState = this.fetchHpState(actor);
+        let fpState = this.fetchFpState(actor);
+        let stateMultiplier = 1;
+
+        if (hpState !== "Healthy" && hpState !== "Injured") {
+            stateMultiplier *= 0.5;
+        }
+
+        if (fpState !== "Fresh" && fpState !== "Tired") {
+            stateMultiplier *= 0.5;
+        }
+
+        return stateMultiplier;
     }
 
     static fetchHpState(actor) {
@@ -2024,5 +2040,11 @@ export class actorHelpers {
                 penalty: -99
             };
         }
+    }
+
+    static fetchCurrentEncPenalty(actor){
+        let enc = this.fetchCurrentEnc(actor)
+
+        return enc.penalty;
     }
 }
