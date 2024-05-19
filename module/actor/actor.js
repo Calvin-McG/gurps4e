@@ -4428,8 +4428,6 @@ export class gurpsActor extends Actor {
 				}
 			}
 
-			console.log(halfRange, maxRange);
-
 			if (maxRange < distanceYards) { // They are firing at a target beyond their attack's max range.
 				rangeDamageMult = 0;
 				modModalContent += "<tr><td colspan='3' style='background-color: rgba(255, 0, 0, 100); font-weight: bold; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; color: white;'>WARNING: YOU ARE ATTEMPTING TO ATTACK A TARGET BEYOND YOUR ATTACK'S MAXIMUM RANGE OF " + maxRange + " YARDS.</td></tr>"; // Default string
@@ -4541,7 +4539,7 @@ export class gurpsActor extends Actor {
 					let exactRange = html.find('#exactRange')[0] ? html.find('#exactRange')[0].checked : undefined;
 					let closeRange = html.find('#closeRange')[0] ? html.find('#closeRange')[0].checked : undefined;
 					let targetHex = (typeof html.find('#targetHex')[0] !== "undefined") ? html.find('#targetHex')[0].checked : false;
-					this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (+totalModifier + +mod), moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange)
+					this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (+totalModifier + +mod), moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange, rangeDamageMult)
 				}
 			}
 		}
@@ -4563,7 +4561,7 @@ export class gurpsActor extends Actor {
 		modModal.render(true)
 	}
 
-	reportHitResult(target, attacker, attack, relativePosition, rof, locationArray, totalModifiers, moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange) {
+	reportHitResult(target, attacker, attack, relativePosition, rof, locationArray, totalModifiers, moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange, rangeDamageMult) {
 		let label = "";
 
 		if (targetHex) {
@@ -4571,6 +4569,10 @@ export class gurpsActor extends Actor {
 		}
 		else { // The attack is not an explosive firing at the target's hex (It might still be an explosive aimed directly at the target)
 			label = attacker.name + " attacks " + target.name + " with a " + attack.weapon + " " + attack.name;
+		}
+
+		if (rangeDamageMult === 0.5) { // If we're firing at 1/2D range
+			label += " at beyond 1/2D range" // Append a note to the label so it's clear to everyone that's what's happening.
 		}
 
 		let level = attack.level;
@@ -4742,7 +4744,8 @@ export class gurpsActor extends Actor {
 					rof: rof,
 					locationIDs: locationIDs,
 					totalModifiers: totalModifiers,
-					targetHex: targetHex
+					targetHex: targetHex,
+					rangeDamageMult: rangeDamageMult
 				}
 			}
 
@@ -5238,8 +5241,6 @@ export class gurpsActor extends Actor {
 			"</div>" +
 			"</div>";
 
-		console.log(flags)
-
 		let buttons = {};
 		let width = 0; // Variable for dialog width
 		if (dodges.length > 0) {
@@ -5323,8 +5324,6 @@ export class gurpsActor extends Actor {
 		let selection;
 		let name;
 		let mod = parseInt(html.find('#mod').val());
-
-		console.log(flags)
 
 		let options = {
 			feverishDefence: 	html.find('#feverishDefence')[0] ? html.find('#feverishDefence')[0].checked : "",
@@ -5692,6 +5691,7 @@ export class gurpsActor extends Actor {
 		let totalFatInj 	= 0;
 		let damageReduction = 1;
 		let largeArea		= false;
+		let rangeDamageMult = flags.rangeDamageMult;
 		let largeAreaDR; // Only needed for largeArea attacks, but init here
 		let armourDivisor;
 
@@ -5799,6 +5799,10 @@ export class gurpsActor extends Actor {
 				totalDamage = damageRoll.total;
 			}
 
+			if (rangeDamageMult === 0.5) { // If the attack was made beyond half range
+				totalDamage = Math.floor(totalDamage * rangeDamageMult); // Halve damage and round down.
+			}
+
 			if (totalDamage <= 0) { // If damage is 0 or less, account for minimum damage for each type
 				if (damageType.type === "cr") { // Minimum crushing damage is 0
 					totalDamage = 0;
@@ -5808,7 +5812,12 @@ export class gurpsActor extends Actor {
 				}
 			}
 
-			html += "<label class='damage-dice-small-adds'> = " + totalDamage + "</label>";
+			if (rangeDamageMult === 0.5) {
+				html += "<label class='damage-dice-small-adds'>/2 = " + totalDamage + "</label>";
+			}
+			else {
+				html += "<label class='damage-dice-small-adds'> = " + totalDamage + "</label>";
+			}
 
 			if (armourDivisor != 1 && largeArea){
 				html += "<label class='damage-dice-small-adds'> (" + armourDivisor + ") Large Area Injury</label>";
