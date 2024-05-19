@@ -1,3 +1,5 @@
+import {actorHelpers} from "./actorHelpers.js";
+
 export class attributeHelpers {
 
     static strikingStrengthToThrustDiceAndAdds(sst){
@@ -698,13 +700,19 @@ export class attributeHelpers {
             dodge += mod;
         }
 
-        if (actor.system.flag.combatReflexes) {
+        if (actor.system.flag.combatReflexes) { // Apply any modifier for combat reflexes
             dodge += 1;
         }
 
-        if (actor.system.enhanced.dodge){
+        if (actor.system.enhanced.dodge){ // Apply any modifier for enhanced dodge
             dodge += actor.system.enhanced.dodge;
         }
+
+        dodge += actorHelpers.fetchCurrentEncPenalty(actor); // Apply any penalty from the current enc level
+
+        dodge *= actorHelpers.fetchStatePenalty(actor); // Apply any penalty from low fp or hp
+
+        dodge = Math.max(dodge, 1); // Dodge is always at least one
 
         return dodge;
     }
