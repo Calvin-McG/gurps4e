@@ -4392,6 +4392,7 @@ export class gurpsActor extends Actor {
 		let distanceRaw = Math.round(canvas.grid.measureDistance(attacker, target));
 		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.grid.units);
 		let distancePenalty = distanceHelpers.distancePenalty(distanceYards);
+		let rangeDamageMult = 1; // This is the multiplier used to assign effects from 1/2D and Max ranges, where applicable.
 
 		let damageType = this.extractDamageType(attack);
 
@@ -4405,6 +4406,39 @@ export class gurpsActor extends Actor {
 
 		let modModalContent = "<table>";
 
+		// Range specific logic (1/2D and Max)
+		// We're doing it early so we can put it at the top of the modal
+		let maxRange = Infinity;
+		let halfRange = Infinity;
+		if (attack.type === "ranged") {
+
+			// Check if max range is present
+			if (typeof attack.maxRange !== "undefined") { // Max range is present
+				maxRange = parseInt(attack.maxRange); // Convert max range to an int
+				if (typeof maxRange !== "number" || Number.isNaN(maxRange)) { // If max range has the wrong type or it came through as NaN.
+					maxRange = Infinity; // Set it back to Infinity.
+				}
+			}
+
+			// Check if half range is present
+			if (typeof attack.halfRange !== "undefined") { // Half range is present
+				halfRange = parseInt(attack.halfRange); // Convert half range to an int
+				if (typeof halfRange !== "number" || Number.isNaN(halfRange) || halfRange > maxRange) { // If half range has the wrong type, it came through as NaN, or it's greater than max range.
+					halfRange = maxRange; // Set it to match maxRange
+				}
+			}
+
+			console.log(halfRange, maxRange);
+
+			if (maxRange < distanceYards) { // They are firing at a target beyond their attack's max range.
+				rangeDamageMult = 0;
+				modModalContent += "<tr><td colspan='3' style='background-color: rgba(255, 0, 0, 100); font-weight: bold; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; color: white;'>WARNING: YOU ARE ATTEMPTING TO ATTACK A TARGET BEYOND YOUR ATTACK'S MAXIMUM RANGE OF " + maxRange + " YARDS.</td></tr>"; // Default string
+			} else if (halfRange < distanceYards) { // They are firing at a target beyond their attack's half range.
+				rangeDamageMult = 0.5;
+				modModalContent += "<tr><td colspan='3' style='background-color: rgba(255, 255, 0, 100); font-weight: bold; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; color: white;'>WARNING: Your target is beyond your attack's 1/2D range of " + halfRange + " yards. Damage will be halved, rounded down.</td></tr>"; // Default string
+			}
+		}
+
 		// Homing specific logic
 		if (typeof attack.flags !== "undefined") {
 			if (attack.flags.toLowerCase().includes("hom") && attack.type === "ranged") { // If it's a homing weapon and ranged
@@ -4412,7 +4446,7 @@ export class gurpsActor extends Actor {
 				modModalContent += "<tr><td>Skill</td><td>" + homSkill + "</td><td>Homing weapons have a skill of 10 + Acc</td></tr>"; // Applies homing skill correctly
 			}
 			else { // If it's anything else
-				modModalContent += "<tr><td>Skill</td><td>" + attack.skill + "</td><td>Your base skill</td></tr>"; // Default string
+				modModalContent += "<tr><td>Skill</td><td>" + attack.skill + ": " + attack.level + "</td><td>Your base skill</td></tr>"; // Default string
 			}
 		}
 
@@ -4493,45 +4527,35 @@ export class gurpsActor extends Actor {
 		modModalContent += "<tr><td>Additional Modifier</td><td><input type='number' id='mod' name='mod' value='0' style='width: 50%'/></td><td>This is a catchall for anything not included above</td></tr>" +
 			"</table>"
 
+		let buttons = {} // Init the buttons object
+
+		if (rangeDamageMult !== 0) { // If we're not prevented from attacking due to being beyond max range
+			buttons.mod = { // Add the button for an attack with a modifier
+				icon: '<i class="fas fa-check"></i>',
+				label: "Apply Modifier",
+				callback: (html) => {
+					let mod = html.find('#mod').val();
+					let moveAndAttack = html.find('#moveAndAttack')[0].checked;
+					let aimTime = html.find('#aimTime') ? html.find('#aimTime').val() : undefined;
+					let evaluate = html.find('#evaluate')[0] ? html.find('#evaluate')[0].checked : undefined;
+					let exactRange = html.find('#exactRange')[0] ? html.find('#exactRange')[0].checked : undefined;
+					let closeRange = html.find('#closeRange')[0] ? html.find('#closeRange')[0].checked : undefined;
+					let targetHex = (typeof html.find('#targetHex')[0] !== "undefined") ? html.find('#targetHex')[0].checked : false;
+					this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (+totalModifier + +mod), moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange)
+				}
+			}
+		}
+
+		buttons.cancel = { // Always add the cancel button
+			icon: '<i class="fas fa-times"></i>',
+			label: "Cancel",
+			callback: () => {}
+		}
+
 		let modModal = new Dialog({
 			title: "Modifier Dialog",
 			content: modModalContent,
-			buttons: {
-				mod: {
-					icon: '<i class="fas fa-check"></i>',
-					label: "Apply Modifier",
-					callback: (html) => {
-						let mod = html.find('#mod').val();
-						let moveAndAttack = html.find('#moveAndAttack')[0].checked;
-						let aimTime = html.find('#aimTime') ? html.find('#aimTime').val() : undefined;
-						let evaluate = html.find('#evaluate')[0] ? html.find('#evaluate')[0].checked : undefined;
-						let exactRange = html.find('#exactRange')[0] ? html.find('#exactRange')[0].checked : undefined;
-						let closeRange = html.find('#closeRange')[0] ? html.find('#closeRange')[0].checked : undefined;
-						let targetHex = (typeof html.find('#targetHex')[0] !== "undefined") ? html.find('#targetHex')[0].checked : false;
-						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (+totalModifier + +mod), moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange)
-					}
-				},
-				noMod: {
-					icon: '<i class="fas fa-times"></i>',
-					label: "No Modifier",
-					callback: (html) => {
-						let moveAndAttack = html.find('#moveAndAttack')[0].checked;
-						let aimTime = html.find('#aimTime') ? html.find('#aimTime').val() : undefined;
-						let evaluate = html.find('#evaluate')[0] ? html.find('#evaluate')[0].checked : undefined;
-						let exactRange = html.find('#exactRange')[0] ? html.find('#exactRange')[0].checked : undefined;
-						let closeRange = html.find('#closeRange')[0] ? html.find('#closeRange')[0].checked : undefined;
-						let targetHex = (typeof html.find('#targetHex')[0] !== "undefined") ? html.find('#targetHex')[0].checked : false;
-						this.reportHitResult(target, attacker, attack, relativePosition, rof, location, totalModifier, moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange)
-					}
-				},
-				cancel: {
-					icon: '<i class="fas fa-times"></i>',
-					label: "Cancel",
-					callback: () => {
-
-					}
-				}
-			},
+			buttons: buttons,
 			default: "mod",
 			render: html => console.info("Register interactivity in the rendered dialog"),
 			close: html => console.info("This always is logged no matter which option is chosen")
