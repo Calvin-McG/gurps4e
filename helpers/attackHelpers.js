@@ -1,5 +1,45 @@
 export class attackHelpers {
 
+    // This method takes in 1/2D and Max range and returns a single sensibly formatted string
+    static formatRange(halfRange, maxRange) {
+        let returnString = "";
+
+        // First, check maxRange for data integrity
+        if (typeof maxRange === "undefined" || maxRange === "" || Number.isNaN(maxRange) || maxRange <= 0) { // If maxRange is fucky
+            maxRange = Infinity; // Default to Infinity
+        }
+
+        // Then check halfRange for data integrity
+        if (typeof halfRange === "undefined" || halfRange === "" || Number.isNaN(halfRange) || halfRange <= 0) { // If halfRange is fucky
+            halfRange = Infinity; // Default to Infinity
+        }
+        else if (halfRange > maxRange) { // Check to see if halfRange is greater than maxRange
+            // By this point maxRange should be correctly formatted, either a proper number or Infinity. So if halfRange is greater, they must both be proper numbers
+            halfRange = maxRange; // Set them the same
+        }
+
+        if (halfRange >= maxRange) { // Half range is the same or greater than max
+            if (maxRange === Infinity) { // Check to see if maxRange is Infinity
+                returnString = "∞"; // Return an Infinity symbol, instead of the word Infinity.
+            }
+            else {
+                returnString = maxRange; // Return only the single max range value.
+            }
+        }
+        else { // Half range is less than max
+            returnString = halfRange + " / ";  // Display halfRange as normal
+
+            if (maxRange === Infinity) { // Check to see if maxRange is Infinity
+                returnString += "∞"; // Return an Infinity symbol, instead of the word Infinity.
+            }
+            else {
+                returnString += maxRange; // Return only the single max range value.
+            }
+        }
+
+        return returnString;
+    }
+
     static calcThrowingRange(dx, level, st, skillName, mult) {
         let trainingSTBonus = this.getTrainingSTBonus(dx, level, skillName, st);
 
