@@ -1,7 +1,9 @@
 export class attackHelpers {
 
-    static calcThrowingRange(dx, level, st, mult) {
-        console.log(dx, level, st, mult);
+    static calcThrowingRange(dx, level, st, skillName, mult) {
+        let trainingSTBonus = this.getTrainingSTBonus(dx, level, skillName, st);
+
+        return Math.round((st + trainingSTBonus) * mult);
     }
 
     // This method gets training bonus ST, per the chart on Technical Grappling 48
