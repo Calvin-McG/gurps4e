@@ -296,6 +296,7 @@ export class gurpsItemSheet extends ItemSheet {
         }
 
         let newRow = {
+            "name": "New Projectile Type",
             "length": 22,
             "material": {
                 "a": 0,
@@ -373,6 +374,7 @@ export class gurpsItemSheet extends ItemSheet {
         }
 
         let newRow = {
+            "name": "New Ammo Type",
             "plusp": false,
             "match": "0",
             "subsonic": false,
