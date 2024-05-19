@@ -71,8 +71,6 @@ export class generalHelpers {
             returnString = "0"; // Make sure to at least return a zero.
         }
 
-        console.log(returnString)
-
         return returnString;
     }
 
