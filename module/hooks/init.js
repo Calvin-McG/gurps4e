@@ -232,6 +232,15 @@ Hooks.once("init", () => {
     type: Number
   });
 
+  game.settings.register("gurps4e", "addsToDice", {
+    name: "Adds to Dice",
+    hint: "This setting converts extra adds to dice, following the normal rules. So +4 is instead +1d6, and +7 is instead +2d6.",
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
   game.settings.register("gurps4e", "gravity", {
     name: "Set the default gravity",
     hint: "Ideally this would be set per scene, but until that's possible, it is set at the campaign level." +
@@ -242,7 +251,6 @@ Hooks.once("init", () => {
     type: Number
   });
 
-  // Register option for whether the vanilla magic tab shows up
   game.settings.register("gurps4e", "strictInjuryCap", {
     name: "Strict Injury Cap",
     hint: "Enable this setting to include injury caps on both the Torso and Abdomen. This is an optional rule and caps torso damage at HPx2, and abdomen damage at HPx1",
