@@ -6,6 +6,7 @@ import { actorHelpers } from "../../helpers/actorHelpers.js";
 import { skillHelpers } from "../../helpers/skillHelpers.js";
 import { postureHelpers } from "../../helpers/postureHelpers.js";
 import { vehicleHelpers } from "../../helpers/vehicleHelpers.js";
+import { attackHelpers } from "../../helpers/attackHelpers.js";
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -1953,37 +1954,9 @@ export class gurpsActor extends Actor {
 		let st = this.system.primaryAttributes.lifting.value; // Store the lifting ST for later
 
 		let throwingSkill = (skillHelpers.getSkillLevelByName("Throwing", this))
+		let trainingBonus = 0;
 
-		let relativeToDx = 0
-
-		if (typeof throwingSkill !== "undefined") {
-			relativeToDx = throwingSkill - this.system.primaryAttributes.dexterity.value; // Get the skill's level relative to DX
-		}
-
-		let trainingBonus = 0; // Init the training bonus
-		let expandedTrainingBonus = game.settings.get("gurps4e", "expandedTrainingBonuses") // Get the game setting that controls training bonuses.
-
-		// Calculate the training bonus for Throwing
-		if (relativeToDx < 1) {
-			trainingBonus = 0;
-		}
-		else if (relativeToDx === 1) {
-			trainingBonus = 1;
-		}
-		else if (relativeToDx === 2) {
-			trainingBonus = 2;
-		}
-		else if (expandedTrainingBonus) { // If using expanded training bonuses, carry on. If not, don't.
-			if (relativeToDx < 4) {
-				trainingBonus = 2;
-			}
-			else if (relativeToDx === 4) {
-				trainingBonus = 3;
-			}
-			else {
-				trainingBonus = 3 + ((relativeToDx - 4) / 3);
-			}
-		}
+		trainingBonus = attackHelpers.getTrainingSTBonus(this.system.primaryAttributes.dexterity.value, throwingSkill, "Throwing", st)
 
 		this.system.info.throw.throwingDistanceST = st + trainingBonus; // The training bonus applies only to distance, not damage
 		this.system.info.throw.effectiveBasicLift = Math.round(((st * st)/5)); // Get basic lift.
