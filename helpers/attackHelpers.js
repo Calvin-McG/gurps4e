@@ -57,28 +57,29 @@ export class attackHelpers {
     }
 
     static damageAddsToDice(damage) {
-        let diceStrings = damage.match(/(\+|\-)?\d+d6/g); // Regex fetches "#d6", plus any +/1 sign
-        let diceCount = 0;
+        if (damage.toString().includes("d6")) {
+            let diceStrings = damage.match(/(\+|\-)?\d+d6/g); // Regex fetches "#d6", plus any +/1 sign
+            let diceCount = 0;
 
-        let addsString = damage;
-        for (let k = 0; k < diceStrings.length; k++) { // Loop through our collected dice
-            addsString = addsString.replace(diceStrings[k], ""); // From the original string, remove all the dice we got above.
-            let dice = diceStrings[k].match(/(\+|\-)?\d+d/g);
-            diceCount += parseInt(dice[0].slice(0, -1));
-        }
+            let addsString = damage;
+            for (let k = 0; k < diceStrings.length; k++) { // Loop through our collected dice
+                addsString = addsString.replace(diceStrings[k], ""); // From the original string, remove all the dice we got above.
+                let dice = diceStrings[k].match(/(\+|\-)?\d+d/g);
+                diceCount += parseInt(dice[0].slice(0, -1));
+            }
 
-        let adds = eval(addsString); // Eval the remaining adds to get a single number.
-        if (typeof adds === "undefined") { // eval() on an empty string returns undefined
-            adds = 0; // Store a zero instead.
-        }
+            let adds = eval(addsString); // Eval the remaining adds to get a single number.
+            if (typeof adds === "undefined") { // eval() on an empty string returns undefined
+                adds = 0; // Store a zero instead.
+            }
 
-        if (game.settings.get("gurps4e", "addsToDice")) { // If we're converting extra adds to dice
-            damage = generalHelpers.pointsToDiceAndAddsString((diceCount * 3.5) + adds); // Convert all dice to adds, and then back to adds and dice.
+            if (game.settings.get("gurps4e", "addsToDice")) { // If we're converting extra adds to dice
+                damage = generalHelpers.pointsToDiceAndAddsString((diceCount * 3.5) + adds); // Convert all dice to adds, and then back to adds and dice.
+            }
+            else {
+                damage = (diceCount + "d6" + adds); // Otherwise, take it as is.
+            }
         }
-        else {
-            damage = (diceCount + "d6" + adds); // Otherwise, take it as is.
-        }
-
         return damage;
     }
 
