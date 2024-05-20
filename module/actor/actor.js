@@ -2562,13 +2562,13 @@ export class gurpsActor extends Actor {
 	}
 
 	saveLocationalTotalDR(){
-		if (this.system) {
-			if (this.system.bodyType) {
-				if (this.system.bodyType.name.length > 0){
+		if (this.system) { // Make sure the actor exists
+			if (this.system.bodyType) { // Make sure the actor has a bodyType object
+				if (this.system.bodyType.name.length > 0){ // Make sure the name of the body type is not blank
 					let object = this.system.bodyType.body;
 					let bodyParts = Object.keys(object); // Collect all the bodypart names
 					for (let i = 0; i < bodyParts.length; i++){ // Loop through all the body parts
-						if (bodyParts[i] == "skull" || bodyParts[i] == "brain"){ // Part has no sub-parts
+						if (bodyParts[i] === "skull" || bodyParts[i] === "brain"){ // Part has no sub-parts
 							let currentBodyPart = getProperty(object, bodyParts[i]);
 
 							// Clear existing DR for the body part
@@ -2729,7 +2729,7 @@ export class gurpsActor extends Actor {
 			let bodyParts = Object.keys(object); // Collect all the bodypart names
 
 			for (let i = 0; i < bodyParts.length; i++){ // Loop through all the body parts
-				if (bodyParts[i] == "skull" || bodyParts[i] == "brain"){ // Part has no sub-parts
+				if (bodyParts[i] === "skull" || bodyParts[i] === "brain"){ // Part has no sub-parts
 					// For each dr type, add it to the object
 					armour.burn[bodyParts[i]] = getProperty(object, bodyParts[i] + ".drBurn") ? +getProperty(object, bodyParts[i] + ".drBurn") : 0;
 					armour.cor[bodyParts[i]]  = getProperty(object, bodyParts[i] + ".drCor")  ? +getProperty(object, bodyParts[i] + ".drCor") : 0;
