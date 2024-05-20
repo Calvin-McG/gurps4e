@@ -42,18 +42,23 @@ export class generalHelpers {
     }
 
     static diceAndAddsToPoints(inputString) {
-        let diceAndAdds = inputString.split("d6"); // Split the string on the d6
-        let dice = parseInt(diceAndAdds[0]); // Die count will be before the d6
-        let adds = parseInt(diceAndAdds[1]); // Adds will be after
+        if (inputString.includes("d6")) { // If we were passed a dice string
+            let diceAndAdds = inputString.split("d6"); // Split the string on the d6
+            let dice = parseInt(diceAndAdds[0]); // Die count will be before the d6
+            let adds = parseInt(diceAndAdds[1]); // Adds will be after
 
-        if (Number.isNaN(dice) || typeof dice === "undefined") { // If dice came through wrong, default to zero
-            dice = 0
-        }
-        if (Number.isNaN(adds) || typeof adds === "undefined") { // If adds came through wrong, default to zero
-            adds = 0
-        }
+            if (Number.isNaN(dice) || typeof dice === "undefined") { // If dice came through wrong, default to zero
+                dice = 0
+            }
+            if (Number.isNaN(adds) || typeof adds === "undefined") { // If adds came through wrong, default to zero
+                adds = 0
+            }
 
-        return (dice * 3.5) + adds; // Return the average damage given the above values.
+            return (dice * 3.5) + adds; // Return the average damage given the above values.
+        }
+        else { // If we were not passed a dice string, such as a specific number
+            return parseFloat(inputString);
+        }
     }
 
     // This method takes in a number of points of damage and converts it to the maximum number of dice and minimum number of adds
