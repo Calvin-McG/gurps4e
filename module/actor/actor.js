@@ -6298,6 +6298,266 @@ export class gurpsActor extends Actor {
 		return armour;
 	}
 
+	async applyDamageNew(flags, locationsHit, additionalMessage) {
+		// Init required variables
+		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor;
+		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;
+		let attack 			= flags.attack;
+		let targetST 		= target.system.primaryAttributes.knockback.value;
+		let targetHex		= flags.targetHex;
+		let effectiveTotalKnockbackDamage = 0; // This variable stores the accumulating effect of knockback from all hits
+		let totalInjury 	= 0;
+		let totalFatInj 	= 0;
+		let damageReduction = 1;
+		let largeArea		= false;
+		let rangeDamageMult = flags.rangeDamageMult;
+		let damageType = this.extractDamageType(attack);
+		let largeAreaDR; // Only needed for largeArea attacks, but init here
+		let strictInjuryCap = game.settings.get("gurps4e", "strictInjuryCap"); // Get the game setting which determines which version of the injury cap we're using.
+		let armourDivisor;
+
+
+		// Work out the correct value for the armour divisor
+		if (typeof attack.armourDivisor == "undefined" || attack.armourDivisor === ""){ // Armour divisor is undefined or blank
+			armourDivisor = 1; // Set it to the default of 1
+		}
+		else if (attack.armourDivisor.toString().toLowerCase().includes("cosmic") || attack.armourDivisor.toString().toLowerCase().includes("c")){
+			armourDivisor = "Cosmic Ignores Armour"; // Set to a display string we will reference later to ignore armour
+		}
+		else if (attack.armourDivisor.toString().toLowerCase().includes("ignore") || attack.armourDivisor.toString().toLowerCase().includes("i")){
+			armourDivisor = "Ignores Armour"; // Set to a display string we will reference later to ignore armour
+		}
+		else {
+			armourDivisor = attack.armourDivisor; // Set it to whatever they entered.
+		}
+
+		// Work out if this is a Large Area Attack
+		// The attack is an area attack or an explosion, making it a Large Area Attack (Rules for which are on B400)
+		if (attack.damageType.toString().toLowerCase().includes("area") || attack.damageType.toString().toLowerCase().includes("la") || attack.damageType.toString().toLowerCase().includes("ex") ) {
+			largeArea = true; // Set the area flag
+			largeAreaDR = this.getLargeAreaDR(target.system.bodyType.body); // Store the largeAreaDR for later.
+		}
+
+		// Check to see if the target has damage reduction and store the value
+		if (target.system.injuryTolerances){
+			if (target.system.injuryTolerances.damageReduction){
+				damageReduction = target.system.injuryTolerances.damageReduction; // Set the target's damage reduction
+			}
+		}
+
+		// Start the html which will be displayed as a chat message
+		let html = "<div>Damage for " + attacker.name + "'s " + attack.weapon + " " + attack.name + " against " + target.name + "</div>"; // Tell players what attack is being used and against which target
+
+		if (additionalMessage) {
+			html += "<hr>" + additionalMessage + "<br>" // If there's an additionalMessage, include it.
+		}
+
+		// Loop through the list of locations we've hit.
+		for (let i = 0; i < locationsHit.length; i++){
+			// == Begin DR totalling ++
+			let drTotalEffectivePoints = 0; // This holds the running total for DR, accounting for any difference from armour divisors and multipliers.
+			if (largeArea) { // If this is a largeArea attack
+				locationsHit[i] = 'upperChest.subLocation.chest'; // Switch the location to the chest
+				drTotalEffectivePoints = Math.floor(getProperty(largeAreaDR, drDamageType) / armourDivisor); // Save
+			}
+
+			let location = getProperty(target.system.bodyType.body, locationsHit[i]); // Get the specific location we hit.
+
+			let layerDR = 0; // Init the variable used to store the total DR for this location.
+			let drLayers = Object.keys(location.dr) // Get the keys for the dr objects on this location.
+
+			// Next, account for attacks like tbb or pi- which don't have their own DR types.
+			let drDamageType = damageType.type;
+			if (drDamageType === "tbb") { // For the purposes of DR only, set tbb attacks equivalent to burn since tbb still uses burning DR
+				drDamageType = "burn";
+			}
+			else if (drDamageType.toLowerCase().includes("pi")) { // Any damage type including the letters pi faces pi dr.
+				drDamageType = "pi";
+			}
+
+			let drGroupFlexible = true; // This variable is only true if all layers of armour are flexible.
+
+			for (let d = 0; d < drLayers.length; d++){ // Loop through the layers of DR on this location
+				let dr = getProperty(location.dr[d], drDamageType); // Get the DR of this specific layer for the specific damage type we're looking at right now.
+				if (dr > 0 && !location.dr[d].flexible) { // If the dr of this location is not zero, and the location is not flexible, then there is rigid armour here
+					drGroupFlexible = false; // Set the flag false
+				}
+
+				let adAfterHardening = armourDivisor;
+
+				if (location.dr[d].hardness > 1){
+					adAfterHardening = attackHelpers.applyDRHardening(armourDivisor, location.dr[d].hardness - 1);
+				}
+
+				if (!adAfterHardening.toString().includes("ignores")) { // If this attack is not ignoring armour
+					drTotalEffectivePoints = drTotalEffectivePoints + (dr / adAfterHardening); // Add the dr from this layer, adjusted by ad, to the running total.
+				}
+			}
+
+			drTotalEffectivePoints = Math.floor(drTotalEffectivePoints);
+
+			console.log(drTotalEffectivePoints);
+			// == End DR totalling
+
+			// == Begin Damage roll section
+			let damageStoppedByDice = 0; // This is any damage dealt, stopped by DR.
+			let damageString = attack.damage
+			let armourAsDice = false;
+
+			if ( ( ((attack.type === "ranged") && game.settings.get("gurps4e", "armourAsDiceRanged")) || // It's a ranged attack and we've set them to use armour as dice, OR, it's a melee attack and they're set to use armour as dice.
+				((attack.type === "melee") && game.settings.get("gurps4e", "armourAsDiceMelee")) ) && // OR, it's a melee attack and they're set to use armour as dice.
+				drTotalEffectivePoints >= 7) { // And there is 7 or more DR.
+				armourAsDice = true; // Store this flag so it's easier to reference later.
+
+				let points = generalHelpers.diceAndAddsToPoints(attack.damage)
+
+				if (rangeDamageMult === 0.5) { // If the attack was made beyond half range
+					points = points * rangeDamageMult; // Halve the points before accounting for armour as dice.
+					html += "<div>Damage was halved due to attacking at beyond 1/2D Range</div>"
+				}
+
+				let pointsAfterDR = Math.max(Math.floor(points - drTotalEffectivePoints), 0); // Subtract DR from average damage. Armour as dice rounds damage down in the case of fractions. Minimum zero.
+				damageStoppedByDice = points - pointsAfterDR; // This is any damage that wasn't rolled because it was stopped by armour as dice.
+				console.log(points, pointsAfterDR, damageStoppedByDice);
+
+				html += "<div>Armour blocked " + generalHelpers.pointsToDiceAndAddsString(damageStoppedByDice) + " damage</div>"
+
+				if (pointsAfterDR > 0) { // If armour didn't stop everything
+					damageString = generalHelpers.pointsToDiceAndAddsString(pointsAfterDR);
+				}
+				else { // Armour stopped everything
+					damageString = "0";
+				}
+				drTotalEffectivePoints = 0; // Set this back to zero so that when we run the code below to deduct DR from roll damage, we don't need special handling for armour as dice.
+			}
+
+			// == Carry on to roll damage. By this point, the damage string has been reduced by armour as dice, if it applies for this attack.
+			console.log(damageString);
+
+			// Roll damage for the attack
+			let roll = new Roll(damageString); // Roll the damage string we built above
+			let damageRoll = await roll.roll({async: true}); // Await the result
+			let adds = 0; // Init adds as 0
+
+			// Display dice and damage total for this location.
+			html += "<hr><div>" + attackHelpers.buildLocationLabel(target, locationsHit[i]) + "</div>";
+			html += "<div>";
+			if(damageRoll.terms[0].results){
+				if(damageRoll.terms[0].results.length){ // Take the results of each roll and turn it into a die icon.
+					for (let k = 0; k < damageRoll.terms[0].results.length; k++){
+						if (damageType.explosive && !targetHex && game.settings.get("gurps4e", "contactExplosionsFromAttacks")){ // If it's an explosive attack that is not striking the hex, it's a contact explosion
+							html += "<label class='fa fa-dice-six fa-2x' style='color: #d24502'></label>" // Explosives do max damage on contact, colour the dice all special to draw attention to this
+						}
+						else {
+							html += rollHelpers.dieToSmallIcon(damageRoll.terms[0].results[k].result)
+						}
+					}
+				}
+				adds = (+damageRoll._total - +damageRoll.dice[0].total);
+			}
+			else {
+				adds = +damageRoll._total;
+			}
+
+			if (adds > 0){ // Adds are positive
+				html += "<label class='damage-dice-small-adds'>+</label><label class='damage-dice-small-adds'>" + adds + "</label>"
+			}
+			else if (adds < 0) { // Adds are negative
+				html += "<label class='damage-dice-small-adds'>-</label><label class='damage-dice-small-adds'>" + Math.abs(adds) + "</label>"
+			}
+
+			// Begin the part where we total up the damage.
+			let totalDamage = 0;
+
+			if (damageType.explosive && !targetHex && game.settings.get("gurps4e", "contactExplosionsFromAttacks")) { // The attack is explosive and not targeting the hex, therefore it's a contact explosion
+				if (typeof damageRoll.terms[0].results !== "undefined") {
+					totalDamage = (6 * (damageRoll.terms[0].results.length)) + adds;
+				}
+				else {
+					totalDamage = damageRoll.total;
+				}
+			}
+			else {
+				totalDamage = damageRoll.total;
+			}
+
+			if (rangeDamageMult === 0.5 && !armourAsDice) { // If the attack was made beyond half range and we haven't already halved damage due to using armour as dice.
+				totalDamage = Math.floor(totalDamage * rangeDamageMult); // Halve damage and round down.
+			}
+
+			if (totalDamage <= 0) { // If damage is 0 or less, account for minimum damage for each type
+				if (damageType.type === "cr") { // Minimum crushing damage is 0
+					totalDamage = 0;
+				}
+				else{ // Minimum damage for any other type is 1
+					totalDamage = 1;
+				}
+			}
+
+			if (rangeDamageMult === 0.5 && !armourAsDice) { // If the attack was made beyond half range and we haven't already halved damage due to using armour as dice.
+				html += "<label class='damage-dice-small-adds'>/2 = " + totalDamage + "</label>"; // Include "/2" in the string so it's clear the result was halved.
+			}
+			else {
+				html += "<label class='damage-dice-small-adds'> = " + totalDamage + "</label>";
+			}
+
+			if (armourDivisor !== 1 && largeArea){
+				html += "<label class='damage-dice-small-adds'> (" + armourDivisor + ") Large Area Injury</label>";
+			}
+			else if (armourDivisor !== 1){
+				html += "<label class='damage-dice-small-adds'> (" + armourDivisor + ")</label>";
+			}
+			else if (largeArea) {
+				html += "<label class='damage-dice-small-adds'> Large Area Injury</label>";
+			}
+
+			html += "</div>";
+
+
+
+			// Deduct armour from damage and check blunt trauma and knockback. If we used armour as dice above then drTotalEffectivePoints has already been set back to 0 so it's fine.
+			let effectiveLocationKnockbackDamage = totalDamage + damageStoppedByDice; // Knockback is calculated based on total damage, including any damage stopped by armour as dice.
+			let effectiveBluntTraumaDamage = damageStoppedByDice; // Blunt trauma is calculated based on only the damage stopped by dr. Start with any damage stopped by armour as dice. More will be added later if necessary
+			let bluntTraumaWounding = 0; // This variable stores the actual wounding as a result of blunt trauma.
+			let damageThroughArmour = Math.max(totalDamage - drTotalEffectivePoints, 0); // This is what actually makes it past the armour. Minimum zero.
+
+			effectiveBluntTraumaDamage = effectiveBluntTraumaDamage + Math.min(totalDamage, drTotalEffectivePoints); // The amount stopped by armour is the lower of the damage dealt or DR present.
+
+			// Check for blunt trauma
+			if (damageType.bluntTraumaCapable && // The attack needs to be capable of blunt trauma
+				(drGroupFlexible || game.settings.get("gurps4e", "rigidBluntTrauma")) && // AND either the armour needs to be flexible or the setting to allow blunt trauma to rigid armour needs to be on.
+				(game.settings.get("gurps4e", "allowBluntTraumaWithWounding") || damageThroughArmour <= 0)){ // AND either we need to be allowing blunt trauma with wounding OR there must not be any wounding.
+				bluntTraumaWounding = (effectiveBluntTraumaDamage / damageType.bluntReq);
+			}
+
+			// Check to make sure the damage type is capable of knockback
+			if (!(damageType.type === "cr" || damageType.type === "cut")) { // Only cr and cutting attacks can do knockback.
+				effectiveLocationKnockbackDamage = 0; // If it's neither, set effectiveKnockbackDamage to zero.
+			}
+
+			console.log(damageThroughArmour, bluntTraumaWounding);
+
+			if (damageThroughArmour > 0) { // Damage has penetrated DR
+				damageThroughArmour = Math.floor(damageThroughArmour); // Round down to a whole number
+				html += "<label>" + damageThroughArmour + " damage gets through</label>";
+
+				// Knockback does not happen upon penetrating DR unless it was crushing.
+				if (!(damageType.type === "cr")) { // Only cr attacks can do knockback while penetrating armour.
+					effectiveLocationKnockbackDamage = 0; // If it's not, set effectiveLocationKnockbackDamage to zero.
+				}
+			}
+
+			let woundCap = strictInjuryCap ? location.injuryCapStrict : location.injuryCap; // Set the injury cap style based on the game setting above
+
+
+			console.log(html);
+
+			// Final logic for this location hit.
+
+			effectiveTotalKnockbackDamage += effectiveLocationKnockbackDamage; // Add any knockback accumulated from this location hit to the total knockback for the whole attack.
+		} // End of loop for the specific locaiton hit
+	}
+
 	extractDamageType(attack) {
 		let damageType = {
 			type: "",
