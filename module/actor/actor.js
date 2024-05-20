@@ -5740,25 +5740,8 @@ export class gurpsActor extends Actor {
 			let damageRoll = await roll.roll({async: true});
 			let adds = 0;
 
-			// Build the location label
-			let firstLocation = getProperty(target.system.bodyType.body, locationsHit[i].split(".")[0]);
-			let secondLocation = getProperty(target.system.bodyType.body, locationsHit[i]);
-			let firstLabel = firstLocation ? firstLocation.label : "";
-			let secondLabel = secondLocation? secondLocation.label: "";
-			let locationLabel;
-			if (firstLabel === secondLabel){
-				locationLabel = firstLabel;
-			}
-			else if (firstLabel === ''){
-				locationLabel = secondLabel;
-			}
-			else {
-				locationLabel = firstLabel + " - " + secondLabel;
-			}
-
 			// Display dice and damage total for this location.
-			html += "<hr>";
-			html += "<div>" + locationLabel + "</div>";
+			html += "<hr><div>" + attackHelpers.buildLocationLabel(target, locationsHit[i]) + "</div>";
 			html += "<div>";
 			if(damageRoll.terms[0].results){
 				if(damageRoll.terms[0].results.length){ // Take the results of each roll and turn it into a die icon.
