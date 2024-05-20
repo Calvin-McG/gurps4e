@@ -6017,7 +6017,7 @@ export class gurpsItem extends Item {
 
   // This method prepares the data for all of the attacks present on the sheet.
   prepareAttackData() {
-    //Check to see if there is an actor yet
+    // Check to see if there is an actor yet
     if (this.actor){
       if (this.actor.system) {
         let damage;
@@ -6097,7 +6097,7 @@ export class gurpsItem extends Item {
                 damage = this.damageParseSwThr(this.system.melee[meleeKeys[k]].damageInput);//Update damage value
                 this.system.melee[meleeKeys[k]].block = block; // Update block value
                 this.system.melee[meleeKeys[k]].type = "melee"; // Update attack type
-                this.system.melee[meleeKeys[k]].damage = damage;
+                this.system.melee[meleeKeys[k]].damage = attackHelpers.damageAddsToDice(damage);
 
                 // Validation for Armour Divisor
                 if (!(this.system.melee[meleeKeys[k]].armourDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
@@ -6117,7 +6117,7 @@ export class gurpsItem extends Item {
           let rangedKeys = Object.keys(this.system.ranged);
           if (rangedKeys.length) {//Check to see if there are any ranged profiles
             for (let k = 0; k < rangedKeys.length; k++) {
-              if (this.system.ranged[rangedKeys[k]].name) {//Check to see if name is filled in
+              if (this.system.ranged[rangedKeys[k]].name) { // Check to see if name is filled in
                 let level = 0;
                 let mod = +this.system.ranged[rangedKeys[k]].skillMod;
 
@@ -6147,7 +6147,7 @@ export class gurpsItem extends Item {
                 this.system.ranged[rangedKeys[k]].level = level;
                 this.system.ranged[rangedKeys[k]].type = "ranged"; // Update attack type
                 damage = this.damageParseSwThr(this.system.ranged[rangedKeys[k]].damageInput);
-                this.system.ranged[rangedKeys[k]].damage = damage;
+                this.system.ranged[rangedKeys[k]].damage = attackHelpers.damageAddsToDice(damage);
 
                 if (typeof this.system.ranged[rangedKeys[k]].rcl == "undefined" || this.system.ranged[rangedKeys[k]].rcl <= 0) { // Catch invalid values for rcl. Value must exist and be at least one.
                   this.system.ranged[rangedKeys[k]].rcl = 1;
@@ -6245,7 +6245,7 @@ export class gurpsItem extends Item {
                 }
 
                 this.system.affliction[afflictionKeys[k]].type = "affliction"; // Update attack type
-                this.system.affliction[afflictionKeys[k]].damage = damage;
+                this.system.affliction[afflictionKeys[k]].damage = attackHelpers.damageAddsToDice(damage);
 
                 // Validation for Armour Divisor
                 if (!(this.system.affliction[afflictionKeys[k]].armourDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
