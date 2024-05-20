@@ -2,6 +2,26 @@ import { generalHelpers } from "./generalHelpers.js";
 
 export class attackHelpers {
 
+    static buildLocationLabel(target, locationHit) {
+        // Build the location label
+        let firstLocation = getProperty(target.system.bodyType.body, locationHit.split(".")[0]);
+        let secondLocation = getProperty(target.system.bodyType.body, locationHit);
+        let firstLabel = firstLocation ? firstLocation.label : "";
+        let secondLabel = secondLocation? secondLocation.label: "";
+        let locationLabel;
+        if (firstLabel === secondLabel){
+            locationLabel = firstLabel;
+        }
+        else if (firstLabel === ''){
+            locationLabel = secondLabel;
+        }
+        else {
+            locationLabel = firstLabel + " - " + secondLabel;
+        }
+
+        return locationLabel;
+    }
+
     static damageAddsToDice(damage) {
         let diceStrings = damage.match(/(\+|\-)?\d+d6/g); // Regex fetches "#d6", plus any +/1 sign
         let diceCount = 0;
