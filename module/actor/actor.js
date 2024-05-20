@@ -5709,10 +5709,8 @@ export class gurpsActor extends Actor {
 		if (attack.damageType.toString().toLowerCase().includes("area") || attack.damageType.toString().toLowerCase().includes("la") || attack.damageType.toString().toLowerCase().includes("ex") ) {
 			largeArea = true; // Set the area flag
 
-			if (!(attack.damageType.toString().toLowerCase().includes("ex") && !targetHex)) { // It's not a contact targeted explosion
-				for (let i = 0; i < locationsHit.length; i++){ // Loop through all the locations
-					locationsHit[i] = 'upperChest.subLocation.chest'; // Set them to the upper chest
-				}
+			for (let i = 0; i < locationsHit.length; i++){ // Loop through all the locations
+				locationsHit[i] = 'upperChest.subLocation.chest'; // Set them to the upper chest
 			}
 
 			largeAreaDR = this.getLargeAreaDR(target.system.bodyType.body); // Get the target's Large Area DR
