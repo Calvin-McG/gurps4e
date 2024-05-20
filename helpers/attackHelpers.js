@@ -45,8 +45,6 @@ export class attackHelpers {
             damage = (diceCount + "d6" + adds); // Otherwise, take it as is.
         }
 
-        console.log(damage)
-
         return damage;
     }
 
