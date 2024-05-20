@@ -11,6 +11,9 @@ export class attackHelpers {
             if (ad === Infinity || ad.toString().toLowerCase() !== "ignores armour") { // Infinite ad, and other non-cosmic ignores armour
                 ad = 100; // reduce to ad 100, which is the next step down
             }
+            else if (ad.toString().toLowerCase() !== "cosmic ignores armour") { // Cosmic ignores armour does not get reduced.
+                return ad;
+            }
             else if (ad >= 100) { // The next step after ad (100) is ad (10)
                 ad = ad / 10; // So divide the value by 10
             }
@@ -27,8 +30,7 @@ export class attackHelpers {
                 ad = ad / 2; // So divide the value by 2
             }
             else if (ad > 1) { // If looping through the above has left us with some strange decimal value but we still have levels of hardening to take care of...
-                ad = 1; // Reduce ad to 1
-                i += Infinity; // And break the loop
+                return 1; // Reduce ad to 1
             }
         }
         return ad;
