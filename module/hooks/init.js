@@ -253,10 +253,20 @@ Hooks.once("init", () => {
 
   game.settings.register("gurps4e", "strictInjuryCap", {
     name: "Strict Injury Cap",
-    hint: "Enable this setting to include injury caps on both the Torso and Abdomen. This is an optional rule and caps torso damage at HPx2, and abdomen damage at HPx1",
+    hint: "Enable this setting to include injury caps on both the Torso and Abdomen. This is an optional rule and caps torso injury at HPx2, and abdomen injury at HPx1",
     scope: "world",
     config: true,
     default: false,
+    type: Boolean
+  });
+
+  game.settings.register("gurps4e", "largeAreaBypassesInjuryCap", {
+    name: "Large Area Attacks Bypass Injury Cap",
+    hint: "With this setting on, attacks that qualify as Large Area Attacks, such as explosions, area attacks, and cones, bypass any locational injury cap. " +
+        "I believe this is RAW, as LAA generally shouldn't target specific locations in the first place, but I leave it here as an option since it is somewhat debateable.",
+    scope: "world",
+    config: true,
+    default: true,
     type: Boolean
   });
 
