@@ -42,6 +42,7 @@ function noResistanceRoll(event) {
 }
 function knockbackFallRoll(event) {
   event.preventDefault();
+  let penalty = parseInt(event.currentTarget.alt);
   let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).flags;
-  game.scenes.get(flags.scene).tokens.get(flags.target).actor.knockbackFallRoll(event);
+  game.scenes.get(flags.scene).tokens.get(flags.target).actor.knockbackFallRoll(event, penalty);
 }

@@ -3281,7 +3281,7 @@ export class gurpsActor extends Actor {
 					htmlContent += "<td>" + attacks.melee[x].name + "</td>";
 					htmlContent += "<td>" + attacks.melee[x].level + "</td>";
 
-					if(attacks.melee[x].armourDivisor == 1){//Only show armour divisor if it's something other than 1
+					if(attacks.melee[x].armourDivisor === 1){ // Only show armour divisor if it's something other than 1
 						htmlContent += "<td>" + attacks.melee[x].damage + " " + attacks.melee[x].damageType + "</td>";
 					}
 					else {
@@ -3844,7 +3844,7 @@ export class gurpsActor extends Actor {
 		this.applyAffliction(flags);
 	}
 
-	knockbackFallRoll(event) {
+	knockbackFallRoll(event, penalty) {
 		event.preventDefault();
 		let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).flags;
 		let target = game.scenes.get(flags.scene).tokens.get(flags.target).actor; // Fetch the target using the appropriate methods
@@ -3882,13 +3882,13 @@ export class gurpsActor extends Actor {
 					label: "Apply Modifier",
 					callback: (html) => {
 						let mod = html.find('#mod').val()
-						this.makeKnockbackRoll(skill, mod, message, target)
+						this.makeKnockbackRoll(skill, mod - penalty, message, target)
 					}
 				},
 				noMod: {
 					icon: '<i class="fas fa-times"></i>',
 					label: "No Modifier",
-					callback: () => this.makeKnockbackRoll(skill, 0, message, target)
+					callback: () => this.makeKnockbackRoll(skill, 0 - penalty, message, target)
 				}
 			},
 			default: "mod",
@@ -3912,7 +3912,14 @@ export class gurpsActor extends Actor {
 
 		ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
 
-		postureHelpers.setPostureTokenDoc(target.token, "lyingback");
+		console.log(target)
+		console.log(target.token)
+		if (typeof target.token !== "undefined") { // A token is present if the token and actor are not directly linked. (As in, the token is a separate copy of the actor)
+			postureHelpers.setPostureTokenDoc(target.token, "lyingback");
+		}
+		else { // The token is directly linked to the actor, meaning the token on the scene is a direct representation of that specific actor
+			postureHelpers.setPostureActor(target, "lyingback");
+		}
 	}
 
 	// This is run when a defender clicks the "Quick Contest" button after being the target of an affliction

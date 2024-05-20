@@ -22,6 +22,10 @@ export class postureHelpers {
         tokenObj.toggleEffect(posturePath, { active: true });
     }
 
+    static setPostureActor(actor, postureString) {
+        this.setPostureTokenObj(actor, postureString);
+    }
+
     // This method removes all posture settings from the token
     static removeAllPosture(tokenObj) {
         tokenObj.toggleEffect("systems/gurps4e/icons/postures/standing.png",        { active: false });
