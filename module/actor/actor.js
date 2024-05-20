@@ -5685,484 +5685,6 @@ export class gurpsActor extends Actor {
 		})
 	}
 
-	async applyDamage(flags, locationsHit, additionalMessage) {
-		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor;
-		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;
-		let attack 			= flags.attack;
-		let targetST 		= target.system.primaryAttributes.knockback.value;
-		let targetHex		= flags.targetHex;
-		let totalKnockback 	= 0;
-		let totalInjury 	= 0;
-		let totalFatInj 	= 0;
-		let damageReduction = 1;
-		let largeArea		= false;
-		let rangeDamageMult = flags.rangeDamageMult;
-		let largeAreaDR; // Only needed for largeArea attacks, but init here
-		let armourDivisor;
-
-		if (typeof attack.armourDivisor == "undefined" || attack.armourDivisor == ""){ // Armour divisor is undefined or blank
-			armourDivisor = 1; // Set it to the default of 1
-		}
-		else if (attack.armourDivisor.toString().toLowerCase().includes("ignore") || attack.armourDivisor.toString().toLowerCase().includes("cosmic") || attack.armourDivisor.toString().toLowerCase().includes("i")){
-			armourDivisor = "Ignores Armour"; // Set to a negative number, which we'll later use to ignore armour entirely.
-		}
-		else {
-			armourDivisor = attack.armourDivisor; // Set it to whatever they entered.
-		}
-
-		// The attack is an area attack or an explosion, making it a Large Area Attack (Rules for which are on B400)
-		if (attack.damageType.toString().toLowerCase().includes("area") || attack.damageType.toString().toLowerCase().includes("la") || attack.damageType.toString().toLowerCase().includes("ex") ) {
-			largeArea = true; // Set the area flag
-
-			for (let i = 0; i < locationsHit.length; i++){ // Loop through all the locations
-				locationsHit[i] = 'upperChest.subLocation.chest'; // Set them to the upper chest
-			}
-
-			largeAreaDR = this.getLargeAreaDR(target.system.bodyType.body); // Get the target's Large Area DR
-		}
-
-		// Check to see if the target has damage reduction and store the value
-		if (target.system.injuryTolerances){
-			if (target.system.injuryTolerances.damageReduction){
-				damageReduction = target.system.injuryTolerances.damageReduction; // Set the target's damage reduction
-			}
-		}
-
-		let damageType = this.extractDamageType(attack);
-
-		let html = "<div>Damage for " + attacker.name + "'s " + attack.weapon + " " + attack.name + " against " + target.name + "</div>";
-
-		if (additionalMessage) {
-			html += "<hr>" + additionalMessage + "<br>"
-		}
-
-		for (let i = 0; i < locationsHit.length; i++){
-			let bluntTrauma = 0;
-			let location = getProperty(target.system.bodyType.body, locationsHit[i]);
-
-			// Roll damage for the attack
-			let roll = new Roll(attack.damage);
-			let damageRoll = await roll.roll({async: true});
-			let adds = 0;
-
-			// Display dice and damage total for this location.
-			html += "<hr><div>" + attackHelpers.buildLocationLabel(target, locationsHit[i]) + "</div>";
-			html += "<div>";
-			if(damageRoll.terms[0].results){
-				if(damageRoll.terms[0].results.length){ // Take the results of each roll and turn it into a die icon.
-					for (let k = 0; k < damageRoll.terms[0].results.length; k++){
-						if (damageType.explosive && !targetHex && game.settings.get("gurps4e", "contactExplosionsFromAttacks")){ // If it's an explosive attack that is not striking the hex, it's a contact explosion
-							html += "<label class='fa fa-dice-six fa-2x' style='color: #d24502'></label>" // Explosives do max damage on contact, colour the dice all special to draw attention to this
-						}
-						else {
-							html += rollHelpers.dieToSmallIcon(damageRoll.terms[0].results[k].result)
-						}
-					}
-				}
-				adds = (+damageRoll._total - +damageRoll.dice[0].total);
-			}
-			else {
-				adds = +damageRoll._total;
-			}
-
-			if (adds > 0){ // Adds are positive
-				html += "<label class='damage-dice-small-adds'>+</label><label class='damage-dice-small-adds'>" + adds + "</label>"
-			}
-			else if (adds < 0) { // Adds are negative
-				html += "<label class='damage-dice-small-adds'>-</label><label class='damage-dice-small-adds'>" + Math.abs(adds) + "</label>"
-			}
-
-			let totalDamage;
-
-			if (damageType.explosive && !targetHex && game.settings.get("gurps4e", "contactExplosionsFromAttacks")) { // The attack is explosive and not targeting the hex, therefore it's a contact explosion
-				if (typeof damageRoll.terms[0].results !== "undefined") {
-					totalDamage = (6 * (damageRoll.terms[0].results.length)) + adds;
-				}
-				else {
-					totalDamage = damageRoll.total;
-				}
-			}
-			else {
-				totalDamage = damageRoll.total;
-			}
-
-			if (rangeDamageMult === 0.5) { // If the attack was made beyond half range
-				totalDamage = Math.floor(totalDamage * rangeDamageMult); // Halve damage and round down.
-			}
-
-			if (totalDamage <= 0) { // If damage is 0 or less, account for minimum damage for each type
-				if (damageType.type === "cr") { // Minimum crushing damage is 0
-					totalDamage = 0;
-				}
-				else{ // Minimum damage for any other type is 1
-					totalDamage = 1;
-				}
-			}
-
-			if (rangeDamageMult === 0.5) {
-				html += "<label class='damage-dice-small-adds'>/2 = " + totalDamage + "</label>";
-			}
-			else {
-				html += "<label class='damage-dice-small-adds'> = " + totalDamage + "</label>";
-			}
-
-			if (armourDivisor !== 1 && largeArea){
-				html += "<label class='damage-dice-small-adds'> (" + armourDivisor + ") Large Area Injury</label>";
-			}
-			else if (armourDivisor !== 1){
-				html += "<label class='damage-dice-small-adds'> (" + armourDivisor + ")</label>";
-			}
-			else if (largeArea) {
-				html += "<label class='damage-dice-small-adds'> Large Area Injury</label>";
-			}
-
-			html += "</div>";
-
-			// Store actualDamage so we can reference totalDamage later for knockback, etc.
-			let actualDamage = totalDamage;
-
-			let drLayers = Object.keys(location.dr)
-
-
-			let drDamageType = damageType.type;
-			if (drDamageType === "tbb") { // For the purposes of DR only, set tbb attacks equivalent to burn since tbb still uses burning DR
-				drDamageType = "burn";
-			}
-			else if (drDamageType.toLowerCase().includes("pi")) { // Any damage type including the letters pi faces pi dr.
-				drDamageType = "pi";
-			}
-
-			let totalLocationDR = 0;
-
-			// Large area attacks handle DR differently. We've already calculated the total above, make use of it now.
-			if (largeArea) {
-				// Set the applicable DR to the largeAreaDR
-				let dr = getProperty(largeAreaDR, drDamageType);
-				let effectiveDR = 0;
-				if (armourDivisor.toString().toLowerCase() == "ignores armour") { // If the armour divisor is set to ignore armour then effective DR is zero.
-					effectiveDR = 0
-				}
-				else {
-					effectiveDR = Math.floor(dr / armourDivisor); // Get the effective DR after armour divisor. Armour divisors round DR down.
-				}
-
-				let drStops = Math.min(actualDamage, effectiveDR); // Get the actual amount of damage stopped by the armour
-
-				// Subtract the dr from the running damage total.
-				actualDamage -= effectiveDR;
-
-				// Assume any Large Area attack does blunt trauma
-				bluntTrauma += (drStops / damageType.bluntReq);
-
-				totalLocationDR += +effectiveDR;
-			}
-			// It's not a large area attack, use the default DR application method
-			else {
-				// Loop through the armour and take DR away from the damage dealt
-				for (let d = 0; d < drLayers.length; d++){
-					let dr = getProperty(location.dr[d], drDamageType);
-					let effectiveDR = 0;
-					if (armourDivisor.toString().toLowerCase() == "ignores armour") { // If the armour divisor is set to ignore armour then effective DR is zero.
-						effectiveDR = 0
-					}
-					else {
-						effectiveDR = Math.floor(dr / armourDivisor); // Get the effective DR after armour divisor. Armour divisors round DR down.
-					}
-
-					let drStops = Math.min(actualDamage, effectiveDR); // Get the actual amount of damage stopped by the armour
-
-					// Subtract the dr from the running damage total.
-					actualDamage -= effectiveDR;
-
-					// Check for blunt trauma
-					if (damageType.bluntTraumaCapable && (location.dr.flexible || game.settings.get("gurps4e", "rigidBluntTrauma"))){ // The attack needs to be capable of blunt trauma and either the armour needs to be flexible or the setting to allow blunt trauma to rigid armour needs to be on.
-						bluntTrauma += (drStops / damageType.bluntReq);
-					}
-					else if (!(location.dr.flexible || game.settings.get("gurps4e", "rigidBluntTrauma"))){ // The armour is not flexible, and the setting for rigid blunt trauma is off.
-						bluntTrauma = 0; // The accumulating blunt trauma has hit a rigid layer and is reduced to zero.
-					}
-
-					totalLocationDR += +effectiveDR;
-				}
-			}
-
-			// Add a check for targets with no DR being hit with an attack that has an armour multiplier
-			if (armourDivisor != "Ignores Armour") {
-				if (actualDamage == totalDamage && armourDivisor < 1){
-					actualDamage -= (1/armourDivisor);
-
-					if (bluntTrauma == 0){ // Kinda hacky, but works for now. TODO - Make less suck
-						bluntTrauma = (totalDamage / damageType.bluntReq) / damageReduction;
-					}
-				}
-			}
-
-			if (actualDamage > 0) { // Damage has penetrated DR.
-				actualDamage = Math.floor(actualDamage);
-				html += "<label>" + actualDamage + " damage gets through</label>";
-
-				if (damageType.noWounding) {
-					actualDamage = 0;
-				}
-
-				// If the attack is capable of knockback, do knockback
-				if (damageType.type === "cr") { // Only cr attacks do knockback while penetrating DR
-					let knockback = totalDamage / targetST
-					if (damageType.doubleKnockback){
-						knockback = knockback * 2;
-					}
-					totalKnockback += knockback;
-				}
-
-				let woundCap; // Init injury cap
-
-				let strictInjuryCap = game.settings.get("gurps4e", "strictInjuryCap"); // Get the game setting
-
-				// Set the injury cap style based on the game setting above
-				if (strictInjuryCap) {
-					woundCap = location.injuryCapStrict;
-				}
-				else {
-					woundCap = location.injuryCap;
-				}
-
-				let actualWounding;
-				if (location.id.toLowerCase().includes("sublocation")){ // This is a sub location, check the parent for an HP value
-					let subLocation = location.id.split(".")[0]
-					let parentLocation = getProperty(target.system.bodyType.body, subLocation);
-					if (damageType.woundModId.toString().toLowerCase().includes("dam")) { // Check for untyped damage
-						actualWounding = Math.floor( (actualDamage / damageReduction) );
-					}
-					else {
-						if (game.settings.get("gurps4e", "edgeProtection") && (damageType.type === "cut") && (!((totalDamage > (totalLocationDR * 2))))) { // If edge protection is enabled, damage type is crushing, and it's not more than twice the DR
-							actualWounding = Math.floor( ( (actualDamage * getProperty(location, "personalWoundMultCr")) / damageReduction) );
-						}
-						else {
-							actualWounding = Math.floor( ( (actualDamage * getProperty(location, damageType.woundModId)) / damageReduction) );
-						}
-					}
-
-					if (target.system.injuryTolerances.diffuse) { // Target is diffuse
-						if (damageType.woundModId.toString().toLowerCase().includes("imp") || damageType.woundModId.toString().toLowerCase().includes("pi")) { // Attack is imp or pi
-							actualWounding = Math.min(actualWounding, 1); // Imp/pi attacks vs diffuse targets are capped at 1 wounding
-						}
-						else { // Attack is not imp or pi
-							actualWounding = Math.min(actualWounding, 2); // All other attacks vs diffuse targets are capped at 2 wounding
-						}
-					}
-
-					if (parentLocation.hp){// Apply damage to the parent location if it tracks HP
-						if (woundCap !== Infinity) { // If the wound cap is not infinity
-							woundCap = parentLocation.hp.value; // Bring the wound cap down to the HP left in the location.
-						}
-
-						parentLocation.hp.value -= actualWounding;
-						parentLocation.hp.value = Math.max(parentLocation.hp.value, -parentLocation.hp.max) // Value should be the higher of it's actual value and full negative HP.
-						target.system.bodyType.body[subLocation].hp.value = parentLocation.hp.value;
-						//await target.update({ ['system.bodyType.body.' + subLocation + ".hp.value"]: parentLocation.hp.value });
-					}
-					if (location.hp){ // Apply damage to the child location if it tracks HP
-						location.hp.value -= actualWounding;
-						location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
-						const splitLocation = location.id.split(".");
-						target.system.bodyType.body[splitLocation[0]][splitLocation[1]][splitLocation[2]].hp.value = location.hp.value;
-						//await target.update({ ['system.bodyType.body.' + location.id + ".hp.value"]: location.hp.value });
-					}
-				}
-				else {
-					if (damageType.woundModId.toString().toLowerCase().includes("dam")) { // Check for untyped damage
-						actualWounding = Math.floor( ((actualDamage * 1) / damageReduction) );
-					}
-					else {
-						actualWounding = Math.floor(((actualDamage * getProperty(location, damageType.woundModId)) / damageReduction) );
-					}
-
-					if (target.system.injuryTolerances.diffuse) { // Target is diffuse
-						if (damageType.woundModId.toString().toLowerCase().includes("imp") || damageType.woundModId.toString().toLowerCase().includes("pi")) { // Attack is imp or pi
-							actualWounding = Math.min(actualWounding, 1); // Imp/pi attacks vs diffuse targets are capped at 1 wounding
-						}
-						else { // Attack is not imp or pi
-							actualWounding = Math.min(actualWounding, 2); // All other attacks vs diffuse targets are capped at 2 wounding
-						}
-					}
-
-					if (location.hp){ // Apply damage to the location if it tracks HP
-
-						if (woundCap !== Infinity) { // If the wound cap is not infinity
-							woundCap = location.hp.value; // Bring the wound cap down to the HP left in the location.
-						}
-
-						location.hp.value -= actualWounding
-						location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
-					}
-				}
-
-				// If there's a wound cap, apply it
-				if (typeof woundCap !== "undefined"){
-					// If the wound cap is less than zero for some reason, fix it
-					if (woundCap < 0){
-						woundCap = 0;
-					}
-					actualWounding = Math.min(woundCap, actualWounding);
-				}
-
-				// Multiply final damage by the locational wound modifier and add it to the running total
-				if (damageType.type == "fat"){
-					totalFatInj += Math.floor(actualDamage * location.personalWoundMultFat);
-					html += "<div>The location loses " + totalFatInj + " fatigue</div>";
-				}
-				else {
-					totalInjury += actualWounding;
-					html += "<div>The location takes " + actualWounding + " injury</div>";
-				}
-
-				if (game.settings.get("gurps4e", "allowBluntTraumaWithWounding")) {
-					bluntTrauma = Math.floor(bluntTrauma); // Round down blunt trama in preparation for actually applying the damage.
-					if (bluntTrauma > 0) {
-						let bluntInjury = bluntTrauma;
-
-						if (location.id.toLowerCase().includes("sublocation")){ // This is a sub location, check the parent for an HP value
-							let subLocation = location.id.split(".")[0]
-							let parentLocation = getProperty(target.system.bodyType.body, subLocation);
-							if (parentLocation.hp) { // Apply damage to the parent location if it tracks HP
-								if (woundCap !== Infinity) { // If the wound cap is not infinity
-									woundCap = parentLocation.hp.value; // Damage is capped to however much HP is left in the limb
-								}
-								parentLocation.hp.value -= bluntInjury;
-								parentLocation.hp.value = Math.max(parentLocation.hp.value, -parentLocation.hp.max) // Value should be the higher of it's actual value and full negative HP.
-								target.system.bodyType.body[subLocation].hp.value = parentLocation.hp.value;
-								// await target.update({ ['system.bodyType.body.' + subLocation + ".hp.value"]: parentLocation.hp.value });
-							}
-							if (location.hp){ // Apply damage to the child location if it tracks HP
-								location.hp.value -= bluntInjury;
-								location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
-								const splitLocation = location.id.split(".");
-								target.system.bodyType.body[splitLocation[0]][splitLocation[1]][splitLocation[2]].hp.value = location.hp.value;
-								// await target.update({ ['system.bodyType.body.' + location.id + ".hp.value"]: location.hp.value });
-							}
-						}
-						else {
-							if (location.hp){ // Apply damage to the location if it tracks HP
-								if (woundCap !== Infinity) { // If the wound cap is not infinity
-									woundCap = location.hp.value; // Damage is capped to however much HP is left in the limb
-								}
-								location.hp.value -= bluntInjury;
-								location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
-							}
-						}
-
-						// If there's a wound cap, apply it
-						if (typeof woundCap !== "undefined"){
-							// If the wound cap is less than zero for some reason, fix it
-							if (woundCap < 0){
-								woundCap = 0;
-							}
-							bluntInjury = Math.min(woundCap, bluntInjury);
-						}
-
-						html += "<label>The location also takes " + bluntInjury + " blunt trauma.</label>";
-
-						totalInjury += bluntInjury;
-					}
-				}
-			}
-			else if (actualDamage <= 0) { // No damage has penetrated DR
-				bluntTrauma = Math.floor(bluntTrauma); // Round down blunt trauma in preparation for actually applying the damage.
-				if (bluntTrauma > 0) {
-					let bluntInjury = bluntTrauma;
-					html += "<label>The armour stops all damage but the attack does " + bluntTrauma + " blunt trauma.</label>";
-
-
-					let woundCap;
-					if (location.id.toLowerCase().includes("sublocation")){ // This is a sub location, check the parent for an HP value
-						let subLocation = location.id.split(".")[0]
-						let parentLocation = getProperty(target.system.bodyType.body, subLocation);
-						if (parentLocation.hp){ // Apply damage to the parent location if it tracks HP
-							woundCap = parentLocation.hp.value; // Damage is capped to however much HP is left in the limb
-							parentLocation.hp.value -= bluntInjury;
-							parentLocation.hp.value = Math.max(parentLocation.hp.value, -parentLocation.hp.max) // Value should be the higher of it's actual value and full negative HP.
-							target.system.bodyType.body[subLocation].hp.value = parentLocation.hp.value;
-							//await target.update({ ['system.bodyType.body.' + subLocation + ".hp.value"]: parentLocation.hp.value });
-						}
-						if (location.hp){ // Apply damage to the child location if it tracks HP
-							location.hp.value -= bluntInjury;
-							location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
-							const splitLocation = location.id.split(".");
-							target.system.bodyType.body[splitLocation[0]][splitLocation[1]][splitLocation[2]].hp.value = location.hp.value;
-							//await target.update({ ['system.bodyType.body.' + location.id + ".hp.value"]: location.hp.value });
-						}
-					}
-					else {
-						if (location.hp){ // Apply damage to the location if it tracks HP
-							woundCap = location.hp.value; // Damage is capped to however much HP is left in the limb
-							location.hp.value -= bluntInjury;
-							location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
-						}
-					}
-
-					// If there's a wound cap, apply it
-					if (typeof woundCap !== "undefined"){
-						// If the wound cap is less than zero for some reason, fix it
-						if (woundCap < 0){
-							woundCap = 0;
-						}
-						bluntInjury = Math.min(woundCap, bluntInjury);
-					}
-
-					totalInjury += bluntInjury;
-
-					html += "<div>The location takes " + bluntInjury + " injury</div>";
-				}
-				else {
-					html += "<label>The armour stops all damage and the attack does no blunt trauma.</label>";
-				}
-
-				// If the attack is capable of knockback, do knockback
-				if (damageType.type === "cut" || damageType.type === "cr") { // Cutting can also do knockback if it fails to penetrate
-					let knockback = totalDamage / targetST
-					if (damageType.doubleKnockback){
-						knockback = knockback * 2;
-					}
-					totalKnockback += knockback;
-				}
-			}
-		}
-
-		totalKnockback = Math.floor(totalKnockback);
-		if (totalKnockback > 0) { // Display total knockback
-			html += "<hr>" + target.name + " is knocked back " + totalKnockback + " yards and must roll at -" + (totalKnockback - 1) + " to avoid falling down.";
-			html += "<br><input type='button' class='knockbackFall' value='Roll to avoid falling down'/>";
-			let damageFromVelocity = generalHelpers.velocityToDamage(target.system.reserves.hp.max, totalKnockback)
-			html += "<hr>If there is a collision, it causes " + damageFromVelocity.hard + " damage. Striking a soft object instead does " + damageFromVelocity.soft + " damage."
-
-			// flags = { // Compile flags that will be passed along through the chat messages
-			// 	target: target.id,
-			// 	attacker: attacker.id,
-			// 	scene: target.scene.id,
-			// 	attack: attack,
-			// 	margin: rollInfo.margin,
-			// 	effectiveSkill: (+attack.level + +totalModifiers)
-			// }
-		}
-
-		if (totalInjury > 0){
-			let newHP = target.system.reserves.hp.value - Math.floor(totalInjury);
-			target.system.reserves.hp.value = newHP;
-			//await target.update({ 'system.reserves.hp.value': newHP });
-		}
-
-		if (totalFatInj > 0){
-			let newFP = target.system.reserves.fp.value - Math.floor(totalFatInj);
-			target.system.reserves.fp.value = newFP;
-			//await target.update({ 'system.reserves.fp.value': newFP });
-		}
-
-		target.update({ 'data': target.system });
-		// console.log(target.token.effects);
-		// console.log(typeof target.token.effects);
-		ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER, flags: flags });
-	}
-
 	// This method goes through each hit location on the body to find the lowest for each separate damage type. It then stores that for the final step where it is averaged with the Torso DR
 	getLargeAreaDR(object) {
 		let armour = { // Init the final largeAreaDR object which we will return at the end of the method
@@ -6303,7 +5825,7 @@ export class gurpsActor extends Actor {
 		return armour;
 	}
 
-	async applyDamageNew(flags, locationsHit, additionalMessage) {
+	async applyDamage(flags, locationsHit, additionalMessage) {
 		// Init required variables
 		let target 			= game.scenes.get(flags.scene).tokens.get(flags.target).actor;
 		let attacker 		= game.scenes.get(flags.scene).tokens.get(flags.attacker).actor;
@@ -6359,11 +5881,16 @@ export class gurpsActor extends Actor {
 
 		// Loop through the list of locations we've hit.
 		for (let i = 0; i < locationsHit.length; i++){
-			// == Begin DR totalling ++
+			// Begin DR totalling
 			let drTotalEffectivePoints = 0; // This holds the running total for DR, accounting for any difference from armour divisors and multipliers.
 			if (largeArea) { // If this is a largeArea attack
 				locationsHit[i] = 'upperChest.subLocation.chest'; // Switch the location to the chest
-				drTotalEffectivePoints = Math.floor(getProperty(largeAreaDR, drDamageType) / armourDivisor); // Save
+				if (armourDivisor < 1) { // It's actually an armour multiplier
+					drTotalEffectivePoints = Math.floor(Math.max(getProperty(largeAreaDR, drDamageType), 1) / armourDivisor); // Save the DR (Which we set to be at least 1), divided by the armour multiplier, rounded down.
+				}
+				else { // It's a regular armour divisor, handle normally.
+					drTotalEffectivePoints = Math.floor(getProperty(largeAreaDR, drDamageType) / armourDivisor); // Save the DR, divided by the armour divisor, rounded down.
+				}
 			}
 
 			let location = getProperty(target.system.bodyType.body, locationsHit[i]); // Get the specific location we hit.
@@ -6389,19 +5916,27 @@ export class gurpsActor extends Actor {
 				}
 
 				let adAfterHardening = armourDivisor;
-
 				if (location.dr[d].hardness > 1){
 					adAfterHardening = attackHelpers.applyDRHardening(armourDivisor, location.dr[d].hardness - 1);
 				}
 
-				if (!adAfterHardening.toString().includes("ignores")) { // If this attack is not ignoring armour
-					drTotalEffectivePoints = drTotalEffectivePoints + (dr / adAfterHardening); // Add the dr from this layer, adjusted by ad, to the running total.
+				if (!adAfterHardening.toString().toLowerCase().includes("ignores")) { // If this attack is not ignoring armour
+					if (adAfterHardening < 1) { // It's actually an armour multiplier
+						drTotalEffectivePoints = drTotalEffectivePoints + (Math.max(dr, 1) / adAfterHardening); // Add the dr from this layer (minimum 1), adjusted by ad, to the running total.
+					}
+					else { // It's a regular armour divisor, handle normally.
+						drTotalEffectivePoints = drTotalEffectivePoints + (dr / adAfterHardening); // Add the dr from this layer, adjusted by ad, to the running total.
+					}
+				}
+				else { // If the attack is ignoring armour.
+					drTotalEffectivePoints = 0;
 				}
 			}
 
+			if (drTotalEffectivePoints)
+
 			drTotalEffectivePoints = Math.floor(drTotalEffectivePoints);
 
-			console.log(drTotalEffectivePoints);
 			// == End DR totalling
 
 			// == Begin Damage roll section
@@ -6423,9 +5958,8 @@ export class gurpsActor extends Actor {
 
 				let pointsAfterDR = Math.max(Math.floor(points - drTotalEffectivePoints), 0); // Subtract DR from average damage. Armour as dice rounds damage down in the case of fractions. Minimum zero.
 				damageStoppedByDice = points - pointsAfterDR; // This is any damage that wasn't rolled because it was stopped by armour as dice.
-				console.log(points, pointsAfterDR, damageStoppedByDice);
 
-				html += "<div>Armour blocked " + generalHelpers.pointsToDiceAndAddsString(damageStoppedByDice) + " damage</div>"
+				html += "<div>Armour as dice blocked " + generalHelpers.pointsToDiceAndAddsString(damageStoppedByDice) + " damage</div>"
 
 				if (pointsAfterDR > 0) { // If armour didn't stop everything
 					damageString = generalHelpers.pointsToDiceAndAddsString(pointsAfterDR);
@@ -6433,11 +5967,13 @@ export class gurpsActor extends Actor {
 				else { // Armour stopped everything
 					damageString = "0";
 				}
+
+				html += "<div>" + damageString + " damage remains</div>"
+
 				drTotalEffectivePoints = 0; // Set this back to zero so that when we run the code below to deduct DR from roll damage, we don't need special handling for armour as dice.
 			}
 
 			// == Carry on to roll damage. By this point, the damage string has been reduced by armour as dice, if it applies for this attack.
-			console.log(damageString);
 
 			// Roll damage for the attack
 			let roll = new Roll(damageString); // Roll the damage string we built above
@@ -6506,10 +6042,10 @@ export class gurpsActor extends Actor {
 				html += "<label class='damage-dice-small-adds'> = " + totalDamage + "</label>";
 			}
 
-			if (armourDivisor !== 1 && largeArea){
+			if (parseInt(armourDivisor.toString()) !== 1 && largeArea){
 				html += "<label class='damage-dice-small-adds'> (" + armourDivisor + ") Large Area Injury</label>";
 			}
-			else if (armourDivisor !== 1){
+			else if (parseInt(armourDivisor.toString()) !== 1){
 				html += "<label class='damage-dice-small-adds'> (" + armourDivisor + ")</label>";
 			}
 			else if (largeArea) {
@@ -6523,16 +6059,26 @@ export class gurpsActor extends Actor {
 			// Deduct armour from damage and check blunt trauma and knockback. If we used armour as dice above then drTotalEffectivePoints has already been set back to 0 so it's fine.
 			let effectiveLocationKnockbackDamage = totalDamage + damageStoppedByDice; // Knockback is calculated based on total damage, including any damage stopped by armour as dice.
 			let effectiveBluntTraumaDamage = damageStoppedByDice; // Blunt trauma is calculated based on only the damage stopped by dr. Start with any damage stopped by armour as dice. More will be added later if necessary
-			let bluntTraumaWounding = 0; // This variable stores the actual wounding as a result of blunt trauma.
+			let bluntTraumaWounding = 0; // This variable stores the actual wounding as a result of blunt trauma. It will remain zero if something blocked blunt trauma from happening.
 			let damageThroughArmour = Math.max(totalDamage - drTotalEffectivePoints, 0); // This is what actually makes it past the armour. Minimum zero.
+
+			// Apply the effects of edgeProtection, if it's in use
+			if (game.settings.get("gurps4e", "edgeProtection") && (damageType.type === "cut") && (!((totalDamage > (drTotalEffectivePoints * 2))))) { // If edge protection is enabled, damage type is cutting, and damage is not more than double DR.
+				damageType.type = "cr"; // Switch damage type to crushing. This accounts for the reduced wound multiplier, but also knockback and blunt trauma.
+				damageType.bluntTraumaCapable = true;
+				damageType.bluntReq = 5;
+				damageType.woundModId = "personalWoundMultCr";
+				html += "<div>Edge protection applies, causing the cutting attack to be treated as crushing.</div>";
+			}
 
 			effectiveBluntTraumaDamage = effectiveBluntTraumaDamage + Math.min(totalDamage, drTotalEffectivePoints); // The amount stopped by armour is the lower of the damage dealt or DR present.
 
 			// Check for blunt trauma
 			if (damageType.bluntTraumaCapable && // The attack needs to be capable of blunt trauma
-				(drGroupFlexible || game.settings.get("gurps4e", "rigidBluntTrauma")) && // AND either the armour needs to be flexible or the setting to allow blunt trauma to rigid armour needs to be on.
+				(drGroupFlexible || game.settings.get("gurps4e", "rigidBluntTrauma") || largeArea) && // AND either the armour needs to be flexible OR the setting to allow blunt trauma to rigid armour needs to be on, OR this is a large area injury.
 				(game.settings.get("gurps4e", "allowBluntTraumaWithWounding") || damageThroughArmour <= 0)){ // AND either we need to be allowing blunt trauma with wounding OR there must not be any wounding.
-				bluntTraumaWounding = (effectiveBluntTraumaDamage / damageType.bluntReq);
+
+				bluntTraumaWounding = Math.floor(effectiveBluntTraumaDamage / damageType.bluntReq); // Work out bluntTraumaWounding, rounded down
 			}
 
 			// Check to make sure the damage type is capable of knockback
@@ -6540,11 +6086,9 @@ export class gurpsActor extends Actor {
 				effectiveLocationKnockbackDamage = 0; // If it's neither, set effectiveKnockbackDamage to zero.
 			}
 
-			console.log(damageThroughArmour, bluntTraumaWounding);
-
 			if (damageThroughArmour > 0) { // Damage has penetrated DR
 				damageThroughArmour = Math.floor(damageThroughArmour); // Round down to a whole number
-				html += "<label>" + damageThroughArmour + " damage gets through</label>";
+				html += "<div>" + damageThroughArmour + " damage gets through</div>";
 
 				// Knockback does not happen upon penetrating DR unless it was crushing.
 				if (!(damageType.type === "cr")) { // Only cr attacks can do knockback while penetrating armour.
@@ -6552,15 +6096,205 @@ export class gurpsActor extends Actor {
 				}
 			}
 
-			let woundCap = strictInjuryCap ? location.injuryCapStrict : location.injuryCap; // Set the injury cap style based on the game setting above
+			// Apply doubleKnockback if relevant.
+			if (effectiveLocationKnockbackDamage && damageType.doubleKnockback) { // If the attack has accumulated some knockback, and the attack has the doubleKnockback flag
+				effectiveLocationKnockbackDamage *= 2; // Double the value.
+			}
 
+			// Run all woundCap logic
+			let woundCap; // Init the variable we are about to set.
+			if (game.settings.get("gurps4e", "largeAreaBypassesInjuryCap") && largeArea) { // This is a large area attack and the game setting which allows LAA to bypass injury caps is on.
+				woundCap = Infinity; // Wound cap is infinite
+			}
+			else { // In all other cases, set the wound cap normally.
+				woundCap = strictInjuryCap ? location.injuryCapStrict : location.injuryCap; // Set the injury cap style based on the game setting above
+			}
 
-			console.log(html);
+			// Run logic for actual calculation and application of wounding
+			let injury = 0; // Init the value we'll use to store wounding as a result of injury before we assign it to the target's hp
+			let actualWounding = 0; // Init the value we'll use to store total wounding, which includes both injury and blunt trauma
+
+			// Account for the effect of a wound modifier, including untyped damage, on the injury
+			if (damageType.woundModId.toString().toLowerCase().includes("dam")) { // Check for untyped damage
+				injury = Math.floor( (damageThroughArmour / damageReduction) ); // Damage divided by damageReduction, rounded down.
+			}
+			else if (damageType.type === "fat") { // Attack is doing fatigue damage
+				totalFatInj += Math.floor(actualDamage * location.personalWoundMultFat);
+			}
+			else {
+				injury = Math.floor(((damageThroughArmour * getProperty(location, damageType.woundModId)) / damageReduction) ); // Damage, times the relevant wound modifier, divided by damageReduction, rounded down.
+			}
+
+			// Account for the impact of diffuse injury tolerance (Other injury tolerances are already built in to the location's wound mod)
+			if (target.system.injuryTolerances.diffuse) { // Target is diffuse
+				if (damageType.woundModId.toString().toLowerCase().includes("imp") || damageType.woundModId.toString().toLowerCase().includes("pi")) { // Attack is imp or pi
+					injury = Math.min(injury, 1); // Imp/pi attacks vs diffuse targets are capped at 1 wounding
+					if (damageType.woundModId.toString().toLowerCase().includes("imp")) { // It was impaling
+						html += "<div>Injury is capped at 1 due to the target being diffuse and the attack being impaling</div>";
+					}
+					else { // Otherwise it was piercing
+						html += "<div>Injury is capped at 1 due to the target being diffuse and the attack being piercing</div>";
+					}
+				}
+				else { // Attack is not imp or pi
+					injury = Math.min(injury, 2); // All other attacks vs diffuse targets are capped at 2 wounding
+					html += "<div>Injury is capped at 2 due to the target being diffuse</div>";
+				}
+			}
+
+			// Run the logic to apply damage, if any.
+			actualWounding = (injury + bluntTraumaWounding)
+			if (actualWounding > 0) {// Check to see if there is any injury or bluntTraumaWounding, as fatigue attacks will actually have this set to 0;
+				// Apply damage to the location if it tracks HP, including a check to see if there's a sublocation involved
+				if (location.id.toLowerCase().includes("sublocation")) { // This is a sub location, we will be checking the parent for an HP value
+					let subLocation = location.id.split(".")[0]
+					let parentLocation = getProperty(target.system.bodyType.body, subLocation);
+					if (parentLocation.hp){ // If the parent location tracks HP (Such as when we've struck a thigh but want to apply damage to the leg as a whole)
+						// Cap injury + bluntTraumaWounding with the woundCap
+						if (typeof woundCap !== "undefined"){
+							if (woundCap < 0){ // If the wound cap is less than zero for some reason, fix it
+								woundCap = 0;
+							}
+
+							if (woundCap !== Infinity) { // If the wound cap is not infinity
+								woundCap = parentLocation.hp.value; // Bring the wound cap down to the HP left in the location.
+								// Example of above: An ST/HP 10 actor has legs with 6 HP each, and the legs also have an injury cap of 6 HP.
+								// If the legs are at full HP, the cap is 6, as it should be.
+								// If the legs are injured, the cap is whatever's left in the leg. Again, as it should be.
+								if (actualWounding > woundCap) { // Only print wound cap related messages if it would become relevant.
+									if (woundCap === parentLocation.hp.max) { // Wound cap matches an undamaged example of this location
+										html += "<div>Injury is capped at " + woundCap + " due to striking an undamaged limb.</div>";
+									}
+									else if (woundCap === 0) { // Wound cap is 0, probably because this location is crippled
+										html += "<div>No injury is possible due to striking an already crippled limb.</div>";
+									}
+									else if (woundCap < parentLocation.hp.max) { // Wound cap is not zero, but also less than the max for this location. The location has probably already been damaged.
+										html += "<div>Injury is capped at " + woundCap + " due to striking a damaged limb.</div>";
+									}
+								}
+							}
+							actualWounding = Math.min(woundCap, actualWounding); // Actual wounding is injury plus blunt trauma, capped by any wound cap.
+						}
+						parentLocation.hp.value -= actualWounding; // Apply the actualWounding we calculated above.
+						parentLocation.hp.value = Math.max(parentLocation.hp.value, -parentLocation.hp.max) // The hp in a location should not go lower than full negative, as at full negative the location is already cut off or otherwise destroyed.
+						target.system.bodyType.body[subLocation].hp.value = parentLocation.hp.value;
+					}
+
+					if (location.hp){ // Apply damage to the child location if it tracks HP
+						location.hp.value -= actualWounding;
+						location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
+						const splitLocation = location.id.split(".");
+						target.system.bodyType.body[splitLocation[0]][splitLocation[1]][splitLocation[2]].hp.value = location.hp.value;
+					}
+				}
+				else { // This is not a sublocation
+					if (location.hp){ // Apply damage to the location if it tracks HP
+						// Cap actualWounding with the woundCap
+						if (typeof woundCap !== "undefined"){
+							if (woundCap < 0){ // If the wound cap is less than zero for some reason, fix it
+								woundCap = 0;
+							}
+
+							if (woundCap !== Infinity) { // If the wound cap is not infinity
+								woundCap = location.hp.value; // Bring the wound cap down to the HP left in the location.
+								// Example of above: An ST/HP 10 actor has legs with 6 HP each, and the legs also have an injury cap of 6 HP.
+								// If the legs are at full HP, the cap is 6, as it should be.
+								// If the legs are injured, the cap is whatever's left in the leg. Again, as it should be.
+								if (actualWounding > woundCap) { // Only print wound cap related messages if it would become relevant.
+									if (woundCap === location.hp.max) { // Wound cap matches an undamaged example of this location
+										html += "<div>Injury is capped at " + woundCap + " due to striking an undamaged limb.</div>";
+									}
+									else if (woundCap === 0) { // Wound cap is 0, probably because this location is crippled
+										html += "<div>No injury is possible due to striking an already crippled limb.</div>";
+									}
+									else if (woundCap < location.hp.max) { // Wound cap is not zero, but also less than the max for this location. The location has probably already been damaged.
+										html += "<div>Injury is capped at " + woundCap + " due to striking a damaged limb.</div>";
+									}
+								}
+							}
+
+							actualWounding = Math.min(woundCap, actualWounding); // Actual wounding is injury plus blunt trauma, capped by any wound cap.
+						}
+
+						location.hp.value -= actualWounding
+						location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
+					}
+				}
+			}
+
+			// Inform the user of injury and or blunt trauma
+			if (actualWounding <= 0) { // There was no wounding at all
+				html += "<div>The armour stops all damage and the attack does no blunt trauma</div>";
+			}
+			else if (injury <= 0 && bluntTraumaWounding > 0) { // All wounding was a result of blunt trauma
+				html += "<div>The armour stops all damage but the attack does " + actualWounding + " blunt trauma</div>";
+			}
+			else if (injury > 0 && bluntTraumaWounding <= 0) { // All wounding was a result of injury
+				html += "<div>The location takes " + actualWounding + " injury</div>";
+			}
+			else if (injury > 0 && bluntTraumaWounding > 0) {  // Wounding was a result of both injury and blunt trauma
+				html += "<div>The location takes " + actualWounding + " injury, " + bluntTraumaWounding + " of which was blunt trauma</div>";
+			}
 
 			// Final logic for this location hit.
-
+			totalInjury += actualWounding; // Add the actualWounding for this location to the running total injury.
 			effectiveTotalKnockbackDamage += effectiveLocationKnockbackDamage; // Add any knockback accumulated from this location hit to the total knockback for the whole attack.
-		} // End of loop for the specific locaiton hit
+			// Any fatigue damage was already added to the running total above.
+		} // End of loop for the specific location hit
+
+		// Start of logic that applies more generally to the target, and not specific locations.
+
+		// Inform the user of any lost fatigue
+		if (totalFatInj > 0) {
+			html += "<div>The target loses " + totalFatInj + " fatigue</div>";
+		}
+
+		// Apply the effects of lost FP and HP
+		if (totalInjury > 0){ // If they took damage
+			let newHP = target.system.reserves.hp.value - Math.floor(totalInjury); // Create a new object that has the correctly updated hp value
+			target.system.reserves.hp.value = newHP; // Assign the new object to the existing hp value
+		}
+
+		if (totalFatInj > 0){
+			let newFP = target.system.reserves.fp.value - Math.floor(totalFatInj); // Create a new object that has the correctly updated fp value
+			target.system.reserves.fp.value = newFP; // Assign the new object to the existing fp value
+		}
+
+		// Apply all the knockback damage we've accrued, if any
+		effectiveTotalKnockbackDamage = Math.floor(effectiveTotalKnockbackDamage); // Round down, just in case we ended up with a decimal.
+		if (effectiveTotalKnockbackDamage > 0) { // If we have any knockback accumulated
+			let yardsOfKnockback = Math.floor(effectiveTotalKnockbackDamage / target.system.primaryAttributes.knockback.value); // Divide accumulated knockback damage by the target's knockback specific ST value to get the number of yards the target is knocked back. Rounded down.
+
+			if (yardsOfKnockback > 0) { // The target is actually getting pushed back
+				html += "<hr>" + target.name + " is knocked back " + yardsOfKnockback + " yards and must roll at -" + (yardsOfKnockback - 1) + " to avoid falling down."; // Tell the user how far the target was moved, and the penalty for the roll.
+				html += "<br><input type='button' class='knockbackFall' value='Roll to avoid falling down' alt='" + (yardsOfKnockback - 1) + "'/>"; // Create a button to handle the roll to not fall down.
+				let damageFromVelocity = generalHelpers.velocityToDamage(target.system.reserves.hp.max, yardsOfKnockback) // Work out the damage from a possible collision.
+
+				if (damageFromVelocity.hard === "0d6+0" && damageFromVelocity.soft === "0d6+0") { // Neither type of collision would cause damage.
+					html += "<hr>Even if there was a collision, it would cause no damage.";
+				}
+				else if (damageFromVelocity.hard === "0d6+0" && damageFromVelocity.soft === "0d6+0") { // Only a hard collision would case damage.
+					html += "<hr>If there is a collision, it causes " + damageFromVelocity.hard + " damage. Striking a soft object would instead do no damage.";
+				}
+				else { // Either type of collision would cause damage, OR, something went wrong with the above logic.
+					html += "<hr>If there is a collision, it causes " + damageFromVelocity.hard + " damage. Striking a soft object instead does " + damageFromVelocity.soft + " damage.";
+				}
+
+				// flags = { // Compile flags that will be passed along through the chat messages
+				// 	target: target.id,
+				// 	attacker: attacker.id,
+				// 	scene: target.scene.id,
+				// 	attack: attack,
+				// 	margin: rollInfo.margin,
+				// 	effectiveSkill: (+attack.level + +totalModifiers)
+				// }
+			}
+		}
+
+		target.update({ 'data': target.system }); // Update the target object to properly save the new values for hp, fp, and any location specific effects.
+		// console.log(target.token.effects);
+		// console.log(typeof target.token.effects);
+		ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER, flags: flags }); // Create a chat message telling the user all about what happened above.
 	}
 
 	extractDamageType(attack) {
