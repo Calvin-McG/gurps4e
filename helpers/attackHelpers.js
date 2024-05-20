@@ -2,6 +2,38 @@ import { generalHelpers } from "./generalHelpers.js";
 
 export class attackHelpers {
 
+    // This method takes in a base armour divisor and a level of hardening and returns the effective armour divisor
+    // ad is the current armour divisor
+    // hardening is the level of hardening
+    static applyDRHardening(armourDivisor, hardening) {
+        let ad = armourDivisor
+        for (let i = 0; i < hardening; i++){ // Run the logic as many times as we have hardening levels.
+            if (ad === Infinity || ad.toString().toLowerCase() !== "ignores armour") { // Infinite ad, and other non-cosmic ignores armour
+                ad = 100; // reduce to ad 100, which is the next step down
+            }
+            else if (ad >= 100) { // The next step after ad (100) is ad (10)
+                ad = ad / 10; // So divide the value by 10
+            }
+            else if (ad >= 10) { // From ad (10) the next is ad (5)
+                ad = ad / 2; // So divide the value by 2
+            }
+            else if (ad >= 5) { // From ad (5) the next is ad (3)
+                ad = ad * 0.6; // So multiply the value by 0.6
+            }
+            else if (ad >= 3) { // From ad (3) the next is ad (2)
+                ad = ad / 1.5; // So divide the value by 1.5
+            }
+            else if (ad >= 2) { // From ad (2) the next is ad (1)
+                ad = ad / 2; // So divide the value by 2
+            }
+            else if (ad > 1) { // If looping through the above has left us with some strange decimal value but we still have levels of hardening to take care of...
+                ad = 1; // Reduce ad to 1
+                i += Infinity; // And break the loop
+            }
+        }
+        return ad;
+    }
+
     static buildLocationLabel(target, locationHit) {
         // Build the location label
         let firstLocation = getProperty(target.system.bodyType.body, locationHit.split(".")[0]);
