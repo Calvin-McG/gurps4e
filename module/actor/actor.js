@@ -4367,7 +4367,7 @@ export class gurpsActor extends Actor {
 					}
 				}
 			}
-			else if (actor.data) { // If this is not a token
+			else { // If this is not a token
 				if (actor.system) { // Make sure the data structure exists
 					if (actor.system.bio) {
 						if (actor.system.bio.sm) {
@@ -4519,7 +4519,7 @@ export class gurpsActor extends Actor {
 
 		// If the damage type is explosive, allow the user to decide between area targeted and contact targeted attacks
 		if (damageType.explosive) {
-			modModalContent += "<tr><td>Target The Hex</td><td><input type='checkbox' class='checkbox' id='targetHex' value='targetHex' name='contactEx' /></td><td>The macro assumes you're targeting the actual actor. Check this box to claim the +4 bonus for targeting the ground at their feet.</td></tr>"
+			modModalContent += "<tr><td>Target The Hex</td><td><input type='checkbox' class='checkbox' id='targetHex' value='targetHex' name='contactEx' checked /></td><td>The macro assumes you're targeting the actual actor. Check this box to claim the +4 bonus for targeting the ground at their feet.</td></tr>"
 		}
 
 		modModalContent += "<tr><td>Additional Modifier</td><td><input type='number' id='mod' name='mod' value='0' style='width: 50%'/></td><td>This is a catchall for anything not included above</td></tr>" +
