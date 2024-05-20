@@ -5716,6 +5716,7 @@ export class gurpsActor extends Actor {
 			largeAreaDR = this.getLargeAreaDR(target.system.bodyType.body); // Get the target's Large Area DR
 		}
 
+		// Check to see if the target has damage reduction and store the value
 		if (target.system.injuryTolerances){
 			if (target.system.injuryTolerances.damageReduction){
 				damageReduction = target.system.injuryTolerances.damageReduction; // Set the target's damage reduction
@@ -5817,10 +5818,10 @@ export class gurpsActor extends Actor {
 				html += "<label class='damage-dice-small-adds'> = " + totalDamage + "</label>";
 			}
 
-			if (armourDivisor != 1 && largeArea){
+			if (armourDivisor !== 1 && largeArea){
 				html += "<label class='damage-dice-small-adds'> (" + armourDivisor + ") Large Area Injury</label>";
 			}
-			else if (armourDivisor != 1){
+			else if (armourDivisor !== 1){
 				html += "<label class='damage-dice-small-adds'> (" + armourDivisor + ")</label>";
 			}
 			else if (largeArea) {
@@ -5839,7 +5840,7 @@ export class gurpsActor extends Actor {
 			if (drDamageType === "tbb") { // For the purposes of DR only, set tbb attacks equivalent to burn since tbb still uses burning DR
 				drDamageType = "burn";
 			}
-			else if (drDamageType === "pi-" || drDamageType === "pi+" || drDamageType === "pi++") {
+			else if (drDamageType.toLowerCase().includes("pi")) { // Any damage type including the letters pi faces pi dr.
 				drDamageType = "pi";
 			}
 
