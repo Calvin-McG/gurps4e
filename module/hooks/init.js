@@ -742,14 +742,23 @@ Hooks.once("init", () => {
     type: Number
   });
 
-  // game.settings.register("gurps4e", "armourAsDice", {
-  //   name: "Armour As Dice - WIP",
-  //   hint: "Pyramid 3/34. DR converts to dice at 1d per 3.5. These dice are subtracted from the the attack, then the remainder is rolled. Makes guns behave better in HT and UT, is less appropriate for fantasy games with melee weapons and muscle powered ranged weapons.",
-  //   scope: "world",
-  //   config: true,
-  //   default: false,
-  //   type: Boolean
-  // });
+  game.settings.register("gurps4e", "armourAsDiceRanged", {
+    name: "Armour As Dice - Ranged",
+    hint: "Pyramid 3/34 & https://gamingballistic.com/2014/01/23/armor-as-dice-what-and-why/. DR converts to dice at 1d per 3.5. These dice are subtracted from the the attack, then the remainder is rolled. The goal is to make HT armour actually act as players would expect. This setting enables it specifically for ranged attacks only.",
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
+  game.settings.register("gurps4e", "armourAsDiceMelee", {
+    name: "Armour As Dice - Melee",
+    hint: "Pyramid 3/34 & https://gamingballistic.com/2014/01/23/armor-as-dice-what-and-why/. DR converts to dice at 1d per 3.5. These dice are subtracted from the the attack, then the remainder is rolled. This feature is not really intended to apply to melee attacks. However, it can be helpful if melee attacks in your campaign are regularly reaching 3d6 or higher.",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean
+  });
 
   // game.settings.register("gurps4e", "bleeding", {
   //   name: "Use Bleeding Rules - WIP",
