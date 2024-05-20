@@ -3882,13 +3882,13 @@ export class gurpsActor extends Actor {
 					label: "Apply Modifier",
 					callback: (html) => {
 						let mod = html.find('#mod').val()
-						this.makeKnockbackRoll(skill, mod - penalty, message, target)
+						this.makeKnockbackRoll(skill, mod - penalty, message, target, flags.target)
 					}
 				},
 				noMod: {
 					icon: '<i class="fas fa-times"></i>',
 					label: "No Modifier",
-					callback: () => this.makeKnockbackRoll(skill, 0 - penalty, message, target)
+					callback: () => this.makeKnockbackRoll(skill, 0 - penalty, message, target, flags.target)
 				}
 			},
 			default: "mod",
@@ -3898,7 +3898,7 @@ export class gurpsActor extends Actor {
 		modModal.render(true)
 	}
 
-	async makeKnockbackRoll(skill, mod, message, target) {
+	async makeKnockbackRoll(skill, mod, message, target, tokenId) {
 		let currentRoll = await rollHelpers.skillRoll(skill, mod, "Rolls against " + message + " to not fall down.", false);
 
 		let html = currentRoll.content;
@@ -3912,13 +3912,11 @@ export class gurpsActor extends Actor {
 
 		ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
 
-		console.log(target)
-		console.log(target.token)
-		if (typeof target.token !== "undefined") { // A token is present if the token and actor are not directly linked. (As in, the token is a separate copy of the actor)
+		if (typeof target.token !== "undefined" && target.token !== null) { // A token is present if the token and actor are not directly linked. (As in, the token is a separate copy of the actor)
 			postureHelpers.setPostureTokenDoc(target.token, "lyingback");
 		}
 		else { // The token is directly linked to the actor, meaning the token on the scene is a direct representation of that specific actor
-			postureHelpers.setPostureActor(target, "lyingback");
+			postureHelpers.setPostureActor(target, "lyingback", tokenId);
 		}
 	}
 

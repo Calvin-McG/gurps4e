@@ -22,8 +22,14 @@ export class postureHelpers {
         tokenObj.toggleEffect(posturePath, { active: true });
     }
 
-    static setPostureActor(actor, postureString) {
-        this.setPostureTokenObj(actor, postureString);
+    // This method is used to the set the posture of a virtual token that is directly linked to an actor, instead of being a separate copy.
+    static setPostureActor(actor, postureString, tokenId) {
+        let dependentTokens = actor.getDependentTokens() // Get the full list of dependent tokens the actor has
+        dependentTokens.forEach( dependentToken => { // Loop through them
+            if (dependentToken.id === tokenId) { // Find the one that matches the id of the token for which we are changing posture
+                this.setPostureTokenDoc(dependentToken, postureString); // Call the method to change posture by token document
+            }
+        })
     }
 
     // This method removes all posture settings from the token
