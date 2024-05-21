@@ -408,6 +408,7 @@
 
             {{#each actor.system.vehicle.loc as |location id|}}
             {{#if (or (eq ../actor.system.vehicle.drMethod "facingPlus") (and (eq ../actor.system.vehicle.drMethod "facing") (or (eq location.code "g") (eq location.code "G"))))}}
+            {{#ifCond location.count '>=' 1 }}
             <table>
               <tr>
                 <th colspan="2">
@@ -435,6 +436,7 @@
                 </td>
               </tr>
             </table>
+            {{/ifCond}}
             {{/if}}
             {{/each}}
             {{/unless}}

@@ -68,6 +68,25 @@ export class gurpsActor extends Actor {
 
 		// This section is for logic that applies to both methods
 		this.vehicleWeightHandling();
+
+		this.assessLocations(); // Go through the location string and use the values to update the block of actual locations stored on the vehicle.
+	}
+
+	assessLocations() {
+		let locationStrings = this.system.vehicle.locations.match(/r*\d*r*((Wi{1})|[ACDEGgHLMORrSsTtXW])/g); // Regex fetches only characters that match a GURPS Vehicle location, including the numerical prefix, if present.
+
+		locationStrings.forEach( locationString => { // Loop through the strings we just collected.
+			let retractable = false;
+			if (locationString.includes("r")) { // The location included an 'r', which denotes a retractable locaiton.
+				retractable = true; // Set retractable true
+				locationString = locationString.replace("r", ""); // Remove any "r"s in the location string as it might disrupt the count parser below.
+			}
+			let count = isNaN(parseInt(locationString)) ? 1 : parseInt(locationString); // parseInt will take only the number at the start of the string and discard the rest. If it comes through NaN, then there was no number, so treat it as one.
+			let locationCode = locationString.replace(count.toString(), ""); // Replace the number we just fetched with nothing. If it doesn't match, like if we retrieved a 1, that's fine because nothing happens.
+			let locationObject = getProperty(this.system.vehicle.loc,locationCode) // Get the object matching the location we're currently itterating over.
+			locationObject.count += count; // It might be that a location string is entered twice. If so, make sure to include both counts in our total.
+			locationObject.retractable = retractable ? retractable : locationObject.retractable; // If retractable is true, set the locationObject to also have it true. If it's false, don't change it. This covers cases where there are two sets of the same location, one of which is retractable and one which is not.
+		});
 	}
 
 	loadBaseVehicles() {
@@ -116,11 +135,11 @@ export class gurpsActor extends Actor {
 					"drMethod": "single",
 					"dr": 2,
 					"drFacing": {
-						"drFront":  -1,
-						"drRear":   -1,
-						"drSide":   -1,
-						"drTop":    -1,
-						"drBottom": -1
+						"drFront":  0,
+						"drRear":   0,
+						"drSide":   0,
+						"drTop":    0,
+						"drBottom": 0
 					},
 					"loc": {
 						"A": {
@@ -129,11 +148,11 @@ export class gurpsActor extends Actor {
 							"Name": "Arm",
 							"dr": -1,
 							"drFacing": {
-								"drFront":  -1,
-								"drRear":   -1,
-								"drSide":   -1,
-								"drTop":    -1,
-								"drBottom": -1
+								"drFront":  0,
+								"drRear":   0,
+								"drSide":   0,
+								"drTop":    0,
+								"drBottom": 0
 							},
 							"count": 0,
 							"retractable": false
@@ -144,11 +163,11 @@ export class gurpsActor extends Actor {
 							"Name": "Caterpillar Tracks",
 							"dr": -1,
 							"drFacing": {
-								"drFront":  -1,
-								"drRear":   -1,
-								"drSide":   -1,
-								"drTop":    -1,
-								"drBottom": -1
+								"drFront":  0,
+								"drRear":   0,
+								"drSide":   0,
+								"drTop":    0,
+								"drBottom": 0
 							},
 							"count": 0,
 							"retractable": false
@@ -219,11 +238,11 @@ export class gurpsActor extends Actor {
 							"Name": "Helicopter Rotors",
 							"dr": -1,
 							"drFacing": {
-								"drFront":  -1,
-								"drRear":   -1,
-								"drSide":   -1,
-								"drTop":    -1,
-								"drBottom": -1
+								"drFront":  0,
+								"drRear":   0,
+								"drSide":   0,
+								"drTop":    0,
+								"drBottom": 0
 							},
 							"count": 0,
 							"retractable": false
@@ -234,11 +253,11 @@ export class gurpsActor extends Actor {
 							"Name": "Legs",
 							"dr": -1,
 							"drFacing": {
-								"drFront":  -1,
-								"drRear":   -1,
-								"drSide":   -1,
-								"drTop":    -1,
-								"drBottom": -1
+								"drFront":  0,
+								"drRear":   0,
+								"drSide":   0,
+								"drTop":    0,
+								"drBottom": 0
 							},
 							"count": 0,
 							"retractable": false
@@ -249,11 +268,11 @@ export class gurpsActor extends Actor {
 							"Name": "Mast and Rigging",
 							"dr": -1,
 							"drFacing": {
-								"drFront":  -1,
-								"drRear":   -1,
-								"drSide":   -1,
-								"drTop":    -1,
-								"drBottom": -1
+								"drFront":  0,
+								"drRear":   0,
+								"drSide":   0,
+								"drTop":    0,
+								"drBottom": 0
 							},
 							"count": 0,
 							"retractable": false
@@ -279,11 +298,11 @@ export class gurpsActor extends Actor {
 							"Name": "Runners and Skids",
 							"dr": -1,
 							"drFacing": {
-								"drFront":  -1,
-								"drRear":   -1,
-								"drSide":   -1,
-								"drTop":    -1,
-								"drBottom": -1
+								"drFront":  0,
+								"drRear":   0,
+								"drSide":   0,
+								"drTop":    0,
+								"drBottom": 0
 							},
 							"count": 0,
 							"retractable": false
@@ -294,11 +313,11 @@ export class gurpsActor extends Actor {
 							"Name": "Large Superstructure or Gondola",
 							"dr": -1,
 							"drFacing": {
-								"drFront":  -1,
-								"drRear":   -1,
-								"drSide":   -1,
-								"drTop":    -1,
-								"drBottom": -1
+								"drFront":  0,
+								"drRear":   0,
+								"drSide":   0,
+								"drTop":    0,
+								"drBottom": 0
 							},
 							"count": 0,
 							"retractable": false
@@ -309,11 +328,11 @@ export class gurpsActor extends Actor {
 							"Name": "Small Superstructure",
 							"dr": -1,
 							"drFacing": {
-								"drFront":  -1,
-								"drRear":   -1,
-								"drSide":   -1,
-								"drTop":    -1,
-								"drBottom": -1
+								"drFront":  0,
+								"drRear":   0,
+								"drSide":   0,
+								"drTop":    0,
+								"drBottom": 0
 							},
 							"count": 0,
 							"retractable": false
@@ -324,11 +343,11 @@ export class gurpsActor extends Actor {
 							"Name": "Main Turret",
 							"dr": -1,
 							"drFacing": {
-								"drFront":  -1,
-								"drRear":   -1,
-								"drSide":   -1,
-								"drTop":    -1,
-								"drBottom": -1
+								"drFront":  0,
+								"drRear":   0,
+								"drSide":   0,
+								"drTop":    0,
+								"drBottom": 0
 							},
 							"count": 0,
 							"retractable": false
@@ -339,11 +358,11 @@ export class gurpsActor extends Actor {
 							"Name": "Independent Turret",
 							"dr": -1,
 							"drFacing": {
-								"drFront":  -1,
-								"drRear":   -1,
-								"drSide":   -1,
-								"drTop":    -1,
-								"drBottom": -1
+								"drFront":  0,
+								"drRear":   0,
+								"drSide":   0,
+								"drTop":    0,
+								"drBottom": 0
 							},
 							"count": 0,
 							"retractable": false
@@ -354,11 +373,11 @@ export class gurpsActor extends Actor {
 							"Name": "Wheel",
 							"dr": -1,
 							"drFacing": {
-								"drFront":  -1,
-								"drRear":   -1,
-								"drSide":   -1,
-								"drTop":    -1,
-								"drBottom": -1
+								"drFront":  0,
+								"drRear":   0,
+								"drSide":   0,
+								"drTop":    0,
+								"drBottom": 0
 							},
 							"count": 0,
 							"retractable": false
@@ -369,11 +388,11 @@ export class gurpsActor extends Actor {
 							"Name": "Wings",
 							"dr": -1,
 							"drFacing": {
-								"drFront":  -1,
-								"drRear":   -1,
-								"drSide":   -1,
-								"drTop":    -1,
-								"drBottom": -1
+								"drFront":  0,
+								"drRear":   0,
+								"drSide":   0,
+								"drTop":    0,
+								"drBottom": 0
 							},
 							"count": 0,
 							"retractable": false
@@ -484,11 +503,11 @@ export class gurpsActor extends Actor {
 					"Name": "Arm",
 					"dr": -1,
 					"drFacing": {
-						"drFront":  -1,
-						"drRear":   -1,
-						"drSide":   -1,
-						"drTop":    -1,
-						"drBottom": -1
+						"drFront":  0,
+						"drRear":   0,
+						"drSide":   0,
+						"drTop":    0,
+						"drBottom": 0
 					},
 					"count": 0,
 					"retractable": false
@@ -499,11 +518,11 @@ export class gurpsActor extends Actor {
 					"Name": "Caterpillar Tracks",
 					"dr": -1,
 					"drFacing": {
-						"drFront":  -1,
-						"drRear":   -1,
-						"drSide":   -1,
-						"drTop":    -1,
-						"drBottom": -1
+						"drFront":  0,
+						"drRear":   0,
+						"drSide":   0,
+						"drTop":    0,
+						"drBottom": 0
 					},
 					"count": 0,
 					"retractable": false
@@ -574,11 +593,11 @@ export class gurpsActor extends Actor {
 					"Name": "Helicopter Rotors",
 					"dr": -1,
 					"drFacing": {
-						"drFront":  -1,
-						"drRear":   -1,
-						"drSide":   -1,
-						"drTop":    -1,
-						"drBottom": -1
+						"drFront":  0,
+						"drRear":   0,
+						"drSide":   0,
+						"drTop":    0,
+						"drBottom": 0
 					},
 					"count": 0,
 					"retractable": false
@@ -589,11 +608,11 @@ export class gurpsActor extends Actor {
 					"Name": "Legs",
 					"dr": -1,
 					"drFacing": {
-						"drFront":  -1,
-						"drRear":   -1,
-						"drSide":   -1,
-						"drTop":    -1,
-						"drBottom": -1
+						"drFront":  0,
+						"drRear":   0,
+						"drSide":   0,
+						"drTop":    0,
+						"drBottom": 0
 					},
 					"count": 0,
 					"retractable": false
@@ -604,11 +623,11 @@ export class gurpsActor extends Actor {
 					"Name": "Mast and Rigging",
 					"dr": -1,
 					"drFacing": {
-						"drFront":  -1,
-						"drRear":   -1,
-						"drSide":   -1,
-						"drTop":    -1,
-						"drBottom": -1
+						"drFront":  0,
+						"drRear":   0,
+						"drSide":   0,
+						"drTop":    0,
+						"drBottom": 0
 					},
 					"count": 0,
 					"retractable": false
@@ -634,11 +653,11 @@ export class gurpsActor extends Actor {
 					"Name": "Runners and Skids",
 					"dr": -1,
 					"drFacing": {
-						"drFront":  -1,
-						"drRear":   -1,
-						"drSide":   -1,
-						"drTop":    -1,
-						"drBottom": -1
+						"drFront":  0,
+						"drRear":   0,
+						"drSide":   0,
+						"drTop":    0,
+						"drBottom": 0
 					},
 					"count": 0,
 					"retractable": false
@@ -649,11 +668,11 @@ export class gurpsActor extends Actor {
 					"Name": "Large Superstructure or Gondola",
 					"dr": -1,
 					"drFacing": {
-						"drFront":  -1,
-						"drRear":   -1,
-						"drSide":   -1,
-						"drTop":    -1,
-						"drBottom": -1
+						"drFront":  0,
+						"drRear":   0,
+						"drSide":   0,
+						"drTop":    0,
+						"drBottom": 0
 					},
 					"count": 0,
 					"retractable": false
@@ -664,11 +683,11 @@ export class gurpsActor extends Actor {
 					"Name": "Small Superstructure",
 					"dr": -1,
 					"drFacing": {
-						"drFront":  -1,
-						"drRear":   -1,
-						"drSide":   -1,
-						"drTop":    -1,
-						"drBottom": -1
+						"drFront":  0,
+						"drRear":   0,
+						"drSide":   0,
+						"drTop":    0,
+						"drBottom": 0
 					},
 					"count": 0,
 					"retractable": false
@@ -679,11 +698,11 @@ export class gurpsActor extends Actor {
 					"Name": "Main Turret",
 					"dr": -1,
 					"drFacing": {
-						"drFront":  -1,
-						"drRear":   -1,
-						"drSide":   -1,
-						"drTop":    -1,
-						"drBottom": -1
+						"drFront":  0,
+						"drRear":   0,
+						"drSide":   0,
+						"drTop":    0,
+						"drBottom": 0
 					},
 					"count": 0,
 					"retractable": false
@@ -694,11 +713,11 @@ export class gurpsActor extends Actor {
 					"Name": "Independent Turret",
 					"dr": -1,
 					"drFacing": {
-						"drFront":  -1,
-						"drRear":   -1,
-						"drSide":   -1,
-						"drTop":    -1,
-						"drBottom": -1
+						"drFront":  0,
+						"drRear":   0,
+						"drSide":   0,
+						"drTop":    0,
+						"drBottom": 0
 					},
 					"count": 0,
 					"retractable": false
@@ -709,11 +728,11 @@ export class gurpsActor extends Actor {
 					"Name": "Wheel",
 					"dr": -1,
 					"drFacing": {
-						"drFront":  -1,
-						"drRear":   -1,
-						"drSide":   -1,
-						"drTop":    -1,
-						"drBottom": -1
+						"drFront":  0,
+						"drRear":   0,
+						"drSide":   0,
+						"drTop":    0,
+						"drBottom": 0
 					},
 					"count": 0,
 					"retractable": false
@@ -724,11 +743,11 @@ export class gurpsActor extends Actor {
 					"Name": "Wings",
 					"dr": -1,
 					"drFacing": {
-						"drFront":  -1,
-						"drRear":   -1,
-						"drSide":   -1,
-						"drTop":    -1,
-						"drBottom": -1
+						"drFront":  0,
+						"drRear":   0,
+						"drSide":   0,
+						"drTop":    0,
+						"drBottom": 0
 					},
 					"count": 0,
 					"retractable": false
@@ -750,7 +769,6 @@ export class gurpsActor extends Actor {
 				}
 			}
 		}
-
 	}
 
 	prepareActorData() {
