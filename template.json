@@ -37,26 +37,26 @@
           "baseCost": 10000,
           "locations": "G4W",
           "drMethod": "single",
-          "dr": 2,
+          "dr": 0,
           "drFacing": {
-            "drFront":  -1,
-            "drRear":   -1,
-            "drSide":   -1,
-            "drTop":    -1,
-            "drBottom": -1
+            "drFront":  0,
+            "drRear":   0,
+            "drSide":   0,
+            "drTop":    0,
+            "drBottom": 0
           },
           "loc": {
             "A": {
               "code": "A",
               "name": "arm",
               "Name": "Arm",
-              "dr": -1,
+              "dr": 0,
               "drFacing": {
-                "drFront":  -1,
-                "drRear":   -1,
-                "drSide":   -1,
-                "drTop":    -1,
-                "drBottom": -1
+                "drFront":  0,
+                "drRear":   0,
+                "drSide":   0,
+                "drTop":    0,
+                "drBottom": 0
               },
               "count": 0,
               "locationalDR": false,
@@ -67,13 +67,13 @@
               "code": "C",
               "name": "caterpillar tracks",
               "Name": "Caterpillar Tracks",
-              "dr": -1,
+              "dr": 0,
               "drFacing": {
-                "drFront":  -1,
-                "drRear":   -1,
-                "drSide":   -1,
-                "drTop":    -1,
-                "drBottom": -1
+                "drFront":  0,
+                "drRear":   0,
+                "drSide":   0,
+                "drTop":    0,
+                "drBottom": 0
               },
               "count": 0,
               "locationalDR": false,
@@ -152,13 +152,13 @@
               "code": "H",
               "name": "helicopter rotors",
               "Name": "Helicopter Rotors",
-              "dr": -1,
+              "dr": 0,
               "drFacing": {
-                "drFront":  -1,
-                "drRear":   -1,
-                "drSide":   -1,
-                "drTop":    -1,
-                "drBottom": -1
+                "drFront":  0,
+                "drRear":   0,
+                "drSide":   0,
+                "drTop":    0,
+                "drBottom": 0
               },
               "count": 0,
               "locationalDR": false,
@@ -169,13 +169,13 @@
               "code": "L",
               "name": "legs",
               "Name": "Legs",
-              "dr": -1,
+              "dr": 0,
               "drFacing": {
-                "drFront":  -1,
-                "drRear":   -1,
-                "drSide":   -1,
-                "drTop":    -1,
-                "drBottom": -1
+                "drFront":  0,
+                "drRear":   0,
+                "drSide":   0,
+                "drTop":    0,
+                "drBottom": 0
               },
               "count": 0,
               "locationalDR": false,
@@ -186,13 +186,13 @@
               "code": "M",
               "name": "mast and rigging",
               "Name": "Mast and Rigging",
-              "dr": -1,
+              "dr": 0,
               "drFacing": {
-                "drFront":  -1,
-                "drRear":   -1,
-                "drSide":   -1,
-                "drTop":    -1,
-                "drBottom": -1
+                "drFront":  0,
+                "drRear":   0,
+                "drSide":   0,
+                "drTop":    0,
+                "drBottom": 0
               },
               "count": 0,
               "locationalDR": false,
@@ -220,13 +220,13 @@
               "code": "R",
               "name": "runners and skids",
               "Name": "Runners and Skids",
-              "dr": -1,
+              "dr": 0,
               "drFacing": {
-                "drFront":  -1,
-                "drRear":   -1,
-                "drSide":   -1,
-                "drTop":    -1,
-                "drBottom": -1
+                "drFront":  0,
+                "drRear":   0,
+                "drSide":   0,
+                "drTop":    0,
+                "drBottom": 0
               },
               "count": 0,
               "locationalDR": false,
@@ -237,13 +237,13 @@
               "code": "S",
               "name": "large superstructure or gondola",
               "Name": "Large Superstructure or Gondola",
-              "dr": -1,
+              "dr": 0,
               "drFacing": {
-                "drFront":  -1,
-                "drRear":   -1,
-                "drSide":   -1,
-                "drTop":    -1,
-                "drBottom": -1
+                "drFront":  0,
+                "drRear":   0,
+                "drSide":   0,
+                "drTop":    0,
+                "drBottom": 0
               },
               "count": 0,
               "locationalDR": false,
@@ -254,13 +254,13 @@
               "code": "s",
               "name": "small superstructure",
               "Name": "Small Superstructure",
-              "dr": -1,
+              "dr": 0,
               "drFacing": {
-                "drFront":  -1,
-                "drRear":   -1,
-                "drSide":   -1,
-                "drTop":    -1,
-                "drBottom": -1
+                "drFront":  0,
+                "drRear":   0,
+                "drSide":   0,
+                "drTop":    0,
+                "drBottom": 0
               },
               "count": 0,
               "locationalDR": false,
@@ -271,13 +271,13 @@
               "code": "T",
               "name": "main turret",
               "Name": "Main Turret",
-              "dr": -1,
+              "dr": 0,
               "drFacing": {
-                "drFront":  -1,
-                "drRear":   -1,
-                "drSide":   -1,
-                "drTop":    -1,
-                "drBottom": -1
+                "drFront":  0,
+                "drRear":   0,
+                "drSide":   0,
+                "drTop":    0,
+                "drBottom": 0
               },
               "count": 0,
               "locationalDR": false,
@@ -288,13 +288,13 @@
               "code": "t",
               "name": "independent turret",
               "Name": "Independent Turret",
-              "dr": -1,
+              "dr": 0,
               "drFacing": {
-                "drFront":  -1,
-                "drRear":   -1,
-                "drSide":   -1,
-                "drTop":    -1,
-                "drBottom": -1
+                "drFront":  0,
+                "drRear":   0,
+                "drSide":   0,
+                "drTop":    0,
+                "drBottom": 0
               },
               "count": 0,
               "locationalDR": false,
@@ -305,13 +305,13 @@
               "code": "W",
               "name": "wheel",
               "Name": "Wheel",
-              "dr": -1,
+              "dr": 0,
               "drFacing": {
-                "drFront":  -1,
-                "drRear":   -1,
-                "drSide":   -1,
-                "drTop":    -1,
-                "drBottom": -1
+                "drFront":  0,
+                "drRear":   0,
+                "drSide":   0,
+                "drTop":    0,
+                "drBottom": 0
               },
               "count": 0,
               "locationalDR": false,
@@ -322,13 +322,13 @@
               "code": "Wi",
               "name": "wings",
               "Name": "Wings",
-              "dr": -1,
+              "dr": 0,
               "drFacing": {
-                "drFront":  -1,
-                "drRear":   -1,
-                "drSide":   -1,
-                "drTop":    -1,
-                "drBottom": -1
+                "drFront":  0,
+                "drRear":   0,
+                "drSide":   0,
+                "drTop":    0,
+                "drBottom": 0
               },
               "count": 0,
               "locationalDR": false,

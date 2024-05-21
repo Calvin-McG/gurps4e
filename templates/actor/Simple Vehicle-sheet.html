@@ -421,12 +421,47 @@
                   <input type="checkbox" name="system.vehicle.loc.{{id}}.locationDR" {{checked location.locationDR}} data-dtype="Boolean" style="width: 100%;"/>
                 </td>
               </tr>
+              {{#if location.locationDR}}
               <tr>
                 <td>Is that DR facing specific?</td>
                 <td>
                   <input type="checkbox" name="system.vehicle.loc.{{id}}.facingDR" {{checked location.facingDR}} data-dtype="Boolean" style="width: 100%;"/>
                 </td>
               </tr>
+              {{#if location.facingDR}}
+              <table style="background-image: url('systems/gurps4e/icons/svg/car-side.svg'); background-size: contain; background-repeat: no-repeat; background-position: center;">
+                <tr>
+                  <td></td>
+                  <td>
+                    <div style="text-align: center; font-weight: bold; text-decoration: underline;">Top</div>
+                    <input name="system.vehicle.loc.{{id}}.drFacing.drTop" type="number" value="{{location.drFacing.drTop}}" placeholder="2" />
+                  </td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="text-align: center; font-weight: bold; text-decoration: underline;">Rear</div>
+                    <input name="system.vehicle.loc.{{id}}.drFacing.drRear" type="number" value="{{location.drFacing.drRear}}" placeholder="2" />
+                  </td>
+                  <td>
+                    <div style="text-align: center; font-weight: bold; text-decoration: underline;">Sides</div>
+                    <input name="system.vehicle.loc.{{id}}.drFacing.drSide" type="number" value="{{location.drFacing.drSide}}" placeholder="2" />
+                  </td>
+                  <td>
+                    <div style="text-align: center; font-weight: bold; text-decoration: underline;">Front</div>
+                    <input name="system.vehicle.loc.{{id}}.drFacing.drFront" type="number" value="{{location.drFacing.drFront}}" placeholder="2" />
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>
+                    <div style="text-align: center; font-weight: bold; text-decoration: underline;">Bottom</div>
+                    <input name="system.vehicle.loc.{{id}}.drFacing.drBottom" type="number" value="{{location.drFacing.drBottom}}" placeholder="2" />
+                  </td>
+                  <td></td>
+                </tr>
+              </table>
+              {{else}}
               <tr>
                 <td>
                   Base DR
@@ -435,6 +470,8 @@
                   <input name="system.vehicle.loc.{{id}}.dr" type="number" value="{{location.dr}}" placeholder="2" />
                 </td>
               </tr>
+              {{/if}}
+              {{/if}}
             </table>
             {{/ifCond}}
             {{/if}}
