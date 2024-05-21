@@ -1,6 +1,67 @@
 import {attributeHelpers} from "./attributeHelpers.js";
+import { rollHelpers } from "./rollHelpers.js";
 
 export class actorHelpers {
+
+    static computeRollFromEvent(event, modifier){
+        event.preventDefault();
+        const element = event.currentTarget;
+        const dataset = element.dataset;
+
+        this.computeRollFromDataset(dataset, modifier);
+    }
+
+    // dataset comes as
+    // dataset = {
+    // 	label: "Makes a <b>Judo</b> roll.",
+    // 	level: "12",
+    // 	type: "skill"
+    // }
+    static computeRollFromDataset(dataset, modifier){
+        if (dataset.type === 'skill' || dataset.type === 'defense' || dataset.type === 'defence') {
+            rollHelpers.skillRoll(dataset.level, modifier, dataset.label, true);
+        }
+
+        else if (dataset.type === 'damage') {
+            let damageRoll = new Roll(dataset.level);
+            damageRoll.roll({async: true}).then( result => {
+                let html = "<div>" + dataset.label + "</div>";
+                let adds = 0;
+
+                html += "<div>";
+                if(damageRoll.terms[0].results){
+                    let diceTotal = 0;
+                    if(damageRoll.terms[0].results.length){//Take the results of each roll and turn it into a die icon.
+                        for (let k = 0; k < damageRoll.terms[0].results.length; k++){
+                            html += rollHelpers.dieToIcon(damageRoll.terms[0].results[k].result)
+                            diceTotal += damageRoll.terms[0].results[k].result;
+                        }
+                    }
+                    adds = (+damageRoll._total - +diceTotal);
+                }
+                else {
+                    adds = +damageRoll._total;
+                }
+
+                if (adds >= 0){//Adds are positive
+                    html += "<label class='damage-dice-adds'>+</label><label class='damage-dice-adds'>" + adds + "</label>"
+                }
+                else {//Adds are negative
+                    html += "<label class='damage-dice-adds'>-</label><label class='damage-dice-adds'>" + Math.abs(adds) + "</label>"
+                }
+
+                html += "</div>";
+
+                html += "<div>Total Damage: " + damageRoll.total + "</div>";
+
+                ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+            })
+        }
+
+        else {
+            console.log("Rollable element triggered with an unsupported data-type (supported types are 'skill', 'damage' and 'defense'");
+        }
+    }
 
     static addSkull(actorData, id, brain) {
 

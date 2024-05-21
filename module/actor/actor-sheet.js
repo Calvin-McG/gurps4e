@@ -1,4 +1,5 @@
 import { rollHelpers } from '../../helpers/rollHelpers.js';
+import { actorHelpers } from "../../helpers/actorHelpers.js";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -12,8 +13,38 @@ export class gurpsActorSheet extends ActorSheet {
 			classes: ["gurps4e", "sheet", "actor"],
 			width: 780,
 			height: 780,
-			tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "stats" }]
+			tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "stats" }],
+			dragDrop: [
+				{
+					dragSelector: '.items-list .item',
+					dropSelector: null,
+				},
+				{
+					dragSelector: '.rollable',
+					dropSelector: null,
+				}
+				],
 		});
+	}
+
+	_canDragStart(selector){
+		if (selector === '.rollable') return true; // This item can always be dragged
+		if (selector === '.items-list .item') return true; // This item can always be dragged
+		return super._canDragStart(selector); // Any other item requires ownership to drag
+	}
+
+	_canDragDrop(selector){
+		if (selector === '.rollable') return true; // This item can always be dragged
+		if (selector === '.items-list .item') return true; // This item can always be dragged
+		return super._canDragDrop(selector); // Any other item requires ownership to drag
+	}
+
+	_onDragStart(event) {
+		super._onDragStart(event);
+		if (event.dataTransfer.getData("text/plain") === "") { // It comes through blank if it's a .rollable
+			let dragData = event.target.dataset // Get the data from the dataset
+			event.dataTransfer.setData("text/plain", JSON.stringify(dragData)); // Set the data
+		}
 	}
 
 	/** @override */
@@ -183,7 +214,7 @@ export class gurpsActorSheet extends ActorSheet {
 		event.preventDefault();
 
 		if (event.altKey || event.ctrlKey || event.shiftKey) { // If any modifier key were pressed.
-			this.computeRollFromEvent(event, 0); // Make the roll directly without bringing up the modal.
+			actorHelpers.computeRollFromEvent(event, 0); // Make the roll directly without bringing up the modal.
 		}
 		else { // Otherwise
 			let modModal = new Dialog({ // Bring up a modal to allow them to input a modifier on the roll.
@@ -195,13 +226,13 @@ export class gurpsActorSheet extends ActorSheet {
 						label: "Apply Modifier",
 						callback: (html) => {
 							let mod = html.find('#mod').val()
-							this.computeRollFromEvent(event, mod)
+							actorHelpers.computeRollFromEvent(event, mod)
 						}
 					},
 					noMod: {
 						icon: '<i class="fas fa-times"></i>',
 						label: "No Modifier",
-						callback: () => this.computeRollFromEvent(event, 0)
+						callback: () => actorHelpers.computeRollFromEvent(event, 0)
 					}
 				},
 				default: "mod",
@@ -209,66 +240,6 @@ export class gurpsActorSheet extends ActorSheet {
 				close: html => console.log("This always is logged no matter which option is chosen")
 			})
 			modModal.render(true)
-		}
-	}
-
-	computeRollFromEvent(event, modifier){
-		event.preventDefault();
-		const element = event.currentTarget;
-		const dataset = element.dataset;
-
-		this.computeRollFromDataset(dataset, modifier);
-	}
-
-	// dataset comes as
-	// dataset = {
-	// 	label: "Makes a <b>Judo</b> roll.",
-	// 	level: "12",
-	// 	type: "skill"
-	// }
-	computeRollFromDataset(dataset, modifier){
-		if (dataset.type === 'skill' || dataset.type === 'defense' || dataset.type === 'defence') {
-			rollHelpers.skillRoll(dataset.level, modifier, dataset.label, true);
-		}
-
-		else if (dataset.type === 'damage') {
-			let damageRoll = new Roll(dataset.level);
-			damageRoll.roll({async: true}).then( result => {
-				let html = "<div>" + dataset.label + "</div>";
-				let adds = 0;
-
-				html += "<div>";
-				if(damageRoll.terms[0].results){
-					let diceTotal = 0;
-					if(damageRoll.terms[0].results.length){//Take the results of each roll and turn it into a die icon.
-						for (let k = 0; k < damageRoll.terms[0].results.length; k++){
-							html += rollHelpers.dieToIcon(damageRoll.terms[0].results[k].result)
-							diceTotal += damageRoll.terms[0].results[k].result;
-						}
-					}
-					adds = (+damageRoll._total - +diceTotal);
-				}
-				else {
-					adds = +damageRoll._total;
-				}
-
-				if (adds >= 0){//Adds are positive
-					html += "<label class='damage-dice-adds'>+</label><label class='damage-dice-adds'>" + adds + "</label>"
-				}
-				else {//Adds are negative
-					html += "<label class='damage-dice-adds'>-</label><label class='damage-dice-adds'>" + Math.abs(adds) + "</label>"
-				}
-
-				html += "</div>";
-
-				html += "<div>Total Damage: " + damageRoll.total + "</div>";
-
-				ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
-			})
-		}
-
-		else {
-			console.log("Rollable element triggered with an unsupported data-type (supported types are 'skill', 'damage' and 'defense'");
 		}
 	}
 }

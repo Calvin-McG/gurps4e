@@ -5438,7 +5438,7 @@ export class gurpsItem extends Item {
     this.system.bowDesign.compoundBowStrictTL      = game.settings.get("gurps4e", "compoundBowStrictTL");
     this.system.bowDesign.fixedBonusStrongbow      = game.settings.get("gurps4e", "fixedBonusStrongbow");
     this.system.bowDesign.realisticBowScale        = game.settings.get("gurps4e", "realisticBowScale");
-    this.system.bowDesign.repeatingAllowed                = game.settings.get("gurps4e", "repeatingCrossbows");
+    this.system.bowDesign.repeatingAllowed         = game.settings.get("gurps4e", "repeatingCrossbows");
 
     // Get materials
     this.system.bowDesign.materials = game.materialAPI.fetchBowMaterials();

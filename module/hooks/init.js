@@ -223,6 +223,24 @@ Hooks.once("init", () => {
     game.vehicleAPI = vehicleHelpers;
   }
 
+  Hooks.on('hotbarDrop', (bar, droppedData, slot) => createMacro(droppedData, slot));
+  async function createMacro(droppedData, slot) {
+    if (droppedData.type !== "item") { // It's not an item being dragged down to the hotbar
+      let macro = await _createMacroForRollable(droppedData);
+      return game.user.assignHotbarMacro(macro, slot);
+    }
+  }
+
+  async function _createMacroForRollable(droppedData) {
+    const command = `game.gurpsAPI.onRollableMacroRaw("${droppedData.label}", "${droppedData.level}", "${droppedData.type}");`;
+    return Macro.implementation.create({
+      name: `${droppedData.label}`,
+      type: "script",
+      img: "icons/svg/dice-target.svg",
+      command
+    });
+  }
+
   game.settings.register("gurps4e", "campaignTL", {
     name: "Set the default campaign TL",
     hint: "TLs can always be changed on the relevant item/actor/etc after the fact, but this sets the default value for new items/actors/etc. This is particularly helpful for new Custom Weapons and Armour where the TL controls which options are available.",
