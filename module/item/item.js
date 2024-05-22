@@ -6402,9 +6402,6 @@ export class gurpsItem extends Item {
     // Total up the point value of this trait
     let totalPoints = this.system.levelledPoints.basePoints + (this.system.levelledPoints.levels * this.system.levelledPoints.pointsPerLevel);
 
-    // Parse the modifier to a single number in case they entered it with a % sign
-    let modifier = parseInt(this.system.levelledPoints.netModifier);
-
     // Convert that modifier to a percentage (So 20% gets parsed to 0.20)
 
     // Cap the modifier at a minimum of 0.20
