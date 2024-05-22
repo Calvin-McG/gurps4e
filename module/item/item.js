@@ -6371,23 +6371,28 @@ export class gurpsItem extends Item {
     }
 
     // Undefined checks per variable
-    if (typeof this.system.levelledPoints.basePoints === "undefined") {
+    if (typeof this.system.levelledPoints.basePoints === "undefined" || this.system.levelledPoints.basePoints === "" || this.system.levelledPoints.basePoints === null) {
       this.system.levelledPoints.basePoints = 0;
     }
-    if (typeof this.system.levelledPoints.levels === "undefined") {
+    if (typeof this.system.levelledPoints.levels === "undefined" || this.system.levelledPoints.levels === "" || this.system.levelledPoints.levels === null) {
       this.system.levelledPoints.levels = 0;
     }
-    if (typeof this.system.levelledPoints.pointsPerLevel === "undefined") {
+    if (typeof this.system.levelledPoints.pointsPerLevel === "undefined" || this.system.levelledPoints.pointsPerLevel === "" || this.system.levelledPoints.pointsPerLevel === null) {
       this.system.levelledPoints.pointsPerLevel = 0;
     }
-    if (typeof this.system.levelledPoints.netModifier === "undefined") {
+    if (typeof this.system.levelledPoints.netModifier === "undefined" || this.system.levelledPoints.netModifier === "" || this.system.levelledPoints.netModifier === null) {
       this.system.levelledPoints.netModifier = 100;
     }
-    if (typeof this.system.levelledPoints.totalMultipliers === "undefined") {
+    if (typeof this.system.levelledPoints.totalMultipliers === "undefined" || this.system.levelledPoints.totalMultipliers === "" || this.system.levelledPoints.totalMultipliers === null) {
       this.system.levelledPoints.totalMultipliers = 1;
     }
-
     // End of undefined checks
+
+    // Input validation per variable
+    if (this.system.levelledPoints.levels < 0) { // Levels must not be negative. If they want a negative cost, set the points per level negative.
+      this.system.levelledPoints.levels = 0; // We will continue to accept decimal levels. Stuff like innate attack takes 0.3 or 0.25 as a valid level, applying rounding after.
+    }
+    // End of input validation per variable
 
     // Backwards compatibility for the old way of doing points for traits
     if (typeof this.system.points !== "undefined" && this.system.points > 0) { // The original points variable exists and has a value greater than 1
@@ -6405,16 +6410,7 @@ export class gurpsItem extends Item {
     // Cap the modifier at a minimum of 0.20
     let netModifier = Math.max(this.system.levelledPoints.netModifier, 20)/100;
 
-    let multiplier = 1; // Default to one in case something goes wrong in assignment.
-    // The multiplier can be any value, but we need to strip out non-numerical characters in case they've entered something like x1/5 instead of 1/5
-    if (typeof this.system.levelledPoints.totalMultipliers !== "undefined") {
-      multiplier = eval(this.system.levelledPoints.totalMultipliers.toString().toLowerCase().replace("x", "").replace("*", ""));
-    }
-    if (isNaN(multiplier) || typeof this.system.levelledPoints.totalMultipliers === "undefined") { // Catch assignment errors
-      multiplier = 1; // Set back to 1.
-    }
-
-    this.system.levelledPoints.totalPoints = Math.ceil(totalPoints * netModifier * multiplier); // ceil rounds towards positive infinity. So 1.9 goes to 2, and -1.9 goes to 1.
+    this.system.levelledPoints.totalPoints = Math.ceil(totalPoints * netModifier * this.system.levelledPoints.totalMultipliers); // ceil rounds towards positive infinity. So 1.9 goes to 2, and -1.9 goes to 1.
   }
 
   showInfo(id) {
