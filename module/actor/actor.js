@@ -62,10 +62,17 @@ export class gurpsActor extends Actor {
 		if (this.system.vehicle.method.toLowerCase() === "pick") {
 			this.loadBaseVehicles();
 			this.system.vehicle.baseVehicle = vehicleHelpers.getVehicleByCode(this.system.vehicle.baseVehicle.code);
+
+			this.system.vehicle.ht.code = this.system.vehicle.baseVehicle.htCodes;
 		}
 		else {
 			this.system.vehicle.baseVehicle = undefined;
 		}
+
+		// Convert the ht code string to the set of bools on the ht object.
+		this.system.vehicle.ht.combustible = this.system.vehicle.ht.code.toString().toLowerCase().includes("c");
+		this.system.vehicle.ht.flammable = this.system.vehicle.ht.code.toString().toLowerCase().includes("f");
+		this.system.vehicle.ht.explosive = this.system.vehicle.ht.code.toString().toLowerCase().includes("x");
 
 		// This section is for logic that applies to both methods
 		this.vehicleWeightHandling();
