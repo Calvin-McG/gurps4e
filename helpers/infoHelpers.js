@@ -118,6 +118,34 @@ export class infoHelpers {
                 "</td>" +
                 "</tr>";
 
+            info += "<tr>" +
+                "<td>" +
+                "<p>You can type whatever you like into the HT Code box, but the only valid inputs are c, f, and x, or to leave it empty. Casing doesn't matter.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+
+            info += "<table>";
+
+            info += "<tr>" +
+                "<td style='padding: 0em 1em;'>C</td>" +
+                "<td>Combustible, see B136 Fragile (Combustible). Vehicles made of wood, large quantities of cloth or paper, or other materials that can burn are combustible.</td>" +
+                "</tr>";
+
+            info += "<tr>" +
+                "<td style='padding: 0em 1em;'>F</td>" +
+                "<td>Flammable, see B137 Fragile (Flammable). Vehicles that contain fuel, hydrogen, or the like are usually flammable, but not always. " +
+                "The sample HMMWV obviously has a fuel tank, but as a military vehicle it's protected in such a way that the vehicle is not treated as flammable.</td>" +
+                "</tr>";
+
+            info += "<tr>" +
+                "<td style='padding: 0em 1em;'>X</td>" +
+                "<td>Explosive, see B137 Fragile (Explosive). Vehicles that contain large quantities of ammunition are usually explosive, but not always. " +
+                "A Panzer IV is treated as explosive due to the large quantity of ammunition carried inside. A Sherman is not considered explosive, as while it also carries " +
+                "a large quantity of ammunition, the vehicle is designed to guard against ammunition explosions.</td>" +
+                "</tr>";
+
             info += "</table>"
         }
         else if (id === "moveInput") {
@@ -268,13 +296,13 @@ export class infoHelpers {
 
             info += "<tr>" +
                 "<td>" +
-                "<p>Facing - Set DR by facing, including the top, bottom, and any windows.</p>" +
+                "<p>Facing - Set DR by facing, including the top and bottom of the vehicle. Windows, if present, will default to DR 2.</p>" +
                 "</td>" +
                 "</tr>";
 
             info += "<tr>" +
                 "<td>" +
-                "<p>Facing Plus - As above, but also lets you set the DR for any special locations added in the row above.</p>" +
+                "<p>Facing Plus - As above, but also lets you give specific locations their own DR, or have them default to the vehicle's DR.</p>" +
                 "</td>" +
                 "</tr>";
 
@@ -302,24 +330,130 @@ export class infoHelpers {
 
             info += "</table>"
         }
+        else if (id === "propulsion") {
+            info = "<table>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>Powered vehicles are almost always Unliving, but have Vitals</p>" +
+                "<p>Unpowered vehicles are almost always Homogenous, and so don't have Vitals</p>" +
+                "<p>Vehicles propelled by animals are almost always Homogenous, and don't have Vitals, but the animals themselves can be damaged or killed.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+        }
+        else if (id === "animal-location") {
+            info = "<table>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>Vehicles pulled by animals generally use Teamster to drive them, and the animals lack DR unless it's worn as equipment.</p>" +
+                "<p>Vehicles with animals internal to the vehicle get the benefit of DR, though they're generally heavier and more expensive.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+        }
+        else if (id === "expected-injury-tolerance") {
+            info = "<table>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>Leaving this box checked gives you the default injury tolerance for a vehicle with it's propulsion type.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+        }
         else if (id === "motive-type") {
             info = "<table>";
 
             info += "<tr>" +
                 "<td>" +
-                "<p>A vehicle might have several different possible methods of moving, but for the purpose of a GURPS Vehicle, only one counts for the stats.</p>" +
+                "<p>Listed here are all possible motive types for your vehicle, based on the locations you've provided.</p>" +
+                "<p>Here we're only really concerned with the effects of damage on the vehicle's hit locations, not including any possible engine damage.</p>" +
+                "<p>For example, if your vehicle has both wheels and tracks, but you pick 'wheeled', then damage to the tracks will not impact movement in any way. " +
+                "But on the other hand, they won't provide any support either and damage to individual wheels will have a more significant impact on your movement. " +
+                "The same is true if you were to pick tracks only.</p>" +
+                "<p>On the other hand, if you were to pick both tracks and wheels, then damage to either location would have an impact on movement. But the loss of any one " +
+                "location would not be so severe.</p>" +
                 "</td>" +
                 "</tr>";
 
             info += "<tr>" +
                 "<td>" +
-                "<p>The list here includes all possible motive types, based on the locations you've selected.</p>" +
+                "<p>Motive type also limits the list of operator skills you can select from lower down on the sheet.</p>" +
                 "</td>" +
                 "</tr>";
 
             info += "<tr>" +
                 "<td>" +
-                "<p>Motive type will also dictate the skill used to maneuver the vehicle.</p>" +
+                "<p>Immune is used for cases where there is not a specific location on the vehicle which can reduce movement if destroyed. " +
+                "For example, a magically propelled flying carpet would be classified as 'Immune', but so would a Motorboat or Battleship. " +
+                "And if you're wondering, 'Well what about the engine?' that's part of the body/vitals hit location.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+        }
+        else if (id === "pneumatic") {
+            info = "<table>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>Pneumatic tires, like those on a car, can be punctured. If the wheel takes any damage, roll vs HT. On a failure the wheel gets a puncture which cripples it until changed.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>Losing one gives ‑4 to Hnd and -50% to Top Speed; losing two or more stops the vehicle.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+        }
+        else if (id === "run-flat") {
+            info = "<table>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>Having run-flat tires will cap the penalty for punctured tires at ‑1 to Hnd and ‑20% to Top Speed, no matter how many are damaged.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+        }
+        else if (id === "operation-skill") {
+            info = "<table>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>This is the skill used by the vehicle's principle operator. If it's something small like a car, that just means the driver. " +
+                "If it's something big like a battleship, it's the skill the captain uses. Generally some variant of Shiphandling (B220).</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+        }
+        else if (id === "crew-skill") {
+            info = "<table>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>If your vehicle requires crew to keep it working, other than to man weapons, this is the skill they use. Generally some variant of Crewman (B185)</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+        }
+        else if (id === "placeholder") {
+            info = "<table>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>This is a placeholder info section.</p>" +
                 "</td>" +
                 "</tr>";
 

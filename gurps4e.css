@@ -1948,3 +1948,9 @@ attribute-senses {
 .ranged-acc input {
 	max-width: 25px;
 }
+
+.simple-vehicle-location {
+	border: groove 2px darkgoldenrod;
+	box-shadow: -1px -1px 0 #b5b3a4, 1px -1px 0 #b5b3a4, -1px 1px 0 #b5b3a4, 1px 1px 0 #b5b3a4;
+	margin: 1em 0;
+}

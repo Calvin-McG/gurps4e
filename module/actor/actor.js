@@ -450,10 +450,13 @@ export class gurpsActor extends Actor {
 			this.system.vehicle.sr = 3
 		}
 		if (typeof this.system.vehicle.ht === "undefined" || this.system.vehicle.ht === null) {
-			this.system.vehicle.ht = 11
-		}
-		if (typeof this.system.vehicle.htCode === "undefined") {
-			this.system.vehicle.htCode = ""
+			this.system.vehicle.ht = {
+				"value": 11,
+				"flammable": false,
+				"combustible": false,
+				"explosive": false,
+				"code": ""
+			}
 		}
 		if (typeof this.system.vehicle.accelerationInput === "undefined") {
 			this.system.vehicle.accelerationInput = 3

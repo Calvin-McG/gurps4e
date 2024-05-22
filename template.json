@@ -8,6 +8,10 @@
       "vehicle": {
         "vehicle": {
           "craftType": "land",
+          "propulsion": "powered",
+          "injuryToleranceExpected": true,
+          "animalLocation": "draft",
+          "motiveType": "wheel",
           "method": "pick",
           "tlFilter": {
             "lo": 0,
@@ -21,8 +25,19 @@
           "sthpCode": "",
           "hnd": 1,
           "sr": 3,
-          "ht": 11,
-          "htCode": "",
+          "ht": {
+            "value": 11,
+            "flammable": false,
+            "combustible": false,
+            "explosive": false,
+            "code": ""
+          },
+          "skill": {
+            "operatorSkillName": "",
+            "crewSkillName": "",
+            "operatorSkillLevel": "",
+            "crewSkillLevel": ""
+          },
           "accelerationInput": 3,
           "moveInput": 30,
           "moveCode": "",
@@ -314,6 +329,7 @@
                 "drBottom": 0
               },
               "count": 0,
+              "pneumatic": false,
               "locationalDR": false,
               "facingDR": false,
               "retractable": false

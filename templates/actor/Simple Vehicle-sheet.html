@@ -53,6 +53,12 @@
         <a class="item" data-tab="stats">Input</a>
       </div>
       <div class="header">
+        <a class="item" data-tab="locations">Locations</a>
+      </div>
+      <div class="header">
+        <a class="item" data-tab="upgrades">Upgrades</a>
+      </div>
+      <div class="header">
         <a class="item" data-tab="output">Output</a>
       </div>
       <div class="header">
@@ -193,17 +199,8 @@
               <tr class="design-row">
                 <td>HT</td>
                 <td style="display: flex">
-                  <input name="system.vehicle.ht" type="number" value="{{actor.system.vehicle.ht}}" placeholder="10" style="min-width: 30px;" />
-                  <select name="system.vehicle.htCode" class="craftType" style="height: unset">
-                    {{#select actor.system.vehicle.htCode}}
-                    <option value=""></option>
-                    <option value="c">c - Combustible</option>
-                    <option value="f">f - Flammable</option>
-                    <option value="x">x - Explosive</option>
-                    <option value="cx">c - Combustible & Explosive</option>
-                    <option value="fx">f - Flammable & Explosive</option>
-                    {{/select}}
-                  </select>
+                  <input name="system.vehicle.ht.value" type="number" value="{{actor.system.vehicle.ht.value}}" placeholder="10" style="min-width: 30px;" />
+                  <input name="system.vehicle.ht.code" type="text" value="{{actor.system.vehicle.ht.code}}" placeholder="HT Code" style="min-width: 30px;" />
                 </td>
                 <td class="question-container" id="vehicleHT">
                   <div class="question-button">
@@ -403,80 +400,97 @@
                 <td></td>
               </tr>
             </table>
-
-            <h2 class="bold" style="text-align: center;">Location DR</h2>
-
-            {{#each actor.system.vehicle.loc as |location id|}}
-            {{#if (or (eq ../actor.system.vehicle.drMethod "facingPlus") (and (eq ../actor.system.vehicle.drMethod "facing") (or (eq location.code "g") (eq location.code "G"))))}}
-            {{#ifCond location.count '>=' 1 }}
-            <table>
-              <tr>
-                <th colspan="2">
-                  {{location.Name}} ({{location.code}})
-                </th>
-              </tr>
-              <tr>
-                <td>Does this location have it's own DR?</td>
-                <td>
-                  <input type="checkbox" name="system.vehicle.loc.{{id}}.locationDR" {{checked location.locationDR}} data-dtype="Boolean" style="width: 100%;"/>
-                </td>
-              </tr>
-              {{#if location.locationDR}}
-              <tr>
-                <td>Is that DR facing specific?</td>
-                <td>
-                  <input type="checkbox" name="system.vehicle.loc.{{id}}.facingDR" {{checked location.facingDR}} data-dtype="Boolean" style="width: 100%;"/>
-                </td>
-              </tr>
-              {{#if location.facingDR}}
-              <table style="background-image: url('systems/gurps4e/icons/svg/car-side.svg'); background-size: contain; background-repeat: no-repeat; background-position: center;">
-                <tr>
-                  <td></td>
-                  <td>
-                    <div style="text-align: center; font-weight: bold; text-decoration: underline;">Top</div>
-                    <input name="system.vehicle.loc.{{id}}.drFacing.drTop" type="number" value="{{location.drFacing.drTop}}" placeholder="2" />
-                  </td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div style="text-align: center; font-weight: bold; text-decoration: underline;">Rear</div>
-                    <input name="system.vehicle.loc.{{id}}.drFacing.drRear" type="number" value="{{location.drFacing.drRear}}" placeholder="2" />
-                  </td>
-                  <td>
-                    <div style="text-align: center; font-weight: bold; text-decoration: underline;">Sides</div>
-                    <input name="system.vehicle.loc.{{id}}.drFacing.drSide" type="number" value="{{location.drFacing.drSide}}" placeholder="2" />
-                  </td>
-                  <td>
-                    <div style="text-align: center; font-weight: bold; text-decoration: underline;">Front</div>
-                    <input name="system.vehicle.loc.{{id}}.drFacing.drFront" type="number" value="{{location.drFacing.drFront}}" placeholder="2" />
-                  </td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>
-                    <div style="text-align: center; font-weight: bold; text-decoration: underline;">Bottom</div>
-                    <input name="system.vehicle.loc.{{id}}.drFacing.drBottom" type="number" value="{{location.drFacing.drBottom}}" placeholder="2" />
-                  </td>
-                  <td></td>
-                </tr>
-              </table>
-              {{else}}
-              <tr>
-                <td>
-                  Base DR
-                </td>
-                <td>
-                  <input name="system.vehicle.loc.{{id}}.dr" type="number" value="{{location.dr}}" placeholder="2" />
-                </td>
-              </tr>
-              {{/if}}
-              {{/if}}
-            </table>
-            {{/ifCond}}
-            {{/if}}
-            {{/each}}
             {{/unless}}
+
+            <h2 class="bold" style="text-align: center;">Movement</h2>
+            <table>
+              <tr class="design-row">
+                <td style="width: 100%">Propulsion</td>
+                <td>
+                  <select name="system.vehicle.propulsion" class="dr-entry-select">
+                    {{#select actor.system.vehicle.propulsion}}
+                      <option value="powered">Powered</option>
+                      <option value="unpowered">Unpowered</option>
+                      <option value="animals">Animals</option>
+                    {{/select}}
+                  </select>
+                </td>
+                <td class="question-container" id="propulsion">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+
+
+              <tr class="design-row">
+                {{#if (or (eq actor.system.vehicle.propulsion "animals") (eq actor.system.vehicle.propulsion "unpowered"))}}
+                <td style="width: 100%">Is this vehicle Homogenous, as expected?</td>
+                {{else}}
+                <td style="width: 100%">Is this vehicle Unliving, as expected?</td>
+                {{/if}}
+                <td>
+                  <input type="checkbox" name="system.vehicle.injuryToleranceExpected" {{checked actor.system.vehicle.injuryToleranceExpected}} data-dtype="Boolean" style="width: 100%;"/>
+                </td>
+                <td class="question-container" id="expected-injury-tolerance">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+
+              {{#if (eq actor.system.vehicle.propulsion "animals")}}
+              <tr class="design-row">
+                <td style="width: 100%">Where are the animals located?</td>
+                <td>
+                  <select name="system.vehicle.animalLocation" class="dr-entry-select">
+                    {{#select actor.system.vehicle.animalLocation}}
+                    <option value="draft">Exterior, pulling the vehicle</option>
+                    <option value="internal">Interior, operating a conveyor or other mechanism.</option>
+                    {{/select}}
+                  </select>
+                </td>
+                <td class="question-container" id="animal-location">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              {{/if}}
+
+              <tr class="design-row">
+                <td style="width: 100%">Motive Type</td>
+                <td>
+                  <select name="system.vehicle.motiveType" class="dr-entry-select">
+                    {{#select actor.system.vehicle.motiveType}}
+                    {{#if (eq actor.system.vehicle.craftType "land")}}
+                    <option value="wheel">Wheeled</option>
+                    <option value="rail">Railway</option>
+                    <option value="track">Tracked</option>
+                    <option value="skids">Skids or Runners</option>
+                    <option value="wTrack">Wheels and Tracks</option>
+                    <option value="rTrack">Skids and Tracks</option>
+                    <option value="skidsW">Wheels and Skids</option>
+                    <option value="sail">Sails</option>
+                    <option value="immune">Immune</option>
+                    {{else if (eq actor.system.vehicle.craftType "water")}}
+                    <option value="sail">Sails</option>
+                    <option value="wheel">Paddlewheels</option>
+                    <option value="immune">Immune</option>
+                    {{else if (eq actor.system.vehicle.craftType "air")}}
+                    <option value="wing">Wings</option>
+                    <option value="heli">Helicopter Blades</option>
+                    {{/if}}
+                    {{/select}}
+                  </select>
+                </td>
+                <td class="question-container" id="motive-type">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+            </table>
             {{/if}}
           </div>
           <div style="width: 50%;">
@@ -486,14 +500,199 @@
         </div>
       </div>
 
+      {{!-- Locations Tab --}}
+      <div class="tab locations" data-tab="locations" data-group="primary">
+        <div class="design-block">
+          <!-- Start of left pane -->
+
+          <div style="width: 50%;">
+            <h2 class="bold" style="text-align: center;">Locations</h2>
+            {{#each actor.system.vehicle.loc as |location id|}}
+            {{#ifCond location.count '>=' 1 }}
+            <div class="simple-vehicle-location">
+              <h2 class="bold" style="text-align: center;">{{location.Name}} x{{location.count}} ({{location.code}})</h2>
+
+              {{#if (and (eq ../actor.system.vehicle.motiveType "wheel") (eq location.code "W"))}}
+              <h3 class="bold" style="text-align: center;">Wheel Details</h3>
+              <table>
+                {{#if (eq ../actor.system.vehicle.craftType "land")}}
+                <tr class="design-row">
+                  <td style="width: 100%">Are these wheels pneumatic, like a car tire?</td>
+                  <td>
+                  <td>
+                    <input type="checkbox" name="system.vehicle.loc.{{id}}.pneumatic" {{checked location.pneumatic}} data-dtype="Boolean" style="width: 100%;"/>
+                  </td>
+                  <td class="question-container" id="pneumatic">
+                    <div class="question-button">
+                      <i class="fas fa-question"></i>
+                    </div>
+                  </td>
+                </tr>
+                {{/if}}
+              </table>
+              {{/if}}
+
+              {{#if (eq ../actor.system.vehicle.drMethod "facingPlus")}}
+              <h3 class="bold" style="text-align: center;">Damage Resistance</h3>
+              <table>
+                <tr>
+                  <td>Does this location have it's own DR?</td>
+                  <td>
+                    <input type="checkbox" name="system.vehicle.loc.{{id}}.locationDR" {{checked location.locationDR}} data-dtype="Boolean" style="width: 100%;"/>
+                  </td>
+                </tr>
+                {{#if location.locationDR}}
+                <tr>
+                  <td>Is that DR facing specific?</td>
+                  <td>
+                    <input type="checkbox" name="system.vehicle.loc.{{id}}.facingDR" {{checked location.facingDR}} data-dtype="Boolean" style="width: 100%;"/>
+                  </td>
+                </tr>
+                {{#if location.facingDR}}
+                <table style="background-image: url('systems/gurps4e/icons/svg/car-side.svg'); background-size: contain; background-repeat: no-repeat; background-position: center;">
+                  <tr>
+                    <td></td>
+                    <td>
+                      <div style="text-align: center; font-weight: bold; text-decoration: underline;">Top</div>
+                      <input name="system.vehicle.loc.{{id}}.drFacing.drTop" type="number" value="{{location.drFacing.drTop}}" placeholder="2" />
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div style="text-align: center; font-weight: bold; text-decoration: underline;">Rear</div>
+                      <input name="system.vehicle.loc.{{id}}.drFacing.drRear" type="number" value="{{location.drFacing.drRear}}" placeholder="2" />
+                    </td>
+                    <td>
+                      <div style="text-align: center; font-weight: bold; text-decoration: underline;">Sides</div>
+                      <input name="system.vehicle.loc.{{id}}.drFacing.drSide" type="number" value="{{location.drFacing.drSide}}" placeholder="2" />
+                    </td>
+                    <td>
+                      <div style="text-align: center; font-weight: bold; text-decoration: underline;">Front</div>
+                      <input name="system.vehicle.loc.{{id}}.drFacing.drFront" type="number" value="{{location.drFacing.drFront}}" placeholder="2" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <div style="text-align: center; font-weight: bold; text-decoration: underline;">Bottom</div>
+                      <input name="system.vehicle.loc.{{id}}.drFacing.drBottom" type="number" value="{{location.drFacing.drBottom}}" placeholder="2" />
+                    </td>
+                    <td></td>
+                  </tr>
+                </table>
+                {{else}}
+                <tr>
+                  <td>
+                    Base DR
+                  </td>
+                  <td>
+                    <input name="system.vehicle.loc.{{id}}.dr" type="number" value="{{location.dr}}" placeholder="2" />
+                  </td>
+                </tr>
+                {{/if}}
+                {{/if}}
+              </table>
+              {{/if}}
+            </div>
+            {{/ifCond}}
+            {{/each}}
+          </div>
+
+          <!-- End of left pane, start of right pane -->
+          <div style="width: 50%;">
+            <h2 class="bold" style="text-align: center;">Info</h2>
+            <div class="equipment-info-container">{{{actor.system.info}}}</div>
+          </div>
+          <!-- End of right pane -->
+        </div>
+      </div>
+
+      {{!-- Upgrades Tab --}}
+      <div class="tab upgrades" data-tab="upgrades" data-group="primary">
+        <div class="design-block">
+          <!-- Start of left pane -->
+          <div style="width: 50%;">
+            <h2 class="bold" style="text-align: center;">A Header would be here</h2>
+            <table>
+              <tr class="design-row">
+                <td>A Label would be here</td>
+                <td>
+                  An input would be here
+                </td>
+                <td class="question-container" id="placeholder">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- End of left pane, start of right pane -->
+          <div style="width: 50%;">
+            <h2 class="bold" style="text-align: center;">Info</h2>
+            <div class="equipment-info-container">{{{actor.system.info}}}</div>
+          </div>
+          <!-- End of right pane -->
+        </div>
+      </div>
+
       {{!-- Output Tab --}}
       <div class="tab output" data-tab="output" data-group="primary">
-        Output tab
+        <div class="design-block">
+          <!-- Start of left pane -->
+          <div style="width: 50%;">
+            <h2 class="bold" style="text-align: center;">A Header would be here</h2>
+            <table>
+              <tr class="design-row">
+                <td>A Label would be here</td>
+                <td>
+                  An input would be here
+                </td>
+                <td class="question-container" id="placeholder">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- End of left pane, start of right pane -->
+          <div style="width: 50%;">
+            <h2 class="bold" style="text-align: center;">Info</h2>
+            <div class="equipment-info-container">{{{actor.system.info}}}</div>
+          </div>
+          <!-- End of right pane -->
+        </div>
       </div>
 
       {{!-- Chase Tab --}}
       <div class="tab chase" data-tab="chase" data-group="primary">
-        Chase tab
+        <div class="design-block">
+          <!-- Start of left pane -->
+          <div style="width: 50%;">
+            <h2 class="bold" style="text-align: center;">A Header would be here</h2>
+            <table>
+              <tr class="design-row">
+                <td>A Label would be here</td>
+                <td>
+                  An input would be here
+                </td>
+                <td class="question-container" id="placeholder">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- End of left pane, start of right pane -->
+          <div style="width: 50%;">
+            <h2 class="bold" style="text-align: center;">Info</h2>
+            <div class="equipment-info-container">{{{actor.system.info}}}</div>
+          </div>
+          <!-- End of right pane -->
+        </div>
       </div>
 
     </section>
