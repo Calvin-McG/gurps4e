@@ -1880,11 +1880,23 @@ export class gurpsActor extends Actor {
 		// Iterate through the list of traits. Advantages and Disadvantages
         for (let i = 0; i < this.items.contents.length; i++){
             if (this.items.contents[i].type === "Trait"){
-                traitPoints = traitPoints += this.items.contents[i].system.points;
-				advantagePoints = this.items.contents[i].system.category.toLowerCase() === "advantage" ? advantagePoints += this.items.contents[i].system.points : advantagePoints;
-                disadvantagePoints = this.items.contents[i].system.category.toLowerCase() === "disadv" ? disadvantagePoints += this.items.contents[i].system.points : disadvantagePoints;
-				quirkPoints = this.items.contents[i].system.category.toLowerCase() === "quirk" ? quirkPoints += this.items.contents[i].system.points : quirkPoints;
-				perkPoints = this.items.contents[i].system.category.toLowerCase() === "perk" ? perkPoints += this.items.contents[i].system.points : perkPoints;
+				let points = 0;
+				if (typeof this.items.contents[i].system.levelledPoints !== "undefined") { // If there's a levelledPoints object
+					points = this.items.contents[i].system.levelledPoints.totalPoints
+				}
+				else {
+					points = this.items.contents[i].system.points
+				}
+
+				if (isNaN(points) || typeof points === "undefined") { // Catch errors calculating point cost so it breaks only the one trait and not the whole sheet.
+					points = 0; // Set back to 1.
+				}
+
+                traitPoints = traitPoints += points;
+				advantagePoints = this.items.contents[i].system.category.toLowerCase() === "advantage" ? advantagePoints += points : advantagePoints;
+                disadvantagePoints = this.items.contents[i].system.category.toLowerCase() === "disadv" ? disadvantagePoints += points : disadvantagePoints;
+				quirkPoints = this.items.contents[i].system.category.toLowerCase() === "quirk" ? quirkPoints += points : quirkPoints;
+				perkPoints = this.items.contents[i].system.category.toLowerCase() === "perk" ? perkPoints += points : perkPoints;
             }
         }
 		this.system.points.traits = traitPoints;

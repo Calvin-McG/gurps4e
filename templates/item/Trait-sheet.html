@@ -5,37 +5,99 @@
         <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
         <div class="header-fields">
             <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
-            <div>
-                <div class="flexrow">
-                    <label class="resource-label">Category</label>
-                    <select name="system.category">
-                        {{#select item.system.category}}
-                            <option value="advantage">Advantage</option>
-                            <option value="disadv">Disadvantage</option>
-                            <option value="perk">Perk</option>
-                            <option value="quirk">Quirk</option>
-                        {{/select}}
-                    </select>
-                </div>
-                <div class="flexrow">
-                    <label class="resource-label">Roll (If Applicable)</label>
-                    <input type="text" name="system.level" value="{{item.system.level}}" data-dtype="Number"/>
-                </div>
-                <div class="flexrow">
-                    <label class="resource-label">Points</label>
-                    <input type="text" name="system.points" value="{{item.system.points}}" data-dtype="Number"/>
-                </div>
-                <div class="flexrow">
-                    <label class="resource-label">Race / Meta Trait / Etc</label>
-                    <input type="text" name="system.subCategory" value="{{item.system.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
-                </div>
-                <div class="flexrow">
-                    <label class="resource-label">Short Notes</label>
-                    <input type="text" name="system.shortNotes" value="{{item.system.shortNotes}}"/>
-                </div>
-            </div>
         </div>
     </header>
+    <div>
+        <table>
+            <tr>
+                <td>
+                    Category
+                </td>
+                <td>
+                    <select name="system.category">
+                        {{#select item.system.category}}
+                        <option value="advantage">Advantage</option>
+                        <option value="disadv">Disadvantage</option>
+                        <option value="perk">Perk</option>
+                        <option value="quirk">Quirk</option>
+                        {{/select}}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Roll (If Applicable)
+                </td>
+                <td>
+                    <input type="text" name="system.level" value="{{item.system.level}}" data-dtype="Number"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Base Points
+                </td>
+                <td>
+                    <input type="text" name="system.levelledPoints.basePoints" value="{{item.system.levelledPoints.basePoints}}" placeholder="0" data-dtype="Number"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Levels
+                </td>
+                <td>
+                    <input type="text" name="system.levelledPoints.levels" value="{{item.system.levelledPoints.levels}}" placeholder="0" data-dtype="Number"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Cost Per Level
+                </td>
+                <td>
+                    <input type="text" name="system.levelledPoints.pointsPerLevel" value="{{item.system.levelledPoints.pointsPerLevel}}" placeholder="0" data-dtype="Number"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Net Modifier
+                </td>
+                <td>
+                    <input type="text" name="system.levelledPoints.netModifier" value="{{item.system.levelledPoints.netModifier}}" placeholder="100" data-dtype="Number"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Multiplier (Like for Alternative Abilities, or Character Point Powered Abilities).
+                </td>
+                <td>
+                    <input type="text" name="system.levelledPoints.totalMultipliers" value="{{item.system.levelledPoints.totalMultipliers}}" placeholder="1"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Total Point Cost
+                </td>
+                <td style="font-weight: bold; text-align: center">
+                    {{item.system.levelledPoints.totalPoints}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Race / Meta Trait / Etc
+                </td>
+                <td>
+                    <input type="text" name="system.subCategory" value="{{item.system.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Short Notes
+                </td>
+                <td>
+                    <input type="text" name="system.shortNotes" value="{{item.system.shortNotes}}"/>
+                </td>
+            </tr>
+        </table>
+    </div>
 
     {{!-- Sheet Tab Navigation --}}
     <nav id="tabselect" class="sheet-tabs tabs" data-group="primary">

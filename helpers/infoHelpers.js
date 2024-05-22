@@ -303,7 +303,27 @@ export class infoHelpers {
             info += "</table>"
         }
         else if (id === "motive-type") {
+            info = "<table>";
 
+            info += "<tr>" +
+                "<td>" +
+                "<p>A vehicle might have several different possible methods of moving, but for the purpose of a GURPS Vehicle, only one counts for the stats.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>The list here includes all possible motive types, based on the locations you've selected.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>Motive type will also dictate the skill used to maneuver the vehicle.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
         }
         return info;
     }

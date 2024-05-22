@@ -1034,6 +1034,16 @@
       "points": {
         "points": 0
       },
+      "levelledPoints": {
+        "levelledPoints": {
+          "basePoints": 0,
+          "levels": 0,
+          "pointsPerLevel": 0,
+          "totalPoints": 0,
+          "netModifier": 100,
+          "totalMultipliers": 1
+        }
+      },
       "dabblerPoints": {
         "dabblerPoints": 0
       },
@@ -1237,7 +1247,7 @@
         "category",
         "subCategory",
         "level",
-        "points",
+        "levelledPoints",
         "melee",
         "ranged"
       ],

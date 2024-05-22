@@ -6358,7 +6358,64 @@ export class gurpsItem extends Item {
     }
   }
 
-  _prepareTraitData() {}
+  _prepareTraitData() {
+    if (typeof this.system.levelledPoints === "undefined") { // Undefined check for .levelledPoints.
+      this.system.levelledPoints = {
+        "basePoints": 0,
+        "levels": 0,
+        "pointsPerLevel": 0,
+        "totalPoints": 0,
+        "netModifier": 100,
+        "totalMultipliers": 1
+      }
+    }
+
+    // Undefined checks per variable
+    if (typeof this.system.levelledPoints.basePoints === "undefined") {
+      this.system.levelledPoints.basePoints = 0;
+    }
+    if (typeof this.system.levelledPoints.levels === "undefined") {
+      this.system.levelledPoints.levels = 0;
+    }
+    if (typeof this.system.levelledPoints.pointsPerLevel === "undefined") {
+      this.system.levelledPoints.pointsPerLevel = 0;
+    }
+    if (typeof this.system.levelledPoints.netModifier === "undefined") {
+      this.system.levelledPoints.netModifier = 100;
+    }
+    if (typeof this.system.levelledPoints.totalMultipliers === "undefined") {
+      this.system.levelledPoints.totalMultipliers = 1;
+    }
+
+    // End of undefined checks
+
+    // Backwards compatibility for the old way of doing points for traits
+    if (typeof this.system.points !== "undefined" && this.system.points > 0) { // The original points variable exists and has a value greater than 1
+      this.system.levelledPoints.basePoints = this.system.points;
+    }
+
+    // Total up the point value of this trait
+    let totalPoints = this.system.levelledPoints.basePoints + (this.system.levelledPoints.levels * this.system.levelledPoints.pointsPerLevel);
+
+    // Parse the modifier to a single number in case they entered it with a % sign
+    let modifier = parseInt(this.system.levelledPoints.netModifier);
+
+    // Convert that modifier to a percentage (So 20% gets parsed to 0.20)
+
+    // Cap the modifier at a minimum of 0.20
+    let netModifier = Math.max(this.system.levelledPoints.netModifier, 20)/100;
+
+    let multiplier = 1; // Default to one in case something goes wrong in assignment.
+    // The multiplier can be any value, but we need to strip out non-numerical characters in case they've entered something like x1/5 instead of 1/5
+    if (typeof this.system.levelledPoints.totalMultipliers !== "undefined") {
+      multiplier = eval(this.system.levelledPoints.totalMultipliers.toString().toLowerCase().replace("x", "").replace("*", ""));
+    }
+    if (isNaN(multiplier) || typeof this.system.levelledPoints.totalMultipliers === "undefined") { // Catch assignment errors
+      multiplier = 1; // Set back to 1.
+    }
+
+    this.system.levelledPoints.totalPoints = Math.ceil(totalPoints * netModifier * multiplier); // ceil rounds towards positive infinity. So 1.9 goes to 2, and -1.9 goes to 1.
+  }
 
   showInfo(id) {
     let info = "";
