@@ -2033,7 +2033,7 @@ export class gurpsActor extends Actor {
 	recalcSpellPoints() {
 		var spellPoints = +0;
 		// Iterate through the list of spells.
-		for (let i = 0; i < this.items.length; i++){
+		for (let i = 0; i < this.items.contents.length; i++){
 			if (this.items.contents[i].type === "Spell"){
 				spellPoints = spellPoints += this.items.contents[i].system.points
 			}
