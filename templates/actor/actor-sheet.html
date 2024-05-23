@@ -275,8 +275,8 @@
 							<td class="item-image"></td>
 							<td class="item-name">Name</td>
 							<td class="item-notes">Notes</td>
-							<td class="item-rolls">Roll</td>
-							<td class="item-points">Points</td>
+							<td class="item-rolls actor-sheet-digit-col">Roll</td>
+							<td class="item-points actor-sheet-digit-col">Points</td>
 							<td class="item-controls"></td>
 					</tr>
 					{{#each actor.system.traitCategories as |category cat|}}
@@ -300,16 +300,16 @@
 										<td class="item-notes">
 												{{item.system.shortNotes}}
 										</td>
-										<td class="item-skill" style="width: 3em;">
+										<td class="item-skill actor-sheet-digit-col" style="width: 4em;">
 											{{#if (isInt item.system.level)}}
 												{{#if item.system.level}}
+													{{item.system.level}}
 													<label for="item.system.level" class="fa fa-dice-six rollable" data-level="{{item.system.level}}"
 															 data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
-													{{item.system.level}}
 												{{/if}}
 											{{/if}}
 										</td>
-										<td class="item-points" style="width: 4em;">
+										<td class="item-points actor-sheet-digit-col" style="width: 4em;">
 											<div class="item-notes">
 												{{item.system.levelledPoints.totalPoints}}
 											</div>
@@ -334,8 +334,8 @@
 						<td class="item-image"></td>
 						<td class="item-name">Skill</td>
 						<td class="item-notes">Notes</td>
-						<td class="item-points">Points</td>
-						<td class="item-rolls">Skill</td>
+						<td class="item-points actor-sheet-digit-col">Points</td>
+						<td class="item-rolls actor-sheet-digit-col">Skill</td>
 						<td class="item-controls"></td>
 					</tr>
 					{{#each actor.system.rollableCategories as |category cat|}}
@@ -359,13 +359,13 @@
 										<td class="item-notes">
 											{{item.system.shortNotes}}
 										</td>
-										<td class="item-points" style="width: 4em;">
+										<td class="item-points actor-sheet-digit-col">
 											{{item.system.points}}
 										</td>
-										<td class="item-skill" style="width: 3em;">
+										<td class="item-skill actor-sheet-digit-col" style="width: 4em;">
+											{{item.system.level}}
 											<label for="actor.system.level" class="fa fa-dice-six rollable" data-level="{{item.system.level}}"
 												   data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
-											{{item.system.level}}
 										</td>
 										<td class="item-controls" style="width: 30px;">
 											<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
@@ -502,10 +502,10 @@
 					<tr class="bold">
 						<td>Source</td>
 						<td>Attack Name</td>
-						<td>Skill</td>
-						<td>Parry</td>
-						<td>Block</td>
-						<td>Damage</td>
+						<td class="actor-sheet-digit-col">Skill</td>
+						<td class="actor-sheet-digit-col">Parry</td>
+						<td class="actor-sheet-digit-col">Block</td>
+						<td class="actor-sheet-digit-col">Damage</td>
 						<td>Reach</td>
 						<td>ST</td>
 					</tr>
@@ -515,26 +515,26 @@
 					<tr>
 						<td>{{item.name}}</td>
 						<td>{{melee.name}}</td>
-						<td>
-							{{melee.skill}}: {{melee.level}}
-							<label class="fa fa-dice-six rollable" data-level="{{melee.level}}"
-								   data-label="Makes a &lt;b&gt;{{item.name}} {{melee.name}}&lt;/b&gt; Skill roll." data-type="skill"></label>
+						<td class="actor-sheet-digit-col">
+							{{melee.skill}}:
+							{{melee.level}}
+							<label class="fa fa-dice-six rollable" data-level="{{melee.level}}" data-label="Makes a &lt;b&gt;{{item.name}} {{melee.name}}&lt;/b&gt; Skill roll." data-type="skill"></label>
 						</td>
-						<td>
+						<td class="actor-sheet-digit-col">
 							{{melee.parry}}{{melee.parryType}}
 							{{#if (isInt melee.parry)}}
 							<label class="fa fa-dice-six rollable" data-level="{{melee.parry}}"
 								   data-label="Makes a &lt;b&gt;{{item.name}}&lt;/b&gt; Parry roll." data-type="skill"></label>
 							{{/if}}
 						</td>
-						<td>
+						<td class="actor-sheet-digit-col">
 							{{melee.block}}
 							{{#if (isInt melee.block)}}
 							<label class="fa fa-dice-six rollable" data-level="{{melee.block}}"
 								   data-label="&lt;b&gt;{{item.name}}&lt;/b&gt; Block roll." data-type="skill"></label>
 							{{/if}}
 						</td>
-						<td>
+						<td class="actor-sheet-digit-col">
 							{{melee.damage}} {{melee.damageType}} ({{melee.armourDivisor}})
 							<label class="fa fa-dice-six rollable" data-level="{{melee.damage}}"
 								   data-label="Makes a &lt;b&gt;{{item.name}} {{melee.name}}&lt;/b&gt; Damage roll." data-type="damage"></label>
@@ -553,15 +553,15 @@
 					<tr class="bold">
 						<td>Source</td>
 						<td>Attack Name</td>
-						<td>Skill</td>
-						<td>Acc</td>
-						<td>Damage</td>
-						<td>Range</td>
-						<td>Rof</td>
-						<td>Shots</td>
-						<td>Bulk</td>
-						<td>Rcl</td>
-						<td>ST</td>
+						<td class="actor-sheet-digit-col">Skill</td>
+						<td class="actor-sheet-digit-col">Acc</td>
+						<td class="actor-sheet-digit-col">Damage</td>
+						<td class="actor-sheet-digit-col">Range</td>
+						<td class="actor-sheet-digit-col">Rof</td>
+						<td class="actor-sheet-digit-col">Shots</td>
+						<td class="actor-sheet-digit-col">Bulk</td>
+						<td class="actor-sheet-digit-col">Rcl</td>
+						<td class="actor-sheet-digit-col">ST</td>
 					</tr>
 					{{#each actor.items as |item id|}}
 					{{#each item.system.ranged as |ranged rid|}}
@@ -569,23 +569,23 @@
 					<tr>
 						<td>{{item.name}}</td>
 						<td>{{ranged.name}}</td>
-						<td>
+						<td class="actor-sheet-digit-col">
 							{{ranged.skill}}: {{ranged.level}}
 							<label for="ranged.skill" class="fa fa-dice-six rollable" data-level="{{ranged.level}}"
 								   data-label="Makes a &lt;b&gt;{{item.name}} {{ranged.name}}&lt;/b&gt; Skill roll." data-type="skill"></label>
 						</td>
-						<td>{{showFullAcc ranged.acc ranged.scopeAcc}}</td>
-						<td>
+						<td class="actor-sheet-digit-col">{{showFullAcc ranged.acc ranged.scopeAcc}}</td>
+						<td class="actor-sheet-digit-col">
 							{{ranged.damage}} {{ranged.damageType}} ({{ranged.armourDivisor}})
 							<label for="ranged.damage" class="fa fa-dice-six rollable" data-level="{{ranged.damage}}"
 								   data-label="Makes a &lt;b&gt;{{item.name}} {{ranged.name}}&lt;/b&gt; Damage roll." data-type="damage"></label>
 						</td>
-						<td>{{formatRange ranged.halfRange ranged.maxRange}}</td>
-						<td>{{ranged.rof}}</td>
-						<td>{{ranged.shots}}</td>
-						<td>{{ranged.bulk}}</td>
-						<td>{{ranged.rcl}}</td>
-						<td>{{ranged.st}}</td>
+						<td class="actor-sheet-digit-col">{{formatRange ranged.halfRange ranged.maxRange}}</td>
+						<td class="actor-sheet-digit-col">{{ranged.rof}}</td>
+						<td class="actor-sheet-digit-col">{{ranged.shots}}</td>
+						<td class="actor-sheet-digit-col">{{ranged.bulk}}</td>
+						<td class="actor-sheet-digit-col">{{ranged.rcl}}</td>
+						<td class="actor-sheet-digit-col">{{ranged.st}}</td>
 					</tr>
 					{{/showAttackInCombatTab}}
 					{{/each}}
@@ -598,8 +598,8 @@
 					<tr class="bold">
 						<td>Source</td>
 						<td>Affliction Name</td>
-						<td>Level</td>
-						<td>Damage</td>
+						<td class="actor-sheet-digit-col">Level</td>
+						<td class="actor-sheet-digit-col">Damage</td>
 						<td>Resistance Roll</td>
 						<td>Rule Of</td>
 					</tr>
@@ -609,12 +609,12 @@
 					<tr>
 						<td>{{item.name}}</td>
 						<td>{{affliction.name}}</td>
-						<td>
+						<td class="actor-sheet-digit-col">
 							{{affliction.skill}}: {{affliction.level}}
 							<label class="fa fa-dice-six rollable" data-level="{{affliction.level}}"
 								   data-label="Casts &lt;b&gt;{{item.name}} {{affliction.name}}&lt;/b&gt;" data-type="skill"></label>
 						</td>
-						<td>
+						<td class="actor-sheet-digit-col">
 							{{affliction.damage}} {{affliction.damageType}} ({{affliction.armourDivisor}})
 							<label class="fa fa-dice-six rollable" data-level="{{affliction.damage}}"
 								   data-label="Makes a &lt;b&gt;{{item.name}} {{affliction.name}}&lt;/b&gt; Damage roll." data-type="damage"></label>
@@ -636,11 +636,11 @@
 						<td class="item-image"></td>
 						<td class="item-name">Name</td>
 						<td class="item-notes">Notes</td>
-						<td class="item-title" style="padding-right: 0.2em">TL</td>
-						<td class="item-title" style="padding-right: 0.2em">LC</td>
-						<td class="item-title" style="padding-right: 0.2em">Qty</td>
-						<td class="item-title" style="text-align: center;">$</td>
-						<td class="item-title" style="padding-right: 0.2em; text-align: center;">lbs</td>
+						<td class="item-title actor-sheet-digit-col">TL</td>
+						<td class="item-title actor-sheet-digit-col">LC</td>
+						<td class="item-title actor-sheet-digit-col">Qty</td>
+						<td class="item-title actor-sheet-digit-col">$</td>
+						<td class="item-title actor-sheet-digit-col">lbs</td>
 						<td class="item-title">Status</td>
 						<td class="item-controls"></td>
 					</tr>
@@ -662,11 +662,11 @@
 										</td>
 										<td class="item-name"><span>{{item.name}}</span></td>
 										<td class="item-notes"><span>{{item.system.shortNotes}}</span></td>
-										<td style="width: 1em;"><span>{{item.system.tl}}</span></td>
-										<td style="width: 1em;"><span>{{item.system.lc}}</span></td>
-										<td style="width: 1.5em;"><span>{{item.system.quantity}}</span></td>
-										<td style="text-align: center;"><span>{{round item.system.ttlCost 100}} $</span></td>
-										<td style="text-align: center;"><span>{{round item.system.ttlWeight 100}} lb{{checkPlural item.system.ttlWeight}}</span></td>
+										<td class="actor-sheet-digit-col"><span>{{item.system.tl}}</span></td>
+										<td class="actor-sheet-digit-col"><span>{{item.system.lc}}</span></td>
+										<td class="actor-sheet-digit-col"><span>{{item.system.quantity}}</span></td>
+										<td class="actor-sheet-digit-col"><span>{{displayCurrency item.system.ttlCost}} $</span></td>
+										<td class="actor-sheet-digit-col"><span>{{round item.system.ttlWeight 100}} lb{{checkPlural item.system.ttlWeight}}</span></td>
 										<td style="width: 62px;"><span>{{equipStatusToString item.system.equipStatus}}</span></td>
 										<td class="item-controls" style="width: 30px;">
 											<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
@@ -2927,14 +2927,17 @@
 								<td class="item-name">Spell</td>
 								<td class="item-notes">Notes</td>
 								<td class="item-college">College</td>
-								<td class="item-points">Points</td>
-								<td class="item-rolls">Level</td>
+								<td class="item-points actor-sheet-digit-col">Cost</td>
+								<td class="item-points actor-sheet-digit-col">Casting Time</td>
+								<td class="item-points actor-sheet-digit-col">Duration</td>
+								<td class="item-rolls actor-sheet-digit-col">Level</td>
+								<td class="item-points actor-sheet-digit-col">Points</td>
 								<td class="item-controls"></td>
 							</tr>
 							{{#each actor.system.spellCategories as |category cat|}}
 								{{#unless (eq category "")}}
 									<tr class="item item-header trait-category-header">
-										<td colspan="6">
+										<td colspan="12">
 											<a class="accordion bold" id="s-accordion-clickable-{{category}}">{{category}}</a>
 										</td>
 									</tr>
@@ -2955,13 +2958,22 @@
 												<td class="item-college">
 													{{item.system.college}}
 												</td>
-												<td class="item-points">
-													{{item.system.points}}
+												<td class="item-points actor-sheet-digit-col">
+													{{item.system.spellDetails.cost}}
 												</td>
-												<td class="item-skill" style="width: 3em;">
-													<label for="actor.system.level" class="fa fa-dice-six rollable" data-level="{{item.system.level}}"
-														   data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
+												<td class="item-points actor-sheet-digit-col">
+													{{item.system.spellDetails.timeToCast}}
+												</td>
+												<td class="item-points actor-sheet-digit-col">
+													{{item.system.spellDetails.duration}}
+												</td>
+												<td class="item-skill actor-sheet-digit-col" style="width: 4em;">
 													{{item.system.level}}
+													<label for="item.system.level" class="fa fa-dice-six rollable" data-level="{{item.system.level}}"
+														   data-label="Makes a &lt;b&gt;{{name}}&lt;/b&gt; roll." data-type="skill"></label>
+												</td>
+												<td class="item-points actor-sheet-digit-col">
+													{{item.system.points}}
 												</td>
 												<td class="item-controls" style="width: 30px;">
 													<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>

@@ -1089,6 +1089,17 @@
         "damageType": "cut",
         "armourDiv": 1,
         "minST": ""
+      },
+      "spellDetails": {
+        "spellDetails": {
+          "cost": "",
+          "duration": "",
+          "prerequisites": "",
+          "timeToCast": ""
+        }
+      },
+      "pageRef": {
+        "pageRef": ""
       }
     },
     "Ritual": {
@@ -1275,7 +1286,9 @@
         "defaults",
         "melee",
         "ranged",
-        "affliction"
+        "affliction",
+        "spellDetails",
+        "pageRef"
       ]
     },
     "Trait": {

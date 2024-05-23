@@ -471,6 +471,15 @@ Hooks.once('init', async function() {
     }
   });
 
+  Handlebars.registerHelper("displayCurrency", function(num) {
+    let returnString = num;
+    if (typeof num === "number") {
+      returnString = (Math.round(num * 100) / 100).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    return returnString
+  });
+
   Handlebars.registerHelper("checkPlural", function(num) {
     if (typeof num != "number") { // If it's not a number
       return ""; // Return blank
