@@ -10,8 +10,26 @@
           "craftType": "land",
           "propulsion": "powered",
           "injuryToleranceExpected": true,
-          "animalLocation": "draft",
-          "motiveType": "wheel",
+          "animal": {
+            "location": "draft",
+            "type": "equine"
+          },
+          "land": {
+            "roadBound": false,
+            "railBound": false
+          },
+          "water": {
+            "draft": 0
+          },
+          "air": {
+            "roadBound": false,
+            "railBound": false
+          },
+          "motiveType": {
+            "selected": "",
+            "possible": []
+          },
+          "sailing": false,
           "method": "pick",
           "tlFilter": {
             "lo": 0,
@@ -34,16 +52,19 @@
           },
           "skill": {
             "operatorSkillName": "",
+            "operatorSkillLevel": 0,
+            "crewed": false,
             "crewSkillName": "",
-            "operatorSkillLevel": "",
-            "crewSkillLevel": ""
+            "crewSkillLevel": 0
           },
           "accelerationInput": 3,
           "moveInput": 30,
           "moveCode": "",
-          "lwt": 1,
-          "load": 1,
-          "emptyWeight": 0,
+          "weight": {
+            "lwt": 1,
+            "load": 1,
+            "emptyWeight": 0
+          },
           "crew": 1,
           "passengers": 3,
           "occCode": "",

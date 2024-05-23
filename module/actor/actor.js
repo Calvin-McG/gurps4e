@@ -103,9 +103,9 @@ export class gurpsActor extends Actor {
 	}
 
 	vehicleWeightHandling() {
-		this.system.vehicle.lwt = Math.round(this.system.vehicle.lwt * 100) / 100; // Correct lwt to two decimals
-		this.system.vehicle.load = Math.round(this.system.vehicle.load * 100) / 100; // Correct load to two decimals
-		this.system.vehicle.emptyWeight = Math.round((this.system.vehicle.lwt - this.system.vehicle.load) * 100) / 100; // Figure the empty weight of the vehicle and round to two decimal places.
+		this.system.vehicle.weight.lwt = Math.round(this.system.vehicle.weight.lwt * 100) / 100; // Correct lwt to two decimals
+		this.system.vehicle.weight.load = Math.round(this.system.vehicle.weight.load * 100) / 100; // Correct load to two decimals
+		this.system.vehicle.weight.emptyWeight = Math.round((this.system.vehicle.weight.lwt - this.system.vehicle.weight.load) * 100) / 100; // Figure the empty weight of the vehicle and round to two decimal places.
 	}
 
 	checkUndefinedVehicles(){
@@ -113,6 +113,27 @@ export class gurpsActor extends Actor {
 			this.system.vehicle =
 				{
 					"craftType": "land",
+					"propulsion": "powered",
+					"injuryToleranceExpected": true,
+					"animal": {
+						"location": "draft",
+						"type": "equine"
+					},
+					"land": {
+						"roadBound": false,
+						"railBound": false
+					},
+					"water": {
+						"draft": 0
+					},
+					"air": {
+						"roadBound": false,
+						"railBound": false
+					},
+					"motiveType": {
+						"selected": "",
+						"possible": []
+					},
 					"method": "pick",
 					"tlFilter": {
 						"lo": 0,
@@ -126,14 +147,30 @@ export class gurpsActor extends Actor {
 					"sthpCode": "",
 					"hnd": 1,
 					"sr": 3,
-					"ht": "10",
-					"htCode": "",
+					"ht": {
+						"value": 11,
+						"flammable": false,
+						"combustible": false,
+						"explosive": false,
+						"code": ""
+					},
+					"skill": {
+						"operatorSkillPossible": [],
+						"operatorSkillName": "",
+						"operatorSkillLevel": 0,
+						"crewed": false,
+						"crewSkillPossible": [],
+						"crewSkillName": "",
+						"crewSkillLevel": 0
+					},
 					"accelerationInput": 3,
 					"moveInput": 30,
 					"moveCode": "",
-					"lwt": 1,
-					"load": 1,
-					"emptyWeight": 0,
+					"weight": {
+						"lwt": 1,
+						"load": 1,
+						"emptyWeight": 0
+					},
 					"crew": 1,
 					"passengers": 3,
 					"occCode": "",
@@ -142,7 +179,7 @@ export class gurpsActor extends Actor {
 					"baseCost": 10000,
 					"locations": "G4W",
 					"drMethod": "single",
-					"dr": 2,
+					"dr": 0,
 					"drFacing": {
 						"drFront":  0,
 						"drRear":   0,
@@ -155,7 +192,7 @@ export class gurpsActor extends Actor {
 							"code": "A",
 							"name": "arm",
 							"Name": "Arm",
-							"dr": -1,
+							"dr": 0,
 							"drFacing": {
 								"drFront":  0,
 								"drRear":   0,
@@ -164,13 +201,15 @@ export class gurpsActor extends Actor {
 								"drBottom": 0
 							},
 							"count": 0,
+							"locationalDR": false,
+							"facingDR": false,
 							"retractable": false
 						},
 						"C": {
 							"code": "C",
 							"name": "caterpillar tracks",
 							"Name": "Caterpillar Tracks",
-							"dr": -1,
+							"dr": 0,
 							"drFacing": {
 								"drFront":  0,
 								"drRear":   0,
@@ -179,6 +218,8 @@ export class gurpsActor extends Actor {
 								"drBottom": 0
 							},
 							"count": 0,
+							"locationalDR": false,
+							"facingDR": false,
 							"retractable": false
 						},
 						"D": {
@@ -194,6 +235,8 @@ export class gurpsActor extends Actor {
 								"drBottom": 0
 							},
 							"count": 0,
+							"locationalDR": false,
+							"facingDR": false,
 							"retractable": false
 						},
 						"E": {
@@ -209,6 +252,8 @@ export class gurpsActor extends Actor {
 								"drBottom": 0
 							},
 							"count": 0,
+							"locationalDR": false,
+							"facingDR": false,
 							"retractable": false
 						},
 						"G": {
@@ -224,6 +269,8 @@ export class gurpsActor extends Actor {
 								"drBottom": 2
 							},
 							"count": 0,
+							"locationalDR": false,
+							"facingDR": false,
 							"retractable": false
 						},
 						"g": {
@@ -239,13 +286,15 @@ export class gurpsActor extends Actor {
 								"drBottom": 2
 							},
 							"count": 0,
+							"locationalDR": false,
+							"facingDR": false,
 							"retractable": false
 						},
 						"H": {
 							"code": "H",
 							"name": "helicopter rotors",
 							"Name": "Helicopter Rotors",
-							"dr": -1,
+							"dr": 0,
 							"drFacing": {
 								"drFront":  0,
 								"drRear":   0,
@@ -254,13 +303,15 @@ export class gurpsActor extends Actor {
 								"drBottom": 0
 							},
 							"count": 0,
+							"locationalDR": false,
+							"facingDR": false,
 							"retractable": false
 						},
 						"L": {
 							"code": "L",
 							"name": "legs",
 							"Name": "Legs",
-							"dr": -1,
+							"dr": 0,
 							"drFacing": {
 								"drFront":  0,
 								"drRear":   0,
@@ -269,13 +320,15 @@ export class gurpsActor extends Actor {
 								"drBottom": 0
 							},
 							"count": 0,
+							"locationalDR": false,
+							"facingDR": false,
 							"retractable": false
 						},
 						"M": {
 							"code": "M",
 							"name": "mast and rigging",
 							"Name": "Mast and Rigging",
-							"dr": -1,
+							"dr": 0,
 							"drFacing": {
 								"drFront":  0,
 								"drRear":   0,
@@ -284,6 +337,8 @@ export class gurpsActor extends Actor {
 								"drBottom": 0
 							},
 							"count": 0,
+							"locationalDR": false,
+							"facingDR": false,
 							"retractable": false
 						},
 						"O": {
@@ -299,13 +354,15 @@ export class gurpsActor extends Actor {
 								"drBottom": 0
 							},
 							"count": 0,
+							"locationalDR": false,
+							"facingDR": false,
 							"retractable": false
 						},
 						"R": {
 							"code": "R",
 							"name": "runners and skids",
 							"Name": "Runners and Skids",
-							"dr": -1,
+							"dr": 0,
 							"drFacing": {
 								"drFront":  0,
 								"drRear":   0,
@@ -314,13 +371,15 @@ export class gurpsActor extends Actor {
 								"drBottom": 0
 							},
 							"count": 0,
+							"locationalDR": false,
+							"facingDR": false,
 							"retractable": false
 						},
 						"S": {
 							"code": "S",
 							"name": "large superstructure or gondola",
 							"Name": "Large Superstructure or Gondola",
-							"dr": -1,
+							"dr": 0,
 							"drFacing": {
 								"drFront":  0,
 								"drRear":   0,
@@ -329,13 +388,15 @@ export class gurpsActor extends Actor {
 								"drBottom": 0
 							},
 							"count": 0,
+							"locationalDR": false,
+							"facingDR": false,
 							"retractable": false
 						},
 						"s": {
 							"code": "s",
 							"name": "small superstructure",
 							"Name": "Small Superstructure",
-							"dr": -1,
+							"dr": 0,
 							"drFacing": {
 								"drFront":  0,
 								"drRear":   0,
@@ -344,13 +405,15 @@ export class gurpsActor extends Actor {
 								"drBottom": 0
 							},
 							"count": 0,
+							"locationalDR": false,
+							"facingDR": false,
 							"retractable": false
 						},
 						"T": {
 							"code": "T",
 							"name": "main turret",
 							"Name": "Main Turret",
-							"dr": -1,
+							"dr": 0,
 							"drFacing": {
 								"drFront":  0,
 								"drRear":   0,
@@ -359,13 +422,15 @@ export class gurpsActor extends Actor {
 								"drBottom": 0
 							},
 							"count": 0,
+							"locationalDR": false,
+							"facingDR": false,
 							"retractable": false
 						},
 						"t": {
 							"code": "t",
 							"name": "independent turret",
 							"Name": "Independent Turret",
-							"dr": -1,
+							"dr": 0,
 							"drFacing": {
 								"drFront":  0,
 								"drRear":   0,
@@ -374,13 +439,15 @@ export class gurpsActor extends Actor {
 								"drBottom": 0
 							},
 							"count": 0,
+							"locationalDR": false,
+							"facingDR": false,
 							"retractable": false
 						},
 						"W": {
 							"code": "W",
 							"name": "wheel",
 							"Name": "Wheel",
-							"dr": -1,
+							"dr": 0,
 							"drFacing": {
 								"drFront":  0,
 								"drRear":   0,
@@ -389,13 +456,16 @@ export class gurpsActor extends Actor {
 								"drBottom": 0
 							},
 							"count": 0,
+							"pneumatic": false,
+							"locationalDR": false,
+							"facingDR": false,
 							"retractable": false
 						},
 						"Wi": {
 							"code": "Wi",
 							"name": "wings",
 							"Name": "Wings",
-							"dr": -1,
+							"dr": 0,
 							"drFacing": {
 								"drFront":  0,
 								"drRear":   0,
@@ -404,6 +474,8 @@ export class gurpsActor extends Actor {
 								"drBottom": 0
 							},
 							"count": 0,
+							"locationalDR": false,
+							"facingDR": false,
 							"retractable": false
 						},
 						"X": {
@@ -419,6 +491,8 @@ export class gurpsActor extends Actor {
 								"drBottom": 0
 							},
 							"count": 0,
+							"locationalDR": false,
+							"facingDR": false,
 							"retractable": false
 						}
 					}
@@ -474,15 +548,27 @@ export class gurpsActor extends Actor {
 		if (typeof this.system.vehicle.moveCode === "undefined") {
 			this.system.vehicle.moveInput = ""
 		}
-		if (typeof this.system.vehicle.lwt === "undefined") {
-			this.system.vehicle.lwt = 1
+
+		// Undefined checks for weight
+		if (typeof this.system.vehicle.weight === "undefined") {
+			this.system.vehicle.weight = {
+				"lwt": 1,
+				"load": 1,
+				"emptyWeight": 0
+			}
 		}
-		if (typeof this.system.vehicle.load === "undefined") {
-			this.system.vehicle.load = 1
+		else {
+			if (typeof this.system.vehicle.weight.lwt === "undefined") {
+				this.system.vehicle.weight.lwt = 1
+			}
+			if (typeof this.system.vehicle.weight.load === "undefined") {
+				this.system.vehicle.weight.load = 1
+			}
+			if (typeof this.system.vehicle.weight.emptyWeight === "undefined") {
+				this.system.vehicle.weight.emptyWeight = 0
+			}
 		}
-		if (typeof this.system.vehicle.emptyWeight === "undefined") {
-			this.system.vehicle.emptyWeight = 0
-		}
+
 		if (typeof this.system.vehicle.crew === "undefined" || this.system.vehicle.crew === null) {
 			this.system.vehicle.crew = 1
 		}

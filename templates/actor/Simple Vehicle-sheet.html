@@ -411,6 +411,7 @@
                     {{#select actor.system.vehicle.propulsion}}
                       <option value="powered">Powered</option>
                       <option value="unpowered">Unpowered</option>
+                      <option value="wind">Sailing</option>
                       <option value="animals">Animals</option>
                     {{/select}}
                   </select>
@@ -443,8 +444,8 @@
               <tr class="design-row">
                 <td style="width: 100%">Where are the animals located?</td>
                 <td>
-                  <select name="system.vehicle.animalLocation" class="dr-entry-select">
-                    {{#select actor.system.vehicle.animalLocation}}
+                  <select name="system.vehicle.animal.location" class="dr-entry-select">
+                    {{#select actor.system.vehicle.animal.location}}
                     <option value="draft">Exterior, pulling the vehicle</option>
                     <option value="internal">Interior, operating a conveyor or other mechanism.</option>
                     {{/select}}
@@ -456,13 +457,38 @@
                   </div>
                 </td>
               </tr>
+
+              <tr class="design-row">
+                <td style="width: 100%">What type of animal propels this vehicle?</td>
+                <td>
+                  <select name="system.vehicle.animal.type" class="dr-entry-select">
+                    {{#select actor.system.vehicle.animal.type}}
+                    <option value="equine">Equine - Horses, Donkeys, Mules.</option>
+                    <option value="canine">Canine - Dogs</option>
+                    <option value="feline">Feline - Cats</option>
+                    <option value="ursine">Ursine - Bears</option>
+                    <option value="rhinocerotidae">Rhinocerotidae - Rhinos</option>
+                    <option value="elephantidae">Elephantidae - Elephants</option>
+                    <option value="cetacean">Cetacean - Dolphins, Porpises, Whales</option>
+                    <option value="selachimorphan">Selachimorphan - Sharks</option>
+                    <option value="strigiformes">Strigiformes - Owls</option>
+                    <option value="accipitridae">Accipitridae - Eagles</option>
+                    {{/select}}
+                  </select>
+                </td>
+                <td class="question-container" id="animal-type">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
               {{/if}}
 
               <tr class="design-row">
                 <td style="width: 100%">Motive Type</td>
                 <td>
-                  <select name="system.vehicle.motiveType" class="dr-entry-select">
-                    {{#select actor.system.vehicle.motiveType}}
+                  <select name="system.vehicle.motiveType.selected" class="dr-entry-select">
+                    {{#select actor.system.vehicle.motiveType.selected}}
                     {{#if (eq actor.system.vehicle.craftType "land")}}
                     <option value="wheel">Wheeled</option>
                     <option value="rail">Railway</option>
@@ -471,10 +497,9 @@
                     <option value="wTrack">Wheels and Tracks</option>
                     <option value="rTrack">Skids and Tracks</option>
                     <option value="skidsW">Wheels and Skids</option>
-                    <option value="sail">Sails</option>
+                    <option value="leg">Legs</option>
                     <option value="immune">Immune</option>
                     {{else if (eq actor.system.vehicle.craftType "water")}}
-                    <option value="sail">Sails</option>
                     <option value="wheel">Paddlewheels</option>
                     <option value="immune">Immune</option>
                     {{else if (eq actor.system.vehicle.craftType "air")}}
@@ -490,6 +515,57 @@
                   </div>
                 </td>
               </tr>
+
+              {{#if (eq actor.system.vehicle.craftType "land")}}
+              <tr class="design-row">
+                <td style="width: 100%">Is this vehicle Road Bound?</td>
+                <td>
+                  <input type="checkbox" name="system.vehicle.land.roadBound" {{checked actor.system.vehicle.land.roadBound}} data-dtype="Boolean" style="width: 100%;"/>
+                </td>
+                <td class="question-container" id="road-bound">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              {{/if}}
+
+              <tr class="design-row">
+                <td style="width: 100%">Operation Skill</td>
+                <td>
+                  <input name="system.vehicle.skill.operatorSkillName" type="text" value="{{actor.system.vehicle.skill.operatorSkillName}}" placeholder="Driving (Automobile)"/>
+                </td>
+                <td class="question-container" id="operation-skill">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+
+              <tr class="design-row">
+                <td style="width: 100%">Does this vehicle have crew with jobs other than acting as gunners?</td>
+                <td>
+                  <input type="checkbox" name="system.vehicle.skill.crewed" {{checked actor.system.vehicle.skill.crewed}} data-dtype="Boolean" style="width: 100%;"/>
+                </td>
+                <td class="question-container" id="crewed">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              {{#if actor.system.vehicle.skill.crewed}}
+              <tr class="design-row">
+                <td style="width: 100%">Crew Skill</td>
+                <td>
+                  <input name="system.vehicle.skill.crewSkillName" type="text" value="{{actor.system.vehicle.skill.crewSkillName}}" placeholder="Crewman"/>
+                </td>
+                <td class="question-container" id="crew-skill">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              {{/if}}
             </table>
             {{/if}}
           </div>
@@ -512,7 +588,7 @@
             <div class="simple-vehicle-location">
               <h2 class="bold" style="text-align: center;">{{location.Name}} x{{location.count}} ({{location.code}})</h2>
 
-              {{#if (and (eq ../actor.system.vehicle.motiveType "wheel") (eq location.code "W"))}}
+              {{#if (and (eq ../actor.system.vehicle.motiveType.selected "wheel") (eq location.code "W"))}}
               <h3 class="bold" style="text-align: center;">Wheel Details</h3>
               <table>
                 {{#if (eq ../actor.system.vehicle.craftType "land")}}

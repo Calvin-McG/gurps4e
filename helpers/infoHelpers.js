@@ -337,6 +337,7 @@ export class infoHelpers {
                 "<td>" +
                 "<p>Powered vehicles are almost always Unliving, but have Vitals</p>" +
                 "<p>Unpowered vehicles are almost always Homogenous, and so don't have Vitals</p>" +
+                "<p>Sailing vehicles are almost always Homogenous, and so don't have Vitals, but damage to the Mast will slow or stop it.</p>" +
                 "<p>Vehicles propelled by animals are almost always Homogenous, and don't have Vitals, but the animals themselves can be damaged or killed.</p>" +
                 "</td>" +
                 "</tr>";
@@ -350,6 +351,18 @@ export class infoHelpers {
                 "<td>" +
                 "<p>Vehicles pulled by animals generally use Teamster to drive them, and the animals lack DR unless it's worn as equipment.</p>" +
                 "<p>Vehicles with animals internal to the vehicle get the benefit of DR, though they're generally heavier and more expensive.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+        }
+        else if (id === "animal-type") {
+            info = "<table>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>The animal type determines the specialty of Teamster, such as Teamster (Equine), which is used to operate the vehicle. " +
+                "The actual animals themselves should be attached as separate characters, much like assigning someone as a driver or passenger.</p>" +
                 "</td>" +
                 "</tr>";
 
@@ -395,6 +408,12 @@ export class infoHelpers {
                 "</td>" +
                 "</tr>";
 
+            info += "<tr>" +
+                "<td>" +
+                "<p>Immune should also be used for most Sailing vehicles. Exceptions would be something like an ice yacht which has Runners that can be destroyed.</p>" +
+                "</td>" +
+                "</tr>";
+
             info += "</table>"
         }
         else if (id === "pneumatic") {
@@ -437,12 +456,34 @@ export class infoHelpers {
 
             info += "</table>"
         }
+        else if (id === "crewed") {
+            info = "<table>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>A motorboat is not a crewed vessel, a battleship is. A hot air baloon is not a crewed vessel, a zepplin is.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+        }
         else if (id === "crew-skill") {
             info = "<table>";
 
             info += "<tr>" +
                 "<td>" +
                 "<p>If your vehicle requires crew to keep it working, other than to man weapons, this is the skill they use. Generally some variant of Crewman (B185)</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+        }
+        else if (id === "road-bound") {
+            info = "<table>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>Road bound vehicles can travel off-road, but at a much reduced speed. Like a normal passenger car trying to drive across a field.</p>" +
                 "</td>" +
                 "</tr>";
 
