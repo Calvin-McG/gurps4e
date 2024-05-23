@@ -129,18 +129,18 @@ export class infoHelpers {
             info += "<table>";
 
             info += "<tr>" +
-                "<td style='padding: 0em 1em;'>C</td>" +
+                "<td style='padding: 0 1em;'>C</td>" +
                 "<td>Combustible, see B136 Fragile (Combustible). Vehicles made of wood, large quantities of cloth or paper, or other materials that can burn are combustible.</td>" +
                 "</tr>";
 
             info += "<tr>" +
-                "<td style='padding: 0em 1em;'>F</td>" +
+                "<td style='padding: 0 1em;'>F</td>" +
                 "<td>Flammable, see B137 Fragile (Flammable). Vehicles that contain fuel, hydrogen, or the like are usually flammable, but not always. " +
                 "The sample HMMWV obviously has a fuel tank, but as a military vehicle it's protected in such a way that the vehicle is not treated as flammable.</td>" +
                 "</tr>";
 
             info += "<tr>" +
-                "<td style='padding: 0em 1em;'>X</td>" +
+                "<td style='padding: 0 1em;'>X</td>" +
                 "<td>Explosive, see B137 Fragile (Explosive). Vehicles that contain large quantities of ammunition are usually explosive, but not always. " +
                 "A Panzer IV is treated as explosive due to the large quantity of ammunition carried inside. A Sherman is not considered explosive, as while it also carries " +
                 "a large quantity of ammunition, the vehicle is designed to guard against ammunition explosions.</td>" +
@@ -234,7 +234,7 @@ export class infoHelpers {
 
             info += "<tr>" +
                 "<td>" +
-                "<p>Generally this will actually be 1 step higher than the length of the vehicle would suggest due to it's boxy shape.</p>" +
+                "<p>Generally this will actually be 1 step higher than the length of the vehicle would suggest due to its boxy shape.</p>" +
                 "</td>" +
                 "</tr>";
 
@@ -373,7 +373,7 @@ export class infoHelpers {
 
             info += "<tr>" +
                 "<td>" +
-                "<p>Leaving this box checked gives you the default injury tolerance for a vehicle with it's propulsion type.</p>" +
+                "<p>Leaving this box checked gives you the default injury tolerance for a vehicle with its propulsion type.</p>" +
                 "</td>" +
                 "</tr>";
 
