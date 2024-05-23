@@ -1,3 +1,5 @@
-2024/05/22-09:53:17.688 5900 Recovering log #25
-2024/05/22-09:53:17.691 5900 Delete type=0 #25
-2024/05/22-09:53:17.691 5900 Delete type=3 #24
+2024/05/22-21:11:25.397 b7c Log #29: 0 ops saved to Table #30 OK
+2024/05/22-21:11:25.397 b7c Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-stock-scenes/000029.log: OK
+2024/05/22-21:11:25.399 b7c Table #19: 55 entries OK
+2024/05/22-21:11:25.400 b7c Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-stock-scenes/MANIFEST-000028: OK
+2024/05/22-21:11:25.402 b7c **** Repaired leveldb C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-stock-scenes; recovered 1 files; 11668 bytes. Some data may have been lost. ****

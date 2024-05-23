@@ -6395,8 +6395,8 @@ export class gurpsItem extends Item {
     // End of input validation per variable
 
     // Backwards compatibility for the old way of doing points for traits
-    if (typeof this.system.points !== "undefined" && this.system.points > 0) { // The original points variable exists and has a value greater than 1
-      this.system.levelledPoints.basePoints = this.system.points;
+    if (typeof this.system.points !== "undefined" && this.system.points !== 0 && this.system.levelledPoints.basePoints === 0) { // The original points variable exists. The original value is not zero. The new value is zero.
+      this.system.levelledPoints.basePoints = this.system.points; // Set the new value to match the old value.
     }
 
     // Total up the point value of this trait
