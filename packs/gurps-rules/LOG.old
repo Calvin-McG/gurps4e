@@ -1,5 +1,3 @@
-2024/05/10-17:14:36.054 a1ec Log #6: 0 ops saved to Table #7 OK
-2024/05/10-17:14:36.054 a1ec Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-rules/000006.log: OK
-2024/05/10-17:14:36.056 a1ec Table #5: 96 entries OK
-2024/05/10-17:14:36.058 a1ec Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-rules/MANIFEST-000004: OK
-2024/05/10-17:14:36.061 a1ec **** Repaired leveldb C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-rules; recovered 1 files; 334632 bytes. Some data may have been lost. ****
+2024/05/22-09:53:17.644 2cd0 Recovering log #25
+2024/05/22-09:53:17.647 2cd0 Delete type=0 #25
+2024/05/22-09:53:17.647 2cd0 Delete type=3 #24

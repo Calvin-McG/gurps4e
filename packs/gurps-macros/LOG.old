@@ -1,5 +1,3 @@
-2024/05/10-17:14:36.032 dafc Log #106: 0 ops saved to Table #107 OK
-2024/05/10-17:14:36.033 dafc Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-macros/000106.log: OK
-2024/05/10-17:14:36.034 dafc Table #98: 13 entries OK
-2024/05/10-17:14:36.036 dafc Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-macros/MANIFEST-000105: OK
-2024/05/10-17:14:36.039 dafc **** Repaired leveldb C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-macros; recovered 1 files; 4969 bytes. Some data may have been lost. ****
+2024/05/22-09:53:17.632 5900 Recovering log #125
+2024/05/22-09:53:17.635 5900 Delete type=0 #125
+2024/05/22-09:53:17.636 5900 Delete type=3 #124
