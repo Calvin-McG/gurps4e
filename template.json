@@ -724,7 +724,8 @@
           "attributeMod": 0,
           "magery": 0,
           "totalMagicAttribute": 0,
-          "mageryName": "Magery"
+          "mageryName": "Magery",
+          "staff": 0
         }
       },
       "rpm": {
