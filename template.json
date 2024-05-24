@@ -723,7 +723,8 @@
           "attribute": "Intelligence",
           "attributeMod": 0,
           "magery": 0,
-          "totalMagicAttribute": 0
+          "totalMagicAttribute": 0,
+          "mageryName": "Magery"
         }
       },
       "rpm": {
