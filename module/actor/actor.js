@@ -2584,7 +2584,7 @@ export class gurpsActor extends Actor {
 	}
 
 	setTotalPoints(unspent) {
-		let total = +this.system.points.attributes + +this.system.points.traits + +this.system.points.skills + +this.system.points.path + +unspent;
+		let total = +this.system.points.attributes + +this.system.points.traits + +this.system.points.skills + +this.system.points.spells + +this.system.points.path + +unspent;
 		this.update({ ['system.points.total']: total });
 	}
 
