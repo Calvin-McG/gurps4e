@@ -119,7 +119,9 @@ export class skillHelpers {
                 if (points <= 0 || (difficulty == "W" && points < 3)) { // They haven't spent any points, or have spent too few points to make a difference for a Wildcard skill. Display default, after account for dabbler
                     let bestAttrDefault = Math.max(...attrDefaultArray); // Get all the attr defaults and pick the highest
                     let bestSkillDefault = Math.max(...skillDefaultArray); // Get all the skill defaults and pick the highest
-                    bestAttrDefault += +dabblerBonus; // Add the dabbler bonus, but only to the attr default (Per PU2:16)
+                    if (bestAttrDefault > 0) { // If there's an actual attribute default
+                        bestAttrDefault += +dabblerBonus; // Add the dabbler bonus, but only to the attr default (Per PU2:16)
+                    }
                     bestAttrDefault = Math.min(bestAttrDefault, this.onePointInSkill(baseAttr, difficulty, actor)-1) // Cap the boosted default to one less than what you'd get spending points
                     level = Math.max(bestAttrDefault, bestSkillDefault, 0) + mod; // Set the value either to their best default or 0, whichever is highest, plus the modifier
                 }
