@@ -68,8 +68,41 @@ export class generalHelpers {
             "adds": 0,
         }
 
-        diceAndAdds.dice = Math.floor(points/3.5);
-        diceAndAdds.adds = Math.floor(3.5*(points/3.5-Math.floor(points/3.5)));
+        // Convert points to dice and adds, borrowing logic from HT 166, though not exactly due to how the system handles converting dice to points and back
+        if (points < -2.5) { // -2.5 works out to 1d6-6, which is a valid thr value for low ST, if it's less than that, return zero
+            diceAndAdds = {
+                "dice": 0,
+                "adds": 0,
+            }
+        }
+        else if (points < 3.5) { // Special handling for point values less than 1 die to make sure stuff like low ST character thrust attacks don't resolve 1d6-1 down to +2 damage.
+            if (points < -1.575) { // -1.5 points is 1d-5, this is slightly less and gives 1d6-6
+                diceAndAdds.adds = -6;
+            }
+            else if (points < -0.525) { // -0.5 points is 1d-4, this is slightly less and gives 1d6-5
+                diceAndAdds.adds = -5;
+            }
+            else if (points < 0.475) { // 0.5 points is 1d-3, this is slightly less and gives 1d6-4
+                diceAndAdds.adds = -4;
+            }
+            else if (points < 1.425) { // 1.5 points is 1d-2, this is slightly less and gives 1d6-3
+                diceAndAdds.adds = -3;
+            }
+            else if (points < 2.375) { // 2.5 points is 1d-1, this is slightly less and gives 1d6-2
+                diceAndAdds.adds = -2;
+            }
+            else if (points < 3.325) { // 3.5 points is 1 die, this is slightly less and gives 1d6-1
+                diceAndAdds.adds = -1;
+            }
+            else { // Point values over 3.325 (0.95 dice) round back up to 1 die
+                diceAndAdds.adds = 0;
+            }
+        }
+        else { // Otherwise run the logic normally
+            diceAndAdds.dice = Math.floor(points/3.5);
+            diceAndAdds.adds = Math.floor(3.5*(points/3.5-Math.floor(points/3.5)));
+        }
+
         return diceAndAdds;
     }
 
