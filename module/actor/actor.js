@@ -6027,6 +6027,15 @@ export class gurpsActor extends Actor {
 
 		// Loop through the list of locations we've hit.
 		for (let i = 0; i < locationsHit.length; i++){
+			// Store the DR Damage type for later, including handling for special types like pi- or tbb
+			let drDamageType = damageType.type;
+			if (drDamageType === "tbb") { // For the purposes of DR only, set tbb attacks equivalent to burn since tbb still uses burning DR
+				drDamageType = "burn";
+			}
+			else if (drDamageType.toLowerCase().includes("pi")) { // Any damage type including the letters pi faces pi dr.
+				drDamageType = "pi";
+			}
+
 			// Begin DR totalling
 			let drTotalEffectivePoints = 0; // This holds the running total for DR, accounting for any difference from armour divisors and multipliers.
 			if (largeArea) { // If this is a largeArea attack
@@ -6043,15 +6052,6 @@ export class gurpsActor extends Actor {
 
 			let layerDR = 0; // Init the variable used to store the total DR for this location.
 			let drLayers = Object.keys(location.dr) // Get the keys for the dr objects on this location.
-
-			// Next, account for attacks like tbb or pi- which don't have their own DR types.
-			let drDamageType = damageType.type;
-			if (drDamageType === "tbb") { // For the purposes of DR only, set tbb attacks equivalent to burn since tbb still uses burning DR
-				drDamageType = "burn";
-			}
-			else if (drDamageType.toLowerCase().includes("pi")) { // Any damage type including the letters pi faces pi dr.
-				drDamageType = "pi";
-			}
 
 			let drGroupFlexible = true; // This variable is only true if all layers of armour are flexible.
 
