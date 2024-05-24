@@ -4,8 +4,6 @@ import { attributeHelpers } from "./attributeHelpers.js";
 export class attackHelpers {
 
     static damageParseSwThr(actor, damage){
-        console.log(actor);
-        console.log(damage);
         if (typeof actor.system !== "undefined" && typeof damage !== "undefined") {
             let smDiscount = attributeHelpers.calcSMDiscount(actor.system.bio.sm); // Get the SM discount so we can properly calculate ST
 
@@ -17,9 +15,9 @@ export class attackHelpers {
 
             // Begin section for magical ST, used by Grognard spells, and the really cool Crushing Fist
             let mSt = attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.intelligence); // Get IQ as the base magical attribute
-            if (typeof actor.magic !== "undefined") { // If the actor has a magic object
-                if (typeof actor.magic.totalMagicAttribute === number) { // If the actor has a value for their totalMagicAttribute (Usually IQ+M)
-                    mSt = actor.magic.totalMagicAttribute; // Set magical ST to the magic attribute
+            if (typeof actor.system.magic !== "undefined") { // If the actor has a magic object
+                if (typeof actor.system.magic.magery === "number") { // If the actor has a value for their totalMagicAttribute (Usually IQ+M)
+                    mSt += actor.system.magic.magery; // Set magical ST to the magic attribute
                 }
             }
             let mThr = attributeHelpers.strikingStrengthToThrust(mSt); // Get thrust damage based on Magical ST
