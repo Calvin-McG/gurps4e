@@ -1,6 +1,45 @@
 import { generalHelpers } from "./generalHelpers.js";
+import { attributeHelpers } from "./attributeHelpers.js";
 
 export class attackHelpers {
+
+    static damageParseSwThr(actor, damage){
+        console.log(actor);
+        console.log(damage);
+        if (typeof actor.system !== "undefined" && typeof damage !== "undefined") {
+            let smDiscount = attributeHelpers.calcSMDiscount(actor.system.bio.sm); // Get the SM discount so we can properly calculate ST
+
+            // Begin section for traditional ST
+            let st = attributeHelpers.calcStOrHt(actor.system.primaryAttributes.strength, smDiscount); // Get ST
+            let sst = attributeHelpers.calcStrikingSt(st, actor.system.primaryAttributes.striking, smDiscount); // From ST, get Striking ST
+            let thr = attributeHelpers.strikingStrengthToThrust(sst); // Get thrust damage based on String ST
+            let sw = attributeHelpers.strikingStrengthToSwing(sst); // Get swing damage based on String ST
+
+            // Begin section for magical ST, used by Grognard spells, and the really cool Crushing Fist
+            let mSt = attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.intelligence); // Get IQ as the base magical attribute
+            if (typeof actor.magic !== "undefined") { // If the actor has a magic object
+                if (typeof actor.magic.totalMagicAttribute === number) { // If the actor has a value for their totalMagicAttribute (Usually IQ+M)
+                    mSt = actor.magic.totalMagicAttribute; // Set magical ST to the magic attribute
+                }
+            }
+            let mThr = attributeHelpers.strikingStrengthToThrust(mSt); // Get thrust damage based on Magical ST
+            let mSw = attributeHelpers.strikingStrengthToSwing(mSt); // Get swing damage based on Magical ST
+
+            if (typeof damage == "undefined" || damage == null){
+                damage = "0";
+            }
+            damage = damage.toLowerCase(); // Fix any case specific issues
+            // First account for any cases of mThr or mSw
+            damage = damage.replace("mthr", mThr); // Replace thrust
+            damage = damage.replace("msw", mSw); // Replace swing
+            // Then if thr or sw strings remain, replace those as well
+            damage = damage.replace("thr", thr); // Replace thrust
+            damage = damage.replace("sw", sw); // Replace swing
+
+            return damage;
+        }
+        return "";
+    }
 
     // This method takes in a base armour divisor and a level of hardening and returns the effective armour divisor
     // ad is the current armour divisor
