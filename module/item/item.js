@@ -6094,7 +6094,7 @@ export class gurpsItem extends Item {
                 } else {
                   block = this.system.melee[meleeKeys[k]].blockMod;
                 }
-                damage = this.damageParseSwThr(this.system.melee[meleeKeys[k]].damageInput);//Update damage value
+                damage = attackHelpers.damageParseSwThr(this.actor, this.system.melee[meleeKeys[k]].damageInput);//Update damage value
                 this.system.melee[meleeKeys[k]].block = block; // Update block value
                 this.system.melee[meleeKeys[k]].type = "melee"; // Update attack type
                 this.system.melee[meleeKeys[k]].damage = attackHelpers.damageAddsToDice(damage);
@@ -6146,7 +6146,7 @@ export class gurpsItem extends Item {
 
                 this.system.ranged[rangedKeys[k]].level = level;
                 this.system.ranged[rangedKeys[k]].type = "ranged"; // Update attack type
-                damage = this.damageParseSwThr(this.system.ranged[rangedKeys[k]].damageInput);
+                damage = attackHelpers.damageParseSwThr(this.actor, this.system.ranged[rangedKeys[k]].damageInput);
                 this.system.ranged[rangedKeys[k]].damage = attackHelpers.damageAddsToDice(damage);
 
                 if (typeof this.system.ranged[rangedKeys[k]].rcl == "undefined" || this.system.ranged[rangedKeys[k]].rcl <= 0) { // Catch invalid values for rcl. Value must exist and be at least one.
@@ -6216,7 +6216,7 @@ export class gurpsItem extends Item {
           if (afflictionKeys.length) { // Check to see if there are any affliction profiles
             for (let k = 0; k < afflictionKeys.length; k++) {
               if (this.system.affliction[afflictionKeys[k]].name) { // Check to see if name is filled in. Otherwise don't bother.
-                damage = this.damageParseSwThr(this.system.affliction[afflictionKeys[k]].damageInput); // Update damage value
+                damage = attackHelpers.damageParseSwThr(this.actor, this.system.affliction[afflictionKeys[k]].damageInput); // Update damage value
 
                 this.system.affliction[afflictionKeys[k]].level = 0; // Default to zero just in case we don't come up with a value
                 if (this.system.type == "Spell") {
@@ -6266,23 +6266,6 @@ export class gurpsItem extends Item {
         }
       }
     }
-  }
-
-  damageParseSwThr(damage){
-    let smDiscount = attributeHelpers.calcSMDiscount(this.actor.system.bio.sm)
-    let st = attributeHelpers.calcStOrHt(this.actor.system.primaryAttributes.strength, smDiscount)
-    let sst = attributeHelpers.calcStrikingSt(st, this.actor.system.primaryAttributes.striking, smDiscount);
-    let thr = attributeHelpers.strikingStrengthToThrust(sst);//Get thrust damage
-    let sw = attributeHelpers.strikingStrengthToSwing(sst);//Get swing damage
-
-    if (typeof damage == "undefined" || damage == null){
-      damage = "0";
-    }
-    damage = damage.toLowerCase();//Fix any case specific issues
-    damage = damage.replace("thr", thr);//Replace thrust
-    damage = damage.replace("sw", sw)//Replace swing
-
-    return damage;
   }
 
   getBaseAttrValue(baseAttr) {
