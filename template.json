@@ -959,6 +959,7 @@
           "intensiveTraining": 0,
           "effectiveHours": 0,
           "effectivePoints": 0,
+          "calculatedModifier": 0,
           "modifier": 0,
           "neededHours": 200,
           "dabblerPoints": 0,
@@ -1308,7 +1309,8 @@
         "ranged",
         "affliction",
         "spellDetails",
-        "pageRef"
+        "pageRef",
+        "trainingTime"
       ]
     },
     "Trait": {

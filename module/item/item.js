@@ -6313,24 +6313,51 @@ export class gurpsItem extends Item {
     if (this.actor) {
       if (this.actor.system) {
         if (this.actor.system.magic) {
+          if (typeof this.system.trainingTime === "undefined") {
+            this.system.trainingTime = {
+              "onTheJob": 0,
+              "selfStudy": 0,
+              "education": 0,
+              "intensiveTraining": 0,
+              "effectiveHours": 0,
+              "effectivePoints": 0,
+              "calculatedModifier": 0,
+              "modifier": 0,
+              "neededHours": 200,
+              "dabblerPoints": 0,
+              "totalHours": 0,
+              "totalPoints": 0
+            }
+          }
 
           // Calculate the total magical attribute
           let totalMagicAttribute = 0;
-          let points = this.system.points;
-          let mod = this.system.mod;
-          let attributeMod = this.actor.system.magic.attributeMod;
-          let difficulty = this.system.difficulty;
-          let magery = this.actor.system.magic.magery;
-          let attribute = this.actor.system.magic.attribute;
 
-          let level = skillHelpers.computeSpellLevel(this.actor, points, mod, attributeMod, difficulty, magery, attribute)
+          this.system.trainingTime.calculatedModifier = Math.min(this.actor.system.magic.magery * 10, 40);
 
-          if (attribute != "") { // Attribute is not blank
-            totalMagicAttribute += this.getBaseAttrValue(attribute)
+          let trainingResult = skillHelpers.trainingTimeToPoints(this.system.trainingTime, this.system.trainingTime.modifier + this.system.trainingTime.calculatedModifier);
+
+          this.system.trainingTime.effectiveHours = trainingResult[0];
+          this.system.trainingTime.effectivePoints = trainingResult[1];
+          this.system.trainingTime.totalHours = trainingResult[2];
+          this.system.trainingTime.totalPoints = trainingResult[3];
+          this.system.trainingTime.neededHours = trainingResult[4];
+          this.system.trainingTime.dabblerPoints = 0;
+
+          this.system.basePointsPlusTraining = this.system.points;
+
+          if (typeof this.system.trainingTime.totalPoints === "number") {
+            this.system.basePointsPlusTraining += this.system.trainingTime.totalPoints;
           }
 
-          totalMagicAttribute += attributeMod ? attributeMod : 0;
-          totalMagicAttribute += magery ? magery : 0;
+          let level = skillHelpers.computeSpellLevel(this.actor, this.system.basePointsPlusTraining, this.system.mod, this.actor.system.magic.attributeMod, this.system.difficulty, this.actor.system.magic.magery, this.actor.system.magic.attribute)
+
+          if (this.actor.system.magic.attribute != "") { // Attribute is not blank
+            totalMagicAttribute += this.getBaseAttrValue(this.actor.system.magic.attribute)
+          }
+
+          totalMagicAttribute += this.actor.system.magic.attributeMod ? this.actor.system.magic.attributeMod : 0;
+          totalMagicAttribute += this.actor.system.magic.magery ? this.actor.system.magic.magery : 0;
           this.system.magicalAbility = totalMagicAttribute;
 
           this.system.level = level;

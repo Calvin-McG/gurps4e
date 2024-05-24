@@ -2045,7 +2045,13 @@ export class gurpsActor extends Actor {
 		// Iterate through the list of spells.
 		for (let i = 0; i < this.items.contents.length; i++){
 			if (this.items.contents[i].type === "Spell"){
-				spellPoints = spellPoints += this.items.contents[i].system.points
+				if (typeof this.items.contents[i].system.basePointsPlusTraining === "number" && this.items.contents[i].system.basePointsPlusTraining > 0) {
+					spellPoints = spellPoints + this.items.contents[i].system.basePointsPlusTraining; // Add the trained point value
+					this.system.points.trained += this.items.contents[i].system.trainingTime.totalPoints; // Add the points earned from training to the value on the actor
+				}
+				else {
+					spellPoints = spellPoints += this.items.contents[i].system.points; // Add the regular point value
+				}
 			}
 		}
 		this.system.points.spells = spellPoints;
