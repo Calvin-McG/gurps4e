@@ -4614,12 +4614,49 @@ export class gurpsActor extends Actor {
 
 			// Display the ranged specific modifiers
 			if (typeof attack.flags !== "undefined") {
-				if (attack.flags.toLowerCase().includes("gui") || attack.flags.toLowerCase().includes("hom")) {
+
+				let staffLength = 0;
+
+				if ((attack.flags.toLowerCase().includes("staff"))) { // If the flags include 'staff', apply the effect of the staff on the range penalty.
+					staffLength = game.scenes.get(target.scene.id).tokens.get(attacker.id).actor.system.magic.staff; // Get the length of the player's staff
+
+					if (typeof staffLength !== "number" || staffLength.isNaN) {// If it's not a number, or it is a NaN
+						staffLength = 0; // Set back to zero
+					}
+				}
+
+				if ((attack.flags.toLowerCase().includes("short"))) {
+					if (staffLength > 0) {
+						distancePenalty = (-1 * Math.max(distanceYards - staffLength, 0)); // Subtract staff length from the distance penalty, but don't go into positive numbers
+						modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance with Short Range Modifiers, while weilding a staff length " + staffLength + "</td></tr>";
+					}
+					else {
+						distancePenalty = (-1 * distanceYards);
+						modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance with Short Range Modifiers</td></tr>";
+					}
+				}
+				else if ((attack.flags.toLowerCase().includes("long"))) {
+					if (staffLength > 0) {
+						distancePenalty = distanceHelpers.longDistancePenalty(Math.max(distanceYards - staffLength, 0));
+						modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance with Long Range Modifiers, while weilding a staff length " + staffLength + "</td></tr>";
+					}
+					else {
+						distancePenalty = distanceHelpers.longDistancePenalty(distanceYards);
+						modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance with Long Range Modifiers</td></tr>";
+					}
+				}
+				else if (attack.flags.toLowerCase().includes("gui") || attack.flags.toLowerCase().includes("hom")) {
 					distancePenalty = 0;
 					modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>There is no distance penalty for guided and homing attacks</td></tr>";
 				}
 				else {
-					modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance</td></tr>";
+					if (staffLength > 0) {
+						distancePenalty = distanceHelpers.distancePenalty(Math.max(distanceYards - staffLength, 0));
+						modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance, while weilding a staff length " + staffLength + "</td></tr>";
+					}
+					else {
+						modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance</td></tr>";
+					}
 				}
 			}
 
