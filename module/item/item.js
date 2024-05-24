@@ -6364,6 +6364,7 @@ export class gurpsItem extends Item {
         "intensiveTraining": 0,
         "effectiveHours": 0,
         "effectivePoints": 0,
+        "calculatedModifier": 0,
         "modifier": 0,
         "neededHours": 200,
         "dabblerPoints": 0,
@@ -6388,9 +6389,7 @@ export class gurpsItem extends Item {
     }
 
     if(this.system && this.actor){
-      let level = skillHelpers.computeSkillLevel(this.actor, this.system);
-
-      this.system.level = level;
+      this.system.level = skillHelpers.computeSkillLevel(this.actor, this.system);
     }
   }
 
