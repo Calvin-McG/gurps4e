@@ -2,6 +2,53 @@ import { attributeHelpers } from "./attributeHelpers.js";
 
 export class skillHelpers {
 
+    static trainingTimeToPoints(trainingTime, modifier) {
+        let effectiveHours = 0;
+
+        // Work out the number of hours needed per character point
+        let neededHours;
+        if (typeof modifier !== "undefined") { // If the modifier came through cleanly
+            neededHours = 200 * (100 - Math.abs(modifier)) / 100; // Convert -10 or +10 both to a -10%
+        }
+        else {
+            neededHours = 200;
+        }
+
+        // Total up the effect of each different type of training time
+        if (typeof trainingTime.onTheJob !== "undefined" && !isNaN(trainingTime.onTheJob)) { // Value exists and is non NaN
+            effectiveHours += trainingTime.onTheJob / 4;
+        }
+        if (typeof trainingTime.selfStudy !== "undefined" && !isNaN(trainingTime.selfStudy)) { // Value exists and is non NaN
+            effectiveHours += trainingTime.selfStudy / 2;
+        }
+        if (typeof trainingTime.education !== "undefined" && !isNaN(trainingTime.education)) { // Value exists and is non NaN
+            effectiveHours += trainingTime.education;
+        }
+        if (typeof trainingTime.intensiveTraining !== "undefined" && !isNaN(trainingTime.intensiveTraining)) { // Value exists and is non NaN
+            effectiveHours += trainingTime.intensiveTraining / 0.5;
+        }
+
+        let dabbler = 0;
+
+        if (game.settings.get("gurps4e", "hoursToDabblerPoints")) { // If we're letting partial training count as dabbler points
+            if (effectiveHours < neededHours) { // They don't have enough hours to equal a full point
+                if (effectiveHours >= (neededHours / 2)) { // They have half of what they need, or more
+                    dabbler = 4
+                }
+                else if (effectiveHours >= (neededHours / 4)) { // They have a quarter of what they need, or more
+                    dabbler = 2
+                }
+                else if (effectiveHours >= (neededHours / 8)) { // They have an eighth of what they need, or more
+                    dabbler = 1
+                }
+            }
+        }
+
+        let effectivePoints = Math.floor(effectiveHours / neededHours * 100) / 100; // Round effective points to two decimals.
+
+        return [Math.floor(effectiveHours * 100) / 100, effectivePoints, Math.floor(effectiveHours), Math.floor(effectivePoints), neededHours, dabbler]; // Return both two-decimal and no-decimal versions of our hour and point totals.
+    }
+
     // This method computes the parry level
     // actor is the actor who has the parry
     // baseSkill is the name of the skill for which we are computing the parry
