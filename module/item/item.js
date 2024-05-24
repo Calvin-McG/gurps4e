@@ -6236,6 +6236,11 @@ export class gurpsItem extends Item {
                         this.system.affliction[afflictionKeys[k]].level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items.contents[i].system) + +this.system.affliction[afflictionKeys[k]].skillMod;
                       }
                     }
+                    else if (this.actor.items.contents[i].type === "Spell") {
+                      if (this.system.affliction[afflictionKeys[k]].skill === this.actor.items.contents[i].name) {
+                        this.system.affliction[afflictionKeys[k]].level = +skillHelpers.computeSpellLevelFromActorAndSpell(this.actor, this.actor.items.contents[i]) + +this.system.affliction[afflictionKeys[k]].skillMod;
+                      }
+                    }
                     else if (this.actor.items.contents[i].type === "Ritual") {
                       if (this.system.affliction[afflictionKeys[k]].skill === this.actor.items.contents[i].name) {
                         this.system.affliction[afflictionKeys[k]].level = this.actor.items.contents[i].system.level + +this.system.affliction[afflictionKeys[k]].skillMod;
