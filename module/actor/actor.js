@@ -1260,6 +1260,10 @@ export class gurpsActor extends Actor {
 			this.system.bio.tl.value = Math.floor(this.system.bio.tl.value);
 		}
 
+		if (typeof this.system.points.trained !== "number") {
+			this.system.points.trained = 0;
+		}
+
 		if (typeof this.system.rpm === 'undefined') {
 			this.system.rpm = {
 				"magery": 0,
@@ -2007,7 +2011,13 @@ export class gurpsActor extends Actor {
         // Iterate through the list of skills.
         for (let i = 0; i < this.items.contents.length; i++){
             if (this.items.contents[i].type === "Rollable"){
-                skillPoints = skillPoints + this.items.contents[i].system.points
+				if (typeof this.items.contents[i].system.basePointsPlusTraining === "number" && this.items.contents[i].system.basePointsPlusTraining > 0) {
+					skillPoints = skillPoints + this.items.contents[i].system.basePointsPlusTraining; // Add the trained point value
+					this.system.points.trained += this.items.contents[i].system.trainingTime.totalPoints; // Add the points earned from training to the value on the actor
+				}
+				else {
+					skillPoints = skillPoints + this.items.contents[i].system.points; // Add the regular point value
+				}
             }
         }
 		this.system.points.skills = skillPoints;
@@ -2584,7 +2594,7 @@ export class gurpsActor extends Actor {
 	}
 
 	setTotalPoints(unspent) {
-		let total = +this.system.points.attributes + +this.system.points.traits + +this.system.points.skills + +this.system.points.spells + +this.system.points.path + +unspent;
+		let total = +this.system.points.attributes + +this.system.points.traits + +this.system.points.skills + +this.system.points.spells + +this.system.points.path + +unspent - +this.system.points.trained;
 		this.update({ ['system.points.total']: total });
 	}
 
@@ -2643,11 +2653,13 @@ export class gurpsActor extends Actor {
 	recalcPointTotals() {
 		let unspent;
 		let spent;
-		spent = +this.system.points.attributes + +this.system.points.traits + +this.system.points.skills + +this.system.points.spells + +this.system.points.path;
+		spent = +this.system.points.attributes + +this.system.points.traits + +this.system.points.skills + +this.system.points.spells + +this.system.points.path - +this.system.points.trained;
 
 		unspent = +this.system.points.total - +spent;
 
 		this.system.points.unspent = unspent;
+
+		this.system.points.displayTotal = unspent + +this.system.points.attributes + +this.system.points.traits + +this.system.points.skills + +this.system.points.spells + +this.system.points.path;
 	}
 
 	setupCategories() {

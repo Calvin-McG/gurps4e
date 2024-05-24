@@ -471,6 +471,15 @@ Hooks.once('init', async function() {
     }
   });
 
+  Handlebars.registerHelper("divide", function(num, decimals, divisor) {
+    if (typeof num != "number" || typeof divisor != "number") {
+      return num;
+    }
+    else {
+      return (Math.floor((num / divisor) * decimals) / decimals);
+    }
+  });
+
   Handlebars.registerHelper("displayCurrency", function(num) {
     let returnString = num;
     if (typeof num === "number") {

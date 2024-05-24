@@ -250,6 +250,16 @@ Hooks.once("init", () => {
     type: Number
   });
 
+  game.settings.register("gurps4e", "hoursToDabblerPoints", {
+    name: "Partial Training Time to Dabbler Points",
+    hint: "The perk 'Dabbler' effectively lets you split up a single character point across up to eight different skills to give you a skill level higher than default, but less than if you'd actually spent points. " +
+        "This setting makes the same logic apply to Training Time, meaning the change from 199 hours to 200 hours is a little less abrupt. Only has an impact on skills with a default, however. On skills with no default this does nothing.",
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean
+  });
+
   game.settings.register("gurps4e", "addsToDice", {
     name: "Adds to Dice",
     hint: "This setting converts extra adds to dice, following the normal rules. So +4 is instead +1d6, and +7 is instead +2d6.",

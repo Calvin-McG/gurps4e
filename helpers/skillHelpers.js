@@ -99,10 +99,20 @@ export class skillHelpers {
             if (typeof item.dabblerPoints !== 'undefined') {
                 dabblerPoints = item.dabblerPoints;
             }
+            if (typeof item.trainingTime !== "undefined") {
+                if (typeof item.trainingTime.dabblerPoints !== "undefined") {
+                    dabblerPoints += item.trainingTime.dabblerPoints;
+                }
+            }
             let defenceTechnique = typeof item.defenceTechnique !== "undefined" ? item.defenceTechnique : ""; // If we have a defenceTechnique value, use it. Otherwise default to ""
             let defenceTechniqueMod = defenceTechnique === "block" || defenceTechnique === "parry" ? item.defenceTechniqueMod : 0; // If it's a defence technique, store the mod. Otherwise set to zero.
             let halfPriceTechnique = item.halfPriceTechnique;
             let pts = item.points;
+            if (typeof item.trainingTime !== "undefined") {
+                if (typeof item.trainingTime.totalPoints !== "undefined") {
+                    pts += +item.trainingTime.totalPoints;
+                }
+            }
             let mod = item.mod;
             let base = 0;
             let points = pts;

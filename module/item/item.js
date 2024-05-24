@@ -6356,6 +6356,37 @@ export class gurpsItem extends Item {
       this.system.defenceTechniqueMod = 0;
     }
 
+    if (typeof this.system.trainingTime === "undefined") {
+      this.system.trainingTime = {
+        "onTheJob": 0,
+        "selfStudy": 0,
+        "education": 0,
+        "intensiveTraining": 0,
+        "effectiveHours": 0,
+        "effectivePoints": 0,
+        "modifier": 0,
+        "neededHours": 200,
+        "dabblerPoints": 0,
+        "totalHours": 0,
+        "totalPoints": 0
+      }
+    }
+
+    let trainingResult = skillHelpers.trainingTimeToPoints(this.system.trainingTime, this.system.trainingTime.modifier);
+
+    this.system.trainingTime.effectiveHours = trainingResult[0];
+    this.system.trainingTime.effectivePoints = trainingResult[1];
+    this.system.trainingTime.totalHours = trainingResult[2];
+    this.system.trainingTime.totalPoints = trainingResult[3];
+    this.system.trainingTime.neededHours = trainingResult[4];
+    this.system.trainingTime.dabblerPoints = trainingResult[5];
+
+    this.system.basePointsPlusTraining = this.system.points;
+
+    if (typeof this.system.trainingTime.totalPoints === "number") {
+      this.system.basePointsPlusTraining += this.system.trainingTime.totalPoints;
+    }
+
     if(this.system && this.actor){
       let level = skillHelpers.computeSkillLevel(this.actor, this.system);
 
