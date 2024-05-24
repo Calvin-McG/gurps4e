@@ -231,6 +231,10 @@ export class skillHelpers {
         return level;
     }
 
+    static computeSpellLevelFromActorAndSpell(actor, spell) {
+        return this.computeSpellLevel(actor, spell.system.points, spell.system.mod, actor.system.magic.attributeMod, spell.system.difficulty, actor.system.magic.magery, actor.system.magic.attribute);
+    }
+
     static computeSpellLevel(actor, points, mod, attributeMod, difficulty, magery, attribute) {
         let level = 0;
         let totalMagicAttribute = 0;
