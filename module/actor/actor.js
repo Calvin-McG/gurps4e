@@ -4627,11 +4627,11 @@ export class gurpsActor extends Actor {
 
 				if ((attack.flags.toLowerCase().includes("short"))) {
 					if (staffLength > 0) {
-						distancePenalty = (-1 * Math.max(distanceYards - staffLength, 0)); // Subtract staff length from the distance penalty, but don't go into positive numbers
+						distancePenalty = distanceHelpers.shortDistancePenalty(Math.max(distanceYards - staffLength, 0)); // Subtract staff length from the distance penalty, but don't go into positive numbers
 						modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance with Short Range Modifiers, while weilding a staff length " + staffLength + "</td></tr>";
 					}
 					else {
-						distancePenalty = (-1 * distanceYards);
+						distancePenalty = distanceHelpers.shortDistancePenalty(distanceYards);
 						modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance with Short Range Modifiers</td></tr>";
 					}
 				}

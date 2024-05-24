@@ -208,6 +208,11 @@ export class distanceHelpers {
         ]
     }
 
+    // This method returns the short range distance penalty, which is the negative number of yards.
+    static shortDistancePenalty(distance) {
+        return (-1 * Math.round(Math.abs(distance)));
+    }
+
     // This method returns the normal distance penalty based on the Size/Speed/Range table
     // Distance is given in yards.
     static distancePenalty(distance){
