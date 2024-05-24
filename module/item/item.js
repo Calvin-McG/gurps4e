@@ -6021,6 +6021,7 @@ export class gurpsItem extends Item {
     if (this.actor){
       if (this.actor.system) {
         let damage;
+
         //Do logic stuff for melee profiles
         if (this.system.melee) {
           let meleeKeys = Object.keys(this.system.melee);
@@ -6038,12 +6039,20 @@ export class gurpsItem extends Item {
                 else if (this.system.melee[meleeKeys[k]].skill.toLowerCase() === "iq") {
                   level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.intelligence);
                 }
+                else if (this.system.melee[meleeKeys[k]].skill.toLowerCase() === "self" && typeof this.system.level === "number") { // The user has entered "Self" and the item we're on has it's own level
+                  level = this.system.level; // Set the attack level to the same level
+                }
                 else {
-                  //Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
+                  // Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
                   for (let i = 0; i < this.actor.items.contents.length; i++) {
                     if (this.actor.items.contents[i].type === "Rollable") {
                       if (this.system.melee[meleeKeys[k]].skill === this.actor.items.contents[i].name) {
                         level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items.contents[i].system);
+                      }
+                    }
+                    else if (this.actor.items.contents[i].type === "Spell") {
+                      if (this.system.melee[meleeKeys[k]].skill === this.actor.items.contents[i].name) {
+                        level = +skillHelpers.computeSpellLevelFromActorAndSpell(this.actor, this.actor.items.contents[i]) + +this.system.melee[meleeKeys[k]].skillMod;
                       }
                     }
                     else if (this.actor.items.contents[i].type === "Ritual") {
@@ -6127,12 +6136,23 @@ export class gurpsItem extends Item {
                 if (this.system.ranged[rangedKeys[k]].skill.toLowerCase() === "dx") {
                   level = dx
                 }
+                else if (this.system.ranged[rangedKeys[k]].skill.toLowerCase() === "iq") {
+                  level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.intelligence);
+                }
+                else if (this.system.ranged[rangedKeys[k]].skill.toLowerCase() === "self" && typeof this.system.level === "number") { // The user has entered "Self" and the item we're on has it's own level
+                  level = this.system.level; // Set the attack level to the same level
+                }
                 else {
                   // Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
                   for (let i = 0; i < this.actor.items.contents.length; i++) {
                     if (this.actor.items.contents[i].type === "Rollable") {
                       if (this.system.ranged[rangedKeys[k]].skill === this.actor.items.contents[i].name) {
                         level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items.contents[i].system);
+                      }
+                    }
+                    else if (this.actor.items.contents[i].type === "Spell") {
+                      if (this.system.ranged[rangedKeys[k]].skill === this.actor.items.contents[i].name) {
+                        level = +skillHelpers.computeSpellLevelFromActorAndSpell(this.actor, this.actor.items.contents[i]) + +this.system.ranged[rangedKeys[k]].skillMod;
                       }
                     }
                     else if (this.actor.items.contents[i].type === "Ritual") {
@@ -6219,14 +6239,14 @@ export class gurpsItem extends Item {
                 damage = attackHelpers.damageParseSwThr(this.actor, this.system.affliction[afflictionKeys[k]].damageInput); // Update damage value
 
                 this.system.affliction[afflictionKeys[k]].level = 0; // Default to zero just in case we don't come up with a value
-                if (this.system.type == "Spell") {
-                  this.system.affliction[afflictionKeys[k]].level = this.system.level;
-                }
-                else if (this.system.affliction[afflictionKeys[k]].skill.toLowerCase() == "dx") {
+                if (this.system.affliction[afflictionKeys[k]].skill.toLowerCase() === "dx") {
                   this.system.affliction[afflictionKeys[k]].level = +attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity) + +this.system.affliction[afflictionKeys[k]].skillMod;
                 }
-                else if (this.system.affliction[afflictionKeys[k]].skill.toLowerCase() == "iq") {
+                else if (this.system.affliction[afflictionKeys[k]].skill.toLowerCase() === "iq") {
                   this.system.affliction[afflictionKeys[k]].level = +attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.intelligence) + +this.system.affliction[afflictionKeys[k]].skillMod;
+                }
+                else if (this.system.affliction[afflictionKeys[k]].skill.toLowerCase() === "self" && typeof this.system.level === "number") { // The user has entered "Self" and the item we're on has it's own level
+                  this.system.affliction[afflictionKeys[k]].level = this.system.level; // Set the attack level to the same level
                 }
                 else {
                   // Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
