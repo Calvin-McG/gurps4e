@@ -29,21 +29,7 @@
                 </div>
                 <div id="customType" class="flexrow">
                     <select name="system.customType" class="equipStatusSelect">
-                        {{#select item.system.customType}}
-                            <option value="bow">Bow</option>
-                            {{#ifCond item.system.tl '>=' 1 }}
-                                <option value="footbow">Footbow</option>
-                            {{/ifCond}}
-                            {{#ifCond item.system.tl '>=' 2 }}
-                                <option value="xbow">Crossbow</option>
-                            {{/ifCond}}
-                            {{#ifCond item.system.tl '>=' 3 }}
-                                <option value="firearm">Firearm</option>
-                            {{/ifCond}}
-                            {{#ifCond item.system.tl '>=' 8 }}
-                                <option value="laser">Laser Weapon</option>
-                            {{/ifCond}}
-                        {{/select}}
+                        {{selectOptions customWeaponTypes selected=item.system.customType}}
                     </select>
                 </div>
                 <div id="value" class="equipmentStatLong">
