@@ -20,55 +20,55 @@ export class gurpsItem extends Item {
     // Set default name in the case they didn't pick one themselves
     switch (this.type) {
       case "Equipment":
-        if (this.name.match("^New Item.*")) {
+        if (this.name.match("^Item.*")) {
           this.name = "New Equipment " + Math.floor(Math.random() * 101);
         }
         this.img = "icons/svg/item-bag.svg"; // This icon comes from the foundry default set
         break;
       case "Rollable":
-        if (this.name.match("^New Item.*")) {
+        if (this.name.match("^Item.*")) {
           this.name = "New Rollable " + Math.floor(Math.random() * 101);
         }
         this.img = "icons/svg/dice-target.svg"; // This icon comes from the foundry default set
         break;
       case "Spell":
-        if (this.name.match("^New Item.*")) {
+        if (this.name.match("^Item.*")) {
           this.name = "New Spell " + Math.floor(Math.random() * 101);
         }
         this.img = "icons/svg/book.svg"; // This icon comes from the foundry default set
         break;
       case "Trait":
-        if (this.name.match("^New Item.*")) {
+        if (this.name.match("^Item.*")) {
           this.name = "New Trait " + Math.floor(Math.random() * 101);
         }
         this.img = "icons/svg/paralysis.svg"; // This icon comes from the foundry default set
         break;
       case "Custom Weapon":
-        if (this.name.match("^New Item.*")) {
+        if (this.name.match("^Item.*")) {
           this.name = "New Custom Weapon " + Math.floor(Math.random() * 101);
         }
         this.img = "systems/gurps4e/icons/svg/gunsmithing.svg"; // This icon comes from the GURPS set
         break;
       case "Custom Armour":
-        if (this.name.match("^New Item.*")) {
+        if (this.name.match("^Item.*")) {
           this.name = "New Custom Armour " + Math.floor(Math.random() * 101);
         }
         this.img = "systems/gurps4e/icons/svg/armoury-body.svg"; // This icon comes from the GURPS set
         break;
       case "Travel Fare":
-        if (this.name.match("^New Item.*")) {
+        if (this.name.match("^Item.*")) {
           this.name = "New Travel Fare " + Math.floor(Math.random() * 101);
         }
         this.img = "systems/gurps4e/icons/svg/ticket.svg"; // This icon comes from the GURPS set
         break;
       case "Custom Jewelry":
-        if (this.name.match("^New Item.*")) {
+        if (this.name.match("^Item.*")) {
           this.name = "New Custom Jewelry " + Math.floor(Math.random() * 101);
         }
         this.img = "systems/gurps4e/icons/svg/ring-box.svg"; // This icon comes from the GURPS set
         break;
       case "Ritual":
-        if (this.name.match("^New Item.*")) {
+        if (this.name.match("^Item.*")) {
           this.name = "New Ritual " + Math.floor(Math.random() * 101);
         }
         this.img = "icons/svg/daze.svg"; // This icon comes from the foundry default set
