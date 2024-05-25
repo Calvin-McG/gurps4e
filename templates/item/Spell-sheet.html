@@ -123,7 +123,11 @@
                 </tr>
                 <tr>
                     <td>Base Cost</td>
-                    <td><input type="text" name="system.spellDetails.cost" value="{{item.system.spellDetails.cost}}" placeholder="The casting cost of the spell"/></td>
+                    <td><input type="number" name="system.spellDetails.baseCost" value="{{item.system.spellDetails.baseCost}}" placeholder="The casting cost of the spell" data-dtype="Number"/></td>
+                </tr>
+                <tr>
+                    <td>Levelled Cost</td>
+                    <td><input type="number" name="system.spellDetails.levelledCost" value="{{item.system.spellDetails.levelledCost}}" placeholder="The casting cost of the spell" data-dtype="Number"/></td>
                 </tr>
                 <tr>
                     <td>Base Time to Cast</td>
@@ -295,13 +299,17 @@
                         <td class="resource-label melee-id">{{id}}</td>
                         <td><input type="text" name="system.melee.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
                         <td class="resource-label">{{melee.level}}</td>
-                        <td class="equipmentInputInput">
-                            <input type="text" name="system.melee.{{id}}.skill" value="{{melee.skill}}" title="{{melee.skill}}" style="text-align:left;" />/
-                            <input type="text" name="system.melee.{{id}}.skillMod" value="{{melee.skillMod}}" data-dtype="Number" class="melee-skillMod"/>
+                        <td>
+                            <div class="equipmentInputInput">
+                                <input type="text" name="system.melee.{{id}}.skill" value="{{melee.skill}}" title="{{melee.skill}}" style="text-align:left;" />/
+                                <input type="text" name="system.melee.{{id}}.skillMod" value="{{melee.skillMod}}" data-dtype="Number" class="melee-skillMod"/>
+                            </div>
                         </td>
                         <td>
-                            <input type="text" name="system.melee.{{id}}.parryMod" value="{{melee.parryMod}}" style="width: 50%"/>
-                            <input type="text" name="system.melee.{{id}}.parryType" value="{{melee.parryType}}" class="melee-parryType"/>
+                            <div class="parryInputInput">
+                                <input type="text" name="system.melee.{{id}}.parryMod" value="{{melee.parryMod}}"/>
+                                <input type="text" name="system.melee.{{id}}.parryType" value="{{melee.parryType}}"/>
+                            </div>
                         </td>
                         <td class="melee-block">
                             <input type="text" name="system.melee.{{id}}.blockMod" value="{{melee.blockMod}}"/>

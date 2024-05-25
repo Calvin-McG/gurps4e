@@ -78,7 +78,12 @@
 
 .equipmentInputInput{
 	display: grid;
-	grid-template-columns: 3fr auto 1fr;
+	grid-template-columns: 1fr auto 30px;
+}
+
+.parryInputInput{
+	display: grid;
+	grid-template-columns: 1fr 30px;
 }
 
 .equipmentLabelInput{
@@ -1918,6 +1923,10 @@ attribute-senses {
 	max-width: 30px;
 }
 
+.melee-st input {
+	max-width: 30px;
+}
+
 .melee-reach {
 	max-width: 45px;
 }
@@ -1927,7 +1936,7 @@ attribute-senses {
 }
 
 .melee-block {
-	max-width: 40px;
+	max-width: 10px;
 }
 
 .melee-id {
@@ -1935,10 +1944,6 @@ attribute-senses {
 }
 
 .melee-parryType {
-	max-width: 30px;
-}
-
-.melee-skillMod {
 	max-width: 30px;
 }
 
