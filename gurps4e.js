@@ -31,7 +31,8 @@ import {
   RANGETYPES,
   RESISTANCETYPES,
   RESISTANCEATTR,
-  BODYTYPES
+  BODYTYPES,
+  VEHICLECRAFTTYPES
 } from "./module/helpers/config.mjs";
 
 Hooks.once('init', async function() {
@@ -64,6 +65,7 @@ Hooks.once('init', async function() {
   CONFIG.RESISTANCETYPES = RESISTANCETYPES;
   CONFIG.RESISTANCEATTR = RESISTANCEATTR;
   CONFIG.BODYTYPES = BODYTYPES;
+  CONFIG.VEHICLECRAFTTYPES = VEHICLECRAFTTYPES;
 
   // Begin section of stuff I don't totally remember the reasons for
   game.gurps4e = {

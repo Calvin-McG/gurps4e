@@ -25,6 +25,7 @@ export const RANGETYPES = {};
 export const RESISTANCETYPES = {};
 export const RESISTANCEATTR = {};
 export const BODYTYPES = {};
+export const VEHICLECRAFTTYPES = {};
 
 DAMAGETYPES.dropdownChoices = {
     "burn": "Burning",
@@ -242,4 +243,10 @@ BODYTYPES.dropdownChoices = {
     "cancroid": "Cancroid",
     "ichthyoid": "Ichthyoid",
     "arachnoid": "Arachnoid",
+}
+
+VEHICLECRAFTTYPES.dropdownChoices = {
+    "ground": "Ground",
+    "naval": "Water",
+    "air": "Air",
 }

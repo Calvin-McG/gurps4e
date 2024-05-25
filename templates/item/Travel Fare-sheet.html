@@ -91,11 +91,7 @@
                                 </td>
                                 <td>
                                     <select name="system.travelFare.method">
-                                        {{#select item.system.travelFare.method}}
-                                        <option value="ground">Ground</option>
-                                        <option value="naval">Water</option>
-                                        <option value="air">Air</option>
-                                        {{/select}}
+                                        {{selectOptions vehicleCraftTypes selected=item.system.travelFare.method}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="travel-method">

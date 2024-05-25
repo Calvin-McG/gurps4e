@@ -34,6 +34,7 @@ export class gurpsItemSheet extends ItemSheet {
         context.resistanceTypes = CONFIG.RESISTANCETYPES.dropdownChoices;
         context.resistanceAttr = CONFIG.RESISTANCEATTR.dropdownChoices;
         context.bodyTypes = CONFIG.BODYTYPES.dropdownChoices;
+        context.vehicleCraftTypes = CONFIG.VEHICLECRAFTTYPES.dropdownChoices;
         return context;
     }
 
