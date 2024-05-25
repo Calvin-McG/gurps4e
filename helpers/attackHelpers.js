@@ -75,8 +75,8 @@ export class attackHelpers {
 
     static buildLocationLabel(target, locationHit) {
         // Build the location label
-        let firstLocation = getProperty(target.system.bodyType.body, locationHit.split(".")[0]);
-        let secondLocation = getProperty(target.system.bodyType.body, locationHit);
+        let firstLocation = foundry.utils.getProperty(target.system.bodyType.body, locationHit.split(".")[0]);
+        let secondLocation = foundry.utils.getProperty(target.system.bodyType.body, locationHit);
         let firstLabel = firstLocation ? firstLocation.label : "";
         let secondLabel = secondLocation? secondLocation.label: "";
         let locationLabel;

@@ -92,7 +92,7 @@ export class gurpsActor extends Actor {
 			}
 			let count = isNaN(parseInt(locationString)) ? 1 : parseInt(locationString); // parseInt will take only the number at the start of the string and discard the rest. If it comes through NaN, then there was no number, so treat it as one.
 			let locationCode = locationString.replace(count.toString(), ""); // Replace the number we just fetched with nothing. If it doesn't match, like if we retrieved a 1, that's fine because nothing happens.
-			let locationObject = getProperty(this.system.vehicle.loc,locationCode) // Get the object matching the location we're currently itterating over.
+			let locationObject = foundry.utils.getProperty(this.system.vehicle.loc,locationCode) // Get the object matching the location we're currently itterating over.
 			locationObject.count += count; // It might be that a location string is entered twice. If so, make sure to include both counts in our total.
 			locationObject.retractable = retractable ? retractable : locationObject.retractable; // If retractable is true, set the locationObject to also have it true. If it's false, don't change it. This covers cases where there are two sets of the same location, one of which is retractable and one which is not.
 		});
@@ -1854,7 +1854,7 @@ export class gurpsActor extends Actor {
 				let totalWeightBack = 0;
 
 				for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
-					let part = getProperty(bodyObj, bodyParts[i]) // Get the current part
+					let part = foundry.utils.getProperty(bodyObj, bodyParts[i]) // Get the current part
 					if (typeof part.weightFront != "undefined"){ // Check to see if weightFront is defined
 						totalWeightFront += +part.weightFront; // Add the front and rear weights
 						totalWeightBack += +part.weightBack;
@@ -2030,7 +2030,7 @@ export class gurpsActor extends Actor {
 			let keys = Object.keys(this.system.rpm.path);
 			if (keys.length > 0) {
 				for (let k = 0; k < keys.length; k++) {
-					pathPoints = pathPoints + getProperty(this.system.rpm.path, keys[k]).points;
+					pathPoints = pathPoints + foundry.utils.getProperty(this.system.rpm.path, keys[k]).points;
 				}
 			}
 			this.system.points.path = pathPoints;
@@ -2617,7 +2617,7 @@ export class gurpsActor extends Actor {
 
 		if (keys.length > 0) {
 			for (let k = 0; k < keys.length; k++) {
-				let path = getProperty(this.system.rpm.path, keys[k]);
+				let path = foundry.utils.getProperty(this.system.rpm.path, keys[k]);
 				path.defaults = [
 					{
 						"skill": skillName,
@@ -2715,7 +2715,7 @@ export class gurpsActor extends Actor {
 					let bodyParts = Object.keys(object); // Collect all the bodypart names
 					for (let i = 0; i < bodyParts.length; i++){ // Loop through all the body parts
 						if (bodyParts[i] === "skull" || bodyParts[i] === "brain"){ // Part has no sub-parts
-							let currentBodyPart = getProperty(object, bodyParts[i]);
+							let currentBodyPart = foundry.utils.getProperty(object, bodyParts[i]);
 
 							// Clear existing DR for the body part
 							currentBodyPart.drBurn = 0;
@@ -2728,8 +2728,8 @@ export class gurpsActor extends Actor {
 							currentBodyPart.drTox  = 0;
 
 							// Loop through DR layers
-							for (let q = 0; q < Object.keys(getProperty(object, bodyParts[i] + ".dr")).length; q++) {
-								let currentDRLayer = getProperty(object, bodyParts[i] + ".dr")[q]
+							for (let q = 0; q < Object.keys(foundry.utils.getProperty(object, bodyParts[i] + ".dr")).length; q++) {
+								let currentDRLayer = foundry.utils.getProperty(object, bodyParts[i] + ".dr")[q]
 								currentBodyPart.drBurn       += currentDRLayer.burn;
 								currentBodyPart.drCor        += currentDRLayer.cor ;
 								currentBodyPart.drCr         += currentDRLayer.cr  ;
@@ -2741,9 +2741,9 @@ export class gurpsActor extends Actor {
 							}
 						}
 						else {
-							let subParts = Object.keys(getProperty(object, bodyParts[i] + ".subLocation")); // Collect all the subpart names
+							let subParts = Object.keys(foundry.utils.getProperty(object, bodyParts[i] + ".subLocation")); // Collect all the subpart names
 							for (let n = 0; n < subParts.length; n++){ // Loop through all the subparts
-								let currentBodyPart = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n]);
+								let currentBodyPart = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n]);
 
 								// Clear existing DR for the body part
 								currentBodyPart.drBurn = 0;
@@ -2756,8 +2756,8 @@ export class gurpsActor extends Actor {
 								currentBodyPart.drTox  = 0;
 
 								// Loop through DR layers
-								for (let q = 0; q < Object.keys(getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".dr")).length; q++) {
-									let currentDRLayer = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".dr")[q]
+								for (let q = 0; q < Object.keys(foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".dr")).length; q++) {
+									let currentDRLayer = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".dr")[q]
 									if (typeof currentDRLayer !== "undefined") {
 										currentBodyPart.drBurn       += currentDRLayer.burn;
 										currentBodyPart.drCor        += currentDRLayer.cor ;
@@ -2823,8 +2823,8 @@ export class gurpsActor extends Actor {
 					}];
 
 					armour[0] = this.getArmour(this.system.bodyType.body, this.system.bodyType.body, 0); // Get the armour inherent in the body
-					this.system.bodyType.drTypesOne = getProperty(armour[0], this.system.bodyType.damageTypeOne.toLowerCase());
-					this.system.bodyType.drTypesTwo = getProperty(armour[0], this.system.bodyType.damageTypeTwo.toLowerCase());
+					this.system.bodyType.drTypesOne = foundry.utils.getProperty(armour[0], this.system.bodyType.damageTypeOne.toLowerCase());
+					this.system.bodyType.drTypesTwo = foundry.utils.getProperty(armour[0], this.system.bodyType.damageTypeTwo.toLowerCase());
 
 					let items = this.items.contents.filter(filterArmour); // Get the character's items and filter out anything that isn't armour
 					items = items.sort(sortArmourByLayer); // Take the above list and sort by layer. Index 0 is lowest, index infinity is highest.
@@ -2835,10 +2835,10 @@ export class gurpsActor extends Actor {
 						let damageTypeTwoObject;
 
 						if (this.system.bodyType.damageTypeOne.length > 0) { // If they've selected a type for display
-							damageTypeOneObject = getProperty(armour[l+1], this.system.bodyType.damageTypeOne.toLowerCase()); // Set the DR
+							damageTypeOneObject = foundry.utils.getProperty(armour[l+1], this.system.bodyType.damageTypeOne.toLowerCase()); // Set the DR
 						}
 						if (this.system.bodyType.damageTypeTwo.length > 0) { // If they've selected a second type for display
-							damageTypeTwoObject = getProperty(armour[l+1], this.system.bodyType.damageTypeTwo.toLowerCase()); // Set the DR
+							damageTypeTwoObject = foundry.utils.getProperty(armour[l+1], this.system.bodyType.damageTypeTwo.toLowerCase()); // Set the DR
 						}
 
 						if (this.system.bodyType.damageTypeOne.length > 0) {
@@ -2877,30 +2877,30 @@ export class gurpsActor extends Actor {
 			for (let i = 0; i < bodyParts.length; i++){ // Loop through all the body parts
 				if (bodyParts[i] === "skull" || bodyParts[i] === "brain"){ // Part has no sub-parts
 					// For each dr type, add it to the object
-					armour.burn[bodyParts[i]] = getProperty(object, bodyParts[i] + ".drBurn") ? +getProperty(object, bodyParts[i] + ".drBurn") : 0;
-					armour.cor[bodyParts[i]]  = getProperty(object, bodyParts[i] + ".drCor")  ? +getProperty(object, bodyParts[i] + ".drCor") : 0;
-					armour.cr[bodyParts[i]]   = getProperty(object, bodyParts[i] + ".drCr")   ? +getProperty(object, bodyParts[i] + ".drCr")  : 0;
-					armour.cut[bodyParts[i]]  = getProperty(object, bodyParts[i] + ".drCut")  ? +getProperty(object, bodyParts[i] + ".drCut") : 0;
-					armour.fat[bodyParts[i]]  = getProperty(object, bodyParts[i] + ".drFat")  ? +getProperty(object, bodyParts[i] + ".drFat") : 0;
-					armour.imp[bodyParts[i]]  = getProperty(object, bodyParts[i] + ".drImp")  ? +getProperty(object, bodyParts[i] + ".drImp") : 0;
-					armour.pi[bodyParts[i]]   = getProperty(object, bodyParts[i] + ".drPi")   ? +getProperty(object, bodyParts[i] + ".drPi")  : 0;
-					armour.tox[bodyParts[i]]  = getProperty(object, bodyParts[i] + ".drTox")  ? +getProperty(object, bodyParts[i] + ".drTox") : 0;
+					armour.burn[bodyParts[i]] = foundry.utils.getProperty(object, bodyParts[i] + ".drBurn") ? +foundry.utils.getProperty(object, bodyParts[i] + ".drBurn") : 0;
+					armour.cor[bodyParts[i]]  = foundry.utils.getProperty(object, bodyParts[i] + ".drCor")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".drCor") : 0;
+					armour.cr[bodyParts[i]]   = foundry.utils.getProperty(object, bodyParts[i] + ".drCr")   ? +foundry.utils.getProperty(object, bodyParts[i] + ".drCr")  : 0;
+					armour.cut[bodyParts[i]]  = foundry.utils.getProperty(object, bodyParts[i] + ".drCut")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".drCut") : 0;
+					armour.fat[bodyParts[i]]  = foundry.utils.getProperty(object, bodyParts[i] + ".drFat")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".drFat") : 0;
+					armour.imp[bodyParts[i]]  = foundry.utils.getProperty(object, bodyParts[i] + ".drImp")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".drImp") : 0;
+					armour.pi[bodyParts[i]]   = foundry.utils.getProperty(object, bodyParts[i] + ".drPi")   ? +foundry.utils.getProperty(object, bodyParts[i] + ".drPi")  : 0;
+					armour.tox[bodyParts[i]]  = foundry.utils.getProperty(object, bodyParts[i] + ".drTox")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".drTox") : 0;
 
 					// For each DR type, add it to the underlying bodypart
 					let dr = {
-						burn: 	getProperty(object, bodyParts[i] + ".drBurn") ? +getProperty(object, bodyParts[i] + ".drBurn") : 0,
-						cor: 	getProperty(object, bodyParts[i] + ".drCor")  ? +getProperty(object, bodyParts[i] + ".drCor") : 0,
-						cr: 	getProperty(object, bodyParts[i] + ".drCr")   ? +getProperty(object, bodyParts[i] + ".drCr")  : 0,
-						cut: 	getProperty(object, bodyParts[i] + ".drCut")  ? +getProperty(object, bodyParts[i] + ".drCut") : 0,
-						fat: 	getProperty(object, bodyParts[i] + ".drFat")  ? +getProperty(object, bodyParts[i] + ".drFat") : 0,
-						imp: 	getProperty(object, bodyParts[i] + ".drImp")  ? +getProperty(object, bodyParts[i] + ".drImp") : 0,
-						pi: 	getProperty(object, bodyParts[i] + ".drPi")   ? +getProperty(object, bodyParts[i] + ".drPi")  : 0,
-						tox: 	getProperty(object, bodyParts[i] + ".drTox")  ? +getProperty(object, bodyParts[i] + ".drTox") : 0,
+						burn: 	foundry.utils.getProperty(object, bodyParts[i] + ".drBurn") ? +foundry.utils.getProperty(object, bodyParts[i] + ".drBurn") : 0,
+						cor: 	foundry.utils.getProperty(object, bodyParts[i] + ".drCor")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".drCor") : 0,
+						cr: 	foundry.utils.getProperty(object, bodyParts[i] + ".drCr")   ? +foundry.utils.getProperty(object, bodyParts[i] + ".drCr")  : 0,
+						cut: 	foundry.utils.getProperty(object, bodyParts[i] + ".drCut")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".drCut") : 0,
+						fat: 	foundry.utils.getProperty(object, bodyParts[i] + ".drFat")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".drFat") : 0,
+						imp: 	foundry.utils.getProperty(object, bodyParts[i] + ".drImp")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".drImp") : 0,
+						pi: 	foundry.utils.getProperty(object, bodyParts[i] + ".drPi")   ? +foundry.utils.getProperty(object, bodyParts[i] + ".drPi")  : 0,
+						tox: 	foundry.utils.getProperty(object, bodyParts[i] + ".drTox")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".drTox") : 0,
 						hardness: 1,
 						flexible: false
 					}
 
-					if (getProperty(object, bodyParts[i] + ".flexible")){ // Check to see if flexible exists and is true
+					if (foundry.utils.getProperty(object, bodyParts[i] + ".flexible")){ // Check to see if flexible exists and is true
 						armour.flexible[bodyParts[i]] = true;
 						dr.flexible = true;
 					}
@@ -2909,41 +2909,41 @@ export class gurpsActor extends Actor {
 						dr.flexible = false;
 					}
 
-					if (getProperty(object, bodyParts[i] + ".drHardening")){ // Check to see if the hardening value exists
-						armour.hardness[bodyParts[i]] = getProperty(object, bodyParts[i] + ".drHardening"); // Set hardening
-						dr.hardness = +getProperty(object, bodyParts[i] + ".drHardening");
+					if (foundry.utils.getProperty(object, bodyParts[i] + ".drHardening")){ // Check to see if the hardening value exists
+						armour.hardness[bodyParts[i]] = foundry.utils.getProperty(object, bodyParts[i] + ".drHardening"); // Set hardening
+						dr.hardness = +foundry.utils.getProperty(object, bodyParts[i] + ".drHardening");
 					}
 
 					setProperty(body, bodyParts[i] + ".dr." + index, dr);
 				}
 				else {
-					let subParts = Object.keys(getProperty(object, bodyParts[i] + ".subLocation")); // Collect all the subpart names
+					let subParts = Object.keys(foundry.utils.getProperty(object, bodyParts[i] + ".subLocation")); // Collect all the subpart names
 					for (let n = 0; n < subParts.length; n++){ // Loop through all the subparts
 						// For each dr type, add it to the object
-						armour.burn[bodyParts[i] + subParts[n]] = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") : 0;
-						armour.cor[bodyParts[i] + subParts[n]]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  : 0;
-						armour.cr[bodyParts[i] + subParts[n]]   = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   : 0;
-						armour.cut[bodyParts[i] + subParts[n]]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  : 0;
-						armour.fat[bodyParts[i] + subParts[n]]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  : 0;
-						armour.imp[bodyParts[i] + subParts[n]]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  : 0;
-						armour.pi[bodyParts[i] + subParts[n]]   = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   : 0;
-						armour.tox[bodyParts[i] + subParts[n]]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  : 0;
+						armour.burn[bodyParts[i] + subParts[n]] = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") : 0;
+						armour.cor[bodyParts[i] + subParts[n]]  = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  : 0;
+						armour.cr[bodyParts[i] + subParts[n]]   = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   : 0;
+						armour.cut[bodyParts[i] + subParts[n]]  = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  : 0;
+						armour.fat[bodyParts[i] + subParts[n]]  = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  : 0;
+						armour.imp[bodyParts[i] + subParts[n]]  = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  : 0;
+						armour.pi[bodyParts[i] + subParts[n]]   = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   : 0;
+						armour.tox[bodyParts[i] + subParts[n]]  = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  : 0;
 
 						// For each DR type, add it to the underlying bodypart
 						let dr = {
-							burn: 	getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") : 0,
-							cor: 	getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  : 0,
-							cr: 	getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   : 0,
-							cut: 	getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  : 0,
-							fat: 	getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  : 0,
-							imp: 	getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  : 0,
-							pi: 	getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   : 0,
-							tox: 	getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  : 0,
+							burn: 	foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") : 0,
+							cor: 	foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  : 0,
+							cr: 	foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   : 0,
+							cut: 	foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  : 0,
+							fat: 	foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  : 0,
+							imp: 	foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  : 0,
+							pi: 	foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   : 0,
+							tox: 	foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  : 0,
 							hardness: 1,
 							flexible: false
 						}
 
-						if (getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".flexible")){ // Check to see if flexible exists and is true
+						if (foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".flexible")){ // Check to see if flexible exists and is true
 							armour.flexible[bodyParts[i] + subParts[n]] = true;
 							dr.flexible = true;
 						}
@@ -2952,9 +2952,9 @@ export class gurpsActor extends Actor {
 							dr.flexible = false;
 						}
 
-						if (getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drHardening")){ // Check to see if the hardening value exists
-							armour.hardness[bodyParts[i] + subParts[n]] = +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drHardening"); // Set hardening
-							dr.hardness = +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drHardening");
+						if (foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drHardening")){ // Check to see if the hardening value exists
+							armour.hardness[bodyParts[i] + subParts[n]] = +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drHardening"); // Set hardening
+							dr.hardness = +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drHardening");
 						}
 
 						setProperty(body, bodyParts[i] + ".subLocation." + subParts[n] + ".dr." + index, dr);
@@ -2985,7 +2985,7 @@ export class gurpsActor extends Actor {
 					let bodyParts = Object.keys(this.system.bodyType.body);
 
 					for (let i = 0; i < bodyParts.length; i++){
-						let currentPart = getProperty(this.system.bodyType.body, bodyParts[i]);
+						let currentPart = foundry.utils.getProperty(this.system.bodyType.body, bodyParts[i]);
 
 						if (currentPart.hp){//Part has hp info
 							let hp = currentPart.hp.value;
@@ -3017,11 +3017,11 @@ export class gurpsActor extends Actor {
 							setProperty(this.system.bodyType.body, bodyParts[i] + ".hp.state",state);
 						}
 
-						if (getProperty(this.system.bodyType.body, bodyParts[i] + ".subLocation")){//Part has sub parts
-							let subParts = Object.keys(getProperty(this.system.bodyType.body, bodyParts[i] + ".subLocation"));
+						if (foundry.utils.getProperty(this.system.bodyType.body, bodyParts[i] + ".subLocation")){//Part has sub parts
+							let subParts = Object.keys(foundry.utils.getProperty(this.system.bodyType.body, bodyParts[i] + ".subLocation"));
 
 							for (let n = 0; n < subParts.length; n++){
-								let currentSubPart = getProperty(this.system.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n]);
+								let currentSubPart = foundry.utils.getProperty(this.system.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n]);
 								if (currentSubPart.hp){//Part has hp info
 									let hp = currentSubPart.hp.value;
 									let state = "Fine";
@@ -3103,7 +3103,7 @@ export class gurpsActor extends Actor {
 
 			if (keys.length > 0) {
 				for (let k = 0; k < keys.length; k++) {
-					let path = getProperty(this.system.rpm.path, keys[k]);
+					let path = foundry.utils.getProperty(this.system.rpm.path, keys[k]);
 					path.defaults = [
 						{
 							"skill": this.system.rpm.coreSkill,
@@ -3630,7 +3630,7 @@ export class gurpsActor extends Actor {
 					for (let m = 0; m < meleeKeys.length; m++){
 						if (filterByName && typeof itemName !== "undefined") { // If we're filtering by name, and there is a name to filter by
 							if (item.name.replace(/\s/g,'') === itemName.replace(/\s/g,'')) { // If the name matches
-								melee = getProperty(item.system.melee, meleeKeys[m]);
+								melee = foundry.utils.getProperty(item.system.melee, meleeKeys[m]);
 								if (filterByAttackName && typeof attackName !== "undefined") { // If we're filtering by attack name, and there is a name to filter by
 									if (melee.name.replace(/\s/g,'') === attackName.replace(/\s/g,'')) { // If the name matches
 										melee.weapon = item.name
@@ -3644,7 +3644,7 @@ export class gurpsActor extends Actor {
 							}
 						}
 						else { // Otherwise just add the profile
-							melee = getProperty(item.system.melee, meleeKeys[m]);
+							melee = foundry.utils.getProperty(item.system.melee, meleeKeys[m]);
 							melee.weapon = item.name
 							meleeAttacks.push(melee);
 						}
@@ -3656,7 +3656,7 @@ export class gurpsActor extends Actor {
 					for (let r = 0; r < rangedKeys.length; r++){
 						if (filterByName && typeof itemName !== "undefined") { // If we're filtering by name, and there is a name to filter by
 							if (item.name.replace(/\s/g,'') === itemName.replace(/\s/g,'')) { // If the name matches
-								ranged = getProperty(item.system.ranged, rangedKeys[r]);
+								ranged = foundry.utils.getProperty(item.system.ranged, rangedKeys[r]);
 								if (filterByAttackName && typeof attackName !== "undefined") { // If we're filtering by attack name, and there is a name to filter by
 									if (ranged.name.replace(/\s/g,'') === attackName.replace(/\s/g,'')) { // If the name matches
 										ranged.weapon = item.name
@@ -3670,7 +3670,7 @@ export class gurpsActor extends Actor {
 							}
 						}
 						else { // Otherwise just add the profile
-							ranged = getProperty(item.system.ranged, rangedKeys[r]);
+							ranged = foundry.utils.getProperty(item.system.ranged, rangedKeys[r]);
 							ranged.weapon = item.name
 							rangedAttacks.push(ranged);
 						}
@@ -3682,7 +3682,7 @@ export class gurpsActor extends Actor {
 					for (let a = 0; a < afflictionKeys.length; a++){
 						if (filterByName && typeof itemName !== "undefined") { // If we're filtering by name, and there is a name to filter by
 							if (item.name.replace(/\s/g,'') === itemName.replace(/\s/g,'')) { // If the name matches
-								affliction = getProperty(item.system.affliction, afflictionKeys[a]);
+								affliction = foundry.utils.getProperty(item.system.affliction, afflictionKeys[a]);
 								if (filterByAttackName && typeof attackName !== "undefined") { // If we're filtering by attack name, and there is a name to filter by
 									if (affliction.name.replace(/\s/g,'') === attackName.replace(/\s/g,'')) { // If the name matches
 										affliction.weapon = item.name
@@ -3698,7 +3698,7 @@ export class gurpsActor extends Actor {
 							}
 						}
 						else { // Otherwise just add the profile
-							affliction = getProperty(item.system.affliction, afflictionKeys[a]);
+							affliction = foundry.utils.getProperty(item.system.affliction, afflictionKeys[a]);
 							affliction.weapon = item.name
 							affliction.type = "affliction";
 							afflictionAttacks.push(affliction);
@@ -3718,7 +3718,7 @@ export class gurpsActor extends Actor {
 		let locationSelector = "<table>" +
 			"<tr><td>Location</td><td><select name='hitLocation' id='hitLocation'>"
 		for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
-			let part = getProperty(target.actor.system.bodyType.body, bodyParts[i])
+			let part = foundry.utils.getProperty(target.actor.system.bodyType.body, bodyParts[i])
 			let penalty;
 			if (relativePosition[1] > 0){ // If the attacker is in front of the target
 				penalty = part.penaltyFront;
@@ -4305,7 +4305,7 @@ export class gurpsActor extends Actor {
 		let locations = [];
 		let penalty;
 		for (let i = 0; i < rof.rof; i++) { // Find a different hit location for each shot
-			let generalLocation = getProperty(target.actor.system.bodyType.body, locationHit); // Get specific hit location
+			let generalLocation = foundry.utils.getProperty(target.actor.system.bodyType.body, locationHit); // Get specific hit location
 
 			if (generalLocation.subLocation){ // Check to see if there are sub locations
 				let specificLocation = this.randomComplexHitLocation(generalLocation, relativePosition); // Get the sub location
@@ -4328,15 +4328,15 @@ export class gurpsActor extends Actor {
 
 	selectedComplexHitLocation(target, attacker, attack, locationHit, relativePosition, rof) { // Select specific hit location and then the complex hit location
 		// Open a new dialog to specify sub location
-		let location = getProperty(target.actor.system.bodyType.body, locationHit)
+		let location = foundry.utils.getProperty(target.actor.system.bodyType.body, locationHit)
 
 		if (location.subLocation){ // Make sure there are even complex hit locations to choose
-			let bodyParts = Object.keys(getProperty(target.actor.system.bodyType.body, locationHit + ".subLocation")); // Collect all the bodypart names
+			let bodyParts = Object.keys(foundry.utils.getProperty(target.actor.system.bodyType.body, locationHit + ".subLocation")); // Collect all the bodypart names
 
 			let complexLocationSelector = ""
 			complexLocationSelector += "<select name='complexHitLocation' id='complexHitLocation'>"
 			for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
-				let part = getProperty(target.actor.system.bodyType.body, locationHit + ".subLocation." + bodyParts[i])
+				let part = foundry.utils.getProperty(target.actor.system.bodyType.body, locationHit + ".subLocation." + bodyParts[i])
 
 				let penalty;
 				if (relativePosition[1] > 0){ // If the attacker is in front of the target
@@ -4363,7 +4363,7 @@ export class gurpsActor extends Actor {
 							// The user has selected a hit location without specifying sub location. Choose the sub location randomly.
 							let elements = document.getElementsByName('complexHitLocation');
 							if(elements[0].value){
-								let location = getProperty(target.actor.system.bodyType.body, elements[0].value)
+								let location = foundry.utils.getProperty(target.actor.system.bodyType.body, elements[0].value)
 								let locations = [];
 								for (let i = 0; i < rof.rof; i++) {
 									locations[i] = location;
@@ -4430,7 +4430,7 @@ export class gurpsActor extends Actor {
 		let i = -1;
 		do {
 			i += 1; // Itterate the index
-			part = getProperty(targetBody.body, bodyParts[i]); // Get the part for the current index
+			part = foundry.utils.getProperty(targetBody.body, bodyParts[i]); // Get the part for the current index
 			if (relativePosition[1] == 1) { // If the target is facing the attacker
 				if (typeof part.weightFront !== "undefined") { // Make sure this entry is not undefined. If it is undefined we don't need to do anything.
 					roll -= part.weightFront; // Subtract its weight from the rolled weight
@@ -4464,7 +4464,7 @@ export class gurpsActor extends Actor {
 
 		let torsoPartsIndex = Math.floor(Math.random() * (torsoParts.length)); // Generate a random number between 0 and the max index
 
-		return getProperty(targetBody.body, torsoParts[torsoPartsIndex]);
+		return foundry.utils.getProperty(targetBody.body, torsoParts[torsoPartsIndex]);
 	}
 
 	randomComplexHitLocation(generalLocation, relativePosition){
@@ -4483,7 +4483,7 @@ export class gurpsActor extends Actor {
 		let i = -1;
 		do {
 			i += 1; // Itterate the index
-			part = getProperty(generalLocation.subLocation, subLocations[i]); // Get the part for the current index
+			part = foundry.utils.getProperty(generalLocation.subLocation, subLocations[i]); // Get the part for the current index
 			if (relativePosition[1] == 1) { // If the target is facing the attacker
 				roll -= part.weightFront; // Subtract it's weight from the rolled weight
 			}
@@ -4899,7 +4899,7 @@ export class gurpsActor extends Actor {
 
 				messageContent += target.name + " is struck in the...</br>";
 				for (let m = 0; m < locations.length; m++){
-					let firstLocation = getProperty(target.actor.system.bodyType.body, (locations[m].id).split(".")[0]);
+					let firstLocation = foundry.utils.getProperty(target.actor.system.bodyType.body, (locations[m].id).split(".")[0]);
 					let firstLabel = firstLocation ? firstLocation.label : "";
 					let secondLabel = locations[m].label
 					let locationLabel;
@@ -5120,7 +5120,7 @@ export class gurpsActor extends Actor {
 				if (item.system.melee) {
 					let keys = Object.keys(item.system.melee)
 					for (let b = 0; b < keys.length; b++){ // Loop through the melee profiles
-						let profile = getProperty(item.system.melee, keys[b])
+						let profile = foundry.utils.getProperty(item.system.melee, keys[b])
 						if (Number.isInteger(profile.parry)){
 							let effectiveParry = profile.parry
 
@@ -5908,38 +5908,38 @@ export class gurpsActor extends Actor {
 			for (let i = 0; i < bodyParts.length; i++){ // Loop through all the body parts
 				if (bodyParts[i] == "skull" || bodyParts[i] == "brain"){ // Part has no sub-parts
 					// Check it exists and add it to the lowest array
-					lowest.burn[i] = getProperty(object, bodyParts[i] + ".drBurn") ? +getProperty(object, bodyParts[i] + ".drBurn") : 0;
-					lowest.cor[i] = getProperty(object, bodyParts[i] + ".drCor")  ? +getProperty(object, bodyParts[i] + ".drCor") : 0;
-					lowest.cr[i]  = getProperty(object, bodyParts[i] + ".drCr")   ? +getProperty(object, bodyParts[i] + ".drCr")  : 0;
-					lowest.cut[i]  = getProperty(object, bodyParts[i] + ".drCut")  ? +getProperty(object, bodyParts[i] + ".drCut") : 0;
-					lowest.fat[i]  = getProperty(object, bodyParts[i] + ".drFat")  ? +getProperty(object, bodyParts[i] + ".drFat") : 0;
-					lowest.imp[i]  = getProperty(object, bodyParts[i] + ".drImp")  ? +getProperty(object, bodyParts[i] + ".drImp") : 0;
-					lowest.pi[i]   = getProperty(object, bodyParts[i] + ".drPi")   ? +getProperty(object, bodyParts[i] + ".drPi")  : 0;
-					lowest.tox[i]  = getProperty(object, bodyParts[i] + ".drTox")  ? +getProperty(object, bodyParts[i] + ".drTox") : 0;
+					lowest.burn[i] = foundry.utils.getProperty(object, bodyParts[i] + ".drBurn") ? +foundry.utils.getProperty(object, bodyParts[i] + ".drBurn") : 0;
+					lowest.cor[i] = foundry.utils.getProperty(object, bodyParts[i] + ".drCor")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".drCor") : 0;
+					lowest.cr[i]  = foundry.utils.getProperty(object, bodyParts[i] + ".drCr")   ? +foundry.utils.getProperty(object, bodyParts[i] + ".drCr")  : 0;
+					lowest.cut[i]  = foundry.utils.getProperty(object, bodyParts[i] + ".drCut")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".drCut") : 0;
+					lowest.fat[i]  = foundry.utils.getProperty(object, bodyParts[i] + ".drFat")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".drFat") : 0;
+					lowest.imp[i]  = foundry.utils.getProperty(object, bodyParts[i] + ".drImp")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".drImp") : 0;
+					lowest.pi[i]   = foundry.utils.getProperty(object, bodyParts[i] + ".drPi")   ? +foundry.utils.getProperty(object, bodyParts[i] + ".drPi")  : 0;
+					lowest.tox[i]  = foundry.utils.getProperty(object, bodyParts[i] + ".drTox")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".drTox") : 0;
 				}
 				else {
-					let subParts = Object.keys(getProperty(object, bodyParts[i] + ".subLocation")); // Collect all the subpart names
+					let subParts = Object.keys(foundry.utils.getProperty(object, bodyParts[i] + ".subLocation")); // Collect all the subpart names
 					for (let n = 0; n < subParts.length; n++){ // Loop through all the subparts
 						// Check it exists and add it to the lowest array
-						lowest.burn[i + n] = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") : 0;
-						lowest.cor[i + n]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  : 0;
-						lowest.cr[i + n]   = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   : 0;
-						lowest.cut[i + n]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  : 0;
-						lowest.fat[i + n]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  : 0;
-						lowest.imp[i + n]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  : 0;
-						lowest.pi[i + n]   = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   : 0;
-						lowest.tox[i + n]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  : 0;
+						lowest.burn[i + n] = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") : 0;
+						lowest.cor[i + n]  = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  : 0;
+						lowest.cr[i + n]   = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   : 0;
+						lowest.cut[i + n]  = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  : 0;
+						lowest.fat[i + n]  = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  : 0;
+						lowest.imp[i + n]  = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  : 0;
+						lowest.pi[i + n]   = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   : 0;
+						lowest.tox[i + n]  = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  : 0;
 
 						if (subParts[n] === "chest" || (subParts[n] === "abdomen" && game.settings.get("gurps4e", "abdomenForLargeAreaInjury"))) { // Check to see if this part matches subLocation.chest to establish if a body part is a chest section, regardless of animal/humanoid/thorax. Do the same for abdomen after checking the game setting.
 							// Check it exists and add it to the torso array
-							torso.burn[torso.burn.length] = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") : 0;
-							torso.cor[torso.cor.length]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  : 0;
-							torso.cr[torso.cr.length]   = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   : 0;
-							torso.cut[torso.cut.length]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  : 0;
-							torso.fat[torso.fat.length]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  : 0;
-							torso.imp[torso.imp.length]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  : 0;
-							torso.pi[torso.pi.length]   = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   : 0;
-							torso.tox[torso.tox.length]  = getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  ? +getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  : 0;
+							torso.burn[torso.burn.length] = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drBurn") : 0;
+							torso.cor[torso.cor.length]  = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCor")  : 0;
+							torso.cr[torso.cr.length]   = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCr")   : 0;
+							torso.cut[torso.cut.length]  = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drCut")  : 0;
+							torso.fat[torso.fat.length]  = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drFat")  : 0;
+							torso.imp[torso.imp.length]  = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drImp")  : 0;
+							torso.pi[torso.pi.length]   = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drPi")   : 0;
+							torso.tox[torso.tox.length]  = foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  ? +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drTox")  : 0;
 						}
 					}
 				}
@@ -6078,14 +6078,14 @@ export class gurpsActor extends Actor {
 			if (largeArea) { // If this is a largeArea attack
 				locationsHit[i] = 'upperChest.subLocation.chest'; // Switch the location to the chest
 				if (armourDivisor < 1) { // It's actually an armour multiplier
-					drTotalEffectivePoints = Math.floor(Math.max(getProperty(largeAreaDR, drDamageType), 1) / armourDivisor); // Save the DR (Which we set to be at least 1), divided by the armour multiplier, rounded down.
+					drTotalEffectivePoints = Math.floor(Math.max(foundry.utils.getProperty(largeAreaDR, drDamageType), 1) / armourDivisor); // Save the DR (Which we set to be at least 1), divided by the armour multiplier, rounded down.
 				}
 				else { // It's a regular armour divisor, handle normally.
-					drTotalEffectivePoints = Math.floor(getProperty(largeAreaDR, drDamageType) / armourDivisor); // Save the DR, divided by the armour divisor, rounded down.
+					drTotalEffectivePoints = Math.floor(foundry.utils.getProperty(largeAreaDR, drDamageType) / armourDivisor); // Save the DR, divided by the armour divisor, rounded down.
 				}
 			}
 
-			let location = getProperty(target.system.bodyType.body, locationsHit[i]); // Get the specific location we hit.
+			let location = foundry.utils.getProperty(target.system.bodyType.body, locationsHit[i]); // Get the specific location we hit.
 
 			let layerDR = 0; // Init the variable used to store the total DR for this location.
 			let drLayers = Object.keys(location.dr) // Get the keys for the dr objects on this location.
@@ -6093,7 +6093,7 @@ export class gurpsActor extends Actor {
 			let drGroupFlexible = true; // This variable is only true if all layers of armour are flexible.
 
 			for (let d = 0; d < drLayers.length; d++){ // Loop through the layers of DR on this location
-				let dr = getProperty(location.dr[d], drDamageType); // Get the DR of this specific layer for the specific damage type we're looking at right now.
+				let dr = foundry.utils.getProperty(location.dr[d], drDamageType); // Get the DR of this specific layer for the specific damage type we're looking at right now.
 				if (dr > 0 && !location.dr[d].flexible) { // If the dr of this location is not zero, and the location is not flexible, then there is rigid armour here
 					drGroupFlexible = false; // Set the flag false
 				}
@@ -6305,7 +6305,7 @@ export class gurpsActor extends Actor {
 				totalFatInj += Math.floor(actualDamage * location.personalWoundMultFat);
 			}
 			else {
-				injury = Math.floor(((damageThroughArmour * getProperty(location, damageType.woundModId)) / damageReduction) ); // Damage, times the relevant wound modifier, divided by damageReduction, rounded down.
+				injury = Math.floor(((damageThroughArmour * foundry.utils.getProperty(location, damageType.woundModId)) / damageReduction) ); // Damage, times the relevant wound modifier, divided by damageReduction, rounded down.
 			}
 
 			// Account for the impact of diffuse injury tolerance (Other injury tolerances are already built in to the location's wound mod)
@@ -6331,7 +6331,7 @@ export class gurpsActor extends Actor {
 				// Apply damage to the location if it tracks HP, including a check to see if there's a sublocation involved
 				if (location.id.toLowerCase().includes("sublocation")) { // This is a sub location, we will be checking the parent for an HP value
 					let subLocation = location.id.split(".")[0]
-					let parentLocation = getProperty(target.system.bodyType.body, subLocation);
+					let parentLocation = foundry.utils.getProperty(target.system.bodyType.body, subLocation);
 					if (parentLocation.hp){ // If the parent location tracks HP (Such as when we've struck a thigh but want to apply damage to the leg as a whole)
 						// Cap injury + bluntTraumaWounding with the woundCap
 						if (typeof woundCap !== "undefined"){
@@ -6605,7 +6605,7 @@ export class gurpsActor extends Actor {
 		let keys = Object.keys(this.system.bodyType.body);
 
 		for (let k = 0; k < keys.length; k++) {
-			let location = getProperty(this.system.bodyType.body, keys[k]);
+			let location = foundry.utils.getProperty(this.system.bodyType.body, keys[k]);
 
 			if (location.hp){ // Check to see if the location tracks HP
 				location.hp.value = location.hp.max; // Reset HP
@@ -6613,7 +6613,7 @@ export class gurpsActor extends Actor {
 			if (location.subLocation) { // Check to see if the location has sublocations
 				let subLocationKeys = Object.keys(location.subLocation); // Gather the subLocation keys for the loop
 				for (let l = 0; l < subLocationKeys.length; l++) { // Loop through the subLocations
-					let subLocation = getProperty(location.subLocation, subLocationKeys[l]);
+					let subLocation = foundry.utils.getProperty(location.subLocation, subLocationKeys[l]);
 					if (subLocation.hp) { // Check to see if the subLocation tracks HP
 						subLocation.hp.value = subLocation.hp.max; // Reset HP
 					}

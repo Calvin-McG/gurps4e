@@ -5,7 +5,7 @@ let keys = Object.keys(tokenList);
 
 if (keys.length > 0) {
     for (let k = 0; k < keys.length; k++) {
-        let actor = getProperty(tokenList, keys[k]).actor;
+        let actor = foundry.utils.getProperty(tokenList, keys[k]).actor;
         actor.resetDamage();
     }
 }

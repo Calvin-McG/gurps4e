@@ -605,12 +605,12 @@ export class gurpsItem extends Item {
 
       this.system.armourDesign.holdout = 0;
       for (let i = 0; i < bodyParts.length; i++) { // Loop through body parts
-        if (getProperty(this.system.armour.bodyType.body, bodyParts[i] + ".subLocation")) { // Part has sub parts
-          let subParts = getProperty(this.system.armour.bodyType.body, bodyParts[i] + ".subLocation");
+        if (foundry.utils.getProperty(this.system.armour.bodyType.body, bodyParts[i] + ".subLocation")) { // Part has sub parts
+          let subParts = foundry.utils.getProperty(this.system.armour.bodyType.body, bodyParts[i] + ".subLocation");
           let subPartKeys = Object.keys(subParts);
 
           for (let n = 0; n < subPartKeys.length; n++) { // Loop through sub parts
-            let currentSubPart = getProperty(this.system.armour.bodyType.body, bodyParts[i] + ".subLocation." + subPartKeys[n]);
+            let currentSubPart = foundry.utils.getProperty(this.system.armour.bodyType.body, bodyParts[i] + ".subLocation." + subPartKeys[n]);
 
             if (subParts.thigh) { // There is a thigh
               if (subParts.thigh.construction && subParts.thigh.material) { // It has been correctly armoured
@@ -627,7 +627,7 @@ export class gurpsItem extends Item {
           }
         }
         else { // Part has no sub parts
-          let currentPart = getProperty(this.system.armour.bodyType.body, bodyParts[i]);
+          let currentPart = foundry.utils.getProperty(this.system.armour.bodyType.body, bodyParts[i]);
 
           this.prepareLocationalCustomArmour(currentPart);
         }
@@ -1827,7 +1827,7 @@ export class gurpsItem extends Item {
     let keys = Object.keys(this.system.path);
     if (keys.length > 0) {
       for (let k = 0; k < keys.length; k++) {
-        let path = getProperty(this.system.path, keys[k]);
+        let path = foundry.utils.getProperty(this.system.path, keys[k]);
         path.cost = this._setCostByEffectName(path.effect); // Get the base cost of the spell
         costFromPaths += path.cost;
 
@@ -1839,7 +1839,7 @@ export class gurpsItem extends Item {
           if (this.actor !== null) { // If there is an actor for this item. (As in, the item is on an actor)
             if (typeof this.actor.system.rpm !== 'undefined') { // If that actor also has the rpm related info
               if (typeof this.actor.system.rpm.path !== 'undefined') { // If that actor also has the paths for rpm
-                path.skill = skillHelpers.computeSkillLevel(this.actor, getProperty(this.actor.system.rpm.path, path.path)); // Grab the level from the path on the actor sheet so we can reference it later
+                path.skill = skillHelpers.computeSkillLevel(this.actor, foundry.utils.getProperty(this.actor.system.rpm.path, path.path)); // Grab the level from the path on the actor sheet so we can reference it later
               }
             }
           }
@@ -1866,7 +1866,7 @@ export class gurpsItem extends Item {
     let totalCraftingModifier = 0;
     if (keys.length > 0) {
       for (let k = 0; k < ritualModifierKeys.length; k++) {
-        let ritualModifier = getProperty(this.system.ritualModifier, ritualModifierKeys[k]);
+        let ritualModifier = foundry.utils.getProperty(this.system.ritualModifier, ritualModifierKeys[k]);
 
         ritualModifier.effect.craftingPenalty = 0;
 
