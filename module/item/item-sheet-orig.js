@@ -20,7 +20,7 @@ export class gurpsItemSheet extends ItemSheet {
 
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["gurps4e", "sheet", "item"],
       width: 926,
       height: 770,
