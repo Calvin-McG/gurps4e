@@ -232,11 +232,7 @@
                                 </td>
                                 <td>
                                     <select name="system.bowDesign.quality">
-                                        {{#select item.system.bowDesign.quality}}
-                                        <option value="cheap">Cheap</option>
-                                        <option value="good">Good</option>
-                                        <option value="fine">Fine (Accurate)</option>
-                                        {{/select}}
+                                        {{selectOptions baseQualityTypes selected=item.system.bowDesign.quality}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="bow-quality">
@@ -255,13 +251,7 @@
                                 </td>
                                 <td>
                                     <select name="system.bowDesign.workingMaterialOne.name">
-                                        {{#select item.system.bowDesign.workingMaterialOne.name}}
-                                        {{#each item.system.bowDesign.materials as |material id|}}
-                                        {{#ifCond ../item.system.tl '>=' material.tl}}
-                                        <option value="{{material.name}}">{{material.name}}</option>
-                                        {{/ifCond}}
-                                        {{/each}}
-                                        {{/select}}
+                                        {{selectOptions item.system.bowDesign.materials selected=item.system.bowDesign.workingMaterialOne.name valueAttr="name" labelAttr="name"}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="working-material">
@@ -293,13 +283,7 @@
                                 </td>
                                 <td>
                                     <select name="system.bowDesign.workingMaterialTwo.name">
-                                        {{#select item.system.bowDesign.workingMaterialTwo.name}}
-                                        {{#each item.system.bowDesign.materials as |material id|}}
-                                        {{#ifCond ../item.system.tl '>=' material.tl}}
-                                        <option value="{{material.name}}">{{material.name}}</option>
-                                        {{/ifCond}}
-                                        {{/each}}
-                                        {{/select}}
+                                        {{selectOptions item.system.bowDesign.materials selected=item.system.bowDesign.workingMaterialTwo.name valueAttr="name" labelAttr="name"}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="working-material">
@@ -336,10 +320,7 @@
                                 </td>
                                 <td>
                                     <select name="system.bowDesign.shape">
-                                        {{#select item.system.bowDesign.shape}}
-                                        <option value="d">D-Section</option>
-                                        <option value="round">Round</option>
-                                        {{/select}}
+                                        {{selectOptions bowShapes selected=item.system.bowDesign.shape}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="bow-shape">
@@ -371,22 +352,7 @@
                                 </td>
                                 <td>
                                     <select name="system.bowDesign.bowConstruction">
-                                        {{#select item.system.bowDesign.bowConstruction}}
-                                        <option value="straight">Straight</option>
-                                        {{#ifCond item.system.tl '>=' 1}}
-                                        <option value="recurve">Recurve</option>
-                                        <option value="reflex">Reflex</option>
-                                        {{/ifCond}}
-                                        {{#if item.system.bowDesign.compoundBowStrictTL}}
-                                        {{#ifCond item.system.tl '>=' 7}}
-                                        <option value="compound">Compound</option>
-                                        {{/ifCond}}
-                                        {{else}}
-                                        {{#ifCond item.system.tl '>=' 2}}
-                                        <option value="compound">Compound</option>
-                                        {{/ifCond}}
-                                        {{/if}}
-                                        {{/select}}
+                                        {{selectOptions bowConstructionTypes selected=item.system.bowDesign.bowConstruction}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="bow-type">
@@ -490,13 +456,7 @@
                                     </td>
                                     <td>
                                         <select name="system.bowDesign.stockMaterialOne.name">
-                                            {{#select item.system.bowDesign.stockMaterialOne.name}}
-                                            {{#each item.system.bowDesign.materials as |material id|}}
-                                            {{#ifCond ../item.system.tl '>=' material.tl}}
-                                            <option value="{{material.name}}">{{material.name}}</option>
-                                            {{/ifCond}}
-                                            {{/each}}
-                                            {{/select}}
+                                            {{selectOptions item.system.bowDesign.materials selected=system.bowDesign.stockMaterialOne.name valueAttr="name" labelAttr="name"}}
                                         </select>
                                     </td>
                                     <td class="question-container" id="riser-material">
@@ -526,13 +486,7 @@
                                     </td>
                                     <td>
                                         <select name="system.bowDesign.stockMaterialTwo.name">
-                                            {{#select item.system.bowDesign.stockMaterialTwo.name}}
-                                            {{#each item.system.bowDesign.materials as |material id|}}
-                                            {{#ifCond ../item.system.tl '>=' material.tl}}
-                                            <option value="{{material.name}}">{{material.name}}</option>
-                                            {{/ifCond}}
-                                            {{/each}}
-                                            {{/select}}
+                                            {{selectOptions item.system.bowDesign.materials selected=system.bowDesign.stockMaterialTwo.name valueAttr="name" labelAttr="name"}}
                                         </select>
                                     </td>
                                     <td class="question-container" id="riser-material">
@@ -622,13 +576,7 @@
                                 </td>
                                 <td>
                                     <select name="system.bowDesign.riserMaterialOne.name">
-                                        {{#select item.system.bowDesign.riserMaterialOne.name}}
-                                        {{#each item.system.bowDesign.materials as |material id|}}
-                                        {{#ifCond ../item.system.tl '>=' material.tl}}
-                                        <option value="{{material.name}}">{{material.name}}</option>
-                                        {{/ifCond}}
-                                        {{/each}}
-                                        {{/select}}
+                                        {{selectOptions item.system.bowDesign.materials selected=item.system.bowDesign.riserMaterialOne.name valueAttr="name" labelAttr="name"}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="riser-material">
@@ -658,13 +606,7 @@
                                 </td>
                                 <td>
                                     <select name="system.bowDesign.riserMaterialTwo.name">
-                                        {{#select item.system.bowDesign.riserMaterialTwo.name}}
-                                        {{#each item.system.bowDesign.materials as |material id|}}
-                                        {{#ifCond ../item.system.tl '>=' material.tl}}
-                                        <option value="{{material.name}}">{{material.name}}</option>
-                                        {{/ifCond}}
-                                        {{/each}}
-                                        {{/select}}
+                                        {{selectOptions item.system.bowDesign.materials selected=item.system.bowDesign.riserMaterialTwo.name valueAttr="name" labelAttr="name"}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="riser-material">
@@ -802,13 +744,7 @@
                                 </td>
                                 <td>
                                     <select name="system.bowDesign.arrows.{{id}}.material.name">
-                                        {{#select arrow.material.name}}
-                                        {{#each ../item.system.bowDesign.materials as |material id|}}
-                                        {{#ifCond ../../item.system.tl '>=' material.tl}}
-                                        <option value="{{material.name}}">{{material.name}}</option>
-                                        {{/ifCond}}
-                                        {{/each}}
-                                        {{/select}}
+                                        {{selectOptions ../item.system.bowDesign.materials selected=arrow.material.name valueAttr="name" labelAttr="name"}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="shaft-material">
@@ -840,11 +776,7 @@
                                 </td>
                                 <td>
                                     <select name="system.bowDesign.arrows.{{id}}.quality">
-                                        {{#select arrow.quality}}
-                                        <option value="cheap">Cheap</option>
-                                        <option value="good">Good</option>
-                                        <option value="fine">Fine (Accurate)</option>
-                                        {{/select}}
+                                        {{selectOptions ../baseQualityTypes selected=arrow.quality}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="arrow-quality">
@@ -889,12 +821,7 @@
                                 </td>
                                 <td>
                                     <select name="system.bowDesign.arrows.{{id}}.arrowhead.damageType">
-                                        {{#select arrow.arrowhead.damageType}}
-                                        <option value="imp">Impaling</option>
-                                        <option value="pi">Piercing</option>
-                                        <option value="cut">Cutting</option>
-                                        <option value="cr">Crushing</option>
-                                        {{/select}}
+                                        {{selectOptions ../arrowDamageTypes selected=arrow.arrowhead.damageType}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="arrowhead-damage-type">
@@ -909,11 +836,7 @@
                                 </td>
                                 <td>
                                     <select name="system.bowDesign.arrows.{{id}}.arrowhead.ad">
-                                        {{#select arrow.arrowhead.ad}}
-                                        <option value="1">(1)</option>
-                                        <option value="0.5">(0.5)</option>
-                                        <option value="2">(2)</option>
-                                        {{/select}}
+                                        {{selectOptions ../arrowArmourDivisors selected=arrow.arrowhead.ad}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="arrowhead-ad">
@@ -928,12 +851,7 @@
                                     Barbed
                                 </td>
                                 <td>
-                                    <select name="system.bowDesign.arrows.{{id}}.arrowhead.barbed">
-                                        {{#select arrow.arrowhead.barbed}}
-                                        <option value="yes">Yes</option>
-                                        <option value="no">No</option>
-                                        {{/select}}
-                                    </select>
+                                    <input type="checkbox" name="system.bowDesign.arrows.{{id}}.arrowhead.barbed" {{checked arrow.arrowhead.barbed}} data-dtype="Boolean"/>
                                 </td>
                                 <td class="question-container" id="arrowhead-barbed">
                                     <div class="question-button">

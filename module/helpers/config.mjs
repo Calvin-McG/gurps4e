@@ -26,6 +26,10 @@ export const RESISTANCETYPES = {};
 export const RESISTANCEATTR = {};
 export const BODYTYPES = {};
 export const VEHICLECRAFTTYPES = {};
+export const BASEQUALITYTYPES = {};
+export const BOWSHAPES = {};
+export const ARROWDAMAGETYPES = {};
+export const ARROWARMOURDIVISOR = {};
 
 DAMAGETYPES.dropdownChoices = {
     "burn": "Burning",
@@ -249,4 +253,29 @@ VEHICLECRAFTTYPES.dropdownChoices = {
     "ground": "Ground",
     "naval": "Water",
     "air": "Air",
+}
+
+BASEQUALITYTYPES.dropdownChoices = {
+    "cheap": "Cheap",
+    "good": "Good",
+    "fine": "Fine",
+    "veryFine": "Very Fine",
+}
+
+BOWSHAPES.dropdownChoices = {
+    "d": "D-Section",
+    "round": "Round",
+}
+
+ARROWDAMAGETYPES.dropdownChoices = {
+    "imp": "Impaling",
+    "pi": "Piercing",
+    "cut": "Cutting",
+    "cr": "Crushing",
+}
+
+ARROWARMOURDIVISOR.dropdownChoices = {
+    "1": "(1)",
+    "0.5": "(0.5)",
+    "2": "(2)",
 }

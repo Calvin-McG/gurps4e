@@ -5241,7 +5241,6 @@ export class gurpsItem extends Item {
         "type": type, // bow/footbow/xbow
         "magicalMaterials": false,
         "superScienceMaterials": false,
-        "compoundBowStrictTL": false,
         "cinematic": false,
         "riser": false, // Some inputs are only available for crossbows and bows with risers. This lets those options show up for bows and footbows.
         "compound": false,
@@ -5420,6 +5419,9 @@ export class gurpsItem extends Item {
 
     if (this.system.bowDesign.workingPercentage < 100) { // If working percent is not 100 then there must be a riser.
       this.system.bowDesign.riser = true;
+      if (typeof this.system.bowDesign.riserWidth === "undefined" || this.system.bowDesign.riserWidth === "" || Number.isNaN(this.system.bowDesign.riserWidth) || this.system.bowDesign.riserWidth <= 0) { // Undefined check for the riser width
+        this.system.bowDesign.riserWidth = 1;
+      }
     }
 
     if (this.system.bowDesign.bowConstruction == "compound") { // It's a compound bow
@@ -5435,7 +5437,6 @@ export class gurpsItem extends Item {
 
     // Get game settings
     this.system.bowDesign.magicalMaterials         = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
-    this.system.bowDesign.compoundBowStrictTL      = game.settings.get("gurps4e", "compoundBowStrictTL");
     this.system.bowDesign.fixedBonusStrongbow      = game.settings.get("gurps4e", "fixedBonusStrongbow");
     this.system.bowDesign.realisticBowScale        = game.settings.get("gurps4e", "realisticBowScale");
     this.system.bowDesign.repeatingAllowed         = game.settings.get("gurps4e", "repeatingCrossbows");
@@ -5448,29 +5449,33 @@ export class gurpsItem extends Item {
 
     this.system.bowDesign.userSTFromActor = false; // Reset whether we're getting the ST from the actor.
     this.system.bowDesign.strongBowCrossbowFinesseFromActor = false; // Reset whether we're getting the perk from the user.
-    if (this.actor) { // If there's an actor
-      if (this.actor.system) {
-        let smDiscount = attributeHelpers.calcSMDiscount(this.actor.system.bio.sm);
-        let st = attributeHelpers.calcStOrHt(this.actor.system.primaryAttributes.strength, smDiscount);
-        let lifting = attributeHelpers.calcLiftingSt(st, this.actor.system.primaryAttributes.lifting, smDiscount)
 
-        this.system.bowDesign.userST = lifting; // Get lifting ST from the user
-        this.system.bowDesign.userSTFromActor = true; // Flag that we're getting the ST from the user
+    if (this.actor && this.actor.system) { // If there's an actor
+      let smDiscount = attributeHelpers.calcSMDiscount(this.actor.system.bio.sm);
+      let st = attributeHelpers.calcStOrHt(this.actor.system.primaryAttributes.strength, smDiscount);
+      let lifting = attributeHelpers.calcLiftingSt(st, this.actor.system.primaryAttributes.lifting, smDiscount)
 
-        for (let i = 0; i < this.actor.items._source.length; i++) { // Loop through the list of the actor's items
-          if (this.actor.items._source[i].type === "Trait") { // Make sure it's a trait
-            if ((this.actor.items._source[i].name.toLowerCase() == "strongbow" || // Check if they have strongbow
-                this.actor.items._source[i].name.toLowerCase() == "strong bow") &&
-                (this.system.bowDesign.type == "bow" || this.system.bowDesign.type == "footbow")) { // And make sure this is a bow
-              this.system.bowDesign.strongBowCrossbowFinesseFromActor = true; // Flag that the perk is coming from the actor.
-              this.system.bowDesign.strongBowCrossbowFinesse = true; // Set the status of the perk
-            }
-            else if ((this.actor.items._source[i].name.toLowerCase() == "crossbow finesse") && (this.system.bowDesign.type == "xbow")) {
-              this.system.bowDesign.strongBowCrossbowFinesseFromActor = true; // Flag that the perk is coming from the actor.
-              this.system.bowDesign.strongBowCrossbowFinesse = true; // Set the status of the perk
-            }
+      this.system.bowDesign.userST = lifting; // Get lifting ST from the user
+      this.system.bowDesign.userSTFromActor = true; // Flag that we're getting the ST from the user
+
+      for (let i = 0; i < this.actor.items._source.length; i++) { // Loop through the list of the actor's items
+        if (this.actor.items._source[i].type === "Trait") { // Make sure it's a trait
+          if ((this.actor.items._source[i].name.toLowerCase() == "strongbow" || // Check if they have strongbow
+              this.actor.items._source[i].name.toLowerCase() == "strong bow") &&
+              (this.system.bowDesign.type == "bow" || this.system.bowDesign.type == "footbow")) { // And make sure this is a bow
+            this.system.bowDesign.strongBowCrossbowFinesseFromActor = true; // Flag that the perk is coming from the actor.
+            this.system.bowDesign.strongBowCrossbowFinesse = true; // Set the status of the perk
+          }
+          else if ((this.actor.items._source[i].name.toLowerCase() == "crossbow finesse") && (this.system.bowDesign.type == "xbow")) {
+            this.system.bowDesign.strongBowCrossbowFinesseFromActor = true; // Flag that the perk is coming from the actor.
+            this.system.bowDesign.strongBowCrossbowFinesse = true; // Set the status of the perk
           }
         }
+      }
+    }
+    else { // There is not an actor
+      if (typeof this.system.bowDesign.userST === "undefined" || this.system.bowDesign.userST === "" || this.system.bowDesign.userST == null || this.system.bowDesign.userST < 0) {
+        this.system.bowDesign.userST = 10
       }
     }
 
@@ -5622,16 +5627,19 @@ export class gurpsItem extends Item {
 
     // Get constructionFactor based on bowConstruction
     let constructionFactor = 0;
-    if (this.system.bowDesign.bowConstruction == "straight") {
+    if (this.system.bowDesign.bowConstruction === "straight") {
       constructionFactor = 1;
     }
-    else if (this.system.bowDesign.bowConstruction == "recurve") {
+    else if (this.system.bowDesign.bowConstruction === "recurve") {
       constructionFactor = 1.3;
     }
-    else if (this.system.bowDesign.bowConstruction == "reflex") {
+    else if (this.system.bowDesign.bowConstruction === "reflex") {
       constructionFactor = 1.6;
     }
-    else if (this.system.bowDesign.bowConstruction == "compound") {
+    else if (this.system.bowDesign.bowConstruction === "reflexRecurve") {
+      constructionFactor = 2.08;
+    }
+    else if (this.system.bowDesign.bowConstruction === "compound") {
       constructionFactor = 1;
     }
 
@@ -5691,16 +5699,19 @@ export class gurpsItem extends Item {
 
     // Calculate Stored Energy
     let z = 0.057;
-    if (this.system.bowDesign.bowConstruction == "straight") {
+    if (this.system.bowDesign.bowConstruction === "straight") {
       z = 0.057;
     }
-    else if (this.system.bowDesign.bowConstruction == "recurve") {
+    else if (this.system.bowDesign.bowConstruction === "recurve") {
       z = 0.065;
     }
-    else if (this.system.bowDesign.bowConstruction == "reflex") {
+    else if (this.system.bowDesign.bowConstruction === "reflex") {
       z = 0.073;
     }
-    else if (this.system.bowDesign.bowConstruction == "compound") {
+    else if (this.system.bowDesign.bowConstruction === "reflexRecurve") {
+      z = 0.0844675;
+    }
+    else if (this.system.bowDesign.bowConstruction === "compound") {
       z = 0.090;
     }
 
@@ -5732,6 +5743,7 @@ export class gurpsItem extends Item {
       if (arrowKeys.length > 0) { // If there are actually keys
         for (let i = 0; i < arrowKeys.length; i++){
           let accFactor = 0
+          let qualAccFactor = 0;
           if (this.system.bowDesign.type === "footbow") {
             accFactor = -1
           }
@@ -5764,17 +5776,33 @@ export class gurpsItem extends Item {
             let shaftWeight = Math.PI/4 * ( this.system.bowDesign.arrows[arrowKeys[i]].outerDiameter ** 2 - this.system.bowDesign.arrows[arrowKeys[i]].innerDiameter ** 2 ) * this.system.bowDesign.arrows[arrowKeys[i]].length * this.system.bowDesign.arrows[arrowKeys[i]].material.densityLbsCuIn;
             this.system.bowDesign.arrows[arrowKeys[i]].weight = shaftWeight + this.system.bowDesign.arrows[arrowKeys[i]].arrowhead.weight;
 
+            // Arrow quality handling
             let arrowCF = 1;
-            if (this.system.bowDesign.arrows[arrowKeys[i]].quality == "fine") {
-              accFactor += 1
-              arrowCF = 3;
+            if (this.system.bowDesign.arrows[arrowKeys[i]].quality === "veryFine") {
+              qualAccFactor += 2
+              arrowCF = 19;
             }
-            else if (this.system.bowDesign.arrows[arrowKeys[i]].quality == "cheap") {
-              accFactor -= 1
+            else if (this.system.bowDesign.arrows[arrowKeys[i]].quality === "fine") {
+              qualAccFactor += 1
+              arrowCF = 4;
+            }
+            else if (this.system.bowDesign.arrows[arrowKeys[i]].quality === "cheap") {
+              qualAccFactor -= 1
               arrowCF = 0.7;
             }
             else {
               arrowCF = 1;
+            }
+
+            // Impact of bow quality on Acc
+            if (this.system.bowDesign.quality === "veryFine") {
+              qualAccFactor += 2
+            }
+            else if (this.system.bowDesign.quality === "fine") {
+              qualAccFactor += 1
+            }
+            else if (this.system.bowDesign.quality === "cheap") {
+              qualAccFactor -= 1
             }
 
             if (game.settings.get("gurps4e", "simpleEssentialMaterials")) { // If the game is using simple essential materials
@@ -5787,7 +5815,10 @@ export class gurpsItem extends Item {
             let shaftCost = (this.system.bowDesign.arrows[arrowKeys[i]].material.arrowCostPerLb * shaftWeight)
 
             if (this.system.bowDesign.arrows[arrowKeys[i]].material.tl > 4 && this.system.bowDesign.arrows[arrowKeys[i]].innerDiameter > 0) { // Material is synthetic and the arrow is hollow.
-              shaftCost = shaftCost * (arrowCF + 4);
+              shaftCost = shaftCost * (arrowCF + 4); // Apply the extra CF for a hollow arrow
+            }
+            else {
+              shaftCost = shaftCost * arrowCF; // Apply the regular CF
             }
 
             // Calculate arrowhead cost
@@ -5838,7 +5869,7 @@ export class gurpsItem extends Item {
 
             let v = Math.sqrt(5.28 * kineticEnergy / this.system.bowDesign.arrows[arrowKeys[i]].weight)
 
-            this.system.bowDesign.arrows[arrowKeys[i]].acc = Math.max(0, Math.min(4,  Math.round(3 * Math.log10(v) - this.system.bowDesign.bulk/2 - 7.5 + accFactor)));
+            this.system.bowDesign.arrows[arrowKeys[i]].acc = Math.max(0, Math.min(4,  Math.round(3 * Math.log10(v) - this.system.bowDesign.bulk/2 - 7.5 + accFactor + qualAccFactor)));
           }
         }
       }
@@ -5847,20 +5878,26 @@ export class gurpsItem extends Item {
     if (typeof this.system.bowDesign.workingMaterialAvg != "undefined" && typeof this.system.bowDesign.riserMaterialAvg != "undefined" && typeof this.system.bowDesign.stockMaterialAvg != "undefined") {
       this.system.cost = limbsWeight * this.system.bowDesign.workingMaterialAvg.bowCostPerLb + riserWeight * this.system.bowDesign.riserMaterialAvg.bowCostPerLb + stockWeight * this.system.bowDesign.stockMaterialAvg.bowCostPerLb
 
-      if (this.system.bowDesign.quality == "fine") {
+      if (this.system.bowDesign.quality === "veryFine") {
+        this.system.cost = this.system.cost * 20;
+      }
+      else if (this.system.bowDesign.quality === "fine") {
         this.system.cost = this.system.cost * 4;
       }
-      else if (this.system.bowDesign.quality == "cheap") {
+      else if (this.system.bowDesign.quality === "cheap") {
         this.system.cost = this.system.cost * 0.7;
       }
 
-      if (this.system.bowDesign.bowConstruction == "recurve") {
+      if (this.system.bowDesign.bowConstruction === "recurve") {
         this.system.cost = this.system.cost * 1.25;
       }
-      else if (this.system.bowDesign.bowConstruction == "reflex") {
+      else if (this.system.bowDesign.bowConstruction === "reflex") {
         this.system.cost = this.system.cost * 1.5;
       }
-      else if (this.system.bowDesign.bowConstruction == "compound") {
+      else if (this.system.bowDesign.bowConstruction === "reflexRecurve") {
+        this.system.cost = this.system.cost * 1.75;
+      }
+      else if (this.system.bowDesign.bowConstruction === "compound") {
         this.system.cost = this.system.cost * 2;
       }
     }
@@ -7469,17 +7506,26 @@ export class gurpsItem extends Item {
 
       info += "<tr>" +
           "<td>Straight</td>" +
-          "<td>Like an english longbow, most historical steel crossbows, and so on. The bow stave, the bit that actually bends, is straight when unstrung.</td>" +
+          "<td>Like an english longbow, most historical steel crossbows, and so on. " +
+          "The bow stave, the bit that actually bends, is straight when unstrung.</td>" +
           "</tr>";
 
       info += "<tr>" +
           "<td>Recurve</td>" +
-          "<td>The end of the limbs bend away from the user when the bow is unstrung. This puts more strain on the materials, but also lets you get more power out of the bow.</td>" +
+          "<td>The end of the limbs bend away from the user when the bow is unstrung. " +
+          "This puts more strain on the materials, but also lets you get more power out of the bow.</td>" +
           "</tr>";
 
       info += "<tr>" +
           "<td>Reflex</td>" +
-          "<td>The entire limb bends way from the user when the bow is unstrung. This puts even more strain on the materials, allowing you to get even more power.</td>" +
+          "<td>The entire limb bends way from the user when the bow is unstrung. " +
+          "This puts even more strain on the materials, allowing you to get even more power out of the bow.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Reflex-Recurve</td>" +
+          "<td>The entire limb bends way from the user when the bow is unstrung, and the ends of the limbs bend away even further than that. " +
+          "This puts the most strain on the materials, allowing you to get even more power out of the bow.</td>" +
           "</tr>";
 
       info += "<tr>" +

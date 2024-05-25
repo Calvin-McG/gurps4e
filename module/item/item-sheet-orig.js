@@ -35,8 +35,53 @@ export class gurpsItemSheet extends ItemSheet {
         context.resistanceAttr = CONFIG.RESISTANCEATTR.dropdownChoices;
         context.bodyTypes = CONFIG.BODYTYPES.dropdownChoices;
         context.vehicleCraftTypes = CONFIG.VEHICLECRAFTTYPES.dropdownChoices;
+        context.baseQualityTypes = CONFIG.BASEQUALITYTYPES.dropdownChoices;
+        context.customWeaponTypes = this.getCustomWeaponTypes();
+        context.bowShapes = CONFIG.BOWSHAPES.dropdownChoices;
+        context.arrowDamageTypes = CONFIG.ARROWDAMAGETYPES.dropdownChoices;
+        context.arrowArmourDivisors = CONFIG.ARROWARMOURDIVISOR.dropdownChoices;
+        context.bowConstructionTypes = this.getBowConstructionTypes()
+
         return context;
     }
+    getCustomWeaponTypes() {
+        let types = {
+            "bow": "Bow"
+        }
+
+        if (this.item.system.tl >= 1) {
+            types.footbow = "Footbow"
+        }
+        if (this.item.system.tl >= 2) {
+            types.xbow = "Crossbow"
+        }
+        if (this.item.system.tl >= 3) {
+            types.firearm = "Firearm"
+        }
+        if (this.item.system.tl >= 8) {
+            types.laser = "Laser Weapon"
+        }
+
+        return types;
+    }
+
+    getBowConstructionTypes() {
+        let types = {
+            "straight": "Straight"
+        }
+
+        if (this.item.system.tl >= 1) {
+            types.recurve = "Recurve";
+            types.reflex = "Reflex";
+            types.reflexRecurve = "Reflex-Recurve";
+        }
+        if ((this.item.system.tl >= 7 && game.settings.get("gurps4e", "compoundBowStrictTL")) || this.item.system.tl >= 2) {
+            types.compound = "Compound";
+        }
+
+        return types;
+    }
+
 
   /** @override */
   static get defaultOptions() {
@@ -348,7 +393,7 @@ export class gurpsItemSheet extends ItemSheet {
             "innerDiameter": 0,
             "arrowhead": {
                 "ad": "1",
-                "barbed": "no",
+                "barbed": false,
                 "damageType": "imp",
                 "weight": 0.04
             },

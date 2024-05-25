@@ -88,24 +88,7 @@
                                 <td>Body Type</td>
                                 <td>
                                     <select name="system.armour.bodyType.name" class="bodyType">
-                                        {{#select item.system.armour.bodyType.name}}
-                                        <option value="">Make a Selection</option>
-                                        <option value="humanoid">Humanoid</option>
-                                        <option value="wingedHumanoid">Winged Humanoid</option>
-                                        <option value="quadruped">Quadruped</option>
-                                        <option value="wingedQuadruped">Winged Quadruped</option>
-                                        <option value="hexapod">Hexapod</option>
-                                        <option value="wingedHexapod">Winged Hexapod</option>
-                                        <option value="centaur">Centaur</option>
-                                        <option value="avian">Avian</option>
-                                        <option value="vermiform">Vermiform</option>
-                                        <option value="lamia">Lamia</option>
-                                        <option value="wingedLamia">Winged Lamia</option>
-                                        <option value="octopod">Octopod</option>
-                                        <option value="cancroid">Cancroid</option>
-                                        <option value="ichthyoid">Ichthyoid</option>
-                                        <option value="arachnoid">Arachnoid</option>
-                                        {{/select}}
+                                        {{selectOptions bodyTypes selected=item.system.armour.bodyType.name}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="armour-body-type">
