@@ -434,35 +434,15 @@
                         <td><input type="text" name="system.affliction.{{id}}.desc" value="{{desc}}" title="{{desc}}" style="text-align:left;" /></td>
                         <td class="resource-label">
                             <select name="system.affliction.{{id}}.rangePenalties">
-                                {{#select affliction.rangePenalties}}
-                                <option value="">Make a Selection</option>
-                                <option value="regular">Regular (-1/yard)</option>
-                                <option value="ssrt">Size/Speed/Range Table</option>
-                                <option value="long">Long Distance Penalties</option>
-                                <option value="none">None</option>
-                                {{/select}}
+                                {{selectOptions ../rangeTypes selected=affliction.rangePenalties}}
                             </select>
                         </td>
                         <td style="display: flex; width: 240px" >
                             <select name="system.affliction.{{id}}.resistanceType">
-                                {{#select affliction.resistanceType}}
-                                <option value="">Make a Selection</option>
-                                <option value="contest">Quick Contest</option>
-                                <option value="resistance">Resistance</option>
-                                <option value="irresistible">Irresistible</option>
-                                {{/select}}
+                                {{selectOptions ../resistanceTypes selected=affliction.resistanceType}}
                             </select>
                             <select name="system.affliction.{{id}}.resistanceRoll" class="resistanceRoll">
-                                {{#select affliction.resistanceRoll}}
-                                <option value="">None</option>
-                                <option value="Strength">ST</option>
-                                <option value="Dexterity">DX</option>
-                                <option value="Intelligence">IQ</option>
-                                <option value="Health">HT</option>
-                                <option value="Will">Will</option>
-                                <option value="Perception">Per</option>
-                                <option value="Fright">Fright</option>
-                                {{/select}}
+                                {{selectOptions ../resistanceAttr selected=affliction.resistanceRoll}}
                             </select>
                             <input type="text" placeholder="-0" name="system.affliction.{{id}}.resistanceRollPenalty" value="{{affliction.resistanceRollPenalty}}" title="{{affliction.resistanceRollPenalty}}" style="text-align:left; width: 40px; margin: unset" />
                         </td>
@@ -500,24 +480,7 @@
                 <span>
                     <label>Body Type:</label>
                     <select name="system.armour.bodyType.name" class="bodyType">
-                        {{#select item.system.armour.bodyType.name}}
-                        <option value="">Make a Selection</option>
-                        <option value="humanoid">Humanoid</option>
-                        <option value="wingedHumanoid">Winged Humanoid</option>
-                        <option value="quadruped">Quadruped</option>
-                        <option value="wingedQuadruped">Winged Quadruped</option>
-                        <option value="hexapod">Hexapod</option>
-                        <option value="wingedHexapod">Winged Hexapod</option>
-                        <option value="centaur">Centaur</option>
-                        <option value="avian">Avian</option>
-                        <option value="vermiform">Vermiform</option>
-                        <option value="lamia">Lamia</option>
-                        <option value="wingedLamia">Winged Lamia</option>
-                        <option value="octopod">Octopod</option>
-                        <option value="cancroid">Cancroid</option>
-                        <option value="ichthyoid">Ichthyoid</option>
-                        <option value="arachnoid">Arachnoid</option>
-                        {{/select}}
+                        {{selectOptions bodyTypes selected=item.system.armour.bodyType.name}}
                     </select>
                 </span>
                 {{#if (eq item.system.armour.bodyType.name "") }}

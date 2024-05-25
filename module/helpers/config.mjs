@@ -24,6 +24,7 @@ export const DEFENCEQTY = {};
 export const RANGETYPES = {};
 export const RESISTANCETYPES = {};
 export const RESISTANCEATTR = {};
+export const BODYTYPES = {};
 
 DAMAGETYPES.dropdownChoices = {
     "burn": "Burning",
@@ -222,4 +223,23 @@ RESISTANCEATTR.dropdownChoices = {
     "Will": "Will",
     "Perception": "Per",
     "Fright": "Fright",
+}
+
+BODYTYPES.dropdownChoices = {
+    "": "Make a Selection",
+    "humanoid": "Humanoid",
+    "wingedHumanoid": "Winged Humanoid",
+    "quadruped": "Quadruped",
+    "wingedQuadruped": "Winged Quadruped",
+    "hexapod": "Hexapod",
+    "wingedHexapod": "Winged Hexapod",
+    "centaur": "Centaur",
+    "avian": "Avian",
+    "vermiform": "Vermiform",
+    "lamia": "Lamia",
+    "wingedLamia": "Winged Lamia",
+    "octopod": "Octopod",
+    "cancroid": "Cancroid",
+    "ichthyoid": "Ichthyoid",
+    "arachnoid": "Arachnoid",
 }
