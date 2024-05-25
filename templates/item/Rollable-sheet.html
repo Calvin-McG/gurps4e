@@ -20,10 +20,7 @@
                     </td>
                     <td>
                         <select name="system.category">
-                            {{#select item.system.category}}
-                            <option value="skill">Skill</option>
-                            <option value="technique">Technique</option>
-                            {{/select}}
+                            {{selectOptions rollableTypeOptions selected=item.system.category}}
                         </select>
                     </td>
                 </tr>
@@ -34,13 +31,7 @@
                         </td>
                         <td>
                             <select name="system.difficulty">
-                                {{#select item.system.difficulty}}
-                                <option value="E">Easy</option>
-                                <option value="A">Average</option>
-                                <option value="H">Hard</option>
-                                <option value="VH">Very Hard</option>
-                                <option value="W">Wildcard</option>
-                                {{/select}}
+                                {{selectOptions rollableDifficultyOptions selected=item.system.difficulty}}
                             </select>
                         </td>
                     </tr>
@@ -51,10 +42,7 @@
                         </td>
                         <td>
                             <select name="system.difficulty">
-                                {{#select item.system.difficulty}}
-                                <option value="A">Average</option>
-                                <option value="H">Hard</option>
-                                {{/select}}
+                                {{selectOptions techniqueDifficultyOptions selected=item.system.difficulty}}
                             </select>
                         </td>
                     </tr>
@@ -67,14 +55,7 @@
                         </td>
                         <td>
                             <select name="system.baseAttr">
-                                {{#select item.system.baseAttr}}
-                                <option value="ST">ST</option>
-                                <option value="DX">DX</option>
-                                <option value="IQ">IQ</option>
-                                <option value="HT">HT</option>
-                                <option value="Per">Per</option>
-                                <option value="Will">Will</option>
-                                {{/select}}
+                                {{selectOptions baseAttrOptions selected=item.system.baseAttr}}
                             </select>
                         </td>
                     </tr>
@@ -93,12 +74,7 @@
                         </td>
                         <td>
                             <select name="system.defenceTechnique">
-                                {{#select item.system.defenceTechnique}}
-                                <option value="">No</option>
-                                <option value="block">Block</option>
-                                <option value="parry">Parry</option>
-                                <option value="dodge">Dodge</option>
-                                {{/select}}
+                                {{selectOptions defenceTypeOptions selected=item.system.defenceTechnique}}
                             </select>
                         </td>
                     </tr>
@@ -332,12 +308,7 @@
             <div class="flexrow">
                 <label class="resource-label">Dabbler Points</label>
                 <select name="system.dabblerPoints">
-                    {{#select item.system.dabblerPoints}}
-                    <option value="0">0: Default +0</option>
-                    <option value="1">1: Default +1</option>
-                    <option value="2">2: Default +2</option>
-                    <option value="3">4: Default +3</option>
-                    {{/select}}
+                    {{selectOptions dabblerOptions selected=item.system.dabblerPoints}}
                 </select>
             </div>
             <hr>

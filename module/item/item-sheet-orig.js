@@ -6,6 +6,18 @@ import {rollHelpers} from "../../helpers/rollHelpers.js";
  */
 export class gurpsItemSheet extends ItemSheet {
 
+    getData() {
+        const context = super.getData();
+        context.traitTypeOptions = CONFIG.TRAITTYPES.dropdownChoices;
+        context.rollableTypeOptions = CONFIG.ROLLABLETYPES.dropdownChoices;
+        context.rollableDifficultyOptions = CONFIG.ROLLABLEDIFFICULTY.dropdownChoices;
+        context.techniqueDifficultyOptions = CONFIG.TECHNIQUEDIFFICULTY.dropdownChoices;
+        context.defenceTypeOptions = CONFIG.DEFENCETYPE.dropdownChoices;
+        context.baseAttrOptions = CONFIG.BASEATTR.dropdownChoices;
+        context.dabblerOptions = CONFIG.DABBLEROPTIONS.dropdownChoices;
+        return context;
+    }
+
   /** @override */
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {

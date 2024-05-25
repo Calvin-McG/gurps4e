@@ -4,12 +4,28 @@ import { gurpsActorSheet } from "./module/actor/actor-sheet.js";
 import { gurpsItem } from "./module/item/item.js";
 import { gurpsItemSheet } from "./module/item/item-sheet-orig.js";
 import { attackHelpers } from "./helpers/attackHelpers.js";
-import { DAMAGETYPES } from "./module/helpers/config.mjs";
+import {
+  DAMAGETYPES,
+  TRAITTYPES,
+  ROLLABLETYPES,
+  ROLLABLEDIFFICULTY,
+  BASEATTR,
+  DEFENCETYPE,
+  TECHNIQUEDIFFICULTY,
+  DABBLEROPTIONS
+} from "./module/helpers/config.mjs";
 
 Hooks.once('init', async function() {
 
   // Begin section for dropdown definitions
   CONFIG.DAMAGETYPES = DAMAGETYPES;
+  CONFIG.TRAITTYPES = TRAITTYPES;
+  CONFIG.ROLLABLETYPES = ROLLABLETYPES;
+  CONFIG.ROLLABLEDIFFICULTY = ROLLABLEDIFFICULTY;
+  CONFIG.TECHNIQUEDIFFICULTY = TECHNIQUEDIFFICULTY;
+  CONFIG.BASEATTR = BASEATTR;
+  CONFIG.DEFENCETYPE = DEFENCETYPE;
+  CONFIG.DABBLEROPTIONS = DABBLEROPTIONS;
 
   // Begin section of stuff I don't totally remember the reasons for
   game.gurps4e = {
