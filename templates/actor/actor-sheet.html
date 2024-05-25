@@ -2608,31 +2608,13 @@
 						<div>
 							<label>Damage Type One:</label>
 							<select name="system.bodyType.damageTypeOne">
-								{{#select actor.system.bodyType.damageTypeOne}}
-									<option value="Burn">Burning</option>
-									<option value="Cor">Corrosion</option>
-									<option value="Cr">Crushing</option>
-									<option value="Cut">Cutting</option>
-									<option value="Fat">Fatigue</option>
-									<option value="Imp">Impaling</option>
-									<option value="Pi">Piercing</option>
-									<option value="Tox">Toxic</option>
-								{{/select}}
+								{{selectOptions damageTypeOptions selected=actor.system.bodyType.damageTypeOne}}
 							</select>
 						</div>
 						<div>
 							<label>Damage Type Two:</label>
 							<select name="system.bodyType.damageTypeTwo">
-								{{#select actor.system.bodyType.damageTypeTwo}}
-									<option value="Burn">Burning</option>
-									<option value="Cor">Corrosion</option>
-									<option value="Cr">Crushing</option>
-									<option value="Cut">Cutting</option>
-									<option value="Fat">Fatigue</option>
-									<option value="Imp">Impaling</option>
-									<option value="Pi">Piercing</option>
-									<option value="Tox">Toxic</option>
-								{{/select}}
+								{{selectOptions damageTypeOptions selected=actor.system.bodyType.damageTypeTwo}}
 							</select>
 						</div>
 						<div>

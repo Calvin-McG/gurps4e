@@ -7,6 +7,12 @@ import { actorHelpers } from "../../helpers/actorHelpers.js";
  */
 export class gurpsActorSheet extends ActorSheet {
 
+	getData(){
+		const context = super.getData();
+		context.damageTypeOptions = CONFIG.DAMAGETYPES.dropdownChoices;
+		return context;
+	}
+
 	/** @override */
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
