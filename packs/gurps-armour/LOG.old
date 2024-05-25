@@ -1,5 +1,1 @@
-2024/05/24-17:48:53.046 61c0 Log #65: 0 ops saved to Table #66 OK
-2024/05/24-17:48:53.047 61c0 Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-armour/000065.log: OK
-2024/05/24-17:48:53.048 61c0 Table #21: 103 entries OK
-2024/05/24-17:48:53.050 61c0 Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-armour/MANIFEST-000064: OK
-2024/05/24-17:48:53.052 61c0 **** Repaired leveldb C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-armour; recovered 1 files; 194065 bytes. Some data may have been lost. ****
+2024/05/24-17:48:53.061 61c0 Delete type=3 #1

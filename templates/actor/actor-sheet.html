@@ -2927,7 +2927,8 @@
 								<td class="item-name">Spell</td>
 								<td class="item-notes">Notes</td>
 								<td class="item-college">College</td>
-								<td class="item-points actor-sheet-digit-col">Cost</td>
+								<td class="item-points actor-sheet-digit-col">Base Cost</td>
+								<td class="item-points actor-sheet-digit-col">Levelled Cost</td>
 								<td class="item-points actor-sheet-digit-col">Casting Time</td>
 								<td class="item-points actor-sheet-digit-col">Duration</td>
 								<td class="item-rolls actor-sheet-digit-col">Level</td>
@@ -2959,7 +2960,10 @@
 													{{item.system.college}}
 												</td>
 												<td class="item-points actor-sheet-digit-col">
-													{{item.system.spellDetails.cost}}
+													{{item.system.spellDetails.baseCost}}
+												</td>
+												<td class="item-points actor-sheet-digit-col">
+													{{item.system.spellDetails.levelledCost}}
 												</td>
 												<td class="item-points actor-sheet-digit-col">
 													{{item.system.spellDetails.timeToCast}}

@@ -1113,9 +1113,8 @@
       },
       "spellDetails": {
         "spellDetails": {
-          "cost": "",
-          "baseCost": "",
-          "levelledCost": "",
+          "baseCost": 0,
+          "levelledCost": 0,
           "duration": "",
           "prerequisites": "",
           "timeToCast": ""
