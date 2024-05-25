@@ -2914,7 +2914,7 @@ export class gurpsActor extends Actor {
 						dr.hardness = +foundry.utils.getProperty(object, bodyParts[i] + ".drHardening");
 					}
 
-					setProperty(body, bodyParts[i] + ".dr." + index, dr);
+					foundry.utils.setProperty(body, bodyParts[i] + ".dr." + index, dr);
 				}
 				else {
 					let subParts = Object.keys(foundry.utils.getProperty(object, bodyParts[i] + ".subLocation")); // Collect all the subpart names
@@ -2957,7 +2957,7 @@ export class gurpsActor extends Actor {
 							dr.hardness = +foundry.utils.getProperty(object, bodyParts[i] + ".subLocation." + subParts[n] + ".drHardening");
 						}
 
-						setProperty(body, bodyParts[i] + ".subLocation." + subParts[n] + ".dr." + index, dr);
+						foundry.utils.setProperty(body, bodyParts[i] + ".subLocation." + subParts[n] + ".dr." + index, dr);
 					}
 				}
 			}
@@ -3014,7 +3014,7 @@ export class gurpsActor extends Actor {
 								state = "Fine";
 							}
 
-							setProperty(this.system.bodyType.body, bodyParts[i] + ".hp.state",state);
+							foundry.utils.setProperty(this.system.bodyType.body, bodyParts[i] + ".hp.state",state);
 						}
 
 						if (foundry.utils.getProperty(this.system.bodyType.body, bodyParts[i] + ".subLocation")){//Part has sub parts
@@ -3039,7 +3039,7 @@ export class gurpsActor extends Actor {
 										state = "Fine";
 									}
 
-									setProperty(this.system.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n] + ".hp.state",state);
+									foundry.utils.setProperty(this.system.bodyType.body, bodyParts[i] + ".subLocation." + subParts[n] + ".hp.state",state);
 								}
 							}
 						}

@@ -6,7 +6,7 @@ Hooks.on("ready", async () => {
   console.log("Starting Ready");
 
   if (game.user.isGM) {
-    let permissions = duplicate(game.permissions)
+    let permissions = foundry.utils.duplicate(game.permissions)
     if (permissions["FILES_BROWSE"].length < 4)
     permissions["FILES_BROWSE"] = [1, 2, 3, 4]
     game.settings.set("core", "permissions", permissions);
