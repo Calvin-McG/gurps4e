@@ -20,11 +20,7 @@
                 </div>
                 <div id="equipped" class="flexrow">
                     <select name="system.equipStatus" class="equipStatusSelect">
-                        {{#select item.system.equipStatus}}
-                        <option value="equipped">Equipped</option>
-                        <option value="carried">Carried</option>
-                        <option value="notCarried">Not Carried</option>
-                        {{/select}}
+                        {{selectOptions equipStatusOptions selected=item.system.equipStatus}}
                     </select>
                 </div>
                 <div id="subCategory" class="flexrow">

@@ -12,7 +12,9 @@ import {
   BASEATTR,
   DEFENCETYPE,
   TECHNIQUEDIFFICULTY,
-  DABBLEROPTIONS
+  DABBLEROPTIONS,
+  EQUIPSTATUS,
+  RELIEFTYPE
 } from "./module/helpers/config.mjs";
 
 Hooks.once('init', async function() {
@@ -26,6 +28,8 @@ Hooks.once('init', async function() {
   CONFIG.BASEATTR = BASEATTR;
   CONFIG.DEFENCETYPE = DEFENCETYPE;
   CONFIG.DABBLEROPTIONS = DABBLEROPTIONS;
+  CONFIG.EQUIPSTATUS = EQUIPSTATUS;
+  CONFIG.RELIEFTYPE = RELIEFTYPE;
 
   // Begin section of stuff I don't totally remember the reasons for
   game.gurps4e = {

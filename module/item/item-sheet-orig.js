@@ -15,6 +15,8 @@ export class gurpsItemSheet extends ItemSheet {
         context.defenceTypeOptions = CONFIG.DEFENCETYPE.dropdownChoices;
         context.baseAttrOptions = CONFIG.BASEATTR.dropdownChoices;
         context.dabblerOptions = CONFIG.DABBLEROPTIONS.dropdownChoices;
+        context.equipStatusOptions = CONFIG.EQUIPSTATUS.dropdownChoices;
+        context.reliefType = CONFIG.RELIEFTYPE.dropdownChoices;
         return context;
     }
 

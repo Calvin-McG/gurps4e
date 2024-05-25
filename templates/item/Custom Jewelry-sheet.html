@@ -20,11 +20,7 @@
                 </div>
                 <div id="equipped" class="flexrow">
                     <select name="system.equipStatus" class="equipStatusSelect">
-                        {{#select item.system.equipStatus}}
-                        <option value="equipped">Equipped</option>
-                        <option value="carried">Carried</option>
-                        <option value="notCarried">Not Carried</option>
-                        {{/select}}
+                        {{selectOptions equipStatusOptions selected=item.system.equipStatus}}
                     </select>
                 </div>
                 <div id="subCategory" class="flexrow">
@@ -96,11 +92,7 @@
                                 </td>
                                 <td>
                                     <select name="system.jewelryDesign.style">
-                                        {{#select item.system.jewelryDesign.style}}
-                                            {{#each item.system.jewelryDesign.styles as |style id|}}
-                                                <option value="{{style.code}}">{{style.name}}</option>
-                                            {{/each}}
-                                        {{/select}}
+                                        {{selectOptions item.system.jewelryDesign.styles selected=item.system.jewelryDesign.style valueAttr="code" labelAttr="name"}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="jewelry-style">
@@ -142,12 +134,9 @@
                                 </td>
                                 <td>
                                     <select name="system.jewelryDesign.material">
-                                        {{#select item.system.jewelryDesign.material}}
-                                            {{#each item.system.jewelryDesign.materials as |material id|}}
-                                                <option value="{{material.name}}">{{material.name}} - {{round material.cost 100}} $/lb</option>
-                                            {{/each}}
-                                        {{/select}}
+                                        {{selectOptions item.system.jewelryDesign.materials selected=item.system.jewelryDesign.material valueAttr="name" labelAttr="name"}}
                                     </select>
+                                    {{item.system.jewelryDesign.selectedMaterial.cost}} $
                                 </td>
                                 <td class="question-container" id="jewelry-material">
                                     <div class="question-button">
@@ -186,11 +175,7 @@
                                 </td>
                                 <td>
                                     <select name="system.jewelryDesign.relief" class="jewelry-decoration-select">
-                                        {{#select item.system.jewelryDesign.relief}}
-                                        <option value="none">None</option>
-                                        <option value="simple">Simple (CF: 1.5)</option>
-                                        <option value="extensive">Extensive (CF: 4)</option>
-                                        {{/select}}
+                                        {{selectOptions reliefType selected=item.system.jewelryDesign.relief}}
                                     </select>
                                 </td>
                             </tr>

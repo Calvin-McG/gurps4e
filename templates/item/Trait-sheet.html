@@ -15,12 +15,7 @@
                 </td>
                 <td>
                     <select name="system.category">
-                        {{#select item.system.category}}
-                        <option value="advantage">Advantage</option>
-                        <option value="disadv">Disadvantage</option>
-                        <option value="perk">Perk</option>
-                        <option value="quirk">Quirk</option>
-                        {{/select}}
+                        {{selectOptions traitTypeOptions selected=item.system.category}}
                     </select>
                 </td>
             </tr>

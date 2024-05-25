@@ -6,6 +6,8 @@ export const TECHNIQUEDIFFICULTY = {};
 export const BASEATTR = {};
 export const DEFENCETYPE = {};
 export const DABBLEROPTIONS = {};
+export const EQUIPSTATUS = {};
+export const RELIEFTYPE = {};
 
 DAMAGETYPES.dropdownChoices = {
     "burn": "Burning",
@@ -64,4 +66,16 @@ DABBLEROPTIONS.dropdownChoices = {
     "1": "1: Default +1",
     "2": "2: Default +2",
     "3": "4: Default +3",
+}
+
+EQUIPSTATUS.dropdownChoices = {
+    "equipped": "Equipped",
+    "carried": "Carried",
+    "notCarried": "Not Carried",
+}
+
+RELIEFTYPE.dropdownChoices = {
+    "none": "None",
+    "simple": "Simple (CF: 1.5)",
+    "extensive": "Extensive (CF: 4)",
 }

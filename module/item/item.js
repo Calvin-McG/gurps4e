@@ -1438,8 +1438,8 @@ export class gurpsItem extends Item {
     this.system.jewelryDesign.hideDecorations = false;
     this.system.jewelryDesign.manaTreasure = game.settings.get("gurps4e", "manaTreasure");
     this.system.jewelryDesign.showMana = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
-    this.system.jewelryDesign.styles = game.materialAPI.fetchJewelryDesigns();
-    this.system.jewelryDesign.materials = game.materialAPI.fetchTreasureMaterials();
+    this.system.jewelryDesign.styles = materialHelpers.fetchJewelryDesigns();
+    this.system.jewelryDesign.materials = materialHelpers.fetchTreasureMaterials();
     this.system.jewelryDesign.allowMagicalMaterialsForCustom = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
     this.system.lc = 4;
     this.system.jewelryDesign.selectedStyle = game.materialAPI.getJewelryDesignByCode(this.system.jewelryDesign.style);
