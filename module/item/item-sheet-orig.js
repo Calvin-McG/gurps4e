@@ -17,6 +17,17 @@ export class gurpsItemSheet extends ItemSheet {
         context.dabblerOptions = CONFIG.DABBLEROPTIONS.dropdownChoices;
         context.equipStatusOptions = CONFIG.EQUIPSTATUS.dropdownChoices;
         context.reliefType = CONFIG.RELIEFTYPE.dropdownChoices;
+        context.inlayType = CONFIG.INLAYTYPE.dropdownChoices;
+        context.gildingType = CONFIG.GILDINGTYPE.dropdownChoices;
+        context.beadingType = CONFIG.BEADINGTYPE.dropdownChoices;
+        context.dyeType = CONFIG.DYETYPE.dropdownChoices;
+        context.embroideryType = CONFIG.EMBROIDERYTYPE.dropdownChoices;
+        context.frigneType = CONFIG.FRINGETYPE.dropdownChoices;
+        context.tapestryWeaveType = CONFIG.TAPESTRYWEAVETYPE.dropdownChoices;
+        context.tapestryDyeType = CONFIG.TAPESTRYDYETYPE.dropdownChoices;
+        context.figurativePaintingType = CONFIG.FIGUREATIVEPAINTINGTYPE.dropdownChoices;
+        context.enamelType = CONFIG.ENAMELTYPE.dropdownChoices;
+        context.etchingType = CONFIG.ETCHINGTYPE.dropdownChoices;
         return context;
     }
 
