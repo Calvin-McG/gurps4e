@@ -23,14 +23,7 @@
                     </td>
                     <td>
                         <select name="system.spellClass">
-                            {{#select item.system.spellClass}}
-                            <option value="Regular">Regular</option>
-                            <option value="Missile">Missile</option>
-                            <option value="Melee">Melee</option>
-                            <option value="Area">Area</option>
-                            <option value="Blocking">Blocking</option>
-                            <option value="Information">Information</option>
-                            {{/select}}
+                            {{selectOptions spellClass selected=item.system.spellClass}}
                         </select>
                     </td>
                 </tr>
@@ -45,12 +38,7 @@
                     </td>
                     <td>
                         <select name="system.defenceType">
-                            {{#select item.system.defenceType}}
-                            <option value="Magic">Magic</option>
-                            <option value="Parry">Parry</option>
-                            <option value="Block">Block</option>
-                            <option value="Dodge">Dodge</option>
-                            {{/select}}
+                            {{selectOptions defenceTypeOptions selected=item.system.defenceType}}
                         </select>
                     </td>
                 </tr>
@@ -65,11 +53,7 @@
                     </td>
                     <td>
                         <select name="system.defenceQty">
-                            {{#select item.system.defenceQty}}
-                            <option value="All">All</option>
-                            <option value="Single">Single</option>
-                            <option value="Regular">Regular</option>
-                            {{/select}}
+                            {{selectOptions defenceQty selected=item.system.defenceQty}}
                         </select>
                     </td>
                 </tr>
@@ -78,12 +62,7 @@
                     <td>Difficulty</td>
                     <td>
                         <select name="system.difficulty">
-                            {{#select item.system.difficulty}}
-                            <option value="A">Average</option>
-                            <option value="H">Hard</option>
-                            <option value="VH">Very Hard</option>
-                            <option value="W">Wildcard</option>
-                            {{/select}}
+                            {{selectOptions rollableDifficultyOptions selected=item.system.difficulty}}
                         </select>
                     </td>
                 </tr>
@@ -588,35 +567,15 @@
                         <td><input type="text" name="system.affliction.{{id}}.desc" value="{{desc}}" title="{{desc}}" style="text-align:left;" /></td>
                         <td class="resource-label">
                             <select name="system.affliction.{{id}}.rangePenalties">
-                                {{#select affliction.rangePenalties}}
-                                <option value="">Make a Selection</option>
-                                <option value="regular">Regular (-1/yard)</option>
-                                <option value="ssrt">Size/Speed/Range Table</option>
-                                <option value="long">Long Distance Penalties</option>
-                                <option value="none">None</option>
-                                {{/select}}
+                                {{selectOptions ../rangeTypes selected=affliction.rangePenalties}}
                             </select>
                         </td>
                         <td style="display: flex; width: 240px" >
                             <select name="system.affliction.{{id}}.resistanceType">
-                                {{#select affliction.resistanceType}}
-                                <option value="">Make a Selection</option>
-                                <option value="contest">Quick Contest</option>
-                                <option value="resistance">Resistance</option>
-                                <option value="irresistible">Irresistible</option>
-                                {{/select}}
+                                {{selectOptions ../resistanceTypes selected=affliction.resistanceType}}
                             </select>
                             <select name="system.affliction.{{id}}.resistanceRoll" class="resistanceRoll">
-                                {{#select affliction.resistanceRoll}}
-                                <option value="">None</option>
-                                <option value="Strength">ST</option>
-                                <option value="Dexterity">DX</option>
-                                <option value="Intelligence">IQ</option>
-                                <option value="Health">HT</option>
-                                <option value="Will">Will</option>
-                                <option value="Perception">Per</option>
-                                <option value="Fright">Fright</option>
-                                {{/select}}
+                                {{selectOptions ../resistanceAttr selected=affliction.resistanceRoll}}
                             </select>
                             <input type="text" placeholder="-0" name="system.affliction.{{id}}.resistanceRollPenalty" value="{{affliction.resistanceRollPenalty}}" title="{{affliction.resistanceRollPenalty}}" style="text-align:left; width: 40px; margin: unset" />
                         </td>

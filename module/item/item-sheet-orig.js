@@ -22,12 +22,17 @@ export class gurpsItemSheet extends ItemSheet {
         context.beadingType = CONFIG.BEADINGTYPE.dropdownChoices;
         context.dyeType = CONFIG.DYETYPE.dropdownChoices;
         context.embroideryType = CONFIG.EMBROIDERYTYPE.dropdownChoices;
-        context.frigneType = CONFIG.FRINGETYPE.dropdownChoices;
+        context.fringeType = CONFIG.FRINGETYPE.dropdownChoices;
         context.tapestryWeaveType = CONFIG.TAPESTRYWEAVETYPE.dropdownChoices;
         context.tapestryDyeType = CONFIG.TAPESTRYDYETYPE.dropdownChoices;
         context.figurativePaintingType = CONFIG.FIGUREATIVEPAINTINGTYPE.dropdownChoices;
         context.enamelType = CONFIG.ENAMELTYPE.dropdownChoices;
         context.etchingType = CONFIG.ETCHINGTYPE.dropdownChoices;
+        context.spellClass = CONFIG.SPELLCLASS.dropdownChoices;
+        context.defenceQty = CONFIG.DEFENCEQTY.dropdownChoices;
+        context.rangeTypes = CONFIG.RANGETYPES.dropdownChoices;
+        context.resistanceTypes = CONFIG.RESISTANCETYPES.dropdownChoices;
+        context.resistanceAttr = CONFIG.RESISTANCEATTR.dropdownChoices;
         return context;
     }
 
@@ -618,8 +623,16 @@ export class gurpsItemSheet extends ItemSheet {
         }
         let newRow = {
             "name": "",
+            "skill": "",
+            "skillMod": 0,
+            "damageInput": "",
+            "damageType": "",
             "resistanceRoll": "",
             "armourDivisor": "I",
+            "desc": "",
+            "rangePenalties": "",
+            "resistanceType": "",
+            "flags": "",
             "resistanceRollPenalty": 0,
             "ruleOf": 16
         };

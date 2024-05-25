@@ -19,6 +19,11 @@ export const TAPESTRYDYETYPE = {};
 export const FIGUREATIVEPAINTINGTYPE = {};
 export const ENAMELTYPE = {};
 export const ETCHINGTYPE = {};
+export const SPELLCLASS = {};
+export const DEFENCEQTY = {};
+export const RANGETYPES = {};
+export const RESISTANCETYPES = {};
+export const RESISTANCEATTR = {};
 
 DAMAGETYPES.dropdownChoices = {
     "burn": "Burning",
@@ -70,6 +75,7 @@ DEFENCETYPE.dropdownChoices = {
     "block": "Block",
     "parry": "Parry",
     "dodge": "Dodge",
+    "magic": "Magic"
 }
 
 DABBLEROPTIONS.dropdownChoices = {
@@ -175,4 +181,45 @@ ETCHINGTYPE.dropdownChoices = {
     "none": "None",
     "simple": "Simple (CF: 1.5)",
     "expensive": "Expensive (CF: 4)",
+}
+
+SPELLCLASS.dropdownChoices = {
+    "Regular": "Regular",
+    "Missile": "Missile",
+    "Melee": "Melee",
+    "Area": "Area",
+    "Blocking": "Blocking",
+    "Information": "Information",
+}
+
+DEFENCEQTY.dropdownChoices = {
+    "All": "All",
+    "Single": "Single",
+    "Regular": "Regular",
+}
+
+RANGETYPES.dropdownChoices = {
+    "": "Make a Selection",
+    "regular": "Regular (-1/yard)",
+    "ssrt": "Size/Speed/Range Table",
+    "long": "Long Distance Penalties",
+    "none": "None",
+}
+
+RESISTANCETYPES.dropdownChoices = {
+    "": "Make a Selection",
+    "contest": "Quick Contest",
+    "resistance": "Resistance",
+    "irresistible": "Irresistible",
+}
+
+RESISTANCEATTR.dropdownChoices = {
+    "": "None",
+    "Strength": "ST",
+    "Dexterity": "DX",
+    "Intelligence": "IQ",
+    "Health": "HT",
+    "Will": "Will",
+    "Perception": "Per",
+    "Fright": "Fright",
 }
