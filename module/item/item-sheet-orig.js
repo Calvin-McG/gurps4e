@@ -1221,7 +1221,17 @@ export class gurpsItemSheet extends ItemSheet {
             newKey = 0; // Add the new one at the start of the empty list
         }
 
-        let newRow = { "name": "" }; // Init the new melee row
+        let newRow = {  // Init the new melee row
+            "name": "",
+            "skill": "DX",
+            "skillMod": 0,
+            "parryMod": 0,
+            "parryType": "",
+            "blockMod": "No",
+            "damageInput": "0",
+            "damageType": "",
+            "armourDivisor": "1"
+        };
 
         this.item.update({ ["system.melee." + newKey]: newRow }); // Add the new row to the list of melee keys
     }
@@ -1240,7 +1250,21 @@ export class gurpsItemSheet extends ItemSheet {
             newKey = 0;
         }
 
-        let newRow = { "name": "" };
+        let newRow = {  // Init the new range row
+            "name": "",
+            "skill": "DX",
+            "skillMod": 0,
+            "acc": 0,
+            "scopeAcc": 0,
+            "damageInput": "0",
+            "damageType": "",
+            "armourDivisor": "1",
+            "rof": "1",
+            "shots": "1",
+            "bulk": "-2",
+            "rcl": "1"
+        };
+
         this.item.update({ ["system.ranged." + newKey]: newRow });
     }
     _onAddAfflictionRow(event) {
@@ -1259,9 +1283,9 @@ export class gurpsItemSheet extends ItemSheet {
         }
         let newRow = {
             "name": "",
-            "skill": "",
+            "skill": "IQ",
             "skillMod": 0,
-            "damageInput": "",
+            "damageInput": "0",
             "damageType": "",
             "resistanceRoll": "",
             "armourDivisor": "I",
