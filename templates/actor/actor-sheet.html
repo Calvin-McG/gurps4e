@@ -2687,23 +2687,7 @@
 				<div>
 					<label>Body Type:</label>
 					<select name="system.bodyType.name" class="bodyType">
-						{{#select actor.system.bodyType.name}}
-						<option value="humanoid">Humanoid</option>
-						<option value="wingedHumanoid">Winged Humanoid</option>
-						<option value="quadruped">Quadruped</option>
-						<option value="wingedQuadruped">Winged Quadruped</option>
-						<option value="hexapod">Hexapod</option>
-						<option value="wingedHexapod">Winged Hexapod</option>
-						<option value="centaur">Centaur</option>
-						<option value="avian">Avian</option>
-						<option value="vermiform">Vermiform</option>
-						<option value="lamia">Lamia</option>
-						<option value="wingedLamia">Winged Lamia</option>
-						<option value="octopod">Octopod</option>
-						<option value="cancroid">Cancroid</option>
-						<option value="ichthyoid">Ichthyoid</option>
-						<option value="arachnoid">Arachnoid</option>
-						{{/select}}
+						{{selectOptions bodyTypes selected=actor.system.bodyType.name}}
 					</select>
 				</div>
 				<div style="display: flex">
@@ -3028,11 +3012,7 @@
 							</td>
 							<td>
 								<select name="system.rpm.showThematic">
-									{{#select actor.system.rpm.showThematic}}
-									<option value="-1">Show common name</option>
-									<option value="0">Show common and sephirotic names</option>
-									<option value="1">Show sephirotic name</option>
-									{{/select}}
+									{{selectOptions rpmDisplayThemes selected=actor.system.rpm.showThematic}}
 								</select>
 							</td>
 						</tr>
@@ -3055,11 +3035,7 @@
 							</td>
 							<td>
 								Ritual Adept (Time): <select name="system.rpm.ritualAdeptTime">
-									{{#select actor.system.rpm.ritualAdeptTime}}
-									<option value="0">None</option>
-									<option value="1">Level 1</option>
-									<option value="2">Level 2</option>
-									{{/select}}
+									{{selectOptions ritualAdeptTimeOptions selected=actor.system.rpm.ritualAdeptTime}}
 								</select>
 							</td>
 						</tr>
@@ -3826,12 +3802,7 @@
 								<td>Terrain</td>
 								<td>
 									<select name="system.info.hiking.terrain">
-										{{#select actor.system.info.hiking.terrain}}
-										<option value="1.25">Good</option>
-										<option value="1">Average</option>
-										<option value="0.5">Bad</option>
-										<option value="0.2">Very Bad</option>
-										{{/select}}
+										{{selectOptions hikingTerrainMultipliers selected=actor.system.info.hiking.terrain}}
 									</select>
 								</td>
 								<td>Most of the time this will be Average, even on most roads. See Basic 351 for details.</td>
@@ -3840,12 +3811,7 @@
 								<td>Weather</td>
 								<td>
 									<select name="system.info.hiking.weather">
-										{{#select actor.system.info.hiking.weather}}
-										<option value="1">Fine</option>
-										<option value="0.5">Rain</option>
-										<option value="0.5">Ankle Deep Snow</option>
-										<option value="0.25">Deeper Snow</option>
-										{{/select}}
+										{{selectOptions hikingWeatherMultipliers selected=actor.system.info.hiking.weather}}
 									</select>
 								</td>
 								<td>This assumes the precipitation is enough to make a difference. Otherwise leave as Fine. Rain also has no impact when on roads. Instead see top left of 351 for the effect of rain on roads.</td>
@@ -4114,11 +4080,7 @@
 								<td>Learning Style</td>
 								<td>
 									<select name="system.info.learning.style">
-										{{#select actor.system.info.learning.style}}
-										<option value="1">Normal Training (x1)</option>
-										<option value="0.5">Self Study (x0.5)</option>
-										<option value="0.25">On the job (x0.25)</option>
-										{{/select}}
+										{{selectOptions learningStyles selected=actor.system.info.learning.style}}
 									</select>
 								</td>
 								<td>Normal Training is any training guided by a teacher. Self Study is any time you dedicate to learning on your own.
@@ -4128,11 +4090,7 @@
 								<td>Language</td>
 								<td>
 									<select name="system.info.learning.lang">
-										{{#select actor.system.info.learning.lang}}
-										<option value="0">Fluent</option>
-										<option value="1">Accented</option>
-										<option value="2">Broken</option>
-										{{/select}}
+										{{selectOptions learningLanguageMultipliers selected=actor.system.info.learning.lang}}
 									</select>
 								</td>
 								<td>What is your skill with the language your instructor is using? Accented gives a -1, and Broken gives a -2.</td>

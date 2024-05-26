@@ -10,7 +10,64 @@ export class gurpsActorSheet extends ActorSheet {
 	getData(){
 		const context = super.getData();
 		context.damageTypeOptions = CONFIG.DAMAGETYPES.dropdownChoices;
+		context.bodyTypes = CONFIG.BODYTYPES.dropdownChoices;
+		context.rpmDisplayThemes = this.getRPMDisplayThemes();
+		context.ritualAdeptTimeOptions = this.getRitualAdeptTimeOptions();
+		context.hikingTerrainMultipliers = this.getHikingTerrainMultipliers();
+		context.hikingWeatherMultipliers = this.getHikingWeatherMultipliers();
+		context.learningStyles = this.getLearningStyles();
+		context.learningLanguageMultipliers = this.getLearningLanguageMultipliers();
 		return context;
+	}
+
+	getLearningLanguageMultipliers() {
+		return {
+			"0": "Fluent",
+			"1": "Accented",
+			"2": "Broken",
+		}
+	}
+
+	getLearningStyles() {
+		return {
+			"1": "Normal Training (x1)",
+			"0.5": "Self Study (x0.5)",
+			"0.25": "On the job (x0.25)",
+		}
+	}
+
+	getHikingWeatherMultipliers() {
+		return {
+			"1": "Fine",
+			"0.5": "Rain",
+			"0.50": "Ankle Deep Snow",
+			"0.25": "Deeper Snow",
+		}
+	}
+
+	getHikingTerrainMultipliers() {
+		return {
+			"1.25": "Good",
+			"1": "Average",
+			"0.5": "Bad",
+			"0.2": "Very Bad",
+		}
+	}
+
+	getRitualAdeptTimeOptions() {
+		return {
+			"0": "None",
+			"1": "Level 1",
+			"2": "Level 2",
+		}
+	}
+
+	getRPMDisplayThemes() {
+		return {
+			"-1": "Show common name",
+			"0": "Show common and sephirotic names",
+			"1": "Show sephirotic name",
+		}
 	}
 
 	/** @override */
