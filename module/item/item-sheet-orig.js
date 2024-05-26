@@ -709,7 +709,7 @@ export class gurpsItemSheet extends ItemSheet {
             ChatMessage.create({ content: html, user: game.user.id, whisper: ChatMessage.getWhisperRecipients('GM') });
         }
         else {
-            ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+            ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_STYLES.OTHER });
         }
     }
 

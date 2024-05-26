@@ -97,7 +97,7 @@ export class rollHelpers {
         }
 
         if (chat){
-            ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+            ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_STYLES.OTHER });
         }
         else {
             return {
@@ -105,7 +105,7 @@ export class rollHelpers {
                 crit: crit,
                 success: success,
                 margin: margin,
-                type: CONST.CHAT_MESSAGE_TYPES.OTHER
+                type: CONST.CHAT_MESSAGE_STYLES.OTHER
             }
         }
     }
@@ -161,7 +161,7 @@ export class rollHelpers {
         }
 
         if (chat){
-            ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+            ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_STYLES.OTHER });
         }
         else {
             return {
@@ -169,7 +169,7 @@ export class rollHelpers {
                 crit: crit,
                 success: success,
                 margin: margin,
-                type: CONST.CHAT_MESSAGE_TYPES.OTHER
+                type: CONST.CHAT_MESSAGE_STYLES.OTHER
             }
         }
     }
@@ -282,7 +282,7 @@ export class rollHelpers {
         }
 
         if (chat){
-            ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+            ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_STYLES.OTHER });
         }
         else {
             return {
@@ -291,7 +291,7 @@ export class rollHelpers {
                 success: success,
                 malfunction: malfunction,
                 margin: margin,
-                type: CONST.CHAT_MESSAGE_TYPES.OTHER
+                type: CONST.CHAT_MESSAGE_STYLES.OTHER
             }
         }
     }

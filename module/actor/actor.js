@@ -4067,7 +4067,7 @@ export class gurpsActor extends Actor {
 			html += "<br/>" + target.name + " falls down."
 		}
 
-		ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+		ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_STYLES.OTHER });
 
 		if (typeof target.token !== "undefined" && target.token !== null) { // A token is present if the token and actor are not directly linked. (As in, the token is a separate copy of the actor)
 			postureHelpers.setPostureTokenDoc(target.token, "lyingback");
@@ -4272,7 +4272,7 @@ export class gurpsActor extends Actor {
 			let html = "<div>Damage for " + attacker.name + "'s " + attack.weapon + " " + attack.name + " against " + target.name + "</div>";
 			html += "<hr>" + attack.desc + "<br>"
 			html += "<hr>";
-			ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER });
+			ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_STYLES.OTHER });
 		}
 		else {
 			let locationsHit = ['upperChest.subLocation.chest'];
@@ -6488,7 +6488,7 @@ export class gurpsActor extends Actor {
 		target.update({ 'data': target.system }); // Update the target object to properly save the new values for hp, fp, and any location specific effects.
 		// console.log(target.token.effects);
 		// console.log(typeof target.token.effects);
-		ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_TYPES.OTHER, flags: flags }); // Create a chat message telling the user all about what happened above.
+		ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_STYLES.OTHER, flags: flags }); // Create a chat message telling the user all about what happened above.
 	}
 
 	extractDamageType(attack) {
