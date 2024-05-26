@@ -1,4 +1,4 @@
 Now if you want to get all tokens within that range.
 let caster = canvas.tokens.controlled[0];
-canvas.tokens.placeables.filter(target => (canvas.grid.measurePath(caster.center, target.center) <= distance;
+canvas.tokens.placeables.filter(target => (canvas.grid.measurePath([caster.center, target.center]) <= distance;
 And you can apply filters after the distance && caster.id != target.id

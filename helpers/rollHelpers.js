@@ -6,7 +6,7 @@ export class rollHelpers {
         let crit = false;
         let success = false;
 
-        let result = await roll.roll({async: true})
+        let result = await roll.roll({evaluateSync: true})
 
         let skillRoll = result.result;
         let margin = +effectiveSkill - +skillRoll;
@@ -125,7 +125,7 @@ export class rollHelpers {
             }
         }
 
-        let rollResult = await roll.roll({async: true}) // Make the roll
+        let rollResult = await roll.roll({evaluateSync: true}) // Make the roll
 
         let result = rollResult.total; // Get the result
 
@@ -188,7 +188,7 @@ export class rollHelpers {
         if (typeof malfInput == "string") {
             malfPlus = malfInput.includes("+");
         }
-        let result = await roll.roll({async: true})
+        let result = await roll.roll({evaluateSync: true})
 
         let skillRoll = result.result;
         let margin = +effectiveSkill - +skillRoll;

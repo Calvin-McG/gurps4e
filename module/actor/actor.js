@@ -3466,7 +3466,7 @@ export class gurpsActor extends Actor {
 				htmlContent += "<tr><td colspan='12' class='trait-category-header' style='text-align: center;'>Ranged Attacks</td></tr>";
 				htmlContent += "<tr><td></td><td>Weapon</td><td>Attack</td><td>Level</td><td>Damage</td><td>Acc</td><td>Range</td><td>RoF</td><td>Shots</td><td>ST</td><td>Bulk</td><td>Rcl</td></tr>";
 
-				let distanceRaw = Math.round(canvas.grid.measurePath(selfToken, targetToken));
+				let distanceRaw = Math.round(canvas.grid.measurePath([selfToken, targetToken]));
 				let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.grid.units);
 
 				for (let q = 0; q < attacks.ranged.length; q++){
@@ -3866,7 +3866,7 @@ export class gurpsActor extends Actor {
 			staffLength = 0;
 		}
 
-		let distanceRaw = Math.round(canvas.grid.measurePath(attacker, target)); // Get the raw distance between target and attacker
+		let distanceRaw = Math.round(canvas.grid.measurePath([attacker, target])); // Get the raw distance between target and attacker
 		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.grid.units); // Convert the raw distance to the distance in yards
 
 		let modifiedDistanceYards = Math.max(distanceYards - staffLength, 0); // Reduce the distance in yards by the length of the staff
@@ -4540,7 +4540,7 @@ export class gurpsActor extends Actor {
 
 	// This method handles all attack modifiers for both ranged and melee attacks
 	attackModifiers(target, attacker, attack, relativePosition, rof, location, locationPenalty) {
-		let distanceRaw = Math.round(canvas.grid.measurePath(attacker, target));
+		let distanceRaw = Math.round(canvas.grid.measurePath([attacker, target]));
 		let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.grid.units);
 		let distancePenalty = distanceHelpers.distancePenalty(distanceYards);
 		let rangeDamageMult = 1; // This is the multiplier used to assign effects from 1/2D and Max ranges, where applicable.
@@ -6160,7 +6160,7 @@ export class gurpsActor extends Actor {
 
 			// Roll damage for the attack
 			let roll = new Roll(damageString); // Roll the damage string we built above
-			let damageRoll = await roll.roll({async: true}); // Await the result
+			let damageRoll = await roll.roll({evaluateSync: true}); // Await the result
 			let adds = 0; // Init adds as 0
 
 			// Display dice and damage total for this location.
