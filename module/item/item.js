@@ -3943,8 +3943,11 @@ export class gurpsItem extends Item {
             // Handle explosive calculation
             if (this.system.firearmDesign.ammunition[ammoKeys[i]].explosivePercent > 0) {
 
-              let explosive = materialHelpers.getExplosiveByName(this.system.firearmDesign.ammunition[ammoKeys[i]].explosiveFiller);
+              let explosive = materialHelpers.getExplosiveByCode(this.system.firearmDesign.ammunition[ammoKeys[i]].explosiveFiller);
 
+              if (typeof explosive === "undefined") {
+                explosive = materialHelpers.getExplosiveByName(this.system.firearmDesign.ammunition[ammoKeys[i]].explosiveFiller);
+              }
               let baseExplosiveDamage = 21 * (Math.sqrt((this.system.firearmDesign.ammunition[ammoKeys[i]].wps * (this.system.firearmDesign.ammunition[ammoKeys[i]].explosivePercent / 100)) * 4 * explosive.ref));
 
               if (this.system.firearmDesign.ammunition[ammoKeys[i]].frag) {
