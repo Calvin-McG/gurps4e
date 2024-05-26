@@ -361,6 +361,7 @@ export class gurpsItemSheet extends ItemSheet {
             "open": "Open",
         }
     }
+
     getFirearmLockTypes() {
         let types = {
             "cannon": "Cannonlock (TL 3)",
@@ -427,6 +428,7 @@ export class gurpsItemSheet extends ItemSheet {
 
         return types;
     }
+
     getCustomWeaponTypes() {
         let types = {
             "bow": "Bow"

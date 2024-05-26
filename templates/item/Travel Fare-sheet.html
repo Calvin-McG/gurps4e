@@ -122,24 +122,7 @@
                                 <td>
                                     <input style="width: 25%" type="number" name="system.travelFare.distance" value="{{item.system.travelFare.distance}}" data-dtype="Number"/>
                                     <select style="width: 70%" name="system.travelFare.unit">
-                                        {{#select item.system.travelFare.unit}}
-                                            {{#each item.system.travelFare.units as |unit id|}}
-                                                {{#ifCond ../item.system.travelFare.distance '>' 1 }}
-                                                    {{#if (and (eq unit.name "mile") (eq ../item.system.travelFare.initComplete false)) }}
-                                                        <option value="{{unit.name}}" selected>{{unit.names}}</option>
-                                                    {{else}}
-                                                        <option value="{{unit.name}}">{{unit.names}}</option>
-                                                    {{/if}}
-                                                {{/ifCond}}
-                                                {{#ifCond ../item.system.travelFare.distance '<=' 1 }}
-                                                    {{#if (and (eq unit.name "mile") (eq ../item.system.travelFare.initComplete false)) }}
-                                                        <option value="{{unit.name}}" selected>{{unit.name}}</option>
-                                                    {{else}}
-                                                        <option value="{{unit.name}}">{{unit.name}}</option>
-                                                    {{/if}}
-                                                {{/ifCond}}
-                                            {{/each}}
-                                        {{/select}}
+                                        {{selectOptions item.system.travelFare.units selected=item.system.travelFare.unit valueAttr="name" labelAttr="name"}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="travel-distance">
