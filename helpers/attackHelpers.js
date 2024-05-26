@@ -105,7 +105,7 @@ export class attackHelpers {
                 diceCount += parseInt(dice[0].slice(0, -1));
             }
 
-            let adds = eval(addsString); // Eval the remaining adds to get a single number.
+            let adds = eval(addsString.replace(/[a-zA-Z]/g, "")); // Strip out any letters and then eval the remaining adds to get a single number.
             if (typeof adds === "undefined") { // eval() on an empty string returns undefined
                 adds = 0; // Store a zero instead.
             }
