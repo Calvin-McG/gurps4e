@@ -24,7 +24,7 @@ export class actorHelpers {
 
         else if (dataset.type === 'damage') {
             let damageRoll = new Roll(dataset.level);
-            damageRoll.roll({async: true}).then( result => {
+            damageRoll.roll({evaluateSync: true}).then( result => {
                 let html = "<div>" + dataset.label + "</div>";
                 let adds = 0;
 
