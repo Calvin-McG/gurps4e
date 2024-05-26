@@ -6461,6 +6461,10 @@ export class gurpsItem extends Item {
       this.system.halfPriceTechnique = false;
     }
 
+    if (typeof this.system.weaponMaster === "undefined") {
+      this.system.weaponMaster = false;
+    }
+
     if (typeof this.system.defenceTechniqueMod === "undefined") {
       this.system.defenceTechniqueMod = 0;
     }

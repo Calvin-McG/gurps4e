@@ -59,6 +59,14 @@
                             </select>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <label class="resource-label">Do you have Weapon Master covering this skill?</label>
+                        </td>
+                        <td style="display: flex">
+                            <input type="checkbox" name="system.weaponMaster" {{checked item.system.weaponMaster}} data-dtype="Boolean"/>
+                        </td>
+                    </tr>
                 {{else}}
                     <tr>
                         <td>
