@@ -166,8 +166,7 @@ export class attackHelpers {
         return Math.round((st + trainingSTBonus) * mult);
     }
 
-    // This method gets training bonus ST, per the chart on Technical Grappling 48
-    static getTrainingSTBonus(dx, level, skillName, st) {
+    static getBonus(dx, level, skillName, st, damBonus) {
         let expandedTrainingBonus = game.settings.get("gurps4e", "expandedTrainingBonuses") // Get the game setting that controls expanded training bonuses.
         let percentageBasedTrainingBonuses = game.settings.get("gurps4e", "percentageBasedTrainingBonuses") // Get the game setting that controls percentageBasedTrainingBonuses
         let cinematicTrainingBonusAccrual = game.settings.get("gurps4e", "cinematicTrainingBonusAccrual") // Get the game setting that controls cinematicTrainingBonusAccrual
@@ -178,17 +177,56 @@ export class attackHelpers {
         let progression = "none";
         let adjustment = 0;
 
-        switch(skillName.toLowerCase()) {
-            case "throwing art":
-                progression = "average";
-                break;
-            case "throwing":
-            case "thrown":
-            case "throw":
-                progression = "slow";
-                break;
-            default:
-                break;
+        if (damBonus) { // damBonus is true, we're looking for just the bonus damage per dice
+            switch(skillName.toLowerCase()) {
+                case "fast":
+                    progression = "fast";
+                    break;
+                case "average":
+                case "brawling":
+                case "throwing art":
+                    progression = "average";
+                    break;
+                case "boxing":
+                case "weapon master":
+                case "karate":
+                case "sumo wrestling":
+                case "sumo":
+                case "judo":
+                case "slow":
+                    progression = "slow";
+                    break;
+                default:
+                    progression = "none";
+                    break;
+            }
+        }
+        else { // damBonus is false, meaning we're looking for the ST bonus which can include throwing range.
+            switch(skillName.toLowerCase()) {
+                case "fast":
+                    progression = "fast";
+                    break;
+                case "average":
+                case "brawling":
+                case "throwing art":
+                    progression = "average";
+                    break;
+                case "boxing":
+                case "weapon master":
+                case "karate":
+                case "sumo wrestling":
+                case "sumo":
+                case "judo":
+                case "slow":
+                case "throwing":
+                case "thrown":
+                case "throw":
+                    progression = "slow";
+                    break;
+                default:
+                    progression = "none";
+                    break;
+            }
         }
 
         if (progression === "fast") {
@@ -240,5 +278,17 @@ export class attackHelpers {
         }
 
         return trainingSTBonus;
+    }
+
+    // This method gets bonus damage per die, per the chart on Technical Grappling 48
+    // skillName can take an actual skill, or the name of a progression type
+    static getTrainingDamageBonus(dx, level, skillName, st) {
+        return this.getBonus(dx, level, skillName, st, true);
+    }
+
+    // This method gets training bonus ST, per the chart on Technical Grappling 48
+    // skillName can take an actual skill, or the name of a progression type
+    static getTrainingSTBonus(dx, level, skillName, st) {
+        return this.getBonus(dx, level, skillName, st, false);
     }
 }
