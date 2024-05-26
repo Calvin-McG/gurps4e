@@ -5429,6 +5429,11 @@ export class gurpsItem extends Item {
       this.system.bowDesign.stockLength = 0;
     }
 
+    // Repeating crossbow mag size must be zero or more
+    if(typeof this.system.bowDesign.repeatingMagSize === "undefined" || this.system.bowDesign.repeatingMagSize < 0 || this.system.bowDesign.repeatingMagSize == "" || this.system.bowDesign.repeatingMagSize == null) {
+      this.system.bowDesign.repeatingMagSize = 0;
+    }
+
     // Cross-section must not be zero or negative
     if (!(this.system.bowDesign.crossSection > 0)) {
       this.system.bowDesign.crossSection = 1;
