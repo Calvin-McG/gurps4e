@@ -69,6 +69,20 @@ export class materialHelpers {
         return selectedMaterial;
     }
 
+    static getBowMaterialByTL(tl) {
+        const materials = this.fetchBowMaterials();
+        let selectedMaterials = [];
+        if (typeof tl !== "undefined"){
+            materials.forEach( material => {
+                if (material.tl <= tl) {
+                    selectedMaterials.push(material);
+                }
+            })
+        }
+
+        return selectedMaterials;
+    }
+
     static essentializeBowMaterial(material) {
         const simpleEssentialMaterials = game.settings.get("gurps4e", "simpleEssentialMaterials");
 

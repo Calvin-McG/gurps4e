@@ -5463,7 +5463,7 @@ export class gurpsItem extends Item {
     this.system.bowDesign.repeatingAllowed         = game.settings.get("gurps4e", "repeatingCrossbows");
 
     // Get materials
-    this.system.bowDesign.materials = game.materialAPI.fetchBowMaterials();
+    this.system.bowDesign.materials = materialHelpers.getBowMaterialByTL(this.system.tl);
 
     // Do actual code stuff
     this.system.bowDesign.type = type;
