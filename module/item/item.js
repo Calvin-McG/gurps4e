@@ -2751,6 +2751,9 @@ export class gurpsItem extends Item {
       if (typeof this.system.firearmDesign.cf == "undefined" || this.system.firearmDesign.cf <= 0 || this.system.firearmDesign.cf == "") {
         this.system.firearmDesign.cf = 1;
       }
+      if (typeof this.system.firearmDesign.baseAcc == "undefined" || this.system.firearmDesign.baseAcc == "" || this.system.firearmDesign.baseAcc == null) {
+        this.system.firearmDesign.baseAcc = 0;
+      }
 
       // The weapon is a muzzle loader, breach loader, or break action and magazine related info will be hidden
       if (this.system.firearmDesign.action === "break" || this.system.firearmDesign.action === "breech" || this.system.firearmDesign.action === "muzzle") {
