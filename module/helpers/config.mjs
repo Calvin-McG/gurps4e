@@ -1,4 +1,6 @@
 export const DAMAGETYPES = {};
+export const WOUNDCODES = {};
+export const RESOURCETYPES = {};
 export const TRAITTYPES = {};
 export const ROLLABLETYPES = {};
 export const ROLLABLEDIFFICULTY = {};
@@ -41,6 +43,26 @@ DAMAGETYPES.dropdownChoices = {
     "imp": "Impaling",
     "pi": "Piercing",
     "tox": "Toxic",
+};
+
+WOUNDCODES.dropdownChoices = {
+    "burn": "burn",
+    "cor": "cor",
+    "cr": "cr",
+    "cut": "cut",
+    "fat": "fat",
+    "imp": "imp",
+    "pi-": "pi-",
+    "pi": "pi",
+    "pi+": "pi+",
+    "pi++": "pi++",
+    "tox": "tox",
+};
+
+RESOURCETYPES.dropdownChoices = {
+    "hp": "HP",
+    "fp": "FP",
+    "er": "ER",
 };
 
 TRAITTYPES.dropdownChoices = {

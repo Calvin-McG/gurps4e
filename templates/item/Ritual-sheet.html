@@ -20,13 +20,7 @@
                                 </td>
                                 <td>
                                     <select name="system.ritualType">
-                                        {{#select item.system.ritualType}}
-                                        <option value="standard">Standard</option>
-                                        <option value="conditional">Conditional</option>
-                                        <option value="charm">Charm</option>
-                                        <option value="elixir">Elixir</option>
-                                        <option value="conditionalCharm">Conditional Charm</option>
-                                        {{/select}}
+                                        {{selectOptions ritualTypes selected=item.system.ritualType}}
                                     </select>
                                 </td>
                             </tr>
@@ -178,13 +172,7 @@
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Elixir Type</label>
                                     <select name="system.elixir.type">
-                                        {{#select item.system.elixir.type}}
-                                        <option value="grenade">Grenade</option>
-                                        <option value="ointment">Ointment</option>
-                                        <option value="pastille">Pastille</option>
-                                        <option value="potion">Potion</option>
-                                        <option value="powder">Powder</option>
-                                        {{/select}}
+                                        {{selectOptions elixirTypes selected=item.system.elixirType}}
                                     </select>
                                 </td>
                             </tr>
@@ -343,12 +331,7 @@
                                 <td>
                                     <label class="resource-label" style="flex: 0.5;">Charm Availability</label>
                                     <select name="system.charm.availability">
-                                        {{#select item.system.charm.availability}}
-                                        <option value="0.5">Common (Wards, healing, lucky charms)</option>
-                                        <option value="1">Uncommon</option>
-                                        <option value="2">Rare (Strange, overly specific)</option>
-                                        <option value="2.0">Custom Order</option>
-                                        {{/select}}
+                                        {{selectOptions charmAvailability selected=item.system.availability}}
                                     </select>
                                 </td>
                             </tr>
@@ -435,38 +418,17 @@
                 <tr>
                     <td>
                         <select name="system.path.{{id}}.level">
-                        {{#select path.level}}
-                        <option value="lesser">Lesser</option>
-                        <option value="greater">Greater</option>
-                        {{/select}}
+                            {{selectOptions ../pathLevel selected=path.level}}
                         </select>
                     </td>
                     <td>
                         <select name="system.path.{{id}}.effect">
-                            {{#select path.effect}}
-                            <option value="sense">Sense</option>
-                            <option value="strengthen">Strengthen</option>
-                            <option value="restore">Restore</option>
-                            <option value="control">Control</option>
-                            <option value="destroy">Destroy</option>
-                            <option value="create">Create</option>
-                            <option value="transform">Transform</option>
-                            {{/select}}
+                            {{selectOptions ../pathEffect selected=path.effect}}
                         </select>
                     </td>
                     <td>
                         <select name="system.path.{{id}}.path">
-                            {{#select path.path}}
-                            <option value="body">Body</option>
-                            <option value="chance">Chance</option>
-                            <option value="crossroads">Crossroads</option>
-                            <option value="energy">Energy</option>
-                            <option value="magic">Magic</option>
-                            <option value="matter">Matter</option>
-                            <option value="mind">Mind</option>
-                            <option value="spirit">Spirit</option>
-                            <option value="undead">Undead</option>
-                            {{/select}}
+                            {{selectOptions ../paths selected=path.path}}
                         </select>
                     </td>
                     <td style="text-align: center">{{path.cost}}</td>
@@ -495,23 +457,7 @@
                 <tr>
                     <td>
                         <select name="system.ritualModifier.{{id}}.modifier">
-                            {{#select ritualModifier.modifier}}
-                            <option value="affliction">Affliction</option>
-                            <option value="trait">Altered Trait</option>
-                            <option value="aoe">Area Of Effect</option>
-                            <option value="modifier">Bestows a Bonus or Penalty</option>
-                            <option value="damage">Damage</option>
-                            <option value="duration">Duration</option>
-                            <option value="energy">Extra Energy</option>
-                            <option value="healing">Healing</option>
-                            <option value="meta">Meta-Magic</option>
-                            <option value="range">Range</option>
-                            <option value="speed">Speed</option>
-                            <option value="weight">Subject Weight</option>
-                            <option value="trappings">Traditional Trappings</option>
-                            <option value="crafting">Crafting - Automatic Penalty</option>
-                            <option value="gmCrafting">Crafting - GM Penalty</option>
-                            {{/select}}
+                            {{selectOptions ../ritualModifiers selected=ritualModifier.modifier}}
                         </select>
                     </td>
                     <td>
@@ -531,11 +477,7 @@
 
                         {{#if (eq ritualModifier.modifier "modifier") }}
                         <select name="system.ritualModifier.{{id}}.effect.scope">
-                            {{#select ritualModifier.effect.scope}}
-                            <option value="broad">Broad</option>
-                            <option value="moderate">Moderate</option>
-                            <option value="narrow">Narrow</option>
-                            {{/select}}
+                            {{selectOptions ../ritualScope selected=ritualModifier.effect.scope}}
                         </select>
                         <input type="number" name="system.ritualModifier.{{id}}.effect.modifier" value="{{ritualModifier.effect.modifier}}" style="text-align:center; width: 20%; margin-left: 10%;"/>
                         {{/if}}
@@ -546,19 +488,7 @@
                                 <input type="number" name="system.ritualModifier.{{id}}.effect.dice" value="{{ritualModifier.effect.dice}}" style="text-align:center; width: 20%;"/>
                                 d6 + <input type="number" name="system.ritualModifier.{{id}}.effect.adds" value="{{ritualModifier.effect.adds}}" style="text-align:center; width: 20%;"/>
                                 <select name="system.ritualModifier.{{id}}.effect.woundMod">
-                                    {{#select ritualModifier.effect.woundMod}}
-                                    <option value="burn">burn</option>
-                                    <option value="cor">cor</option>
-                                    <option value="cr">cr</option>
-                                    <option value="cut">cut</option>
-                                    <option value="fat">fat</option>
-                                    <option value="imp">imp</option>
-                                    <option value="pi-">pi-</option>
-                                    <option value="pi">pi</option>
-                                    <option value="pi+">pi+</option>
-                                    <option value="pi++">pi++</option>
-                                    <option value="tox">tox</option>
-                                    {{/select}}
+                                    {{selectOptions ../woundCodes selected=ritualModifier.effect.woundMod}}
                                 </select>
                             </div>
 
@@ -588,15 +518,7 @@
 
                         {{#if (eq ritualModifier.modifier "duration") }}
                         <select name="system.ritualModifier.{{id}}.effect.durationUnits">
-                            {{#select ritualModifier.effect.durationUnits}}
-                            <option value="minutes">Minutes</option>
-                            <option value="hours">Hours</option>
-                            <option value="days">Days</option>
-                            <option value="weeks">Weeks</option>
-                            <option value="fortnights">Fortnights</option>
-                            <option value="months">Months</option>
-                            <option value="years">Years</option>
-                            {{/select}}
+                            {{selectOptions ../ritualDurationUnits selected=ritualModifier.effect.durationUnits}}
                         </select>
                         <input type="number" name="system.ritualModifier.{{id}}.effect.durationQty" value="{{ritualModifier.effect.durationQty}}" style="text-align:center; width: 20%;"/>
                         {{/if}}
@@ -611,10 +533,7 @@
                             <input type="number" name="system.ritualModifier.{{id}}.effect.dice" value="{{ritualModifier.effect.dice}}" style="text-align:center; width: 20%;"/>
                             d6 + <input type="number" name="system.ritualModifier.{{id}}.effect.adds" value="{{ritualModifier.effect.adds}}" style="text-align:center; width: 20%;"/>
                             <select name="system.ritualModifier.{{id}}.effect.resource">
-                                {{#select ritualModifier.effect.resource}}
-                                <option value="hp">HP</option>
-                                <option value="fp">FP</option>
-                                {{/select}}
+                                {{selectOptions ../resources selected=ritualModifier.effect.resource}}
                             </select>
                         </div>
                         {{/if}}
@@ -630,12 +549,7 @@
                         <input type="number" name="system.ritualModifier.{{id}}.effect.range" value="{{ritualModifier.effect.range}}" style="text-align:center; width: 20%; margin-left: 10%;" /> dimensions crossed
                         {{/if}}
                         <select name="system.ritualModifier.{{id}}.effect.rangeType">
-                            {{#select ritualModifier.effect.rangeType}}
-                            <option value="normal">Normal</option>
-                            <option value="info">Informational</option>
-                            <option value="time">Cross-Time</option>
-                            <option value="dim">Cross-Dimensional</option>
-                            {{/select}}
+                            {{selectOptions ../ritualRangeTypes selected=ritualModifier.effect.rangeType}}
                         </select>
                         {{/if}}
 

@@ -9,6 +9,8 @@ export class gurpsItemSheet extends ItemSheet {
 
     getData() {
         const context = super.getData();
+        context.woundCodes = CONFIG.WOUNDCODES.dropdownChoices;
+        context.resources = CONFIG.RESOURCETYPES.dropdownChoices;
         context.traitTypeOptions = CONFIG.TRAITTYPES.dropdownChoices;
         context.rollableTypeOptions = CONFIG.ROLLABLETYPES.dropdownChoices;
         context.rollableDifficultyOptions = CONFIG.ROLLABLEDIFFICULTY.dropdownChoices;
@@ -66,7 +68,131 @@ export class gurpsItemSheet extends ItemSheet {
             context.explosiveFillers = this.getExplosiveFillers();
         }
 
+        if (this.item.type === "Ritual") {
+            context.ritualTypes = this.getRitualTypes();
+            context.elixirTypes = this.getElixirTypes();
+            context.charmAvailability = this.getCharmAvailability();
+            context.pathLevel = this.getPathLevel();
+            context.pathEffect = this.getPathEffect();
+            context.paths = this.getPaths();
+            context.ritualModifiers = this.getRitualModifiers();
+            context.ritualScope = this.getRitualScope();
+            context.ritualDurationUnits = this.getRitualDurationUnits();
+            context.ritualRangeTypes = this.getRitualRangeTypes();
+        }
+
         return context;
+    }
+
+    getRitualRangeTypes() {
+        return {
+            "normal": "Normal",
+            "info": "Informational",
+            "time": "Cross-Time",
+            "dim": "Cross-Dimensional",
+        }
+    }
+
+    getRitualDurationUnits() {
+        return {
+            "minutes": "Minutes",
+            "hours": "Hours",
+            "days": "Days",
+            "weeks": "Weeks",
+            "fortnights": "Fortnights",
+            "months": "Months",
+            "years": "Years",
+        }
+    }
+
+    getRitualScope() {
+        return {
+            "broad": "Broad",
+            "moderate": "Moderate",
+            "narrow": "Narrow",
+        }
+    }
+
+    getRitualModifiers() {
+        return {
+            "affliction": "Affliction",
+            "trait": "Altered Trait",
+            "aoe": "Area Of Effect",
+            "modifier": "Bestows a Bonus or Penalty",
+            "damage": "Damage",
+            "duration": "Duration",
+            "energy": "Extra Energy",
+            "healing": "Healing",
+            "meta": "Meta-Magic",
+            "range": "Range",
+            "speed": "Speed",
+            "weight": "Subject Weight",
+            "trappings": "Traditional Trappings",
+            "crafting": "Crafting - Automatic Penalty",
+            "gmCrafting": "Crafting - GM Penalty",
+        }
+    }
+
+    getPaths() {
+        return {
+            "body": "Body",
+            "chance": "Chance",
+            "crossroads": "Crossroads",
+            "energy": "Energy",
+            "magic": "Magic",
+            "matter": "Matter",
+            "mind": "Mind",
+            "spirit": "Spirit",
+            "undead": "Undead",
+        }
+    }
+
+    getPathEffect() {
+        return {
+            "sense": "Sense",
+            "strengthen": "Strengthen",
+            "restore": "Restore",
+            "control": "Control",
+            "destroy": "Destroy",
+            "create": "Create",
+            "transform": "Transform",
+        }
+    }
+
+    getPathLevel() {
+        return {
+            "lesser": "Lesser",
+            "greater": "Greater",
+        }
+    }
+
+    getCharmAvailability() {
+        return {
+            "0.5": "Common (Wards, healing, lucky charms)",
+            "1": "Uncommon",
+            "2": "Rare (Strange, overly specific)",
+            "2.0": "Custom Order",
+        }
+    }
+
+    getElixirTypes() {
+        return {
+            "grenade": "Grenade",
+            "ointment": "Ointment",
+            "pastille": "Pastille",
+            "potion": "Potion",
+            "powder": "Powder",
+        }
+    }
+
+    getRitualTypes() {
+        return {
+            "standard": "Standard",
+            "conditional": "Conditional",
+            "charm": "Charm",
+            "elixir": "Elixir",
+            "conditionalCharm": "Conditional Charm",
+        }
     }
 
     getExplosiveFillers() {

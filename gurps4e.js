@@ -6,6 +6,8 @@ import { gurpsItemSheet } from "./module/item/item-sheet-orig.js";
 import { attackHelpers } from "./helpers/attackHelpers.js";
 import {
   DAMAGETYPES,
+  WOUNDCODES,
+  RESOURCETYPES,
   TRAITTYPES,
   ROLLABLETYPES,
   ROLLABLEDIFFICULTY,
@@ -36,13 +38,16 @@ import {
   BASEQUALITYTYPES,
   BOWSHAPES,
   ARROWDAMAGETYPES,
-  ARROWARMOURDIVISOR, POWERCELLS
+  ARROWARMOURDIVISOR,
+  POWERCELLS,
 } from "./module/helpers/config.mjs";
 
 Hooks.once('init', async function() {
 
   // Begin section for dropdown definitions
   CONFIG.DAMAGETYPES = DAMAGETYPES;
+  CONFIG.WOUNDCODES = WOUNDCODES;
+  CONFIG.RESOURCETYPES = RESOURCETYPES;
   CONFIG.TRAITTYPES = TRAITTYPES;
   CONFIG.ROLLABLETYPES = ROLLABLETYPES;
   CONFIG.ROLLABLEDIFFICULTY = ROLLABLEDIFFICULTY;
