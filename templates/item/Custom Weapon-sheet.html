@@ -99,6 +99,7 @@
         </div>
 
         {{!-- Bow Design Tab --}}
+        {{#if (or (eq item.system.customType "xbow") (eq item.system.customType "footbow") (eq item.system.customType "bow")) }}
         <div class="tab stats" data-tab="designBow" data-group="primary">
             <h1 class="bold" style="text-align: center;">The Deadly Spring: Pyramid 3/33</h1>
             <div class="tab">
@@ -430,6 +431,8 @@
                                 </td>
                             </tr>
 
+
+                            {{#if item.system.bowDesign.repeating}}
                             <tr class="design-row">
                                 <td style="width: 150px">
                                     Magazine Size
@@ -443,6 +446,7 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{/if}}
                         </table>
                         {{/if}}
                         {{#if (eq item.system.bowDesign.type "xbow")}}
@@ -942,8 +946,10 @@
                 </div>
             </div>
         </div>
+        {{/if}}
 
         {{!-- Material Catalogue Tab --}}
+        {{#if (or (eq item.system.customType "xbow") (eq item.system.customType "footbow") (eq item.system.customType "bow")) }}
         <div class="tab stats" data-tab="materials" data-group="primary">
             <h2 class="bold">Material Catalogue</h2>
             <div>
@@ -1009,8 +1015,10 @@
                 </table>
             </div>
         </div>
+        {{/if}}
 
         {{!-- Firearm Design Tab --}}
+        {{#if (eq item.system.customType "firearm")}}
         <div class="tab stats" data-tab="designFirearm" data-group="primary">
             <h1 class="bold" style="text-align: center;">Firearm Design: DouglasCole's Spreadsheet</h1>
             <div class="tab">
@@ -2017,8 +2025,10 @@
                 </table>
             </div>
         </div>
+        {{/if}}
 
         {{!-- Laser Design Tab --}}
+        {{#if (eq item.system.customType "laser")}}
         <div class="tab stats" data-tab="designLaser" data-group="primary">
             <h1 class="bold" style="text-align: center;">Laser Design: Pyramid 3/37</h1>
             <div class="tab">
@@ -2523,7 +2533,7 @@
                 </table>
             </div>
         </div>
-
+        {{/if}}
 
     </section>
 </form>
