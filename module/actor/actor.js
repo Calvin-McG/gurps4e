@@ -1855,14 +1855,25 @@ export class gurpsActor extends Actor {
 
 				for (let i = 0; i < bodyParts.length; i++){ // Loop through all the parts
 					let part = foundry.utils.getProperty(bodyObj, bodyParts[i]) // Get the current part
-					if (typeof part.weightFront != "undefined"){ // Check to see if weightFront is defined
-						totalWeightFront += +part.weightFront; // Add the front and rear weights
-						totalWeightBack += +part.weightBack;
+
+					// Assign front weight
+					if (typeof part.weightFront !== "undefined"){ // Check to see if weightFront is defined
+						totalWeightFront += +part.weightFront; // Add the front weight
 					}
 					else { // If the actor's weighting is not defined with the new front/back setup
-						if (typeof part.weight != "undefined"){ // Check to see if the old part.weight is still defined
-							totalWeightFront += +part.weight; // Use that to set the front and back weights instead
-							totalWeightBack += +part.weight;
+						if (typeof part.weight !== "undefined"){ // Check to see if the old part.weight is still defined
+							totalWeightFront += +part.weight; // Use that to set the front weight instead
+						}
+						console.error(this.name + " needs to refresh their body type"); // Print an error to console
+					}
+
+					// Assign back weight
+					if (typeof part.weightBack !== "undefined"){ // Check to see if we have a back weight
+						totalWeightBack += +part.weightBack; // Add it
+					}
+					else { // Fall back on the vanilla weight
+						if (typeof part.weight !== "undefined"){ // Check to see if the old part.weight is still defined
+							totalWeightBack += +part.weight; // Use that to set the back weight instead
 						}
 						console.error(this.name + " needs to refresh their body type"); // Print an error to console
 					}
