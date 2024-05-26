@@ -1389,7 +1389,7 @@ export class gurpsItem extends Item {
             currentSubPart.holdout += 2;
           }
         }
-        console.log(this.system.armourDesign.holdout, currentSubPart.holdout)
+
         this.system.armourDesign.holdout = Math.min(this.system.armourDesign.holdout, currentSubPart.holdout);
       }
     }
