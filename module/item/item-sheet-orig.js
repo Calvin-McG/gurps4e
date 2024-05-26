@@ -68,6 +68,15 @@ export class gurpsItemSheet extends ItemSheet {
             context.explosiveFillers = this.getExplosiveFillers();
         }
 
+        if (this.item.type === "Custom Armour") {
+            context.tailoring = this.getTailoring();
+            context.style = this.getStyle();
+            context.steelHardening = this.getSteelHardening();
+            context.leatherQuality = this.getLeatherQuality();
+            context.concealedClothing = this.getConcealedClothing();
+            context.undercoverClothing = this.getUndercoverClothing();
+        }
+
         if (this.item.type === "Ritual") {
             context.ritualTypes = this.getRitualTypes();
             context.elixirTypes = this.getElixirTypes();
@@ -82,6 +91,69 @@ export class gurpsItemSheet extends ItemSheet {
         }
 
         return context;
+    }
+
+    getUndercoverClothing() {
+        return {
+            "0": "No Bonus",
+            "1": "+1 Bonus (+4 CF)",
+            "2": "+2 Bonus (+19 CF)",
+        }
+    }
+
+    getConcealedClothing() {
+        return {
+            "": "None",
+            "swimwear": "Swimwear (-5)",
+            "summer": "Summer Clothing (-3)",
+            "standard": "Normal Clothing (+0)",
+            "winter": "Winter Clothing (+3)",
+            "longCoat": "Long Coat (+4)",
+            "heavyLongCoat": "Heavy Long Coat (+4)",
+            "leatherLongCoat": "Leather Long Coat (+4)",
+            "lightQualityLeatherLongCoat": "Light Quality Leather Long Coat (+4)",
+            "qualityLeatherLongCoat": "Quality Leather Long Coat (+4)",
+            "habit": "Nun's Habit (+5)",
+        }
+    }
+
+    getLeatherQuality() {
+        return {
+            "rawhide": "Rawhide",
+            "": "Standard",
+            "quality": "Leather of Quality",
+        }
+    }
+
+    getSteelHardening() {
+        let types = {
+            "": "None",
+            "hardened": "Hardened Steel",
+        }
+
+        if (this.item.system.armourDesign.hasPlate) {
+            types.duplex = "Duplex Plate";
+        }
+
+        return types;
+    }
+
+    getStyle() {
+        return {
+            "0": "No Styling",
+            "1": "+1 Styling",
+            "2": "+2 Styling (Presentation Quality)",
+            "3": "+3 Styling",
+        }
+    }
+
+    getTailoring() {
+        return {
+            "cheap": "Cheap",
+            "": "Regularly Tailored",
+            "expert": "Expertly Tailored",
+            "master": "Masterfully Tailored",
+        }
     }
 
     getRitualRangeTypes() {

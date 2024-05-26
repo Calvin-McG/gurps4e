@@ -101,6 +101,20 @@ export class materialHelpers {
         return selectedMaterial;
     }
 
+    static fetchArmourMaterialsByTL(tl) {
+        const materials = this.fetchArmourMaterials();
+        let selectedMaterials = [];
+        if (typeof tl !== "undefined"){
+            materials.forEach( material => {
+                if (material.tl <= tl) {
+                    selectedMaterials.push(material);
+                }
+            })
+        }
+
+        return selectedMaterials;
+    }
+
     static getExplosiveByCode(code) {
         const explosives = this.fetchExplosives();
         let selectedExplosive;
@@ -221,6 +235,20 @@ export class materialHelpers {
         }
 
         return selectedConstructionType;
+    }
+
+    static fetchArmourConstructionMethodsByTL(tl) {
+        const constructionTypes = this.fetchArmourConstructionMethods();
+        let selectedConstructionTypes = [];
+        if (typeof tl !== "undefined"){
+            constructionTypes.forEach( constructionType => {
+                if (constructionType.tl <= tl) {
+                    selectedConstructionTypes.push(constructionType);
+                }
+            })
+        }
+
+        return selectedConstructionTypes;
     }
 
     static adToPF(ad) {

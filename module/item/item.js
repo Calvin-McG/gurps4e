@@ -528,8 +528,8 @@ export class gurpsItem extends Item {
       }
 
       // Get materials and construction methods
-      this.system.armourDesign.materials = game.materialAPI.fetchArmourMaterials();
-      this.system.armourDesign.constructionTypes = game.materialAPI.fetchArmourConstructionMethods();
+      this.system.armourDesign.materials = materialHelpers.fetchArmourMaterialsByTL(this.system.tl);
+      this.system.armourDesign.constructionTypes = materialHelpers.fetchArmourConstructionMethodsByTL(this.system.tl);
 
       // Get game settings relevant to the design of the laser
       this.system.armourDesign.allowMagicalMaterialsForCustom = game.settings.get("gurps4e", "allowMagicalMaterialsForCustom");
@@ -603,7 +603,7 @@ export class gurpsItem extends Item {
       this.system.armourDesign.unitDonTime = 0;
       this.system.armourDesign.donTime = 0;
 
-      this.system.armourDesign.holdout = 0;
+      this.system.armourDesign.holdout = 99;
       for (let i = 0; i < bodyParts.length; i++) { // Loop through body parts
         if (foundry.utils.getProperty(this.system.armour.bodyType.body, bodyParts[i] + ".subLocation")) { // Part has sub parts
           let subParts = foundry.utils.getProperty(this.system.armour.bodyType.body, bodyParts[i] + ".subLocation");
@@ -614,11 +614,13 @@ export class gurpsItem extends Item {
 
             if (subParts.thigh) { // There is a thigh
               if (subParts.thigh.construction && subParts.thigh.material) { // It has been correctly armoured
-                if (currentSubPart.label.toLowerCase() == "thigh artery") { // Current part is a thigh artery
-                  currentSubPart.construction = subParts.thigh.construction;
-                  currentSubPart.material = subParts.thigh.material;
-                  currentSubPart.selectedDR = subParts.thigh.selectedDR;
-                  currentSubPart.surfaceArea = 0;
+                if (typeof currentSubPart.label === "string") {
+                  if (currentSubPart.label.toLowerCase() === "thigh artery") { // Current part is a thigh artery
+                    currentSubPart.construction = subParts.thigh.construction;
+                    currentSubPart.material = subParts.thigh.material;
+                    currentSubPart.selectedDR = subParts.thigh.selectedDR;
+                    currentSubPart.surfaceArea = 0;
+                  }
                 }
               }
             }
@@ -728,6 +730,10 @@ export class gurpsItem extends Item {
         this.system.armourDesign.canPassFor = "Concealed under clothing or pass as ordinary civilian outerwear";
         this.system.lc = 3;
       }
+      else if (isNaN(this.system.armourDesign.armourPercent)) {
+        this.system.armourDesign.canPassFor = "You've got no armour, so it doesn't need to pass for anything.";
+        this.system.lc = 4;
+      }
       else {
         this.system.armourDesign.canPassFor = "Not concealable. It can only pass as heavy clothing such as a trench coat, biker leathers, etc";
         this.system.lc = 2;
@@ -740,54 +746,74 @@ export class gurpsItem extends Item {
       // Handle cost and weight for armour concealed within clothing
       if (this.system.armourDesign.concealed) { // If it's concealed, run concealment related code
         // Tailoring applies to the clothing as well
-        if (this.system.armourDesign.tailoring.toLowerCase() == "expert") {
-          clothingCF = clothingCF + 5;
-          clothingWM = clothingWM - 0.15;
-        }
-        else if (this.system.armourDesign.tailoring.toLowerCase() == "master") {
-          clothingCF = clothingCF +29
-          clothingWM = clothingWM - 0.3;
+        if (typeof this.system.armourDesign.tailoring === "string") {
+          if (this.system.armourDesign.tailoring.toLowerCase() === "expert") {
+            clothingCF = clothingCF + 5;
+            clothingWM = clothingWM - 0.15;
+          }
+          else if (this.system.armourDesign.tailoring.toLowerCase() === "master") {
+            clothingCF = clothingCF +29
+            clothingWM = clothingWM - 0.3;
+          }
         }
 
-        if (this.system.armourDesign.concealedClothing.toLowerCase() == "swimwear") {
-          this.system.armourDesign.clothingCost = economicHelpers.getColByStatus(this.system.armourDesign.clothingStatus) * 0.05;
-          this.system.armourDesign.clothingWeight = 0.5;
-        }
-        else if (this.system.armourDesign.concealedClothing.toLowerCase() == "summer") {
-          this.system.armourDesign.clothingCost = economicHelpers.getColByStatus(this.system.armourDesign.clothingStatus) * 0.10;
-          this.system.armourDesign.clothingWeight = 1;
-        }
-        else if (this.system.armourDesign.concealedClothing.toLowerCase() == "standard") {
-          this.system.armourDesign.clothingCost = economicHelpers.getColByStatus(this.system.armourDesign.clothingStatus) * 0.20;
-          this.system.armourDesign.clothingWeight = 2;
-        }
-        else if (this.system.armourDesign.concealedClothing.toLowerCase() == "winter") {
-          this.system.armourDesign.clothingCost = economicHelpers.getColByStatus(this.system.armourDesign.clothingStatus) * 0.30;
-          this.system.armourDesign.clothingWeight = 5;
-        }
-        else if (this.system.armourDesign.concealedClothing.toLowerCase() == "longcoat") {
-          this.system.armourDesign.clothingCost = 50;
-          this.system.armourDesign.clothingWeight = 5;
-        }
-        else if (this.system.armourDesign.concealedClothing.toLowerCase() == "leatherLongCoat") {
-          this.system.armourDesign.clothingCost = 100;
-          this.system.armourDesign.clothingWeight = 10;
-        }
-        else if (this.system.armourDesign.concealedClothing.toLowerCase() == "lightQualityLeatherLongCoat") {
-          this.system.armourDesign.clothingCost = 250;
-          this.system.armourDesign.clothingWeight = 5;
-        }
-        else if (this.system.armourDesign.concealedClothing.toLowerCase() == "qualityLeatherLongCoat") {
-          this.system.armourDesign.clothingCost = 500;
-          this.system.armourDesign.clothingWeight = 10;
-        }
-        else if (this.system.armourDesign.concealedClothing.toLowerCase() == "habit") {
-          this.system.armourDesign.clothingCost = economicHelpers.getColByStatus(this.system.armourDesign.clothingStatus) * 0.35;
-          this.system.armourDesign.clothingWeight = 6;
+        this.system.armourDesign.hideClothingStatus =false;
+        this.system.armourDesign.hideUndercoverClothing = false;
+        if (typeof this.system.armourDesign.concealedClothing === "string") {
+          if (this.system.armourDesign.concealedClothing.toLowerCase() === "swimwear") {
+            this.system.armourDesign.clothingCost = economicHelpers.getColByStatus(this.system.armourDesign.clothingStatus) * 0.05;
+            this.system.armourDesign.clothingWeight = 0.5;
+          }
+          else if (this.system.armourDesign.concealedClothing.toLowerCase() === "summer") {
+            this.system.armourDesign.clothingCost = economicHelpers.getColByStatus(this.system.armourDesign.clothingStatus) * 0.10;
+            this.system.armourDesign.clothingWeight = 1;
+          }
+          else if (this.system.armourDesign.concealedClothing.toLowerCase() === "standard") {
+            this.system.armourDesign.clothingCost = economicHelpers.getColByStatus(this.system.armourDesign.clothingStatus) * 0.20;
+            this.system.armourDesign.clothingWeight = 2;
+          }
+          else if (this.system.armourDesign.concealedClothing.toLowerCase() === "winter") {
+            this.system.armourDesign.clothingCost = economicHelpers.getColByStatus(this.system.armourDesign.clothingStatus) * 0.30;
+            this.system.armourDesign.clothingWeight = 5;
+          }
+          else if (this.system.armourDesign.concealedClothing.toLowerCase() === "longcoat") {
+            this.system.armourDesign.clothingCost = 50;
+            this.system.armourDesign.clothingWeight = 5;
+            this.system.armourDesign.hideClothingStatus = true;
+          }
+          else if (this.system.armourDesign.concealedClothing.toLowerCase() === "leatherlongcoat" || this.system.armourDesign.concealedClothing.toLowerCase() === "heavylongcoat") {
+            this.system.armourDesign.clothingCost = 50;
+            clothingCF += 1; // Going to a heavy or leather long coat is CF+1
+            this.system.armourDesign.clothingWeight = 10;
+            this.system.armourDesign.hideClothingStatus = true;
+          }
+          else if (this.system.armourDesign.concealedClothing.toLowerCase() === "lightqualityleatherlongcoat") {
+            this.system.armourDesign.clothingCost = 50;
+            clothingCF += 4; // Quality leather is CF+4
+            this.system.armourDesign.clothingWeight = 5;
+            this.system.armourDesign.hideClothingStatus = true;
+          }
+          else if (this.system.armourDesign.concealedClothing.toLowerCase() === "qualityleatherlongcoat") {
+            this.system.armourDesign.clothingCost = 50;
+            clothingCF += 1; // Going to a heavy or leather long coat is CF+1
+            clothingCF += 4; // Quality leather is CF+4
+            this.system.armourDesign.clothingWeight = 10;
+            this.system.armourDesign.hideClothingStatus = true;
+          }
+          else if (this.system.armourDesign.concealedClothing.toLowerCase() === "habit") {
+            this.system.armourDesign.clothingCost = economicHelpers.getColByStatus(this.system.armourDesign.clothingStatus) * 0.35;
+            this.system.armourDesign.clothingWeight = 6;
+          }
+          else {
+            this.system.armourDesign.clothingCost = 0;
+            this.system.armourDesign.clothingWeight = 0;
+            this.system.armourDesign.hideClothingStatus = true;
+            this.system.armourDesign.hideUndercoverClothing = true;
+          }
         }
         else {
-          this.system.armourDesign.clothingCost = 0;
-          this.system.armourDesign.clothingWeight = 0;
+          this.system.armourDesign.hideClothingStatus = true;
+          this.system.armourDesign.hideUndercoverClothing = true;
         }
 
         if (this.system.armourDesign.undercoverClothing == "1") {
@@ -1006,7 +1032,7 @@ export class gurpsItem extends Item {
 
           // Handle bonus DR from leather coat options
           if (this.system.armourDesign.concealedClothing) {
-            if (this.system.armourDesign.concealedClothing.toLowerCase() == "leatherlongcoat" || this.system.armourDesign.concealedClothing.toLowerCase() == "lightqualityleatherlongcoat" || this.system.armourDesign.concealedClothing.toLowerCase() == "qualityleatherlongcoat") {
+            if (this.system.armourDesign.concealedClothing.toLowerCase() == "heavylongcoat" || this.system.armourDesign.concealedClothing.toLowerCase() == "leatherlongcoat" || this.system.armourDesign.concealedClothing.toLowerCase() == "lightqualityleatherlongcoat" || this.system.armourDesign.concealedClothing.toLowerCase() == "qualityleatherlongcoat") {
               let leatherCoatBonus = 1; // Most of the coats give +1 DR
               if (this.system.armourDesign.concealedClothing.toLowerCase() == "qualityleatherlongcoat") { // Quality heavy leather coats give +2
                 leatherCoatBonus = 2;
@@ -1025,7 +1051,8 @@ export class gurpsItem extends Item {
                   currentSubPart.label.toLowerCase() == "digestive tract"      || currentSubPart.label.toLowerCase() == "pelvis" ||
                   currentSubPart.label.toLowerCase() == "groin"                || currentSubPart.label.toLowerCase() == "abdomen" ||
                   currentSubPart.label.toLowerCase() == "animal abdomen"       || currentSubPart.label.toLowerCase() == "lower thorax" ||
-                  currentSubPart.label.toLowerCase() == "neck"                 || currentSubPart.label.toLowerCase() == "vein") {
+                  currentSubPart.label.toLowerCase() == "neck"                 || currentSubPart.label.toLowerCase() == "vein" ||
+                  currentSubPart.label.toLowerCase() == "shin"                 || currentSubPart.label.toLowerCase() == "tail") {
                 drModifier += leatherCoatBonus;
               }
             }
@@ -1298,7 +1325,9 @@ export class gurpsItem extends Item {
           }
         }
 
-        this.system.armourDesign.armourPercent = Math.max(currentSubPart.armourPercent, this.system.armourDesign.armourPercent) // Always use the worst (highest) value
+        if (!isNaN(currentSubPart.armourPercent)) {
+          this.system.armourDesign.armourPercent = Math.max(currentSubPart.armourPercent, this.system.armourDesign.armourPercent) // Always use the worst (highest) value
+        }
 
         this.system.armourDesign.donTime = Math.round(this.system.armourDesign.donTime);
         this.system.armourDesign.unitWeight += currentSubPart.weight;
@@ -1323,10 +1352,10 @@ export class gurpsItem extends Item {
         }
         else if (this.system.armourDesign.adjustedHoldoutPenaltyForCustomArmour.toLowerCase() == "thickness") {
           if (currentSubPart.flexible) {
-            currentSubPart.holdout = currentSubPart.selectedDR / 3 * (currentSubPart.material.drPerIn / 8);
+            currentSubPart.holdout = currentSubPart.in / (1 / 4 / 3); // The highest penalty I could find for flexible armour is -3. Armour stops being flexible beyond 0.25in, so at 0.25in the penalty should be -3.
           }
         else {
-            currentSubPart.holdout = currentSubPart.selectedDR * (currentSubPart.material.drPerIn / 68);
+            currentSubPart.holdout = currentSubPart.in / 0.015; // The penalty for High Quality Iron (The baseline we're using for correction) is -14 at 0.21in of armour. So divide inches by 0.015 to get the penalty for rigid armour.
           }
         }
 
@@ -1360,7 +1389,7 @@ export class gurpsItem extends Item {
             currentSubPart.holdout += 2;
           }
         }
-
+        console.log(this.system.armourDesign.holdout, currentSubPart.holdout)
         this.system.armourDesign.holdout = Math.min(this.system.armourDesign.holdout, currentSubPart.holdout);
       }
     }
@@ -8341,23 +8370,28 @@ export class gurpsItem extends Item {
           "</tr>";
 
       info += "<tr>" +
-          "<td>Long Coat covers the neck, torso, arms, knees, and thighs.</td>" +
+          "<td>Long Coat covers the neck, torso, arms, and legs.</td>" +
           "<td>50$</td><td>5 lbs</td>" +
           "</tr>";
 
       info += "<tr>" +
-          "<td>The Leather Long Coat grants +1 DR to the neck, torso, arms, knees, and thighs. It need not actually be leather.</td>" +
+          "<td>The Leather Long Coat grants +1 DR to the neck, torso, arms, and legs.</td>" +
           "<td>100$</td><td>10 lbs</td>" +
           "</tr>";
 
       info += "<tr>" +
-          "<td>The Light Quality Leather Long Coat grants +1 DR to the neck, torso, arms, knees, and thighs. It does need to be leather.</td>" +
+          "<td>The Heavy Long Coat grants +1 DR to the neck, torso, arms, and legs.</td>" +
+          "<td>100$</td><td>10 lbs</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>The Light Quality Leather Long Coat grants +1 DR to the neck, torso, arms, and legs.</td>" +
           "<td>250$</td><td>5 lbs</td>" +
           "</tr>";
 
       info += "<tr>" +
-          "<td>The Quality Leather Long Coat grants +2 DR to the neck, torso, arms, knees, and thighs. It does need to be leather.</td>" +
-          "<td>500$</td><td>10 lbs</td>" +
+          "<td>The Quality Leather Long Coat grants +2 DR to the neck, torso, arms, and legs.</td>" +
+          "<td>300$</td><td>10 lbs</td>" +
           "</tr>";
 
       info += "<tr>" +
@@ -8602,7 +8636,11 @@ export class gurpsItem extends Item {
       info = "<table>";
 
       info += "<tr>" +
-          "<td>The type of clothing this armour might be able to pass for. This is usually not going to work for rigid armour, however, no matter how thin.</td>" +
+          "<td>The type of clothing this armour might be able to pass for. That said, this doesn't usually work at all for rigid armour, no matter how thin.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>This also matters a lot less if the armour is concelled within another piece of clothing, in which case refer to the Holdout modifier below.</td>" +
           "</tr>";
 
       info += "</table>"
@@ -8611,7 +8649,16 @@ export class gurpsItem extends Item {
       info = "<table>";
 
       info += "<tr>" +
-          "<td>This is the worst holdout penalty among all the pieces in this set of armour.</td>" +
+          "<td>This is the worst holdout modifier among all the pieces in this set of armour.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>If you can get this to +3 or better, the armour will only be detected if someone pats you down.</td>" +
+          "</tr>";
+
+      info += "<tr>" +
+          "<td>Normally, a pat down will only automatically detect something with a modifier of -2 or worse. " +
+          "But because this is armour, it would automatically be detected regardless of the net modifier.</td>" +
           "</tr>";
 
       info += "</table>"
