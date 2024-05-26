@@ -1,4 +1,5 @@
-import {rollHelpers} from "../../helpers/rollHelpers.js";
+import { rollHelpers } from "../../helpers/rollHelpers.js";
+import { materialHelpers } from "../../helpers/materialHelpers.js";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -54,8 +55,119 @@ export class gurpsItemSheet extends ItemSheet {
         context.firearmCasingType = this.getFirearmCasingTypes();
         context.ammunitionGrades = this.getAmmunitionGrades();
         context.projectileTypes = this.getProjectileTypes();
+        context.laserConfigurations = this.getLaserConfiguration();
+        context.laserBeamTypes = this.getLaserBeamTypes();
+        context.laserColours = this.getLaserColours();
+        context.laserGenerators = this.getLaserGenerators();
+        context.graviticFocusing = this.getGraviticFocusing();
+        context.powerCells = CONFIG.POWERCELLS.dropdownChoices;
+        context.explosiveFillers = this.getExplosiveFillers();
 
         return context;
+    }
+
+    getExplosiveFillers() {
+        return materialHelpers.getExplosivesWithLabelByTL(this.item.system.tl);
+    }
+
+    getGraviticFocusing() {
+        let types = {
+            "0": "None",
+        }
+
+        if (this.item.system.tl >= 10) {
+            types = {
+                "0": "None",
+                "1": "One Level (TL10^)"
+            }
+        }
+        else if (this.item.system.tl >= 11) {
+            types = {
+                "0": "None",
+                "1": "One Level (TL10^)",
+                "2": "Two Levels (TL 11^)"
+            }
+        }
+        else if (this.item.system.tl >= 12) {
+            types = {
+                "0": "None",
+                "1": "One Level (TL10^)",
+                "2": "Two Levels (TL 11^)",
+                "3": "Three Levels (TL 12^)"
+            }
+        }
+
+        return types;
+    }
+
+    getLaserGenerators() {
+        let types = {
+            "single": "Single Shot",
+            "semi": "Semi-Auto",
+            "light": "Light Automatic",
+            "heavy": "Heavy Automatic",
+        }
+
+        if (game.settings.get("gurps4e", "hotshotsAndOverheating")) {
+            types.lightGat = "Light Gatling";
+            types.heavyGat = "Heavy Gatling";
+        }
+
+        return types;
+    }
+
+    getLaserColours() {
+        return {
+            "ir": "Infrared",
+            "bg": "Blue-Green",
+            "uv": "Ultraviolet",
+        }
+    }
+
+    getLaserBeamTypes() {
+        let types = {
+            "chemicalLaser": "Chemical Laser (TL8)",
+        }
+
+        if (this.item.system.tl >= 9) {
+            types.laser = "Laser (TL9)";
+        }
+        if (this.item.system.tl >= 10) {
+            types.blaster = "Blaster (TL 10)";
+            types.neutralParticleBeam = "Neutral Particle Beam (TL 10)";
+
+            if (game.settings.get("gurps4e", "allowSuperScienceCustomLasers")) {
+                types.forceBeam = "Force Beam (TL 10^)";
+            }
+        }
+        if (this.item.system.tl >= 11) {
+            types.rainbowLaser = "Rainbow Laser (TL 11)";
+            types.xRayLaser = "X-Ray Laser (TL 11)";
+            types.pulsar = "Pulsar (TL 11)";
+            types.blaster = "Blaster (TL 11)";
+            types.neutralParticleBeam = "Neutral Particle Beam (TL 11)";
+            types.rainbowLaser = "Rainbow Laser (TL 11)";
+            types.xRayLaser = "X-Ray Laser (TL 11)";
+
+            if (game.settings.get("gurps4e", "allowSuperScienceCustomLasers")) {
+                types.gravitonBeam = "Graviton Beam (TL 11^)";
+            }
+        }
+        if (this.item.system.tl >= 12) {
+            types.pulsar = "Pulsar (TL 12)";
+            types.graser = "Graser (TL 12)";
+        }
+
+        return types;
+    }
+
+    getLaserConfiguration() {
+        return {
+            "pistol": "Pistol",
+            "rifle" : "Rifle",
+            "beamer": "Beamer",
+            "cannon": "Cannon",
+        }
     }
 
     getProjectileTypes() {

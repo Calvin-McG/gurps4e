@@ -92,7 +92,7 @@ export class materialHelpers {
         let selectedMaterial;
         if (typeof name != "undefined"){
             materials.forEach( material => {
-                if (material.name.toLowerCase() == name.toLowerCase()) {
+                if (material.name.toLowerCase() === name.toLowerCase()) {
                     selectedMaterial = material;
                 }
             })
@@ -106,13 +106,56 @@ export class materialHelpers {
         let selectedExplosive;
         if (typeof code != "undefined"){
             explosives.forEach( explosive => {
-                if (explosive.code.toLowerCase() == code.toLowerCase()) {
+                if (explosive.code.toLowerCase() === code.toLowerCase()) {
                     selectedExplosive = explosive;
                 }
             })
         }
 
         return selectedExplosive;
+    }
+
+    static getExplosiveByName(name) {
+        const explosives = this.fetchExplosives();
+        let selectedExplosive;
+        if (typeof name !== "undefined"){
+            explosives.forEach( explosive => {
+                if (explosive.name.toLowerCase() === name.toLowerCase()) {
+                    selectedExplosive = explosive;
+                }
+            })
+        }
+
+        return selectedExplosive;
+    }
+
+    static getExplosivesByTL(tl) {
+        const explosives = this.fetchExplosives();
+        let selectedExplosives = [];
+        if (typeof tl !== "undefined"){
+            explosives.forEach( explosive => {
+                if (explosive.tl == tl) {
+                    selectedExplosives.push(explosive);
+                }
+            })
+        }
+
+        return selectedExplosives;
+    }
+
+    static getExplosivesWithLabelByTL(tl) {
+        const explosives = this.fetchExplosives();
+        let selectedExplosives = [];
+        if (typeof tl != "undefined"){
+            explosives.forEach( explosive => {
+                if (explosive.tl <= tl) {
+                    explosive.label = explosive.name + " - REF: " + explosive.ref
+                    selectedExplosives.push(explosive);
+                }
+            })
+        }
+
+        return selectedExplosives;
     }
 
     static getJewelryDesignByCode(code) {

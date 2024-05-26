@@ -2723,8 +2723,6 @@ export class gurpsItem extends Item {
         this.system.firearmDesign.cf = 1;
       }
 
-      this.system.firearmDesign.explosives = game.materialAPI.fetchExplosives();
-
       // The weapon is a muzzle loader, breach loader, or break action and magazine related info will be hidden
       if (this.system.firearmDesign.action === "break" || this.system.firearmDesign.action === "breech" || this.system.firearmDesign.action === "muzzle") {
         this.system.firearmDesign.magazineStyle = "none";
@@ -3913,7 +3911,7 @@ export class gurpsItem extends Item {
             // Handle explosive calculation
             if (this.system.firearmDesign.ammunition[ammoKeys[i]].explosivePercent > 0) {
 
-              let explosive = materialHelpers.getExplosiveByCode(this.system.firearmDesign.ammunition[ammoKeys[i]].explosiveFiller);
+              let explosive = materialHelpers.getExplosiveByName(this.system.firearmDesign.ammunition[ammoKeys[i]].explosiveFiller);
 
               let baseExplosiveDamage = 21 * (Math.sqrt((this.system.firearmDesign.ammunition[ammoKeys[i]].wps * (this.system.firearmDesign.ammunition[ammoKeys[i]].explosivePercent / 100)) * 4 * explosive.ref));
 
@@ -3974,8 +3972,6 @@ export class gurpsItem extends Item {
           "focalArray": 1, // Numbers map to Tiny, Very Small, etc, through to Extremely Large. Valid entires are 0.1 to 4
           "focalArraySize": "Medium", // Numbers map to Tiny, Very Small, etc, through to Extremely Large. Valid entires are 0.1 to 4
           "generator": "semi", // single/semi/light/heavy/lightGat/heavyGat.
-          "hotshotsAndOverheating": game.settings.get("gurps4e", "hotshotsAndOverheating"),
-          "allowSuperScienceCustomLasers": game.settings.get("gurps4e", "allowSuperScienceCustomLasers"),
           "superScience": false, // Makes use of allowSuperScienceCustomLasers to turn regular science lasers into super science lasers
           "damageDice": 2.0,
           "hotshotDamageDice": 2.0,
@@ -4058,8 +4054,7 @@ export class gurpsItem extends Item {
       this.system.laserDesign.damageDice = this.system.laserDesign.damageDiceInput / 2**(parseInt(this.system.laserDesign.graviticFocus));
 
       // Get game settings relevant to the design of the laser
-      this.system.laserDesign.hotshotsAndOverheating = game.settings.get("gurps4e", "hotshotsAndOverheating");
-      this.system.laserDesign.allowSuperScienceCustomLasers = game.settings.get("gurps4e", "allowSuperScienceCustomLasers");
+      let allowSuperScienceCustomLasers = game.settings.get("gurps4e", "allowSuperScienceCustomLasers");
 
       // This block categorizes the user's focal array selection into the categories given in the article
       if (this.system.laserDesign.focalArray < 0.175) { // Default tiny is 0.1, average of it and the next size is 0.175
@@ -4616,7 +4611,7 @@ export class gurpsItem extends Item {
       // Hotshots are allowed and this isn't a gatling weapon
       let hotshotDice = 0;
       let hotshotAdds = 0;
-      if (this.system.laserDesign.hotshotsAndOverheating && !(this.system.laserDesign.generator == "lightGat" || this.system.laserDesign.generator == "heavyGat")) {
+      if (game.settings.get("gurps4e", "hotshotsAndOverheating") && !(this.system.laserDesign.generator == "lightGat" || this.system.laserDesign.generator == "heavyGat")) {
         this.system.laserDesign.hotshotDamageDice = this.system.laserDesign.damageDice * 1.3;
         if (this.system.laserDesign.hotshotDamageDice < 1) { // Dice is less than 1, use different rules than normal rounding.
           if (this.system.laserDesign.hotshotDamageDice == 0) {
@@ -4708,7 +4703,7 @@ export class gurpsItem extends Item {
         this.system.laserDesign.halfRange = this.system.laserDesign.halfRange * 2;
       }
 
-      if (parseInt(this.system.laserDesign.graviticFocus) > 0 && this.system.laserDesign.allowSuperScienceCustomLasers) {
+      if (parseInt(this.system.laserDesign.graviticFocus) > 0 && allowSuperScienceCustomLasers) {
         if (parseInt(this.system.laserDesign.graviticFocus) == 1) {
           this.system.laserDesign.halfRange = this.system.laserDesign.halfRange * 10;
         }
@@ -4721,7 +4716,7 @@ export class gurpsItem extends Item {
       }
 
       if ((this.system.laserDesign.beamType == "laser" && this.system.laserDesign.laserColour == "ir") || this.system.laserDesign.beamType == "chemicalLaser") {
-        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+        if (this.system.laserDesign.fieldJacketed && allowSuperScienceCustomLasers) {
           if (this.system.laserDesign.halfRange >= 100) {
             this.system.laserDesign.halfRangeWater = Math.round(this.system.laserDesign.halfRange / 10) * 10;
           }
@@ -4749,7 +4744,7 @@ export class gurpsItem extends Item {
       }
       else if (this.system.laserDesign.beamType == "laser" && this.system.laserDesign.laserColour == "uv") {
         this.system.laserDesign.halfRangeSpace = Math.round(this.system.laserDesign.halfRange * 3 / 10) * 10;
-        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+        if (this.system.laserDesign.fieldJacketed && allowSuperScienceCustomLasers) {
           this.system.laserDesign.halfRangeWater = Math.round(this.system.laserDesign.halfRange * 3 / 10) * 10;
           this.system.laserDesign.halfRange = Math.round(this.system.laserDesign.halfRange * 3 / 10) * 10;
         }
@@ -4760,7 +4755,7 @@ export class gurpsItem extends Item {
       }
       else if (this.system.laserDesign.beamType == "rainbowLaser") {
         this.system.laserDesign.halfRange = Math.round(this.system.laserDesign.halfRange / 10) * 10;
-        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+        if (this.system.laserDesign.fieldJacketed && allowSuperScienceCustomLasers) {
           this.system.laserDesign.halfRangeSpace = Math.round(this.system.laserDesign.halfRange / 10) * 10;
           this.system.laserDesign.halfRangeWater = Math.round(this.system.laserDesign.halfRange / 10) * 10;
         }
@@ -4771,7 +4766,7 @@ export class gurpsItem extends Item {
       }
       else if (this.system.laserDesign.beamType == "xRayLaser") {
         this.system.laserDesign.halfRangeSpace = Math.round(this.system.laserDesign.halfRange / 10) * 10;
-        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+        if (this.system.laserDesign.fieldJacketed && allowSuperScienceCustomLasers) {
           this.system.laserDesign.halfRange = Math.round(this.system.laserDesign.halfRange / 10) * 10;
           this.system.laserDesign.halfRangeWater = Math.round(this.system.laserDesign.halfRange / 10) * 10;
         }
@@ -4782,7 +4777,7 @@ export class gurpsItem extends Item {
       }
       else if (this.system.laserDesign.beamType == "graser") {
         this.system.laserDesign.halfRangeSpace = Math.round(this.system.laserDesign.halfRange / 10) * 10;
-        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+        if (this.system.laserDesign.fieldJacketed && allowSuperScienceCustomLasers) {
           this.system.laserDesign.halfRange = Math.round(this.system.laserDesign.halfRange / 10) * 10;
           this.system.laserDesign.halfRangeWater = Math.round(this.system.laserDesign.halfRange / 10) * 10;
         }
@@ -4792,7 +4787,7 @@ export class gurpsItem extends Item {
         }
       }
       else if (this.system.laserDesign.beamType == "blaster") {
-        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+        if (this.system.laserDesign.fieldJacketed && allowSuperScienceCustomLasers) {
           this.system.laserDesign.halfRange = Math.round(this.system.laserDesign.halfRange / 10) * 10;
           this.system.laserDesign.halfRangeSpace = Math.round(this.system.laserDesign.halfRange / 10) * 10;
           this.system.laserDesign.halfRangeWater = Math.round(this.system.laserDesign.halfRange / 10) * 10;
@@ -4807,7 +4802,7 @@ export class gurpsItem extends Item {
       else if (this.system.laserDesign.beamType == "pulsar") {
         this.system.laserDesign.halfRangeSpace = Math.round(this.system.laserDesign.halfRange / 10) * 10;
         this.system.laserDesign.halfRangeWater = Math.round(this.system.laserDesign.halfRange / 10) * 10;
-        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+        if (this.system.laserDesign.fieldJacketed && allowSuperScienceCustomLasers) {
           this.system.laserDesign.halfRange = Math.round(this.system.laserDesign.halfRange / 10) * 10;
         }
         else {
@@ -4824,7 +4819,7 @@ export class gurpsItem extends Item {
       if (this.system.laserDesign.beamType == "chemicalLaser") {
         this.system.laserDesign.maxRange = this.system.laserDesign.halfRange * 3;
         this.system.laserDesign.maxRangeSpace = this.system.laserDesign.halfRangeSpace * 3;
-        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+        if (this.system.laserDesign.fieldJacketed && allowSuperScienceCustomLasers) {
           this.system.laserDesign.maxRangeWater = this.system.laserDesign.halfRange * 3;
         }
         else {
@@ -4834,7 +4829,7 @@ export class gurpsItem extends Item {
       else if (this.system.laserDesign.beamType == "laser" && this.system.laserDesign.laserColour == "ir") {
         this.system.laserDesign.maxRange = this.system.laserDesign.halfRange * 3;
         this.system.laserDesign.maxRangeSpace = this.system.laserDesign.halfRangeSpace * 3;
-        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+        if (this.system.laserDesign.fieldJacketed && allowSuperScienceCustomLasers) {
           this.system.laserDesign.maxRangeWater = this.system.laserDesign.halfRange * 3;
         }
         else {
@@ -4847,7 +4842,7 @@ export class gurpsItem extends Item {
         this.system.laserDesign.maxRangeWater = this.system.laserDesign.halfRangeWater * 3;
       }
       else if (this.system.laserDesign.beamType == "laser" && this.system.laserDesign.laserColour == "uv") {
-        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+        if (this.system.laserDesign.fieldJacketed && allowSuperScienceCustomLasers) {
           this.system.laserDesign.maxRange = this.system.laserDesign.halfRange * 3;
         }
         else {
@@ -4857,7 +4852,7 @@ export class gurpsItem extends Item {
         this.system.laserDesign.maxRangeWater = this.system.laserDesign.halfRangeWater * 3;
       }
       else if (this.system.laserDesign.beamType == "rainbowLaser") {
-        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+        if (this.system.laserDesign.fieldJacketed && allowSuperScienceCustomLasers) {
           this.system.laserDesign.maxRangeWater = this.system.laserDesign.halfRange * 3;
         }
         else {
@@ -4867,7 +4862,7 @@ export class gurpsItem extends Item {
         this.system.laserDesign.maxRangeSpace = this.system.laserDesign.halfRangeSpace * 3;
       }
       else if (this.system.laserDesign.beamType == "xRayLaser") {
-        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+        if (this.system.laserDesign.fieldJacketed && allowSuperScienceCustomLasers) {
           this.system.laserDesign.maxRangeWater = this.system.laserDesign.halfRangeWater * 3;
           this.system.laserDesign.maxRange = this.system.laserDesign.halfRange * 3;
         }
@@ -4878,7 +4873,7 @@ export class gurpsItem extends Item {
         this.system.laserDesign.maxRangeSpace = this.system.laserDesign.halfRangeSpace * 3;
       }
       else if (this.system.laserDesign.beamType == "graser") {
-        if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+        if (this.system.laserDesign.fieldJacketed && allowSuperScienceCustomLasers) {
           this.system.laserDesign.maxRangeWater = this.system.laserDesign.halfRangeWater * 3;
           this.system.laserDesign.maxRange = this.system.laserDesign.halfRange * 3;
         }
@@ -4907,7 +4902,7 @@ export class gurpsItem extends Item {
         this.system.laserDesign.maxRange = this.system.laserDesign.halfRange * 3;
       }
 
-      if (this.system.laserDesign.ftl && this.system.laserDesign.allowSuperScienceCustomLasers) {
+      if (this.system.laserDesign.ftl && allowSuperScienceCustomLasers) {
         this.system.laserDesign.halfRange = this.system.laserDesign.maxRangeSpace;
         this.system.laserDesign.halfRangeSpace = this.system.laserDesign.maxRangeWater;
         this.system.laserDesign.halfRangeWater = this.system.laserDesign.maxRange;
@@ -5022,7 +5017,7 @@ export class gurpsItem extends Item {
       if (this.system.laserDesign.beamType == "blaster" && this.system.laserDesign.omniBlaster) {
         cf += 1;
       }
-      if (this.system.laserDesign.fieldJacketed && this.system.laserDesign.allowSuperScienceCustomLasers) {
+      if (this.system.laserDesign.fieldJacketed && allowSuperScienceCustomLasers) {
         cf += 1;
       }
       if (parseInt(this.system.laserDesign.graviticFocus) > 0){
@@ -5130,7 +5125,7 @@ export class gurpsItem extends Item {
 
       rangedProfiles.push(showWater);
     }
-    if (this.system.laserDesign.showAirHotshot && this.system.hotshotsAndOverheating && !(this.system.configuration.toLowerCase().includes("gat"))) { // The user wants to show hotshots, hotshots are allowed, and this isn't a gatling weapon
+    if (this.system.laserDesign.showAirHotshot && game.settings.get("gurps4e", "hotshotsAndOverheating") && !(this.system.configuration.toLowerCase().includes("gat"))) { // The user wants to show hotshots, hotshots are allowed, and this isn't a gatling weapon
       let showAirHotshot = {
         "name": "Hotshot Air",
         "skill": this.system.laserDesign.rangedSkill,
@@ -5151,7 +5146,7 @@ export class gurpsItem extends Item {
 
       rangedProfiles.push(showAirHotshot);
     }
-    if (this.system.laserDesign.showSpaceHotshot && this.system.hotshotsAndOverheating && !(this.system.configuration.toLowerCase().includes("gat"))) { // The user wants to show hotshots, hotshots are allowed, and this isn't a gatling weapon
+    if (this.system.laserDesign.showSpaceHotshot && game.settings.get("gurps4e", "hotshotsAndOverheating") && !(this.system.configuration.toLowerCase().includes("gat"))) { // The user wants to show hotshots, hotshots are allowed, and this isn't a gatling weapon
       let showSpaceHotshot = {
         "name": "Space Hotshot",
         "skill": this.system.laserDesign.rangedSkill,
@@ -5172,7 +5167,7 @@ export class gurpsItem extends Item {
 
       rangedProfiles.push(showSpaceHotshot);
     }
-    if (this.system.laserDesign.showWaterHotshot && this.system.hotshotsAndOverheating && !(this.system.configuration.toLowerCase().includes("gat"))) { // The user wants to show hotshots, hotshots are allowed, and this isn't a gatling weapon
+    if (this.system.laserDesign.showWaterHotshot && game.settings.get("gurps4e", "hotshotsAndOverheating") && !(this.system.configuration.toLowerCase().includes("gat"))) { // The user wants to show hotshots, hotshots are allowed, and this isn't a gatling weapon
       let showWaterHotshot = {
         "name": "Water Hotshot",
         "skill": this.system.laserDesign.rangedSkill,
@@ -6545,7 +6540,7 @@ export class gurpsItem extends Item {
           "</tr>";
 
       if (this.system.tl >= 10){
-        if (this.system.laserDesign.allowSuperScienceCustomLasers) {
+        if (game.settings.get("gurps4e", "allowSuperScienceCustomLasers")) {
           info += "<tr>" +
               "<td style='width: 160px;'>Force Beam (TL 10^)</td>" +
               "<td><p>Fus Roh Dah except in a gun. Includes a stun setting.</p></td>" +
@@ -6574,7 +6569,7 @@ export class gurpsItem extends Item {
             "<td><p>A fuckin sick laser weapon, if not for the fact it's range in air is terrible. You can probably throw the gun farther than the beam will reach. But it's got AD (5) and its range is ludicrous in space.</p></td>" +
             "</tr>";
 
-        if (this.system.laserDesign.allowSuperScienceCustomLasers) {
+        if (game.settings.get("gurps4e", "allowSuperScienceCustomLasers")) {
           info += "<tr>" +
               "<td style='width: 160px;'>Graviton Beam (TL 11^)</td>" +
               "<td><p>Shoot gravity at people. Low damage but it ignores armour.</p></td>" +
@@ -6639,7 +6634,7 @@ export class gurpsItem extends Item {
           "<p>These options determine how quickly the weapon can draw from its power source, allowing for higher or lower rates of fire. Higher rate of fire options cost and weigh more.</p>" +
           "</td>" +
           "</tr>";
-      if (this.system.laserDesign.hotshotsAndOverheating) {
+      if (game.settings.get("gurps4e", "hotshotsAndOverheating")) {
         info += "<tr>" +
             "<td><p>Gatling versions of the Light and Heavy generators prevent the laser from overheating due to continuous fire, but are incapable of firing hotshots.</p></td>" +
             "</tr>";

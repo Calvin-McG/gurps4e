@@ -1894,13 +1894,7 @@
                                 </td>
                                 <td>
                                     <select name="system.firearmDesign.ammunition.{{id}}.explosiveFiller">
-                                        {{#select ammo.explosiveFiller}}
-                                            {{#each ../item.system.firearmDesign.explosives as |explosive id|}}
-                                                {{#ifCond ../../item.system.tl '>=' explosive.tl}}
-                                                    <option value="{{explosive.code}}">{{explosive.name}} - REF: {{explosive.ref}}</option>
-                                                {{/ifCond}}
-                                            {{/each}}
-                                        {{/select}}
+                                        {{selectOptions ../explosiveFillers selected=ammo.explosiveFiller valueAttr="name" labelAttr="label"}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="explosive-filler">
@@ -2038,12 +2032,7 @@
                                 </td>
                                 <td>
                                     <select name="system.laserDesign.configuration">
-                                        {{#select item.system.laserDesign.configuration}}
-                                        <option value="pistol">Pistol</option>
-                                        <option value="rifle">Rifle</option>
-                                        <option value="beamer">Beamer</option>
-                                        <option value="cannon">Cannon</option>
-                                        {{/select}}
+                                        {{selectOptions laserConfigurations selected=item.system.laserDesign.configuration}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="laser-configuration">
@@ -2059,65 +2048,7 @@
                                 </td>
                                 <td>
                                     <select name="system.laserDesign.beamType">
-                                        {{#select item.system.laserDesign.beamType}}
-                                        {{#ifCond  item.system.tl '>=' 8 }}
-                                        <option value="chemicalLaser">Chemical Laser (TL8)</option>
-                                        {{/ifCond}}
-                                        {{#ifCond  item.system.tl '>=' 9 }}
-                                        <option value="laser">Laser (TL9)</option>
-                                        {{/ifCond}}
-                                        {{#if item.system.laserDesign.allowSuperScienceCustomLasers}}
-                                        {{#ifCond  item.system.tl '>=' 10 }}
-                                        <option value="forceBeam">Force Beam (TL 10^)</option>
-                                        {{/ifCond}}
-                                        {{/if}}
-                                        {{#if (eq item.system.laserDesign.configuration "cannon")}}
-                                        {{#ifCond  item.system.tl '>=' 10 }}
-                                        <option value="blaster">Blaster (TL 10)</option>
-                                        {{/ifCond}}
-                                        {{#ifCond  item.system.tl '>=' 10 }}
-                                        <option value="neutralParticleBeam">Neutral Particle Beam (TL 10)</option>
-                                        {{/ifCond}}
-                                        {{#ifCond  item.system.tl '>=' 11 }}
-                                        <option value="rainbowLaser">Rainbow Laser (TL 11)</option>
-                                        {{/ifCond}}
-                                        {{#ifCond  item.system.tl '>=' 11 }}
-                                        <option value="xRayLaser">X-Ray Laser (TL 11)</option>
-                                        {{/ifCond}}
-                                        {{#if item.system.laserDesign.allowSuperScienceCustomLasers}}
-                                        {{#ifCond  item.system.tl '>=' 11 }}
-                                        <option value="gravitonBeam">Graviton Beam (TL 11^)</option>
-                                        {{/ifCond}}
-                                        {{/if}}
-                                        {{#ifCond  item.system.tl '>=' 11 }}
-                                        <option value="pulsar">Pulsar (TL 11)</option>
-                                        {{/ifCond}}
-                                        {{else}}
-                                        {{#ifCond  item.system.tl '>=' 11 }}
-                                        <option value="blaster">Blaster (TL 11)</option>
-                                        {{/ifCond}}
-                                        {{#ifCond  item.system.tl '>=' 11 }}
-                                        <option value="neutralParticleBeam">Neutral Particle Beam (TL 11)</option>
-                                        {{/ifCond}}
-                                        {{#ifCond  item.system.tl '>=' 11 }}
-                                        <option value="rainbowLaser">Rainbow Laser (TL 11)</option>
-                                        {{/ifCond}}
-                                        {{#ifCond  item.system.tl '>=' 11 }}
-                                        <option value="xRayLaser">X-Ray Laser (TL 11)</option>
-                                        {{/ifCond}}
-                                        {{#if item.system.laserDesign.allowSuperScienceCustomLasers}}
-                                        {{#ifCond  item.system.tl '>=' 11 }}
-                                        <option value="gravitonBeam">Graviton Beam (TL 11^)</option>
-                                        {{/ifCond}}
-                                        {{/if}}
-                                        {{#ifCond  item.system.tl '>=' 12 }}
-                                        <option value="pulsar">Pulsar (TL 12)</option>
-                                        {{/ifCond}}
-                                        {{/if}}
-                                        {{#ifCond  item.system.tl '==' 12 }}
-                                        <option value="graser">Graser (TL 12)</option>
-                                        {{/ifCond}}
-                                        {{/select}}
+                                        {{selectOptions laserBeamTypes selected=item.system.laserDesign.beamType}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="beam-type">
@@ -2134,11 +2065,7 @@
                                 </td>
                                 <td>
                                 <select name="system.laserDesign.laserColour">
-                                    {{#select item.system.laserDesign.laserColour}}
-                                    <option value="ir">Infrared</option>
-                                    <option value="bg">Blue-Green</option>
-                                    <option value="uv">Ultraviolet</option>
-                                    {{/select}}
+                                    {{selectOptions laserColours selected=item.system.laserDesign.laserColour}}
                                 </select>
                                 </td>
                                 <td class="question-container" id="laser-colour">
@@ -2191,16 +2118,7 @@
                                 </td>
                                 <td>
                                 <select name="system.laserDesign.generator">
-                                    {{#select item.system.laserDesign.generator}}
-                                    <option value="single">Single Shot</option>
-                                    <option value="semi">Semi-Auto</option>
-                                    <option value="light">Light Automatic</option>
-                                    <option value="heavy">Heavy Automatic</option>
-                                    {{#if item.system.laserDesign.hotshotsAndOverheating}}
-                                    <option value="lightGat">Light Gatling</option>
-                                    <option value="heavyGat">Heavy Gatling</option>
-                                    {{/if}}
-                                    {{/select}}
+                                    {{selectOptions laserGenerators selected=item.system.laserDesign.generator}}
                                 </select>
                                 </td>
                                 <td class="question-container" id="laser-generator">
@@ -2246,16 +2164,7 @@
                             </td>
                             <td style="line-height: 27.5px">
                                 <select name="system.laserDesign.graviticFocus">
-                                    {{#select item.system.laserDesign.graviticFocus}}
-                                    <option value="0">None</option>
-                                    <option value="1">One Level (TL 10^)</option>
-                                    {{#ifCond  item.system.tl '>=' 11 }}
-                                    <option value="2">Two Levels (TL 11^)</option>
-                                    {{#ifCond  item.system.tl '>=' 12 }}
-                                    <option value="3">Three Levels (TL 12^)</option>
-                                    {{/ifCond}}
-                                    {{/ifCond}}
-                                    {{/select}}
+                                    {{selectOptions graviticFocusing selected=item.system.laserDesign.graviticFocus}}
                                 </select>
                             </td>
                             <td class="question-container" id="gravitic-focusing">
@@ -2327,14 +2236,7 @@
                                 <td style="line-height: 27.5px">
                                     <input type="number" style="width: 50px;" name="system.laserDesign.powerCellQty" value="{{item.system.laserDesign.powerCellQty}}" data-dtype="Number"/>
                                     <select name="system.laserDesign.powerCell">
-                                        {{#select item.system.laserDesign.powerCell}}
-                                        <option value="A">A cell{{#ifCond item.system.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
-                                        <option value="B">B cell{{#ifCond item.system.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
-                                        <option value="C">C cell{{#ifCond item.system.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
-                                        <option value="D">D cell{{#ifCond item.system.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
-                                        <option value="E">E cell{{#ifCond item.system.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
-                                        <option value="F">F cell{{#ifCond item.system.laserDesign.powerCellQty '>' 1}}s{{/ifCond}}</option>
-                                        {{/select}}
+                                        {{selectOptions powerCells selected=item.system.laserDesign.powerCell}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="laser-power-system">

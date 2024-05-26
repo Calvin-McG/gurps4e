@@ -36,7 +36,7 @@ import {
   BASEQUALITYTYPES,
   BOWSHAPES,
   ARROWDAMAGETYPES,
-  ARROWARMOURDIVISOR
+  ARROWARMOURDIVISOR, POWERCELLS
 } from "./module/helpers/config.mjs";
 
 Hooks.once('init', async function() {
@@ -74,6 +74,7 @@ Hooks.once('init', async function() {
   CONFIG.BOWSHAPES = BOWSHAPES;
   CONFIG.ARROWDAMAGETYPES = ARROWDAMAGETYPES;
   CONFIG.ARROWARMOURDIVISOR = ARROWARMOURDIVISOR;
+  CONFIG.POWERCELLS = POWERCELLS;
 
   // Begin section of stuff I don't totally remember the reasons for
   game.gurps4e = {

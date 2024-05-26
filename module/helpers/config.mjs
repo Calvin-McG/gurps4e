@@ -30,6 +30,7 @@ export const BASEQUALITYTYPES = {};
 export const BOWSHAPES = {};
 export const ARROWDAMAGETYPES = {};
 export const ARROWARMOURDIVISOR = {};
+export const POWERCELLS = {};
 
 DAMAGETYPES.dropdownChoices = {
     "burn": "Burning",
@@ -278,4 +279,13 @@ ARROWARMOURDIVISOR.dropdownChoices = {
     "1": "(1)",
     "0.5": "(0.5)",
     "2": "(2)",
+}
+
+POWERCELLS.dropdownChoices = {
+    "A": "A cell",
+    "B": "B cell",
+    "C": "C cell",
+    "D": "D cell",
+    "E": "E cell",
+    "F": "F cell",
 }
