@@ -5817,7 +5817,7 @@ export class gurpsActor extends Actor {
 		label = generalHelpers.correctAtoAn(label);
 
 		// Include enc level in the dodge or parry label if it is relevant.
-		if ((flags.attack.parryType.toUpperCase() === "F" || type === "dodge") && typeof target.system.encumbrance.current.title !== 'undefined') {
+		if (((typeof flags.attack.parryType !== "undefined" && flags.attack.parryType.toUpperCase() === "F") || type === "dodge") && typeof target.system.encumbrance.current.title !== 'undefined') {
 			label += " at an encumbrance level of " + target.system.encumbrance.current.title
 		}
 
