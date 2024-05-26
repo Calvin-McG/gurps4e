@@ -3102,7 +3102,7 @@ export class gurpsItem extends Item {
         this.system.firearmDesign.shots = this.system.firearmDesign.capacity // Base shots is the magazine capacity
 
         if (this.system.firearmDesign.bolt === "closed") { // If it's closed bolt, add +1
-          this.system.firearmDesign.shot += "+" + 1
+          this.system.firearmDesign.shots += "+" + 1
         }
 
         if (this.system.firearmDesign.barrels > 1) { // If it has multiple barrels, multiply accordingly
