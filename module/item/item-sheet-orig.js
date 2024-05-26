@@ -37,31 +37,34 @@ export class gurpsItemSheet extends ItemSheet {
         context.bodyTypes = CONFIG.BODYTYPES.dropdownChoices;
         context.vehicleCraftTypes = CONFIG.VEHICLECRAFTTYPES.dropdownChoices;
         context.baseQualityTypes = CONFIG.BASEQUALITYTYPES.dropdownChoices;
-        context.customWeaponTypes = this.getCustomWeaponTypes();
-        context.bowShapes = CONFIG.BOWSHAPES.dropdownChoices;
-        context.arrowDamageTypes = CONFIG.ARROWDAMAGETYPES.dropdownChoices;
-        context.arrowArmourDivisors = CONFIG.ARROWARMOURDIVISOR.dropdownChoices;
-        context.bowConstructionTypes = this.getBowConstructionTypes();
-        context.firearmConfigurations = this.getFirearmConfigurations();
-        context.firearmActionTypes = this.getFirearmActionTypes();
-        context.firearmLockTypes = this.getFirearmLockTypes();
-        context.firearmBoltTypes = this.getFirearmBoltTypes();
-        context.firearmPropellants = this.getFirearmPropellants();
-        context.cartridgeTypes = this.getCartridgeTypes();
-        context.magazineStyles = this.getMagazineStyles();
-        context.magazineMaterials = this.getMagazineMaterials();
-        context.firearmQualityAccuracy = this.getFirearmQualityAccuracy();
-        context.firearmQualityReliability = this.getFirearmQualityReliability();
-        context.firearmCasingType = this.getFirearmCasingTypes();
-        context.ammunitionGrades = this.getAmmunitionGrades();
-        context.projectileTypes = this.getProjectileTypes();
-        context.laserConfigurations = this.getLaserConfiguration();
-        context.laserBeamTypes = this.getLaserBeamTypes();
-        context.laserColours = this.getLaserColours();
-        context.laserGenerators = this.getLaserGenerators();
-        context.graviticFocusing = this.getGraviticFocusing();
-        context.powerCells = CONFIG.POWERCELLS.dropdownChoices;
-        context.explosiveFillers = this.getExplosiveFillers();
+
+        if (this.item.type === "Custom Weapon") {
+            context.customWeaponTypes = this.getCustomWeaponTypes();
+            context.bowShapes = CONFIG.BOWSHAPES.dropdownChoices;
+            context.arrowDamageTypes = CONFIG.ARROWDAMAGETYPES.dropdownChoices;
+            context.arrowArmourDivisors = CONFIG.ARROWARMOURDIVISOR.dropdownChoices;
+            context.bowConstructionTypes = this.getBowConstructionTypes();
+            context.firearmConfigurations = this.getFirearmConfigurations();
+            context.firearmActionTypes = this.getFirearmActionTypes();
+            context.firearmLockTypes = this.getFirearmLockTypes();
+            context.firearmBoltTypes = this.getFirearmBoltTypes();
+            context.firearmPropellants = this.getFirearmPropellants();
+            context.cartridgeTypes = this.getCartridgeTypes();
+            context.magazineStyles = this.getMagazineStyles();
+            context.magazineMaterials = this.getMagazineMaterials();
+            context.firearmQualityAccuracy = this.getFirearmQualityAccuracy();
+            context.firearmQualityReliability = this.getFirearmQualityReliability();
+            context.firearmCasingType = this.getFirearmCasingTypes();
+            context.ammunitionGrades = this.getAmmunitionGrades();
+            context.projectileTypes = this.getProjectileTypes();
+            context.laserConfigurations = this.getLaserConfiguration();
+            context.laserBeamTypes = this.getLaserBeamTypes();
+            context.laserColours = this.getLaserColours();
+            context.laserGenerators = this.getLaserGenerators();
+            context.graviticFocusing = this.getGraviticFocusing();
+            context.powerCells = CONFIG.POWERCELLS.dropdownChoices;
+            context.explosiveFillers = this.getExplosiveFillers();
+        }
 
         return context;
     }
