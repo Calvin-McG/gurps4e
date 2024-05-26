@@ -40,9 +40,277 @@ export class gurpsItemSheet extends ItemSheet {
         context.bowShapes = CONFIG.BOWSHAPES.dropdownChoices;
         context.arrowDamageTypes = CONFIG.ARROWDAMAGETYPES.dropdownChoices;
         context.arrowArmourDivisors = CONFIG.ARROWARMOURDIVISOR.dropdownChoices;
-        context.bowConstructionTypes = this.getBowConstructionTypes()
+        context.bowConstructionTypes = this.getBowConstructionTypes();
+        context.firearmConfigurations = this.getFirearmConfigurations();
+        context.firearmActionTypes = this.getFirearmActionTypes();
+        context.firearmLockTypes = this.getFirearmLockTypes();
+        context.firearmBoltTypes = this.getFirearmBoltTypes();
+        context.firearmPropellants = this.getFirearmPropellants();
+        context.cartridgeTypes = this.getCartridgeTypes();
+        context.magazineStyles = this.getMagazineStyles();
+        context.magazineMaterials = this.getMagazineMaterials();
+        context.firearmQualityAccuracy = this.getFirearmQualityAccuracy();
+        context.firearmQualityReliability = this.getFirearmQualityReliability();
+        context.firearmCasingType = this.getFirearmCasingTypes();
+        context.ammunitionGrades = this.getAmmunitionGrades();
+        context.projectileTypes = this.getProjectileTypes();
 
         return context;
+    }
+
+    getProjectileTypes() {
+        let types = {
+            "solid": "Solid",
+        }
+
+        if (this.item.system.tl >= 4) {
+            types.le = "Low Explosive";
+            types.lec = "Low Explosive Concussion";
+            if (this.item.system.firearmDesign.projectileCalibre >= 5) {
+                types.shotshell = "Shotshell"; // Only calibres of +5mm can be shotshells
+            }
+            if (this.item.system.firearmDesign.projectileCalibre >= 20) {
+                types.canister = "Canister"; // Only calibres of +20mm can be canister
+            }
+        }
+        if (this.item.system.tl >= 5) {
+            types.hp = "Hollow Point";
+            types.saple = "Semi Armour Piercing Low Explosive";
+            types.saplec = "Semi Armour Piercing Low Explosive Concussion";
+        }
+        if (this.item.system.tl >= 6) {
+            types.ap = "Armour Piercing";
+            types.aphc = "Armour Piercing Hardcore";
+            types.frangible = "Frangible";
+            types.apex = "Armour Piercing Explosive";
+            types.he = "High Explosive";
+            types.hec = "High Explosive Concussion";
+            types.saphe = "Semi Armour Piercing High Explosive";
+            types.saphec = "Semi Armour Piercing High Explosive Concussion";
+            types.duplex = "Duplex";
+            types.triplex = "Triplex";
+        }
+        if (this.item.system.tl >= 7) {
+            types.apds = "Armour Piercing Discarding Sabot";
+            types.apfsds = "Armour Piercing Fin Stabilized Discarding Sabot";
+            types.underwater = "Underwater Dart";
+            types.aphex = "Armour Piercing Hardcore Explosive";
+            if (this.item.system.firearmDesign.projectileCalibre >= 9) {
+                types.bean = "Beanbag";
+            }
+            if (this.item.system.firearmDesign.projectileCalibre >= 10) {
+                types.baton = "Baton";
+                types.mf = "Multi Flechette";
+                types.rs = "Rubber Shot";
+            }
+            if (this.item.system.firearmDesign.projectileCalibre <= 10) {
+                types.sapfsds = "Semi Armor Piercing Fin Stabilized Discarding Sabot";
+            }
+            if (this.item.system.firearmDesign.projectileCalibre >= 20) {
+                types.heat = "High Explosive Antitank";
+                types.hedp = "High Explosive Dual Purpose";
+            }
+            if (this.item.system.firearmDesign.projectileCalibre >= 50) {
+                types.efp = "Explosively Formed Projectile";
+                types.hesh = "High Explosive Squash Head";
+            }
+        }
+        if (this.item.system.tl >= 8) {
+            types.apdu = "Armour Piercing Depleted Uranium";
+            types.apdsdu = "Armour Piercing Discarding-Sabot Depleted Uranium";
+            if (this.item.system.firearmDesign.projectileCalibre >= 10) {
+                types.apfsdsdu = "Armour Piercing Fin Stabilized Discarding Sabot Depleted Uranium";
+            }
+            if (this.item.system.firearmDesign.projectileCalibre >= 20) {
+                types.thermobaric = "Thermobaric";
+            }
+            if (this.item.system.firearmDesign.projectileCalibre >= 50) {
+                types.msheat = "Multi-Stage High Explosive Antitank";
+            }
+        }
+
+        return types;
+    }
+
+    getAmmunitionGrades() {
+        return {
+            "1": "Standard Grade",
+            "1.25": "Match Grade (TL6)",
+            "1.5": "Handloaded Match Grade (TL6)",
+        }
+    }
+
+    getFirearmCasingTypes() {
+        return {
+            "cased": "Cased (TL5)",
+            "lightCased": "Light Cased (TL5)"
+        }
+    }
+
+    getFirearmQualityReliability() {
+        return {
+            "-1": "Cheap",
+            "0": "Good",
+            "1": "Fine",
+            "2": "Very Fine"
+        }
+    }
+
+    getFirearmQualityAccuracy() {
+        let types = {
+            "-1": "Cheap",
+            "0": "Good",
+        }
+
+        if (this.item.system.firearmDesign.baseAcc >= 4) {
+            types = {
+                "-1": "Cheap",
+                "0": "Good",
+                "1": "Fine",
+                "2": "Very Fine"
+            }
+        }
+        else if (this.item.system.firearmDesign.baseAcc >= 2) {
+            types = {
+                "-1": "Cheap",
+                "0": "Good",
+                "1": "Fine"
+            }
+        }
+
+        return types;
+    }
+
+    getMagazineMaterials() {
+        let types = {
+            "steel": "Steel (TL 3)"
+        }
+
+        if (this.item.system.tl >= 6) {
+            types.alloy = "Alloy (TL 6)";
+        }
+        if (this.item.system.tl >= 7) {
+            types.plastic = "Plastic (TL 7)";
+        }
+
+        return types;
+    }
+
+    getMagazineStyles() {
+        let types = {
+            "none": "None",
+            "internal": "Internal (TL 3)"
+        }
+
+        if (this.item.system.tl >= 6) {
+            types.standard = "Standard (TL 6)";
+            types.extended = "Extended (TL 6)";
+            types.drum = "Drum (TL 6)";
+        }
+        if (this.item.system.tl >= 7) {
+            types.highDensity = "High Density (TL 7)";
+        }
+
+        return types;
+    }
+
+    getCartridgeTypes() {
+        return {
+            "pistol": "Pistol",
+            "rifle": "Rifle",
+            "custom": "Custom",
+        }
+    }
+
+    getFirearmPropellants() {
+        let types = {
+            "black": "Black Powder (TL 3)",
+        }
+
+        if (this.item.system.tl >= 6) {
+            types.smokeless = "Smokeless Powder (TL 6)";
+        }
+        if (this.item.system.tl >= 9) {
+            types.etc = "Electrothermal Chemical (TL 9)";
+        }
+        if (this.item.system.tl >= 10) {
+            types.etk = "Electrothermal Kinetic (TL 10)";
+        }
+
+        return types;
+    }
+
+    getFirearmBoltTypes() {
+        return {
+            "closed": "Closed",
+            "open": "Open",
+        }
+    }
+    getFirearmLockTypes() {
+        let types = {
+            "cannon": "Cannonlock (TL 3)",
+            "match": "Matchlock (Very Late TL 3)",
+        }
+
+        if (this.item.system.tl >= 4) {
+            types.wheel = "Wheellock (TL4)";
+            types.flint = "Flintlock (Mid-Early TL4)";
+        }
+        if (this.item.system.tl >= 5) {
+            types.cap = "Caplock (Mid TL5)";
+            types.pin = "Pinfire (Late TL5)";
+            types.rim = "Rimfire (Late TL5)";
+        }
+        if (this.item.system.tl >= 6) {
+            types.centre = "Centrefire (Late TL6)";
+        }
+
+        return types;
+    }
+
+    getFirearmActionTypes() {
+        let types = {
+            "muzzle": "Muzzle Loader (TL3)",
+        }
+
+        if ((game.settings.get("gurps4e", "allowTL4BreechLoaders") && this.item.system.tl >= 4) || this.item.system.tl >= 5) {
+            types.breech = "Breech Loader (TL4)"
+        }
+        if (this.item.system.tl >= 5) {
+            types.break =       "Break Action (TL5)";
+            types.lever =       "Lever Action (Mid-Late TL5)";
+            types.revolverSA =  "Single Action Revolver (Mid-Late TL5)";
+            types.pump =        "Pump Action (Late TL5)";
+            types.bolt =        "Bolt Action (Very Late TL5)";
+        }
+        if (this.item.system.tl >= 6) {
+            types.revolverDA   = "Double Action Revolver (TL6)";
+            types.straightPull = "Straight Pull Bolt Action (TL6)";
+            types.semi         = "Semi Automatic (TL6)";
+            types.auto         = "Automatic (TL6)";
+        }
+        if (this.item.system.tl >= 7) {
+            types.burst   = "Automatic With Burst (TL7)";
+        }
+
+        return types;
+    }
+
+    getFirearmConfigurations() {
+        let types = {
+            "cannon": "Cannon",
+        }
+
+        if (this.item.system.tl >= 4) {
+            types.pistol = "Pistol";
+            types.longarm = "Longarm";
+            types.semiportable = "Semi-Portable Longarm";
+        }
+        if (this.item.system.tl >= 6) {
+            types.bullpup = "Bullpup Longarm"
+        }
+
+        return types;
     }
     getCustomWeaponTypes() {
         let types = {

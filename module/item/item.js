@@ -2587,7 +2587,6 @@ export class gurpsItem extends Item {
           "bolt": "closed", // closed/open
           "action": "semi", // muzzle/breech/break/bolt/straightPull/lever/pump/revolverSA/revolverDA/semi/auto/burst/highCyclicBurst
           "lock": "centre", // cannon/match/wheel/flint/cap/pin/rim/centre
-          "allowTL4BreechLoaders": game.settings.get("gurps4e", "allowTL4BreechLoaders"),
 
           "magicalMaterials": false,
 
@@ -2751,8 +2750,6 @@ export class gurpsItem extends Item {
       if (this.system.tl < 4) {
         this.system.firearmDesign.rifling = false;
       }
-
-      this.system.firearmDesign.allowTL4BreechLoaders = game.settings.get("gurps4e", "allowTL4BreechLoaders");
 
       // Begin calculations proper
 
@@ -8745,10 +8742,6 @@ export class gurpsItem extends Item {
             "<tr>" +
             "<td style='width: 50px; padding-right: 10px;'>Automatic with Burst</td>" +
             "<td><p>Automatic, but you can set the number of shots fired each time you pull the trigger. Without this, it can be hard to control how many shots you fire, particularly at high fire rates.</p></td>" +
-            "</tr>" +
-            "<tr>" +
-            "<td style='width: 50px; padding-right: 10px;'>Automatic with High-Cyclic Burst</td>" +
-            "<td><p>Seems similar to the other burst option, but it serves a completely different purpose. Weapons firing in high-cyclic burst mode have a Rcl of 1.</p></td>" +
             "</tr>" +
             "</table>"
     }

@@ -1025,17 +1025,7 @@
                                 </td>
                                 <td>
                                     <select name="system.firearmDesign.configuration">
-                                        {{#select item.system.firearmDesign.configuration}}
-                                        <option value="cannon">Cannon</option>
-                                        {{#ifCond  item.system.tl '>=' 4 }}
-                                        <option value="pistol">Pistol</option>
-                                        <option value="longarm">Longarm</option>
-                                        <option value="semiportable">Semi-Portable Longarm</option>
-                                        {{/ifCond}}
-                                        {{#ifCond  item.system.tl '>=' 6 }}
-                                        <option value="bullpup">Bullpup Longarm</option>
-                                        {{/ifCond}}
-                                        {{/select}}
+                                        {{selectOptions firearmConfigurations selected=item.system.firearmDesign.configuration}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="firearm-configuration">
@@ -1067,40 +1057,7 @@
                                 </td>
                                 <td>
                                     <select name="system.firearmDesign.action">
-                                        {{#select item.system.firearmDesign.action}}
-                                        <option value="muzzle">Muzzle Loader (TL3)</option>
-
-                                        {{#if item.system.firearmDesign.allowTL4BreechLoaders}}
-                                            {{#ifCond  item.system.tl '==' 4 }}
-                                                <option value="breech">Breech Loader (TL4)</option>
-                                            {{/ifCond}}
-                                        {{else}}
-                                            {{#ifCond  item.system.tl '>=' 5 }}
-                                                <option value="breech">Breech Loader (TL5)</option>
-                                            {{/ifCond}}
-                                        {{/if}}
-
-                                        {{#ifCond  item.system.tl '>=' 5 }}
-                                        <option value="break">Break Action (TL5)</option>
-                                        <option value="lever">Lever Action (Mid-Late TL5)</option>
-                                        <option value="revolverSA">Single Action Revolver (Mid-Late TL5)</option>
-                                        <option value="pump">Pump Action (Late TL5)</option>
-                                        <option value="bolt">Bolt Action (Very Late TL5)</option>
-                                        {{/ifCond}}
-
-                                        {{#ifCond  item.system.tl '>=' 6 }}
-                                        <option value="revolverDA">Double Action Revolver (TL6)</option>
-                                        <option value="straightPull">Straight Pull Bolt Action (TL6)</option>
-                                        <option value="semi">Semi Automatic (TL6)</option>
-                                        <option value="auto">Automatic (TL6)</option>
-                                        {{/ifCond}}
-
-                                        {{#ifCond  item.system.tl '>=' 7 }}
-                                        <option value="burst">Automatic With Burst (TL7)</option>
-                                        <option value="burst">Automatic With High-Cyclic Burst (Mid TL7)</option>
-                                        {{/ifCond}}
-
-                                        {{/select}}
+                                        {{selectOptions firearmActionTypes selected=item.system.firearmDesign.action}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="firearm-action">
@@ -1116,26 +1073,7 @@
                                 </td>
                                 <td>
                                     <select name="system.firearmDesign.lock">
-                                        {{#select item.system.firearmDesign.lock}}
-                                        <option value="cannon">Cannonlock (TL 3)</option>
-                                        <option value="match">Matchlock (Very Late TL 3)</option>
-
-                                        {{#ifCond  item.system.tl '>=' 4 }}
-                                        <option value="wheel">Wheellock (TL4)</option>
-                                        <option value="flint">Flintlock (Mid-Early TL4)</option>
-                                        {{/ifCond}}
-
-                                        {{#ifCond  item.system.tl '>=' 5 }}
-                                        <option value="cap">Caplock (Mid TL5)</option>
-                                        <option value="pin">Pinfire (Late TL5)</option>
-                                        <option value="rim">Rimfire (Late TL5)</option>
-                                        {{/ifCond}}
-
-                                        {{#ifCond  item.system.tl '>=' 6 }}
-                                        <option value="centre">Centrefire (Late TL6)</option>
-                                        {{/ifCond}}
-
-                                        {{/select}}
+                                        {{selectOptions firearmLockTypes selected=item.system.firearmDesign.lock}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="firearm-lock">
@@ -1152,10 +1090,7 @@
                                 </td>
                                 <td>
                                     <select name="system.firearmDesign.bolt">
-                                        {{#select item.system.firearmDesign.bolt}}
-                                        <option value="closed">Closed</option>
-                                        <option value="open">Open</option>
-                                        {{/select}}
+                                        {{selectOptions firearmBoltTypes selected=item.system.firearmDesign.bolt}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="firearm-bolt">
@@ -1229,22 +1164,11 @@
                         <table>
                             <tr class="design-row">
                                 <td style="width: 150px">
-                                    Powder Type
+                                    Propellant Type
                                 </td>
                                 <td>
                                     <select name="system.firearmDesign.powder">
-                                        {{#select item.system.firearmDesign.powder}}
-                                        <option value="black">Black Powder (TL 3)</option>
-                                        {{#ifCond  item.system.tl '>=' 6 }}
-                                        <option value="smokeless">Smokeless Powder (TL 6)</option>
-                                        {{/ifCond}}
-                                        {{#ifCond  item.system.tl '>=' 9 }}
-                                        <option value="etc">Electrothermal Chemical (TL 9)</option>
-                                        {{/ifCond}}
-                                        {{#ifCond  item.system.tl '>=' 10 }}
-                                        <option value="etk">Electrothermal Kinetic (TL 10)</option>
-                                        {{/ifCond}}
-                                        {{/select}}
+                                        {{selectOptions firearmPropellants selected=item.system.firearmDesign.powder}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="powder-type">
@@ -1344,11 +1268,7 @@
                                 </td>
                                 <td>
                                     <select name="system.firearmDesign.cartridgeType">
-                                        {{#select item.system.firearmDesign.cartridgeType}}
-                                        <option value="pistol">Pistol</option>
-                                        <option value="rifle">Rifle</option>
-                                        <option value="custom">Custom</option>
-                                        {{/select}}
+                                        {{selectOptions cartridgeTypes selected=item.system.firearmDesign.cartridgeType}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="cartridge-type">
@@ -1399,18 +1319,7 @@
                                 </td>
                                 <td>
                                     <select name="system.firearmDesign.magazineStyle">
-                                        {{#select item.system.firearmDesign.magazineStyle}}
-                                        <option value="none">None</option>
-                                        <option value="internal">Internal (TL 3)</option>
-                                        {{#ifCond  item.system.tl '>=' 6 }}
-                                        <option value="standard">Standard (TL 6)</option>
-                                        <option value="extended">Extended (TL 6)</option>
-                                        <option value="drum">Drum (TL 6)</option>
-                                        {{/ifCond}}
-                                        {{#ifCond  item.system.tl '>=' 7 }}
-                                        <option value="highDensity">High Density (TL 7)</option>
-                                        {{/ifCond}}
-                                        {{/select}}
+                                        {{selectOptions magazineStyles selected=item.system.firearmDesign.magazineStyle}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="magazine-style">
@@ -1426,15 +1335,7 @@
                                 </td>
                                 <td>
                                     <select name="system.firearmDesign.magazineMaterial">
-                                        {{#select item.system.firearmDesign.magazineMaterial}}
-                                        <option value="internal">Steel (TL 3)</option>
-                                        {{#ifCond  item.system.tl '>=' 6 }}
-                                        <option value="drum">Alloy (TL 6)</option>
-                                        {{/ifCond}}
-                                        {{#ifCond  item.system.tl '>=' 7 }}
-                                        <option value="plastic">Plastic (TL 7)</option>
-                                        {{/ifCond}}
-                                        {{/select}}
+                                        {{selectOptions magazineMaterials selected=item.system.firearmDesign.magazineMaterial}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="magazine-material">
@@ -1468,16 +1369,7 @@
                                 </td>
                                 <td>
                                     <select name="system.firearmDesign.accuracy">
-                                        {{#select item.system.firearmDesign.accuracy}}
-                                        <option value="-1">Cheap</option>
-                                        <option value="0">Good</option>
-                                        {{#ifCond item.system.firearmDesign.baseAcc '>=' 2 }}
-                                        <option value="1">Fine</option>
-                                        {{/ifCond}}
-                                        {{#ifCond item.system.firearmDesign.baseAcc '>=' 4 }}
-                                        <option value="2">Very Fine</option>
-                                        {{/ifCond}}
-                                        {{/select}}
+                                        {{selectOptions firearmQualityAccuracy selected=item.system.firearmDesign.accuracy}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="firearm-accuracy">
@@ -1493,12 +1385,7 @@
                                 </td>
                                 <td>
                                     <select name="system.firearmDesign.reliability">
-                                        {{#select item.system.firearmDesign.reliability}}
-                                        <option value="-2">Cheap</option>
-                                        <option value="0">Good</option>
-                                        <option value="1">Fine</option>
-                                        <option value="2">Very Fine</option>
-                                        {{/select}}
+                                        {{selectOptions firearmQualityReliability selected=item.system.firearmDesign.reliability}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="firearm-reliability">
@@ -1804,10 +1691,7 @@
                                 </td>
                                 <td>
                                     <select name="system.firearmDesign.ammunition.{{id}}.case">
-                                        {{#select ammo.case}}
-                                        <option value="cased">Cased (TL5)</option>
-                                        <option value="lightCased">Light Cased (TL5)</option>
-                                        {{/select}}
+                                        {{selectOptions ../firearmCasingType selected=ammo.case}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="case-type">
@@ -1842,11 +1726,7 @@
                                 </td>
                                 <td>
                                     <select name="system.firearmDesign.ammunition.{{id}}.match">
-                                        {{#select ammo.match}}
-                                        <option value="1">Standard Grade</option>
-                                        <option value="1.25">Match Grade (TL6)</option>
-                                        <option value="1.5">Handloaded Match Grade (TL6)</option>
-                                        {{/select}}
+                                        {{selectOptions ../ammunitionGrades selected=ammo.match}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="match-grade">
@@ -1945,76 +1825,7 @@
                                 </td>
                                 <td>
                                     <select name="system.firearmDesign.ammunition.{{id}}.projectile">
-                                        {{#select ammo.projectile}}
-                                            <option value="solid">Solid</option>
-                                            {{#ifCond ../item.system.tl '>=' 4 }}
-                                                <option value="le">Low Explosive</option>
-                                                <option value="lec">Low Explosive Concussion</option>
-                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 5 }}
-                                                    <option value="shotshell">Shotshell</option>
-                                                {{/ifCond}}
-                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 20 }}
-                                                    <option value="canister">Canister</option>
-                                                {{/ifCond}}
-                                            {{/ifCond}}
-                                            {{#ifCond ../item.system.tl '>=' 5 }}
-                                                <option value="hp">Hollow Point</option>
-                                                <option value="saple">Semi Armour Piercing Low Explosive</option>
-                                                <option value="saplec">Semi Armour Piercing Low Explosive Concussion</option>
-                                            {{/ifCond}}
-                                            {{#ifCond ../item.system.tl '>=' 6 }}
-                                                <option value="ap">Armour Piercing</option>
-                                                <option value="aphc">Armour Piercing Hardcore</option>
-                                                <option value="frangible">Frangible</option>
-                                                <option value="apex">Armour Piercing Explosive</option>
-                                                <option value="he">High Explosive</option>
-                                                <option value="hec">High Explosive Concussion</option>
-                                                <option value="saphe">Semi Armour Piercing High Explosive</option>
-                                                <option value="saphec">Semi Armour Piercing High Explosive Concussion</option>
-                                                <option value="duplex">Duplex</option>
-                                                <option value="triplex">Triplex</option>
-                                            {{/ifCond}}
-                                            {{#ifCond ../item.system.tl '>=' 7 }}
-                                                <option value="apds">Armour Piercing Discarding Sabot</option>
-                                                <option value="apfsds">Armour Piercing Fin Stabilized Discarding Sabot</option>
-                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 10 }}
-                                                    <option value="baton">Baton</option>
-                                                {{/ifCond}}
-                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 9 }}
-                                                    <option value="bean">Beanbag</option>
-                                                {{/ifCond}}
-                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '<=' 10 }}
-                                                    <option value="sapfsds">Semi Armor Piercing Fin Stabilized Discarding Sabot</option>
-                                                {{/ifCond}}
-                                                <option value="underwater">Underwater Dart</option>
-                                                <option value="aphex">Armour Piercing Hardcore Explosive</option>
-                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 50 }}
-                                                    <option value="efp">Explosively Formed Projectile</option>
-                                                    <option value="hesh">High Explosive Squash Head</option>
-                                                {{/ifCond}}
-                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 20 }}
-                                                    <option value="heat">High Explosive Antitank</option>
-                                                    <option value="hedp">High Explosive Dual Purpose</option>
-                                                {{/ifCond}}
-                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 10 }}
-                                                    <option value="mf">Multi Flechette</option>
-                                                    <option value="rs">Rubber Shot</option>
-                                                {{/ifCond}}
-                                            {{/ifCond}}
-                                            {{#ifCond ../item.system.tl '>=' 8 }}
-                                                <option value="apdu">Armour Piercing Depleted Uranium</option>
-                                                <option value="apdsdu">Armour Piercing Discarding-Sabot Depleted Uranium</option>
-                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 10 }}
-                                                    <option value="apfsdsdu">Armour Piercing Fin Stabilized Discarding Sabot Depleted Uranium</option>
-                                                {{/ifCond}}
-                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 50 }}
-                                                    <option value="msheat">Multi-Stage High Explosive Antitank</option>
-                                                {{/ifCond}}
-                                                {{#ifCond ../item.system.firearmDesign.projectileCalibre '>=' 20 }}
-                                                    <option value="thermobaric">Thermobaric</option>
-                                                {{/ifCond}}
-                                            {{/ifCond}}
-                                        {{/select}}
+                                        {{selectOptions ../projectileTypes selected=ammo.projectile}}
                                     </select>
                                 </td>
                                 <td class="question-container" id="firearm-projectile-type">
