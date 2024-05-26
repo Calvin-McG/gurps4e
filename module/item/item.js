@@ -1363,6 +1363,16 @@ export class gurpsItem extends Item {
           currentSubPart.holdout = Math.max(currentSubPart.holdout - this.system.armourDesign.holdoutReduction, 0); // Apply any holdout penalty reduction, but only remove penalties, don't grant any bonus.
         }
 
+        // Tailoring also removes holdout penalties but does not give a bonus.
+        if (typeof this.system.armourDesign.tailoring === "string") {
+          if (this.system.armourDesign.tailoring.toLowerCase() === "expert") {
+            currentSubPart.holdout = Math.max(currentSubPart.holdout - 1, 0);
+          }
+          else if (this.system.armourDesign.tailoring.toLowerCase() === "master") {
+            currentSubPart.holdout = Math.max(currentSubPart.holdout - 2, 0);
+          }
+        }
+
         currentSubPart.holdout *= -1; // Flip the holdout penalty to negative
 
         if (this.system.armourDesign.concealed) { // If it's concealed, run concealment related code
