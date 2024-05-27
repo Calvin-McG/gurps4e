@@ -686,7 +686,7 @@ export class gurpsItemSheet extends ItemSheet {
     get template() {
         const path = "systems/gurps4e/templates/item"; // This is the path to where the item sheets are kept
 
-        if (this.item.type === "Trait" || this.item.type === "Rollable") { // It's in the list of item types that fit on the consolidated sheet.
+        if (this.item.type === "Trait" || this.item.type === "Rollable" || this.item.type === "Equipment") { // It's in the list of item types that fit on the consolidated sheet.
             return `${path}/Consolidated-Item-sheet.html`; // Assemble the sheet reference for the consolidated sheet.
         }
         else {

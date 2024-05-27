@@ -1966,3 +1966,7 @@ attribute-senses {
 	text-align: right;
 	padding-right: 0.5em;
 }
+
+.consolidated-item-sheet-header td {
+	padding: 0.2em 0.4em;
+}

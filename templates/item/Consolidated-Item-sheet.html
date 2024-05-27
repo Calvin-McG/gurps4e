@@ -8,8 +8,72 @@
                 <input name="name" type="text" value="{{item.name}}" placeholder="Name"/>
             </h1>
         </div>
-        Consolidated Sheet
     </header>
+    <div style="padding-top: 2px;">
+        <table class="consolidated-item-sheet-header">{{!-- Rows in this table have a total colspan of 5 --}}
+            {{#if (eq item.type "Equipment")}}{{!-- Only Equipment gets qty, value, weight, lc, and equip status --}}
+            <tr>
+                <td>
+                    <div style="display: grid; grid-template-columns: auto auto;">
+                        <label class="resource-label">Qty:</label>
+                        <input type="number" name="system.quantity" value="{{item.system.quantity}}" data-dtype="Number"/>
+                    </div>
+                </td>
+                <td>
+                    <div style="display: grid; grid-template-columns: auto auto auto;">
+                        <label class="resource-label">Value:</label>
+                        <input type="number" name="system.cost" value="{{item.system.cost}}" data-dtype="Number"/>
+                        <label class="resource-label"> / {{item.system.ttlCost}}$ total</label>
+                    </div>
+                </td>
+                <td>
+                    <div style="display: grid; grid-template-columns: auto auto auto;">
+                        <label class="resource-label">Weight:</label>
+                        <input type="number" name="system.weight" value="{{item.system.weight}}" data-dtype="Number"/>
+                        <label class="resource-label"> / {{item.system.ttlWeight}}lb{{checkPlural item.system.ttlWeight}} total</label>
+                    </div>
+                </td>
+                <td>
+                    <div style="display: grid; grid-template-columns: auto auto;">
+                        <label class="resource-label">LC:</label>
+                        <input type="number" name="system.lc" value="{{item.system.lc}}" data-dtype="Number"/>
+                    </div>
+                </td>
+                <td>
+                    <div style="display: grid; grid-template-columns: auto;">
+                        <select name="system.equipStatus" class="equipStatusSelect">
+                            {{selectOptions equipStatusOptions selected=item.system.equipStatus}}
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            {{/if}}
+            <tr>
+                {{#if (or (eq item.type "Equipment") (eq item.type "Rollable"))}}{{!-- Only rollables and equipment get a TL --}}
+                <td>
+                    <div style="display: grid; grid-template-columns: auto auto;">
+                        <label class="resource-label">TL:</label>
+                        <input type="number" name="system.tl" value="{{item.system.tl}}" data-dtype="Number"/>
+                    </div>
+                </td>
+                {{/if}}
+                <td colspan="4">
+                    <div style="display: grid; grid-template-columns: 130px auto;">
+                        <label class="resource-label">Race / Meta Trait / Etc:</label>
+                        <input type="text" name="system.subCategory" value="{{item.system.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div style="display: grid; grid-template-columns: 76px auto;">
+                        <label class="resource-label">Short Notes:</label>
+                        <input type="text" name="system.shortNotes" value="{{item.system.shortNotes}}"/>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
 
     {{#if (eq item.type "Trait")}}
     <div>
@@ -78,22 +142,6 @@
                 </td>
                 <td style="font-weight: bold; text-align: center">
                     {{item.system.levelledPoints.totalPoints}}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Race / Meta Trait / Etc
-                </td>
-                <td>
-                    <input type="text" name="system.subCategory" value="{{item.system.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Short Notes
-                </td>
-                <td>
-                    <input type="text" name="system.shortNotes" value="{{item.system.shortNotes}}"/>
                 </td>
             </tr>
         </table>
@@ -243,22 +291,6 @@
                 </td>
                 <td>
                     <input type="text" name="system.points" value="{{item.system.points}}" data-dtype="Number"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label class="resource-label">Race / Meta Trait / Etc:</label>
-                </td>
-                <td>
-                    <input type="text" name="system.subCategory" value="{{item.system.subCategory}}" placeholder="Leave this blank if you don't want it categorized"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label class="resource-label">Notes</label>
-                </td>
-                <td>
-                    <input type="text" name="system.shortNotes" value="{{item.system.shortNotes}}"/>
                 </td>
             </tr>
         </table>
