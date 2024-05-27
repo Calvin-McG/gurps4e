@@ -2813,6 +2813,31 @@ export class materialHelpers {
         return materials;
     }
 
+    static materialMasterList() {
+        // For a material to be valid for a bow it needs (name, densityLbsCuIn, tensileStPsi, elasticModulusPsi)
+        return [
+            {
+                "name": "", // [BOWS] Used for display
+                "densityLbsCuIn": 0,  // [BOWS] Density in pounds per cubic inch
+                "tensileStPsi": 0, // [BOWS] Tensile strength / Breaking Stress rated in PSI
+                "elasticModulusPsi": 0, // [BOWS] Elastic Modulus rated in PSI
+                "a": 0, // [BOWS] Buckling Constant. Not actually used as we calculate it on demand.
+                "tl": 0, // [BOWS] The TL at which this becomes available
+                "bowCostPerLb": 0, // [BOWS] Math.round(this.system.bowDesign.workingMaterialOne.tensileStPsi ** 2 / 100 / this.system.bowDesign.workingMaterialOne.elasticModulusPsi / this.system.bowDesign.workingMaterialOne.densityLbsCuIn*100)/100;
+                "arrowCostPerLb": 0 // [BOWS] This is entirely calculated: Math.round(elasticModulusPsi / densityLbsCuIn * 1.25 / 9000000 * 100 ) / 100;
+            },
+            {
+                "name": "Advanced Nanotube-Cellulose Compound", // This was a bow material originally
+                "densityLbsCuIn": 0.020,  // Density in pounds per cubic inch
+                "tensileStPsi": 750000, // Tensile strength / Breaking Stress rated in PSI
+                "elasticModulusPsi": 30000000, // Elastic Modulus rated in PSI
+                "a": 0.34, // Buckling Constant
+                "builtIn": true, //
+                "tl": 10 // The TL at which this becomes available
+            },
+        ]
+    }
+
     static fetchBowMaterials() {
         const materials = [
             {
