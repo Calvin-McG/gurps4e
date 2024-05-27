@@ -296,7 +296,114 @@
         </table>
     </div>
     {{else if (eq item.type "Spell")}}
-
+    <table class="">
+        <tr>
+            <td class="tooltip">
+                Spell Class
+                <span class="tooltiptext" style="margin-left: -100px; bottom: 75%">
+                            <span style="font-weight: bold;">Blocking</span> - Blocking spells that are used against or on other targets, such as Fumble, or Blocking spells that modify the attack or your defence, such as Bladeturning, Block, or Boost Attribute, should be entered as Regular spells.  <br>
+                        </span>
+            </td>
+            <td>
+                <select name="system.spellClass">
+                    {{selectOptions spellClass selected=item.system.spellClass}}
+                </select>
+            </td>
+        </tr>
+        {{#if (eq item.system.spellClass "Blocking") }}
+        <tr>
+            <td class="tooltip">
+                Defence Type
+                <span class="tooltiptext" style="margin-left: -100px">
+                            Blocking spells that count as another type of active defence are typically subject to Deceptive Attacks, Ripostes, Runaround Attacks, Etc.<br><br>
+                            Magical defences like Phase and Blink are not.
+                        </span>
+            </td>
+            <td>
+                <select name="system.defenceType">
+                    {{selectOptions defenceTypeOptions selected=item.system.defenceType}}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="tooltip">
+                Attacks Stopped
+                <span class="tooltiptext" style="margin-left: -100px">
+                            <span style="font-weight: bold;">All</span> - A success stops all incoming projectiles. (Such as Phase, Blink, etc)<br>
+                            <span style="font-weight: bold;">Single</span> - A success stops exactly one incoming attack. (Such as Return Missile)<br>
+                            <span style="font-weight: bold;">Regular</span> - A sucess stops a number of attacks equal to the margin of success plus one, as usual. (Like a normal non-magical Dodge)<br>
+                        </span>
+            </td>
+            <td>
+                <select name="system.defenceQty">
+                    {{selectOptions defenceQty selected=item.system.defenceQty}}
+                </select>
+            </td>
+        </tr>
+        {{/if}}
+        <tr>
+            <td>Difficulty</td>
+            <td>
+                <select name="system.difficulty">
+                    {{selectOptions rollableDifficultyOptions selected=item.system.difficulty}}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="tooltip">
+                Magical Ability
+                <span class="tooltiptext" style="margin-left: -100px">
+                            Your base magical ability. IQ plus Magery, IQ plus Clerical Investment, whatever the value is for your specific form of magic.
+                        </span>
+            </td>
+            <td>{{item.system.magicalAbility}}</td>
+        </tr>
+        <tr>
+            <td class="tooltip">
+                Modifier
+                <span class="tooltiptext" style="margin-left: -100px">
+                            A spell specific modifier. This is not your Magery or Clerical Investment.
+                        </span>
+            </td>
+            <td><input type="text" name="system.mod" value="{{item.system.mod}}" data-dtype="Number"/></td>
+        </tr>
+        <tr>
+            <td>Level</td>
+            <td>{{item.system.level}}</td>
+        </tr>
+        <tr>
+            <td>Points</td>
+            <td><input type="text" name="system.points" value="{{item.system.points}}" data-dtype="Number"/></td>
+        </tr>
+        <tr id="college">
+            <td>College</td>
+            <td><input type="text" name="system.college" value="{{item.system.college}}" placeholder="This costs ten times as much for characters in the USA"/></td>
+        </tr>
+        <tr>
+            <td>Base Cost</td>
+            <td><input type="number" name="system.spellDetails.baseCost" value="{{item.system.spellDetails.baseCost}}" placeholder="The casting cost of the spell" data-dtype="Number"/></td>
+        </tr>
+        <tr>
+            <td>Levelled Cost</td>
+            <td><input type="number" name="system.spellDetails.levelledCost" value="{{item.system.spellDetails.levelledCost}}" placeholder="The casting cost of the spell" data-dtype="Number"/></td>
+        </tr>
+        <tr>
+            <td>Base Time to Cast</td>
+            <td><input type="text" name="system.spellDetails.timeToCast" value="{{item.system.spellDetails.timeToCast}}" placeholder="The time it takes to cast the spell"/></td>
+        </tr>
+        <tr>
+            <td>Duration</td>
+            <td><input type="text" name="system.spellDetails.duration" value="{{item.system.spellDetails.duration}}" placeholder="The duration of the spell"/></td>
+        </tr>
+        <tr>
+            <td>Prerequisites</td>
+            <td><input type="text" name="system.spellDetails.prerequisites" value="{{item.system.spellDetails.prerequisites}}" placeholder="Prerequisites to learn the spell"/></td>
+        </tr>
+        <tr>
+            <td>Page Reference</td>
+            <td><input type="text" name="system.pageRef" value="{{item.system.pageRef}}"/></td>
+        </tr>
+    </table>
     {{else if (eq item.type "Equipment")}}
 
     {{else if (eq item.type "Ritual")}}
@@ -641,7 +748,7 @@
             </tr>
         </table>
 
-        <!-- Energy Gathering -->
+        {{!-- Energy Gathering --}}
         <table style="background: #7900ff47">
             <tr>
                 <th colspan="4" style="font-size: larger">Energy Gathering</th>
@@ -689,7 +796,7 @@
             </tr>
         </table>
 
-        <!-- Paths -->
+        {{!-- Paths --}}
         <table style="background: #ed143d47;">
             <tr>
                 <th colspan="7" style="font-size: larger">Path Details</th>
@@ -730,7 +837,7 @@
             {{/each}}
         </table>
 
-        <!-- Ritual Modifiers -->
+        {{!-- Ritual Modifiers --}}
         <table style="background: rgba(190,237,20,0.28);">
             <tr>
                 <th colspan="5" style="font-size: larger">Modifier Details</th>
