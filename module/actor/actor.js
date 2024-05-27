@@ -5580,17 +5580,17 @@ export class gurpsActor extends Actor {
 
 		if (type.toLowerCase() === 'parry'){
 			selection = html.find('#parrySelector').val()
-			defenceQty = html.find('#magicalSelector')[0].selectedOptions[0].dataset.defenceqty;
+			defenceQty = html.find('#parrySelector')[0].selectedOptions[0].dataset.defenceqty;
 			name = html.find('#parrySelector')[0].innerText.split(":")[1]
 		}
 		else if (type.toLowerCase() === 'block'){
 			selection = html.find('#blockSelector').val()
-			defenceQty = html.find('#magicalSelector')[0].selectedOptions[0].dataset.defenceqty;
+			defenceQty = html.find('#blockSelector')[0].selectedOptions[0].dataset.defenceqty;
 			name = html.find('#blockSelector')[0].innerText.split(":")[1]
 		}
 		else if (type.toLowerCase() === 'dodge'){
 			selection = html.find('#dodgeSelector').val()
-			defenceQty = html.find('#magicalSelector')[0].selectedOptions[0].dataset.defenceqty;
+			defenceQty = html.find('#dodgeSelector')[0].selectedOptions[0].dataset.defenceqty;
 			name = html.find('#dodgeSelector')[0].innerText.split(":")[1]
 		}
 		else if (type.toLowerCase() === 'magical'){
