@@ -6106,14 +6106,18 @@ export class gurpsItem extends Item {
           let meleeKeys = Object.keys(this.system.melee);
           if (meleeKeys.length) {//Check to see if there are any melee profiles
             for (let k = 0; k < meleeKeys.length; k++) {
-              if (this.system.melee[meleeKeys[k]].name) {//Check to see if name is filled in. Otherwise don't bother.
+              if (this.system.melee[meleeKeys[k]].name) { // Check to see if name is filled in. Otherwise don't bother.
                 let level = 0;
                 let mod = +this.system.melee[meleeKeys[k]].skillMod;
                 let parry = 0;
                 let block = 0;
+                let weaponMastery = false;
+
+                let dx = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity);
+                let st = attributeHelpers.calcStOrHt(this.actor.system.primaryAttributes.strength, attributeHelpers.calcSMDiscount(this.actor.system.bio.sm));
 
                 if (this.system.melee[meleeKeys[k]].skill.toLowerCase() === "dx") {
-                  level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity);
+                  level = dx;
                 }
                 else if (this.system.melee[meleeKeys[k]].skill.toLowerCase() === "iq") {
                   level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.intelligence);
@@ -6126,6 +6130,7 @@ export class gurpsItem extends Item {
                   for (let i = 0; i < this.actor.items.contents.length; i++) {
                     if (this.actor.items.contents[i].type === "Rollable") {
                       if (this.system.melee[meleeKeys[k]].skill === this.actor.items.contents[i].name) {
+                        weaponMastery = this.actor.items.contents[i].system.weaponMaster;
                         level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items.contents[i].system);
                       }
                     }
@@ -6182,10 +6187,13 @@ export class gurpsItem extends Item {
                 } else {
                   block = this.system.melee[meleeKeys[k]].blockMod;
                 }
-                damage = attackHelpers.damageParseSwThr(this.actor, this.system.melee[meleeKeys[k]].damageInput);//Update damage value
+                damage = attackHelpers.damageParseSwThr(this.actor, this.system.melee[meleeKeys[k]].damageInput); // Update damage value
+
+                let bonusPerDie = attackHelpers.getTrainingDamageBonus(dx, level - +this.system.melee[meleeKeys[k]].skillMod, (weaponMastery ? "weapon master" : this.system.melee[meleeKeys[k]].skill), st)
+
                 this.system.melee[meleeKeys[k]].block = block; // Update block value
                 this.system.melee[meleeKeys[k]].type = "melee"; // Update attack type
-                this.system.melee[meleeKeys[k]].damage = attackHelpers.damageAddsToDice(damage);
+                this.system.melee[meleeKeys[k]].damage = attackHelpers.damageAddsToDiceWithBonusDamagePerDie(damage, bonusPerDie);
 
                 // Validation for Armour Divisor
                 if (!(this.system.melee[meleeKeys[k]].armourDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
