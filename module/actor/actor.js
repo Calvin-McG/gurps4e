@@ -3638,26 +3638,35 @@ export class gurpsActor extends Actor {
 				(typeof item.system.equipStatus !== "undefined" && item.system.equipStatus !== "equipped"))){ // If it's part of an item that has an equipped status, but it's not equipped, don't show it.
 				if (item.system.melee && showMelee) {
 					let meleeKeys = Object.keys(item.system.melee); // Collect all the melee keys
-					for (let m = 0; m < meleeKeys.length; m++){
-						if (filterByName && typeof itemName !== "undefined") { // If we're filtering by name, and there is a name to filter by
+					for (let m = 0; m < meleeKeys.length; m++){ // Loop through the melee keys
+						if (filterByName && typeof itemName !== "undefined") { // If we're filtering by item name, and there is a name to filter by
 							if (item.name.replace(/\s/g,'') === itemName.replace(/\s/g,'')) { // If the name matches
 								melee = foundry.utils.getProperty(item.system.melee, meleeKeys[m]);
-								if (filterByAttackName && typeof attackName !== "undefined") { // If we're filtering by attack name, and there is a name to filter by
+								if (filterByAttackName && typeof attackName !== "undefined") { // If we're also filtering by attack name, and there is a name to filter by
 									if (melee.name.replace(/\s/g,'') === attackName.replace(/\s/g,'')) { // If the name matches
-										melee.weapon = item.name
-										meleeAttacks.push(melee);
+										melee.weapon = item.name;
+
+										if (typeof melee.name === "string" && melee.name !== "") { // The name of the attack is a string, and that string is not empty.
+											meleeAttacks.push(melee); // Add the attack
+										}
 									}
 								}
 								else { // Otherwise just add the profile
 									melee.weapon = item.name
-									meleeAttacks.push(melee);
+
+									if (typeof melee.name === "string" && melee.name !== "") { // The name of the attack is a string, and that string is not empty.
+										meleeAttacks.push(melee); // Add the attack
+									}
 								}
 							}
 						}
 						else { // Otherwise just add the profile
 							melee = foundry.utils.getProperty(item.system.melee, meleeKeys[m]);
 							melee.weapon = item.name
-							meleeAttacks.push(melee);
+
+							if (typeof melee.name === "string" && melee.name !== "") { // The name of the attack is a string, and that string is not empty.
+								meleeAttacks.push(melee); // Add the attack
+							}
 						}
 					}
 				}
@@ -3671,19 +3680,28 @@ export class gurpsActor extends Actor {
 								if (filterByAttackName && typeof attackName !== "undefined") { // If we're filtering by attack name, and there is a name to filter by
 									if (ranged.name.replace(/\s/g,'') === attackName.replace(/\s/g,'')) { // If the name matches
 										ranged.weapon = item.name
-										rangedAttacks.push(ranged);
+
+										if (typeof ranged.name === "string" && ranged.name !== "") { // The name of the attack is a string, and that string is not empty.
+											rangedAttacks.push(ranged); // Add the attack
+										}
 									}
 								}
 								else { // Otherwise just add the profile
 									ranged.weapon = item.name
-									rangedAttacks.push(ranged);
+
+									if (typeof ranged.name === "string" && ranged.name !== "") { // The name of the attack is a string, and that string is not empty.
+										rangedAttacks.push(ranged); // Add the attack
+									}
 								}
 							}
 						}
 						else { // Otherwise just add the profile
 							ranged = foundry.utils.getProperty(item.system.ranged, rangedKeys[r]);
 							ranged.weapon = item.name
-							rangedAttacks.push(ranged);
+
+							if (typeof ranged.name === "string" && ranged.name !== "") { // The name of the attack is a string, and that string is not empty.
+								rangedAttacks.push(ranged); // Add the attack
+							}
 						}
 					}
 				}
@@ -3698,13 +3716,19 @@ export class gurpsActor extends Actor {
 									if (affliction.name.replace(/\s/g,'') === attackName.replace(/\s/g,'')) { // If the name matches
 										affliction.weapon = item.name
 										affliction.type = "affliction";
-										afflictionAttacks.push(affliction);
+
+										if (typeof affliction.name === "string" && affliction.name !== "") { // The name of the attack is a string, and that string is not empty.
+											afflictionAttacks.push(affliction); // Add the attack
+										}
 									}
 								}
 								else { // Otherwise just add the profile
 									affliction.weapon = item.name
 									affliction.type = "affliction";
-									afflictionAttacks.push(affliction);
+
+									if (typeof affliction.name === "string" && affliction.name !== "") { // The name of the attack is a string, and that string is not empty.
+										afflictionAttacks.push(affliction); // Add the attack
+									}
 								}
 							}
 						}
@@ -3712,7 +3736,10 @@ export class gurpsActor extends Actor {
 							affliction = foundry.utils.getProperty(item.system.affliction, afflictionKeys[a]);
 							affliction.weapon = item.name
 							affliction.type = "affliction";
-							afflictionAttacks.push(affliction);
+
+							if (typeof affliction.name === "string" && affliction.name !== "") { // The name of the attack is a string, and that string is not empty.
+								afflictionAttacks.push(affliction); // Add the attack
+							}
 						}
 					}
 				}
