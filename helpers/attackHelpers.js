@@ -93,7 +93,7 @@ export class attackHelpers {
         return locationLabel;
     }
 
-    static damageAddsToDice(damage) {
+    static damageAddsToDiceWithBonusDamagePerDie(damage, bonusPerDie) {
         if (damage.toString().includes("d6")) {
             let diceStrings = damage.match(/(\+|\-)?\d+d6/g); // Regex fetches "#d6", plus any +/1 sign
             let diceCount = 0;
@@ -111,13 +111,18 @@ export class attackHelpers {
             }
 
             if (game.settings.get("gurps4e", "addsToDice")) { // If we're converting extra adds to dice
-                damage = generalHelpers.pointsToDiceAndAddsString((diceCount * 3.5) + adds); // Convert all dice to adds, and then back to adds and dice.
+                damage = generalHelpers.pointsToDiceAndAddsString((diceCount * 3.5) + adds + (diceCount * bonusPerDie)); // Convert all dice to adds, and then back to adds and dice.
             }
             else {
                 damage = (diceCount + "d6" + adds); // Otherwise, take it as is.
             }
         }
+
         return damage;
+    }
+
+    static damageAddsToDice(damage) {
+        return this.damageAddsToDiceWithBonusDamagePerDie(damage, 0);
     }
 
     // This method takes in 1/2D and Max range and returns a single sensibly formatted string
@@ -179,20 +184,19 @@ export class attackHelpers {
 
         if (damBonus) { // damBonus is true, we're looking for just the bonus damage per dice
             switch(skillName.toLowerCase()) {
-                case "fast":
-                    progression = "fast";
-                    break;
-                case "average":
-                case "brawling":
-                case "throwing art":
-                    progression = "average";
-                    break;
                 case "boxing":
                 case "weapon master":
                 case "karate":
                 case "sumo wrestling":
                 case "sumo":
-                case "judo":
+                case "throwing art":
+                case "fast":
+                    progression = "fast";
+                    break;
+                case "average":
+                case "brawling":
+                    progression = "average";
+                    break;
                 case "slow":
                     progression = "slow";
                     break;
@@ -240,20 +244,14 @@ export class attackHelpers {
         }
 
         if (progression !== "none") {
-            if ((dxDifference + adjustment) === -1) {
+           if ((dxDifference + adjustment) === 1) {
                 trainingSTBonus = 1;
             }
-            else if ((dxDifference + adjustment) === 0) {
+            else if ((dxDifference + adjustment) === 2 || (dxDifference + adjustment) === 3) {
                 trainingSTBonus = 2;
             }
-            else if ((dxDifference + adjustment) === 1) {
-                trainingSTBonus = 3;
-            }
-            else if ((dxDifference + adjustment) === 2 || (dxDifference + adjustment) === 3) {
-                trainingSTBonus = 4;
-            }
             else if ((dxDifference + adjustment) >= 4) {
-                trainingSTBonus = 5 + Math.floor(((dxDifference + adjustment) - 4)/3) // Every full +3 gives an extra +1. So 4 gives a +5, and 7 gives a +6
+                trainingSTBonus = 3 + Math.floor(((dxDifference + adjustment) - 4)/3) // Every full +3 gives an extra +1. So 4 gives a +5, and 7 gives a +6
             }
 
             if (!expandedTrainingBonus) { // If we're not using expanded training bonuses
