@@ -299,6 +299,578 @@
 
     {{else if (eq item.type "Equipment")}}
 
+    {{else if (eq item.type "Ritual")}}
+    <div class="header-fields">
+        <table style="margin: unset; padding: unset; background: unset; border: unset;">
+            <tr>
+                <td style="width: 50%; vertical-align:top"><!-- Left Col -->
+                    <table style="background: #00ffff47">
+                        <tr>
+                            <th colspan="2" style="font-size: larger">Ritual Details</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Ritual Type:</label>
+                            </td>
+                            <td>
+                                <select name="system.ritualType">
+                                    {{selectOptions ritualTypes selected=item.system.ritualType}}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Ritual Mastery:</label>
+                            </td>
+                            <td>
+                                <input id="rpmStats" type="checkbox" name="system.ritualMastery" {{checked item.system.ritualMastery}} data-dtype="Boolean"/>
+                            </td>
+                        </tr>
+                        {{#if item.system.higherPurpose1Present}}
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Higher Purpose ({{item.system.higherPurpose1Name}}) applies for a +{{item.system.higherPurpose1Level}} bonus</label>
+                            </td>
+                            <td>
+                                <input id="hp1" type="checkbox" name="system.higherPurpose1Applies" {{checked item.system.higherPurpose1Applies}} data-dtype="Boolean"/>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{#if item.system.higherPurpose2Present}}
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Higher Purpose ({{item.system.higherPurpose2Name}}) applies for a +{{item.system.higherPurpose2Level}} bonus</label>
+                            </td>
+                            <td>
+                                <input id="hp2" type="checkbox" name="system.higherPurpose2Applies" {{checked item.system.higherPurpose2Applies}} data-dtype="Boolean"/>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{#if item.system.higherPurpose3Present}}
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Higher Purpose ({{item.system.higherPurpose3Name}}) applies for a +{{item.system.higherPurpose3Level}} bonus</label>
+                            </td>
+                            <td>
+                                <input id="hp3" type="checkbox" name="system.higherPurpose3Applies" {{checked item.system.higherPurpose3Applies}} data-dtype="Boolean"/>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Grimoire Bonus</label>
+                            </td>
+                            <td>
+                                <input type="number" style="width: 50%" name="system.grimBonus" value="{{item.system.grimBonus}}" data-dtype="Number" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Level</label>
+                            </td>
+                            <td>
+                                {{item.system.level}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Energy Cost</label>
+                            </td>
+                            <td>
+                                {{item.system.energyCost}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Number Ready</label>
+                            </td>
+                            <td>
+                                <input type="number" style="width: 50%" name="system.quantity" value="{{item.system.quantity}}" data-dtype="Number" />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="width: 50%; vertical-align:top"><!-- Right Col -->
+                    {{#if (or (eq item.system.ritualType "charm") (eq item.system.ritualType "conditionalCharm") (eq item.system.ritualType "conditional"))}}
+                    <table style="background: rgba(255,102,0,0.28)">
+                        <tr>
+                            {{#if (eq item.system.ritualType "conditional")}}
+                            <th colspan="2" style="font-size: larger">Conditional Ritual Details</th>
+                            {{/if}}
+                            {{#if (eq item.system.ritualType "conditionalCharm")}}
+                            <th colspan="2" style="font-size: larger">Conditional Charm Details</th>
+                            {{/if}}
+                            {{#if (eq item.system.ritualType "charm")}}
+                            <th colspan="2" style="font-size: larger">Charm Details</th>
+                            {{/if}}
+                        </tr>
+                        {{#unless (eq item.system.ritualType "conditional")}}
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Workspace Modifier: </label>
+                                <input type="number" style="width: 50%" name="system.workspaceMod" value="{{item.system.workspaceMod}}" data-dtype="Number" />
+                            </td>
+                        </tr>
+                        {{/unless}}
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Safe Threshold: </label>
+                                {{item.system.safeThreshold}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Character's Mana Contribution: </label>
+                                {{item.system.actorContribution}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Additional Sources Of Mana: </label>
+                                <input type="number" style="width: 50%" name="system.additionalSourcesOfMana" value="{{item.system.additionalSourcesOfMana}}" data-dtype="Number" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Total Safe Threshold: </label>
+                                {{item.system.totalSafeThreshold}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Crafting Roll Modifier (Higher numbers are bad): </label>
+                                {{item.system.craftingRollMod}} <input type='button' class='makeCraftingRoll' id="{{item.name}}" value='Make Crafting Roll'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Quirk Roll Modifier (Higher numbers are good): </label>
+                                {{item.system.quirkRollMod}} <input type='button' class='makeQuirkRoll' id="{{item.name}}"  value='Make Quirk Roll'/>
+                            </td>
+                        </tr>
+                    </table>
+                    {{/if}}
+
+                    {{#if (eq item.system.ritualType "elixir") }}
+                    <table style="background: rgba(0,255,21,0.28)">
+                        <tr>
+                            <th colspan="2" style="font-size: larger">Elixir Details</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Workspace Modifier</label>
+                                <input type="number" style="width: 50%" name="system.workspaceMod" value="{{item.system.workspaceMod}}" data-dtype="Number" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Elixir Type</label>
+                                <select name="system.elixir.type">
+                                    {{selectOptions elixirTypes selected=item.system.elixirType}}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Safe Threshold: </label>
+                                {{item.system.safeThreshold}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Character's Mana Contribution: </label>
+                                {{item.system.actorContribution}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Additional Sources Of Mana: </label>
+                                <input type="number" style="width: 50%" name="system.additionalSourcesOfMana" value="{{item.system.additionalSourcesOfMana}}" data-dtype="Number" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Total Safe Threshold: </label>
+                                {{item.system.totalSafeThreshold}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Crafting Roll Modifier (Higher numbers are bad): </label>
+                                {{item.system.craftingRollMod}} <input type='button' class='makeCraftingRoll' id="{{item.name}}" value='Make Crafting Roll'/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Quirk Roll Modifier (Higher numbers are good): </label>
+                                {{item.system.quirkRollMod}} <input type='button' class='makeQuirkRoll' id="{{item.name}}"  value='Make Quirk Roll'/>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="background: rgba(0,255,21,0.28)">
+                        <tr>
+                            <th colspan="4" style="font-size: larger; text-decoration: underline;">Alchemy Ingredients</th>
+                        </tr>
+                        <tr>
+                            <th style="width: 66px;">Rarity</th>
+                            <th>Quantity</th>
+                            <th>Cost</th>
+                            <th>Weight</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Improvised</label>
+                            </td>
+                            <td>
+                                <input type="number" style="width: 100%" name="system.elixir.ingredientQtys.improvised" value="{{item.system.elixir.ingredientQtys.improvised}}" data-dtype="Number" />
+                            </td>
+                            <td style="text-align: center">
+                                {{item.system.elixir.ingredientQtys.improvised$}} $
+                            </td>
+                            <td style="text-align: center">
+                                {{item.system.elixir.ingredientQtys.improvisedLb}} lbs
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Basic</label>
+                            </td>
+                            <td>
+                                <input type="number" style="width: 100%" name="system.elixir.ingredientQtys.basic" value="{{item.system.elixir.ingredientQtys.basic}}" data-dtype="Number" />
+                            </td>
+                            <td style="text-align: center">
+                                {{item.system.elixir.ingredientQtys.basic$}} $
+                            </td>
+                            <td style="text-align: center">
+                                {{item.system.elixir.ingredientQtys.basicLb}} lbs
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Good</label>
+                            </td>
+                            <td>
+                                <input type="number" style="width: 100%" name="system.elixir.ingredientQtys.good" value="{{item.system.elixir.ingredientQtys.good}}" data-dtype="Number" />
+                            </td>
+                            <td style="text-align: center">
+                                {{item.system.elixir.ingredientQtys.good$}} $
+                            </td>
+                            <td style="text-align: center">
+                                {{item.system.elixir.ingredientQtys.goodLb}} lbs
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Fine</label>
+                            </td>
+                            <td>
+                                <input type="number" style="width: 100%" name="system.elixir.ingredientQtys.fine" value="{{item.system.elixir.ingredientQtys.fine}}" data-dtype="Number" />
+                            </td>
+                            <td style="text-align: center">
+                                {{item.system.elixir.ingredientQtys.fine$}} $
+                            </td>
+                            <td style="text-align: center">
+                                {{item.system.elixir.ingredientQtys.fineLb}} lbs
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Legendary</label>
+                            </td>
+                            <td style="text-align: center">
+                                <input type="number" style="width: 100%" name="system.elixir.ingredientQtys.legendary" value="{{item.system.elixir.ingredientQtys.legendary}}" data-dtype="Number" />
+                            </td>
+                            <td>
+                                <input type="number" style="width: 50%" name="system.elixir.ingredientQtys.legendary$" value="{{item.system.elixir.ingredientQtys.legendary$}}" data-dtype="Number" />
+                                $ each
+                            </td>
+                            <td>
+                                <input type="number" style="width: 50%" name="system.elixir.ingredientQtys.legendaryLb" value="{{item.system.elixir.ingredientQtys.legendaryLb}}" data-dtype="Number" />
+                                lbs each
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label class="resource-label" style="flex: 0.5;">Total</label>
+                            </th>
+                            <th>
+                                {{item.system.elixir.ingredientQtys.total}}
+                            </th>
+                            <th>
+                                {{item.system.elixir.ingredientQtys.total$}} $
+                            </th>
+                            <th>
+                                {{item.system.elixir.ingredientQtys.totalLb}} lbs
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: right">
+                                <label class="resource-label" style="flex: 0.5;">Total Discount:</label>
+                            </td>
+                            <td style="text-align: center">
+                                {{item.system.elixir.discount}} %
+                            </td>
+                            <td style="text-align: center">
+                                {{item.system.elixir.discountManaValue}} energy
+                            </td>
+                        </tr>
+                    </table>
+                    {{/if}}
+
+                    <table style="background: rgb(215,172,17,0.28)">
+                        <tr>
+                            <th colspan="4" style="font-size: larger; text-decoration: underline;">Economics</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Charm Availability</label>
+                                <select name="system.charm.availability">
+                                    {{selectOptions charmAvailability selected=item.system.availability}}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="resource-label" style="flex: 0.5;">Sale / Purchase Cost:</label>
+                                {{item.system.charm.saleCost}} $
+                            </td>
+                        </tr>
+                    </table>
+
+                </td>
+            </tr>
+        </table>
+
+        <!-- Energy Gathering -->
+        <table style="background: #7900ff47">
+            <tr>
+                <th colspan="4" style="font-size: larger">Energy Gathering</th>
+            </tr>
+            <tr>
+                <td style="text-align: right; padding-right: 1em;">
+                    {{#if (eq item.system.ritualAdeptTime 0) }}
+                    Minutes per attempt
+                    {{/if}}
+                    {{#if (eq item.system.ritualAdeptTime 1) }}
+                    Seconds for first attempt, minutes per subsequent attempts
+                    {{/if}}
+                    {{#if (eq item.system.ritualAdeptTime 2) }}
+                    Seconds per attempt
+                    {{/if}}
+                </td>
+                <td>
+                    <input type="number" style="width: 50%" name="system.timeUnitsPerAttempt" value="{{item.system.timeUnitsPerAttempt}}" data-dtype="Number" />
+                </td>
+                <td style="text-align: right; padding-right: 1em;">
+                    Gathering Modifier
+                </td>
+                <td>
+                    <input type="number" style="width: 50%" name="system.gatherMod" value="{{item.system.gatherMod}}" data-dtype="Number" />
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right; padding-right: 1em;">
+                    Use personal mana reserve
+                </td>
+                <td>
+                    <input id="usePersonalMana" type="checkbox" name="system.usePersonalMana" {{checked item.system.usePersonalMana}} data-dtype="Boolean"/>
+                </td>
+                <td style="text-align: right; padding-right: 1em;">
+                    Extra mana from other sources
+                </td>
+                <td>
+                    <input type="number" style="width: 50%" name="system.extraMana" value="{{item.system.extraMana}}" data-dtype="Number" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <input type='button' class='gatherEnergy' id="{{item.name}}" value='Gather Energy' style="width: 100%; height: 30px; font-weight: bold;"/>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Paths -->
+        <table style="background: #ed143d47;">
+            <tr>
+                <th colspan="7" style="font-size: larger">Path Details</th>
+            </tr>
+            <tr>
+                <td style="width: 70px;">Level</td>
+                <td style="width: 90px;">Effect</td>
+                <td style="width: 95px;">Path</td>
+                <td style="width: 35px; text-align: center">Cost</td>
+                <td style="width: 37px; text-align: center">Skill</td>
+                <td>Notes</td>
+                <td style="width: 65px;"><h3 class="addPathRow" style="text-align: right;">Add Path</h3></td>
+            </tr>
+            {{#each item.system.path as |path id|}}
+            <tr>
+                <td>
+                    <select name="system.path.{{id}}.level">
+                        {{selectOptions ../pathLevel selected=path.level}}
+                    </select>
+                </td>
+                <td>
+                    <select name="system.path.{{id}}.effect">
+                        {{selectOptions ../pathEffect selected=path.effect}}
+                    </select>
+                </td>
+                <td>
+                    <select name="system.path.{{id}}.path">
+                        {{selectOptions ../paths selected=path.path}}
+                    </select>
+                </td>
+                <td style="text-align: center">{{path.cost}}</td>
+                <td style="text-align: center">{{path.skill}}</td>
+                <td>
+                    <input type="text" placeholder="Notes" name="system.path.{{id}}.notes" value="{{path.notes}}" title="{{path.notes}}" style="text-align:left; margin: unset" data-dtype="String"/>
+                </td>
+                <td  style="text-align: right;"><a class="path-delete" id="pathhh{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
+            </tr>
+            {{/each}}
+        </table>
+
+        <!-- Ritual Modifiers -->
+        <table style="background: rgba(190,237,20,0.28);">
+            <tr>
+                <th colspan="5" style="font-size: larger">Modifier Details</th>
+            </tr>
+            <tr>
+                <td style="width: 143px;">Modifier</td>
+                <td>Effect</td>
+                <td style="width: 35px; text-align: center">Cost</td>
+                <td>Notes</td>
+                <td style="width: 130px;"><h3 class="addRitualModifierRow" style="text-align: right;">Add Ritual Modifier</h3></td>
+            </tr>
+            {{#each item.system.ritualModifier as |ritualModifier id|}}
+            <tr>
+                <td>
+                    <select name="system.ritualModifier.{{id}}.modifier">
+                        {{selectOptions ../ritualModifiers selected=ritualModifier.modifier}}
+                    </select>
+                </td>
+                <td>
+                    {{#if (eq ritualModifier.modifier "affliction") }}
+                    <input type="number" name="system.ritualModifier.{{id}}.effect.percentage" value="{{ritualModifier.effect.percentage}}" style="text-align:center; width: 90%; margin: unset" min="0" step="5"/>
+                    {{/if}}
+
+                    {{#if (eq ritualModifier.modifier "trait") }}
+                    <input type="number" name="system.ritualModifier.{{id}}.effect.level" value="{{ritualModifier.effect.level}}" style="text-align:center; width: 90%; margin: unset" />
+                    {{/if}}
+
+                    {{#if (eq ritualModifier.modifier "aoe") }}
+                    <input type="number" name="system.ritualModifier.{{id}}.effect.area" value="{{ritualModifier.effect.area}}" style="text-align:center; width: 20%; margin-left: 1em;" /> yards
+                    <input type="number" name="system.ritualModifier.{{id}}.effect.excludes" value="{{ritualModifier.effect.excludes}}" style="text-align:center; width: 20%; margin-left: 1em;" min="0"/> exclusions;
+                    Total Hexes: {{ritualModifier.hexes}}
+                    {{/if}}
+
+                    {{#if (eq ritualModifier.modifier "modifier") }}
+                    <select name="system.ritualModifier.{{id}}.effect.scope">
+                        {{selectOptions ../ritualScope selected=ritualModifier.effect.scope}}
+                    </select>
+                    <input type="number" name="system.ritualModifier.{{id}}.effect.modifier" value="{{ritualModifier.effect.modifier}}" style="text-align:center; width: 20%; margin-left: 10%;"/>
+                    {{/if}}
+
+                    {{#if (eq ritualModifier.modifier "damage") }}
+                    <div style="height: 27px">
+                        <label>Damage: </label>
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.dice" value="{{ritualModifier.effect.dice}}" style="text-align:center; width: 20%;"/>
+                        d6 + <input type="number" name="system.ritualModifier.{{id}}.effect.adds" value="{{ritualModifier.effect.adds}}" style="text-align:center; width: 20%;"/>
+                        <select name="system.ritualModifier.{{id}}.effect.woundMod">
+                            {{selectOptions ../woundCodes selected=ritualModifier.effect.woundMod}}
+                        </select>
+                    </div>
+
+                    <div style="height: 27px">
+                        <label for="external">External</label><input id="external" type="checkbox" name="system.ritualModifier.{{id}}.effect.external" {{checked ritualModifier.effect.external}} data-dtype="Boolean"/>
+                    </div>
+                    {{#if ritualModifier.effect.external }}
+                    <div style="height: 27px">
+                        <label for="explosive">Explosive</label><input id="explosive" type="checkbox" name="system.ritualModifier.{{id}}.effect.explosive" {{checked ritualModifier.effect.explosive}} data-dtype="Boolean"/>
+                    </div>
+                    <div style="height: 27px">
+                        <label for="enhancementsOn">Total Enhancements</label><input id="enhancementsOn" type="checkbox" name="system.ritualModifier.{{id}}.effect.enhancementsOn" {{checked ritualModifier.effect.enhancementsOn}} data-dtype="Boolean"/>
+                        {{#if ritualModifier.effect.enhancementsOn }}
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.enhancements" value="{{ritualModifier.effect.enhancements}}" style="text-align:center; width: 10%;"/>
+                        <input type="text" name="system.ritualModifier.{{id}}.effect.enhancementNotes" value="{{ritualModifier.effect.enhancementNotes}}" style="width: 50%;" placeholder="Enhancement Notes"/>
+                        {{/if}}
+                    </div>
+                    <div style="height: 27px">
+                        <label for="limitationsOn">Total Limitations</label><input id="limitationsOn" type="checkbox" name="system.ritualModifier.{{id}}.effect.limitationsOn" {{checked ritualModifier.effect.limitationsOn}} data-dtype="Boolean"/>
+                        {{#if ritualModifier.effect.limitationsOn }}
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.limitations" value="{{ritualModifier.effect.limitations}}" style="text-align:center; width: 10%;"/>
+                        <input type="text" name="system.ritualModifier.{{id}}.effect.limitationNotes" value="{{ritualModifier.effect.limitationNotes}}" style="width: 50%;" placeholder="Limitation Notes"/>
+                        {{/if}}
+                    </div>
+                    {{/if}}
+                    {{/if}}
+
+                    {{#if (eq ritualModifier.modifier "duration") }}
+                    <select name="system.ritualModifier.{{id}}.effect.durationUnits">
+                        {{selectOptions ../ritualDurationUnits selected=ritualModifier.effect.durationUnits}}
+                    </select>
+                    <input type="number" name="system.ritualModifier.{{id}}.effect.durationQty" value="{{ritualModifier.effect.durationQty}}" style="text-align:center; width: 20%;"/>
+                    {{/if}}
+
+                    {{#if (or (eq ritualModifier.modifier "energy") (eq ritualModifier.modifier "meta")) }}
+                    <input type="number" name="system.ritualModifier.{{id}}.effect.extraEnergy" value="{{ritualModifier.effect.extraEnergy}}" style="text-align:center; width: 90%; margin: unset" />
+                    {{/if}}
+
+                    {{#if (eq ritualModifier.modifier "healing") }}
+                    <div style="height: 27px">
+                        <label>Healing: </label>
+                        <input type="number" name="system.ritualModifier.{{id}}.effect.dice" value="{{ritualModifier.effect.dice}}" style="text-align:center; width: 20%;"/>
+                        d6 + <input type="number" name="system.ritualModifier.{{id}}.effect.adds" value="{{ritualModifier.effect.adds}}" style="text-align:center; width: 20%;"/>
+                        <select name="system.ritualModifier.{{id}}.effect.resource">
+                            {{selectOptions ../resources selected=ritualModifier.effect.resource}}
+                        </select>
+                    </div>
+                    {{/if}}
+
+                    {{#if (eq ritualModifier.modifier "range") }}
+                    {{#if (or (eq ritualModifier.effect.rangeType "normal")  (eq ritualModifier.effect.rangeType "info") ) }}
+                    <input type="number" name="system.ritualModifier.{{id}}.effect.range" value="{{ritualModifier.effect.range}}" style="text-align:center; width: 20%; margin-left: 10%;" /> yards
+                    {{/if}}
+                    {{#if (eq ritualModifier.effect.rangeType "time") }}
+                    <input type="number" name="system.ritualModifier.{{id}}.effect.range" value="{{ritualModifier.effect.range}}" style="text-align:center; width: 20%; margin-left: 10%;" /> days
+                    {{/if}}
+                    {{#if (eq ritualModifier.effect.rangeType "dim") }}
+                    <input type="number" name="system.ritualModifier.{{id}}.effect.range" value="{{ritualModifier.effect.range}}" style="text-align:center; width: 20%; margin-left: 10%;" /> dimensions crossed
+                    {{/if}}
+                    <select name="system.ritualModifier.{{id}}.effect.rangeType">
+                        {{selectOptions ../ritualRangeTypes selected=ritualModifier.effect.rangeType}}
+                    </select>
+                    {{/if}}
+
+                    {{#if (eq ritualModifier.modifier "speed") }}
+                    <input type="number" name="system.ritualModifier.{{id}}.effect.speed" value="{{ritualModifier.effect.speed}}" style="text-align:center; width: 20%; margin-left: 10%;" /> yards per second
+                    {{/if}}
+
+                    {{#if (eq ritualModifier.modifier "weight") }}
+                    <input type="number" name="system.ritualModifier.{{id}}.effect.weight" value="{{ritualModifier.effect.weight}}" style="text-align:center; width: 50%; margin-left: 10%;" /> lbs
+                    {{/if}}
+
+                    {{#if (eq ritualModifier.modifier "trappings") }}
+                    <input type="number" name="system.ritualModifier.{{id}}.effect.trappings" value="{{ritualModifier.effect.trappings}}" style="text-align:center; width: 50%; margin-left: 10%;" /> % discount
+                    {{/if}}
+
+                    {{#if (eq ritualModifier.modifier "crafting") }}
+                    Item Cost: <input type="number" name="system.ritualModifier.{{id}}.effect.crafting" value="{{ritualModifier.effect.crafting}}" style="text-align:center; width: 50%;" /> $
+                    <br>Crafting Penalty: {{ritualModifier.effect.craftingPenalty}}
+                    {{/if}}
+
+                    {{#if (eq ritualModifier.modifier "gmCrafting") }}
+                    Modifier: <input type="number" name="system.ritualModifier.{{id}}.effect.craftingPenalty" value="{{ritualModifier.effect.craftingPenalty}}" style="text-align:center; width: 50%; margin-left: 10%;" />
+                    {{/if}}
+
+                </td>
+                <td style="text-align: center">{{ritualModifier.cost}}</td>
+                <td><input type="text" placeholder="Notes" name="system.ritualModifier.{{id}}.notes" value="{{ritualModifier.notes}}" title="{{ritualModifier.notes}}" style="text-align:left; margin: unset" data-dtype="String"/></td>
+                <td style="text-align: right;"><a class="ritualModifier-delete" id="ritual{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
+            </tr>
+            {{/each}}
+        </table>
+    </div>
     {{/if}}
 
     {{!-- Sheet Tab Navigation --}}
