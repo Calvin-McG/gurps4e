@@ -5145,7 +5145,8 @@ export class gurpsActor extends Actor {
 
 		let dodge = {
 			name: "Dodge",
-			level: target.system.primaryAttributes.dodge.value
+			level: target.system.primaryAttributes.dodge.value,
+			defenceQty: "Regular",
 		}
 
 		dodges.push(dodge);
@@ -5162,7 +5163,7 @@ export class gurpsActor extends Actor {
 						if (Number.isInteger(profile.parry)){
 							let effectiveParry = profile.parry
 
-							if (profile.flags.toLowerCase().includes("una")) { // If the defence is unarmed
+							if (typeof profile.flags !== "undefined" && profile.flags.toLowerCase().includes("una")) { // If the defence is unarmed
 								if (!(profile.skill.toLowerCase().includes("karate") || profile.skill.toLowerCase().includes("judo"))) { // And it's not karate or judo
 									if (((flags.attack.damageInput.toLowerCase().includes("sw") || flags.attack.flags.toLowerCase().includes("sw")) && !flags.attack.flags.toLowerCase().includes("una"))) { // And the attacker is armed, and using a swing attack
 										effectiveParry -= 3; // Apply the appropriate penalty
@@ -5195,7 +5196,8 @@ export class gurpsActor extends Actor {
 
 							let parry = {
 								name: item.name,
-								level: effectiveParry
+								level: effectiveParry,
+								defenceQty: typeof item.system.defenceQty !== "undefined" ? item.system.defenceQty : "Regular",
 							}
 							parries.push(parry)
 						}
@@ -5203,39 +5205,44 @@ export class gurpsActor extends Actor {
 						if (Number.isInteger(profile.block)){
 							let block = {
 								name: item.name,
-								level: profile.block
+								level: profile.block,
+								defenceQty: typeof item.system.defenceQty !== "undefined" ? item.system.defenceQty : "Regular",
 							}
 							blocks.push(block)
 						}
 					}
 				}
-				if (item.system.type == "Spell"){
+				if (item.type === "Spell"){
 					if (item.system.spellClass == "Blocking"){
-						if (item.system.defenceType == "Dodge") {
+						if (item.system.defenceType.toLowerCase() === "dodge") {
 							let dodge = {
 								name:  item.name,
-								level: item.level
+								level: item.system.level,
+								defenceQty: typeof item.system.defenceQty !== "undefined" ? item.system.defenceQty : "Regular",
 							}
 							dodges.push(dodge);
 						}
-						else if (item.system.defenceType == "Parry") {
+						else if (item.system.defenceType.toLowerCase() === "parry") {
 							let parry = {
 								name:  item.name,
-								level: item.level
+								level: item.system.level,
+								defenceQty: typeof item.system.defenceQty !== "undefined" ? item.system.defenceQty : "Regular",
 							}
 							parries.push(parry)
 						}
-						else if (item.system.defenceType == "Block") {
+						else if (item.system.defenceType.toLowerCase() === "block") {
 							let block = {
 								name:  item.name,
-								level: item.level
+								level: item.system.level,
+								defenceQty: typeof item.system.defenceQty !== "undefined" ? item.system.defenceQty : "Regular",
 							}
 							blocks.push(block)
 						}
-						else if (item.system.defenceType == "Magic") {
+						else if (item.system.defenceType.toLowerCase() === "magic") {
 							let magic = {
 								name:  item.name,
-								level: item.level
+								level: item.system.level,
+								defenceQty: typeof item.system.defenceQty !== "undefined" ? item.system.defenceQty : "Regular",
 							}
 							magical.push(magic)
 						}
@@ -5457,7 +5464,7 @@ export class gurpsActor extends Actor {
 				"<div><span style='text-align: center; font-weight: bold;'>Magical</span></div>" +
 				"<select style='width: 100%' name='magicalSelector' id='magicalSelector'>";
 			for (let m = 0; m < magical.length; m++){
-				activeDefenceModalContent += "<option value='" + magical[m].level + "'>" + magical[m].level + ": " + magical[m].name + "</option>"
+				activeDefenceModalContent += "<option data-defenceqty='" + magical[m].defenceQty + "' value='" + magical[m].level + "'>" + magical[m].level + ": " + magical[m].name + "</option>"
 			}
 			activeDefenceModalContent += "</select>" +
 				"</div>";
@@ -5549,6 +5556,7 @@ export class gurpsActor extends Actor {
 	gatherActiveDefenceAndOptions(html, type, flags, locationIDs, facing){
 		let selection;
 		let name;
+		let defenceQty;
 		let mod = parseInt(html.find('#mod').val());
 
 		let options = {
@@ -5572,18 +5580,22 @@ export class gurpsActor extends Actor {
 
 		if (type.toLowerCase() === 'parry'){
 			selection = html.find('#parrySelector').val()
+			defenceQty = html.find('#magicalSelector')[0].selectedOptions[0].dataset.defenceqty;
 			name = html.find('#parrySelector')[0].innerText.split(":")[1]
 		}
 		else if (type.toLowerCase() === 'block'){
 			selection = html.find('#blockSelector').val()
+			defenceQty = html.find('#magicalSelector')[0].selectedOptions[0].dataset.defenceqty;
 			name = html.find('#blockSelector')[0].innerText.split(":")[1]
 		}
 		else if (type.toLowerCase() === 'dodge'){
 			selection = html.find('#dodgeSelector').val()
+			defenceQty = html.find('#magicalSelector')[0].selectedOptions[0].dataset.defenceqty;
 			name = html.find('#dodgeSelector')[0].innerText.split(":")[1]
 		}
 		else if (type.toLowerCase() === 'magical'){
 			selection = html.find('#magicalSelector').val()
+			defenceQty = html.find('#magicalSelector')[0].selectedOptions[0].dataset.defenceqty;
 			name = html.find('#magicalSelector')[0].innerText.split(":")[1]
 		}
 
@@ -5596,10 +5608,10 @@ export class gurpsActor extends Actor {
 			mod -= 2 // Subtract 2 from the defence modifier
 		}
 
-		this.rollActiveDefence(mod, selection, name, options, flags, locationIDs, type, facing);
+		this.rollActiveDefence(mod, selection, name, options, flags, locationIDs, type, facing, defenceQty);
 	}
 
-	async rollActiveDefence(mod, selection, name, options, flags, locationIDs, type, facing) {
+	async rollActiveDefence(mod, selection, name, options, flags, locationIDs, type, facing, defenceQty) {
 		let targetToken = game.scenes.get(flags.scene).tokens.get(flags.target)
 		let target = targetToken.actor;
 
@@ -5608,6 +5620,10 @@ export class gurpsActor extends Actor {
 		let totalModifier;
 		let additionalMessageContent = "";
 		let label = "";
+
+		if (typeof defenceQty === "undefined") {
+			defenceQty = "Regular";
+		}
 
 		if (mod === "" || mod === undefined){
 			totalModifier = +0;
@@ -5789,7 +5805,12 @@ export class gurpsActor extends Actor {
 			totalModifier += 2;
 		}
 
-		label += type + " ";
+		if (type.toLowerCase() === "magical") {
+			label += type + " defence ";
+		}
+		else {
+			label += type + " ";
+		}
 
 		// Block for retreat options
 		if (options.drop && type === "dodge") {
@@ -5851,12 +5872,31 @@ export class gurpsActor extends Actor {
 		rollHelpers.skillRoll(selection, totalModifier, label, false).then( rollInfo => {
 			let attacksStopped;
 
-			if (rollInfo.margin >= 0) {
-				attacksStopped = Math.min(rollInfo.margin + 1, locationIDs.length);
+			if (defenceQty.toLowerCase() === "all") {
+				if (rollInfo.margin >= 0) {
+					attacksStopped = locationIDs.length + 1;
+				}
+				else {
+					attacksStopped = 0;
+				}
 			}
-			else {
-				attacksStopped = 0;
+			else if (defenceQty.toLowerCase() === "single") {
+				if (rollInfo.margin >= 0) {
+					attacksStopped = 1;
+				}
+				else {
+					attacksStopped = 0;
+				}
 			}
+			else { // This else captures Regular defences and any other weirdness
+				if (rollInfo.margin >= 0) {
+					attacksStopped = Math.min(rollInfo.margin + 1, locationIDs.length);
+				}
+				else {
+					attacksStopped = 0;
+				}
+			}
+
 
 			let locationsHit;
 			let attacksThrough;
