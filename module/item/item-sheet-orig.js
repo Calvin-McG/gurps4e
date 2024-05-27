@@ -672,26 +672,27 @@ export class gurpsItemSheet extends ItemSheet {
     }
 
 
-  /** @override */
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ["gurps4e", "sheet", "item"],
-      width: 926,
-      height: 770,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "notes" }]
-    });
-  }
+    /** @override */
+    static get defaultOptions() {
+        return foundry.utils.mergeObject(super.defaultOptions, {
+            classes: ["gurps4e", "sheet", "item"],
+            width: 926,
+            height: 770,
+            tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "notes" }]
+        });
+    }
 
-  /** @override */
-  get template() {
-    const path = "systems/gurps4e/templates/item";
-    // Return a single sheet for all item types.
-    // return `${path}/item-sheet.html`;
-    // Alternatively, you could use the following return statement to do a
-    // unique item sheet by type, like `weapon-sheet.html`.
+    /** @override */
+    get template() {
+        const path = "systems/gurps4e/templates/item"; // This is the path to where the item sheets are kept
 
-    return `${path}/${this.item.type}-sheet.html`;
-  }
+        if (this.item.type.toLowerCase() === "trait") { // It's in the list of item types that fit on the consolidated sheet.
+            return `${path}/Consolidated-Item-sheet.html`; // Assemble the sheet reference for the consolidated sheet.
+        }
+        else {
+            return `${path}/${this.item.type}-sheet.html`; // Assemble the sheet reference with the path above, and the item type. (So Custom Weapon types are found at systems/gurps4e/templates/item/Custom Weapon-sheet.html
+        }
+    }
 
   /* -------------------------------------------- */
 
