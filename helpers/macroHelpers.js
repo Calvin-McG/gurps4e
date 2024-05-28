@@ -605,12 +605,7 @@ export class macroHelpers {
         if (typeof attack.area === "string" && attack.area !== "") { // Attack.area is a string and not blank
             console.log("This is an area attack of type " + attack.area); // This is an area attack of some kind
         }
-        else { // This is not an area attack, run the logic for point target attacks
-            this.pointTargetAttack(attacker, attack, target)
-        }
-    }
 
-    static pointTargetAttack(attacker, attack, target) {
         let bodyParts = Object.keys(target.actor.system.bodyType.body); // Collect all the bodypart names
         let relativePosition = this.getFacing(attacker, target); // Method returns [facing,position]
 
@@ -758,17 +753,6 @@ export class macroHelpers {
     }
 
     static afflictionOnTarget(attacker, attack, target) {
-        console.log(attack);
-        console.log(attack.area);
-        if (typeof attack.area === "string" && attack.area !== "") { // Attack.area is a string and not blank
-            console.log("This is an area attack of type " + attack.area); // This is an area attack of some kind
-        }
-        else { // This is not an area attack, run the logic for point target attacks
-            this.pointTargetAffliction(attacker, attack, target)
-        }
-    }
-
-    static pointTargetAffliction(attacker, attack, target) {
         let staffLength = game.scenes.get(target.scene.id).tokens.get(attacker.id).actor.system.magic.staff; // Get the length of the player's staff
 
         // If it's not a number, or it is a NaN
@@ -3012,6 +2996,7 @@ export class macroHelpers {
         }
 
         // Loop through the list of locations we've hit.
+        console.log(locationsHit)
         for (let i = 0; i < locationsHit.length; i++){
             // Store the DR Damage type for later, including handling for special types like pi- or tbb
             let drDamageType = damageType.type;
@@ -3033,8 +3018,10 @@ export class macroHelpers {
                     drTotalEffectivePoints = Math.floor(foundry.utils.getProperty(largeAreaDR, drDamageType) / armourDivisor); // Save the DR, divided by the armour divisor, rounded down.
                 }
             }
-
+            console.log(target.system.bodyType.body)
+            console.log(locationsHit[i])
             let location = foundry.utils.getProperty(target.system.bodyType.body, locationsHit[i]); // Get the specific location we hit.
+            console.log(location);
 
             let drGroupFlexible = true; // This variable is only true if all layers of armour are flexible.
             let layerDR = 0; // Init the variable used to store the total DR for this location.
