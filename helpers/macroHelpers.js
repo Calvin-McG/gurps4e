@@ -216,12 +216,12 @@ export class macroHelpers {
     // Using that we call the method to list all the attacks, at which point we either show a modal, or skip right to the specific attack they selected if the name was complete
     static singleTargetDialog(selfToken, targetToken, attackType, itemName, attackName){
         let attacks;
-        let areaTemplateType = "";
         // Check area logic first
+        let targetTemplate;
+        let areaTemplateType = "";
         if (typeof targetToken === "undefined" || targetToken === null) { // targetToken is undefined or null. Check to see if there's a valid target template
             let templates = selfToken.scene.templates; // All of the templates in the scene.
             let selection = canvas.tokens.controlled; // This is the currently selected actors.
-            let targetTemplate;
             templates.forEach( template => { // Loop through the templates
                 if (template.author.isSelf) { // If we created this template
                     if (template.fillColor.css === template.author.color.css && !template.hidden) { // If it's colour matches our colour, and the template is not hidden.
@@ -246,7 +246,7 @@ export class macroHelpers {
         // Beams use beam templates
         // All others use circle templates
 
-        // Narrow displayed attacks by attack type.
+        // Narrow displayed attacks by attack type, and if present, the areaTemplateType.
         if (attackType === "melee") {
             attacks = this.listAttacks(selfToken.actor, "melee", itemName, attackName, areaTemplateType);
         }
@@ -270,16 +270,16 @@ export class macroHelpers {
 
         if (getToStabbin === true) { // If we're skipping the modal, go right to attackOnTarget
             if (attacks.melee.length === 1){
-                this.attackOnTarget(selfToken, attacks.melee[0], targetToken)
+                this.determineAttackFormat(selfToken, attacks.melee[0], targetToken, targetTemplate)
             }
             else if (attacks.ranged.length === 1){
-                this.attackOnTarget(selfToken, attacks.ranged[0], targetToken)
+                this.determineAttackFormat(selfToken, attacks.ranged[0], targetToken, targetTemplate)
             }
             else if (attacks.affliction.length === 1){
-                this.attackOnTarget(selfToken, attacks.affliction[0], targetToken)
+                this.determineAttackFormat(selfToken, attacks.affliction[0], targetToken, targetTemplate)
             }
         }
-        else { // If for whatever reason the above doesn't evaluate, show the modal.
+        else { // If we're not skipping the modal, show it
             let htmlContent = "<div>";
 
             let buttons = {};
@@ -298,7 +298,7 @@ export class macroHelpers {
                             }
                         }
                         if (typeof attack !== "undefined") {
-                            this.attackOnTarget(selfToken, attacks.melee[attack], targetToken)
+                            this.determineAttackFormat(selfToken, attacks.melee[attack], targetToken, targetTemplate)
                         }
                     }
                 }
@@ -350,7 +350,7 @@ export class macroHelpers {
                             }
                         }
                         if (typeof attack !== "undefined") {
-                            this.attackOnTarget(selfToken, attacks.ranged[attack], targetToken)
+                            this.determineAttackFormat(selfToken, attacks.ranged[attack], targetToken, targetTemplate)
                         }
                     }
                 }
@@ -415,7 +415,7 @@ export class macroHelpers {
                             }
                         }
                         if (typeof attack !== "undefined") {
-                            this.afflictionOnTarget(selfToken, attacks.affliction[attack], targetToken)
+                            this.determineAttackFormat(selfToken, attacks.affliction[attack], targetToken, targetTemplate)
                         }
                     }
                 }
@@ -671,6 +671,80 @@ export class macroHelpers {
         })
 
         return { "melee": meleeAttacks, "ranged": rangedAttacks, "affliction": afflictionAttacks}
+    }
+
+    // This method takes in an attacker, attack, target, and template (target and template are both optional)
+    // If it's got a template, it runs the logic to attack a template.
+    // If there is not a template, it checks whether that attack has the area property, it decides whether to call attackOnTarget or templateOnActor
+    // Or afflictionOnTarget
+    static determineAttackFormat(attacker, attack, target, template) {
+        if (typeof template !== "undefined" && template !== null) { // We ended up with a target template
+            this.attackOnArea(attacker, attack, template); // Attack an area
+        }
+        else if (typeof target !== "undefined" && target !== null) { // We ended up with a valid target and might be making an area attack against them
+            if (typeof attack.area === "string" && attack.area !== "") { // Area is a string and not blank
+                this.templateOnActor(attacker, attack, target); // Create a template on an actor
+            }
+            else { // It's not an area attack, attack normally.
+                if (attack.type === "affliction") { // Afflictions have their own method
+                    this.afflictionOnTarget(attacker, attack, target); // Run the normal affliction method
+                }
+                else { // Ranged and melee use the normal method
+                    this.attackOnTarget(attacker, attack, target); // Run the normal attack method
+                }
+            }
+        }
+        else { // We ended up with neither a template nor token to attack
+            return this.noTargetsDialog(); // Load the noTarget dialog and return early.
+        }
+    }
+
+    // This method is used when someone is making an area attack targetted at a specific actor
+    // It takes in an attacker, attack, and target.
+    // It creates a template of the appropriate size and location
+    // It then calls attackOnArea
+    static async templateOnActor(attacker, attack, target) {
+        console.log("templateOnActor")
+        console.log(attacker, attack, target)
+
+        if (attack.area === "area") {
+
+        }
+        else if (attack.area === "ex") {
+
+        }
+        else if (attack.area === "frag") {
+
+        }
+        else if (attack.area === "beam") {
+
+        }
+        else { // Shit's fucked up
+            return this.noTargetsDialog(); // Load the noTarget dialog and return early.
+        }
+
+        const templateData = {
+            t: "circle",
+            x: target.center.x,
+            y: target.center.y,
+            distance: 5,
+            direction: 0,
+            fillColor: "#FF0000",
+            borderColor: "#FF0000"
+        }
+
+        let template = await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [templateData]);
+        console.log(target.scene.templates);
+        this.attackOnArea(attacker, attack, template)
+    }
+
+    // This method is used when someone is making an attack targeted at a template
+    // It takes in an attacker, attack, and token
+    // It scatters the template and then creates a chat message allowing the GM or player to proceed with the generating of attacks and active defence macros for all the targets.
+    // Also allows time to pass if the attack has some sort of fuze.
+    static attackOnArea(attacker, attack, template) {
+        console.log("attackOnArea")
+        console.log(attacker, attack, template);
     }
 
     // Part of the attack macro flow
