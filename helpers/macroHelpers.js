@@ -8,6 +8,15 @@ import { generalHelpers } from "./generalHelpers.js";
 
 export class macroHelpers {
 
+    static capitalizeFirst(str) {
+        if (typeof str === "string") {
+            return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+        }
+        else {
+            return ""
+        }
+    }
+
     // This is the method called when a user clicks the "Make An Attack" macro
     // By this point we only know the user's selected token, target token, and possibly some or all of the attack's name.
     static makeAnAttackMacro(token, attackType, itemName, attackName) {

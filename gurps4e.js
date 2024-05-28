@@ -42,6 +42,7 @@ import {
   ARROWARMOURDIVISOR,
   POWERCELLS,
 } from "./module/helpers/config.mjs";
+import { macroHelpers } from "./helpers/macroHelpers.js";
 
 Hooks.once('init', async function() {
 
@@ -115,7 +116,7 @@ Hooks.once('init', async function() {
   });
 
   Handlebars.registerHelper('capitalizeFirst', function(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    return macroHelpers.capitalizeFirst(str);
   });
 
   Handlebars.registerHelper('isInt', function (value) {
