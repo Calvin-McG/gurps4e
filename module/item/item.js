@@ -6123,6 +6123,54 @@ export class gurpsItem extends Item {
     return attackKey;
   }
 
+  getSkillLevelAndMasteryForAttack(attackKey) {
+    let level = 0;
+    let weaponMastery = false;
+
+    let dx = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity);
+    let st = attributeHelpers.calcStOrHt(this.actor.system.primaryAttributes.strength, attributeHelpers.calcSMDiscount(this.actor.system.bio.sm));
+
+    if (attackKey.skill.toLowerCase() === "dx") {
+      level = dx;
+    }
+    else if (attackKey.skill.toLowerCase() === "iq") {
+      level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.intelligence);
+    }
+    else if (attackKey.skill.toLowerCase() === "self" && typeof this.system.level === "number") { // The user has entered "Self" and the item we're on has it's own level
+      level = this.system.level; // Set the attack level to the same level
+    }
+    else {
+      // Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
+      for (let i = 0; i < this.actor.items.contents.length; i++) {
+        if (this.actor.items.contents[i].type === "Rollable") {
+          if (attackKey.skill === this.actor.items.contents[i].name) {
+            weaponMastery = this.actor.items.contents[i].system.weaponMaster;
+            level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items.contents[i].system) + +attackKey.skillMod;
+          }
+        }
+        else if (this.actor.items.contents[i].type === "Spell") {
+          if (attackKey.skill === this.actor.items.contents[i].name) {
+            level = +skillHelpers.computeSpellLevelFromActorAndSpell(this.actor, this.actor.items.contents[i]) + +attackKey.skillMod;
+          }
+        }
+        else if (this.actor.items.contents[i].type === "Ritual") {
+          if (attackKey.skill === this.actor.items.contents[i].name) {
+            level = this.actor.items.contents[i].system.level + +attackKey.skillMod;
+          }
+        }
+      }
+    }
+
+    if (typeof weaponMastery === "undefined") {
+      weaponMastery = false;
+    }
+
+    return {
+      "level": level,
+      "weaponMastery": weaponMastery
+    }
+  }
+
   // This method prepares the data for all of the attacks present on the sheet.
   prepareAttackData() {
     // Check to see if there is an actor yet
@@ -6135,9 +6183,8 @@ export class gurpsItem extends Item {
           let meleeKeys = Object.keys(this.system.melee);
           if (meleeKeys.length) {//Check to see if there are any melee profiles
             for (let k = 0; k < meleeKeys.length; k++) {
-              if (this.system.melee[meleeKeys[k]].name) { // Check to see if name is filled in. Otherwise don't bother.
+              if (typeof this.system.melee[meleeKeys[k]].name === "string" && this.system.melee[meleeKeys[k]].name !== "") { // Check to see if name is a string and not blank. Otherwise don't bother.
                 let level = 0;
-                let mod = +this.system.melee[meleeKeys[k]].skillMod;
                 let parry = 0;
                 let block = 0;
                 let weaponMastery = false;
@@ -6147,40 +6194,14 @@ export class gurpsItem extends Item {
 
                 this.system.melee[meleeKeys[k]] = this.validateAreaData(this.system.melee[meleeKeys[k]]); // Call the method to validate our area inputs.
 
-                if (this.system.melee[meleeKeys[k]].skill.toLowerCase() === "dx") {
-                  level = dx;
-                }
-                else if (this.system.melee[meleeKeys[k]].skill.toLowerCase() === "iq") {
-                  level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.intelligence);
-                }
-                else if (this.system.melee[meleeKeys[k]].skill.toLowerCase() === "self" && typeof this.system.level === "number") { // The user has entered "Self" and the item we're on has it's own level
-                  level = this.system.level; // Set the attack level to the same level
-                }
-                else {
-                  // Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-                  for (let i = 0; i < this.actor.items.contents.length; i++) {
-                    if (this.actor.items.contents[i].type === "Rollable") {
-                      if (this.system.melee[meleeKeys[k]].skill === this.actor.items.contents[i].name) {
-                        weaponMastery = this.actor.items.contents[i].system.weaponMaster;
-                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items.contents[i].system);
-                      }
-                    }
-                    else if (this.actor.items.contents[i].type === "Spell") {
-                      if (this.system.melee[meleeKeys[k]].skill === this.actor.items.contents[i].name) {
-                        level = +skillHelpers.computeSpellLevelFromActorAndSpell(this.actor, this.actor.items.contents[i]) + +this.system.melee[meleeKeys[k]].skillMod;
-                      }
-                    }
-                    else if (this.actor.items.contents[i].type === "Ritual") {
-                      if (this.system.melee[meleeKeys[k]].skill === this.actor.items.contents[i].name) {
-                        level = this.actor.items.contents[i].system.level + +this.system.melee[meleeKeys[k]].skillMod;
-                      }
-                    }
-                  }
-                }
+                let levelAndMastery = this.getSkillLevelAndMasteryForAttack(this.system.melee[meleeKeys[k]])
 
-                level = level + mod; // Update the skill level with the skill modifier
+                level = levelAndMastery.level;
+                weaponMastery = levelAndMastery.weaponMastery;
+
                 this.system.melee[meleeKeys[k]].level = level // Update skill level
 
+                // Begin melee specific defence related stuff
                 if (Number.isInteger(+this.system.melee[meleeKeys[k]].parryMod)) { // If parry mod is a number, compute normally
                   parry = Math.floor(+(level / 2 + 3) + +this.system.melee[meleeKeys[k]].parryMod); // Calculate the parry value
                   if (this.actor.system.enhanced.parry) {
@@ -6189,7 +6210,8 @@ export class gurpsItem extends Item {
                   if (this.actor.system.flag.combatReflexes) {
                     parry += 1;
                   }
-                } else { // If it's not a number, display the entry
+                }
+                else { // If it's not a number, display the entry
                   parry = this.system.melee[meleeKeys[k]].parryMod;
                 }
 
@@ -6207,7 +6229,7 @@ export class gurpsItem extends Item {
 
                 this.system.melee[meleeKeys[k]].parry = parry; // Update parry value
 
-                if (Number.isInteger(+this.system.melee[meleeKeys[k]].blockMod)) {//If block mod is a number, compute normally
+                if (Number.isInteger(+this.system.melee[meleeKeys[k]].blockMod)) { // If block mod is a number, compute normally
                   block = Math.floor(+(level / 2 + 3) + +this.system.melee[meleeKeys[k]].blockMod);//Calculate the block value
                   if (this.actor.system.enhanced.block) {
                     block += this.actor.system.enhanced.block;
@@ -6215,9 +6237,12 @@ export class gurpsItem extends Item {
                   if (this.actor.system.flag.combatReflexes) {
                     block += 1;
                   }
-                } else {
+                }
+                else {
                   block = this.system.melee[meleeKeys[k]].blockMod;
                 }
+                // End melee specific defence related stuff
+
                 damage = attackHelpers.damageParseSwThr(this.actor, this.system.melee[meleeKeys[k]].damageInput); // Update damage value
 
                 let bonusPerDie = attackHelpers.getTrainingDamageBonus(dx, level - +this.system.melee[meleeKeys[k]].skillMod, (weaponMastery ? "weapon master" : this.system.melee[meleeKeys[k]].skill), st)
@@ -6248,50 +6273,27 @@ export class gurpsItem extends Item {
           let rangedKeys = Object.keys(this.system.ranged);
           if (rangedKeys.length) {//Check to see if there are any ranged profiles
             for (let k = 0; k < rangedKeys.length; k++) {
-              if (this.system.ranged[rangedKeys[k]].name) { // Check to see if name is filled in
+              if (typeof this.system.ranged[rangedKeys[k]].name === "string" && this.system.ranged[rangedKeys[k]].name !== "") { // Check to see if name is a string and not blank. Otherwise don't bother.
                 let level = 0;
-                let mod = +this.system.ranged[rangedKeys[k]].skillMod;
+                let weaponMastery = false;
 
                 let dx = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity);
                 let st = attributeHelpers.calcStOrHt(this.actor.system.primaryAttributes.strength, attributeHelpers.calcSMDiscount(this.actor.system.bio.sm));
 
                 this.system.ranged[rangedKeys[k]] = this.validateAreaData(this.system.ranged[rangedKeys[k]]); // Call the method to validate our area inputs.
 
-                if (this.system.ranged[rangedKeys[k]].skill.toLowerCase() === "dx") {
-                  level = dx
-                }
-                else if (this.system.ranged[rangedKeys[k]].skill.toLowerCase() === "iq") {
-                  level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.intelligence);
-                }
-                else if (this.system.ranged[rangedKeys[k]].skill.toLowerCase() === "self" && typeof this.system.level === "number") { // The user has entered "Self" and the item we're on has it's own level
-                  level = this.system.level; // Set the attack level to the same level
-                }
-                else {
-                  // Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-                  for (let i = 0; i < this.actor.items.contents.length; i++) {
-                    if (this.actor.items.contents[i].type === "Rollable") {
-                      if (this.system.ranged[rangedKeys[k]].skill === this.actor.items.contents[i].name) {
-                        level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items.contents[i].system);
-                      }
-                    }
-                    else if (this.actor.items.contents[i].type === "Spell") {
-                      if (this.system.ranged[rangedKeys[k]].skill === this.actor.items.contents[i].name) {
-                        level = +skillHelpers.computeSpellLevelFromActorAndSpell(this.actor, this.actor.items.contents[i]) + +this.system.ranged[rangedKeys[k]].skillMod;
-                      }
-                    }
-                    else if (this.actor.items.contents[i].type === "Ritual") {
-                      if (this.system.ranged[rangedKeys[k]].skill === this.actor.items.contents[i].name) {
-                        level = this.actor.items.contents[i].system.level + +this.system.ranged[rangedKeys[k]].skillMod;
-                      }
-                    }
-                  }
-                }
-                level = level + mod; // Update the skill level with the skill modifier
+                let levelAndMastery = this.getSkillLevelAndMasteryForAttack(this.system.ranged[rangedKeys[k]])
+
+                level = levelAndMastery.level;
+                weaponMastery = levelAndMastery.weaponMastery;
 
                 this.system.ranged[rangedKeys[k]].level = level;
                 this.system.ranged[rangedKeys[k]].type = "ranged"; // Update attack type
                 damage = attackHelpers.damageParseSwThr(this.actor, this.system.ranged[rangedKeys[k]].damageInput);
-                this.system.ranged[rangedKeys[k]].damage = attackHelpers.damageAddsToDice(damage);
+
+                let bonusPerDie = attackHelpers.getTrainingDamageBonus(dx, level - +this.system.ranged[rangedKeys[k]].skillMod, (weaponMastery ? "weapon master" : this.system.ranged[rangedKeys[k]].skill), st)
+
+                this.system.ranged[rangedKeys[k]].damage = attackHelpers.damageAddsToDiceWithBonusDamagePerDie(damage, bonusPerDie);
 
                 if (typeof this.system.ranged[rangedKeys[k]].rcl == "undefined" || this.system.ranged[rangedKeys[k]].rcl <= 0) { // Catch invalid values for rcl. Value must exist and be at least one.
                   this.system.ranged[rangedKeys[k]].rcl = 1;
@@ -6359,41 +6361,17 @@ export class gurpsItem extends Item {
           let afflictionKeys = Object.keys(this.system.affliction);
           if (afflictionKeys.length) { // Check to see if there are any affliction profiles
             for (let k = 0; k < afflictionKeys.length; k++) {
-              if (this.system.affliction[afflictionKeys[k]].name) { // Check to see if name is filled in. Otherwise don't bother.
+              if (typeof this.system.affliction[afflictionKeys[k]].name === "string" && this.system.affliction[afflictionKeys[k]].name !== "") { // Check to see if name is filled in. Otherwise don't bother.
+                let level = 0;
                 damage = attackHelpers.damageParseSwThr(this.actor, this.system.affliction[afflictionKeys[k]].damageInput); // Update damage value
 
                 this.system.affliction[afflictionKeys[k]] = this.validateAreaData(this.system.affliction[afflictionKeys[k]]); // Call the method to validate our area inputs.
 
-                this.system.affliction[afflictionKeys[k]].level = 0; // Default to zero just in case we don't come up with a value
-                if (this.system.affliction[afflictionKeys[k]].skill.toLowerCase() === "dx") {
-                  this.system.affliction[afflictionKeys[k]].level = +attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity) + +this.system.affliction[afflictionKeys[k]].skillMod;
-                }
-                else if (this.system.affliction[afflictionKeys[k]].skill.toLowerCase() === "iq") {
-                  this.system.affliction[afflictionKeys[k]].level = +attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.intelligence) + +this.system.affliction[afflictionKeys[k]].skillMod;
-                }
-                else if (this.system.affliction[afflictionKeys[k]].skill.toLowerCase() === "self" && typeof this.system.level === "number") { // The user has entered "Self" and the item we're on has it's own level
-                  this.system.affliction[afflictionKeys[k]].level = this.system.level; // Set the attack level to the same level
-                }
-                else {
-                  // Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
-                  for (let i = 0; i < this.actor.items.contents.length; i++) {
-                    if (this.actor.items.contents[i].type === "Rollable") {
-                      if (this.system.affliction[afflictionKeys[k]].skill === this.actor.items.contents[i].name) {
-                        this.system.affliction[afflictionKeys[k]].level = +skillHelpers.computeSkillLevel(this.actor, this.actor.items.contents[i].system) + +this.system.affliction[afflictionKeys[k]].skillMod;
-                      }
-                    }
-                    else if (this.actor.items.contents[i].type === "Spell") {
-                      if (this.system.affliction[afflictionKeys[k]].skill === this.actor.items.contents[i].name) {
-                        this.system.affliction[afflictionKeys[k]].level = +skillHelpers.computeSpellLevelFromActorAndSpell(this.actor, this.actor.items.contents[i]) + +this.system.affliction[afflictionKeys[k]].skillMod;
-                      }
-                    }
-                    else if (this.actor.items.contents[i].type === "Ritual") {
-                      if (this.system.affliction[afflictionKeys[k]].skill === this.actor.items.contents[i].name) {
-                        this.system.affliction[afflictionKeys[k]].level = this.actor.items.contents[i].system.level + +this.system.affliction[afflictionKeys[k]].skillMod;
-                      }
-                    }
-                  }
-                }
+                let levelAndMastery = this.getSkillLevelAndMasteryForAttack(this.system.affliction[afflictionKeys[k]])
+
+                level = levelAndMastery.level;
+
+                this.system.affliction[afflictionKeys[k]].level = level;
 
                 this.system.affliction[afflictionKeys[k]].type = "affliction"; // Update attack type
                 this.system.affliction[afflictionKeys[k]].damage = attackHelpers.damageAddsToDice(damage);
