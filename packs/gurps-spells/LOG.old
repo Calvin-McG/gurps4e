@@ -1,4 +1,7 @@
-2024/05/24-18:31:07.431 12d0 Log #66: 0 ops saved to Table #67 OK
-2024/05/24-18:31:07.432 12d0 Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-spells/000066.log: OK
-2024/05/24-18:31:07.434 12d0 Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-spells/MANIFEST-000065: OK
-2024/05/24-18:31:07.436 12d0 **** Repaired leveldb C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-spells; recovered 0 files; 0 bytes. Some data may have been lost. ****
+2024/05/27-14:07:55.558 1708 Recovering log #86
+2024/05/27-14:07:55.561 1708 Delete type=0 #86
+2024/05/27-14:07:55.561 1708 Delete type=3 #84
+2024/05/27-19:35:36.022 423c Level-0 table #91: started
+2024/05/27-19:35:36.022 423c Level-0 table #91: 0 bytes OK
+2024/05/27-19:35:36.023 423c Delete type=0 #89
+2024/05/27-19:35:36.026 423c Manual compaction at level-0 from 'undefined' @ 72057594037927935 : 1 .. 'undefined' @ 0 : 0; will stop at (end)

@@ -1,5 +1,7 @@
-2024/05/24-18:31:07.497 3844 Log #68: 0 ops saved to Table #69 OK
-2024/05/24-18:31:07.498 3844 Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-weapons/000068.log: OK
-2024/05/24-18:31:07.498 3844 Table #19: 135 entries OK
-2024/05/24-18:31:07.500 3844 Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-weapons/MANIFEST-000067: OK
-2024/05/24-18:31:07.502 3844 **** Repaired leveldb C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-weapons; recovered 1 files; 55431 bytes. Some data may have been lost. ****
+2024/05/27-14:07:55.594 6c1c Recovering log #90
+2024/05/27-14:07:55.597 6c1c Delete type=0 #90
+2024/05/27-14:07:55.597 6c1c Delete type=3 #88
+2024/05/27-19:35:36.027 423c Level-0 table #95: started
+2024/05/27-19:35:36.027 423c Level-0 table #95: 0 bytes OK
+2024/05/27-19:35:36.028 423c Delete type=0 #93
+2024/05/27-19:35:36.040 423c Manual compaction at level-0 from '!folders!0T74VDszLEHCUxB2' @ 72057594037927935 : 1 .. '!items!znVKmNUyLM9ZbEcx' @ 0 : 0; will stop at (end)

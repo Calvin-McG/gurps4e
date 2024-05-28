@@ -1,5 +1,7 @@
-2024/05/24-18:31:07.446 3844 Log #68: 0 ops saved to Table #69 OK
-2024/05/24-18:31:07.447 3844 Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-stock-scenes/000068.log: OK
-2024/05/24-18:31:07.447 3844 Table #19: 55 entries OK
-2024/05/24-18:31:07.448 3844 Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-stock-scenes/MANIFEST-000067: OK
-2024/05/24-18:31:07.450 3844 **** Repaired leveldb C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-stock-scenes; recovered 1 files; 11668 bytes. Some data may have been lost. ****
+2024/05/27-14:07:55.565 6c58 Recovering log #90
+2024/05/27-14:07:55.568 6c58 Delete type=0 #90
+2024/05/27-14:07:55.568 6c58 Delete type=3 #88
+2024/05/27-19:35:36.025 423c Level-0 table #95: started
+2024/05/27-19:35:36.025 423c Level-0 table #95: 0 bytes OK
+2024/05/27-19:35:36.026 423c Delete type=0 #93
+2024/05/27-19:35:36.026 423c Manual compaction at level-0 from '!scenes!TN6fJ0krYIldiehV' @ 72057594037927935 : 1 .. '!scenes.notes!TN6fJ0krYIldiehV.yOe2QUHdFl3XwmT4' @ 0 : 0; will stop at (end)

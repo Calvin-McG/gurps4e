@@ -2,6 +2,35 @@ import { actorHelpers } from "./actorHelpers.js";
 
 export class macroHelpers {
 
+    // This is the method called when a user clicks the "Make An Attack" macro
+    static makeAnAttackMacro(token, attackType, itemName, attackName) {
+        // This macro allows the user to select an attack from their sheet to use against their target(s)
+
+        let selfToken = token; // Get owned token
+
+        if (typeof selfToken === "undefined" || selfToken === null) {
+            this.noSelectionsDialog(1);
+        }
+
+        else {
+            let targetSet = game.user.targets // Get set of targets
+            let targetArray = Array.from(targetSet); // Convert to an actually useable data type
+            let selfActor = selfToken.actor // Get owned actor from token
+
+            if(targetArray.length == 0){ // There were no targets, show an error.
+                selfActor.noTargetsDialog();
+            }
+
+            else if(targetArray.length == 1){ // There is one target.
+                selfActor.singleTargetDialog(selfToken, targetArray[0], attackType, itemName, attackName);
+            }
+
+            else if(targetArray.length > 1){ // There is more than one target.
+                selfActor.tooManyTargetsDialog();
+            }
+        }
+    }
+
     // Return a dialog that tells the user to select some number of actors
     static noSelectionsDialog(amount){
         let noSelectionsDialogContent = "";
