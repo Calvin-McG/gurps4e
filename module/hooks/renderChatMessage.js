@@ -2,6 +2,8 @@
  * Searches each message and adds drag and drop functionality and hides certain things from players
  */
 
+import {macroHelpers} from "../../helpers/macroHelpers.js";
+
 Hooks.on("renderChatMessage", async (app, html, msg) => {
   html.find('.attemptActiveDefences').click(attemptActiveDefences.bind(this));
   html.find('.noActiveDefences').click(noActiveDefences.bind(this));
@@ -13,36 +15,30 @@ Hooks.on("renderChatMessage", async (app, html, msg) => {
 
 function attemptActiveDefences(event) {
   event.preventDefault();
-  let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).flags;
-  game.scenes.get(flags.scene).tokens.get(flags.target).actor.attemptActiveDefences(event);
+  macroHelpers.attemptActiveDefences(event);
 }
 
 function noActiveDefences(event) {
   event.preventDefault();
-  let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).flags;
-  game.scenes.get(flags.scene).tokens.get(flags.target).actor.noActiveDefences(event);
+  macroHelpers.noActiveDefences(event);
 }
 
 function quickContest(event) {
   event.preventDefault();
-  let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).flags;
-  game.scenes.get(flags.scene).tokens.get(flags.target).actor.quickContest(event);
+  macroHelpers.quickContest(event);
 }
 
 function attemptResistanceRoll(event) {
   event.preventDefault();
-  let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).flags;
-  game.scenes.get(flags.scene).tokens.get(flags.target).actor.attemptResistanceRoll(event);
+  macroHelpers.attemptResistanceRoll(event);
 }
 
 function noResistanceRoll(event) {
   event.preventDefault();
-  let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).flags;
-  game.scenes.get(flags.scene).tokens.get(flags.target).actor.noResistanceRoll(event);
+  macroHelpers.noResistanceRoll(event);
 }
 function knockbackFallRoll(event) {
   event.preventDefault();
   let penalty = parseInt(event.currentTarget.alt);
-  let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).flags;
-  game.scenes.get(flags.scene).tokens.get(flags.target).actor.knockbackFallRoll(event, penalty);
+  macroHelpers.knockbackFallRoll(event, penalty);
 }
