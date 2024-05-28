@@ -511,7 +511,7 @@
 					</tr>
 					{{#each actor.items as |item id|}}
 					{{#each item.system.melee as |melee mid|}}
-					{{#showAttackInCombatTab item}}
+					{{#showAttackInCombatTab item melee}}
 					<tr>
 						<td>{{item.name}}</td>
 						<td>{{melee.name}}</td>
@@ -565,7 +565,7 @@
 					</tr>
 					{{#each actor.items as |item id|}}
 					{{#each item.system.ranged as |ranged rid|}}
-					{{#showAttackInCombatTab item}}
+					{{#showAttackInCombatTab item ranged}}
 					<tr>
 						<td>{{item.name}}</td>
 						<td>{{ranged.name}}</td>
@@ -605,7 +605,7 @@
 					</tr>
 					{{#each actor.items as |item id|}}
 					{{#each item.system.affliction as |affliction mid|}}
-					{{#showAttackInCombatTab item}}
+					{{#showAttackInCombatTab item affliction}}
 					<tr>
 						<td>{{item.name}}</td>
 						<td>{{affliction.name}}</td>

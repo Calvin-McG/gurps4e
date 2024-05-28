@@ -141,14 +141,25 @@ Hooks.once('init', async function() {
   });
 
   // This helper handles the logic to display or not display a given attack profile in the combat tab
-  Handlebars.registerHelper('showAttackInCombatTab', function (item, options) {
+  Handlebars.registerHelper('showAttackInCombatTab', function (item, attack, options) {
     let show = true;
+
+    // Procedural checks
     if (item.type.toLowerCase() === "ritual" && item.system.quantity === 0) { // If it's a ritual, but quantity is zero, don't show.
       show = false;
     }
     else if (typeof item.system.equipStatus !== "undefined" && item.system.equipStatus !== "equipped") { // If it's something that can be equipped, but it's not, don't show
       show = false;
     }
+
+    // Undefined checks
+    if (typeof item.name !== "string" || (typeof item.name === "string" && item.name === "")) { // It's either not a string, or it is a blank string
+      show = false;
+    }
+    else if (typeof attack.name !== "string" || (typeof attack.name === "string" && attack.name === "")) { // It's either not a string, or it is a blank string
+      show = false;
+    }
+
     return (show) ? options.fn(this) : options.inverse(this);
   });
 
