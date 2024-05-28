@@ -6171,6 +6171,31 @@ export class gurpsItem extends Item {
     }
   }
 
+  // This method takes in an armour divisor and returns it either validated, or defaulted to 1.
+  validateArmourDivisors(armourDivisor) {
+    let regex = new RegExp(/\d/);
+
+    if (regex.test(armourDivisor.toString())) { // This will pass true if the armourDivisor contains a number.
+      armourDivisor = parseFloat(armourDivisor); // Parse armourDivisor to a float, which will result in it getting typeof number
+    }
+
+    if (typeof armourDivisor === "undefined") { // Armour divisor is undefined
+      armourDivisor = 1; // Reset
+    }
+    else if (typeof armourDivisor === "string" && // Armour divisor is a string, and does not include ignore, cosmic, i, or c
+        !(armourDivisor.toString().toLowerCase().includes("ignore") ||
+            armourDivisor.toString().toLowerCase().includes("cosmic") ||
+            armourDivisor.toString().toLowerCase().includes("i") ||
+            armourDivisor.toString().toLowerCase().includes("c"))) {
+      armourDivisor = 1; // Reset
+    }
+    else if (typeof armourDivisor === "number" && !(armourDivisor >= 0)) { // The armour divisor is a number, but not zero or more
+      armourDivisor = 1; // Reset
+    }
+
+    return armourDivisor;
+  }
+
   // This method prepares the data for all of the attacks present on the sheet.
   prepareAttackData() {
     // Check to see if there is an actor yet
@@ -6251,14 +6276,7 @@ export class gurpsItem extends Item {
                 this.system.melee[meleeKeys[k]].type = "melee"; // Update attack type
                 this.system.melee[meleeKeys[k]].damage = attackHelpers.damageAddsToDiceWithBonusDamagePerDie(damage, bonusPerDie);
 
-                // Validation for Armour Divisor
-                if (!(this.system.melee[meleeKeys[k]].armourDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
-                    this.system.melee[meleeKeys[k]].armourDivisor.toString().toLowerCase().includes("cosmic") ||
-                    this.system.melee[meleeKeys[k]].armourDivisor.toString().toLowerCase().includes("i") ||
-                    this.system.melee[meleeKeys[k]].armourDivisor >= 0)
-                ) {
-                  this.system.melee[meleeKeys[k]].armourDivisor = 1;
-                }
+                this.system.melee[meleeKeys[k]].armourDivisor = this.validateArmourDivisors(this.system.melee[meleeKeys[k]].armourDivisor); // Validation for Armour Divisor
 
 
                 // End melee attack handling
@@ -6315,14 +6333,7 @@ export class gurpsItem extends Item {
                   this.system.ranged[rangedKeys[k]].bulk = -this.system.ranged[rangedKeys[k]].bulk;
                 }
 
-                // Validation for Armour Divisor
-                if (!(this.system.ranged[rangedKeys[k]].armourDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
-                    this.system.ranged[rangedKeys[k]].armourDivisor.toString().toLowerCase().includes("cosmic") ||
-                    this.system.ranged[rangedKeys[k]].armourDivisor.toString().toLowerCase().includes("i") ||
-                    this.system.ranged[rangedKeys[k]].armourDivisor >= 0)
-                ) {
-                  this.system.ranged[rangedKeys[k]].armourDivisor = 1;
-                }
+                this.system.ranged[rangedKeys[k]].armourDivisor = this.validateArmourDivisors(this.system.ranged[rangedKeys[k]].armourDivisor); // Validation for Armour Divisor
 
                 // Validation for halfRange and maxRange
                 if (typeof this.system.ranged[rangedKeys[k]].halfRangeInput !== "undefined") {
@@ -6376,14 +6387,7 @@ export class gurpsItem extends Item {
                 this.system.affliction[afflictionKeys[k]].type = "affliction"; // Update attack type
                 this.system.affliction[afflictionKeys[k]].damage = attackHelpers.damageAddsToDice(damage);
 
-                // Validation for Armour Divisor
-                if (!(this.system.affliction[afflictionKeys[k]].armourDivisor.toString().toLowerCase().includes("ignore") || // Must either ignore armour or be a positive number
-                    this.system.affliction[afflictionKeys[k]].armourDivisor.toString().toLowerCase().includes("cosmic") ||
-                    this.system.affliction[afflictionKeys[k]].armourDivisor.toString().toLowerCase().includes("i") ||
-                    this.system.affliction[afflictionKeys[k]].armourDivisor >= 0)
-                ) {
-                  this.system.affliction[afflictionKeys[k]].armourDivisor = 1;
-                }
+                this.system.affliction[afflictionKeys[k]].armourDivisor = this.validateArmourDivisors(this.system.affliction[afflictionKeys[k]].armourDivisor); // Validation for Armour Divisor
               }
             }
           }
