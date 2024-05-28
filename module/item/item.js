@@ -6094,8 +6094,32 @@ export class gurpsItem extends Item {
     }
   }
 
-  // This method takes in an attack key `like this.system.melee[meleeKeys[k]]` and returns that same key after validating any area related logic.
+  // This method takes in an attack key like `this.system.melee[meleeKeys[k]]` and returns that same key after validating any area related logic.
   validateAreaData(attackKey) {
+    // Begin handling for legacy damage type entry which could contain information making an attack an explosive attack.
+    let exString = attackKey.damageType.toLowerCase().match(/[e][x]\d*/g); // Check to see if there are any instances of ex# in the damageType string
+    if (exString !== null) { // There was a match
+      attackKey.area = "ex"; // Overwrite the attack key to ex
+      attackKey.damageType = attackKey.damageType.replace(/[e][x]\d*/g, ""); // Remove ex from the damageType string
+      let exDivisor = exString.toString().match(/\d/g);
+      console.log(exDivisor);
+      if (exDivisor === null) { // If there was no digit
+        attackKey.exDivisor = 3; // Default to 3
+      }
+      else {
+        if (parseInt(exDivisor) === 1) {
+          attackKey.exDivisor = 1;
+        }
+        else if (parseInt(exDivisor) === 2) {
+          attackKey.exDivisor = 2;
+        }
+        else { // exDivisor was a number, but something other than 1 or 2
+          attackKey.exDivisor = 3
+        }
+      }
+    }
+
+    // Normal validation for the area inputs themselves
     if (typeof attackKey.area !== "undefined") { // The Area input is not undefined
       if (attackKey.area.toLowerCase() === "area") {
         if (typeof attackKey.areaRadius === "undefined" || attackKey.areaRadius < 1) { // Area radius came through wrong (1 means just the targetted hex)
