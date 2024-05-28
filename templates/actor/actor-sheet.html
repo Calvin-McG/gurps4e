@@ -497,7 +497,7 @@
 				</div>
 				<table class="items-list">
 					<tr class="bold">
-						<th colspan="8" class="combat-tab-attack-header">Melee Attacks</th>
+						<th colspan="9" class="combat-tab-attack-header">Melee Attacks</th>
 					</tr>
 					<tr class="bold">
 						<td>Source</td>
@@ -507,6 +507,7 @@
 						<td class="actor-sheet-digit-col">Block</td>
 						<td class="actor-sheet-digit-col">Damage</td>
 						<td>Reach</td>
+						<td>Area</td>
 						<td>ST</td>
 					</tr>
 					{{#each actor.items as |item id|}}
@@ -540,6 +541,13 @@
 								   data-label="Makes a &lt;b&gt;{{item.name}} {{melee.name}}&lt;/b&gt; Damage roll." data-type="damage"></label>
 						</td>
 						<td>{{melee.reach}}</td>
+						{{#if (eq melee.area "area")}}
+						<td>Area {{melee.areaRadius}}</td>
+						{{else if (eq melee.area "ex")}}
+						<td>Ex {{melee.exDivisor}}</td>
+						{{else}}
+						<td>{{capitalizeFirst melee.area}}</td>
+						{{/if}}
 						<td>{{melee.st}}</td>
 					</tr>
 					{{/showAttackInCombatTab}}
@@ -548,7 +556,7 @@
 				</table>
 				<table class="items-list">
 					<tr class="bold">
-						<th colspan="11" class="combat-tab-attack-header">Ranged Attacks</th>
+						<th colspan="12" class="combat-tab-attack-header">Ranged Attacks</th>
 					</tr>
 					<tr class="bold">
 						<td>Source</td>
@@ -557,6 +565,7 @@
 						<td class="actor-sheet-digit-col">Acc</td>
 						<td class="actor-sheet-digit-col">Damage</td>
 						<td class="actor-sheet-digit-col">Range</td>
+						<td>Area</td>
 						<td class="actor-sheet-digit-col">Rof</td>
 						<td class="actor-sheet-digit-col">Shots</td>
 						<td class="actor-sheet-digit-col">Bulk</td>
@@ -581,6 +590,13 @@
 								   data-label="Makes a &lt;b&gt;{{item.name}} {{ranged.name}}&lt;/b&gt; Damage roll." data-type="damage"></label>
 						</td>
 						<td class="actor-sheet-digit-col">{{formatRange ranged.halfRange ranged.maxRange}}</td>
+						{{#if (eq ranged.area "area")}}
+						<td>Area {{ranged.areaRadius}}</td>
+						{{else if (eq ranged.area "ex")}}
+						<td>Ex {{ranged.exDivisor}}</td>
+						{{else}}
+						<td>{{capitalizeFirst melee.area}}</td>
+						{{/if}}
 						<td class="actor-sheet-digit-col">{{ranged.rof}}</td>
 						<td class="actor-sheet-digit-col">{{ranged.shots}}</td>
 						<td class="actor-sheet-digit-col">{{ranged.bulk}}</td>
@@ -600,6 +616,7 @@
 						<td>Affliction Name</td>
 						<td class="actor-sheet-digit-col">Level</td>
 						<td class="actor-sheet-digit-col">Damage</td>
+						<td>Area</td>
 						<td>Resistance Roll</td>
 						<td>Rule Of</td>
 					</tr>
@@ -619,6 +636,13 @@
 							<label class="fa fa-dice-six rollable" data-level="{{affliction.damage}}"
 								   data-label="Makes a &lt;b&gt;{{item.name}} {{affliction.name}}&lt;/b&gt; Damage roll." data-type="damage"></label>
 						</td>
+						{{#if (eq affliction.area "area")}}
+						<td>Area {{affliction.areaRadius}}</td>
+						{{else if (eq affliction.area "ex")}}
+						<td>Ex {{affliction.exDivisor}}</td>
+						{{else}}
+						<td>{{capitalizeFirst melee.area}}</td>
+						{{/if}}
 						<td>{{affliction.resistanceRoll}} {{affliction.resistanceRollPenalty}}</td>
 						<td>{{affliction.ruleOf}}</td>
 					</tr>
