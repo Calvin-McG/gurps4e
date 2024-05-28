@@ -35,6 +35,7 @@ export class gurpsItemSheet extends ItemSheet {
         context.defenceQty = CONFIG.DEFENCEQTY.dropdownChoices;
         context.rangeTypes = CONFIG.RANGETYPES.dropdownChoices;
         context.resistanceTypes = CONFIG.RESISTANCETYPES.dropdownChoices;
+        context.areaTypes = CONFIG.AREATYPES.dropdownChoices;
         context.resistanceAttr = CONFIG.RESISTANCEATTR.dropdownChoices;
         context.bodyTypes = CONFIG.BODYTYPES.dropdownChoices;
         context.vehicleCraftTypes = CONFIG.VEHICLECRAFTTYPES.dropdownChoices;
@@ -1231,7 +1232,10 @@ export class gurpsItemSheet extends ItemSheet {
             "blockMod": "No",
             "damageInput": "0",
             "damageType": "",
-            "armourDivisor": "1"
+            "armourDivisor": "1",
+            "area": "",
+            "areaRadius": 2,
+            "exDivisor": 3
         };
 
         this.item.update({ ["system.melee." + newKey]: newRow }); // Add the new row to the list of melee keys
@@ -1263,7 +1267,10 @@ export class gurpsItemSheet extends ItemSheet {
             "rof": "1",
             "shots": "1",
             "bulk": "-2",
-            "rcl": "1"
+            "rcl": "1",
+            "area": "",
+            "areaRadius": 2,
+            "exDivisor": 3
         };
 
         this.item.update({ ["system.ranged." + newKey]: newRow });
@@ -1295,7 +1302,10 @@ export class gurpsItemSheet extends ItemSheet {
             "resistanceType": "",
             "flags": "",
             "resistanceRollPenalty": 0,
-            "ruleOf": 16
+            "ruleOf": 16,
+            "area": "",
+            "areaRadius": 2,
+            "exDivisor": 3
         };
         this.item.update({ ["system.affliction." + newKey]: newRow });
     }

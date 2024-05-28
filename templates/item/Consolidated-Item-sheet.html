@@ -1030,6 +1030,7 @@
                         <td class="resource-label">Type</td>
                         <td class="resource-label">AD</td>
                         <td class="resource-label">Reach</td>
+                        <td class="resource-label">Area</td>
                         <td class="resource-label">ST</td>
                         <td class="resource-label">Flags</td>
                         <td class="resource-label"></td>
@@ -1096,6 +1097,16 @@
                         </span>
                         </td>
                         <td class="melee-reach"><input type="text" name="system.melee.{{id}}.reach" value="{{melee.reach}}" title="{{melee.reach}}" style="text-align:left;" /></td>
+                        <td class="resource-label">
+                            <select name="system.melee.{{id}}.area">
+                                {{selectOptions ../areaTypes selected=melee.area}}
+                            </select>
+                            {{#if (eq melee.area "area")}}
+                            <input type="number" name="system.melee.{{id}}.areaRadius" value="{{melee.areaRadius}}" data-dtype="Number" style="width: 60px;"/>
+                            {{else if (eq melee.area "ex")}}
+                            <input type="number" name="system.melee.{{id}}.exDivisor" value="{{melee.exDivisor}}" placeholder="3" data-dtype="Number" style="width: 60px;"/>
+                            {{/if}}
+                        </td>
                         <td class="melee-st"><input type="text" name="system.melee.{{id}}.st" value="{{melee.st}}"/></td>
                         <td>
                             <span class="tooltip">
@@ -1141,6 +1152,7 @@
                         <td class="resource-label">Type</td>
                         <td class="resource-label">Divisor</td>
                         <td class="resource-label">Range</td>
+                        <td class="resource-label">Area</td>
                         <td class="resource-label">Rof</td>
                         <td class="resource-label">Shots</td>
                         <td class="resource-label">Bulk</td>
@@ -1212,6 +1224,16 @@
                             <span style="font-weight: bold">/</span>
                             <input type="text" name="system.ranged.{{id}}.maxRangeInput" value="{{ranged.maxRangeInput}}" title="{{ranged.maxRangeInput}}" style="text-align:center; width: 40%" placeholder="Max" />
                         </td>
+                        <td class="resource-label">
+                            <select name="system.ranged.{{id}}.area">
+                                {{selectOptions ../areaTypes selected=ranged.area}}
+                            </select>
+                            {{#if (eq ranged.area "area")}}
+                            <input type="number" name="system.ranged.{{id}}.areaRadius" value="{{ranged.areaRadius}}" data-dtype="Number" style="width: 60px;"/>
+                            {{else if (eq ranged.area "ex")}}
+                            <input type="number" name="system.ranged.{{id}}.exDivisor" value="{{ranged.exDivisor}}" placeholder="3" data-dtype="Number" style="width: 60px;"/>
+                            {{/if}}
+                        </td>
                         <td><input type="text" name="system.ranged.{{id}}.rof" value="{{ranged.rof}}" title="{{ranged.rof}}" style="text-align:left;" /></td>
                         <td><input type="text" name="system.ranged.{{id}}.shots" value="{{ranged.shots}}" title="{{ranged.shots}}" style="text-align:left;" /></td>
                         <td><input type="text" name="system.ranged.{{id}}.bulk" value="{{ranged.bulk}}" title="{{ranged.bulk}}" style="text-align:left;" /></td>
@@ -1261,6 +1283,7 @@
                         <td class="resource-label">Divisor</td>
                         <td class="resource-label">Effect Description</td>
                         <td class="resource-label">Range Penalties</td>
+                        <td class="resource-label">Area</td>
                         <td class="resource-label" style="width: 240px">
                             <span class="tooltip">
                                 Resist With
@@ -1337,6 +1360,16 @@
                             <select name="system.affliction.{{id}}.rangePenalties">
                                 {{selectOptions ../rangeTypes selected=affliction.rangePenalties}}
                             </select>
+                        </td>
+                        <td class="resource-label">
+                            <select name="system.affliction.{{id}}.area">
+                                {{selectOptions ../areaTypes selected=affliction.area}}
+                            </select>
+                            {{#if (eq affliction.area "area")}}
+                            <input type="number" name="system.affliction.{{id}}.areaRadius" value="{{affliction.areaRadius}}" data-dtype="Number" style="width: 60px;"/>
+                            {{else if (eq affliction.area "ex")}}
+                            <input type="number" name="system.affliction.{{id}}.exDivisor" value="{{affliction.exDivisor}}" placeholder="3" data-dtype="Number" style="width: 60px;"/>
+                            {{/if}}
                         </td>
                         <td style="display: flex; width: 240px" >
                             <select name="system.affliction.{{id}}.resistanceType">

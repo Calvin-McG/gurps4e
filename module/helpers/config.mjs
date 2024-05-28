@@ -25,6 +25,7 @@ export const SPELLCLASS = {};
 export const DEFENCEQTY = {};
 export const RANGETYPES = {};
 export const RESISTANCETYPES = {};
+export const AREATYPES = {};
 export const RESISTANCEATTR = {};
 export const BODYTYPES = {};
 export const VEHICLECRAFTTYPES = {};
@@ -240,6 +241,14 @@ RESISTANCETYPES.dropdownChoices = {
     "contest": "Quick Contest",
     "resistance": "Resistance",
     "irresistible": "Irresistible",
+}
+
+AREATYPES.dropdownChoices = {
+    "": "No",
+    "area": "Area",
+    "ex": "Ex",
+    "frag": "Frag",
+    "beam": "Beam"
 }
 
 RESISTANCEATTR.dropdownChoices = {

@@ -6094,6 +6094,35 @@ export class gurpsItem extends Item {
     }
   }
 
+  // This method takes in an attack key `like this.system.melee[meleeKeys[k]]` and returns that same key after validating any area related logic.
+  validateAreaData(attackKey) {
+    if (typeof attackKey.area !== "undefined") { // The Area input is not undefined
+      if (attackKey.area.toLowerCase() === "area") {
+        if (typeof attackKey.areaRadius === "undefined" || attackKey.areaRadius < 1) { // Area radius came through wrong (1 means just the targetted hex)
+          attackKey.areaRadius = 2; // Default to 2, which covers the targeted hex and all adjacent
+        }
+        // TODO - Stuff for area logic
+      }
+      else if (attackKey.area.toLowerCase() === "ex") {
+        if (typeof attackKey.exDivisor === "undefined" || attackKey.exDivisor < 1 || attackKey.exDivisor > 3) { // Ex divisor came through wrong
+          attackKey.exDivisor = 3; // Default to 3, which is the normal explosion area divisor
+        }
+        // TODO - Stuff for explosive attacks
+      }
+      else if (attackKey.area.toLowerCase() === "frag") {
+        // TODO - Stuff for frag attacks
+      }
+      else if (attackKey.area.toLowerCase() === "beam") {
+        // TODO - Stuff for beam attacks
+      }
+    }
+    else { // If it is undefined
+      attackKey.area = ""; // Set to a blank string
+    }
+
+    return attackKey;
+  }
+
   // This method prepares the data for all of the attacks present on the sheet.
   prepareAttackData() {
     // Check to see if there is an actor yet
@@ -6115,6 +6144,8 @@ export class gurpsItem extends Item {
 
                 let dx = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity);
                 let st = attributeHelpers.calcStOrHt(this.actor.system.primaryAttributes.strength, attributeHelpers.calcSMDiscount(this.actor.system.bio.sm));
+
+                this.system.melee[meleeKeys[k]] = this.validateAreaData(this.system.melee[meleeKeys[k]]); // Call the method to validate our area inputs.
 
                 if (this.system.melee[meleeKeys[k]].skill.toLowerCase() === "dx") {
                   level = dx;
@@ -6203,7 +6234,11 @@ export class gurpsItem extends Item {
                 ) {
                   this.system.melee[meleeKeys[k]].armourDivisor = 1;
                 }
+
+
+                // End melee attack handling
               }
+              // End loop
             }
           }
         }
@@ -6219,6 +6254,8 @@ export class gurpsItem extends Item {
 
                 let dx = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity);
                 let st = attributeHelpers.calcStOrHt(this.actor.system.primaryAttributes.strength, attributeHelpers.calcSMDiscount(this.actor.system.bio.sm));
+
+                this.system.ranged[rangedKeys[k]] = this.validateAreaData(this.system.ranged[rangedKeys[k]]); // Call the method to validate our area inputs.
 
                 if (this.system.ranged[rangedKeys[k]].skill.toLowerCase() === "dx") {
                   level = dx
@@ -6324,6 +6361,8 @@ export class gurpsItem extends Item {
             for (let k = 0; k < afflictionKeys.length; k++) {
               if (this.system.affliction[afflictionKeys[k]].name) { // Check to see if name is filled in. Otherwise don't bother.
                 damage = attackHelpers.damageParseSwThr(this.actor, this.system.affliction[afflictionKeys[k]].damageInput); // Update damage value
+
+                this.system.affliction[afflictionKeys[k]] = this.validateAreaData(this.system.affliction[afflictionKeys[k]]); // Call the method to validate our area inputs.
 
                 this.system.affliction[afflictionKeys[k]].level = 0; // Default to zero just in case we don't come up with a value
                 if (this.system.affliction[afflictionKeys[k]].skill.toLowerCase() === "dx") {
