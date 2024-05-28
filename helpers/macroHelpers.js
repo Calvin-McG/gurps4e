@@ -24,23 +24,19 @@ export class macroHelpers {
             let targetArray = Array.from(targetSet); // Convert to an actually useable data type
             let selfActor = selfToken.actor // Get owned actor from token
 
-            if(targetArray.length == 0){ // There were no targets, show an error.
-                this.noTargetsDialog();
-            }
-
-            else if(targetArray.length == 1){ // There is one target.
-                this.singleTargetDialog(selfToken, targetArray[0], attackType, itemName, attackName);
-            }
-
-            else if(targetArray.length > 1){ // There is more than one target.
+            if(targetArray.length > 1){ // There is more than one target.
                 this.tooManyTargetsDialog();
+            }
+
+            else { // There are zero to one targets.
+                this.singleTargetDialog(selfToken, targetArray[0], attackType, itemName, attackName);
             }
         }
     }
 
-    // Return a dialog that tells the user to pick a target
+    // Return a dialog that tells the user to pick a target or place a token
     static noTargetsDialog(){
-        let noTargetsDialogContent = "<div>You need to select a target.</div>";
+        let noTargetsDialogContent = "<div>You need to select a target, or place a template with a colour matching your own.</div>";
 
         let noTargetsDialog = new Dialog({
             title: "Select a target",
@@ -211,6 +207,27 @@ export class macroHelpers {
     // Using that we call the method to list all the attacks, at which point we either show a modal, or skip right to the specific attack they selected if the name was complete
     static singleTargetDialog(selfToken, targetToken, attackType, itemName, attackName){
         let attacks;
+
+        // Check area logic first
+        if (typeof targetToken === "undefined" || targetToken === null) { // targetToken is undefined or null. Check to see if there's a valid target template
+            let templates = selfToken.scene.templates; // All of the templates in the scene.
+            let selection = canvas.tokens.controlled; // This is the currently selected actors.
+            let targetTemplate;
+            templates.forEach( template => { // Loop through the templates
+                if (template.author.isSelf) { // If we created this template
+                    if (template.fillColor.css === template.author.color.css && !template.hidden) { // If it's colour matches our colour, and the template is not hidden.
+                        targetTemplate = template; // Store the target template
+                    }
+                }
+            })
+            if (typeof targetTemplate !== "undefined" && targetTemplate !== null) { // If we ended up with a target template
+                console.log(targetTemplate);
+                targetTemplate.update({ borderColor: "#FF0000"}); // Update the colour of the template to communicate to the user that it's the one getting attacked
+            }
+            else { // We did not end up with a target template, and we already know we don't have a token.
+                return this.noTargetsDialog(); // Load the noTarget dialog and return early.
+            }
+        }
 
         // Narrow displayed attacks by attack type.
         if (attackType === "melee") {
