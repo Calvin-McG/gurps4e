@@ -216,7 +216,7 @@ export class macroHelpers {
     // Using that we call the method to list all the attacks, at which point we either show a modal, or skip right to the specific attack they selected if the name was complete
     static singleTargetDialog(selfToken, targetToken, attackType, itemName, attackName){
         let attacks;
-
+        let areaTemplateType = "";
         // Check area logic first
         if (typeof targetToken === "undefined" || targetToken === null) { // targetToken is undefined or null. Check to see if there's a valid target template
             let templates = selfToken.scene.templates; // All of the templates in the scene.
@@ -225,31 +225,39 @@ export class macroHelpers {
             templates.forEach( template => { // Loop through the templates
                 if (template.author.isSelf) { // If we created this template
                     if (template.fillColor.css === template.author.color.css && !template.hidden) { // If it's colour matches our colour, and the template is not hidden.
-                        targetTemplate = template; // Store the target template
+                        console.log(template)
+                        if (template.t === "circle" || template.t === "ray") { // We're only supporting rays and circles at the moment.
+                            targetTemplate = template; // Store the target template
+                        }
                     }
                 }
             })
             if (typeof targetTemplate !== "undefined" && targetTemplate !== null) { // If we ended up with a target template
                 console.log(targetTemplate);
                 targetTemplate.update({ borderColor: "#FF0000"}); // Update the colour of the template to communicate to the user that it's the one getting attacked
+                areaTemplateType = targetTemplate.t; // Circle templates return 'circle' and beam templates return 'ray'
             }
             else { // We did not end up with a target template, and we already know we don't have a token.
                 return this.noTargetsDialog(); // Load the noTarget dialog and return early.
             }
         }
 
+        // TODO - If we're doing an area attack, filter by our selected template.
+        // Beams use beam templates
+        // All others use circle templates
+
         // Narrow displayed attacks by attack type.
         if (attackType === "melee") {
-            attacks = this.listAttacks(selfToken.actor, "melee", itemName, attackName);
+            attacks = this.listAttacks(selfToken.actor, "melee", itemName, attackName, areaTemplateType);
         }
         else if (attackType === "range" || attackType === "ranged") {
-            attacks = this.listAttacks(selfToken.actor, "ranged", itemName, attackName);
+            attacks = this.listAttacks(selfToken.actor, "ranged", itemName, attackName, areaTemplateType);
         }
         else if (attackType === "affliction") {
-            attacks = this.listAttacks(selfToken.actor, "affliction", itemName, attackName);
+            attacks = this.listAttacks(selfToken.actor, "affliction", itemName, attackName, areaTemplateType);
         }
         else {
-            attacks = this.listAttacks(selfToken.actor, "all", itemName, attackName);
+            attacks = this.listAttacks(selfToken.actor, "all", itemName, attackName, areaTemplateType);
         }
 
         // This block decides whether to skip the attack selection modal and go right to stabbin'
@@ -319,7 +327,7 @@ export class macroHelpers {
                     }
 
                     htmlContent += "<td>" + attacks.melee[x].reach + "</td>";
-                    htmlContent += "<td>" + attacks.melee[x].area + attacks.melee[x].areaRadius + attacks.melee[x].exDivisor + "</td>";
+                    htmlContent += "<td>" + macroHelpers.capitalizeFirst(attacks.melee[x].area) + (attacks.melee[x].area === "area" ? (" " + attacks.melee[x].areaRadius) : "") + (attacks.melee[x].area === "ex" ? (" " + attacks.melee[x].exDivisor) : "") + "</td>";
                     htmlContent += "<td>" + attacks.melee[x].parry + attacks.melee[x].parryType + "</td>";
                     htmlContent += "<td>" + attacks.melee[x].st + "</td>";
                     htmlContent += "</tr>";
@@ -349,7 +357,7 @@ export class macroHelpers {
                 htmlContent += "<table>";
 
                 htmlContent += "<tr><td colspan='12' class='trait-category-header' style='text-align: center;'>Ranged Attacks</td></tr>";
-                htmlContent += "<tr><td></td><td>Weapon</td><td>Attack</td><td>Level</td><td>Damage</td><td>Acc</td><td>Range</td><td>RoF</td><td>Shots</td><td>ST</td><td>Bulk</td><td>Rcl</td></tr>";
+                htmlContent += "<tr><td></td><td>Weapon</td><td>Attack</td><td>Level</td><td>Damage</td><td>Acc</td><td>Range</td><td>Area</td><td>RoF</td><td>Shots</td><td>ST</td><td>Bulk</td><td>Rcl</td></tr>";
 
                 let distanceRaw = Math.round(canvas.grid.measurePath([selfToken, targetToken]).distance);
                 let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.grid.units);
@@ -382,6 +390,7 @@ export class macroHelpers {
                     else { // Target is between max and half range
                         htmlContent += "<td style='font-weight: bold; background-color: rgb(213, 153, 102)'>" + attackHelpers.formatRange(attacks.ranged[q].halfRange, attacks.ranged[q].maxRange) + "</td>";
                     }
+                    htmlContent += "<td>" + macroHelpers.capitalizeFirst(attacks.ranged[q].area) + (attacks.ranged[q].area === "area" ? (" " + attacks.ranged[q].areaRadius) : "") + (attacks.ranged[q].area === "ex" ? (" " + attacks.ranged[q].exDivisor) : "") + "</td>";
                     htmlContent += "<td>" + attacks.ranged[q].rof + "</td>";
                     htmlContent += "<td>" + attacks.ranged[q].shots + "</td>";
                     htmlContent += "<td>" + attacks.ranged[q].st + "</td>";
@@ -413,7 +422,7 @@ export class macroHelpers {
                 htmlContent += "<table>";
 
                 htmlContent += "<tr><td colspan='12' class='trait-category-header' style='text-align: center;'>Afflictions</td></tr>";
-                htmlContent += "<tr><td></td><td>Affliction</td><td>Name</td><td>Level</td><td>Damage</td><td>Resistance Roll</td><td>Rule Of</td></tr>";
+                htmlContent += "<tr><td></td><td>Affliction</td><td>Name</td><td>Level</td><td>Damage</td><td>Area</td><td>Resistance Roll</td><td>Rule Of</td></tr>";
 
                 for (let q = 0; q < attacks.affliction.length; q++){
                     htmlContent += "<tr>";
@@ -432,6 +441,7 @@ export class macroHelpers {
                     else {
                         htmlContent += "<td>" + attacks.affliction[q].damage + " " + attacks.affliction[q].damageType + " " + "(" + attacks.affliction[q].armourDivisor + ")</td>";
                     }
+                    htmlContent += "<td>" + macroHelpers.capitalizeFirst(attacks.affliction[q].area) + (attacks.affliction[q].area === "area" ? (" " + attacks.affliction[q].areaRadius) : "") + (attacks.affliction[q].area === "ex" ? (" " + attacks.affliction[q].exDivisor) : "") + "</td>";
                     htmlContent += "<td>" + attacks.affliction[q].resistanceRoll + " " + attacks.affliction[q].resistanceRollPenalty + "</td>";
                     htmlContent += "<td>" + attacks.affliction[q].ruleOf + "</td>";
                     htmlContent += "</tr>";
@@ -464,7 +474,7 @@ export class macroHelpers {
         }
     }
 
-    static listAttacks(actor, attackType, itemName, attackName){
+    static listAttacks(actor, attackType, itemName, attackName, areaTemplateType){
         // Narrow displayed attacks by attack type.
         let showMelee 		= true;
         let showRange 		= true;
@@ -499,6 +509,10 @@ export class macroHelpers {
             }
         }
 
+        if (typeof areaTemplateType === "undefined" || areaTemplateType === null) { // Undefined check for the area template type
+            areaTemplateType = ""; // Default to an empty string, which we do not filter on.
+        }
+
         let meleeAttacks = [];
         let rangedAttacks = [];
         let afflictionAttacks = [];
@@ -521,7 +535,11 @@ export class macroHelpers {
                                         melee.weapon = item.name;
 
                                         if (typeof melee.name === "string" && melee.name !== "") { // The name of the attack is a string, and that string is not empty.
-                                            meleeAttacks.push(melee); // Add the attack
+                                            if ((areaTemplateType === "circle" && (melee.area === "area" || melee.area === "ex" || melee.area === "frag")) || // The template type is circle, and the area type is area/ex/frag
+                                                (areaTemplateType === "ray" && (melee.area === "beam")) || // The template type is ray and the area type is beam
+                                            areaTemplateType === "") { // The template type is blank
+                                                meleeAttacks.push(melee); // Add the attack
+                                            }
                                         }
                                     }
                                 }
@@ -529,7 +547,11 @@ export class macroHelpers {
                                     melee.weapon = item.name
 
                                     if (typeof melee.name === "string" && melee.name !== "") { // The name of the attack is a string, and that string is not empty.
-                                        meleeAttacks.push(melee); // Add the attack
+                                        if ((areaTemplateType === "circle" && (melee.area === "area" || melee.area === "ex" || melee.area === "frag")) || // The template type is circle, and the area type is area/ex/frag
+                                            (areaTemplateType === "ray" && (melee.area === "beam")) || // The template type is ray and the area type is beam
+                                            areaTemplateType === "") { // The template type is blank
+                                            meleeAttacks.push(melee); // Add the attack
+                                        }
                                     }
                                 }
                             }
@@ -539,7 +561,11 @@ export class macroHelpers {
                             melee.weapon = item.name
 
                             if (typeof melee.name === "string" && melee.name !== "") { // The name of the attack is a string, and that string is not empty.
-                                meleeAttacks.push(melee); // Add the attack
+                                if ((areaTemplateType === "circle" && (melee.area === "area" || melee.area === "ex" || melee.area === "frag")) || // The template type is circle, and the area type is area/ex/frag
+                                    (areaTemplateType === "ray" && (melee.area === "beam")) || // The template type is ray and the area type is beam
+                                    areaTemplateType === "") { // The template type is blank
+                                    meleeAttacks.push(melee); // Add the attack
+                                }
                             }
                         }
                     }
@@ -556,7 +582,11 @@ export class macroHelpers {
                                         ranged.weapon = item.name
 
                                         if (typeof ranged.name === "string" && ranged.name !== "") { // The name of the attack is a string, and that string is not empty.
-                                            rangedAttacks.push(ranged); // Add the attack
+                                            if ((areaTemplateType === "circle" && (ranged.area === "area" || ranged.area === "ex" || ranged.area === "frag")) || // The template type is circle, and the area type is area/ex/frag
+                                                (areaTemplateType === "ray" && (ranged.area === "beam")) || // The template type is ray and the area type is beam
+                                                areaTemplateType === "") { // The template type is blank
+                                                rangedAttacks.push(ranged); // Add the attack
+                                            }
                                         }
                                     }
                                 }
@@ -564,7 +594,11 @@ export class macroHelpers {
                                     ranged.weapon = item.name
 
                                     if (typeof ranged.name === "string" && ranged.name !== "") { // The name of the attack is a string, and that string is not empty.
-                                        rangedAttacks.push(ranged); // Add the attack
+                                        if ((areaTemplateType === "circle" && (ranged.area === "area" || ranged.area === "ex" || ranged.area === "frag")) || // The template type is circle, and the area type is area/ex/frag
+                                            (areaTemplateType === "ray" && (ranged.area === "beam")) || // The template type is ray and the area type is beam
+                                            areaTemplateType === "") { // The template type is blank
+                                            rangedAttacks.push(ranged); // Add the attack
+                                        }
                                     }
                                 }
                             }
@@ -574,7 +608,11 @@ export class macroHelpers {
                             ranged.weapon = item.name
 
                             if (typeof ranged.name === "string" && ranged.name !== "") { // The name of the attack is a string, and that string is not empty.
-                                rangedAttacks.push(ranged); // Add the attack
+                                if ((areaTemplateType === "circle" && (ranged.area === "area" || ranged.area === "ex" || ranged.area === "frag")) || // The template type is circle, and the area type is area/ex/frag
+                                    (areaTemplateType === "ray" && (ranged.area === "beam")) || // The template type is ray and the area type is beam
+                                    areaTemplateType === "") { // The template type is blank
+                                    rangedAttacks.push(ranged); // Add the attack
+                                }
                             }
                         }
                     }
@@ -592,7 +630,11 @@ export class macroHelpers {
                                         affliction.type = "affliction";
 
                                         if (typeof affliction.name === "string" && affliction.name !== "") { // The name of the attack is a string, and that string is not empty.
-                                            afflictionAttacks.push(affliction); // Add the attack
+                                            if ((areaTemplateType === "circle" && (affliction.area === "area" || affliction.area === "ex" || affliction.area === "frag")) || // The template type is circle, and the area type is area/ex/frag
+                                                (areaTemplateType === "ray" && (affliction.area === "beam")) || // The template type is ray and the area type is beam
+                                                areaTemplateType === "") { // The template type is blank
+                                                afflictionAttacks.push(affliction); // Add the attack
+                                            }
                                         }
                                     }
                                 }
@@ -601,7 +643,11 @@ export class macroHelpers {
                                     affliction.type = "affliction";
 
                                     if (typeof affliction.name === "string" && affliction.name !== "") { // The name of the attack is a string, and that string is not empty.
-                                        afflictionAttacks.push(affliction); // Add the attack
+                                        if ((areaTemplateType === "circle" && (affliction.area === "area" || affliction.area === "ex" || affliction.area === "frag")) || // The template type is circle, and the area type is area/ex/frag
+                                            (areaTemplateType === "ray" && (affliction.area === "beam")) || // The template type is ray and the area type is beam
+                                            areaTemplateType === "") { // The template type is blank
+                                            afflictionAttacks.push(affliction); // Add the attack
+                                        }
                                     }
                                 }
                             }
@@ -612,7 +658,11 @@ export class macroHelpers {
                             affliction.type = "affliction";
 
                             if (typeof affliction.name === "string" && affliction.name !== "") { // The name of the attack is a string, and that string is not empty.
-                                afflictionAttacks.push(affliction); // Add the attack
+                                if ((areaTemplateType === "circle" && (affliction.area === "area" || affliction.area === "ex" || affliction.area === "frag")) || // The template type is circle, and the area type is area/ex/frag
+                                    (areaTemplateType === "ray" && (affliction.area === "beam")) || // The template type is ray and the area type is beam
+                                    areaTemplateType === "") { // The template type is blank
+                                    afflictionAttacks.push(affliction); // Add the attack
+                                }
                             }
                         }
                     }
