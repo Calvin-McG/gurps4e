@@ -3324,44 +3324,8 @@ export class gurpsActor extends Actor {
 		return [facing,position]
 	}
 
-	//Return a dialog that tells the user to pick a target
-	noTargetsDialog(){
-		let noTargetsDialogContent = "<div>You need to select a target.</div>";
-
-		let noTargetsDialog = new Dialog({
-			title: "Select a target",
-			content: noTargetsDialogContent,
-			buttons: {
-				ok: {
-					icon: '<i class="fas fa-check"></i>',
-					label: "Ok"
-				}
-			},
-			default: "ok"
-		})
-
-		noTargetsDialog.render(true);
-	}
-
-	//Return a dialog that tells the user to pick only one target
-	tooManyTargetsDialog(){
-		let tooManyTargetsDialogContent = "<div>You have too many targets selected, make sure there is only one</div>";
-
-		let tooManyTargetsDialog = new Dialog({
-			title: "Select a target",
-			content: tooManyTargetsDialogContent,
-			buttons: {
-				ok: {
-					icon: '<i class="fas fa-check"></i>',
-					label: "Ok"
-				}
-			},
-			default: "ok"
-		})
-
-		tooManyTargetsDialog.render(true);
-	}
-
+	// By this point we still only know the user's selected token, target token, and possibly some or all of the attack's name.
+	// Using that we call the method to list all the attacks, at which point we either show a modal, or skip right to the specific attack they selected if the name was complete
 	singleTargetDialog(selfToken, targetToken, attackType, itemName, attackName){
 		let attacks;
 
@@ -3424,7 +3388,7 @@ export class gurpsActor extends Actor {
 				htmlContent += "<table>";
 
 				htmlContent += "<tr><td colspan='8' class='trait-category-header' style='text-align: center;'>Melee Attacks</td></tr>";
-				htmlContent += "<tr><td></td><td>Weapon</td><td>Attack</td><td>Level</td><td>Damage</td><td>Reach</td><td>Parry</td><td>ST</td></tr>";
+				htmlContent += "<tr><td></td><td>Weapon</td><td>Attack</td><td>Level</td><td>Damage</td><td>Reach</td><td>Area</td><td>Parry</td><td>ST</td></tr>";
 
 				for (let x = 0; x < attacks.melee.length; x++){
 					htmlContent += "<tr>";
@@ -3446,6 +3410,7 @@ export class gurpsActor extends Actor {
 					}
 
 					htmlContent += "<td>" + attacks.melee[x].reach + "</td>";
+					htmlContent += "<td>" + attacks.melee[x].area + attacks.melee[x].areaRadius + attacks.melee[x].exDivisor "</td>";
 					htmlContent += "<td>" + attacks.melee[x].parry + attacks.melee[x].parryType + "</td>";
 					htmlContent += "<td>" + attacks.melee[x].st + "</td>";
 					htmlContent += "</tr>";
@@ -3749,7 +3714,15 @@ export class gurpsActor extends Actor {
 		return { "melee": meleeAttacks, "ranged": rangedAttacks, "affliction": afflictionAttacks}
 	}
 
+	// Part of the attack macro flow
+	// This is the first step in the process where we know the attacker's token, the target token, and the full details of the attack being made.
 	attackOnTarget(attacker, attack, target) {
+		console.log(attack);
+		console.log(attack.area);
+		if (typeof attack.area === "string" && attack.area !== "") { // Attack.area is a string and not blank
+			console.log("This is an area attack of type " + attack.area); // This is an area attack of some kind
+		}
+
 		let bodyParts = Object.keys(target.actor.system.bodyType.body); // Collect all the bodypart names
 		let relativePosition = this.getFacing(attacker, target); // Method returns [facing,position]
 
@@ -4364,8 +4337,7 @@ export class gurpsActor extends Actor {
 		this.attackModifiers(target, attacker, attack, relativePosition, rof, locations, penalty)
 	}
 
-	selectedComplexHitLocation(target, attacker, attack, locationHit, relativePosition, rof) { // Select specific hit location and then the complex hit location
-		// Open a new dialog to specify sub location
+	selectedComplexHitLocation(target, attacker, attack, locationHit, relativePosition, rof) { // Select specific hit location and then the complex hit location by openning a new dialog to specify sub location
 		let location = foundry.utils.getProperty(target.actor.system.bodyType.body, locationHit)
 
 		if (location.subLocation){ // Make sure there are even complex hit locations to choose

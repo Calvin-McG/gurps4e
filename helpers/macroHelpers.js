@@ -3,6 +3,7 @@ import { actorHelpers } from "./actorHelpers.js";
 export class macroHelpers {
 
     // This is the method called when a user clicks the "Make An Attack" macro
+    // By this point we only know the user's selected token, target token, and possibly some or all of the attack's name.
     static makeAnAttackMacro(token, attackType, itemName, attackName) {
         // This macro allows the user to select an attack from their sheet to use against their target(s)
 
@@ -18,17 +19,55 @@ export class macroHelpers {
             let selfActor = selfToken.actor // Get owned actor from token
 
             if(targetArray.length == 0){ // There were no targets, show an error.
-                selfActor.noTargetsDialog();
+                this.noTargetsDialog();
             }
 
             else if(targetArray.length == 1){ // There is one target.
-                selfActor.singleTargetDialog(selfToken, targetArray[0], attackType, itemName, attackName);
+                this.singleTargetDialog(selfToken, targetArray[0], attackType, itemName, attackName);
             }
 
             else if(targetArray.length > 1){ // There is more than one target.
-                selfActor.tooManyTargetsDialog();
+                this.tooManyTargetsDialog();
             }
         }
+    }
+
+    // Return a dialog that tells the user to pick a target
+    static noTargetsDialog(){
+        let noTargetsDialogContent = "<div>You need to select a target.</div>";
+
+        let noTargetsDialog = new Dialog({
+            title: "Select a target",
+            content: noTargetsDialogContent,
+            buttons: {
+                ok: {
+                    icon: '<i class="fas fa-check"></i>',
+                    label: "Ok"
+                }
+            },
+            default: "ok"
+        })
+
+        noTargetsDialog.render(true);
+    }
+
+    // Return a dialog that tells the user to pick only one target
+    static tooManyTargetsDialog(){
+        let tooManyTargetsDialogContent = "<div>You have too many targets selected, make sure there is only one</div>";
+
+        let tooManyTargetsDialog = new Dialog({
+            title: "Select a target",
+            content: tooManyTargetsDialogContent,
+            buttons: {
+                ok: {
+                    icon: '<i class="fas fa-check"></i>',
+                    label: "Ok"
+                }
+            },
+            default: "ok"
+        })
+
+        tooManyTargetsDialog.render(true);
     }
 
     // Return a dialog that tells the user to select some number of actors
