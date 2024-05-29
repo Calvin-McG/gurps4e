@@ -6298,11 +6298,12 @@ export class gurpsItem extends Item {
 
                 this.system.melee[meleeKeys[k]].block = block; // Update block value
                 this.system.melee[meleeKeys[k]].type = "melee"; // Update attack type
-                this.system.melee[meleeKeys[k]].damage = attackHelpers.damageAddsToDiceWithBonusDamagePerDie(damage, bonusPerDie);
+                let damageObject = attackHelpers.damageAddsToDiceWithBonusDamagePerDie(damage, bonusPerDie);
+                this.system.melee[meleeKeys[k]].damage  = damageObject.damage;
+                this.system.melee[meleeKeys[k]].dice    = damageObject.dice;
+                this.system.melee[meleeKeys[k]].adds    = damageObject.adds;
 
                 this.system.melee[meleeKeys[k]].armourDivisor = this.validateArmourDivisors(this.system.melee[meleeKeys[k]].armourDivisor); // Validation for Armour Divisor
-
-
                 // End melee attack handling
               }
               // End loop
@@ -6335,7 +6336,10 @@ export class gurpsItem extends Item {
 
                 let bonusPerDie = attackHelpers.getTrainingDamageBonus(dx, level - +this.system.ranged[rangedKeys[k]].skillMod, (weaponMastery ? "weapon master" : this.system.ranged[rangedKeys[k]].skill), st)
 
-                this.system.ranged[rangedKeys[k]].damage = attackHelpers.damageAddsToDiceWithBonusDamagePerDie(damage, bonusPerDie);
+                let damageObject = attackHelpers.damageAddsToDiceWithBonusDamagePerDie(damage, bonusPerDie);
+                this.system.ranged[rangedKeys[k]].damage  = damageObject.damage;
+                this.system.ranged[rangedKeys[k]].dice    = damageObject.dice;
+                this.system.ranged[rangedKeys[k]].adds    = damageObject.adds;
 
                 if (typeof this.system.ranged[rangedKeys[k]].rcl == "undefined" || this.system.ranged[rangedKeys[k]].rcl <= 0) { // Catch invalid values for rcl. Value must exist and be at least one.
                   this.system.ranged[rangedKeys[k]].rcl = 1;
@@ -6409,7 +6413,10 @@ export class gurpsItem extends Item {
                 this.system.affliction[afflictionKeys[k]].level = level;
 
                 this.system.affliction[afflictionKeys[k]].type = "affliction"; // Update attack type
-                this.system.affliction[afflictionKeys[k]].damage = attackHelpers.damageAddsToDice(damage);
+                let damageObject = attackHelpers.damageAddsToDice(damage);
+                this.system.affliction[afflictionKeys[k]].damage  = damageObject.damage;
+                this.system.affliction[afflictionKeys[k]].dice    = damageObject.dice;
+                this.system.affliction[afflictionKeys[k]].adds    = damageObject.adds;
 
                 this.system.affliction[afflictionKeys[k]].armourDivisor = this.validateArmourDivisors(this.system.affliction[afflictionKeys[k]].armourDivisor); // Validation for Armour Divisor
               }

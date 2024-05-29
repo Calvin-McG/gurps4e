@@ -94,9 +94,10 @@ export class attackHelpers {
     }
 
     static damageAddsToDiceWithBonusDamagePerDie(damage, bonusPerDie) {
+        let diceCount = 0;
+        let adds = 0;
         if (damage.toString().includes("d6")) {
             let diceStrings = damage.match(/(\+|\-)?\d+d6/g); // Regex fetches "#d6", plus any +/1 sign
-            let diceCount = 0;
 
             let addsString = damage;
             for (let k = 0; k < diceStrings.length; k++) { // Loop through our collected dice
@@ -105,7 +106,7 @@ export class attackHelpers {
                 diceCount += parseInt(dice[0].slice(0, -1));
             }
 
-            let adds = eval(addsString.replace(/[a-zA-Z]/g, "")); // Strip out any letters and then eval the remaining adds to get a single number.
+            adds = eval(addsString.replace(/[a-zA-Z]/g, "")); // Strip out any letters and then eval the remaining adds to get a single number.
             if (typeof adds === "undefined") { // eval() on an empty string returns undefined
                 adds = 0; // Store a zero instead.
             }
@@ -118,7 +119,11 @@ export class attackHelpers {
             }
         }
 
-        return damage;
+        return  {
+            "damage": damage,
+            "dice": diceCount,
+            "adds": adds
+        };
     }
 
     static damageAddsToDice(damage) {
