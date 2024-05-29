@@ -1,8 +1,23 @@
 
 export class distanceHelpers {
-    static convertToYards(dist, gridUnits) {
-        let distance = 0;
 
+    // gridSizeRaw takes in the value from canvas.scene.grid.size
+    // The points are each tokens.
+    static measureDistance(point1, point2, gridSizeRaw) {
+        let rawDistance = this.measureRawDistance(point1, point2)
+
+        return rawDistance / gridSizeRaw;
+    }
+
+    static measureRawDistance(point1, point2) {
+        let a = point1.x - point2.x;
+        let b = point1.y - point2.y;
+
+        return Math.sqrt( a*a + b*b )
+    }
+
+    // This method takes in a number of squares or hexes, and the grid's Unit.
+    static convertToYards(dist, gridUnits) {
         // If there's an s at the end of the string, remove it
         if (gridUnits.charAt(gridUnits.length - 1).toLowerCase() === "s"){
             gridUnits = gridUnits.slice(0, -1);
@@ -11,6 +26,18 @@ export class distanceHelpers {
         let selectedUnit = this.getUnitByPossibleNames(gridUnits.toLowerCase())
 
         return dist * selectedUnit.mult;
+    }
+
+    // This method takes in a number of yards and the grid's Unit and returns a raw distance
+    static yardsToRaw(yards, gridUnits) {
+        // If there's an s at the end of the string, remove it
+        if (gridUnits.charAt(gridUnits.length - 1).toLowerCase() === "s"){
+            gridUnits = gridUnits.slice(0, -1);
+        }
+
+        let selectedUnit = this.getUnitByPossibleNames(gridUnits.toLowerCase())
+
+        return yards / selectedUnit.mult;
     }
 
     static getUnitByName(name) {
