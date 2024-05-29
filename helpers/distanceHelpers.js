@@ -12,6 +12,7 @@ export class distanceHelpers {
 
     // point is an object with x and y values and is the point you are measuring to.
     // x1, y1 to x2, y2 is your line segment.
+    // https://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
     static distanceFromBeamToPoint(point, x1, y1, x2, y2, gridSizeRaw) {
         let A = point.x - x1;
         let B = point.y - y1;
@@ -45,7 +46,7 @@ export class distanceHelpers {
         let dy = point.y - yy;
         return {
             "distance": Math.sqrt(dx * dx + dy * dy) / gridSizeRaw,
-            "adjacent": (0 < param <= 1) // If param is more than zero but not more than 1, our point is adjacent to the line segment.
+            "adjacent": (param <= 1 && param > 0) // If param is more than zero but not more than 1, our point is adjacent to the line segment.
         };
     }
 
