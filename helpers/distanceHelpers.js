@@ -1,6 +1,54 @@
 
 export class distanceHelpers {
 
+    static getRayEnd(originX, originY, length, direction, gridSizeRaw) {
+        let directionInRadians = (direction) * Math.PI / 180.0;
+
+        return {
+            x: originX + (length * gridSizeRaw * Math.cos(directionInRadians)),
+            y: originY + (length * gridSizeRaw * Math.sin(directionInRadians))
+        };
+    }
+
+    // point is an object with x and y values and is the point you are measuring to.
+    // x1, y1 to x2, y2 is your line segment.
+    static distanceFromBeamToPoint(point, x1, y1, x2, y2, gridSizeRaw) {
+        let A = point.x - x1;
+        let B = point.y - y1;
+        let C = x2 - x1;
+        let D = y2 - y1;
+
+        let dot = A * C + B * D;
+        let len_sq = C * C + D * D;
+        let param = -1;
+
+        if (len_sq != 0) { // In case of 0 length line
+            param = dot / len_sq;
+        }
+
+        let xx, yy;
+
+        if (param < 0) {
+            xx = x1;
+            yy = y1;
+        }
+        else if (param > 1) {
+            xx = x2;
+            yy = y2;
+        }
+        else {
+            xx = x1 + param * C;
+            yy = y1 + param * D;
+        }
+
+        let dx = point.x - xx;
+        let dy = point.y - yy;
+        return {
+            "distance": Math.sqrt(dx * dx + dy * dy) / gridSizeRaw,
+            "adjacent": (0 < param <= 1) // If param is more than zero but not more than 1, our point is adjacent to the line segment.
+        };
+    }
+
     // gridSizeRaw takes in the value from canvas.scene.grid.size
     // The points are each tokens.
     static measureDistance(point1, point2, gridSizeRaw) {
