@@ -734,15 +734,14 @@ export class macroHelpers {
         }
         else if (attack.area === "beam") { // If it's a template we render as a ray
             templateData.t = "ray";
-            // Rays give an origin, angle, and destination so we use the attacker as the origin
-            templateData.x = attacker.center.x;
-            templateData.y = attacker.center.y;
-            templateData.width = 1;
+            templateData.direction = (Math.atan2(-(target.center.x - attacker.center.x), (target.center.y - attacker.center.y)) * 180 / Math.PI) + 90; // Get the angle to the target and point the beam that way.
+            // Rays give an origin, angle, and destination so we use the attacker as the origin, but move it a quarter grid unit in the direction of the target.
+            templateData.x = attacker.center.x + ((canvas.scene.grid.size * 0.25) * Math.cos(templateData.direction * Math.PI / 180));
+            templateData.y = attacker.center.y + ((canvas.scene.grid.size * 0.25) * Math.sin(templateData.direction * Math.PI / 180));
+            templateData.width = distanceHelpers.yardsToRaw(1, canvas.scene.grid.units);
             if (typeof attack.maxRange !== "undefined") { // We have a max range that is not infinity
-                templateData.distance = attack.maxRange; // Use it for the template length // TODO - Convert from maxRange in yards to raw distance on the given grid.
+                templateData.distance = attack.maxRange; // Use it for the template length
             }
-
-            templateData.direction = (Math.atan2(-(target.x - attacker.x), (target.y - attacker.y)) * 180 / Math.PI) + 90; // Get the angle to the target and point the beam that way.
         }
         else { // Shit's fucked up
             return this.noTargetsDialog(); // Load the noTarget dialog and return early.
@@ -750,7 +749,7 @@ export class macroHelpers {
 
         // TODO Modify templateData.distance for the scene's grid unit and size.
         if (typeof templateData.distance === "undefined" || templateData.distance === null) { // The templateData.distance doesn't yet exist. Infer that it's a beam that wasn't given a max range.
-            templateData.distance = distanceHelpers.measureDistance(attacker, target, canvas.scene.grid.size); // If we don't have maxRange, just use the distance to the target.
+            templateData.distance = distanceHelpers.measureDistance(attacker, target, canvas.scene.grid.size / canvas.scene.grid.distance); // If we don't have maxRange, just use the distance to the target.
         }
         else { // We have a templateData.distance, denominated in yards.
             templateData.distance = distanceHelpers.yardsToRaw(templateData.distance, canvas.scene.grid.units); // Convert the figure in yards into a raw distance for the sheet
@@ -768,11 +767,21 @@ export class macroHelpers {
         console.log("attackOnArea")
         console.log(attacker, attack, template, template.x, template.y);
 
+        let targetList = [];
+
         if (attack.area === "area" || attack.area === "ex" || attack.area === "frag") {
-            this.isTokenInCircleTemplate(attacker, template);
+            canvas.tokens.objects.children.forEach( token => {
+                if (this.isTokenInCircleTemplate(token, template)) {
+                    targetList.push(token);
+                }
+            })
         }
         else if (attack.area === "beam") {
-            this.isTokenInRayTemplate(attacker, template);
+            canvas.tokens.objects.children.forEach( token => {
+                if (this.isTokenInRayTemplate(token, template)) {
+                    targetList.push(token);
+                }
+            })
         }
     }
 
@@ -785,7 +794,7 @@ export class macroHelpers {
     // All units should be numerical grid units (As in one square or hex, no matter how many units it represents, counts as 1).
     // It returns a bool
     static isTokenInCircle(token, circleCentreX, circleCentreY, circleRadius) {
-        let rawDistance = distanceHelpers.measureDistance(token.center,{ x: circleCentreX, y: circleCentreY}, canvas.scene.grid.size);
+        let rawDistance = distanceHelpers.measureDistance(token.center,{ x: circleCentreX, y: circleCentreY}, canvas.scene.grid.size / canvas.scene.grid.distance);
         return circleRadius >= rawDistance;
     }
 
