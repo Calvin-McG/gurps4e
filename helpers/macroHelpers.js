@@ -359,7 +359,13 @@ export class macroHelpers {
                 htmlContent += "<tr><td colspan='12' class='trait-category-header' style='text-align: center;'>Ranged Attacks</td></tr>";
                 htmlContent += "<tr><td></td><td>Weapon</td><td>Attack</td><td>Level</td><td>Damage</td><td>Acc</td><td>Range</td><td>Area</td><td>RoF</td><td>Shots</td><td>ST</td><td>Bulk</td><td>Rcl</td></tr>";
 
-                let distanceRaw = Math.round(canvas.grid.measurePath([selfToken, targetToken]).distance);
+                let distanceRaw;
+                if (typeof targetToken === "undefined" || targetToken === null) {
+                    distanceRaw = distanceHelpers.measureDistance(selfToken.center, targetTemplate, canvas.scene.grid.size / canvas.scene.grid.distance);
+                }
+                else {
+                    distanceRaw = distanceHelpers.measureDistance(selfToken.center, targetToken.center, canvas.scene.grid.size / canvas.scene.grid.distance);
+                }
                 let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.grid.units);
 
                 for (let q = 0; q < attacks.ranged.length; q++){
@@ -679,7 +685,7 @@ export class macroHelpers {
     // Or afflictionOnTarget
     static determineAttackFormat(attacker, attack, target, template) {
         if (typeof template !== "undefined" && template !== null) { // We ended up with a target template
-            this.attackOnArea(attacker, attack, template); // Attack an area
+            this.correctTemplate(attacker, attack, template); // Attack an area
         }
         else if (typeof target !== "undefined" && target !== null) { // We ended up with a valid target and might be making an area attack against them
             if (typeof attack.area === "string" && attack.area !== "") { // Area is a string and not blank
@@ -699,6 +705,57 @@ export class macroHelpers {
         }
     }
 
+    static setTemplateDistance(attack) {
+        let distance;
+        console.log(attack)
+        if (attack.area === "area") {
+            distance = attack.areaRadius;  // TODO - Convert from range in yards to raw distance on the given grid.
+        }
+        else if (attack.area === "ex") {
+            if (attack.exDivisor === 1) {
+                distance = attack.dice * 6; // TODO - Convert from range in yards to raw distance on the given grid.
+            }
+            else if (attack.exDivisor === 2) {
+                distance = attack.dice * 3; // TODO - Convert from range in yards to raw distance on the given grid.
+            }
+            else if (attack.exDivisor === 3) {
+                distance = attack.dice * 2; // TODO - Convert from range in yards to raw distance on the given grid.
+            }
+        }
+        else if (attack.area === "frag") {
+            distance = attack.dice * 5; // TODO - Convert from range in yards to raw distance on the given grid.
+        }
+        else if (attack.area === "beam") { // If it's a template we render as a ray
+            if (typeof attack.maxRange !== "undefined") { // We have a max range that is not infinity
+                distance = attack.maxRange; // Use it for the template length
+            }
+        }
+        console.log(distance)
+        return distance;
+    }
+
+    static correctTemplate(attacker, attack, template) {
+        let correctedDistance = distanceHelpers.yardsToRaw(this.setTemplateDistance(attack), canvas.scene.grid.units);
+        let correctedWidth;
+        if (typeof correctedDistance !== "undefined" && correctedDistance !== null) {
+            if (attack.area === "beam") { // We have a proper distance and it is a beam
+                correctedWidth = distanceHelpers.yardsToRaw(1, canvas.scene.grid.units);
+                template.update({ distance: correctedDistance, width: correctedWidth});
+            }
+            else { // We have a proper distance and it is not a beam
+                template.update({ distance: correctedDistance});
+            }
+        }
+        else if (attack.area === "beam") { // We don't have a proper distance, but it is a beam
+            correctedWidth = distanceHelpers.yardsToRaw(1, canvas.scene.grid.units);
+            template.update({ width: correctedWidth});
+        }
+
+        console.log(correctedWidth, correctedDistance);
+
+        this.attackOnArea(attacker, attack, template);
+    }
+
     // This method is used when someone is making an area attack targetted at a specific actor
     // It takes in an attacker, attack, and target.
     // It creates a template of the appropriate size and location
@@ -713,24 +770,7 @@ export class macroHelpers {
             templateData.t = "circle";
             templateData.x = target.center.x;
             templateData.y = target.center.y;
-
-            if (attack.area === "area") {
-                templateData.distance = attack.areaRadius;  // TODO - Convert from range in yards to raw distance on the given grid.
-            }
-            else if (attack.area === "ex") {
-                if (attack.exDivisor === 1) {
-                    templateData.distance = attack.dice * 6; // TODO - Convert from range in yards to raw distance on the given grid.
-                }
-                else if (attack.exDivisor === 2) {
-                    templateData.distance = attack.dice * 3; // TODO - Convert from range in yards to raw distance on the given grid.
-                }
-                else if (attack.exDivisor === 3) {
-                    templateData.distance = attack.dice * 2; // TODO - Convert from range in yards to raw distance on the given grid.
-                }
-            }
-            else if (attack.area === "frag") {
-                templateData.distance = attack.dice * 5; // TODO - Convert from range in yards to raw distance on the given grid.
-            }
+            templateData.distance = this.setTemplateDistance(attack)
         }
         else if (attack.area === "beam") { // If it's a template we render as a ray
             templateData.t = "ray";
@@ -739,14 +779,12 @@ export class macroHelpers {
             templateData.x = attacker.center.x + ((canvas.scene.grid.size * 0.25) * Math.cos(templateData.direction * Math.PI / 180));
             templateData.y = attacker.center.y + ((canvas.scene.grid.size * 0.25) * Math.sin(templateData.direction * Math.PI / 180));
             templateData.width = distanceHelpers.yardsToRaw(1, canvas.scene.grid.units);
-            if (typeof attack.maxRange !== "undefined") { // We have a max range that is not infinity
-                templateData.distance = attack.maxRange; // Use it for the template length
-            }
+            templateData.distance = this.setTemplateDistance(attack)
         }
         else { // Shit's fucked up
             return this.noTargetsDialog(); // Load the noTarget dialog and return early.
         }
-
+        console.log(canvas.scene.grid)
         // TODO Modify templateData.distance for the scene's grid unit and size.
         if (typeof templateData.distance === "undefined" || templateData.distance === null) { // The templateData.distance doesn't yet exist. Infer that it's a beam that wasn't given a max range.
             templateData.distance = distanceHelpers.measureDistance(attacker, target, canvas.scene.grid.size / canvas.scene.grid.distance); // If we don't have maxRange, just use the distance to the target.
@@ -783,6 +821,8 @@ export class macroHelpers {
                 }
             })
         }
+
+        console.log(targetList);
     }
 
     static isTokenInCircleTemplate(token, circleTemplate) {
