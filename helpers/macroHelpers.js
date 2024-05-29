@@ -707,30 +707,56 @@ export class macroHelpers {
         console.log("templateOnActor")
         console.log(attacker, attack, target)
 
-        if (attack.area === "area") {
-
+        const templateData = { // Init the template with the colours we are planning to use.
+            fillColor: "#FF0000",
+            borderColor: "#FF0000"
         }
-        else if (attack.area === "ex") {
 
+        if (attack.area === "area" || attack.area === "ex" || attack.area === "frag") { // If it's a template we render as a circle
+            templateData.t = "circle";
+            templateData.x = target.center.x;
+            templateData.y = target.center.y;
+
+            if (attack.area === "area") {
+                templateData.distance = attack.areaRadius;  // TODO - Convert from range in yards to raw distance on the given grid.
+            }
+            else if (attack.area === "ex") {
+                if (attack.exDivisor === 1) {
+                    templateData.distance = attack.dice * 6; // TODO - Convert from range in yards to raw distance on the given grid.
+                }
+                else if (attack.exDivisor === 2) {
+                    templateData.distance = attack.dice * 3; // TODO - Convert from range in yards to raw distance on the given grid.
+                }
+                else if (attack.exDivisor === 3) {
+                    templateData.distance = attack.dice * 2; // TODO - Convert from range in yards to raw distance on the given grid.
+                }
+            }
+            else if (attack.area === "frag") {
+                templateData.distance = attack.dice * 5; // TODO - Convert from range in yards to raw distance on the given grid.
+            }
         }
-        else if (attack.area === "frag") {
+        else if (attack.area === "beam") { // If it's a template we render as a ray
+            templateData.t = "ray";
+            // Rays give an origin, angle, and destination so we use the attacker as the origin
+            templateData.x = attacker.center.x;
+            templateData.y = attacker.center.y;
+            templateData.width = 1;
+            if (typeof attack.maxRange !== "undefined") { // We have a max range that is not infinity
+                templateData.distance = attack.maxRange; // Use it for the template length // TODO - Convert from maxRange in yards to raw distance on the given grid.
+            }
 
-        }
-        else if (attack.area === "beam") {
-
+            templateData.direction = (Math.atan2(-(target.x - attacker.x), (target.y - attacker.y)) * 180 / Math.PI) + 90; // Get the angle to the target and point the beam that way.
         }
         else { // Shit's fucked up
             return this.noTargetsDialog(); // Load the noTarget dialog and return early.
         }
 
-        const templateData = {
-            t: "circle",
-            x: target.center.x,
-            y: target.center.y,
-            distance: 5,
-            direction: 0,
-            fillColor: "#FF0000",
-            borderColor: "#FF0000"
+        // TODO Modify templateData.distance for the scene's grid unit and size.
+        if (typeof templateData.distance === "undefined" || templateData.distance === null) { // The templateData.distance doesn't yet exist. Infer that it's a beam that wasn't given a max range.
+            templateData.distance = distanceHelpers.measureDistance(attacker, target, canvas.scene.grid.size);; // If we don't have maxRange, just use the distance to the target.
+        }
+        else { // We have a templateData.distance, denominated in yards.
+            templateData.distance = distanceHelpers.yardsToRaw(templateData.distance, canvas.scene.grid.units); // Convert the figure in yards into a raw distance for the sheet
         }
 
         let template = await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [templateData]);
