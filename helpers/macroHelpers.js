@@ -704,9 +704,6 @@ export class macroHelpers {
     // It creates a template of the appropriate size and location
     // It then calls attackOnArea
     static async templateOnActor(attacker, attack, target) {
-        console.log("templateOnActor")
-        console.log(attacker, attack, target)
-
         const templateData = { // Init the template with the colours we are planning to use.
             fillColor: "#FF0000",
             borderColor: "#FF0000"
@@ -760,7 +757,6 @@ export class macroHelpers {
         }
 
         let template = await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [templateData]);
-        console.log(target.scene.templates);
         this.attackOnArea(attacker, attack, template)
     }
 
