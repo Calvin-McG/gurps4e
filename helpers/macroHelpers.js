@@ -750,14 +750,14 @@ export class macroHelpers {
 
         // TODO Modify templateData.distance for the scene's grid unit and size.
         if (typeof templateData.distance === "undefined" || templateData.distance === null) { // The templateData.distance doesn't yet exist. Infer that it's a beam that wasn't given a max range.
-            templateData.distance = distanceHelpers.measureDistance(attacker, target, canvas.scene.grid.size);; // If we don't have maxRange, just use the distance to the target.
+            templateData.distance = distanceHelpers.measureDistance(attacker, target, canvas.scene.grid.size); // If we don't have maxRange, just use the distance to the target.
         }
         else { // We have a templateData.distance, denominated in yards.
             templateData.distance = distanceHelpers.yardsToRaw(templateData.distance, canvas.scene.grid.units); // Convert the figure in yards into a raw distance for the sheet
         }
 
         let template = await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [templateData]);
-        this.attackOnArea(attacker, attack, template)
+        this.attackOnArea(attacker, attack, template[0])
     }
 
     // This method is used when someone is making an attack targeted at a template
@@ -766,7 +766,44 @@ export class macroHelpers {
     // Also allows time to pass if the attack has some sort of fuze.
     static attackOnArea(attacker, attack, template) {
         console.log("attackOnArea")
-        console.log(attacker, attack, template);
+        console.log(attacker, attack, template, template.x, template.y);
+
+        if (attack.area === "area" || attack.area === "ex" || attack.area === "frag") {
+            this.isTokenInCircleTemplate(attacker, template);
+        }
+        else if (attack.area === "beam") {
+            this.isTokenInRayTemplate(attacker, template);
+        }
+    }
+
+    static isTokenInCircleTemplate(token, circleTemplate) {
+        return this.isTokenInCircle(token, circleTemplate.x, circleTemplate.y, circleTemplate.distance);
+    }
+
+    // This method takes in a token, the centre of a hypothetical circle, and the radius of that hypothetical circle
+    // These circle values can be directly provided by a MeasuredTokenTemplate with the 'circle' type, as it denominates circles by their radius, not diameter.
+    // All units should be numerical grid units (As in one square or hex, no matter how many units it represents, counts as 1).
+    // It returns a bool
+    static isTokenInCircle(token, circleCentreX, circleCentreY, circleRadius) {
+        let rawDistance = distanceHelpers.measureDistance(token.center,{ x: circleCentreX, y: circleCentreY}, canvas.scene.grid.size);
+        return circleRadius >= rawDistance;
+    }
+
+    static isTokenInRayTemplate(token, rayTemplate) {
+        return this.isTokenInRay(token, rayTemplate.x, rayTemplate.y, rayTemplate.width/2, rayTemplate.distance, rayTemplate.direction); // Pass half the width, as we are measuring to the centre line of the ray.
+    }
+
+    // This method takes in a token, and the details of a hypothetical ray
+    // These circle values can be directly provided by a MeasuredTokenTemplate with the 'ray' type
+    // All units should be raw grid units.
+    // It returns a bool
+    static isTokenInRay(token, rayOriginX, rayOriginY, rayWidth, rayLength, rayAngle) {
+        let rayEnd = distanceHelpers.getRayEnd(rayOriginX, rayOriginY, rayLength, rayAngle, canvas.scene.grid.size)
+        let rayDistanceObject = distanceHelpers.distanceFromBeamToPoint(token.center, rayOriginX, rayOriginY, rayEnd.x, rayEnd.y, canvas.scene.grid.size)
+        let distanceFromRay = rayDistanceObject.distance;
+        let targetAdjacent = rayDistanceObject.adjacent;
+
+        return targetAdjacent && rayWidth >= distanceFromRay; // Target is adjacent to the array (Not ahead or behind) and within the width of the beam.
     }
 
     // Part of the attack macro flow
