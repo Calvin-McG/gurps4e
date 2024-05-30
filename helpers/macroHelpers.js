@@ -387,14 +387,14 @@ export class macroHelpers {
                     }
                     htmlContent += "<td>" + (attacks.ranged[q].acc ? attacks.ranged[q].acc : 0) + (attacks.ranged[q].scopeAcc ? "+" + attacks.ranged[q].scopeAcc : "") + "</td>";
 
-                    if (distanceYards > attacks.ranged[q].maxRange) { // Target is beyond max range
+                    if (distanceYards > attacks.ranged[q].maxRange && areaTemplateType !== "ray" && typeof targetToken !== "undefined") { // Target is beyond max range, and we're not firing at an existing beam template
                         htmlContent += "<td style='font-weight: bold; background-color: rgb(208, 127, 127)'>" + attackHelpers.formatRange(attacks.ranged[q].halfRange, attacks.ranged[q].maxRange) + "</td>";
                     }
-                    else if (distanceYards <= attacks.ranged[q].halfRange) { // Target is within half range
-                        htmlContent += "<td>" + attackHelpers.formatRange(attacks.ranged[q].halfRange, attacks.ranged[q].maxRange) + "</td>";
-                    }
-                    else { // Target is between max and half range
+                    else if (distanceYards > attacks.ranged[q].halfRange && areaTemplateType !== "ray" && typeof targetToken !== "undefined") { // Target is beyond half range, and we're not firing at an existing beam template
                         htmlContent += "<td style='font-weight: bold; background-color: rgb(213, 153, 102)'>" + attackHelpers.formatRange(attacks.ranged[q].halfRange, attacks.ranged[q].maxRange) + "</td>";
+                    }
+                    else { // Target is within half range
+                        htmlContent += "<td>" + attackHelpers.formatRange(attacks.ranged[q].halfRange, attacks.ranged[q].maxRange) + "</td>";
                     }
                     htmlContent += "<td>" + macroHelpers.capitalizeFirst(attacks.ranged[q].area) + (attacks.ranged[q].area === "area" ? (" " + attacks.ranged[q].areaRadius) : "") + (attacks.ranged[q].area === "ex" ? (" " + attacks.ranged[q].exDivisor) : "") + "</td>";
                     htmlContent += "<td>" + attacks.ranged[q].rof + "</td>";
