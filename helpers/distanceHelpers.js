@@ -65,8 +65,8 @@ export class distanceHelpers {
         return Math.sqrt( a*a + b*b )
     }
 
-    // This method takes in a number of squares or hexes, and the grid's Unit.
-    static convertToYards(dist, gridUnits) {
+    // This method takes in a number of squares or hexes, the grid's Unit, and the number of units each space is worth
+    static convertToYards(dist, gridUnits, numUnits) {
         // If there's an s at the end of the string, remove it
         if (gridUnits.charAt(gridUnits.length - 1).toLowerCase() === "s"){
             gridUnits = gridUnits.slice(0, -1);
@@ -74,7 +74,11 @@ export class distanceHelpers {
 
         let selectedUnit = this.getUnitByPossibleNames(gridUnits.toLowerCase())
 
-        return dist * selectedUnit.mult;
+        if (typeof numUnits === "undefined" || numUnits === null) {
+            numUnits = 1;
+        }
+
+        return dist * selectedUnit.mult * numUnits;
     }
 
     // This method takes in a number of yards and the grid's Unit and returns a raw distance
