@@ -5716,17 +5716,17 @@ export class gurpsItem extends Item {
     this.system.bowDesign.riserThickness = 0;
     this.system.bowDesign.stockThickness = 0;
     let riserWeight = 0;
-    let stockWeight = 0;
+    this.system.bowDesign.stockWeight = 0;
     let magazineWeight = 0;
     if (this.system.bowDesign.riser && typeof this.system.bowDesign.riserMaterialAvg != "undefined") { // It has a riser and the material is defined
       this.system.bowDesign.riserThickness = ((this.system.bowDesign.drawWeight * r ** 2) / (4 * this.system.bowDesign.riserMaterialAvg.elasticModulusPsi * this.system.bowDesign.riserWidth * this.system.bowDesign.allowedRiserDeflection * 100)) ** (1/3);
       riserWeight = this.system.bowDesign.riserMaterialAvg.densityLbsCuIn * this.system.bowDesign.riserWidth * this.system.bowDesign.riserThickness * r;
     }
-    if (this.system.bowDesign.type == "xbow" && typeof this.system.bowDesign.stockMaterialAvg != "undefined"){ // It has a stock and the material is defined
+    if (this.system.bowDesign.type === "xbow" && typeof this.system.bowDesign.stockMaterialAvg != "undefined"){ // It has a stock and the material is defined
       this.system.bowDesign.stockThickness = (this.system.bowDesign.drawWeight * this.system.bowDesign.drawLength ** 2 / 4 / this.system.bowDesign.stockMaterialAvg.elasticModulusPsi / this.system.bowDesign.stockWidth / this.system.bowDesign.allowedStockDeflection * 100) ** (1/3);
-      stockWeight = this.system.bowDesign.stockMaterialAvg.densityLbsCuIn * this.system.bowDesign.stockWidth * this.system.bowDesign.stockThickness * this.system.bowDesign.stockLength;
+      this.system.bowDesign.stockWeight = this.system.bowDesign.stockMaterialAvg.densityLbsCuIn * this.system.bowDesign.stockWidth * this.system.bowDesign.stockThickness * this.system.bowDesign.stockLength;
     }
-    if (this.system.bowDesign.type == "xbow" && typeof this.system.bowDesign.stockMaterialAvg != "undefined" && this.system.bowDesign.repeatingAllowed && this.system.bowDesign.repeating) { // It's a crossbow, the material is defined, and it's repeating
+    if (this.system.bowDesign.type === "xbow" && typeof this.system.bowDesign.stockMaterialAvg != "undefined" && this.system.bowDesign.repeatingAllowed && this.system.bowDesign.repeating) { // It's a crossbow, the material is defined, and it's repeating
       magazineWeight = this.system.bowDesign.stockMaterialAvg.densityLbsCuIn * this.system.bowDesign.stockWidth * this.system.bowDesign.stockThickness * this.system.bowDesign.drawLength * 0.2; // Treat a magazine as an extra stock with length equal to the draw length of the crossbow, at 20% weightr
     }
 
@@ -5737,7 +5737,7 @@ export class gurpsItem extends Item {
     }
 
     let limbsWeight = (this.system.bowDesign.workingMaterialAvg.densityLbsCuIn * l * this.system.bowDesign.limbMinThickness ** 2 * c)
-    this.system.weight = limbsWeight + riserWeight + stockWeight + magazineWeight;
+    this.system.weight = limbsWeight + riserWeight + this.system.bowDesign.stockWeight + magazineWeight;
 
     // Calculate Stored Energy
     let z = 0.057;
@@ -5918,7 +5918,7 @@ export class gurpsItem extends Item {
     }
 
     if (typeof this.system.bowDesign.workingMaterialAvg != "undefined" && typeof this.system.bowDesign.riserMaterialAvg != "undefined" && typeof this.system.bowDesign.stockMaterialAvg != "undefined") {
-      this.system.cost = limbsWeight * this.system.bowDesign.workingMaterialAvg.bowCostPerLb + riserWeight * this.system.bowDesign.riserMaterialAvg.bowCostPerLb + stockWeight * this.system.bowDesign.stockMaterialAvg.bowCostPerLb
+      this.system.cost = limbsWeight * this.system.bowDesign.workingMaterialAvg.bowCostPerLb + riserWeight * this.system.bowDesign.riserMaterialAvg.bowCostPerLb + this.system.bowDesign.stockWeight * this.system.bowDesign.stockMaterialAvg.bowCostPerLb
 
       if (this.system.bowDesign.quality === "veryFine") {
         this.system.cost = this.system.cost * 20;
@@ -7815,6 +7815,17 @@ export class gurpsItem extends Item {
       info += "<tr>" +
           "<td>" +
           "<p>This is how long the stock is. It must be at least as long as the draw length. Beyond that, any value is allowed.</p>" +
+          "</td>" +
+          "</tr>";
+
+      info += "</table>"
+    }
+    else if (id === "riser-weight") {
+      info = "<table>";
+
+      info += "<tr>" +
+          "<td>" +
+          "<p>This is the weight of the stock based on your above inputs. Honestly, not a big deal. This is mostly here so you have a better idea of what's going on.</p>" +
           "</td>" +
           "</tr>";
 

@@ -558,9 +558,22 @@
                                         Resulting Thickness:
                                     </td>
                                     <td>
-                                        {{item.system.bowDesign.stockThickness}}
+                                        {{round item.system.bowDesign.stockThickness 100}} inches
                                     </td>
                                     <td class="question-container" id="riser-thickness">
+                                        <div class="question-button">
+                                            <i class="fas fa-question"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="design-row">
+                                    <td style="width: 150px">
+                                        Resulting Weight:
+                                    </td>
+                                    <td>
+                                        {{round item.system.bowDesign.stockWeight 100}} lbs
+                                    </td>
+                                    <td class="question-container" id="riser-weight">
                                         <div class="question-button">
                                             <i class="fas fa-question"></i>
                                         </div>
