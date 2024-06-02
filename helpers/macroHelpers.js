@@ -230,7 +230,6 @@ export class macroHelpers {
             templates.forEach( template => { // Loop through the templates
                 if (template.author.isSelf) { // If we created this template
                     if (template.fillColor.css === template.author.color.css && !template.hidden) { // If it's colour matches our colour, and the template is not hidden.
-                        console.log(template)
                         if (template.t === "circle" || template.t === "ray") { // We're only supporting rays and circles at the moment.
                             targetTemplate = template; // Store the target template
                         }
@@ -238,7 +237,6 @@ export class macroHelpers {
                 }
             })
             if (typeof targetTemplate !== "undefined" && targetTemplate !== null) { // If we ended up with a target template
-                console.log(targetTemplate);
                 targetTemplate.update({ borderColor: "#FF0000"}); // Update the colour of the template to communicate to the user that it's the one getting attacked
                 areaTemplateType = targetTemplate.t; // Circle templates return 'circle' and beam templates return 'ray'
             }
@@ -708,7 +706,6 @@ export class macroHelpers {
 
     static setTemplateDistance(attack) {
         let distance;
-        console.log(attack)
         if (attack.area === "area") {
             distance = attack.areaRadius;  // TODO - Convert from range in yards to raw distance on the given grid.
         }
@@ -820,11 +817,6 @@ export class macroHelpers {
     // It scatters the template and then creates a chat message allowing the GM or player to proceed with the generating of attacks and active defence macros for all the targets.
     // Also allows time to pass if the attack has some sort of fuze.
     static attackOnArea(attacker, attack, target, template, rayPointOfAim) {
-        console.log("attackOnArea")
-        console.log(attacker, attack, template, template.x, template.y, rayPointOfAim);
-
-        // TODO - A Modal is created to take modifiers and player makes attack roll to strike target and a chat message is generated with the results.
-
         this.attackModifiers(target, attacker, attack, undefined, undefined, undefined, 0, rayPointOfAim, template)
     }
 
@@ -871,7 +863,7 @@ export class macroHelpers {
             x: 0,
             y: 0
         }
-        console.log(origin, distance, direction);
+
         destination.x = Math.cos(direction * Math.PI/180) * distance + origin.x
         destination.y = Math.sin(direction * Math.PI/180) * distance + origin.y
 
@@ -1721,7 +1713,6 @@ export class macroHelpers {
 
     // This method handles all attack modifiers for both ranged and melee attacks
     static attackModifiers(target, attacker, attack, relativePosition, rof, location, locationPenalty, rayPointOfAim, template) {
-        console.log(target, attacker, attack, relativePosition, rof, location, locationPenalty, rayPointOfAim, template);
         let distanceRaw;
         let areaAttack = false;
 
@@ -1739,13 +1730,9 @@ export class macroHelpers {
             // relativePosition, rof, location, and locationPenalty are all probably undefined at this point
         }
 
-        console.log(distanceRaw)
-
         let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.grid.units);
         let distancePenalty = distanceHelpers.distancePenalty(distanceYards);
         let rangeDamageMult = 1; // This is the multiplier used to assign effects from 1/2D and Max ranges, where applicable.
-
-        console.log(areaAttack, distanceRaw, distanceYards, distancePenalty)
 
         let damageType = this.extractDamageType(attack);
 
@@ -1805,8 +1792,6 @@ export class macroHelpers {
             modModalContent += "<tr><td>Hit Location</td><td>" + locationPenalty + "</td><td>The penalty for the selected hit location.</td></tr>";
         }
 
-        console.log(typeof attack.flags)
-        console.log(attack.flags)
         if (attack.type === "ranged") {
             // Sort out the effective SM modifier based on the game's settings and the attacker/target SM
             if (typeof target !== "undefined") {
@@ -2257,16 +2242,13 @@ export class macroHelpers {
         let direction = this.randomInteger(0, 360) // Used for scatter logic, the direction it's scattering
         if (template.t === "ray") {
             let scatterResult = this.getScatteredPoint(rayPointOfAim, scatterDistance, direction); // Get the new point of aim
-            console.log(scatterResult);
             let scatterAngle = distanceHelpers.getAngleFromAtoB(attacker.center, scatterResult); // Get the angle from our attacker's centre to the new point of aim.
             let x = attacker.center.x + ((canvas.scene.grid.size * 0.5) * Math.cos(scatterAngle * Math.PI / 180));
             let y = attacker.center.y + ((canvas.scene.grid.size * 0.5) * Math.sin(scatterAngle * Math.PI / 180));
-            console.log(scatterAngle, scatterResult)
             template.update({ direction: scatterAngle, x: x, y: y }); // Point the beam in that direction
         }
         else if (template.t === "circle") {
             let scatterResult = this.getScatteredPoint(template, scatterDistance, direction);
-            console.log(scatterResult);
             template.update({ x: scatterResult.x, y: scatterResult.y }); // Point the beam in that direction
         }
         else { // Some other template got passed through, throw an error exit early.
@@ -3480,7 +3462,6 @@ export class macroHelpers {
         }
 
         // Loop through the list of locations we've hit.
-        console.log(locationsHit)
         for (let i = 0; i < locationsHit.length; i++){
             // Store the DR Damage type for later, including handling for special types like pi- or tbb
             let drDamageType = damageType.type;
@@ -3502,10 +3483,8 @@ export class macroHelpers {
                     drTotalEffectivePoints = Math.floor(foundry.utils.getProperty(largeAreaDR, drDamageType) / armourDivisor); // Save the DR, divided by the armour divisor, rounded down.
                 }
             }
-            console.log(target.system.bodyType.body)
-            console.log(locationsHit[i])
+
             let location = foundry.utils.getProperty(target.system.bodyType.body, locationsHit[i]); // Get the specific location we hit.
-            console.log(location);
 
             let drGroupFlexible = true; // This variable is only true if all layers of armour are flexible.
             let layerDR = 0; // Init the variable used to store the total DR for this location.
