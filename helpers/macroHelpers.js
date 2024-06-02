@@ -773,7 +773,7 @@ export class macroHelpers {
         }
         const templateData = { // Init the template with the colours we are planning to use.
             fillColor: "#FF0000",
-            borderColor: "#FF0000"
+            borderColor: "#FFFFFF"
         }
 
         if (attack.area === "area" || attack.area === "ex" || attack.area === "frag") { // If it's a template we render as a circle
