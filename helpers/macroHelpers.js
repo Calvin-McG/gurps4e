@@ -825,7 +825,7 @@ export class macroHelpers {
 
         // TODO - A Modal is created to take modifiers and player makes attack roll to strike target and a chat message is generated with the results.
 
-        this.attackModifiers(template, attacker, attack, undefined, undefined, undefined, 0, rayPointOfAim)
+        this.attackModifiers(target, attacker, attack, undefined, undefined, undefined, 0, rayPointOfAim, template)
     }
 
     static isTokenInCircleTemplate(token, circleTemplate) {
@@ -1720,21 +1720,21 @@ export class macroHelpers {
     }
 
     // This method handles all attack modifiers for both ranged and melee attacks
-    static attackModifiers(target, attacker, attack, relativePosition, rof, location, locationPenalty, rayPointOfAim) {
-        console.log(target, attacker, attack, relativePosition, rof, location, locationPenalty, rayPointOfAim);
+    static attackModifiers(target, attacker, attack, relativePosition, rof, location, locationPenalty, rayPointOfAim, template) {
+        console.log(target, attacker, attack, relativePosition, rof, location, locationPenalty, rayPointOfAim, template);
         let distanceRaw;
         let areaAttack = false;
 
-        if (typeof target.name === "string") { // Tokens have names, we are looking at a token
+        if (typeof template === "undefined") { // We were not passed a template, this is a normal attack
             distanceRaw = distanceHelpers.measureDistance(attacker.center, target.center, canvas.scene.grid.size / canvas.scene.grid.distance);
         }
-        else { // Templates do not have names, we are looking at a template
+        else { // We were passed a template and are making an area attack
             areaAttack = true;
-            if (target.t === "ray") { // It's a beam
+            if (template.t === "ray") { // It's a beam
                 distanceRaw = distanceHelpers.measureDistance(attacker.center, rayPointOfAim, canvas.scene.grid.size / canvas.scene.grid.distance);
             }
             else { // It's a circle
-                distanceRaw = distanceHelpers.measureDistance(attacker.center, target, canvas.scene.grid.size / canvas.scene.grid.distance);
+                distanceRaw = distanceHelpers.measureDistance(attacker.center, template, canvas.scene.grid.size / canvas.scene.grid.distance);
             }
             // relativePosition, rof, location, and locationPenalty are all probably undefined at this point
         }
@@ -1809,13 +1809,15 @@ export class macroHelpers {
         console.log(attack.flags)
         if (attack.type === "ranged") {
             // Sort out the effective SM modifier based on the game's settings and the attacker/target SM
-            if (game.settings.get("gurps4e", "rangedRelativeSM")) { // Game is using relative SM rules for ranged attacks
-                sizeModModifier = this.getSM(target.actor) - this.getSM(attacker.actor);
-                smMessage = "The modifier for the relative size difference between target and attacker";
-            }
-            else {
-                sizeModModifier = this.getSM(target.actor);
-                smMessage = "The modifier for the target's size";
+            if (typeof target !== "undefined") {
+                if (game.settings.get("gurps4e", "rangedRelativeSM")) { // Game is using relative SM rules for ranged attacks
+                    sizeModModifier = this.getSM(target.actor) - this.getSM(attacker.actor);
+                    smMessage = "The modifier for the relative size difference between target and attacker";
+                }
+                else {
+                    sizeModModifier = this.getSM(target.actor);
+                    smMessage = "The modifier for the target's size";
+                }
             }
 
             // Display the ranged specific modifiers
@@ -1824,7 +1826,7 @@ export class macroHelpers {
                 let staffLength = 0;
 
                 if ((attack.flags.toLowerCase().includes("staff"))) { // If the flags include 'staff', apply the effect of the staff on the range penalty.
-                    staffLength = game.scenes.get(target.scene.id).tokens.get(attacker.id).actor.system.magic.staff; // Get the length of the player's staff
+                    staffLength = game.scenes.get(attacker.scene.id).tokens.get(attacker.id).actor.system.magic.staff; // Get the length of the player's staff
 
                     if (typeof staffLength !== "number" || staffLength.isNaN) {// If it's not a number, or it is a NaN
                         staffLength = 0; // Set back to zero
@@ -1875,23 +1877,25 @@ export class macroHelpers {
         }
         else if (attack.type === "melee") {
             // Sort out the effective SM modifier based on the game's settings and the attacker/target SM
-            if (game.settings.get("gurps4e", "meleeRelativeSM")) { // Game is using relative SM rules for melee attacks
-                sizeModModifier = this.getSM(target.actor) - this.getSM(attacker.actor);
-                smMessage = "The modifier for the relative size difference between target and attacker";
-            }
-            else {
-                sizeModModifier = this.getSM(target.actor);
-                smMessage = "The modifier for the target's size";
+            if (typeof target !== "undefined") {
+                if (game.settings.get("gurps4e", "meleeRelativeSM")) { // Game is using relative SM rules for melee attacks
+                    sizeModModifier = this.getSM(target.actor) - this.getSM(attacker.actor);
+                    smMessage = "The modifier for the relative size difference between target and attacker";
+                }
+                else {
+                    sizeModModifier = this.getSM(target.actor);
+                    smMessage = "The modifier for the target's size";
+                }
             }
         }
 
-        if (areaAttack && typeof target !== "undefined") { // Area attacks that have a person to target can optionally target either the person or the hex.
+        if (areaAttack && typeof target !== "undefined") { // It's an area attack, but we still have a specific target. Let the player optionally target either the person or the hex.
             modModalContent += "<tr>" +
                 "<td>Target The Hex (+4)</td><td><input type='checkbox' class='checkbox' id='targetHex' value='targetHex' name='contactEx' checked /></td><td>Decide if you are targeting the hex to claim a +4, or the actor to claim the " + (sizeModModifier > 0 ? ("+" + sizeModModifier) : sizeModModifier) + " for their SM.</td>" +
                 "</tr>"
         }
         else if (areaAttack) { // It's an area attack, but we have no single actor target.
-            modModalContent += "<tr><td>Targeting the hex:</td><td> +4 </td><td>An area attack gets +4 for targeting a hex.</td></tr>";
+            modModalContent += "<tr><td>Target The Hex (+4)</td><td><input type='checkbox' class='checkbox' id='targetHex' value='targetHex' name='contactEx' checked /></td><td>An area attack gets +4 for targeting a hex.</td></tr>";
         }
         else { // It's not an area attack, provide the value for the target's SM.
             modModalContent += "<tr><td>SM Modifier:</td><td>" + sizeModModifier + "</td><td>" + smMessage + "</td></tr>";
@@ -1951,8 +1955,8 @@ export class macroHelpers {
                     let evaluate = html.find('#evaluate')[0] ? html.find('#evaluate')[0].checked : undefined;
                     let exactRange = html.find('#exactRange')[0] ? html.find('#exactRange')[0].checked : undefined;
                     let closeRange = html.find('#closeRange')[0] ? html.find('#closeRange')[0].checked : undefined;
-                    let targetHex = typeof html.find('#targetHex')[0] !== "undefined" ? html.find('#targetHex')[0].checked : false;
-                    this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (+totalModifier + +mod), moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange, rangeDamageMult, areaAttack, sizeModModifier, rayPointOfAim)
+                    let targetHex = typeof html.find('#targetHex')[0] !== "undefined" ? html.find('#targetHex')[0].checked : (typeof target === "undefined" ? true : false); // If the targetHex checkbox is present, use it to control the bool. If the checkbox isn't there, instead check to see if there was a target token in the first place.
+                    this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (+totalModifier + +mod), moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange, rangeDamageMult, areaAttack, sizeModModifier, rayPointOfAim, template)
                 }
             }
         }
