@@ -2242,20 +2242,20 @@ export class macroHelpers {
 
     /**
      *
-     * @param messageContent
-     * @param scatterDistance
-     * @param template
-     * @param attacker
-     * @param attack
-     * @param rangeDamageMult
+     * @param messageContent The content of the chat message created up to this point.
+     * @param scatterDistance The distance in yards by which this attack scatters
+     * @param target If a target was involved, this is a token. Otherwise it's undefined
+     * @param attacker The token that made this attack
+     * @param attack The attack object being applied to this template
+     * @param rangeDamageMult A multipler to handle 1/2 and Max range. Does not apply to beams.
      * @param rayPointOfAim this is a Point {x: number, y: number} only used when making beam/ray attacks and represents the actual point of aim, not the origin or end of the beam.
+     * @param template The template being used for this attack
      */
-    static finalizeAreaAttack(messageContent, scatterDistance, template, attacker, attack, rangeDamageMult, rayPointOfAim) {
-        console.log(messageContent, scatterDistance, template, attacker, attack, rangeDamageMult, rayPointOfAim);
-        // TODO - Get the target point of a beam and scatter off of that.
+    static finalizeAreaAttack(messageContent, scatterDistance, target, attacker, attack, rangeDamageMult, rayPointOfAim, template) {
 
+        // Begin scatter logic
+        let direction = this.randomInteger(0, 360) // Used for scatter logic, the direction it's scattering
         if (template.t === "ray") {
-            let direction = this.randomInteger(0, 360)
             let scatterResult = this.getScatteredPoint(rayPointOfAim, scatterDistance, direction); // Get the new point of aim
             console.log(scatterResult);
             let scatterAngle = distanceHelpers.getAngleFromAtoB(attacker.center, scatterResult); // Get the angle from our attacker's centre to the new point of aim.
@@ -2265,13 +2265,20 @@ export class macroHelpers {
             template.update({ direction: scatterAngle, x: x, y: y }); // Point the beam in that direction
         }
         else if (template.t === "circle") {
-            console.log(this.getScatteredPoint(template, scatterDistance))
+            let scatterResult = this.getScatteredPoint(template, scatterDistance, direction);
+            console.log(scatterResult);
+            template.update({ x: scatterResult.x, y: scatterResult.y }); // Point the beam in that direction
         }
         else { // Some other template got passed through, throw an error exit early.
             console.error("Attempted to finalizeAreaAttack for unsupported template type.")
             return;
         }
+        if (Math.abs(scatterDistance) > 0) { // If we scattered
+            messageContent += "The attack scatters " + scatterDistance + " yards " + "<span style='display: inline-block; rotate: " + direction + "deg'>&#129034;</span>" + "</br>"; // Tell the user about it.
+        }
+        // End scatter logic
 
+        // Begin target selection
         // Once the attack has scattered, get the list of targets still in the area
         let targetList = [];
         if (attack.area === "area" || attack.area === "ex" || attack.area === "frag") {
@@ -2288,8 +2295,8 @@ export class macroHelpers {
                 }
             })
         }
-
         console.log(targetList);
+        // End target selection
 
         let flags = {
             template: template,
