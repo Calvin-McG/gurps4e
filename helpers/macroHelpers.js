@@ -879,12 +879,9 @@ export class macroHelpers {
     }
 
 
-    static getScatterResult(origin, distance, direction) {
-        console.log(distance);
-        let rawScatterDistance = distanceHelpers.yardsToRawCoordinateDistance(Math.abs(distance));
-        console.log(rawScatterDistance);
-        let scatterResult = this.getRayEndPoint(origin, rawScatterDistance, direction)
-        console.log(scatterResult);
+    static getScatteredPoint(origin, distance, direction) {
+        let scatterDistance = distanceHelpers.yardsToGridSpaces(Math.abs(distance));
+        let scatterResult = canvas.grid.getTranslatedPoint(origin, direction, scatterDistance)
         return scatterResult;
     }
 
