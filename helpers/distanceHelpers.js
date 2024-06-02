@@ -100,15 +100,12 @@ export class distanceHelpers {
         return dist * selectedUnit.mult * numUnits;
     }
 
+    /**
+     * @param yards The number of yards to be converted
+     * @returns {number} The raw coordinate distance for that number of yards on this specific grid
+     */
     static yardsToRawCoordinateDistance(yards) {
-        // This step corrects only for unit difference.
-        // Like Yards vs Feet. Not for quantity of said unit.
-        // So a grid of 2 yard hexes will pass the same value back as yards to yards includes no conversion
-        let rawCoordinateDistance = this.numYardsToNumGridUnitOfMeasure(yards, canvas.scene.grid.units);
-
-        // This step corrects for the number of units each square represents.
-        // So for the example 2 yard hexes, this would cut the value in half
-        rawCoordinateDistance = rawCoordinateDistance / canvas.scene.grid.distance
+        let rawCoordinateDistance = this.yardsToGridSpaces(yards)
 
         // This step corrects for the grid size in pixels. So a result of 1 yard on a grid where each space is 1 yard,
         // but each space is 50 pixels would return a result of 50
@@ -117,7 +114,29 @@ export class distanceHelpers {
         return rawCoordinateDistance;
     }
 
-    // This method takes in a number of yards and the grid's Unit and returns a raw distance
+    /**
+     * @param yards The number of yards to be converted
+     * @returns {number} The number of spaces that translates to on this specific grid
+     */
+    static yardsToGridSpaces(yards) {
+        // This step corrects only for unit difference.
+        // Like Yards vs Feet. Not for quantity of said unit.
+        // So a grid of 2 yard hexes will pass the same value back as yards to yards includes no conversion
+        let gridSpaces = this.numYardsToNumGridUnitOfMeasure(yards, canvas.scene.grid.units);
+
+        // This step corrects for the number of units each square represents.
+        // So for the example 2 yard hexes, this would cut the value in half
+        gridSpaces = gridSpaces / canvas.scene.grid.distance
+
+        return gridSpaces;
+    }
+
+    /**
+     * This method converts a yards denominated value and converts it to one denominated in the grid's unit of measure
+     * @param yards The number of yards to convert
+     * @param gridUnits The unit of measure (yards, miles, etc) that each grid space is denominated in.
+     * @returns {number} The number of the grid's units (Yards, miles, etc) that the input represents. Not necessarily the number of spaces on said grid.
+     */
     static numYardsToNumGridUnitOfMeasure(yards, gridUnits) {
         // If there's an s at the end of the string, remove it
         if (gridUnits.charAt(gridUnits.length - 1).toLowerCase() === "s"){
