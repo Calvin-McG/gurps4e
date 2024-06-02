@@ -769,7 +769,7 @@ export class macroHelpers {
             y: 0
         }
         const templateData = { // Init the template with the colours we are planning to use.
-            fillColor: "#FF0000",
+            fillColor: "#FF0102", // Don't use a perfect shade of red to try to avoid collisions with players who've selected red for their own colour.
             borderColor: "#FFFFFF"
         }
 
