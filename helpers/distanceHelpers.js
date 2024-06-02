@@ -1,6 +1,15 @@
 
 export class distanceHelpers {
 
+    /**
+     *
+     * @param originX The starting point's x coordinate
+     * @param originY The starting point's y coordinate
+     * @param length The length of the ray
+     * @param direction The direction in degrees
+     * @param gridSizeRaw
+     * @returns {{x: *, y: *}}
+     */
     static getRayEnd(originX, originY, length, direction, gridSizeRaw) {
         let directionInRadians = (direction) * Math.PI / 180.0;
 
@@ -8,6 +17,16 @@ export class distanceHelpers {
             x: originX + (length * gridSizeRaw * Math.cos(directionInRadians)),
             y: originY + (length * gridSizeRaw * Math.sin(directionInRadians))
         };
+    }
+
+    /**
+     *
+     * @param a Anything with an x and y value. This is where the angle is being measured from
+     * @param b Anything with an x and y value. This is where the angle is being measured to
+     * @returns {number} The number of degrees of heading from a to b
+     */
+    static getAngleFromAtoB(a,b) {
+        return (Math.atan2(-(b.x - a.x), (b.y - a.y)) * 180 / Math.PI) + 90;
     }
 
     // point is an object with x and y values and is the point you are measuring to.
@@ -81,8 +100,25 @@ export class distanceHelpers {
         return dist * selectedUnit.mult * numUnits;
     }
 
+    static yardsToRawCoordinateDistance(yards) {
+        // This step corrects only for unit difference.
+        // Like Yards vs Feet. Not for quantity of said unit.
+        // So a grid of 2 yard hexes will pass the same value back as yards to yards includes no conversion
+        let rawCoordinateDistance = this.numYardsToNumGridUnitOfMeasure(yards, canvas.scene.grid.units);
+
+        // This step corrects for the number of units each square represents.
+        // So for the example 2 yard hexes, this would cut the value in half
+        rawCoordinateDistance = rawCoordinateDistance / canvas.scene.grid.distance
+
+        // This step corrects for the grid size in pixels. So a result of 1 yard on a grid where each space is 1 yard,
+        // but each space is 50 pixels would return a result of 50
+        rawCoordinateDistance = rawCoordinateDistance * canvas.scene.grid.size
+
+        return rawCoordinateDistance;
+    }
+
     // This method takes in a number of yards and the grid's Unit and returns a raw distance
-    static yardsToRaw(yards, gridUnits) {
+    static numYardsToNumGridUnitOfMeasure(yards, gridUnits) {
         // If there's an s at the end of the string, remove it
         if (gridUnits.charAt(gridUnits.length - 1).toLowerCase() === "s"){
             gridUnits = gridUnits.slice(0, -1);

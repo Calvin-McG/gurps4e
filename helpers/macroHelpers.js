@@ -8,6 +8,11 @@ import { generalHelpers } from "./generalHelpers.js";
 
 export class macroHelpers {
 
+
+    static randomInteger(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
     static capitalizeFirst(str) {
         if (typeof str === "string") {
             return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -242,10 +247,6 @@ export class macroHelpers {
             }
         }
 
-        // TODO - If we're doing an area attack, filter by our selected template.
-        // Beams use beam templates
-        // All others use circle templates
-
         // Narrow displayed attacks by attack type, and if present, the areaTemplateType.
         if (attackType === "melee") {
             attacks = this.listAttacks(selfToken.actor, "melee", itemName, attackName, areaTemplateType);
@@ -304,7 +305,7 @@ export class macroHelpers {
                 }
                 htmlContent += "<table>";
 
-                htmlContent += "<tr><td colspan='8' class='trait-category-header' style='text-align: center;'>Melee Attacks</td></tr>";
+                htmlContent += "<tr><td colspan='9' class='trait-category-header' style='text-align: center;'>Melee Attacks</td></tr>";
                 htmlContent += "<tr><td></td><td>Weapon</td><td>Attack</td><td>Level</td><td>Damage</td><td>Reach</td><td>Area</td><td>Parry</td><td>ST</td></tr>";
 
                 for (let x = 0; x < attacks.melee.length; x++){
@@ -356,7 +357,7 @@ export class macroHelpers {
                 }
                 htmlContent += "<table>";
 
-                htmlContent += "<tr><td colspan='12' class='trait-category-header' style='text-align: center;'>Ranged Attacks</td></tr>";
+                htmlContent += "<tr><td colspan='13' class='trait-category-header' style='text-align: center;'>Ranged Attacks</td></tr>";
                 htmlContent += "<tr><td></td><td>Weapon</td><td>Attack</td><td>Level</td><td>Damage</td><td>Acc</td><td>Range</td><td>Area</td><td>RoF</td><td>Shots</td><td>ST</td><td>Bulk</td><td>Rcl</td></tr>";
 
                 let distanceRaw;
@@ -730,16 +731,23 @@ export class macroHelpers {
                 distance = attack.maxRange; // Use it for the template length
             }
         }
-        console.log(distance)
         return distance;
     }
 
+    /**
+     * This method takes an existing template, and adjusts it to match the attack profile being used against it.
+     * @param attacker The token making the attack
+     * @param attack
+     * @param template
+     */
     static correctTemplate(attacker, attack, template) {
-        let correctedDistance = distanceHelpers.yardsToRaw(this.setTemplateDistance(attack), canvas.scene.grid.units);
+        let correctedDistance = distanceHelpers.numYardsToNumGridUnitOfMeasure(this.setTemplateDistance(attack), canvas.scene.grid.units);
         let correctedWidth;
+        let rayPointOfAim;
         if (typeof correctedDistance !== "undefined" && correctedDistance !== null) {
             if (attack.area === "beam") { // We have a proper distance and it is a beam
-                correctedWidth = distanceHelpers.yardsToRaw(1, canvas.scene.grid.units);
+                correctedWidth = distanceHelpers.numYardsToNumGridUnitOfMeasure(1, canvas.scene.grid.units);
+                rayPointOfAim = this.getRayEndPoint({ x: template.x, y: template.y}, template.distance, template.direction);
                 template.update({ distance: correctedDistance, width: correctedWidth});
             }
             else { // We have a proper distance and it is not a beam
@@ -747,13 +755,11 @@ export class macroHelpers {
             }
         }
         else if (attack.area === "beam") { // We don't have a proper distance, but it is a beam
-            correctedWidth = distanceHelpers.yardsToRaw(1, canvas.scene.grid.units);
+            correctedWidth = distanceHelpers.numYardsToNumGridUnitOfMeasure(1, canvas.scene.grid.units);
             template.update({ width: correctedWidth});
         }
 
-        console.log(correctedWidth, correctedDistance);
-
-        this.attackOnArea(attacker, attack, template);
+        this.attackOnArea(attacker, attack, undefined, template, rayPointOfAim); // Pass undefined for the target token so we know our point of aim is a template, not an actor.
     }
 
     // This method is used when someone is making an area attack targetted at a specific actor
@@ -761,6 +767,10 @@ export class macroHelpers {
     // It creates a template of the appropriate size and location
     // It then calls attackOnArea
     static async templateOnActor(attacker, attack, target) {
+        let rayPointOfAim = {
+            x: 0,
+            y: 0
+        }
         const templateData = { // Init the template with the colours we are planning to use.
             fillColor: "#FF0000",
             borderColor: "#FF0000"
@@ -774,55 +784,48 @@ export class macroHelpers {
         }
         else if (attack.area === "beam") { // If it's a template we render as a ray
             templateData.t = "ray";
-            templateData.direction = (Math.atan2(-(target.center.x - attacker.center.x), (target.center.y - attacker.center.y)) * 180 / Math.PI) + 90; // Get the angle to the target and point the beam that way.
-            // Rays give an origin, angle, and destination so we use the attacker as the origin, but move it a quarter grid unit in the direction of the target.
-            templateData.x = attacker.center.x + ((canvas.scene.grid.size * 0.25) * Math.cos(templateData.direction * Math.PI / 180));
-            templateData.y = attacker.center.y + ((canvas.scene.grid.size * 0.25) * Math.sin(templateData.direction * Math.PI / 180));
-            templateData.width = distanceHelpers.yardsToRaw(1, canvas.scene.grid.units);
+            templateData.direction = distanceHelpers.getAngleFromAtoB(attacker.center, target.center) // Get the angle to the target and point the beam that way.
+            // Rays give an origin, angle, and destination so we use the attacker as the origin, but move it a half grid unit in the direction of the target.
+            templateData.x = attacker.center.x + ((canvas.scene.grid.size * 0.5) * Math.cos(templateData.direction * Math.PI / 180));
+            templateData.y = attacker.center.y + ((canvas.scene.grid.size * 0.5) * Math.sin(templateData.direction * Math.PI / 180));
+            templateData.width = distanceHelpers.numYardsToNumGridUnitOfMeasure(1, canvas.scene.grid.units);
             templateData.distance = this.setTemplateDistance(attack)
+
+            let distanceRaw = distanceHelpers.measureDistance(attacker.center, target.center, canvas.scene.grid.size / canvas.scene.grid.distance);
+            let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.grid.units);
+
+            rayPointOfAim = {
+                x: target.center.x,
+                y: target.center.y
+            }
         }
         else { // Shit's fucked up
             return this.noTargetsDialog(); // Load the noTarget dialog and return early.
         }
-        console.log(canvas.scene.grid)
+
         // TODO Modify templateData.distance for the scene's grid unit and size.
         if (typeof templateData.distance === "undefined" || templateData.distance === null) { // The templateData.distance doesn't yet exist. Infer that it's a beam that wasn't given a max range.
             templateData.distance = distanceHelpers.measureDistance(attacker, target, canvas.scene.grid.size / canvas.scene.grid.distance); // If we don't have maxRange, just use the distance to the target.
         }
         else { // We have a templateData.distance, denominated in yards.
-            templateData.distance = distanceHelpers.yardsToRaw(templateData.distance, canvas.scene.grid.units); // Convert the figure in yards into a raw distance for the sheet
+            templateData.distance = distanceHelpers.numYardsToNumGridUnitOfMeasure(templateData.distance, canvas.scene.grid.units); // Convert the figure in yards into a raw distance for the sheet
         }
 
         let template = await canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [templateData]);
-        this.attackOnArea(attacker, attack, template[0])
+        this.attackOnArea(attacker, attack, target, template[0], rayPointOfAim);
     }
 
     // This method is used when someone is making an attack targeted at a template
     // It takes in an attacker, attack, and token
     // It scatters the template and then creates a chat message allowing the GM or player to proceed with the generating of attacks and active defence macros for all the targets.
     // Also allows time to pass if the attack has some sort of fuze.
-    static attackOnArea(attacker, attack, template) {
+    static attackOnArea(attacker, attack, target, template, rayPointOfAim) {
         console.log("attackOnArea")
-        console.log(attacker, attack, template, template.x, template.y);
+        console.log(attacker, attack, template, template.x, template.y, rayPointOfAim);
 
-        let targetList = [];
+        // TODO - A Modal is created to take modifiers and player makes attack roll to strike target and a chat message is generated with the results.
 
-        if (attack.area === "area" || attack.area === "ex" || attack.area === "frag") {
-            canvas.tokens.objects.children.forEach( token => {
-                if (this.isTokenInCircleTemplate(token, template)) {
-                    targetList.push(token);
-                }
-            })
-        }
-        else if (attack.area === "beam") {
-            canvas.tokens.objects.children.forEach( token => {
-                if (this.isTokenInRayTemplate(token, template)) {
-                    targetList.push(token);
-                }
-            })
-        }
-
-        console.log(targetList);
+        this.attackModifiers(template, attacker, attack, undefined, undefined, undefined, 0, rayPointOfAim)
     }
 
     static isTokenInCircleTemplate(token, circleTemplate) {
@@ -873,6 +876,16 @@ export class macroHelpers {
         destination.y = Math.sin(direction * Math.PI/180) * distance + origin.y
 
         return destination
+    }
+
+
+    static getScatterResult(origin, distance, direction) {
+        console.log(distance);
+        let rawScatterDistance = distanceHelpers.yardsToRawCoordinateDistance(Math.abs(distance));
+        console.log(rawScatterDistance);
+        let scatterResult = this.getRayEndPoint(origin, rawScatterDistance, direction)
+        console.log(scatterResult);
+        return scatterResult;
     }
 
     // Part of the attack macro flow
@@ -1063,7 +1076,7 @@ export class macroHelpers {
         let totalModifier = distancePenalty;
 
         let modModalContent =  "<table>";
-        modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td></tr>"; // Display the distance penalty
+        modModalContent += "<tr><td>Distance (" + (Math.round(distanceRaw * 10) / 10) + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td></tr>"; // Display the distance penalty
 
         let odds = rollHelpers.levelToOdds(+attack.level + +totalModifier)
 
@@ -1710,19 +1723,40 @@ export class macroHelpers {
     }
 
     // This method handles all attack modifiers for both ranged and melee attacks
-    static attackModifiers(target, attacker, attack, relativePosition, rof, location, locationPenalty) {
-        let distanceRaw = Math.round(canvas.grid.measurePath([attacker, target]).distance);
+    static attackModifiers(target, attacker, attack, relativePosition, rof, location, locationPenalty, rayPointOfAim) {
+        console.log(target, attacker, attack, relativePosition, rof, location, locationPenalty, rayPointOfAim);
+        let distanceRaw;
+        let areaAttack = false;
+
+        if (typeof target.name === "string") { // Tokens have names, we are looking at a token
+            distanceRaw = distanceHelpers.measureDistance(attacker.center, target.center, canvas.scene.grid.size / canvas.scene.grid.distance);
+        }
+        else { // Templates do not have names, we are looking at a template
+            areaAttack = true;
+            if (target.t === "ray") { // It's a beam
+                distanceRaw = distanceHelpers.measureDistance(attacker.center, rayPointOfAim, canvas.scene.grid.size / canvas.scene.grid.distance);
+            }
+            else { // It's a circle
+                distanceRaw = distanceHelpers.measureDistance(attacker.center, target, canvas.scene.grid.size / canvas.scene.grid.distance);
+            }
+            // relativePosition, rof, location, and locationPenalty are all probably undefined at this point
+        }
+
+        console.log(distanceRaw)
+
         let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.grid.units);
         let distancePenalty = distanceHelpers.distancePenalty(distanceYards);
         let rangeDamageMult = 1; // This is the multiplier used to assign effects from 1/2D and Max ranges, where applicable.
 
+        console.log(areaAttack, distanceRaw, distanceYards, distancePenalty)
+
         let damageType = this.extractDamageType(attack);
 
-        let rofBonus = generalHelpers.rofToBonus(rof.rof);
-        if (typeof rofBonus == "undefined") { // RoF is sometimes coming through undefined. Catch that.
+        let rofBonus = generalHelpers.rofToBonus(rof ? rof.rof : 0);
+        if (typeof rofBonus == "undefined" || areaAttack) { // RoF is sometimes coming through undefined. Catch that, and remove the RoF bonus, if any, from area attacks
             rofBonus = 0;
         }
-        let totalModifier;
+        let totalModifier = 0;
         let sizeModModifier = 0;
         let smMessage = "";
 
@@ -1732,7 +1766,7 @@ export class macroHelpers {
         // We're doing it early so we can put it at the top of the modal
         let maxRange = Infinity;
         let halfRange = Infinity;
-        if (attack.type === "ranged") {
+        if (attack.type === "ranged" && attack.area !== "beam") { // It's ranged, but not a beam type attack.
 
             // Check if max range is present
             if (typeof attack.maxRange !== "undefined") { // Max range is present
@@ -1770,8 +1804,12 @@ export class macroHelpers {
             }
         }
 
-        modModalContent += "<tr><td>Hit Location</td><td>" + locationPenalty + "</td><td>The penalty for the selected hit location.</td></tr>";
+        if (!areaAttack) {
+            modModalContent += "<tr><td>Hit Location</td><td>" + locationPenalty + "</td><td>The penalty for the selected hit location.</td></tr>";
+        }
 
+        console.log(typeof attack.flags)
+        console.log(attack.flags)
         if (attack.type === "ranged") {
             // Sort out the effective SM modifier based on the game's settings and the attacker/target SM
             if (game.settings.get("gurps4e", "rangedRelativeSM")) { // Game is using relative SM rules for ranged attacks
@@ -1799,41 +1837,44 @@ export class macroHelpers {
                 if ((attack.flags.toLowerCase().includes("short"))) {
                     if (staffLength > 0) {
                         distancePenalty = distanceHelpers.shortDistancePenalty(Math.max(distanceYards - staffLength, 0)); // Subtract staff length from the distance penalty, but don't go into positive numbers
-                        modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance with Short Range Modifiers, while weilding a staff length " + staffLength + "</td></tr>";
+                        modModalContent += "<tr><td>Distance (" + (Math.round(distanceRaw * 10) / 10) + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance with Short Range Modifiers, while weilding a staff length " + staffLength + "</td></tr>";
                     }
                     else {
                         distancePenalty = distanceHelpers.shortDistancePenalty(distanceYards);
-                        modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance with Short Range Modifiers</td></tr>";
+                        modModalContent += "<tr><td>Distance (" + (Math.round(distanceRaw * 10) / 10) + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance with Short Range Modifiers</td></tr>";
                     }
                 }
                 else if ((attack.flags.toLowerCase().includes("long"))) {
                     if (staffLength > 0) {
                         distancePenalty = distanceHelpers.longDistancePenalty(Math.max(distanceYards - staffLength, 0));
-                        modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance with Long Range Modifiers, while weilding a staff length " + staffLength + "</td></tr>";
+                        modModalContent += "<tr><td>Distance (" + (Math.round(distanceRaw * 10) / 10) + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance with Long Range Modifiers, while weilding a staff length " + staffLength + "</td></tr>";
                     }
                     else {
                         distancePenalty = distanceHelpers.longDistancePenalty(distanceYards);
-                        modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance with Long Range Modifiers</td></tr>";
+                        modModalContent += "<tr><td>Distance (" + (Math.round(distanceRaw * 10) / 10) + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance with Long Range Modifiers</td></tr>";
                     }
                 }
                 else if (attack.flags.toLowerCase().includes("gui") || attack.flags.toLowerCase().includes("hom")) {
                     distancePenalty = 0;
-                    modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>There is no distance penalty for guided and homing attacks</td></tr>";
+                    modModalContent += "<tr><td>Distance (" + (Math.round(distanceRaw * 10) / 10) + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>There is no distance penalty for guided and homing attacks</td></tr>";
                 }
                 else {
                     if (staffLength > 0) {
                         distancePenalty = distanceHelpers.distancePenalty(Math.max(distanceYards - staffLength, 0));
-                        modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance, while weilding a staff length " + staffLength + "</td></tr>";
+                        modModalContent += "<tr><td>Distance (" + (Math.round(distanceRaw * 10) / 10) + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance, while weilding a staff length " + staffLength + "</td></tr>";
                     }
                     else {
-                        modModalContent += "<tr><td>Distance (" + distanceRaw + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance</td></tr>";
+                        modModalContent += "<tr><td>Distance (" + (Math.round(distanceRaw * 10) / 10) + " " + canvas.scene.grid.units + ")</td><td>" + distancePenalty + "</td><td>The penalty for the given distance</td></tr>";
                     }
                 }
             }
 
-            totalModifier = (distancePenalty + locationPenalty + rofBonus + sizeModModifier); // Total up the modifiers
+            totalModifier += distancePenalty; // Apply the distance penalty
+            if (!areaAttack) { // Only non-area attacks get to rof modifiers
+                totalModifier += rofBonus; // Total up the modifiers
+                modModalContent += "<tr><td>RoF Bonus:</td><td>" + rofBonus + "</td><td>The bonus for the selected rate of fire</td></tr>";
+            }
 
-            modModalContent += "<tr><td>RoF Bonus:</td><td>" + rofBonus + "</td><td>The bonus for the selected rate of fire</td></tr>";
         }
         else if (attack.type === "melee") {
             // Sort out the effective SM modifier based on the game's settings and the attacker/target SM
@@ -1845,11 +1886,32 @@ export class macroHelpers {
                 sizeModModifier = this.getSM(target.actor);
                 smMessage = "The modifier for the target's size";
             }
-
-            totalModifier = locationPenalty + sizeModModifier; // Total up the modifiers
         }
 
-        modModalContent += "<tr><td>SM Modifier:</td><td>" + sizeModModifier + "</td><td>" + smMessage + "</td></tr>";
+        if (areaAttack && typeof target !== "undefined") { // Area attacks that have a person to target can optionally target either the person or the hex.
+            modModalContent += "<tr>" +
+                "<td>Target The Hex (+4)</td><td><input type='checkbox' class='checkbox' id='targetHex' value='targetHex' name='contactEx' checked /></td><td>Decide if you are targeting the hex to claim a +4, or the actor to claim the " + (sizeModModifier > 0 ? ("+" + sizeModModifier) : sizeModModifier) + " for their SM.</td>" +
+                "</tr>"
+        }
+        else if (areaAttack) { // It's an area attack, but we have no single actor target.
+            modModalContent += "<tr><td>Targeting the hex:</td><td> +4 </td><td>An area attack gets +4 for targeting a hex.</td></tr>";
+        }
+        else { // It's not an area attack, provide the value for the target's SM.
+            modModalContent += "<tr><td>SM Modifier:</td><td>" + sizeModModifier + "</td><td>" + smMessage + "</td></tr>";
+        }
+
+        // This block totals up modifiers which impact both melee and ranged attacks.
+
+        if (areaAttack) { // Area attacks don't get locations, rof, or size mods.
+            totalModifier += 4; // Assume they are claiming the +4. We will remove it later if they uncheck the box.
+        }
+        else { // Only non-area attacks get to have location, rof, and size modifiers
+            totalModifier += (locationPenalty + sizeModModifier); // Total up the modifiers
+        }
+
+        // This block determines whether to apply the sizeModModifier or +4 for targetting a hex
+
+
 
         let oddsEffectiveSkill = +attack.level + +totalModifier
 
@@ -1876,11 +1938,6 @@ export class macroHelpers {
 
         modModalContent += "<tr><td>Move and Attack</td><td><input type='checkbox' class='checkbox' id='moveAndAttack' value='moveAndAttack' name='moveAndAttack' /></td><td>This handles both melee and ranged move and attacks with their respective rules</td></tr>";
 
-        // If the damage type is explosive, allow the user to decide between area targeted and contact targeted attacks
-        if (damageType.explosive) {
-            modModalContent += "<tr><td>Target The Hex</td><td><input type='checkbox' class='checkbox' id='targetHex' value='targetHex' name='contactEx' checked /></td><td>The macro assumes you're targeting the actual actor. Check this box to claim the +4 bonus for targeting the ground at their feet.</td></tr>"
-        }
-
         modModalContent += "<tr><td>Additional Modifier</td><td><input type='number' id='mod' name='mod' value='0' style='width: 50%'/></td><td>This is a catchall for anything not included above</td></tr>" +
             "</table>"
 
@@ -1889,7 +1946,7 @@ export class macroHelpers {
         if (rangeDamageMult !== 0) { // If we're not prevented from attacking due to being beyond max range
             buttons.mod = { // Add the button for an attack with a modifier
                 icon: '<i class="fas fa-check"></i>',
-                label: "Apply Modifier",
+                label: "Make Attack",
                 callback: (html) => {
                     let mod = html.find('#mod').val();
                     let moveAndAttack = html.find('#moveAndAttack')[0].checked;
@@ -1897,8 +1954,8 @@ export class macroHelpers {
                     let evaluate = html.find('#evaluate')[0] ? html.find('#evaluate')[0].checked : undefined;
                     let exactRange = html.find('#exactRange')[0] ? html.find('#exactRange')[0].checked : undefined;
                     let closeRange = html.find('#closeRange')[0] ? html.find('#closeRange')[0].checked : undefined;
-                    let targetHex = (typeof html.find('#targetHex')[0] !== "undefined") ? html.find('#targetHex')[0].checked : false;
-                    this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (+totalModifier + +mod), moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange, rangeDamageMult)
+                    let targetHex = typeof html.find('#targetHex')[0] !== "undefined" ? html.find('#targetHex')[0].checked : false;
+                    this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (+totalModifier + +mod), moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange, rangeDamageMult, areaAttack, sizeModModifier, rayPointOfAim)
                 }
             }
         }
@@ -1910,7 +1967,7 @@ export class macroHelpers {
         }
 
         let modModal = new Dialog({
-            title: "Modifier Dialog",
+            title: "Attack Modifier Dialog",
             content: modModalContent,
             buttons: buttons,
             default: "mod",
@@ -1920,17 +1977,36 @@ export class macroHelpers {
         modModal.render(true)
     }
 
-    static reportHitResult(target, attacker, attack, relativePosition, rof, locationArray, totalModifiers, moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange, rangeDamageMult) {
+    /**
+     * @param target This is a token, or in the case of an area attack, a template
+     * @param attacker This is a token
+     * @param attack This is an attack object
+     * @param relativePosition This is a facing object
+     * @param rof This is a rof object
+     * @param locationArray is an array of all the locations hit
+     * @param totalModifiers is a number
+     * @param moveAndAttack is a bool, true when making a move and attack.
+     * @param targetHex is a bool describing whether they are targetting the hex (true) or not (false)
+     * @param aimTime is a number of seconds for which they are aiming.
+     * @param evaluate is a bool tracking whether or not the attacker evaluated preceeding the attack
+     * @param exactRange this is a bool tracking whether the attacker knows the exact range. This is what happens when an attacker is using a range finder, has it targeted with a targeting sense, or the target is standing on a hex they have pre-ranged.
+     * @param closeRange this is a bool tracking whether the attacker knows the almost exact range. The target is standing next to a landmark you have pre-ranged.
+     * @param rangeDamageMult this is a number which applies the half damage range multiplier
+     * @param areaAttack this is a bool which is true when a template is involved.
+     * @param sizeModModifier this is a number, only used to take back the +4 for targetting a hex in cases where we assumed they were but they opted not to.
+     * @param rayPointOfAim this is a Point {x: number, y: number} only used when making beam/ray attacks and represents the actual point of aim, not the origin or end of the beam.
+     */
+    static reportHitResult(target, attacker, attack, relativePosition, rof, locationArray, totalModifiers, moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange, rangeDamageMult, areaAttack, sizeModModifier, rayPointOfAim) {
         let label = "";
 
-        if (targetHex) {
+        if (targetHex) { // It's an area attack firing at the hex
             label = attacker.name + " attacks the ground at " + target.name + "'s feet with a " + attack.weapon + " " + attack.name;
         }
-        else { // The attack is not an explosive firing at the target's hex (It might still be an explosive aimed directly at the target)
+        else { // Whether it's an area attack or not, it's firing at the person.
             label = attacker.name + " attacks " + target.name + " with a " + attack.weapon + " " + attack.name;
         }
 
-        if (rangeDamageMult === 0.5) { // If we're firing at 1/2D range
+        if (rangeDamageMult === 0.5 && attack.area !== "beam") { // If we're firing at 1/2D range, and it's not a beam (Which is handled separately)
             label += " at beyond 1/2D range" // Append a note to the label so it's clear to everyone that's what's happening.
         }
 
@@ -1945,8 +2021,21 @@ export class macroHelpers {
 
         let mod = totalModifiers;
 
+        if (areaAttack && !targetHex) { // The actor is making an area attack, but not targeting the hex. Remove the -4 we granted earlier and replace it with the target's size modifier
+            mod -= 4; // Remove +4
+            mod += sizeModModifier; // Apply the size mod
+        }
+
         if (attack.type === "ranged"){
-            if (rof.shots === rof.rof){ // It is not a multiple projectile weapon
+            if (typeof rof === "undefined" || rof === null){ // Its rof object is undefined, it's probably an area attack.
+                label += " and fires once";
+                rof = { // Create a dummy rof object so undefined errors don't get thrown below.
+                    shots: 1,
+                    pellets: 1,
+                    rof: 1
+                }
+            }
+            else if (rof.shots === rof.rof){ // It is not a multiple projectile weapon
                 label += " and fires " + this.numToWords(rof.shots);
             }
             else { // It is a multiple projectile weapon
@@ -1955,12 +2044,7 @@ export class macroHelpers {
 
             // Handle move and attack for ranged
             if (moveAndAttack) {
-                mod = +mod + +attack.bulk; // Add the bulk penalty to the total modifiers
-            }
-
-            // The actor is targeting the hex at the feet of the person they are attacking. Give a +4
-            if (targetHex) {
-                mod = +mod + 4;
+                mod += +attack.bulk; // Add the bulk penalty to the total modifiers
             }
 
             mod += this.getAimingBonus(attack, aimTime, exactRange, closeRange) // Add the bonus from aiming, if any.
@@ -1968,9 +2052,8 @@ export class macroHelpers {
         else if (attack.type === "melee") {
             label += ".";
 
-            // The actor is targeting the hex at the feet of the person they are attacking. Give a +4
-            if (targetHex) {
-                mod = +mod + 4;
+            if (evaluate) {
+                mod = +mod + 1; // Add the modifier for evaluating
             }
 
             // Handle move and attack for melee
@@ -1978,10 +2061,6 @@ export class macroHelpers {
                 level = level + mod - 4; // Add the modifier and the move and attack penalty to the level so we can cap it
                 mod = 0; // Blank the modifier so it doesn't mess with the macro
                 level = Math.min(level, 9); // Melee move and attacks are at -4, with a skill cap of 9
-            }
-
-            if (evaluate) {
-                mod = +mod + 1; // Add the modifier for evaluating
             }
         }
 
@@ -1994,9 +2073,15 @@ export class macroHelpers {
                 malfunctionType = rollHelpers.getMalfunctionType();
             }
 
-            if (rollInfo.success == false) {
-                messageContent += attacker.name + " misses " + target.name + "</br>";
-                if (rollInfo.malfunction == true) {
+            if (rollInfo.success === false) {
+                if (!areaAttack || !targetHex) { // Either it's not an area attack, or it is an area attack but they've opted not to strike the hex.
+                    messageContent += attacker.name + " misses " + target.name + "</br>";
+                }
+                else { // It is an area attack and it is targeting the hex
+                    messageContent += attacker.name + " misses.</br>";
+                }
+
+                if (rollInfo.malfunction === true) {
                     switch (malfunctionType) {
                         case "mech":
                             messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>" + attacker.name + "'s weapon has a mechanical or electrical issue. It fails to fire, and it will take at least an hour to fix.</div></br>";
@@ -2020,15 +2105,21 @@ export class macroHelpers {
                             break;
                     }
                 }
+
+                if (areaAttack) { // Scatter logic for area attacks.
+                    if (rollInfo.malfunction === false || (rollInfo.malfunction === true && malfunctionType === "stoppage")) { // Either the weapon didn't malfunction, or it did malfunction but it was a stoppage which still fires a single shot.
+                        this.finalizeAreaAttack(messageContent, rollInfo.margin < 0 ? Math.abs(rollInfo.margin) : 0, target, attacker, attack, rangeDamageMult, rayPointOfAim);
+                    }
+                }
             }
             else {
                 let hits;
-                if (attack.type == "ranged") {
+                if (attack.type === "ranged") {
                     let rcl = attack.rcl ? attack.rcl : 1;
-                    if (rollInfo.malfunction == true && malfunctionType === "stoppage") {
+                    if (rollInfo.malfunction === true && malfunctionType === "stoppage") {
                         hits = 1; // Stoppages still fire once.
                     }
-                    else if (rollInfo.malfunction == true) {
+                    else if (rollInfo.malfunction === true) {
                         hits = 0; // All other malfunction types mean the weapon never fires.
                     }
                     else { // Otherwise it's a normal success
@@ -2039,7 +2130,7 @@ export class macroHelpers {
                     hits = 1
                 }
 
-                if (rollInfo.malfunction == true) {
+                if (rollInfo.malfunction === true) {
                     switch (malfunctionType) {
                         case "mech":
                             messageContent += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>" + attacker.name + "'s weapon has a mechanical or electrical issue. It fails to fire, and it will take at least an hour to fix.</div></br>";
@@ -2064,53 +2155,137 @@ export class macroHelpers {
                     }
                 }
 
-                messageContent += attacker.name + " hits " + target.name + " " + this.numToWords(hits) + "</br></br>"; // Display the number of hits
-
-                let locations = locationArray.slice(0, hits); // Shorten the list of locations to the number of hits.
-
-                messageContent += target.name + " is struck in the...</br>";
-                for (let m = 0; m < locations.length; m++){
-                    let firstLocation = foundry.utils.getProperty(target.actor.system.bodyType.body, (locations[m].id).split(".")[0]);
-                    let firstLabel = firstLocation ? firstLocation.label : "";
-                    let secondLabel = locations[m].label
-                    let locationLabel;
-                    if (firstLabel === secondLabel){
-                        locationLabel = firstLabel;
-                    }
-                    else if (firstLabel === ''){
-                        locationLabel = secondLabel;
-                    }
-                    else {
-                        locationLabel = firstLabel + " - " + secondLabel;
-                    }
-                    messageContent += "<div style='display: grid; grid-template-columns: 0.1fr auto;'><input type='checkbox' checked class='checkbox' id='" + locations[m].id + "' value='" + locations[m].id + "' name='" + locations[m].id + "' /><span style='line-height: 26px;'>" + locationLabel + "</span></div>";
+                if (!areaAttack || !targetHex) { // Either it's not an area attack, or it is an area attack but they've opted not to strike the hex.
+                    messageContent += attacker.name + " hits " + target.name + " " + this.numToWords(hits) + "</br></br>"; // Display the number of hits
+                }
+                else { // It is an area attack and it is targeting the hex
+                    messageContent += attacker.name + " hits their target.</br>";
                 }
 
-                messageContent += "</br><input type='button' class='attemptActiveDefences' value='Attempt Active Defences'/><input type='button' class='noActiveDefences' value='No Active Defences'/>"
-
-                let locationIDs = [];
-
-                for (let l = 0; l < locations.length; l++){
-                    locationIDs[l] = locations[l].id;
+                if (areaAttack) { // If it's an area attack.
+                    this.finalizeAreaAttack(messageContent, 0, target, attacker, attack, rangeDamageMult, rayPointOfAim); // Switch over to the finalize area logic
+                    return; // Return early
                 }
+                else { // It's not an area attack, carry on as usual.
+                    let locations = locationArray.slice(0, hits); // Shorten the list of locations to the number of hits.
 
-                flags = {
-                    target: target.document.id,
-                    attacker: attacker.document.id,
-                    scene: target.scene.id,
-                    attack: attack,
-                    relativePosition: relativePosition,
-                    rof: rof,
-                    locationIDs: locationIDs,
-                    totalModifiers: totalModifiers,
-                    targetHex: targetHex,
-                    rangeDamageMult: rangeDamageMult
+                    messageContent += target.name + " is struck in the...</br>";
+                    for (let m = 0; m < locations.length; m++){
+                        let firstLocation = foundry.utils.getProperty(target.actor.system.bodyType.body, (locations[m].id).split(".")[0]);
+                        let firstLabel = firstLocation ? firstLocation.label : "";
+                        let secondLabel = locations[m].label
+                        let locationLabel;
+                        if (firstLabel === secondLabel){
+                            locationLabel = firstLabel;
+                        }
+                        else if (firstLabel === ''){
+                            locationLabel = secondLabel;
+                        }
+                        else {
+                            locationLabel = firstLabel + " - " + secondLabel;
+                        }
+                        messageContent += "<div style='display: grid; grid-template-columns: 0.1fr auto;'><input type='checkbox' checked class='checkbox' id='" + locations[m].id + "' value='" + locations[m].id + "' name='" + locations[m].id + "' /><span style='line-height: 26px;'>" + locationLabel + "</span></div>";
+                    }
+
+                    messageContent += "</br><input type='button' class='attemptActiveDefences' value='Attempt Active Defences'/><input type='button' class='noActiveDefences' value='No Active Defences'/>"
+
+                    let locationIDs = [];
+
+                    for (let l = 0; l < locations.length; l++){
+                        locationIDs[l] = locations[l].id;
+                    }
+
+                    flags = {
+                        target: target.document.id,
+                        attacker: attacker.document.id,
+                        scene: target.scene.id,
+                        attack: attack,
+                        relativePosition: relativePosition,
+                        rof: rof,
+                        locationIDs: locationIDs,
+                        totalModifiers: totalModifiers,
+                        targetHex: targetHex,
+                        rangeDamageMult: rangeDamageMult
+                    }
                 }
             }
 
-            // Everything is assembled, send the message
-            ChatMessage.create({ content: messageContent, user: game.user.id, type: rollInfo.type, flags: flags});
+            if (!areaAttack) { // If it's not an area attack, send the normal chat message.
+                ChatMessage.create({ content: messageContent, user: game.user.id, type: rollInfo.type, flags: flags}); // Everything is assembled, send the message
+            }
         })
+    }
+
+    /**
+     *
+     * @param messageContent
+     * @param scatterDistance
+     * @param template
+     * @param attacker
+     * @param attack
+     * @param rangeDamageMult
+     * @param rayPointOfAim this is a Point {x: number, y: number} only used when making beam/ray attacks and represents the actual point of aim, not the origin or end of the beam.
+     */
+    static finalizeAreaAttack(messageContent, scatterDistance, template, attacker, attack, rangeDamageMult, rayPointOfAim) {
+        console.log(messageContent, scatterDistance, template, attacker, attack, rangeDamageMult, rayPointOfAim);
+        // TODO - Get the target point of a beam and scatter off of that.
+
+        if (template.t === "ray") {
+            let direction = this.randomInteger(0, 360)
+            let scatterResult = this.getScatteredPoint(rayPointOfAim, scatterDistance, direction); // Get the new point of aim
+            console.log(scatterResult);
+            let scatterAngle = distanceHelpers.getAngleFromAtoB(attacker.center, scatterResult); // Get the angle from our attacker's centre to the new point of aim.
+            let x = attacker.center.x + ((canvas.scene.grid.size * 0.5) * Math.cos(scatterAngle * Math.PI / 180));
+            let y = attacker.center.y + ((canvas.scene.grid.size * 0.5) * Math.sin(scatterAngle * Math.PI / 180));
+            console.log(scatterAngle, scatterResult)
+            template.update({ direction: scatterAngle, x: x, y: y }); // Point the beam in that direction
+        }
+        else if (template.t === "circle") {
+            console.log(this.getScatteredPoint(template, scatterDistance))
+        }
+        else { // Some other template got passed through, throw an error exit early.
+            console.error("Attempted to finalizeAreaAttack for unsupported template type.")
+            return;
+        }
+
+        // Once the attack has scattered, get the list of targets still in the area
+        let targetList = [];
+        if (attack.area === "area" || attack.area === "ex" || attack.area === "frag") {
+            canvas.tokens.objects.children.forEach( token => {
+                if (this.isTokenInCircleTemplate(token, template)) {
+                    targetList.push(token);
+                }
+            })
+        }
+        else if (attack.area === "beam") {
+            canvas.tokens.objects.children.forEach( token => {
+                if (this.isTokenInRayTemplate(token, template)) {
+                    targetList.push(token);
+                }
+            })
+        }
+
+        console.log(targetList);
+
+        let flags = {
+            template: template,
+            attacker: attacker.document.id,
+            scene: attacker.scene.id,
+            attack: attack,
+            //targetList: targetList
+            //relativePosition: relativePosition,
+            //rof: rof,
+            //locationIDs: locationIDs,
+            //totalModifiers: totalModifiers,
+            //targetHex: targetHex,
+            //rangeDamageMult: rangeDamageMult
+        }
+
+        console.log(game.scenes.get(flags.scene));
+        console.log(game.scenes.get(flags.scene).templates);
+        console.log(game.scenes.get(flags.scene).templates.get(flags.template.id));
+
+        ChatMessage.create({ content: messageContent, user: game.user.id, type: CONST.CHAT_MESSAGE_STYLES.OTHER, flags: flags}); // Everything is assembled, send the message
     }
 
     static getAimingBonus(attack, aimTime, exactRange){
