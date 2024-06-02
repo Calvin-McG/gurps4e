@@ -855,6 +855,26 @@ export class macroHelpers {
         return targetAdjacent && rayWidth >= distanceFromRay; // Target is adjacent to the array (Not ahead or behind) and within the width of the beam.
     }
 
+    /**
+     *
+     * @param origin A Point { x: number, y: number} defining the origin of the ray
+     * @param distance A number defining the distance to the end of the ray
+     * @param direction The angle of the line
+     *
+     * @return destination A Point { x: number, y: number} defining the end of the ray
+     */
+    static getRayEndPoint(origin, distance, direction) {
+        let destination = {
+            x: 0,
+            y: 0
+        }
+        console.log(origin, distance, direction);
+        destination.x = Math.cos(direction * Math.PI/180) * distance + origin.x
+        destination.y = Math.sin(direction * Math.PI/180) * distance + origin.y
+
+        return destination
+    }
+
     // Part of the attack macro flow
     // This is the first step in the process where we know the attacker's token, the target token, and the full details of the attack being made.
     static attackOnTarget(attacker, attack, target) {
