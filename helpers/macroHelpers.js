@@ -1979,7 +1979,7 @@ export class macroHelpers {
     }
 
     /**
-     * @param target This is a token, or in the case of an area attack, a template
+     * @param target This is a token, or in the case of an area attack not directly involving a token, undefined.
      * @param attacker This is a token
      * @param attack This is an attack object
      * @param relativePosition This is a facing object
@@ -1996,21 +1996,42 @@ export class macroHelpers {
      * @param areaAttack this is a bool which is true when a template is involved.
      * @param sizeModModifier this is a number, only used to take back the +4 for targetting a hex in cases where we assumed they were but they opted not to.
      * @param rayPointOfAim this is a Point {x: number, y: number} only used when making beam/ray attacks and represents the actual point of aim, not the origin or end of the beam.
+     * @param template This is a temple or undefined, depending on whether the attack is an area attack
      */
-    static reportHitResult(target, attacker, attack, relativePosition, rof, locationArray, totalModifiers, moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange, rangeDamageMult, areaAttack, sizeModModifier, rayPointOfAim) {
+    static reportHitResult(target, attacker, attack, relativePosition, rof, locationArray, totalModifiers, moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange, rangeDamageMult, areaAttack, sizeModModifier, rayPointOfAim, template) {
+        // Begin label logic decribing the attack
         let label = "";
+        let templateLabel = "";
 
-        if (targetHex) { // It's an area attack firing at the hex
-            label = attacker.name + " attacks the ground at " + target.name + "'s feet with a " + attack.weapon + " " + attack.name;
+        if (typeof template !== "undefined") { // We were passed a template, it's an area attack
+            templateLabel = "<span style='font-weight: bolder; color: " + template.fillColor.css + ";text-shadow: -1px -1px 0 " + template.borderColor.css + ", 1px -1px 0 " + template.borderColor.css + ", -1px 1px 0 " + template.borderColor.css + ", 1px 1px 0 " + template.borderColor.css + ";'>" + template.t + " template</span>"
+            if (typeof target !== "undefined" && target.name) { // We have a target with a name
+                if (targetHex) { // It's firing at the hex
+                    label = attacker.name + " attacks the ground at " + target.name + "'s feet with a " + attack.weapon + " " + attack.name + " creating a " + templateLabel;
+                }
+                else { // It's directly targeting at the person
+                    label = attacker.name + " attacks " + target.name + " with a " + attack.weapon + " " + attack.name + " creating a " + templateLabel;
+                }
+            }
+            else { // We do not have a target with a name. The player is probably manually placing a template
+                if (targetHex) { // It's firing at the hex
+                    label = attacker.name + " uses their " + attack.weapon + " " + attack.name + " to strike the ground, manually targeting their " + templateLabel;
+                }
+                else { // It's not firing at the hex
+                    label = attacker.name + " uses their " + attack.weapon + " " + attack.name + " to manually target their " + templateLabel;
+                }
+            }
         }
-        else { // Whether it's an area attack or not, it's firing at the person.
+        else {
             label = attacker.name + " attacks " + target.name + " with a " + attack.weapon + " " + attack.name;
         }
 
         if (rangeDamageMult === 0.5 && attack.area !== "beam") { // If we're firing at 1/2D range, and it's not a beam (Which is handled separately)
             label += " at beyond 1/2D range" // Append a note to the label so it's clear to everyone that's what's happening.
         }
+        // End label logic decribing the attack
 
+        // Begin effective skill level logic
         let level = attack.level;
 
         // Homing specific logic
@@ -2064,7 +2085,9 @@ export class macroHelpers {
                 level = Math.min(level, 9); // Melee move and attacks are at -4, with a skill cap of 9
             }
         }
+        // End effective skill level logic
 
+        // Make the roll
         rollHelpers.rangedAttackRoll(level, mod, label, false, attack.malf).then( rollInfo => {
             let messageContent = rollInfo.content;
             let flags = {}
@@ -2075,7 +2098,7 @@ export class macroHelpers {
             }
 
             if (rollInfo.success === false) {
-                if (!areaAttack || !targetHex) { // Either it's not an area attack, or it is an area attack but they've opted not to strike the hex.
+                if ((!areaAttack || !targetHex) && (typeof target !== "undefined" && target.name)) { // Either it's not an area attack, or it is an area attack but they've opted not to strike the hex, and we have a name to reference.
                     messageContent += attacker.name + " misses " + target.name + "</br>";
                 }
                 else { // It is an area attack and it is targeting the hex
@@ -2109,7 +2132,7 @@ export class macroHelpers {
 
                 if (areaAttack) { // Scatter logic for area attacks.
                     if (rollInfo.malfunction === false || (rollInfo.malfunction === true && malfunctionType === "stoppage")) { // Either the weapon didn't malfunction, or it did malfunction but it was a stoppage which still fires a single shot.
-                        this.finalizeAreaAttack(messageContent, rollInfo.margin < 0 ? Math.abs(rollInfo.margin) : 0, target, attacker, attack, rangeDamageMult, rayPointOfAim);
+                        this.finalizeAreaAttack(messageContent, rollInfo.margin < 0 ? Math.abs(rollInfo.margin) : 0, target, attacker, attack, rangeDamageMult, rayPointOfAim, template);
                     }
                 }
             }
@@ -2164,7 +2187,7 @@ export class macroHelpers {
                 }
 
                 if (areaAttack) { // If it's an area attack.
-                    this.finalizeAreaAttack(messageContent, 0, target, attacker, attack, rangeDamageMult, rayPointOfAim); // Switch over to the finalize area logic
+                    this.finalizeAreaAttack(messageContent, 0, target, attacker, attack, rangeDamageMult, rayPointOfAim, template); // Switch over to the finalize area logic
                     return; // Return early
                 }
                 else { // It's not an area attack, carry on as usual.
