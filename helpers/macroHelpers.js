@@ -1964,6 +1964,10 @@ export class macroHelpers {
         modModal.render(true)
     }
 
+    static createTemplateLabel(template) {
+        return "<span style='font-weight: bolder; color: " + (template.fillColor.css ?? template.fillColor) + ";text-shadow: -1px -1px 0 " + (template.borderColor.css ?? template.borderColor) + ", 1px -1px 0 " + (template.borderColor.css ?? template.borderColor) + ", -1px 1px 0 " + (template.borderColor.css ?? template.borderColor) + ", 1px 1px 0 " + (template.borderColor.css ?? template.borderColor) + ";'>" + template.t + " template</span>"
+    }
+
     /**
      * @param target This is a token, or in the case of an area attack not directly involving a token, undefined.
      * @param attacker This is a token
@@ -1990,7 +1994,7 @@ export class macroHelpers {
         let templateLabel = "";
 
         if (typeof template !== "undefined") { // We were passed a template, it's an area attack
-            templateLabel = "<span style='font-weight: bolder; color: " + template.fillColor.css + ";text-shadow: -1px -1px 0 " + template.borderColor.css + ", 1px -1px 0 " + template.borderColor.css + ", -1px 1px 0 " + template.borderColor.css + ", 1px 1px 0 " + template.borderColor.css + ";'>" + template.t + " template</span>"
+            templateLabel = this.createTemplateLabel(template);
             if (typeof target !== "undefined" && target.name) { // We have a target with a name
                 if (targetHex) { // It's firing at the hex
                     label = attacker.name + " attacks the ground at " + target.name + "'s feet with a " + attack.weapon + " " + attack.name + " creating a " + templateLabel;
