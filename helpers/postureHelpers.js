@@ -3,7 +3,7 @@ export class postureHelpers {
     // Take the token document and update it's posture
     // Valid postures are found in CONFIG.postures on config-gurps4e.js
     static setPostureTokenDoc(tokenDoc, postureString) {
-        this.setPostureTokenObj(tokenDoc.object, postureString);
+        this.setPostureTokenObj(tokenDoc.object ?? tokenDoc, postureString);
     }
 
     // Take the token object and update it's posture
