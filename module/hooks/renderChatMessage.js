@@ -7,6 +7,7 @@ import {macroHelpers} from "../../helpers/macroHelpers.js";
 Hooks.on("renderChatMessage", async (app, html, msg) => {
   html.find('.attemptActiveDefences').click(attemptActiveDefences.bind(this));
   html.find('.noActiveDefences').click(noActiveDefences.bind(this));
+  html.find('.generateAreaAttacks').click(generateAreaAttacks.bind(this));
   html.find('.quickContest').click(quickContest.bind(this));
   html.find('.attemptResistanceRoll').click(attemptResistanceRoll.bind(this));
   html.find('.noResistanceRoll').click(noResistanceRoll.bind(this));
@@ -21,6 +22,12 @@ function attemptActiveDefences(event) {
 function noActiveDefences(event) {
   event.preventDefault();
   macroHelpers.noActiveDefences(event);
+}
+
+function generateAreaAttacks(event) {
+  console.log(event)
+  event.preventDefault();
+  macroHelpers.generateAreaAttacks(event);
 }
 
 function quickContest(event) {
