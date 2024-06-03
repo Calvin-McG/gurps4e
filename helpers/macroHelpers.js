@@ -2338,6 +2338,229 @@ export class macroHelpers {
         ChatMessage.create({ content: messageContent, user: game.user.id, type: CONST.CHAT_MESSAGE_STYLES.OTHER, flags: flags}); // Everything is assembled, send the message
     }
 
+    static generateAreaAttacks(event) {
+        event.preventDefault();
+        let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).flags;
+
+        // TODO - Refetch target list to account for an updated template location
+
+        // game.scenes.get(flags.scene).tokens.get(flags.target).actor;
+
+        let attack = flags.attack; // Get the attack object
+        let attacker = game.scenes.get(flags.scene).tokens.get(flags.attacker); // Get the attacker actor
+        let scene = game.scenes.get(flags.scene); // Get the scene object
+        let targetList = flags.targetList; // Get the array of token ids
+        let template = flags.template; // Get the template object
+        let rangeDamageMult = flags.rangeDamageMult;
+
+        targetList.forEach( targetId => {
+            this.generateAreaAttack(game.scenes.get(flags.scene).tokens.get(targetId), attack, attacker, template, rangeDamageMult, scene);
+        })
+    }
+
+    /**
+     * @param target The target actor
+     * @param attack The attack object
+     * @param attacker The attacker octor
+     * @param template The template object
+     * @param rangeDamageMult Either a 1 or 0.5 to multiply damage for range
+     * @param scene
+     */
+    static async generateAreaAttack(target, attack, attacker, template, rangeDamageMult, scene) {
+        let messageContent = "";
+        let otherDamageMult = 1;
+        let relativePosition = this.getFacing(template, target); // Method returns [facing,position]
+        relativePosition[0] = 1; // Whatever the result of the above was, make sure it counts as an attack from the front for the purpose of making active defences.
+        let locationIDs = ["upperChest.subLocation.chest"]; // By default, area attacks strike the chest as a large area injury.
+        let bombardment = false;
+        let bombardmentSkill = 0;
+        let collateral = false;
+        let dissipation = false;
+        let posture = postureHelpers.getPosture(target.effects) ?? { // Get the posture from the token, defaulting to standing if we can't fetch it properly.
+            name: "standing",
+            defenceMod: 0,
+            meleeAttackMod: 0,
+            rangedToHitMod: 0,
+            movementMultiplier: 1,
+            mpPerHex: 1
+        };
+
+        // Begin check for rof
+        let split;
+        let rof = {
+            shots: 1,
+            pellets: 1,
+            rof: 1
+        }
+        if (attack.rof) {
+            if (attack.rof.toString().toLowerCase().includes("x")){
+                split = attack.rof.toString().toLowerCase().split("x")
+                rof.shots = Math.max(split[0], 1);
+                rof.pellets = Math.max(split[1], 1);
+            }
+            else if (attack.rof.toString().toLowerCase().includes("*")){
+                split = attack.rof.toString().toLowerCase().split("*")
+                rof.shots = Math.max(split[0], 1);
+                rof.pellets = Math.max(split[1], 1);
+            }
+            else if (typeof attack.rof === "number"){
+                rof.shots = Math.max(attack.rof, 1);
+                rof.pellets = 1;
+            }
+            else {
+                rof.shots = Math.max(attack.rof.trim(), 1);
+                rof.pellets = 1;
+            }
+            rof.rof = rof.shots * rof.pellets;
+        }
+
+
+        // Begin flag checking
+        if (typeof attack.flags !== "undefined") { // Check to see if there are flags
+            if (attack.flags.toLowerCase().includes("bomba")) { // It's a bombardment attack, using the attack's base skill.
+                bombardment = true;
+                bombardmentSkill = attack.level;
+            }
+            else if (attack.flags.toString().toLowerCase().match(/bomb\d*/g)) { // It's a bombardment attack, using the attack's base skill.
+                bombardment = true;
+                bombardmentSkill = parseInt(attack.flags.toString().toLowerCase().match(/bomb\d*/g));
+            }
+            else if (attack.flags.toLowerCase().includes("collateral")) { // It's a collateral attack, like from a high rof attack missing.
+                collateral = true;
+            }
+            if (attack.flags.toLowerCase().includes("diss")) { // It's a bombardment attack, using the attack's base skill.
+                dissipation = true;
+            }
+        }
+        // End flag checking
+
+        // Begin logic for correcting rangeDamageMult
+        // TODO - If it's a beam, switch to using the distance from the origin to figure rangeDamageMult. Otherwise leave it as it is.
+        // End logic for correcting rangeDamageMult
+
+        if (bombardment || collateral || attack.area === "frag") { // It's one of the area types that involves a roll to see if and how many times they are hit.
+            let rollModifier = target.actor.system.bio.sm.value ?? 0; // All above types include size as a modifier for the attack
+
+            // Begin logic for roll Modifier
+            if (collateral || attack.area === "frag") { // It's a type that gets posture and range modifiers
+                rollModifier += posture.rangedToHitMod; // Apply the modifier for posture
+
+                // Begin logic to work out distance modifier
+                let distanceRaw = distanceHelpers.measureDistance(target, template, canvas.scene.grid.size / canvas.scene.grid.distance);
+                let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.grid.units);
+                let distancePenalty = distanceHelpers.distancePenalty(distanceYards);
+                rollModifier += distanceHelpers.distancePenalty(distanceYards); // Apply the modifier for distance from the origin of the attack.
+
+                if (collateral) { // It's a collaterall attack which gets rof modifiers.
+
+                    rollModifier += generalHelpers.rofToBonus(rof.rof);
+                }
+                // End logic to work out distance modifier
+            }
+            // End logic for roll Modifier
+
+            // Begin logic for rcl
+            let rcl = 999;
+            if (bombardment || collateral) { // Bombardment and collateral both use the rcl of the underlying attack
+                rcl = attack.rcl ? attack.rcl : 1;
+            }
+            else if (attack.area === "frag") { // Frag has a set rcl of 3
+                rcl = 3;
+            }
+            // End logic for rcl
+
+            // Begin logic for maximum quantity of hits
+            let maxHits = 1;
+            if (bombardment || collateral) { // Bombardment and collateral both use the rof of the underlying attack
+                maxHits = rof.rof;
+            }
+            else if (attack.area === "frag") { // Frag has no cap to the maximum number of hits
+                maxHits = Infinity;
+            }
+            // End logic for maximum quantity of hits
+
+            // Begin logic for roll level
+            let rollLevel = 3;
+            if (bombardment) {
+                rollLevel = bombardmentSkill; // Use the bombardment skill we worked out earlier
+            }
+            else if (collateral) {
+                rollLevel = Math.min(attack.level, 9); // Use the attack's level, but capped at 9.
+            }
+            else if (attack.area === "frag") {
+                rollLevel = 15; // Frag always uses skill 15
+            }
+            // End logic for roll level
+
+            // Make the roll to find out how many hits we made
+            let areaRoll = await rollHelpers.skillRoll(rollLevel + rollModifier, 0, "", false);
+
+            // Begin message logic and number of hits
+            messageContent += "Rolling against a " + rollLevel + rollModifier + ", the result was a";
+            let actualHits = 0;
+            if (areaRoll.success && areaRoll.margin === 0) {
+                messageContent += "n exact success, resulting in one hit.";
+                actualHits = 1;
+            }
+            else if (areaRoll.success) {
+                messageContent += " success by " + Math.abs(areaRoll.margin);
+                actualHits = 1 + Math.floor(areaRoll.margin / rcl); // One hit, plus one for full multiple of rcl
+                actualHits = Math.min(actualHits, maxHits); // Cap hits by max hits.
+                messageContent += ", resulting in " + actualHits + " hits."
+            }
+            else {
+                messageContent += " failure by " + Math.abs(areaRoll.margin) + ", resulting in no hits.";
+                actualHits = 0;
+            }
+            // End message logic and number of hits
+
+            let newAttack = attack; // Start creating a new attack with the values we came up with above.
+            attack.rof = actualHits;
+            attack.rcl = rcl;
+            attack.level = rollLevel;
+
+            let locations = this.getRandomHitLocations(target, attacker, attack, relativePosition, actualHits);
+            let flags = {
+                target: target.id, // Or maybe use actorId
+                attacker: attacker.id,
+                scene: scene.id,
+                attack: newAttack,
+                relativePosition: relativePosition,
+                rof: rof,
+                locationIDs: locations,
+                totalModifiers: rollModifier,
+                //targetHex: targetHex,
+                rangeDamageMult: rangeDamageMult,
+                areaAttack: true,
+                otherDamageMult: 1
+            }
+
+            messageContent += target.name + " is struck in the...</br>";
+            for (let m = 0; m < locations.length; m++){
+                let firstLocation = foundry.utils.getProperty(target.actor.system.bodyType.body, (locations[m].id).split(".")[0]);
+                let firstLabel = firstLocation ? firstLocation.label : "";
+                let secondLabel = locations[m].label
+                let locationLabel;
+                if (firstLabel === secondLabel){
+                    locationLabel = firstLabel;
+                }
+                else if (firstLabel === ''){
+                    locationLabel = secondLabel;
+                }
+                else {
+                    locationLabel = firstLabel + " - " + secondLabel;
+                }
+                messageContent += "<div style='display: grid; grid-template-columns: 0.1fr auto;'><input type='checkbox' checked class='checkbox' id='" + locations[m].id + "' value='" + locations[m].id + "' name='" + locations[m].id + "' /><span style='line-height: 26px;'>" + locationLabel + "</span></div>";
+            }
+
+            messageContent += "</br><input type='button' class='attemptActiveDefences' value='Attempt Active Defences'/><input type='button' class='noActiveDefences' value='No Active Defences'/>"
+            ChatMessage.create({ content: messageContent, user: game.user.id, type: CONST.CHAT_MESSAGE_STYLES.OTHER, flags: flags}); // Everything is assembled, send the message
+        }
+        else { // It's an area type where there is no additional roll at this point.
+            // TODO - Active defence and damage
+        }
+    }
+
     static getAimingBonus(attack, aimTime, exactRange){
         let aimingBonus = 0;
         if (typeof aimTime !== "undefined" && aimTime > 0) { // They are aiming for any amount of time
