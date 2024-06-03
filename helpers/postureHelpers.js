@@ -26,7 +26,7 @@ export class postureHelpers {
     static setPostureActor(actor, postureString, tokenId) {
         let dependentTokens = actor.getDependentTokens() // Get the full list of dependent tokens the actor has
         dependentTokens.forEach( dependentToken => { // Loop through them
-            if (dependentToken.id === tokenId) { // Find the one that matches the id of the token for which we are changing posture
+            if (dependentToken.id === tokenId || typeof tokenId === "undefined") { // Find the one that matches the id of the token for which we are changing posture
                 this.setPostureTokenDoc(dependentToken, postureString); // Call the method to change posture by token document
             }
         })
