@@ -2969,7 +2969,7 @@ export class macroHelpers {
         }
 
         // Undefined & NaN check for the modifier
-        if (typeof mod !== "number" || !mod.isNaN) {
+        if (typeof mod !== "number" || mod.isNaN) {
             mod = 0;
         }
 
