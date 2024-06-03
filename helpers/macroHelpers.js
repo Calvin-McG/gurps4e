@@ -1,10 +1,10 @@
-import { actorHelpers } from "./actorHelpers.js";
-import { distanceHelpers } from "./distanceHelpers.js";
-import { attackHelpers } from "./attackHelpers.js";
-import { rollHelpers } from "./rollHelpers.js";
-import { skillHelpers } from "./skillHelpers.js";
-import { postureHelpers } from "./postureHelpers.js";
-import { generalHelpers } from "./generalHelpers.js";
+import {actorHelpers} from "./actorHelpers.js";
+import {distanceHelpers} from "./distanceHelpers.js";
+import {attackHelpers} from "./attackHelpers.js";
+import {rollHelpers} from "./rollHelpers.js";
+import {skillHelpers} from "./skillHelpers.js";
+import {postureHelpers} from "./postureHelpers.js";
+import {generalHelpers} from "./generalHelpers.js";
 
 export class macroHelpers {
 
@@ -174,13 +174,7 @@ export class macroHelpers {
         }
         relativeAngle = Math.round(relativeAngle); // Round the angle so we don't get cases like 120.172 degrees.
 
-
-        let attackerTokenActor = attackerToken.actor;
-        if (!attackerTokenActor){
-            attackerTokenActor = attackerToken.document.actor;
-        }
-
-        let targetTokenActor = targetToken.actor;
+        let targetTokenActor = targetToken.actor ?? targetToken;
         if (!targetTokenActor){
             targetTokenActor = targetToken.document.actor;
         }
@@ -880,10 +874,6 @@ export class macroHelpers {
     // Part of the attack macro flow
     // This is the first step in the process where we know the attacker's token, the target token, and the full details of the attack being made.
     static attackOnTarget(attacker, attack, target) {
-        if (typeof attack.area === "string" && attack.area !== "") { // Attack.area is a string and not blank
-            console.log("This is an area attack of type " + attack.area); // This is an area attack of some kind
-        }
-
         let bodyParts = Object.keys(target.actor.system.bodyType.body); // Collect all the bodypart names
         let relativePosition = this.getFacing(attacker, target); // Method returns [facing,position]
 
@@ -2320,8 +2310,6 @@ export class macroHelpers {
             else {
                 messageContent += "No one was caught in the area<br/>";
             }
-
-            console.log(targetList);
             // End target selection
 
             flags = {
@@ -2337,10 +2325,6 @@ export class macroHelpers {
                 //targetHex: targetHex,
                 rangeDamageMult: rangeDamageMult
             }
-
-            console.log(game.scenes.get(flags.scene));
-            console.log(game.scenes.get(flags.scene).templates);
-            console.log(game.scenes.get(flags.scene).templates.get(flags.template.id));
 
             messageContent += "<hr>";
             messageContent += "You can now make final adjustments to token and template locations before moving onto the next step:<br/>";
@@ -2487,6 +2471,17 @@ export class macroHelpers {
 
     // The following section relates to the active defence portion of the combat macro.
     // This method is run when the user clicks the "Attempt Active Defences" button
+    // Values used here are fetched from flags on the parent chat message
+    // attack - an attack object
+    // attacker - the id of the attacker
+    // locationIDs - an array of location ids like 'legLeft.subLocation.knee'
+    // rangeDamageMult - Either 1 or 0.5
+    // relativePosition - the facing object
+    // rof - a rof object with .rof, .pellets, and .shots
+    // scene - the scene id
+    // target - the target id
+    // targetHex - Whether the hex itself is being targeted
+    // totalModifiers - a number
     static attemptActiveDefences(event) {
         event.preventDefault();
 
@@ -2509,7 +2504,7 @@ export class macroHelpers {
 
         let targetHex = flags.targetHex;
 
-        let facing = this.getFacing(attackerToken, targetToken);
+        let facing = flags.relativePosition ?? this.getFacing(attackerToken, targetToken);
         let target = targetToken.actor;
 
         let dodges = [];
@@ -3190,7 +3185,12 @@ export class macroHelpers {
         if (options.drop && type === "dodge") {
             label += "and drop ";
             totalModifier += 3;
-            postureHelpers.setPostureTokenDoc(target.token,"lyingprone")
+            if (typeof target.token !== "undefined" && target.token !== null) { // A token is present if the token and actor are not directly linked. (As in, the token is a separate copy of the actor)
+                postureHelpers.setPostureTokenDoc(target.token, "lyingprone");
+            }
+            else { // The token is directly linked to the actor, meaning the token on the scene is a direct representation of that specific actor
+                postureHelpers.setPostureActor(target, "lyingprone");
+            }
         }
         else if (options.retreat) {
             label += "and retreat ";
