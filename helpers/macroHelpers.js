@@ -1441,18 +1441,23 @@ export class macroHelpers {
         }
     }
 
-    static selectedRandom(target, attacker, attack, relativePosition, rof) { // Select random hit location
+    static getRandomHitLocations(target, attacker, attack, relativePosition, quantity) {
         let locations = [];
-        for (let i = 0; i < rof.rof; i++){ // Find a different hit location for each shot
+        for (let i = 0; i < quantity; i++){ // Find a different hit location for each shot
             let generalLocation = this.randomHitLocation(target, relativePosition) // Select a random location
             if (generalLocation.subLocation){ // Check to see if there are sub locations
-                let specificLocation = this.randomComplexHitLocation(generalLocation, relativePosition); // Get the sub location
-                locations[i] = specificLocation;
+                locations[i] = this.randomComplexHitLocation(generalLocation, relativePosition); // Get the sub location
             }
-            else {
-                locations[i] = generalLocation;
+            else { // Otherwise
+                locations[i] = generalLocation; // Use the general location
             }
         }
+
+        return locations;
+    }
+
+    static selectedRandom(target, attacker, attack, relativePosition, rof) { // Select random hit location
+        let locations = this.getRandomHitLocations(target, attacker, attack, relativePosition, rof.rof);
 
         this.attackModifiers(target, attacker, attack, relativePosition, rof, locations, 0) // There is no hit location penalty since they're going with a random location
     }
