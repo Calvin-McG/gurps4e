@@ -737,7 +737,7 @@ export class macroHelpers {
      * @param attack
      * @param template
      */
-    static correctTemplate(attacker, attack, template) {
+    static async correctTemplate(attacker, attack, template) {
         let correctedDistance = distanceHelpers.numYardsToNumGridUnitOfMeasure(this.setTemplateDistance(attack), canvas.scene.grid.units);
         let correctedWidth;
         let rayPointOfAim;
@@ -745,15 +745,15 @@ export class macroHelpers {
             if (attack.area === "beam") { // We have a proper distance and it is a beam
                 correctedWidth = distanceHelpers.numYardsToNumGridUnitOfMeasure(1, canvas.scene.grid.units);
                 rayPointOfAim = this.getRayEndPoint({ x: template.x, y: template.y}, template.distance, template.direction);
-                template.update({ distance: correctedDistance, width: correctedWidth});
+                await template.update({ distance: correctedDistance, width: correctedWidth});
             }
             else { // We have a proper distance and it is not a beam
-                template.update({ distance: correctedDistance});
+                await template.update({ distance: correctedDistance});
             }
         }
         else if (attack.area === "beam") { // We don't have a proper distance, but it is a beam
             correctedWidth = distanceHelpers.numYardsToNumGridUnitOfMeasure(1, canvas.scene.grid.units);
-            template.update({ width: correctedWidth});
+            await template.update({ width: correctedWidth});
         }
 
         this.attackOnArea(attacker, attack, undefined, template, rayPointOfAim); // Pass undefined for the target token so we know our point of aim is a template, not an actor.
@@ -880,8 +880,6 @@ export class macroHelpers {
     // Part of the attack macro flow
     // This is the first step in the process where we know the attacker's token, the target token, and the full details of the attack being made.
     static attackOnTarget(attacker, attack, target) {
-        console.log(attack);
-        console.log(attack.area);
         if (typeof attack.area === "string" && attack.area !== "") { // Attack.area is a string and not blank
             console.log("This is an area attack of type " + attack.area); // This is an area attack of some kind
         }
@@ -1874,13 +1872,25 @@ export class macroHelpers {
             }
         }
 
-        if (areaAttack && typeof target !== "undefined") { // It's an area attack, but we still have a specific target. Let the player optionally target either the person or the hex.
+        let canTargetHex = (attack.type === "affliction" ? false : areaAttack); // Afflictions never get the +4 for targeting a hex. Otherwise just check to see if it's an area attack.
+        // Correct for flags on the attack changing whether it can target the hex
+        if ((typeof attack.flags !== "undefined" && attack.flags.toLowerCase().includes("ytargethex"))) { // It's been explicitly set to get the +4.
+            canTargetHex = true;
+        }
+        else if ((typeof attack.flags !== "undefined" && attack.flags.toLowerCase().includes("ntargethex"))) { // It's been explicitly set to not get the +4.
+            canTargetHex = false;
+        }
+
+        if (areaAttack && canTargetHex && typeof target !== "undefined") { // It's an area attack, but we still have a specific target. Let the player optionally target either the person or the hex.
             modModalContent += "<tr>" +
                 "<td>Target The Hex (+4)</td><td><input type='checkbox' class='checkbox' id='targetHex' value='targetHex' name='contactEx' checked /></td><td>Decide if you are targeting the hex to claim a +4, or the actor to claim the " + (sizeModModifier > 0 ? ("+" + sizeModModifier) : sizeModModifier) + " for their SM.</td>" +
                 "</tr>"
         }
-        else if (areaAttack) { // It's an area attack, but we have no single actor target.
+        else if (areaAttack && canTargetHex) { // It's an area attack, but we have no single actor target.
             modModalContent += "<tr><td>Target The Hex (+4)</td><td><input type='checkbox' class='checkbox' id='targetHex' value='targetHex' name='contactEx' checked /></td><td>An area attack gets +4 for targeting a hex.</td></tr>";
+        }
+        else if (attack.type === "affliction") { // It's an affliction, there is no modifier for size.
+            sizeModModifier = 0;
         }
         else { // It's not an area attack, provide the value for the target's SM.
             modModalContent += "<tr><td>SM Modifier:</td><td>" + sizeModModifier + "</td><td>" + smMessage + "</td></tr>";
@@ -1888,16 +1898,12 @@ export class macroHelpers {
 
         // This block totals up modifiers which impact both melee and ranged attacks.
 
-        if (areaAttack) { // Area attacks don't get locations, rof, or size mods.
+        if (areaAttack && canTargetHex) { // Area attacks don't get locations, rof, or size mods.
             totalModifier += 4; // Assume they are claiming the +4. We will remove it later if they uncheck the box.
         }
         else { // Only non-area attacks get to have location, rof, and size modifiers
             totalModifier += (locationPenalty + sizeModModifier); // Total up the modifiers
         }
-
-        // This block determines whether to apply the sizeModModifier or +4 for targetting a hex
-
-
 
         let oddsEffectiveSkill = +attack.level + +totalModifier
 
@@ -1940,7 +1946,7 @@ export class macroHelpers {
                     let evaluate = html.find('#evaluate')[0] ? html.find('#evaluate')[0].checked : undefined;
                     let exactRange = html.find('#exactRange')[0] ? html.find('#exactRange')[0].checked : undefined;
                     let closeRange = html.find('#closeRange')[0] ? html.find('#closeRange')[0].checked : undefined;
-                    let targetHex = typeof html.find('#targetHex')[0] !== "undefined" ? html.find('#targetHex')[0].checked : (typeof target === "undefined" ? true : false); // If the targetHex checkbox is present, use it to control the bool. If the checkbox isn't there, instead check to see if there was a target token in the first place.
+                    let targetHex = typeof html.find('#targetHex')[0] !== "undefined" ? html.find('#targetHex')[0].checked : ((typeof target === "undefined" && attack.type !== "affliction") ? true : false); // If the targetHex checkbox is present, use it to control the bool. If the checkbox isn't there, instead check to see if there was a target token in the first place and that it's not an affliction
                     this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (+totalModifier + +mod), moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange, rangeDamageMult, areaAttack, sizeModModifier, rayPointOfAim, template)
                 }
             }
@@ -1984,7 +1990,7 @@ export class macroHelpers {
      * @param template This is a temple or undefined, depending on whether the attack is an area attack
      */
     static reportHitResult(target, attacker, attack, relativePosition, rof, locationArray, totalModifiers, moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange, rangeDamageMult, areaAttack, sizeModModifier, rayPointOfAim, template) {
-        // Begin label logic decribing the attack
+        // Begin label logic describing the attack
         let label = "";
         let templateLabel = "";
 
@@ -2028,7 +2034,7 @@ export class macroHelpers {
 
         let mod = totalModifiers;
 
-        if (areaAttack && !targetHex) { // The actor is making an area attack, but not targeting the hex. Remove the -4 we granted earlier and replace it with the target's size modifier
+        if (areaAttack && attack.type !== "affliction" && !targetHex) { // The actor is making an area attack, but not targeting the hex. Remove the -4 we granted earlier and replace it with the target's size modifier
             mod -= 4; // Remove +4
             mod += sizeModModifier; // Apply the size mod
         }
@@ -2236,67 +2242,109 @@ export class macroHelpers {
      * @param rayPointOfAim this is a Point {x: number, y: number} only used when making beam/ray attacks and represents the actual point of aim, not the origin or end of the beam.
      * @param template The template being used for this attack
      */
-    static finalizeAreaAttack(messageContent, scatterDistance, target, attacker, attack, rangeDamageMult, rayPointOfAim, template) {
+    static async finalizeAreaAttack(messageContent, scatterDistance, target, attacker, attack, rangeDamageMult, rayPointOfAim, template) {
+        let flags = {};
 
         // Begin scatter logic
+        let scatter = true;
         let direction = this.randomInteger(0, 360) // Used for scatter logic, the direction it's scattering
-        if (template.t === "ray") {
-            let scatterResult = this.getScatteredPoint(rayPointOfAim, scatterDistance, direction); // Get the new point of aim
-            let scatterAngle = distanceHelpers.getAngleFromAtoB(attacker.center, scatterResult); // Get the angle from our attacker's centre to the new point of aim.
-            let x = attacker.center.x + ((canvas.scene.grid.size * 0.5) * Math.cos(scatterAngle * Math.PI / 180));
-            let y = attacker.center.y + ((canvas.scene.grid.size * 0.5) * Math.sin(scatterAngle * Math.PI / 180));
-            template.update({ direction: scatterAngle, x: x, y: y }); // Point the beam in that direction
-        }
-        else if (template.t === "circle") {
-            let scatterResult = this.getScatteredPoint(template, scatterDistance, direction);
-            template.update({ x: scatterResult.x, y: scatterResult.y }); // Point the beam in that direction
-        }
-        else { // Some other template got passed through, throw an error exit early.
-            console.error("Attempted to finalizeAreaAttack for unsupported template type.")
-            return;
-        }
-        if (Math.abs(scatterDistance) > 0) { // If we scattered
-            messageContent += "The attack scatters " + scatterDistance + " yards " + "<span style='display: inline-block; rotate: " + direction + "deg'>&#129034;</span>" + "</br>"; // Tell the user about it.
-        }
-        // End scatter logic
 
-        // Begin target selection
-        // Once the attack has scattered, get the list of targets still in the area
-        let targetList = [];
-        if (attack.area === "area" || attack.area === "ex" || attack.area === "frag") {
-            canvas.tokens.objects.children.forEach( token => {
-                if (this.isTokenInCircleTemplate(token, template)) {
-                    targetList.push(token);
-                }
-            })
+        // Get default scatter status
+        if (attack.type === "ranged") { // It's a ranged weapon which scatters by default
+            scatter = true;
         }
-        else if (attack.area === "beam") {
-            canvas.tokens.objects.children.forEach( token => {
-                if (this.isTokenInRayTemplate(token, template)) {
-                    targetList.push(token);
-                }
-            })
-        }
-        console.log(targetList);
-        // End target selection
-
-        let flags = {
-            template: template,
-            attacker: attacker.document.id,
-            scene: attacker.scene.id,
-            attack: attack,
-            //targetList: targetList
-            //relativePosition: relativePosition,
-            //rof: rof,
-            //locationIDs: locationIDs,
-            //totalModifiers: totalModifiers,
-            //targetHex: targetHex,
-            //rangeDamageMult: rangeDamageMult
+        else { // It's a melee or affliction which does not scatter by default.
+            scatter = false;
         }
 
-        console.log(game.scenes.get(flags.scene));
-        console.log(game.scenes.get(flags.scene).templates);
-        console.log(game.scenes.get(flags.scene).templates.get(flags.template.id));
+        // Correct for flags on the attack changing scatter status.
+        if ((typeof attack.flags !== "undefined" && attack.flags.toLowerCase().includes("yscatter"))) { // It's been explicitly told to scatter.
+            scatter = true;
+        }
+        else if ((typeof attack.flags !== "undefined" && attack.flags.toLowerCase().includes("nscatter"))) { // It's been explicitly told not to scatter.
+            scatter = false;
+        }
+
+        if (scatter || Math.abs(scatterDistance) === 0) { // This attack can scatter and is scattering, or don't need to scatter in the first place.
+            if (template.t === "ray") {
+                let scatterResult = this.getScatteredPoint(rayPointOfAim, scatterDistance, direction); // Get the new point of aim
+                let scatterAngle = distanceHelpers.getAngleFromAtoB(attacker.center, scatterResult); // Get the angle from our attacker's centre to the new point of aim.
+                let x = attacker.center.x + ((canvas.scene.grid.size * 0.5) * Math.cos(scatterAngle * Math.PI / 180));
+                let y = attacker.center.y + ((canvas.scene.grid.size * 0.5) * Math.sin(scatterAngle * Math.PI / 180));
+                await template.update({ direction: scatterAngle, x: x, y: y }); // Point the beam in that direction
+            }
+            else if (template.t === "circle") {
+                let scatterResult = this.getScatteredPoint(template, scatterDistance, direction);
+                await template.update({ x: scatterResult.x, y: scatterResult.y }); // Point the beam in that direction
+            }
+            else { // Some other template got passed through, throw an error exit early.
+                console.error("Attempted to finalizeAreaAttack for unsupported template type.")
+                return;
+            }
+            if (Math.abs(scatterDistance) > 0) { // If we scattered
+                messageContent += "The attack scatters " + scatterDistance + " yards " + "<span style='display: inline-block; rotate: " + direction + "deg'>&#129034;</span>" + "</br>"; // Tell the user about it.
+            }
+            // End scatter logic
+
+            // Begin target selection
+            // Once the attack has scattered, get the list of targets still in the area
+            messageContent += "<hr>";
+            let targetList = [];
+            let targetNames = "";
+            if (attack.area === "area" || attack.area === "ex" || attack.area === "frag") {
+                canvas.tokens.objects.children.forEach( token => {
+                    if (this.isTokenInCircleTemplate(token, template)) {
+                        targetList.push(token.id);
+                        targetNames += token.name + "<br/>";
+                    }
+                })
+            }
+            else if (attack.area === "beam") {
+                canvas.tokens.objects.children.forEach( token => {
+                    if (this.isTokenInRayTemplate(token, template)) {
+                        targetList.push(token.id);
+                        targetNames += token.name + "<br/>";
+                    }
+                })
+            }
+
+            if (targetList.length > 0) { // There was a non-zero number of targets
+                messageContent += "The following target's were caught in the area<br/>";
+                messageContent += targetNames;
+            }
+            else {
+                messageContent += "No one was caught in the area<br/>";
+            }
+
+            console.log(targetList);
+            // End target selection
+
+            flags = {
+                template: template,
+                attacker: attacker.document.id,
+                scene: attacker.scene.id,
+                attack: attack,
+                targetList: targetList,
+                //relativePosition: relativePosition,
+                //rof: rof,
+                //locationIDs: locationIDs,
+                //totalModifiers: totalModifiers,
+                //targetHex: targetHex,
+                rangeDamageMult: rangeDamageMult
+            }
+
+            console.log(game.scenes.get(flags.scene));
+            console.log(game.scenes.get(flags.scene).templates);
+            console.log(game.scenes.get(flags.scene).templates.get(flags.template.id));
+
+            messageContent += "<hr>";
+            messageContent += "You can now make final adjustments to token and template locations before moving onto the next step:<br/>";
+            messageContent += "<input type='button' class='generateAreaAttacks' value='Generate Area Attacks'/>"
+        }
+        else if (!scatter && Math.abs(scatterDistance) !== 0) { // This attack cannot scatter, but it was meant to.
+            messageContent += "The attack fails</br>"; // Tell the user about it.
+            await template.delete();
+        }
 
         ChatMessage.create({ content: messageContent, user: game.user.id, type: CONST.CHAT_MESSAGE_STYLES.OTHER, flags: flags}); // Everything is assembled, send the message
     }
