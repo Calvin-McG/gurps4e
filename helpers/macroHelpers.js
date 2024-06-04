@@ -2601,16 +2601,19 @@ export class macroHelpers {
 
         if (actualHits > 0) {
             messageContent += target.name + " is struck in the...</br>";
-            for (let m = 0; m < locations.length; m++){
-                let firstLocation = foundry.utils.getProperty(target.actor.system.bodyType.body, (locations[m].id).split(".")[0]);
-                let firstLabel = firstLocation ? firstLocation.label : "";
-                let secondLabel = locations[m].label
+            for (let m = 0; (m < locations.length || m < actualHits); m++){
+                let firstLocation = foundry.utils.getProperty(target.actor.system.bodyType.body, (locations[m].id ?? locations[m]).split(".")[0]);
+                let firstLabel = firstLocation.label ?? firstLocation ?? "";
+                let secondLabel = locations[m].label ?? "";
                 let locationLabel;
                 if (firstLabel === secondLabel){
                     locationLabel = firstLabel;
                 }
                 else if (firstLabel === ''){
                     locationLabel = secondLabel;
+                }
+                else if (secondLabel === ''){
+                    locationLabel = firstLabel;
                 }
                 else {
                     locationLabel = firstLabel + " - " + secondLabel;
