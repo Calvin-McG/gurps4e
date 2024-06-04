@@ -2402,6 +2402,7 @@ export class macroHelpers {
             mpPerHex: 1
         };
         let newAttack = attack;
+        let locations = ['upperChest.subLocation.chest'];
 
         // Begin check for rof
         let split;
@@ -2557,12 +2558,13 @@ export class macroHelpers {
             newAttack.rof = actualHits;
             newAttack.rcl = rcl;
             newAttack.level = rollLevel;
+
+            locations = this.getRandomHitLocations(target, attacker, attack, relativePosition, actualHits);
         }
         else { // It's an area type where there is no additional roll at this point.
             // TODO - Active defence and damage
         }
 
-        let locations = this.getRandomHitLocations(target, attacker, attack, relativePosition, actualHits);
         let flags = {
             target: target.id, // Or maybe use actorId
             attacker: attacker.id,
