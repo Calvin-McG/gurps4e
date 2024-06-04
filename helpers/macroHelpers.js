@@ -2385,7 +2385,7 @@ export class macroHelpers {
         let messageContent = "";
         let actualHits = 0;
         let rollModifier = 0;
-        let otherDamageMult = 1;
+        let otherDamageDiv = 1;
         let relativePosition = this.getFacing(template, target); // Method returns [facing,position]
         relativePosition[0] = 1; // Whatever the result of the above was, make sure it counts as an attack from the front for the purpose of making active defences.
         let locationIDs = ["upperChest.subLocation.chest"]; // By default, area attacks strike the chest as a large area injury.
@@ -2452,10 +2452,6 @@ export class macroHelpers {
             }
         }
         // End flag checking
-
-        // Begin logic for correcting rangeDamageMult
-        // TODO - If it's a beam, switch to using the distance from the origin to figure rangeDamageMult. Otherwise leave it as it is.
-        // End logic for correcting rangeDamageMult
 
         if (bombardment || collateral || attack.area === "frag") { // It's one of the area types that involves a roll to see if and how many times they are hit.
             rollModifier = target.actor.system.bio.sm.value ?? 0; // All above types include size as a modifier for the attack
@@ -2562,7 +2558,30 @@ export class macroHelpers {
             locations = this.getRandomHitLocations(target, attacker, attack, relativePosition, actualHits);
         }
         else { // It's an area type where there is no additional roll at this point.
-            // TODO - Active defence and damage
+            actualHits = 1;
+
+            let distanceRaw = distanceHelpers.measureDistance(target, template, canvas.scene.grid.size / canvas.scene.grid.distance); // Get the distance from the origin
+            let distanceFromOrigin = distanceHelpers.convertToYards(distanceRaw, canvas.scene.grid.units); // Convert to yards
+
+            if (attack.area === "ex" || (attack.area === "area" && dissipation)) { // area with dissipation behave the same as ex1 attacks
+                if (dissipation){ // Dissipation attacks divide damage by number of yards
+                    otherDamageDiv = Math.floor(distanceFromOrigin);
+                }
+                else { // Explosion attacks divide damage by number of yards times the exDivisor
+                    otherDamageDiv = (Math.floor(distanceFromOrigin) * attack.exDivisor);
+                }
+            }
+            else if (attack.area === "area") {
+                // I don't think areas need special handling?
+            }
+            else if (attack.area === "beam") {
+                if (typeof attack.halfRange === "number" && distanceFromOrigin > attack.halfRange) { // We have a halfRange and the distanceFromOrigin is greater
+                    rangeDamageMult = 0.5;
+                }
+                else {
+                    rangeDamageMult = 1;
+                }
+            }
         }
 
         let flags = {
@@ -2577,7 +2596,7 @@ export class macroHelpers {
             //targetHex: targetHex,
             rangeDamageMult: rangeDamageMult,
             areaAttack: true,
-            otherDamageMult: 1
+            otherDamageDiv: otherDamageDiv,
         }
 
         if (actualHits > 0) {
