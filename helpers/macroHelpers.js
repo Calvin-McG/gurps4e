@@ -3759,6 +3759,7 @@ export class macroHelpers {
         let attack 			= flags.attack;
         let targetST 		= target.system.primaryAttributes.knockback.value;
         let targetHex		= flags.targetHex;
+        let otherDamageDiv = flags.otherDamageDiv ?? 1;
         let effectiveTotalKnockbackDamage = 0; // This variable stores the accumulating effect of knockback from all hits
         let totalInjury 	= 0;
         let totalFatInj 	= 0;
@@ -3957,6 +3958,10 @@ export class macroHelpers {
                 totalDamage = Math.floor(totalDamage * rangeDamageMult); // Halve damage and round down.
             }
 
+            if (otherDamageDiv !== 1) { // This is probably the result of an explosion's damage fall off at range
+                totalDamage = Math.floor(totalDamage / otherDamageDiv);
+            }
+
             if (totalDamage <= 0) { // If damage is 0 or less, account for minimum damage for each type
                 if (damageType.type === "cr") { // Minimum crushing damage is 0
                     totalDamage = 0;
@@ -3967,11 +3972,17 @@ export class macroHelpers {
             }
 
             if (rangeDamageMult === 0.5 && !armourAsDice) { // If the attack was made beyond half range and we haven't already halved damage due to using armour as dice.
-                html += "<label class='damage-dice-small-adds'>/2 = " + totalDamage + "</label>"; // Include "/2" in the string so it's clear the result was halved.
+                html += "<label class='damage-dice-small-adds'>/2"; // Include "/2" in the string so it's clear the result was halved.
             }
             else {
-                html += "<label class='damage-dice-small-adds'> = " + totalDamage + "</label>";
+                html += "<label class='damage-dice-small-adds'>";
             }
+
+            if (otherDamageDiv !== 1) { // If we had a damage divisor from another source, include it
+                html += "/" + otherDamageDiv;
+            }
+
+            html += " = " + totalDamage + "</label>";
 
             if (parseInt(armourDivisor.toString()) !== 1 && largeArea){
                 html += "<label class='damage-dice-small-adds'> (" + armourDivisor + ") Large Area Injury</label>";
