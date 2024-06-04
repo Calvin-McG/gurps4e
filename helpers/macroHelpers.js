@@ -4298,41 +4298,4 @@ export class macroHelpers {
 
         return damageType;
     }
-
-    static async resetDamage() {
-        let reserves = {
-            er: {
-                value: this.system.reserves.er.max
-            },
-            hp: {
-                value: this.system.reserves.hp.max
-            },
-            fp: {
-                value: this.system.reserves.fp.max
-            }
-        }
-
-        this.system.reserves = reserves
-
-        let keys = Object.keys(this.system.bodyType.body);
-
-        for (let k = 0; k < keys.length; k++) {
-            let location = foundry.utils.getProperty(this.system.bodyType.body, keys[k]);
-
-            if (location.hp){ // Check to see if the location tracks HP
-                location.hp.value = location.hp.max; // Reset HP
-            }
-            if (location.subLocation) { // Check to see if the location has sublocations
-                let subLocationKeys = Object.keys(location.subLocation); // Gather the subLocation keys for the loop
-                for (let l = 0; l < subLocationKeys.length; l++) { // Loop through the subLocations
-                    let subLocation = foundry.utils.getProperty(location.subLocation, subLocationKeys[l]);
-                    if (subLocation.hp) { // Check to see if the subLocation tracks HP
-                        subLocation.hp.value = subLocation.hp.max; // Reset HP
-                    }
-                }
-            }
-        }
-
-        this.update({ 'data': this.system });
-    }
 }
