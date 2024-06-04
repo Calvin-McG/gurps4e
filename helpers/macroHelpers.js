@@ -3785,9 +3785,10 @@ export class macroHelpers {
             armourDivisor = attack.armourDivisor; // Set it to whatever they entered.
         }
 
-        // Work out if this is a Large Area Attack
-        // The attack is an area attack or an explosion, making it a Large Area Attack (Rules for which are on B400)
-        if (attack.damageType.toString().toLowerCase().includes("area") || attack.damageType.toString().toLowerCase().includes("la") || attack.damageType.toString().toLowerCase().includes("ex") ) {
+        // Work out if this is a Large Area Attack (Rules for which are on B400)
+        if (attack.damageType.toString().toLowerCase().includes("la") || // The attack has been explicitly flagged as a large area attack
+            ((attack.area === "ex" || attack.area === "beam" || attack.area === "area") && // The attack is an area type
+                (typeof attack.flags === "undefined" || (!attack.flags.toLowerCase().includes("collateral") && !attack.flags.toLowerCase().includes("bomb"))))) { // But it's not flagged as collateral or bombardment
             largeArea = true; // Set the area flag
             largeAreaDR = this.getLargeAreaDR(target.system.bodyType.body); // Store the largeAreaDR for later.
         }
