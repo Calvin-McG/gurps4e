@@ -6155,13 +6155,13 @@ export class gurpsItem extends Item {
     let st = attributeHelpers.calcStOrHt(this.actor.system.primaryAttributes.strength, attributeHelpers.calcSMDiscount(this.actor.system.bio.sm));
 
     if (attackKey.skill.toLowerCase() === "dx") {
-      level = dx;
+      level = dx + +attackKey.skillMod;
     }
     else if (attackKey.skill.toLowerCase() === "iq") {
-      level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.intelligence);
+      level = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.intelligence) + +attackKey.skillMod;
     }
     else if (attackKey.skill.toLowerCase() === "self" && typeof this.system.level === "number") { // The user has entered "Self" and the item we're on has it's own level
-      level = this.system.level; // Set the attack level to the same level
+      level = this.system.level + +attackKey.skillMod; // Set the attack level to the same level
     }
     else {
       // Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
