@@ -2345,17 +2345,28 @@ export class macroHelpers {
     static generateAreaAttacks(event) {
         event.preventDefault();
         let flags = game.messages.get($(event.target.parentElement.parentElement)[0].dataset.messageId).flags;
-
-        // TODO - Refetch target list to account for an updated template location
-
-        // game.scenes.get(flags.scene).tokens.get(flags.target).actor;
-
         let attack = flags.attack; // Get the attack object
         let attacker = game.scenes.get(flags.scene).tokens.get(flags.attacker); // Get the attacker actor
         let scene = game.scenes.get(flags.scene); // Get the scene object
-        let targetList = flags.targetList; // Get the array of token ids
         let template = flags.template; // Get the template object
         let rangeDamageMult = flags.rangeDamageMult;
+
+        // Fetch the target list again as the template or tokens may have moved
+        let targetList = [];
+        if (attack.area === "area" || attack.area === "ex" || attack.area === "frag") {
+            canvas.tokens.objects.children.forEach( token => {
+                if (this.isTokenInCircleTemplate(token, template)) {
+                    targetList.push(token.id);
+                }
+            })
+        }
+        else if (attack.area === "beam") {
+            canvas.tokens.objects.children.forEach( token => {
+                if (this.isTokenInRayTemplate(token, template)) {
+                    targetList.push(token.id);
+                }
+            })
+        }
 
         targetList.forEach( targetId => {
             this.generateAreaAttack(game.scenes.get(flags.scene).tokens.get(targetId), attack, attacker, template, rangeDamageMult, scene);
