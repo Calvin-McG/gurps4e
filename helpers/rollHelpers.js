@@ -105,6 +105,7 @@ export class rollHelpers {
                 crit: crit,
                 success: success,
                 margin: margin,
+                result: result.result,
                 type: CONST.CHAT_MESSAGE_STYLES.OTHER
             }
         }

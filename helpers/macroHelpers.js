@@ -1024,7 +1024,7 @@ export class macroHelpers {
         let staffLength = game.scenes.get(target.scene.id).tokens.get(attacker.id).actor.system.magic.staff; // Get the length of the player's staff
 
         // If it's not a number, or it is a NaN
-        if (typeof staffLength !== "number" || staffLength.isNaN) {
+        if (typeof staffLength !== "number" || isNaN(staffLength)) {
             staffLength = 0;
         }
 
@@ -1806,7 +1806,7 @@ export class macroHelpers {
                 if ((attack.flags.toLowerCase().includes("staff"))) { // If the flags include 'staff', apply the effect of the staff on the range penalty.
                     staffLength = game.scenes.get(attacker.scene.id).tokens.get(attacker.id).actor.system.magic.staff; // Get the length of the player's staff
 
-                    if (typeof staffLength !== "number" || staffLength.isNaN) {// If it's not a number, or it is a NaN
+                    if (typeof staffLength !== "number" || isNaN(staffLength)) {// If it's not a number, or it is a NaN
                         staffLength = 0; // Set back to zero
                     }
                 }
@@ -2450,7 +2450,13 @@ export class macroHelpers {
                 rollModifier += posture.rangedToHitMod; // Apply the modifier for posture
 
                 // Begin logic to work out distance modifier
-                let distanceRaw = distanceHelpers.measureDistance(target, template, canvas.scene.grid.size / canvas.scene.grid.distance);
+                let distanceRaw;
+                if (collateral) { // If it's a collateral attack
+                    distanceRaw = distanceHelpers.measureDistance(target, attacker, canvas.scene.grid.size / canvas.scene.grid.distance); // Distance penalty is from the attacker.
+                }
+                else { // If it's a frag attack
+                    distanceRaw = distanceHelpers.measureDistance(target, template, canvas.scene.grid.size / canvas.scene.grid.distance); // Distance penalty is from centre.
+                }
                 let distanceYards = distanceHelpers.convertToYards(distanceRaw, canvas.scene.grid.units);
                 let distancePenalty = distanceHelpers.distancePenalty(distanceYards);
                 rollModifier += distanceHelpers.distancePenalty(distanceYards); // Apply the modifier for distance from the origin of the attack.
@@ -2489,7 +2495,8 @@ export class macroHelpers {
                 rollLevel = bombardmentSkill; // Use the bombardment skill we worked out earlier
             }
             else if (collateral) {
-                rollLevel = Math.min(attack.level, 9); // Use the attack's level, but capped at 9.
+                rollLevel = Math.min((+attack.level + +rollModifier), 9); // Use the attack's level, but capped at 9.
+                rollModifier = 0;
             }
             else if (attack.area === "frag") {
                 rollLevel = 15; // Frag always uses skill 15
@@ -2500,7 +2507,22 @@ export class macroHelpers {
             let areaRoll = await rollHelpers.skillRoll(rollLevel + rollModifier, 0, "", false);
 
             // Begin message logic and number of hits
-            messageContent += "Rolling against a " + rollLevel + rollModifier + ", the result was a";
+            messageContent += "Damage for " + this.createTemplateLabel(template) + " targeting " + target.name;
+            messageContent += "<hr>";
+
+            if(rollModifier >= 0) { //modifier is zero or positive
+                messageContent += "<span class='tooltip'>Rolls a " + areaRoll.result + " vs " + (+rollLevel + +rollModifier) +
+                    "<span class='tooltiptext'>" + rollLevel + " + " + rollModifier + "</span>" +
+                    "</span>";
+            }
+            else {
+                messageContent += "<span class='tooltip'>Rolls a " + areaRoll.result + " vs " + (+rollLevel + +rollModifier) +
+                    "<span class='tooltiptext'>" + rollLevel + " - " + Math.abs(rollModifier) + "</span>" +
+                    "</span>"; // Run Math.abs to allow repositioning the negative symbol.
+            }
+
+            messageContent += " for a"
+
             let actualHits = 0;
             if (areaRoll.success && areaRoll.margin === 0) {
                 messageContent += "n exact success, resulting in one hit.";
@@ -2516,12 +2538,13 @@ export class macroHelpers {
                 messageContent += " failure by " + Math.abs(areaRoll.margin) + ", resulting in no hits.";
                 actualHits = 0;
             }
+            messageContent += "<br/>"
             // End message logic and number of hits
 
             let newAttack = attack; // Start creating a new attack with the values we came up with above.
-            attack.rof = actualHits;
-            attack.rcl = rcl;
-            attack.level = rollLevel;
+            newAttack.rof = actualHits;
+            newAttack.rcl = rcl;
+            newAttack.level = rollLevel;
 
             let locations = this.getRandomHitLocations(target, attacker, attack, relativePosition, actualHits);
             let flags = {
@@ -2539,25 +2562,28 @@ export class macroHelpers {
                 otherDamageMult: 1
             }
 
-            messageContent += target.name + " is struck in the...</br>";
-            for (let m = 0; m < locations.length; m++){
-                let firstLocation = foundry.utils.getProperty(target.actor.system.bodyType.body, (locations[m].id).split(".")[0]);
-                let firstLabel = firstLocation ? firstLocation.label : "";
-                let secondLabel = locations[m].label
-                let locationLabel;
-                if (firstLabel === secondLabel){
-                    locationLabel = firstLabel;
+            if (actualHits > 0) {
+                messageContent += target.name + " is struck in the...</br>";
+                for (let m = 0; m < locations.length; m++){
+                    let firstLocation = foundry.utils.getProperty(target.actor.system.bodyType.body, (locations[m].id).split(".")[0]);
+                    let firstLabel = firstLocation ? firstLocation.label : "";
+                    let secondLabel = locations[m].label
+                    let locationLabel;
+                    if (firstLabel === secondLabel){
+                        locationLabel = firstLabel;
+                    }
+                    else if (firstLabel === ''){
+                        locationLabel = secondLabel;
+                    }
+                    else {
+                        locationLabel = firstLabel + " - " + secondLabel;
+                    }
+                    messageContent += "<div style='display: grid; grid-template-columns: 0.1fr auto;'><input type='checkbox' checked class='checkbox' id='" + locations[m].id + "' value='" + locations[m].id + "' name='" + locations[m].id + "' /><span style='line-height: 26px;'>" + locationLabel + "</span></div>";
                 }
-                else if (firstLabel === ''){
-                    locationLabel = secondLabel;
-                }
-                else {
-                    locationLabel = firstLabel + " - " + secondLabel;
-                }
-                messageContent += "<div style='display: grid; grid-template-columns: 0.1fr auto;'><input type='checkbox' checked class='checkbox' id='" + locations[m].id + "' value='" + locations[m].id + "' name='" + locations[m].id + "' /><span style='line-height: 26px;'>" + locationLabel + "</span></div>";
+
+                messageContent += "</br><input type='button' class='attemptActiveDefences' value='Attempt Active Defences'/><input type='button' class='noActiveDefences' value='No Active Defences'/>"
             }
 
-            messageContent += "</br><input type='button' class='attemptActiveDefences' value='Attempt Active Defences'/><input type='button' class='noActiveDefences' value='No Active Defences'/>"
             ChatMessage.create({ content: messageContent, user: game.user.id, type: CONST.CHAT_MESSAGE_STYLES.OTHER, flags: flags}); // Everything is assembled, send the message
         }
         else { // It's an area type where there is no additional roll at this point.
@@ -3196,7 +3222,7 @@ export class macroHelpers {
         }
 
         // Undefined & NaN check for the modifier
-        if (typeof mod !== "number" || mod.isNaN) {
+        if (typeof mod !== "number" || isNaN(mod)) {
             mod = 0;
         }
 
@@ -3226,6 +3252,9 @@ export class macroHelpers {
         }
         else {
             totalModifier = parseInt(mod);
+            if (isNaN(totalModifier)) {
+                totalModifier = 0;
+            }
         }
 
         totalModifier += posture.defenceMod;
@@ -3239,7 +3268,7 @@ export class macroHelpers {
         }
 
         // Undefined / NaN check for feverishDefenceMod
-        if (typeof feverishDefenceMod !== "number" || feverishDefenceMod.isNaN) {
+        if (typeof feverishDefenceMod !== "number" || isNaN(feverishDefenceMod)) {
             feverishDefenceMod = 0;
         }
 
@@ -3320,7 +3349,7 @@ export class macroHelpers {
             }
 
             // Undefined / NaN check for acroMod
-            if (typeof acroMod !== "number" || acroMod.isNaN) {
+            if (typeof acroMod !== "number" || isNaN(acroMod)) {
                 acroMod = 0;
             }
 
