@@ -2372,6 +2372,8 @@ export class macroHelpers {
      */
     static async generateAreaAttack(target, attack, attacker, template, rangeDamageMult, scene) {
         let messageContent = "";
+        let actualHits = 0;
+        let rollModifier = 0;
         let otherDamageMult = 1;
         let relativePosition = this.getFacing(template, target); // Method returns [facing,position]
         relativePosition[0] = 1; // Whatever the result of the above was, make sure it counts as an attack from the front for the purpose of making active defences.
@@ -2388,6 +2390,7 @@ export class macroHelpers {
             movementMultiplier: 1,
             mpPerHex: 1
         };
+        let newAttack = attack;
 
         // Begin check for rof
         let split;
@@ -2443,7 +2446,7 @@ export class macroHelpers {
         // End logic for correcting rangeDamageMult
 
         if (bombardment || collateral || attack.area === "frag") { // It's one of the area types that involves a roll to see if and how many times they are hit.
-            let rollModifier = target.actor.system.bio.sm.value ?? 0; // All above types include size as a modifier for the attack
+            rollModifier = target.actor.system.bio.sm.value ?? 0; // All above types include size as a modifier for the attack
 
             // Begin logic for roll Modifier
             if (collateral || attack.area === "frag") { // It's a type that gets posture and range modifiers
@@ -2523,7 +2526,6 @@ export class macroHelpers {
 
             messageContent += " for a"
 
-            let actualHits = 0;
             if (areaRoll.success && areaRoll.margin === 0) {
                 messageContent += "n exact success, resulting in one hit.";
                 actualHits = 1;
@@ -2541,54 +2543,53 @@ export class macroHelpers {
             messageContent += "<br/>"
             // End message logic and number of hits
 
-            let newAttack = attack; // Start creating a new attack with the values we came up with above.
             newAttack.rof = actualHits;
             newAttack.rcl = rcl;
             newAttack.level = rollLevel;
-
-            let locations = this.getRandomHitLocations(target, attacker, attack, relativePosition, actualHits);
-            let flags = {
-                target: target.id, // Or maybe use actorId
-                attacker: attacker.id,
-                scene: scene.id,
-                attack: newAttack,
-                relativePosition: relativePosition,
-                rof: rof,
-                locationIDs: locations,
-                totalModifiers: rollModifier,
-                //targetHex: targetHex,
-                rangeDamageMult: rangeDamageMult,
-                areaAttack: true,
-                otherDamageMult: 1
-            }
-
-            if (actualHits > 0) {
-                messageContent += target.name + " is struck in the...</br>";
-                for (let m = 0; m < locations.length; m++){
-                    let firstLocation = foundry.utils.getProperty(target.actor.system.bodyType.body, (locations[m].id).split(".")[0]);
-                    let firstLabel = firstLocation ? firstLocation.label : "";
-                    let secondLabel = locations[m].label
-                    let locationLabel;
-                    if (firstLabel === secondLabel){
-                        locationLabel = firstLabel;
-                    }
-                    else if (firstLabel === ''){
-                        locationLabel = secondLabel;
-                    }
-                    else {
-                        locationLabel = firstLabel + " - " + secondLabel;
-                    }
-                    messageContent += "<div style='display: grid; grid-template-columns: 0.1fr auto;'><input type='checkbox' checked class='checkbox' id='" + locations[m].id + "' value='" + locations[m].id + "' name='" + locations[m].id + "' /><span style='line-height: 26px;'>" + locationLabel + "</span></div>";
-                }
-
-                messageContent += "</br><input type='button' class='attemptActiveDefences' value='Attempt Active Defences'/><input type='button' class='noActiveDefences' value='No Active Defences'/>"
-            }
-
-            ChatMessage.create({ content: messageContent, user: game.user.id, type: CONST.CHAT_MESSAGE_STYLES.OTHER, flags: flags}); // Everything is assembled, send the message
         }
         else { // It's an area type where there is no additional roll at this point.
             // TODO - Active defence and damage
         }
+
+        let locations = this.getRandomHitLocations(target, attacker, attack, relativePosition, actualHits);
+        let flags = {
+            target: target.id, // Or maybe use actorId
+            attacker: attacker.id,
+            scene: scene.id,
+            attack: newAttack,
+            relativePosition: relativePosition,
+            rof: rof,
+            locationIDs: locations,
+            totalModifiers: rollModifier,
+            //targetHex: targetHex,
+            rangeDamageMult: rangeDamageMult,
+            areaAttack: true,
+            otherDamageMult: 1
+        }
+
+        if (actualHits > 0) {
+            messageContent += target.name + " is struck in the...</br>";
+            for (let m = 0; m < locations.length; m++){
+                let firstLocation = foundry.utils.getProperty(target.actor.system.bodyType.body, (locations[m].id).split(".")[0]);
+                let firstLabel = firstLocation ? firstLocation.label : "";
+                let secondLabel = locations[m].label
+                let locationLabel;
+                if (firstLabel === secondLabel){
+                    locationLabel = firstLabel;
+                }
+                else if (firstLabel === ''){
+                    locationLabel = secondLabel;
+                }
+                else {
+                    locationLabel = firstLabel + " - " + secondLabel;
+                }
+                messageContent += "<div style='display: grid; grid-template-columns: 0.1fr auto;'><input type='checkbox' checked class='checkbox' id='" + locations[m].id + "' value='" + locations[m].id + "' name='" + locations[m].id + "' /><span style='line-height: 26px;'>" + locationLabel + "</span></div>";
+            }
+
+            messageContent += "</br><input type='button' class='attemptActiveDefences' value='Attempt Active Defences'/><input type='button' class='noActiveDefences' value='No Active Defences'/>"
+        }
+
+        ChatMessage.create({ content: messageContent, user: game.user.id, type: CONST.CHAT_MESSAGE_STYLES.OTHER, flags: flags}); // Everything is assembled, send the message
     }
 
     static getAimingBonus(attack, aimTime, exactRange){
