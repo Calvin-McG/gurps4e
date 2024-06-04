@@ -3506,8 +3506,43 @@
 
 			{{!-- Info Tab --}}
 			<div class="tab stats" data-tab="info" data-group="primary">
-				<h3 class="bold">General Info</h3>
 				<div class="tab">
+					<div>
+						<h1 class="bold" style="text-align: center;">
+							<label for="infoToggles">
+								<div>
+									{{#if actor.system.info.toggles.show }}
+									Character Toggles
+									{{else}}
+									Character Toggles (Hidden)
+									{{/if}}
+								</div>
+							</label>
+						</h1>
+						<input style="display: none" id="infoToggles" type="checkbox" name="system.info.toggles.show" {{checked actor.system.info.toggles.show}} data-dtype="Boolean"/>
+						{{#if actor.system.info.toggles.show }}
+						<table>
+							<tr class="item">
+								<td>Show Vanilla magic tab</td>
+								<td>
+									<input type="checkbox" name="system.showVanillaMagic" {{checked actor.system.showVanillaMagic}} data-dtype="Boolean"/>
+								</td>
+							</tr>
+							<tr class="item">
+								<td>Show RPM tab</td>
+								<td>
+									<input type="checkbox" name="system.showRPM" {{checked actor.system.showRPM}} data-dtype="Boolean"/>
+								</td>
+							</tr>
+							<tr class="item">
+								<td>Show TK tab</td>
+								<td>
+									<input type="checkbox" name="system.showTK" {{checked actor.system.showTK}} data-dtype="Boolean"/>
+								</td>
+							</tr>
+						</table>
+						{{/if}}
+					</div>
 					<div>
 						<h1 class="bold" style="text-align: center;">
 							<label for="infoFalls">

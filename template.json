@@ -543,6 +543,7 @@
       },
       "info": {
         "info": {
+          "toggles": {},
           "jump": {},
           "breath": {},
           "runSprint": {},

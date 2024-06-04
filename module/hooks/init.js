@@ -298,26 +298,6 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  // Register option for whether the vanilla magic tab shows up
-  game.settings.register("gurps4e", "showVanillaMagic", {
-    name: "Show vanilla magic tab.",
-    hint: "Enable this setting to show a tab on the character sheet for tracking info related to vanilla GURPS Magic.",
-    scope: "world",
-    config: true,
-    default: false,
-    type: Boolean
-  });
-
-  // Register option for whether the RPM magic tab shows up
-  game.settings.register("gurps4e", "showRPM", {
-    name: "Show RPM magic tab.",
-    hint: "Enable this setting to show a tab on the character sheet for tracking info related to Ritual Path Magic.",
-    scope: "world",
-    config: true,
-    default: false,
-    type: Boolean
-  });
-
   game.settings.register("gurps4e", "rpmElixirLimit", {
     name: "Select limit type on RPM Elixir quantity.",
     hint: "",

@@ -2035,7 +2035,7 @@ export class gurpsActor extends Actor {
     }
 
     recalcPathPoints() {
-		if (game.settings.get("gurps4e", "showRPM")) { // If the RPM tab is enabled, total up the points.
+		if (this.system.showRPM) { // If the RPM tab is enabled for the parent actor, total up the points.
 			let pathPoints = 0;
 			// Iterate through the list of paths.
 			let keys = Object.keys(this.system.rpm.path);
@@ -2519,7 +2519,7 @@ export class gurpsActor extends Actor {
 				carriedCost = (+this.items.contents[l].system.cost * +this.items.contents[l].system.quantity) + +carriedCost;
 			}
 
-			if (game.settings.get("gurps4e", "showRPM")) { // If the RPM tab is enabled, total up the number of ritual types for each cap.
+			if (this.system.showRPM) { // If the RPM tab is enabled for the parent actor, total up the number of ritual types for each cap.
 				if (this.items.contents[l].type === "Ritual") {
 					if (this.items.contents[l].system.ritualType === "conditional" || this.items.contents[l].system.ritualType === "charm" || this.items.contents[l].system.ritualType === "conditionalCharm") {
 						this.system.rpm.totalConditional += this.items.contents[l].system.quantity;
@@ -3061,14 +3061,11 @@ export class gurpsActor extends Actor {
 	}
 
 	updateMagic() {
-		this.system.showVanillaMagic = game.settings.get("gurps4e", "showVanillaMagic");
-		this.system.showRPM = game.settings.get("gurps4e", "showRPM");
-
 		if (this.system) {
-			if (this.system.showVanillaMagic) { // The campaign is using the vanilla magic tab.
+			if (this.system.showVanillaMagic) { // The character is using the vanilla magic tab.
 				this.updateVanillaMagic();
 			}
-			if (this.system.showRPM) { // The campaign is using the RPM tab.
+			if (this.system.showRPM) { // The character is using the RPM tab.
 				this.updateRPM();
 			}
 		}
