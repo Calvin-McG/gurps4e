@@ -2427,7 +2427,7 @@ export class macroHelpers {
             }
             else if (attack.flags.toString().toLowerCase().match(/bomb\d*/g)) { // It's a bombardment attack, using the attack's base skill.
                 bombardment = true;
-                bombardmentSkill = parseInt(attack.flags.toString().toLowerCase().match(/bomb\d*/g));
+                bombardmentSkill = parseInt(attack.flags.toString().toLowerCase().match(/bomb\d*/g)[0].replace(/\D/g, ""));
             }
             else if (attack.flags.toLowerCase().includes("collateral")) { // It's a collateral attack, like from a high rof attack missing.
                 collateral = true;
