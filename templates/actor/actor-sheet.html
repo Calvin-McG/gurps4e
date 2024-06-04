@@ -176,6 +176,11 @@
 				<a class="item" data-tab="rpm">RPM</a>
 			</div>
 			{{/if}}
+			{{#if actor.system.showTK}}
+			<div class="header">
+				<a class="item" data-tab="tk">TK</a>
+			</div>
+			{{/if}}
 			<div class="header">
 				<a class="item" data-tab="info">Info</a>
 			</div>
@@ -190,24 +195,32 @@
 				<div id="attributes_defences">
 					<div id="attribute-block">
                         <div class="primary-attribute-header" id="stHeader">
-                            <label class="title">Val</label>
+							<label></label>
+							<label class="title">Val</label>
                             <label class="title">Mod</label>
                             <label class="title">Pts</label>
+							<label></label>
                         </div>
                         <div class="primary-attribute-header" id="dxHeader">
+							<label></label>
                             <label class="title">Val</label>
                             <label class="title">Mod</label>
                             <label class="title">Pts</label>
+							<label></label>
                         </div>
                         <div class="primary-attribute-header" id="iqHeader">
+							<label></label>
                             <label class="title">Val</label>
                             <label class="title">Mod</label>
                             <label class="title">Pts</label>
+							<label></label>
                         </div>
                         <div class="primary-attribute-header" id="htHeader">
+							<label></label>
                             <label class="title">Val</label>
                             <label class="title">Mod</label>
                             <label class="title">Pts</label>
+							<label></label>
                         </div>
 						{{#each actor.system.primaryAttributes as |attr id|}}
 							<div class="primary-attribute" id="{{attr.id}}">
@@ -219,6 +232,8 @@
 								{{#unless (eq attr.abbr "Knockback")}}
 									<input type="number" name="system.primaryAttributes.{{id}}.points" class="atrPoints" value="{{attr.points}}"
 												 data-dtype="Number" />
+								{{else}}
+								<span></span>
 								{{/unless}}
 								{{#unless (or (eq attr.abbr "Speed") (eq attr.abbr "Move") )}}
 								<label for="system.primaryAttributes.{{id}}.value" class="fa fa-dice-six rollable"
@@ -231,12 +246,12 @@
 							<div style="text-align: center; border-bottom: 2px solid rgba(0, 0, 255, 0.1); margin-bottom: 5px;">
 								<label for="showSenses" style="font-weight: bold; font-size: x-large; display: block;">
 									{{#if actor.system.flag.showSenses }}
-										<i class="fas fa-angle-up"></i>
+										Senses <i class="fas fa-angle-up"></i>
 									{{else}}
-										<i class="fas fa-angle-down"></i>
+										Senses <i class="fas fa-angle-down"></i>
 									{{/if}}
 								</label>
-								<input style="display: none" id="showSenses" type="checkbox" name="system.flag.showSenses" {{checked system.flag.showSenses}} data-dtype="Boolean"/>
+								<input style="display: none" id="showSenses" type="checkbox" name="system.flag.showSenses" {{checked actor.system.flag.showSenses}} data-dtype="Boolean"/>
 							</div>
 							{{#unless actor.system.flag.showSenses }}
 								{{#each actor.system.senses as |sense id|}}
@@ -3500,6 +3515,32 @@
 					</table>
 					{{/if}}
 					<!-- End of Grimoire block -->
+				</div>
+			</div>
+			{{/if}}
+
+			{{#if actor.system.showTK}}
+			{{!-- TK Tab --}}
+			<div id="tk" class="tab magic" data-tab="tk" data-group="primary">
+				<div style="display: flex; flex-direction: column;">
+					<table>
+						<tr>
+							<td style="width: 20%">
+								Base TK Level
+							</td>
+							<td style="display: flex;">
+								<span><input type="number" name="system.tk.magnitude" value="{{actor.system.tk.magnitude}}" placeholder="0" style="width: 25px"/></span>
+							</td>
+						</tr>
+						<tr>
+							<td style="width: 20%">
+								Move Modifier
+							</td>
+							<td style="display: flex;">
+								<span><input type="number" name="system.tk.moveAdj" value="{{actor.system.tk.moveAdj}}" placeholder="0" style="width: 25px"/></span>
+							</td>
+						</tr>
+					</table>
 				</div>
 			</div>
 			{{/if}}

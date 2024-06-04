@@ -729,6 +729,12 @@
           "staff": 0
         }
       },
+      "tk": {
+        "tk": {
+          "magnitude": 0,
+          "moveAdj": 0,
+        }
+      },
       "rpm": {
         "rpm": {
           "magery": 0,
@@ -915,6 +921,7 @@
         "bio",
         "primaryAttributes",
         "info",
+        "tk",
         "posture",
         "bodyType",
         "injuryTolerances",

@@ -272,8 +272,6 @@
 }
 
 #attributes_defences {
-	display: grid;
-	grid-template-columns: repeat(9,1fr);
 	border-top: 2px groove darkgoldenrod;
 }
 
@@ -338,7 +336,6 @@
 							"kb			dodge 		fr			z1"
 							"z2			z3			senses		z1";
 	grid-template-columns: repeat(4,auto);
-	grid-gap: 5px;
 }
 
 .reserves-block {
@@ -354,7 +351,7 @@
 }
 
 .atrVal {
-	width: 5ch !important;
+	width: 2em !important;
 }
 
 .senseVal {
@@ -377,24 +374,29 @@
 
 .primary-attribute {
 	display: grid;
-	grid-template-columns: auto 2fr 2fr 2fr auto;
+	grid-template-columns: 60px 2em 2em 2em 16px;
 	padding: 2px;
-	border: 1px dotted grey;
-	margin: 1px;
+	justify-content: center;
 }
 
-attribute-senses {
+.attribute-senses {
+	display: grid;
+	grid-template-columns: auto 2em 2em 16px;
 	padding: 2px;
-	border: 1px dotted grey;
-	margin: 1px;
+}
+
+.primary-attribute-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
 .primary-attribute-header {
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-columns: 60px 2em 2em 2em 16px;
 	padding: 2px;
-	border: 1px dotted grey;
 	margin: 1px;
+	border-bottom: 2px groove darkgoldenrod;
+	justify-content: center;
 }
 
 .primary-attribute-header .title {
