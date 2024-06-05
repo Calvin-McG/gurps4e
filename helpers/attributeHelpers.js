@@ -20,6 +20,9 @@ export class attributeHelpers {
         let thrust = "";
 
         switch(sst) {
+            case 0:
+                thrust = "0";
+                break;
             case 1:
                 thrust = "1d6-6";
                 break;
@@ -332,6 +335,9 @@ export class attributeHelpers {
         let swing = "";
 
         switch(sst) {
+            case 0:
+                swing = "0";
+                break;
             case 1:
                 swing = "1d6-5";
                 break;
