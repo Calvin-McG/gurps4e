@@ -14,22 +14,12 @@ export class attackHelpers {
             let sw = attributeHelpers.strikingStrengthToSwing(sst); // Get swing damage based on String ST
 
             // Begin section for magical ST, used by Grognard spells, and the really cool Crushing Fist
-            let mSt = attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.intelligence); // Get IQ as the base magical attribute
-            if (typeof actor.system.magic !== "undefined") { // If the actor has a magic object
-                if (typeof actor.system.magic.magery === "number") { // If the actor has a value for their totalMagicAttribute (Usually IQ+M)
-                    mSt += actor.system.magic.magery; // Set magical ST to the magic attribute
-                }
-            }
+            let mSt = attributeHelpers.calcMST(actor);
             let mThr = attributeHelpers.strikingStrengthToThrust(mSt); // Get thrust damage based on Magical ST
             let mSw = attributeHelpers.strikingStrengthToSwing(mSt); // Get swing damage based on Magical ST
 
             // Begin section for telekinetic ST
-            let tkSst = 0; // Default TK strength is zero
-            if (typeof actor.system.tk !== "undefined") { // If the actor has a tk object
-                if (typeof actor.system.tk.magnitude === "number") { // If the actor has a value for their tk striking
-                    tkSst += actor.system.tk.magnitude + actor.system.tk.strikingAdj;
-                }
-            }
+            let tkSst = attributeHelpers.calcTKST(actor);
 
             let tkThr = attributeHelpers.strikingStrengthToThrust(tkSst); // Get thrust damage based on TK Striking ST
             let tkSw  = attributeHelpers.strikingStrengthToSwing(tkSst); // Get swing damage based on TK Striking ST
