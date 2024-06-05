@@ -3180,44 +3180,64 @@
 				{{!-- Vanilla Magic Tab --}}
 				<div id="magic" class="tab magic" data-tab="magic" data-group="primary">
 					<div style="display: flex; flex-direction: column;">
-						<table>
-							<tr>
-								<td style="width: 20%">
-									Magic Attribute
-								</td>
-								<td style="display: flex;">
-									<span><input type="text" name="system.magic.attribute" value="{{actor.system.magic.attribute}}" placeholder="Intelligence" /></span>
-									<span><input type="number" name="system.magic.attributeMod" value="{{actor.system.magic.attributeMod}}" placeholder="0" style="width: 25px"/></span>
-								</td>
-							</tr>
-							<tr>
-								<td style="width: 20%">
-									<input type="text" name="system.magic.mageryName" value="{{actor.system.magic.mageryName}}" placeholder="Magery" style="width: auto"/>
-								</td>
-								<td>
-									<input type="number" name="system.magic.magery" value="{{actor.system.magic.magery}}" placeholder="0" />
-								</td>
-							</tr>
-							<tr>
-								<td style="width: 20%">
-									Total Ability
-								</td>
-								<td>
-									{{actor.system.magic.totalMagicAttribute}}
-								</td>
-							</tr>
-							<tr>
-								<td style="width: 20%" class="tooltip">
-									Length of Staff
-									<span class="tooltiptext">
+						<div style="display: flex; flex-direction: row">
+							<table>
+								<tr>
+									<td style="width: 10%">
+										Magic Attribute
+									</td>
+									<td style="display: flex;">
+										<span><input type="text" name="system.magic.attribute" value="{{actor.system.magic.attribute}}" placeholder="Intelligence" /></span>
+										<span><input type="number" name="system.magic.attributeMod" value="{{actor.system.magic.attributeMod}}" placeholder="0" style="width: 25px"/></span>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="text" name="system.magic.mageryName" value="{{actor.system.magic.mageryName}}" placeholder="Magery" style="width: 90px"/>
+									</td>
+									<td>
+										<input type="number" name="system.magic.magery" value="{{actor.system.magic.magery}}" placeholder="0" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Total Ability
+									</td>
+									<td>
+										{{actor.system.magic.totalMagicAttribute}}
+									</td>
+								</tr>
+							</table>
+							<table>
+								<tr>
+									<td>
+										Slow-Progression Magical Damage (Thrust)
+									</td>
+									<td>
+										{{actor.system.magic.thr}}
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Fast-Progression Magical Damage (Swing)
+									</td>
+									<td>
+										{{actor.system.magic.sw}}
+									</td>
+								</tr>
+								<tr>
+									<td class="tooltip">
+										Length of Staff
+										<span class="tooltiptext">
 										For the purposes of reducing range penalties for Regular spells
 									</span>
-								</td>
-								<td>
-									<input type="number" name="system.magic.staff" value="{{actor.system.magic.staff}}" placeholder="0" />
-								</td>
-							</tr>
-						</table>
+									</td>
+									<td>
+										<input type="number" name="system.magic.staff" value="{{actor.system.magic.staff}}" placeholder="0" />
+									</td>
+								</tr>
+							</table>
+						</div>
 						<table>
 							<tr class="item item-header">
 								<td class="item-image"></td>

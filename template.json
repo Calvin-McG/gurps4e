@@ -732,7 +732,9 @@
           "magery": 0,
           "totalMagicAttribute": 0,
           "mageryName": "Magery",
-          "staff": 0
+          "staff": 0,
+          "sw": "0d6",
+          "thr": "0d6"
         }
       },
       "tk": {

@@ -3126,6 +3126,10 @@ export class gurpsActor extends Actor {
 			let per = this.system.primaryAttributes.perception.value;
 
 			this.system.senses.magic.value = per + this.system.senses.magic.mod + (this.system.magic.magery ? this.system.magic.magery : 0);
+
+			// Begin section for magical ST, used by Grognard spells, and the really cool Crushing Fist
+			this.system.magic.thr	= attributeHelpers.strikingStrengthToThrust(totalMagicAttribute);
+			this.system.magic.sw	= attributeHelpers.strikingStrengthToSwing(totalMagicAttribute);
 		}
 	}
 
