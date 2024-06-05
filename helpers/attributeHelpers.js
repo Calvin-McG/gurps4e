@@ -1,6 +1,59 @@
 import {actorHelpers} from "./actorHelpers.js";
+import {skillHelpers} from "./skillHelpers.js";
 
 export class attributeHelpers {
+
+    /**
+     * This method takes in an actor and returns their magical ST
+     * @param actor - A complete actor object
+     * @returns {number}
+     */
+    static calcMST(actor) {
+        let totalMagicAttribute = 0;
+        if (actor.system.magic) { // Character has the magic block
+            // Calculate the total magical attribute
+
+            if (actor.system.magic.attribute != "") { // Attribute is not blank
+                totalMagicAttribute += skillHelpers.getBaseAttrValue(actor.system.magic.attribute, actor);
+            }
+            totalMagicAttribute += actor.system.magic.attributeMod ? actor.system.magic.attributeMod : 0;
+            totalMagicAttribute += actor.system.magic.magery ? actor.system.magic.magery : 0;
+        }
+        return totalMagicAttribute;
+    }
+
+    /**
+     * This method takes in an actor and returns their TK ST
+     * @param actor - A complete actor object
+     * @returns {number}
+     */
+    static calcTKST(actor){
+        let tkSst = 0; // Default TK strength is zero
+        if (typeof actor.system.tk !== "undefined") { // If the actor has a tk object
+            if (typeof actor.system.tk.magnitude === "number") { // If the actor has a value for their tk striking
+                tkSst = actor.system.tk.magnitude + actor.system.tk.strikingAdj;
+            }
+        }
+        return tkSst;
+    }
+
+    /**
+     * This method takes in a damage input string to determine what type of ST is being used.
+     * This helps with throwing range calculations.
+     * @param damageInput A damage input string
+     * @returns {string}
+     */
+    static stType(damageInput){
+        if (damageInput.toLowerCase().includes("mthr") || damageInput.toLowerCase().includes("msw")) {
+            return "M";
+        }
+        else if (damageInput.toLowerCase().includes("tkthr") || damageInput.toLowerCase().includes("tksw")) {
+            return "TK";
+        }
+        else {
+            return "ST";
+        }
+    }
 
     static strikingStrengthToThrustDiceAndAdds(sst){
         let dice = 0;
