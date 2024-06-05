@@ -179,11 +179,6 @@
 				<a class="item" data-tab="rpm">RPM</a>
 			</div>
 			{{/if}}
-			{{#if actor.system.showTK}}
-			<div class="header">
-				<a class="item" data-tab="tk">TK</a>
-			</div>
-			{{/if}}
 		</nav>
 
 		{{!-- Sheet Body --}}
@@ -557,13 +552,13 @@
 							<span></span>
 						</div>
 						<div class="tk-dam-row">
-							<label style="font-weight: bold">Thrust</label>
+							<label style="font-weight: bold">Thrust (TKThr)</label>
 							<label>{{actor.system.tk.thr}}</label>
 							<label class="fa fa-dice-six rollable" data-level="{{actor.system.tk.thr}}"
 								   data-label="Makes a &lt;b&gt;TK Thrust&lt;/b&gt; Damage roll." data-type="damage"></label>
 						</div>
 						<div class="tk-dam-row">
-							<label style="font-weight: bold">Swing</label>
+							<label style="font-weight: bold">Swing (TKSw)</label>
 							<label>{{actor.system.tk.sw}}</label>
 							<label class="fa fa-dice-six rollable" data-level="{{actor.system.tk.sw}}"
 								   data-label="Makes a &lt;b&gt;TK Swing&lt;/b&gt; Damage roll." data-type="damage"></label>
