@@ -3114,22 +3114,15 @@ export class gurpsActor extends Actor {
 		}
 
 		if (this.system.magic) { // Character has the magic block
-			// Calculate the total magical attribute
-			let totalMagicAttribute = 0;
-			if (this.system.magic.attribute != "") { // Attribute is not blank
-				totalMagicAttribute += skillHelpers.getBaseAttrValue(this.system.magic.attribute, this)
-			}
-			totalMagicAttribute += this.system.magic.attributeMod ? this.system.magic.attributeMod : 0;
-			totalMagicAttribute += this.system.magic.magery ? this.system.magic.magery : 0;
-			this.system.magic.totalMagicAttribute = totalMagicAttribute;
+			this.system.magic.totalMagicAttribute = attributeHelpers.calcMST(this); // Calculate the total magical attribute
 
 			let per = this.system.primaryAttributes.perception.value;
 
 			this.system.senses.magic.value = per + this.system.senses.magic.mod + (this.system.magic.magery ? this.system.magic.magery : 0);
 
 			// Begin section for magical ST, used by Grognard spells, and the really cool Crushing Fist
-			this.system.magic.thr	= attributeHelpers.strikingStrengthToThrust(totalMagicAttribute);
-			this.system.magic.sw	= attributeHelpers.strikingStrengthToSwing(totalMagicAttribute);
+			this.system.magic.thr = attributeHelpers.strikingStrengthToThrust(this.system.magic.totalMagicAttribute);
+			this.system.magic.sw  = attributeHelpers.strikingStrengthToSwing(this.system.magic.totalMagicAttribute);
 		}
 	}
 
