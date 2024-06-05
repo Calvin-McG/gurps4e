@@ -6323,6 +6323,21 @@ export class gurpsItem extends Item {
                 let dx = attributeHelpers.calcDxOrIq(this.actor.system.primaryAttributes.dexterity);
                 let st = attributeHelpers.calcStOrHt(this.actor.system.primaryAttributes.strength, attributeHelpers.calcSMDiscount(this.actor.system.bio.sm));
 
+                let throwingST = st;
+
+                // Begin block where we figure out the type of throwing ST to use (Magic, TK, standard)
+                let stType = attributeHelpers.stType(this.system.ranged[rangedKeys[k]].damageInput);
+                if (stType == "TK") {
+                  throwingST = attributeHelpers.calcTKST(this.actor);
+                }
+                else if (stType == "M") {
+                  throwingST = attributeHelpers.calcMST(this.actor);
+                }
+                else { // ST
+                  throwingST = st;
+                }
+                // End block where we figure out the type of throwing ST to use (Magic, TK, standard)
+
                 this.system.ranged[rangedKeys[k]] = this.validateAreaData(this.system.ranged[rangedKeys[k]]); // Call the method to validate our area inputs.
 
                 let levelAndMastery = this.getSkillLevelAndMasteryForAttack(this.system.ranged[rangedKeys[k]])
@@ -6367,7 +6382,7 @@ export class gurpsItem extends Item {
                 if (typeof this.system.ranged[rangedKeys[k]].halfRangeInput !== "undefined") {
                   if (this.system.ranged[rangedKeys[k]].halfRangeInput.toLowerCase().includes("x")){ // If the range includes an x, assume it is an ST multiplier
                     let halfMult = parseFloat(this.system.ranged[rangedKeys[k]].halfRangeInput.split("x")[1]);
-                    this.system.ranged[rangedKeys[k]].halfRange =  parseInt(attackHelpers.calcThrowingRange(dx, level, st, this.system.ranged[rangedKeys[k]].skill.toLowerCase(), halfMult));
+                    this.system.ranged[rangedKeys[k]].halfRange =  parseInt(attackHelpers.calcThrowingRange(dx, level, throwingST, this.system.ranged[rangedKeys[k]].skill.toLowerCase(), halfMult));
                   }
                   else { // Otherwise it's probably just a number so we can take it as is.
                     this.system.ranged[rangedKeys[k]].halfRange = parseInt(this.system.ranged[rangedKeys[k]].halfRangeInput);
@@ -6381,7 +6396,7 @@ export class gurpsItem extends Item {
                 if (typeof this.system.ranged[rangedKeys[k]].maxRangeInput !== "undefined") {
                   if (this.system.ranged[rangedKeys[k]].maxRangeInput.toLowerCase().includes("x")){ // If the range includes an x, assume it is an ST multiplier
                     let maxMult = parseFloat(this.system.ranged[rangedKeys[k]].maxRangeInput.split("x")[1]);
-                    this.system.ranged[rangedKeys[k]].maxRange =  parseInt(attackHelpers.calcThrowingRange(dx, level, st, this.system.ranged[rangedKeys[k]].skill.toLowerCase(), maxMult));
+                    this.system.ranged[rangedKeys[k]].maxRange =  parseInt(attackHelpers.calcThrowingRange(dx, level, throwingST, this.system.ranged[rangedKeys[k]].skill.toLowerCase(), maxMult));
                   }
                   else { // Otherwise it's probably just a number so we can take it as is.
                     this.system.ranged[rangedKeys[k]].maxRange = parseInt(this.system.ranged[rangedKeys[k]].maxRangeInput);
