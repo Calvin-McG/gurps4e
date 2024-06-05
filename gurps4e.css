@@ -249,7 +249,7 @@
 
 #tabselect {
 	display: grid;
-	grid-template-columns: repeat(8,0fr);
+	grid-template-columns: repeat(8, 72px);
 	border-top: 2px groove darkgoldenrod;
 }
 
@@ -308,7 +308,7 @@
 
 .sense-header {
 	display: grid;
-	grid-template-columns: 60px 2em 2em 16px;
+	grid-template-columns: 7em 2em 2em 16px;
 	padding: 2px;
 	margin: 1px;
 	border-bottom: 2px groove darkgoldenrod;
@@ -319,6 +319,30 @@
 .sense-row {
 	display: grid;
 	grid-template-columns: 7em 2em 2em 16px;
+	padding: 2px;
+	justify-content: center;
+}
+
+.tk-header {
+	display: grid;
+	grid-template-columns: 7em 2em 2em 16px;
+	padding: 2px;
+	margin: 1px;
+	border-bottom: 2px groove darkgoldenrod;
+	justify-content: center;
+	font-weight: bold;
+}
+
+.tk-row {
+	display: grid;
+	grid-template-columns: 7em 2em 2em 16px;
+	padding: 2px;
+	justify-content: center;
+}
+
+.tk-dam-row {
+	display: grid;
+	grid-template-columns: 7em 4em 16px;
 	padding: 2px;
 	justify-content: center;
 }
@@ -575,9 +599,12 @@
 	padding-right: 2px;
 	font-size: 80%;
 	font-weight: bold;
-	align-self: center;
-	line-height: 100%;
 	color: rgb(144, 144, 144);
+	width: 72px;
+	height: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
 .label {

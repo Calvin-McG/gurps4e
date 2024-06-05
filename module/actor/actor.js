@@ -889,6 +889,9 @@ export class gurpsActor extends Actor {
 		// Update magic related stuff
 		this.updateMagic();
 
+		// Update TK related stuff
+		this.updateTK();
+
 		// Sort out the player's senses.
 		this.recalcSenses();
 
@@ -3067,6 +3070,35 @@ export class gurpsActor extends Actor {
 			}
 			if (this.system.showRPM) { // The character is using the RPM tab.
 				this.updateRPM();
+			}
+		}
+	}
+
+	updateTK(){
+		if (this.system) {
+			if (this.system.showTK) { // The character has TK enabled
+
+				if (typeof this.system.tk === "undefined") { // Undefined check for characters enabling TK for the first time
+					this.system.tk = {
+						"magnitude": 0,
+						"move": 0,
+						"moveAdj": 0,
+						"lifting": 0,
+						"liftingAdj": 0,
+						"striking": 0,
+						"strikingAdj": 0,
+						"range": 10,
+						"sw": "0d6",
+						"thr": "0d6"
+					}
+				}
+
+				this.system.tk.lifting 	= this.system.tk.magnitude + this.system.tk.liftingAdj;
+				this.system.tk.striking = this.system.tk.magnitude + this.system.tk.strikingAdj;
+				this.system.tk.move 	= this.system.tk.magnitude + this.system.tk.moveAdj;
+
+				this.system.tk.thr 	= attributeHelpers.strikingStrengthToThrust(this.system.tk.striking);
+				this.system.tk.sw 	= attributeHelpers.strikingStrengthToSwing(this.system.tk.striking);
 			}
 		}
 	}

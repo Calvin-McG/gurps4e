@@ -166,6 +166,9 @@
 			<div class="header">
 				<a class="item" data-tab="body-type">Body Type</a>
 			</div>
+			<div class="header">
+				<a class="item" data-tab="info">Info</a>
+			</div>
 			{{#if actor.system.showVanillaMagic}}
 			<div class="header">
 				<a class="item" data-tab="magic">Magic</a>
@@ -181,9 +184,6 @@
 				<a class="item" data-tab="tk">TK</a>
 			</div>
 			{{/if}}
-			<div class="header">
-				<a class="item" data-tab="info">Info</a>
-			</div>
 		</nav>
 
 		{{!-- Sheet Body --}}
@@ -477,7 +477,7 @@
 						</div>
 						{{#if actor.system.showVanillaMagic}}
 						<div class="sense-row">
-							<label style="font-weight: bold">{{actor.system.senses.magic.abbr}}</label>
+							<label style="font-weight: bold">Magic</label>
 							<input type="text" name="system.senses.magic.value" class="atrVal" value="{{actor.system.senses.magic.value}}"
 								   data-dtype="Number" disabled />
 							<input type="text" name="system.senses.magic.mod" class="senseMod" value="{{actor.system.senses.magic.mod}}"
@@ -509,6 +509,69 @@
 						</div>
 					</div>
 					{{!-- End 	Senses Column --}}
+					{{!-- Begin TK Column --}}
+					{{#if actor.system.showTK}}
+					<div class="attribute-column" style="background-color: rgba(255, 0, 255, 0.05);">
+						<div class="attribute-label">
+							<label>Telekinesis</label>
+						</div>
+						<div class="tk-header">
+							<label>Name</label>
+							<label class="title">Val</label>
+							<label class="title">Mod</label>
+							<label></label>
+						</div>
+						<div class="tk-row">
+							<label style="font-weight: bold">Base TK</label>
+							<input type="number" name="system.tk.magnitude" value="{{actor.system.tk.magnitude}}" placeholder="0"/>
+							<span></span>
+							<label for="system.tk.magnitude" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.tk.magnitude}}" data-label="Makes a &lt;b&gt;TK&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+						<div class="tk-row">
+							<label style="font-weight: bold">Lifting</label>
+							<input type="number" name="system.tk.lifting" value="{{actor.system.tk.lifting}}" disabled placeholder="0"/>
+							<input type="number" name="system.tk.liftingAdj" value="{{actor.system.tk.liftingAdj}}" placeholder="0"/>
+							<label for="system.tk.lifting" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.tk.lifting}}" data-label="Makes a &lt;b&gt;TK Lifting&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+						<div class="tk-row">
+							<label style="font-weight: bold">Striking</label>
+							<input type="number" name="system.tk.striking" value="{{actor.system.tk.striking}}" disabled placeholder="0"/>
+							<input type="number" name="system.tk.strikingAdj" value="{{actor.system.tk.strikingAdj}}" placeholder="0"/>
+							<label for="system.tk.striking" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.tk.striking}}" data-label="Makes a &lt;b&gt;TK Striking&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+						<div class="tk-row">
+							<label style="font-weight: bold">Move</label>
+							<input type="number" name="system.tk.move" value="{{actor.system.tk.move}}" disabled placeholder="0"/>
+							<input type="number" name="system.tk.moveAdj" value="{{actor.system.tk.moveAdj}}" placeholder="0"/>
+							<span></span>
+						</div>
+						<div class="tk-dam-row">
+							<label style="font-weight: bold">Range</label>
+							<input type="number" name="system.tk.range" value="{{actor.system.tk.range}}" placeholder="0"/>
+							<span></span>
+						</div>
+						<div class="tk-dam-row">
+							<label style="font-weight: bold">Thrust</label>
+							<label>{{actor.system.tk.thr}}</label>
+							<label class="fa fa-dice-six rollable" data-level="{{actor.system.tk.thr}}"
+								   data-label="Makes a &lt;b&gt;TK Thrust&lt;/b&gt; Damage roll." data-type="damage"></label>
+						</div>
+						<div class="tk-dam-row">
+							<label style="font-weight: bold">Swing</label>
+							<label>{{actor.system.tk.sw}}</label>
+							<label class="fa fa-dice-six rollable" data-level="{{actor.system.tk.sw}}"
+								   data-label="Makes a &lt;b&gt;TK Swing&lt;/b&gt; Damage roll." data-type="damage"></label>
+						</div>
+					</div>
+					{{/if}}
+					{{!-- End 	TK Column --}}
+
 				</div>
 
 				<div id="biography" style="height: 100%">
@@ -3753,32 +3816,6 @@
 			</div>
 			{{/if}}
 
-			{{#if actor.system.showTK}}
-			{{!-- TK Tab --}}
-			<div id="tk" class="tab magic" data-tab="tk" data-group="primary">
-				<div style="display: flex; flex-direction: column;">
-					<table>
-						<tr>
-							<td style="width: 20%">
-								Base TK Level
-							</td>
-							<td style="display: flex;">
-								<span><input type="number" name="system.tk.magnitude" value="{{actor.system.tk.magnitude}}" placeholder="0" style="width: 25px"/></span>
-							</td>
-						</tr>
-						<tr>
-							<td style="width: 20%">
-								Move Modifier
-							</td>
-							<td style="display: flex;">
-								<span><input type="number" name="system.tk.moveAdj" value="{{actor.system.tk.moveAdj}}" placeholder="0" style="width: 25px"/></span>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-			{{/if}}
-
 			{{!-- Info Tab --}}
 			<div class="tab stats" data-tab="info" data-group="primary">
 				<div class="tab">
@@ -3810,7 +3847,7 @@
 								</td>
 							</tr>
 							<tr class="item">
-								<td>Show TK tab</td>
+								<td>Show TK fields</td>
 								<td>
 									<input type="checkbox" name="system.showTK" {{checked actor.system.showTK}} data-dtype="Boolean"/>
 								</td>

@@ -738,7 +738,15 @@
       "tk": {
         "tk": {
           "magnitude": 0,
+          "move": 0,
           "moveAdj": 0,
+          "lifting": 0,
+          "liftingAdj": 0,
+          "striking": 0,
+          "strikingAdj": 0,
+          "range": 10,
+          "sw": "0d6",
+          "thr": "0d6"
         }
       },
       "rpm": {

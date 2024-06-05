@@ -23,17 +23,30 @@ export class attackHelpers {
             let mThr = attributeHelpers.strikingStrengthToThrust(mSt); // Get thrust damage based on Magical ST
             let mSw = attributeHelpers.strikingStrengthToSwing(mSt); // Get swing damage based on Magical ST
 
+            // Begin section for telekinetic ST
+            let tkSst = 0; // Default TK strength is zero
+            if (typeof actor.system.tk !== "undefined") { // If the actor has a tk object
+                if (typeof actor.system.tk.magnitude === "number") { // If the actor has a value for their tk striking
+                    tkSst += actor.system.tk.magnitude + actor.system.tk.strikingAdj;
+                }
+            }
+
+            let tkThr = attributeHelpers.strikingStrengthToThrust(tkSst); // Get thrust damage based on TK Striking ST
+            let tkSw  = attributeHelpers.strikingStrengthToSwing(tkSst); // Get swing damage based on TK Striking ST
+
             if (typeof damage == "undefined" || damage == null){
                 damage = "0";
             }
             damage = damage.toLowerCase(); // Fix any case specific issues
             // First account for any cases of mThr or mSw
             damage = damage.replace("mthr", mThr); // Replace thrust
-            damage = damage.replace("msw", mSw); // Replace swing
+            damage = damage.replace("msw",  mSw); // Replace swing
+            // Second account for any cases of tkThr or tkSw
+            damage = damage.replace("tkthr", tkThr); // Replace thrust
+            damage = damage.replace("tksw",  tkSw); // Replace swing
             // Then if thr or sw strings remain, replace those as well
             damage = damage.replace("thr", thr); // Replace thrust
             damage = damage.replace("sw", sw); // Replace swing
-
             return damage;
         }
         return "";
