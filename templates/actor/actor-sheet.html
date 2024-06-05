@@ -192,89 +192,323 @@
 			{{!-- Stats Tab --}}
 			<div class="tab stats" data-tab="stats" data-group="primary">
 
-				<div id="attributes_defences">
-					<div id="attribute-block">
-                        <div class="primary-attribute-header" id="stHeader">
-							<label></label>
+				<div class="attributes-block">
+					{{!-- Begin ST Column --}}
+					<div class="attribute-column" style="background-color: rgba(255, 0, 0, 0.05);">
+						<div class="attribute-label">
+							<label>Strength</label>
+						</div>
+						<div class="attribute-header">
+							<label>Name</label>
 							<label class="title">Val</label>
-                            <label class="title">Mod</label>
-                            <label class="title">Pts</label>
+							<label class="title">Mod</label>
+							<label class="title">Pts</label>
 							<label></label>
-                        </div>
-                        <div class="primary-attribute-header" id="dxHeader">
-							<label></label>
-                            <label class="title">Val</label>
-                            <label class="title">Mod</label>
-                            <label class="title">Pts</label>
-							<label></label>
-                        </div>
-                        <div class="primary-attribute-header" id="iqHeader">
-							<label></label>
-                            <label class="title">Val</label>
-                            <label class="title">Mod</label>
-                            <label class="title">Pts</label>
-							<label></label>
-                        </div>
-                        <div class="primary-attribute-header" id="htHeader">
-							<label></label>
-                            <label class="title">Val</label>
-                            <label class="title">Mod</label>
-                            <label class="title">Pts</label>
-							<label></label>
-                        </div>
-						{{#each actor.system.primaryAttributes as |attr id|}}
-							<div class="primary-attribute" id="{{attr.id}}">
-									<label style="font-weight: bold">{{attr.abbr}}</label>
-									<input type="number" name="system.primaryAttributes.{{id}}.value" class="atrVal" value="{{attr.value}}"
-										data-dtype="Number" disabled />
-									<input type="number" name="system.primaryAttributes.{{id}}.mod" class="atrMod" value="{{attr.mod}}"
-												 data-dtype="Number" />
-								{{#unless (eq attr.abbr "Knockback")}}
-									<input type="number" name="system.primaryAttributes.{{id}}.points" class="atrPoints" value="{{attr.points}}"
-												 data-dtype="Number" />
-								{{else}}
-								<span></span>
-								{{/unless}}
-								{{#unless (or (eq attr.abbr "Speed") (eq attr.abbr "Move") )}}
-								<label for="system.primaryAttributes.{{id}}.value" class="fa fa-dice-six rollable"
-											 data-level="{{attr.value}}" data-label="Makes a &lt;b&gt;{{attr.abbr}}&lt;/b&gt; check."
-											 data-type="skill"></label>
-								{{/unless}}
-							</div>
-						{{/each}}
-						<div id="senses">
-							<div style="text-align: center; border-bottom: 2px solid rgba(0, 0, 255, 0.1); margin-bottom: 5px;">
-								<label for="showSenses" style="font-weight: bold; font-size: x-large; display: block;">
-									{{#if actor.system.flag.showSenses }}
-										Senses <i class="fas fa-angle-up"></i>
-									{{else}}
-										Senses <i class="fas fa-angle-down"></i>
-									{{/if}}
-								</label>
-								<input style="display: none" id="showSenses" type="checkbox" name="system.flag.showSenses" {{checked actor.system.flag.showSenses}} data-dtype="Boolean"/>
-							</div>
-							{{#unless actor.system.flag.showSenses }}
-								{{#each actor.system.senses as |sense id|}}
-									<div class="attribute-senses" id="{{sense.id}}">
-										{{#if sense.id}}
-											{{#if (or (eq sense.id "extra1") (eq sense.id "extra2")) }}
-												<input type="text" name="system.senses.{{id}}.abbr" class="senseVal" value="{{sense.abbr}}" style="text-align: left;"/>
-											{{else}}
-												<label style="font-weight: bold" class="senseVal">{{sense.abbr}}</label>
-											{{/if}}
-										{{/if}}
-										<input type="text" name="system.senses.{{id}}.value" class="atrVal" value="{{sense.value}}"
-											   data-dtype="Number" disabled />
-										<input type="text" name="system.senses.{{id}}.mod" class="senseMod" value="{{sense.mod}}"
-											   data-dtype="Number" />
-										<label for="system.senses.{{id}}.value" class="fa fa-dice-six rollable"
-											   data-level="{{sense.value}}" data-label="Makes a &lt;b&gt;{{sense.abbr}}&lt;/b&gt; check."
-											   data-type="skill"></label>
-									</div>
-								{{/each}}
-							{{/unless}}
+						</div>
+						<div class="attribute-row">
+							<label style="font-weight: bold">{{actor.system.primaryAttributes.strength.abbr}}</label>
+							<input type="number" name="system.primaryAttributes.{{id}}.value" class="atrVal" value="{{actor.system.primaryAttributes.strength.value}}"
+								   data-dtype="Number" disabled />
+							<input type="number" name="system.primaryAttributes.strength.mod" class="atrMod" value="{{actor.system.primaryAttributes.strength.mod}}"
+								   data-dtype="Number" />
+							<input type="number" name="system.primaryAttributes.strength.points" class="atrPoints" value="{{actor.system.primaryAttributes.strength.points}}"
+								   data-dtype="Number" />
+							<label for="system.primaryAttributes.strength.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.primaryAttributes.strength.value}}" data-label="Makes a &lt;b&gt;{{actor.system.primaryAttributes.strength.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+						<div class="attribute-row">
+							<label style="font-weight: bold">{{actor.system.primaryAttributes.lifting.abbr}}</label>
+							<input type="number" name="system.primaryAttributes.{{id}}.value" class="atrVal" value="{{actor.system.primaryAttributes.lifting.value}}"
+								   data-dtype="Number" disabled />
+							<input type="number" name="system.primaryAttributes.lifting.mod" class="atrMod" value="{{actor.system.primaryAttributes.lifting.mod}}"
+								   data-dtype="Number" />
+							<input type="number" name="system.primaryAttributes.lifting.points" class="atrPoints" value="{{actor.system.primaryAttributes.lifting.points}}"
+								   data-dtype="Number" />
+							<label for="system.primaryAttributes.lifting.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.primaryAttributes.lifting.value}}" data-label="Makes a &lt;b&gt;{{actor.system.primaryAttributes.lifting.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+						<div class="attribute-row">
+							<label style="font-weight: bold">{{actor.system.primaryAttributes.striking.abbr}}</label>
+							<input type="number" name="system.primaryAttributes.{{id}}.value" class="atrVal" value="{{actor.system.primaryAttributes.striking.value}}"
+								   data-dtype="Number" disabled />
+							<input type="number" name="system.primaryAttributes.striking.mod" class="atrMod" value="{{actor.system.primaryAttributes.striking.mod}}"
+								   data-dtype="Number" />
+							<input type="number" name="system.primaryAttributes.striking.points" class="atrPoints" value="{{actor.system.primaryAttributes.striking.points}}"
+								   data-dtype="Number" />
+							<label for="system.primaryAttributes.striking.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.primaryAttributes.striking.value}}" data-label="Makes a &lt;b&gt;{{actor.system.primaryAttributes.striking.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+						<div class="attribute-row">
+							<label style="font-weight: bold">{{actor.system.primaryAttributes.knockback.abbr}}</label>
+							<input type="number" name="system.primaryAttributes.{{id}}.value" class="atrVal" value="{{actor.system.primaryAttributes.knockback.value}}"
+								   data-dtype="Number" disabled />
+							<input type="number" name="system.primaryAttributes.knockback.mod" class="atrMod" value="{{actor.system.primaryAttributes.knockback.mod}}"
+								   data-dtype="Number" />
+							<span></span>
+							<label for="system.primaryAttributes.knockback.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.primaryAttributes.knockback.value}}" data-label="Makes a &lt;b&gt;{{actor.system.primaryAttributes.knockback.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
 						</div>
 					</div>
+					{{!-- End ST Column --}}
+					{{!-- Begin DX Column --}}
+					<div class="attribute-column" style="background-color: rgba(0, 255, 0, 0.05);">
+						<div class="attribute-label">
+							<label>Dexterity</label>
+						</div>
+						<div class="attribute-header">
+							<label>Name</label>
+							<label class="title">Val</label>
+							<label class="title">Mod</label>
+							<label class="title">Pts</label>
+							<label></label>
+						</div>
+						<div class="attribute-row">
+							<label style="font-weight: bold">{{actor.system.primaryAttributes.dexterity.abbr}}</label>
+							<input type="number" name="system.primaryAttributes.{{id}}.value" class="atrVal" value="{{actor.system.primaryAttributes.dexterity.value}}"
+								   data-dtype="Number" disabled />
+							<input type="number" name="system.primaryAttributes.dexterity.mod" class="atrMod" value="{{actor.system.primaryAttributes.dexterity.mod}}"
+								   data-dtype="Number" />
+							<input type="number" name="system.primaryAttributes.dexterity.points" class="atrPoints" value="{{actor.system.primaryAttributes.dexterity.points}}"
+								   data-dtype="Number" />
+							<label for="system.primaryAttributes.dexterity.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.primaryAttributes.dexterity.value}}" data-label="Makes a &lt;b&gt;{{actor.system.primaryAttributes.dexterity.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+						<div class="attribute-row">
+							<label style="font-weight: bold">{{actor.system.primaryAttributes.speed.abbr}}</label>
+							<input type="number" name="system.primaryAttributes.{{id}}.value" class="atrVal" value="{{actor.system.primaryAttributes.speed.value}}"
+								   data-dtype="Number" disabled />
+							<input type="number" name="system.primaryAttributes.speed.mod" class="atrMod" value="{{actor.system.primaryAttributes.speed.mod}}"
+								   data-dtype="Number" />
+							<input type="number" name="system.primaryAttributes.speed.points" class="atrPoints" value="{{actor.system.primaryAttributes.speed.points}}"
+								   data-dtype="Number" />
+							<span></span>
+						</div>
+						<div class="attribute-row">
+							<label style="font-weight: bold">{{actor.system.primaryAttributes.move.abbr}}</label>
+							<input type="number" name="system.primaryAttributes.{{id}}.value" class="atrVal" value="{{actor.system.primaryAttributes.move.value}}"
+								   data-dtype="Number" disabled />
+							<input type="number" name="system.primaryAttributes.move.mod" class="atrMod" value="{{actor.system.primaryAttributes.move.mod}}"
+								   data-dtype="Number" />
+							<input type="number" name="system.primaryAttributes.move.points" class="atrPoints" value="{{actor.system.primaryAttributes.move.points}}"
+								   data-dtype="Number" />
+							<span></span>
+						</div>
+						<div class="attribute-row">
+							<label style="font-weight: bold">{{actor.system.primaryAttributes.dodge.abbr}}</label>
+							<input type="number" name="system.primaryAttributes.{{id}}.value" class="atrVal" value="{{actor.system.primaryAttributes.dodge.value}}"
+								   data-dtype="Number" disabled />
+							<input type="number" name="system.primaryAttributes.dodge.mod" class="atrMod" value="{{actor.system.primaryAttributes.dodge.mod}}"
+								   data-dtype="Number" />
+							<input type="number" name="system.primaryAttributes.dodge.points" class="atrPoints" value="{{actor.system.primaryAttributes.dodge.points}}"
+								   data-dtype="Number" />
+							<label for="system.primaryAttributes.dodge.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.primaryAttributes.dodge.value}}" data-label="Makes a &lt;b&gt;{{actor.system.primaryAttributes.dodge.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+					</div>
+					{{!-- End DX Column --}}
+					{{!-- Begin IQ Column --}}
+					<div class="attribute-column" style="background-color: rgba(0, 0, 255, 0.05);">
+						<div class="attribute-label">
+							<label>Intelligence</label>
+						</div>
+						<div class="attribute-header">
+							<label>Name</label>
+							<label class="title">Val</label>
+							<label class="title">Mod</label>
+							<label class="title">Pts</label>
+							<label></label>
+						</div>
+						<div class="attribute-row">
+							<label style="font-weight: bold">{{actor.system.primaryAttributes.intelligence.abbr}}</label>
+							<input type="number" name="system.primaryAttributes.{{id}}.value" class="atrVal" value="{{actor.system.primaryAttributes.intelligence.value}}"
+								   data-dtype="Number" disabled />
+							<input type="number" name="system.primaryAttributes.intelligence.mod" class="atrMod" value="{{actor.system.primaryAttributes.intelligence.mod}}"
+								   data-dtype="Number" />
+							<input type="number" name="system.primaryAttributes.intelligence.points" class="atrPoints" value="{{actor.system.primaryAttributes.intelligence.points}}"
+								   data-dtype="Number" />
+							<label for="system.primaryAttributes.intelligence.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.primaryAttributes.intelligence.value}}" data-label="Makes a &lt;b&gt;{{actor.system.primaryAttributes.intelligence.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+						<div class="attribute-row">
+							<label style="font-weight: bold">{{actor.system.primaryAttributes.perception.abbr}}</label>
+							<input type="number" name="system.primaryAttributes.{{id}}.value" class="atrVal" value="{{actor.system.primaryAttributes.perception.value}}"
+								   data-dtype="Number" disabled />
+							<input type="number" name="system.primaryAttributes.perception.mod" class="atrMod" value="{{actor.system.primaryAttributes.perception.mod}}"
+								   data-dtype="Number" />
+							<input type="number" name="system.primaryAttributes.perception.points" class="atrPoints" value="{{actor.system.primaryAttributes.perception.points}}"
+								   data-dtype="Number" />
+							<label for="system.primaryAttributes.perception.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.primaryAttributes.perception.value}}" data-label="Makes a &lt;b&gt;{{actor.system.primaryAttributes.perception.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+						<div class="attribute-row">
+							<label style="font-weight: bold">{{actor.system.primaryAttributes.will.abbr}}</label>
+							<input type="number" name="system.primaryAttributes.{{id}}.value" class="atrVal" value="{{actor.system.primaryAttributes.will.value}}"
+								   data-dtype="Number" disabled />
+							<input type="number" name="system.primaryAttributes.will.mod" class="atrMod" value="{{actor.system.primaryAttributes.will.mod}}"
+								   data-dtype="Number" />
+							<input type="number" name="system.primaryAttributes.will.points" class="atrPoints" value="{{actor.system.primaryAttributes.will.points}}"
+								   data-dtype="Number" />
+							<label for="system.primaryAttributes.will.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.primaryAttributes.will.value}}" data-label="Makes a &lt;b&gt;{{actor.system.primaryAttributes.will.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+						<div class="attribute-row">
+							<label style="font-weight: bold">{{actor.system.primaryAttributes.fright.abbr}}</label>
+							<input type="number" name="system.primaryAttributes.{{id}}.value" class="atrVal" value="{{actor.system.primaryAttributes.fright.value}}"
+								   data-dtype="Number" disabled />
+							<input type="number" name="system.primaryAttributes.fright.mod" class="atrMod" value="{{actor.system.primaryAttributes.fright.mod}}"
+								   data-dtype="Number" />
+							<input type="number" name="system.primaryAttributes.fright.points" class="atrPoints" value="{{actor.system.primaryAttributes.fright.points}}"
+								   data-dtype="Number" />
+							<label for="system.primaryAttributes.fright.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.primaryAttributes.fright.value}}" data-label="Makes a &lt;b&gt;{{actor.system.primaryAttributes.fright.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+					</div>
+					{{!-- End IQ Column --}}
+					{{!-- Begin HT Column --}}
+					<div class="attribute-column" style="background-color: rgba(255, 255, 0, 0.05);">
+						<div class="attribute-label">
+							<label>Health</label>
+						</div>
+						<div class="attribute-header">
+							<label>Name</label>
+							<label class="title">Val</label>
+							<label class="title">Mod</label>
+							<label class="title">Pts</label>
+							<label></label>
+						</div>
+						<div class="attribute-row">
+							<label style="font-weight: bold">{{actor.system.primaryAttributes.health.abbr}}</label>
+							<input type="number" name="system.primaryAttributes.{{id}}.value" class="atrVal" value="{{actor.system.primaryAttributes.health.value}}"
+								   data-dtype="Number" disabled />
+							<input type="number" name="system.primaryAttributes.health.mod" class="atrMod" value="{{actor.system.primaryAttributes.health.mod}}"
+								   data-dtype="Number" />
+							<input type="number" name="system.primaryAttributes.health.points" class="atrPoints" value="{{actor.system.primaryAttributes.health.points}}"
+								   data-dtype="Number" />
+							<label for="system.primaryAttributes.health.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.primaryAttributes.health.value}}" data-label="Makes a &lt;b&gt;{{actor.system.primaryAttributes.health.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+						<div class="attribute-row">
+							<label style="font-weight: bold">{{actor.system.primaryAttributes.subdue.abbr}}</label>
+							<input type="number" name="system.primaryAttributes.{{id}}.value" class="atrVal" value="{{actor.system.primaryAttributes.subdue.value}}"
+								   data-dtype="Number" disabled />
+							<input type="number" name="system.primaryAttributes.subdue.mod" class="atrMod" value="{{actor.system.primaryAttributes.subdue.mod}}"
+								   data-dtype="Number" />
+							<input type="number" name="system.primaryAttributes.subdue.points" class="atrPoints" value="{{actor.system.primaryAttributes.subdue.points}}"
+								   data-dtype="Number" />
+							<label for="system.primaryAttributes.subdue.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.primaryAttributes.subdue.value}}" data-label="Makes a &lt;b&gt;{{actor.system.primaryAttributes.subdue.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+						<div class="attribute-row">
+							<label style="font-weight: bold">{{actor.system.primaryAttributes.death.abbr}}</label>
+							<input type="number" name="system.primaryAttributes.{{id}}.value" class="atrVal" value="{{actor.system.primaryAttributes.death.value}}"
+								   data-dtype="Number" disabled />
+							<input type="number" name="system.primaryAttributes.death.mod" class="atrMod" value="{{actor.system.primaryAttributes.death.mod}}"
+								   data-dtype="Number" />
+							<input type="number" name="system.primaryAttributes.death.points" class="atrPoints" value="{{actor.system.primaryAttributes.death.points}}"
+								   data-dtype="Number" />
+							<label for="system.primaryAttributes.death.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.primaryAttributes.death.value}}" data-label="Makes a &lt;b&gt;{{actor.system.primaryAttributes.death.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+					</div>
+					{{!-- End HT Column --}}
+					{{!-- Begin Senses Column --}}
+					<div class="attribute-column" style="background-color: rgba(0, 255, 255, 0.05);">
+						<div class="attribute-label">
+							<label>Senses</label>
+						</div>
+						<div class="sense-header">
+							<label>Name</label>
+							<label class="title">Val</label>
+							<label class="title">Mod</label>
+							<label></label>
+						</div>
+						<div class="sense-row">
+							<label style="font-weight: bold">{{actor.system.senses.vis.abbr}}</label>
+							<input type="text" name="system.senses.vis.value" class="atrVal" value="{{actor.system.senses.vis.value}}"
+								   data-dtype="Number" disabled />
+							<input type="text" name="system.senses.vis.mod" class="senseMod" value="{{actor.system.senses.vis.mod}}"
+								   data-dtype="Number" />
+							<label for="system.senses.{{id}}.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.senses.vis.value}}" data-label="Makes a &lt;b&gt;{{actor.system.senses.vis.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+						<div class="sense-row">
+							<label style="font-weight: bold">{{actor.system.senses.hear.abbr}}</label>
+							<input type="text" name="system.senses.hear.value" class="atrVal" value="{{actor.system.senses.hear.value}}"
+								   data-dtype="Number" disabled />
+							<input type="text" name="system.senses.hear.mod" class="senseMod" value="{{actor.system.senses.hear.mod}}"
+								   data-dtype="Number" />
+							<label for="system.senses.{{id}}.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.senses.hear.value}}" data-label="Makes a &lt;b&gt;{{actor.system.senses.hear.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+						<div class="sense-row">
+							<label style="font-weight: bold">{{actor.system.senses.smell.abbr}}</label>
+							<input type="text" name="system.senses.smell.value" class="atrVal" value="{{actor.system.senses.smell.value}}"
+								   data-dtype="Number" disabled />
+							<input type="text" name="system.senses.smell.mod" class="senseMod" value="{{actor.system.senses.smell.mod}}"
+								   data-dtype="Number" />
+							<label for="system.senses.{{id}}.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.senses.smell.value}}" data-label="Makes a &lt;b&gt;{{actor.system.senses.smell.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+						<div class="sense-row">
+							<label style="font-weight: bold">{{actor.system.senses.touch.abbr}}</label>
+							<input type="text" name="system.senses.touch.value" class="atrVal" value="{{actor.system.senses.touch.value}}"
+								   data-dtype="Number" disabled />
+							<input type="text" name="system.senses.touch.mod" class="senseMod" value="{{actor.system.senses.touch.mod}}"
+								   data-dtype="Number" />
+							<label for="system.senses.{{id}}.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.senses.touch.value}}" data-label="Makes a &lt;b&gt;{{actor.system.senses.touch.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+						{{#if actor.system.showVanillaMagic}}
+						<div class="sense-row">
+							<label style="font-weight: bold">{{actor.system.senses.magic.abbr}}</label>
+							<input type="text" name="system.senses.magic.value" class="atrVal" value="{{actor.system.senses.magic.value}}"
+								   data-dtype="Number" disabled />
+							<input type="text" name="system.senses.magic.mod" class="senseMod" value="{{actor.system.senses.magic.mod}}"
+								   data-dtype="Number" />
+							<label for="system.senses.{{id}}.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.senses.magic.value}}" data-label="Makes a &lt;b&gt;{{actor.system.senses.magic.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+						{{/if}}
+						<div class="sense-row">
+							<input type="text" name="system.senses.extra1.abbr" value="{{actor.system.senses.extra1.abbr}}" style="text-align: left;"/>
+							<input type="text" name="system.senses.extra1.value" class="atrVal" value="{{actor.system.senses.extra1.value}}"
+								   data-dtype="Number" disabled />
+							<input type="text" name="system.senses.extra1.mod" class="senseMod" value="{{actor.system.senses.extra1.mod}}"
+								   data-dtype="Number" />
+							<label for="system.senses.{{id}}.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.senses.extra1.value}}" data-label="Makes a &lt;b&gt;{{actor.system.senses.extra1.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+						<div class="sense-row">
+							<input type="text" name="system.senses.extra2.abbr" value="{{actor.system.senses.extra2.abbr}}" style="text-align: left;"/>
+							<input type="text" name="system.senses.extra2.value" class="atrVal" value="{{actor.system.senses.extra2.value}}"
+								   data-dtype="Number" disabled />
+							<input type="text" name="system.senses.extra2.mod" class="senseMod" value="{{actor.system.senses.extra2.mod}}"
+								   data-dtype="Number" />
+							<label for="system.senses.{{id}}.value" class="fa fa-dice-six rollable"
+								   data-level="{{actor.system.senses.extra2.value}}" data-label="Makes a &lt;b&gt;{{actor.system.senses.extra2.abbr}}&lt;/b&gt; check."
+								   data-type="skill"></label>
+						</div>
+					</div>
+					{{!-- End 	Senses Column --}}
 				</div>
 
 				<div id="biography" style="height: 100%">

@@ -271,6 +271,58 @@
 	border-top: 2px groove darkgoldenrod;
 }
 
+.attributes-block {
+	display: grid;
+	grid-template-columns: repeat(4,auto);
+	border-top: 2px groove darkgoldenrod;
+}
+
+.attribute-column {
+
+}
+
+.attribute-label {
+	padding: 2px;
+	margin: 1px;
+	justify-content: center;
+	text-align: center;
+	font-weight: bold;
+}
+
+.attribute-header {
+	display: grid;
+	grid-template-columns: 60px 2em 2em 2em 16px;
+	padding: 2px;
+	margin: 1px;
+	border-bottom: 2px groove darkgoldenrod;
+	justify-content: center;
+	font-weight: bold;
+}
+
+.attribute-row {
+	display: grid;
+	grid-template-columns: 60px 2em 2em 2em 16px;
+	padding: 2px;
+	justify-content: center;
+}
+
+.sense-header {
+	display: grid;
+	grid-template-columns: 60px 2em 2em 16px;
+	padding: 2px;
+	margin: 1px;
+	border-bottom: 2px groove darkgoldenrod;
+	justify-content: center;
+	font-weight: bold;
+}
+
+.sense-row {
+	display: grid;
+	grid-template-columns: 7em 2em 2em 16px;
+	padding: 2px;
+	justify-content: center;
+}
+
 #attributes_defences {
 	border-top: 2px groove darkgoldenrod;
 }
@@ -354,12 +406,8 @@
 	width: 2em !important;
 }
 
-.senseVal {
-	width: 15ch !important;
-}
-
 .senseMod {
-	width: 2ch !important;
+	width: 2em !important;
 }
 
 .attack {

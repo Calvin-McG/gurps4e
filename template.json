@@ -705,6 +705,12 @@
             "value": 10,
             "mod": 0
           },
+          "magic": {
+            "id": "magic",
+            "abbr": "Magic",
+            "value": 0,
+            "mod": 0
+          },
           "extra1": {
             "id": "extra1",
             "abbr": "",

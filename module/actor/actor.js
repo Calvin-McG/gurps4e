@@ -3072,6 +3072,15 @@ export class gurpsActor extends Actor {
 	}
 
 	updateVanillaMagic() {
+		if (typeof this.system.senses.magic === "undefined") { // Undefined check for the new magic sense
+			this.system.senses.magic = {
+				"id": "magic",
+				"abbr": "Magic",
+				"value": 0,
+				"mod": 0
+			}
+		}
+
 		if (this.system.magic) { // Character has the magic block
 			// Calculate the total magical attribute
 			let totalMagicAttribute = 0;
@@ -3081,6 +3090,10 @@ export class gurpsActor extends Actor {
 			totalMagicAttribute += this.system.magic.attributeMod ? this.system.magic.attributeMod : 0;
 			totalMagicAttribute += this.system.magic.magery ? this.system.magic.magery : 0;
 			this.system.magic.totalMagicAttribute = totalMagicAttribute;
+
+			let per = this.system.primaryAttributes.perception.value;
+
+			this.system.senses.magic.value = per + this.system.senses.magic.mod + (this.system.magic.magery ? this.system.magic.magery : 0);
 		}
 	}
 
