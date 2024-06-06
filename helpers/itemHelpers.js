@@ -34,7 +34,7 @@ export class itemHelpers {
         firearmStats.yardsPerSecond = Math.floor(feetPerSecond / 3);
 
         // Decide whether or not this gun counts 4 to 8mm projectiles as pi or pi- (High/Low energy)
-        if (firearmStats.kineticEnergy > 1250 || metresPerSecond > 700) { // The KE is the NATO standard for intermediate cartridges.
+        if (firearmStats.kineticEnergy > 1000 || metresPerSecond > 540) { // HT holds an M1 carbine to be normal piercing. These values match those for .30 Carbine
             firearmStats.highEnergy = true;
         }
         else {
