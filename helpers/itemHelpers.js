@@ -34,7 +34,7 @@ export class itemHelpers {
         firearmStats.yardsPerSecond = Math.floor(feetPerSecond / 3);
 
         // Decide whether or not this gun counts 4 to 8mm projectiles as pi or pi- (High/Low energy)
-        if (firearmStats.kineticEnergy > 1000 || metresPerSecond > 540) { // HT holds an M1 carbine to be normal piercing. These values match those for .30 Carbine
+        if (firearmStats.kineticEnergy > 1000 || metresPerSecond > 800) { // HT holds an M1 carbine to be normal piercing, but a P90 to be pi-. These values are set to put the split between the two.
             firearmStats.highEnergy = true;
         }
         else {
