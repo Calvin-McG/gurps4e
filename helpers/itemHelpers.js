@@ -235,7 +235,6 @@ export class itemHelpers {
         // Recoil
         let mv = totalAcceleratedKgs * metresPerSecond;
         firearmStats.rclRaw = mv / (firearmStats.loadedWeight * 0.453592);
-        console.log(firearmStats.rclRaw, firearmStats.loadedWeight, mv, totalAcceleratedKgs, metresPerSecond)
 
         if (firearmStats.rclRaw < 2) {
             firearmStats.rcl = 2;
