@@ -121,6 +121,9 @@ export class gurpsActorSheet extends ActorSheet {
 		if (this.actor.type.toLowerCase() === "fullchar") {
 			return `${path}/actor-sheet.html`;
 		}
+		else if (this.actor.type.toLowerCase() === "simple vehicle") {
+			return `${path}/Simple Vehicle-sheet.html`;
+		}
 		else {
 			return `${path}/${this.actor.type}-sheet.html`;
 		}
