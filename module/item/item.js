@@ -3001,10 +3001,6 @@ export class gurpsItem extends Item {
 
       this.system.firearmDesign.malf += parseInt(this.system.firearmDesign.reliability); // Apply malf modifier for quality level.
 
-      if (this.system.firearmDesign.malf > 17) { // Above a malf of 17, it's set to 17+. Which represents the fact two crit fails are required for the gun to malfunction.
-        this.system.firearmDesign.malf = "17+";
-      }
-
       // Reload
       this.system.firearmDesign.individualLoading = "";
       if (this.system.firearmDesign.action === "muzzle") {
@@ -3298,7 +3294,6 @@ export class gurpsItem extends Item {
             this.system.firearmDesign.ammunition[ammoKeys[i]].wps       = firearmStats.baseWeightPerShot;
             this.system.firearmDesign.ammunition[ammoKeys[i]].cps       = firearmStats.cps;
             this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF     = 1;
-            this.system.firearmDesign.ammunition[ammoKeys[i]].malf      = this.system.firearmDesign.malf + (this.system.firearmDesign.ammunition[ammoKeys[i]].malfMod ?? 0);
             this.system.firearmDesign.ammunition[ammoKeys[i]].acc       = this.system.firearmDesign.baseAcc; // ST is based on weapon configuration, so doesn't change with custom PSI
             this.system.firearmDesign.ammunition[ammoKeys[i]].damage    = ammoStats.baseDamage;
             this.system.firearmDesign.ammunition[ammoKeys[i]].st        = this.system.firearmDesign.st; // ST is based on weapon configuration and weight, so doesn't change with custom PSI
@@ -3306,6 +3301,12 @@ export class gurpsItem extends Item {
             this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange  = ammoStats.maxRange
             this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod  = ammoStats.baseWoundMod;
             this.system.firearmDesign.ammunition[ammoKeys[i]].lc        = 3;
+
+            this.system.firearmDesign.ammunition[ammoKeys[i]].malf = this.system.firearmDesign.malf + this.system.firearmDesign.ammunition[ammoKeys[i]].malfMod ?? 0; // Apply the malf modifier
+
+            if (this.system.firearmDesign.ammunition[ammoKeys[i]].malf > 17) { // Above a malf of 17, it's set to 17+. Which represents the fact two crit fails are required for the gun to malfunction.
+              this.system.firearmDesign.ammunition[ammoKeys[i]].malf = "17+";
+            }
 
             // Light cased
             if (this.system.firearmDesign.ammunition[ammoKeys[i]].case === "lightCased") {
