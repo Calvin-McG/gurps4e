@@ -1054,7 +1054,10 @@ export class gurpsItemSheet extends ItemSheet {
             "inc": false,
             "tracer": false,
             "maxExplosivePercent": 0,
+            "malfMod": 0,
             "rofBonus": 0,
+            "flags": "",
+            "psi": this.item.system.firearmDesign.chamberPressure ?? 15000
         }; // Init the new arrow row
 
         this.item.system.firearmDesign.ammunition[newKey] = newRow;

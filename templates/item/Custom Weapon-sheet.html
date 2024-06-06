@@ -1704,6 +1704,20 @@
                                 </td>
                             </tr>
 
+                            <tr class="design-row">
+                                <td style="width: 160px">
+                                    Adjusted Pressure:
+                                </td>
+                                <td>
+                                    <input type="number" name="system.firearmDesign.ammunition.{{id}}.psi" value="{{ammo.psi}}" data-dtype="Number"/>
+                                </td>
+                                <td class="question-container" id="adj-psi">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
                             {{#unless (and (eq item.system.firearmDesign.action "breech") (eq item.system.firearmDesign.action "muzzle") ) }}
                             {{#ifCond ../item.system.tl '>=' 5 }}
                             <tr class="design-row">
@@ -1724,6 +1738,7 @@
                             {{/ifCond}}
                             {{/unless}}
 
+                            {{#ifCond ../item.system.firearmDesign.chamberPressure '==' ammo.psi }}
                             {{#ifCond ../item.system.tl '>=' 4 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
@@ -1738,6 +1753,7 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{/ifCond}}
                             {{/ifCond}}
 
                             {{#ifCond ../item.system.tl '>=' 6 }}
@@ -1759,7 +1775,8 @@
                             {{/ifCond}}
 
                             {{#ifCond ../item.system.tl '>=' 6 }}
-                            {{#ifCond item.system.firearmDesign.yardsPerSecond '>=' 375.109 }}
+                            {{#ifCond ../item.system.firearmDesign.chamberPressure '==' ammo.psi }}
+                            {{#ifCond ../item.system.firearmDesign.yardsPerSecond '>=' 375.109 }}
                             <tr class="design-row">
                                 <td style="width: 160px">
                                     Subsonic Ammunition
@@ -1773,6 +1790,7 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{/ifCond}}
                             {{/ifCond}}
                             {{/ifCond}}
 
@@ -1946,6 +1964,20 @@
 
                             <tr class="design-row">
                                 <td style="width: 160px">
+                                    Malf Modifier:
+                                </td>
+                                <td>
+                                    <input type="number" name="system.firearmDesign.ammunition.{{id}}.malfMod" value="{{ammo.malfMod}}" data-dtype="Number"/>
+                                </td>
+                                <td class="question-container" id="malf-mod">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 160px">
                                     Weight Per Shot
                                 </td>
                                 <td>
@@ -1966,6 +1998,20 @@
                                     {{round ammo.cps 100}}$
                                 </td>
                                 <td class="question-container" id="cps">
+                                    <div class="question-button">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="design-row">
+                                <td style="width: 160px">
+                                    Flags:
+                                </td>
+                                <td>
+                                    <input type="text" name="system.firearmDesign.ammunition.{{id}}.flags" value="{{ammo.flags}}" data-dtype="String"/>
+                                </td>
+                                <td class="question-container" id="custom-weapon-flags">
                                     <div class="question-button">
                                         <i class="fas fa-question"></i>
                                     </div>

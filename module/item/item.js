@@ -1,12 +1,13 @@
-import { attributeHelpers } from '../../helpers/attributeHelpers.js';
-import { skillHelpers } from '../../helpers/skillHelpers.js';
-import { materialHelpers } from "../../helpers/materialHelpers.js";
-import { distanceHelpers } from "../../helpers/distanceHelpers.js";
-import { economicHelpers } from "../../helpers/economicHelpers.js";
-import { actorHelpers } from "../../helpers/actorHelpers.js";
-import { generalHelpers } from "../../helpers/generalHelpers.js";
-import { vehicleHelpers } from "../../helpers/vehicleHelpers.js";
-import { attackHelpers } from "../../helpers/attackHelpers.js";
+import {attributeHelpers} from '../../helpers/attributeHelpers.js';
+import {skillHelpers} from '../../helpers/skillHelpers.js';
+import {materialHelpers} from "../../helpers/materialHelpers.js";
+import {distanceHelpers} from "../../helpers/distanceHelpers.js";
+import {economicHelpers} from "../../helpers/economicHelpers.js";
+import {actorHelpers} from "../../helpers/actorHelpers.js";
+import {generalHelpers} from "../../helpers/generalHelpers.js";
+import {vehicleHelpers} from "../../helpers/vehicleHelpers.js";
+import {attackHelpers} from "../../helpers/attackHelpers.js";
+import {itemHelpers} from "../../helpers/itemHelpers.js";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -2803,46 +2804,17 @@ export class gurpsItem extends Item {
 
       this.system.firearmDesign.burnLength = this.system.firearmDesign.burnRatio * this.system.firearmDesign.caseLength;
 
-      // Prerequisite Calculations
-      let barrelBoreMetres        = this.system.firearmDesign.projectileCalibre / 1000 // F21 / F14
-      let chamberBoreMetres       = this.system.firearmDesign.chamberBore / 1000
-      let chamberPressurePascals  = this.system.firearmDesign.chamberPressure * 6896;
-      let burnLengthMeters        = this.system.firearmDesign.burnLength / 1000;
-      let boreCrossSection        = Math.PI * ( barrelBoreMetres / 2) ** 2; // I13
-      let bulletCrossSection      = Math.PI * ( barrelBoreMetres / 2) ** 2; // I17
-      let barrelLengthMetres      = this.system.firearmDesign.barrelLength / 1000; // F17
-      let caseLengthMetres        = this.system.firearmDesign.caseLength / 1000;
-      let chamberCrossSection     = Math.PI * ( chamberBoreMetres / 2 ) ** 2
-      let chamberVolume           = chamberCrossSection * ( caseLengthMetres * 7/8 - barrelBoreMetres);
-      let fallOffVolume           = chamberVolume + boreCrossSection * burnLengthMeters;
-      let acclerationDistance     = barrelLengthMetres - caseLengthMetres - burnLengthMeters + barrelBoreMetres;
-      let totalAcceleratedKgs     = this.system.firearmDesign.projectileMass / 15430; // F22 or F18
+      let firearmStats = itemHelpers.calcCustomFirearmStats(this.system.firearmDesign, this.system.tl); // Prerequisite Calculations
 
-      // Actually useful calculations
-
-      // Kinetic Energy in Joules
-      let kineticEnergy = Math.abs( chamberPressurePascals * ( boreCrossSection * burnLengthMeters + fallOffVolume * Math.log( boreCrossSection * acclerationDistance / fallOffVolume + 1) ) ); //Measured in joules - D27 or K12
-
-      // Velocity
-      let metresPerSecond = Math.sqrt((2* Math.abs(kineticEnergy) / totalAcceleratedKgs )); // D25
-      let feetPerSecond = metresPerSecond * 1000 / (12 * 25.4); // D26
-      this.system.firearmDesign.yardsPerSecond = Math.floor(feetPerSecond / 3);
-
-      // Decide whether or not this gun counts 4 to 8mm projectiles as pi or pi- (High/Low energy)
-      if (kineticEnergy > 1250 || metresPerSecond > 700) { // The KE is the NATO standard for intermediate cartridges.
-        this.system.firearmDesign.highEnergy = true;
-      }
-      else {
-        this.system.firearmDesign.highEnergy = false;
-      }
+      this.system.firearmDesign.yardsPerSecond = firearmStats.yardsPerSecond;
+      this.system.firearmDesign.highEnergy = firearmStats.highEnergy;
 
       // Damage
-      this.system.firearmDesign.baseDamage = Math.round(Math.sqrt(( kineticEnergy ** 1.04)/( bulletCrossSection ** 0.314))/13.3926)
+      this.system.firearmDesign.baseDamage = firearmStats.baseDamage;
       this.system.firearmDesign.baseDamageObject = generalHelpers.pointsToDiceAndAdds(this.system.firearmDesign.baseDamage);
 
       // Projectile Density
-      let projectileVolume = (Math.PI*(barrelBoreMetres/2) ** 3+Math.PI/12*barrelBoreMetres ** 2*(2 * barrelBoreMetres * this.system.firearmDesign.projectileAspectRatio - barrelBoreMetres)); // I21
-      this.system.firearmDesign.projectileDensity = totalAcceleratedKgs / projectileVolume / 1000 // I22 - Measured in g/cm^2
+      this.system.firearmDesign.projectileDensity = firearmStats.projectileDensity
 
       let projectileMaterialArray = materialHelpers.densityToMaterials(this.system.firearmDesign.projectileDensity);
 
@@ -2857,27 +2829,7 @@ export class gurpsItem extends Item {
       }
 
       // Wound modifier calculation
-
-      if (this.system.firearmDesign.projectileCalibre < 4) {
-        this.system.firearmDesign.baseWoundMod = 1;
-      }
-      else if (this.system.firearmDesign.projectileCalibre < 8) {
-        if (this.system.firearmDesign.highEnergy) { // If the projectile is moving quickly enough or carrying enough energy, count is as 'pi', otherwise it remains pi-
-          this.system.firearmDesign.baseWoundMod = 2;
-        }
-        else {
-          this.system.firearmDesign.baseWoundMod = 1;
-        }
-      }
-      else if (this.system.firearmDesign.projectileCalibre < 10) {
-        this.system.firearmDesign.baseWoundMod = 2;
-      }
-      else if (this.system.firearmDesign.projectileCalibre < 15) {
-        this.system.firearmDesign.baseWoundMod = 3;
-      }
-      else {
-        this.system.firearmDesign.baseWoundMod = 4;
-      }
+      this.system.firearmDesign.baseWoundMod = firearmStats.baseWoundMod;
 
       // ACC calculation
       this.system.firearmDesign.baseAcc = 0;
@@ -2938,168 +2890,11 @@ export class gurpsItem extends Item {
       }
 
       // Weight
-      let configWeightModifier = 45;
+      this.system.firearmDesign.weightKgs = firearmStats.weightKgs;
+      this.system.firearmDesign.weight = firearmStats.weight;
+      this.system.firearmDesign.baseWeightPerShot = firearmStats.baseWeightPerShot;// Add weight for ammo
 
-      if (this.system.firearmDesign.action === "auto") {
-        // Do nothing.
-      }
-      else if (this.system.firearmDesign.action === "semi") {
-        configWeightModifier = 1.5 / 0.9 * configWeightModifier;
-      }
-      else if (this.system.firearmDesign.action === "revolverSA" || this.system.firearmDesign.action === "revolverDA") {
-        configWeightModifier = 5 * configWeightModifier;
-      }
-      else { // Else, use the modifier for bolt action weapons.
-        configWeightModifier = 1.5 / 0.75 * configWeightModifier;
-      }
-
-      // Calculate the base receiver weight
-      let receiverWeight = ((kineticEnergy ** 0.66) / configWeightModifier / 1.4 ** (this.system.tl - 7))
-
-      // Add weight for revolver cylinder
-      if (this.system.firearmDesign.action === "revolverSA" || this.system.firearmDesign.action === "revolverDA") {
-        receiverWeight = (receiverWeight) + ((receiverWeight * (this.system.firearmDesign.capacity-1)) * 0.132)
-      }
-
-      if (this.system.firearmDesign.essentialMaterials) { // The gun is made of essential materials, modify receiverWeight weight accordingly.
-        receiverWeight = receiverWeight / 3;
-      }
-
-      let h25 = 44000000 * ((1.4) ** (this.system.tl - 7));
-
-      let wallThickness = this.system.firearmDesign.chamberPressure * this.system.firearmDesign.projectileCalibre / 2 / h25; // H27
-
-      let barrelDiameter = 2 * (wallThickness) + barrelBoreMetres;
-
-      let barrelWeight = (Math.PI * (barrelBoreMetres / 2 + wallThickness) ** 2 - Math.PI * (barrelBoreMetres / 2) ** 2) * barrelLengthMetres * 7860
-
-      if (this.system.firearmDesign.essentialMaterials) { // The gun is made of essential materials, modify barrelWeight accordingly.
-        barrelWeight = barrelWeight / 3;
-      }
-
-      this.system.firearmDesign.weightKgs = (receiverWeight + barrelWeight); // The base weight of the gun.
-      this.system.firearmDesign.weightKgs += (((receiverWeight + barrelWeight) * 0.8) * (this.system.firearmDesign.barrels - 1)); // Add the weight of any extra barrels.
-      this.system.firearmDesign.weightKgs *= this.system.firearmDesign.weightTweak; // Multiply by the weight tweak
-      this.system.firearmDesign.weight = this.system.firearmDesign.weightKgs * 2.205; // Convert from kgs to lbs.
-
-      // Add weight for ammo
-      let projectileWeight = this.system.firearmDesign.projectileMass * 0.000142857; // Take the projectile mass above (measured in grams) and convert to pounds.
-
-      let propellantREF = 1;
-      let propellantCost = 1; // We'll use this later to determine cost per shot
-      let materialCost = 1; // We'll use this later to determine the weapon's material cost
-      switch (this.system.tl) {
-        case 1:
-        case 2:
-        case 3:
-          propellantREF = 0.3;
-          propellantCost = 5;
-          materialCost = 50;
-          break;
-        case 4:
-          propellantREF = 0.4;
-          propellantCost = 5;
-          materialCost = 50;
-          break;
-        case 5:
-          propellantREF = 0.5;
-          propellantCost = 5;
-          materialCost = 50;
-          break;
-        case 6:
-          propellantREF = 0.8;
-          propellantCost = 7.5;
-          materialCost = 3.50;
-          break;
-        case 7:
-          propellantREF = 0.85;
-          propellantCost = 7.5;
-          break;
-        case 8:
-          propellantREF = 0.9;
-          propellantCost = 7.5;
-          break;
-        case 9:
-          propellantREF = 0.9 * 1.5;
-          propellantCost = 7.5 * 1.5;
-          break;
-        case 10:
-          propellantREF = 0.9 * 2;
-          propellantCost = 7.5 * 2;
-          break;
-        case 11:
-          propellantREF = 0.9 * 2.5;
-          propellantCost = 7.5 * 2.5;
-          break;
-        case 12:
-          propellantREF = 0.9 * 3;
-          propellantCost = 7.5 * 3;
-          break;
-        default:
-          propellantREF = 0.8;
-          propellantCost = 7.5;
-          break;
-      }
-
-      let powderWeight = kineticEnergy / 4184; // Dividing the kinetic energy by the number of joules in a single gram of TnT gives us the powder weight, assuming that powder is TnT or an equivalent
-      powderWeight = powderWeight * 0.00220462; // Convert the above number to pounds
-      powderWeight = powderWeight / propellantREF; // Correct the above number for the REF of the propellant
-
-      powderWeight *= 18; // This number is entirely arbitrary, based on the fact that running the above calculations for a 5.56mm cartridge gives a powder weight roughly 1/18th what it should be.
-
-      this.system.firearmDesign.baseWeightPerShot = projectileWeight + powderWeight;
-
-      // Add weight for magazine body
-      let magazineWeightMultiplier = 1;
-      if (this.system.firearmDesign.magazineStyle === "none" || this.system.firearmDesign.magazineStyle === "internal"){
-        magazineWeightMultiplier = 1;
-      }
-      else if (this.system.firearmDesign.magazineMaterial === "steel"){
-        if (this.system.firearmDesign.magazineStyle === "standard") {
-          magazineWeightMultiplier = 1.2;
-        }
-        else if (this.system.firearmDesign.magazineStyle === "highDensity") {
-          magazineWeightMultiplier = 1.3;
-        }
-        else if (this.system.firearmDesign.magazineStyle === "extended") {
-          magazineWeightMultiplier = 1.5;
-        }
-        else if (this.system.firearmDesign.magazineStyle === "drum") {
-          magazineWeightMultiplier = 1.6;
-        }
-      }
-      else if (this.system.firearmDesign.magazineMaterial === "alloy" || this.system.firearmDesign.magazineMaterial === "plastic"){
-        if (this.system.firearmDesign.magazineStyle === "standard") {
-          magazineWeightMultiplier = 1.1;
-        }
-        else if (this.system.firearmDesign.magazineStyle === "highDensity") {
-          magazineWeightMultiplier = 1.1;
-        }
-        else if (this.system.firearmDesign.magazineStyle === "extended") {
-          magazineWeightMultiplier = 1.2;
-        }
-        else if (this.system.firearmDesign.magazineStyle === "drum") {
-          magazineWeightMultiplier = 1.3;
-        }
-      }
-
-      if (this.system.firearmDesign.essentialMaterials) { // The gun is made of essential materials, modify magazine weight accordingly.
-        magazineWeightMultiplier = 1 + ((magazineWeightMultiplier - 1)/3);
-      }
-
-      let loadedRounds = this.system.firearmDesign.capacity;
-      if (this.system.firearmDesign.capacity === 0) {
-        loadedRounds = 1
-      }
-      else if (this.system.firearmDesign.bolt = "closed") {
-        loadedRounds += 1;
-      }
-
-      loadedRounds = loadedRounds * this.system.firearmDesign.barrels;
-
-      this.system.firearmDesign.ammoWeight = loadedRounds * this.system.firearmDesign.baseWeightPerShot * magazineWeightMultiplier;
-
-      this.system.firearmDesign.loadedWeight = Math.floor((this.system.firearmDesign.weight + this.system.firearmDesign.ammoWeight) * 100) / 100;
+      this.system.firearmDesign.loadedWeight = firearmStats.loadedWeight;
       this.system.weight = this.system.firearmDesign.loadedWeight;
 
       // Shots
@@ -3168,24 +2963,12 @@ export class gurpsItem extends Item {
       this.system.firearmDesign.bulk = 0.1 - Math.log10(bulkConfigMod) - Math.log10(this.system.weight) - (2*Math.log10(bulkLength))
 
       // Rcl
-      let mv = totalAcceleratedKgs * metresPerSecond;
-      this.system.firearmDesign.rclRaw = mv / (this.system.firearmDesign.loadedWeight * 0.453592);
-
-      if (this.system.firearmDesign.rclRaw < 2) {
-        this.system.firearmDesign.rcl = 2;
-      }
-      else {
-        this.system.firearmDesign.rcl = Math.round(this.system.firearmDesign.rclRaw);
-      }
+      this.system.firearmDesign.rclRaw = firearmStats.rclRaw;
+      this.system.firearmDesign.rcl = firearmStats.rcl;
 
       // Range
-      let sectionalDensity = (this.system.firearmDesign.projectileMass/15.43)/(Math.PI*(this.system.firearmDesign.projectileCalibre/2) ** 2); // D37
-      let lossCoefficient = 0.000178 * sectionalDensity ** - 1.1213 / Math.pow(this.system.firearmDesign.projectileAspectRatio,1/4)*1.65; // D38
-
-      let someWeirdConstant = 0.5 * Math.round(Math.sqrt(kineticEnergy ** 1.04/bulletCrossSection ** 0.314)/13.3926);
-
-      this.system.firearmDesign.halfRange = Math.round((Math.log(13.3926)+Math.log(someWeirdConstant)-0.52*Math.log(totalAcceleratedKgs/2)+0.157*Math.log(bulletCrossSection))/(-1.04*lossCoefficient) + Math.log(metresPerSecond)/lossCoefficient);
-      this.system.firearmDesign.maxRange = Math.round((Math.log(13.3926)+Math.log(0.017)-0.52*Math.log(totalAcceleratedKgs/2)+0.157*Math.log(bulletCrossSection))/(-1.04*lossCoefficient) + Math.log(metresPerSecond)/lossCoefficient);
+      this.system.firearmDesign.halfRange = firearmStats.halfRange;
+      this.system.firearmDesign.maxRange  = firearmStats.maxRange;
 
       // Malf
       this.system.firearmDesign.malf = 17;
@@ -3333,8 +3116,7 @@ export class gurpsItem extends Item {
       }
 
       // Cost
-      let costOfLead = this.system.tl >= 5 ? 1 : 2;
-      this.system.firearmDesign.cps = (projectileWeight * costOfLead) + (propellantCost * powderWeight);
+      this.system.firearmDesign.cps = firearmStats.cps;
       this.system.firearmDesign.finalCps = this.system.firearmDesign.cf * this.system.firearmDesign.cps;
 
       let cost = 350;
@@ -3492,6 +3274,19 @@ export class gurpsItem extends Item {
         if (ammoKeys.length > 0) { // If there are actually keys
           for (let i = 0; i < ammoKeys.length; i++) { // Loop through the ammo the user has created and run whatever numbers need to be run.
 
+            let ammoStats = {
+              "baseWoundMod": this.system.firearmDesign.baseWoundMod,
+              "halfRange": this.system.firearmDesign.halfRange,
+              "maxRange": this.system.firearmDesign.maxRange,
+              "rcl": this.system.firearmDesign.rcl,
+              "baseDamage": this.system.firearmDesign.baseDamage,
+              "yardsPerSecond": this.system.firearmDesign.yardsPerSecond
+            }
+
+            if (this.system.firearmDesign.chamberPressure !== this.system.firearmDesign.ammunition[ammoKeys[i]].psi) { // If we're using a custom PSI
+              ammoStats = itemHelpers.calcCustomFirearmStats(this.system.firearmDesign, this.system.tl, this.system.firearmDesign.ammunition[ammoKeys[i]].psi); // Run the calculations to get values specific to our new PSI
+            }
+
             // Input validation for projectile count
             if (typeof this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles == "undefined" || this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles <= 0 || this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles == "") {
               this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles = 1;
@@ -3499,17 +3294,17 @@ export class gurpsItem extends Item {
             this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles = Math.floor(Math.abs(this.system.firearmDesign.ammunition[ammoKeys[i]].projectiles));
 
             // Init some things
-            this.system.firearmDesign.ammunition[ammoKeys[i]].wps = this.system.firearmDesign.baseWeightPerShot;
-            this.system.firearmDesign.ammunition[ammoKeys[i]].cps = this.system.firearmDesign.cps;
-            this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF = 1;
-            this.system.firearmDesign.ammunition[ammoKeys[i]].malf = this.system.firearmDesign.malf;
-            this.system.firearmDesign.ammunition[ammoKeys[i]].acc = this.system.firearmDesign.baseAcc;
-            this.system.firearmDesign.ammunition[ammoKeys[i]].damage = this.system.firearmDesign.baseDamage;
-            this.system.firearmDesign.ammunition[ammoKeys[i]].st = this.system.firearmDesign.st;
-            this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange = this.system.firearmDesign.halfRange;
-            this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange = this.system.firearmDesign.maxRange;
-            this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod = this.system.firearmDesign.baseWoundMod;
-            this.system.firearmDesign.ammunition[ammoKeys[i]].lc = 3;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].wps       = firearmStats.baseWeightPerShot;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].cps       = firearmStats.cps;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF     = 1;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].malf      = this.system.firearmDesign.malf + (this.system.firearmDesign.ammunition[ammoKeys[i]].malfMod ?? 0);
+            this.system.firearmDesign.ammunition[ammoKeys[i]].acc       = this.system.firearmDesign.baseAcc; // ST is based on weapon configuration, so doesn't change with custom PSI
+            this.system.firearmDesign.ammunition[ammoKeys[i]].damage    = ammoStats.baseDamage;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].st        = this.system.firearmDesign.st; // ST is based on weapon configuration and weight, so doesn't change with custom PSI
+            this.system.firearmDesign.ammunition[ammoKeys[i]].halfRange = ammoStats.halfRange
+            this.system.firearmDesign.ammunition[ammoKeys[i]].maxRange  = ammoStats.maxRange
+            this.system.firearmDesign.ammunition[ammoKeys[i]].woundMod  = ammoStats.baseWoundMod;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].lc        = 3;
 
             // Light cased
             if (this.system.firearmDesign.ammunition[ammoKeys[i]].case === "lightCased") {
@@ -3518,7 +3313,7 @@ export class gurpsItem extends Item {
             }
 
             // +P ammo
-            if (this.system.firearmDesign.ammunition[ammoKeys[i]].plusp) {
+            if (this.system.firearmDesign.ammunition[ammoKeys[i]].plusp && this.system.firearmDesign.chamberPressure === this.system.firearmDesign.ammunition[ammoKeys[i]].psi) { // +P Ammo is only an option for ammo not using custom PSI.
               this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.5;
               this.system.firearmDesign.ammunition[ammoKeys[i]].damage *= 1.1;
               this.system.firearmDesign.ammunition[ammoKeys[i]].st *= 1.1;
@@ -3546,7 +3341,7 @@ export class gurpsItem extends Item {
             }
 
             // Subsonic ammo
-            if (this.system.firearmDesign.ammunition[ammoKeys[i]].subsonic) {
+            if (this.system.firearmDesign.ammunition[ammoKeys[i]].subsonic && this.system.firearmDesign.chamberPressure === this.system.firearmDesign.ammunition[ammoKeys[i]].psi) { // +P Ammo is only an option for ammo not using custom PSI.
               this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF += 0.3;
               if (this.system.firearmDesign.yardsPerSecond >= 375.109) {
                 if (this.system.firearmDesign.highEnergy) { // If the projectile is moving quickly enough or carrying enough energy, count is as a rifle round, otherwise a pistol round
@@ -3583,7 +3378,7 @@ export class gurpsItem extends Item {
             this.system.firearmDesign.ammunition[ammoKeys[i]].frag = false;
             this.system.firearmDesign.ammunition[ammoKeys[i]].maxExplosivePercent = 0;
             this.system.firearmDesign.ammunition[ammoKeys[i]].woundModOut = "";
-            this.system.firearmDesign.ammunition[ammoKeys[i]].rcl = this.system.firearmDesign.rcl;
+            this.system.firearmDesign.ammunition[ammoKeys[i]].rcl = ammoStats.rcl;
 
             // Projectile Type
             if (this.system.firearmDesign.ammunition[ammoKeys[i]].projectile === "le" ||
@@ -6036,7 +5831,8 @@ export class gurpsItem extends Item {
             "st": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].st),
             "malf": this.system.firearmDesign.ammunition[ammoKeys[i]].malf,
             "cps": this.system.firearmDesign.ammunition[ammoKeys[i]].cps,
-            "wps": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].wps * 100) / 100
+            "wps": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].wps * 100) / 100,
+            "flags": this.system.firearmDesign.ammunition[ammoKeys[i]].flags ?? ""
           }
           rangedProfiles.push(profile);
 
@@ -6059,7 +5855,8 @@ export class gurpsItem extends Item {
               "st": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].st),
               "malf": this.system.firearmDesign.ammunition[ammoKeys[i]].malf,
               "cps": Math.round((this.system.firearmDesign.ammunition[ammoKeys[i]].cps * this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF) * 100) / 100,
-              "wps": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].wps * 100) / 100
+              "wps": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].wps * 100) / 100,
+              "flags": this.system.firearmDesign.ammunition[ammoKeys[i]].flags ?? ""
             }
             rangedProfiles.push(followUpExplosion);
           }
@@ -6083,7 +5880,8 @@ export class gurpsItem extends Item {
               "st": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].st),
               "malf": this.system.firearmDesign.ammunition[ammoKeys[i]].malf,
               "cps": Math.round((this.system.firearmDesign.ammunition[ammoKeys[i]].cps * this.system.firearmDesign.ammunition[ammoKeys[i]].cpsCF) * 100) / 100,
-              "wps": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].wps * 100) / 100
+              "wps": Math.round(this.system.firearmDesign.ammunition[ammoKeys[i]].wps * 100) / 100,
+              "flags": this.system.firearmDesign.ammunition[ammoKeys[i]].flags ?? ""
             }
             rangedProfiles.push(followUpFrag);
           }
@@ -9450,6 +9248,69 @@ export class gurpsItem extends Item {
             "<tr>" +
             "<td>" +
             "<p>The number of shots in one tank of chemicals. Increases the cost and weight.</p>" +
+            "</td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id === "malf-mod") {
+        info = "<table>" +
+            "<tr>" +
+            "<td>" +
+            "<p>Allows you to tweak Malf for special cases.</p>" +
+            "<p>(P+ Ammo already has its malf modifier accounted for)</p>" +
+            "</td>" +
+            "</tr>" +
+            "</table>"
+      }
+    else if (id === "custom-weapon-flags") {
+        info = "<table>" +
+            "<tr>" +
+            "<td>" +
+            "<p>Accepts the same sort of special flags as normal attacks</p>" +
+            "</td>" +
+            "</tr>" +
+            "</table>" +
+            "<table>" +
+            "<tr><td>una</td><td> Unarmed (Vulnerable to damage following a failed parry)</td></tr>\n" +
+            "<tr><td>sw</td><td> Swing (Should be treated as a swing)</td></tr>\n" +
+            "<tr><td>agp</td><td> Aggressive Parry</td></tr>\n" +
+            "<tr><td>kik</td><td> Kick</td></tr>\n" +
+            "<tr><td>gui</td><td> Guided</td></tr>\n" +
+            "<tr><td>hom</td><td> Homing</td></tr>\n" +
+            "<tr><td>short</td><td> Short Range (-1/yard)</td></tr>\n" +
+            "<tr><td>long</td><td> Long Range (Long Distance Modifiers)</td></tr>\n" +
+            "<tr><td>staff</td><td> The character's staff reduces range penalties</td></tr>\n" +
+            "<tr><td>va#</td><td> Variable Scope (Replace # with Acc bonus)</td></tr>\n" +
+            "<tr><td>bomba</td><td> Bombardment, uses attack's base skill</td></tr>\n" +
+            "<tr><td>bomb#</td><td> Bombardment, the number as the skill</td></tr>\n" +
+            "<tr><td>collateral</td><td> Collateral hits from a high rof attack.</td></tr>\n" +
+            "<tr><td>yscatter</td><td> If the attack normally wouldn't scatter, it does.</td></tr>\n" +
+            "<tr><td>nscatter</td><td> If the attack would normally scatter, it doesn't.</td></tr>\n" +
+            "<tr><td>ytargethex</td><td> If the attack normally wouldn't get +4 for targeting a hex, it does.</td></tr>\n" +
+            "<tr><td>ntargethex</td><td> If the attack would normally get +4 for targeting a hex, it doesn't.</td></tr>\n" +
+            "<tr><td>diss</td><td> Dissipation for Area attacks</td></tr>\n" +
+            "</table>"
+      }
+    else if (id === "adj-psi") {
+        info = "<table>" +
+            "<tr>" +
+            "<td>" +
+            "<p>Allows you to adjust the pressure of this specific ammunition.</p>" +
+            "</td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td>" +
+            "<p>This should not be used in combination with the Extra Powerful or Subsonic Ammo options.</p>" +
+            "</td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td>" +
+            "<p>You also shouldn't use this to go higher than 120% of the weapon's base damage unless you have a very good reason, as 120% is generally the cap for a firearm damage increase in GURPS.</p>" +
+            "</td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td>" +
+            "<p>It can also be used to make true subsonic ammo.</p>" +
             "</td>" +
             "</tr>" +
             "</table>"
