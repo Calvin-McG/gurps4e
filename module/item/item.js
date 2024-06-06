@@ -2892,6 +2892,7 @@ export class gurpsItem extends Item {
       // Weight
       this.system.firearmDesign.weightKgs = firearmStats.weightKgs;
       this.system.firearmDesign.weight = firearmStats.weight;
+      this.system.firearmDesign.ammoWeight = firearmStats.ammoWeight;
       this.system.firearmDesign.baseWeightPerShot = firearmStats.baseWeightPerShot;// Add weight for ammo
 
       this.system.firearmDesign.loadedWeight = firearmStats.loadedWeight;
