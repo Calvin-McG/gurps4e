@@ -2144,7 +2144,7 @@ export class macroHelpers {
                 mod += +attack.bulk; // Add the bulk penalty to the total modifiers
             }
 
-            mod += this.getAimingBonus(attack, aimTime, exactRange, closeRange) // Add the bonus from aiming, if any.
+            mod += this.getAimingBonus(attack, aimTime, exactRange, closeRange, attacker) // Add the bonus from aiming, if any.
         }
         else if (attack.type === "melee") {
             label += ".";
@@ -2718,11 +2718,11 @@ export class macroHelpers {
         ChatMessage.create({ content: messageContent, user: game.user.id, type: CONST.CHAT_MESSAGE_STYLES.OTHER, flags: flags}); // Everything is assembled, send the message
     }
 
-    static getAimingBonus(attack, aimTime, exactRange){
+    static getAimingBonus(attack, aimTime, exactRange, closeRange, attacker){
         let aimingBonus = 0;
         if (typeof aimTime !== "undefined" && aimTime > 0) { // They are aiming for any amount of time
             let accLevels = this.getScopeAccLevels(attack);
-            let deadEyeLevel = this.getDeadEyeLevel();
+            let deadEyeLevel = this.getDeadEyeLevel(attacker.actor);
             let additionalAimBonus = this.getAdditionalAimBonus(aimTime, deadEyeLevel);
             let rangingBonus = exactRange ? 3 : closeRange ? 1 : 0; // The bonus for knowing the exact range to a target is +3, and the bonus for knowing it very closely is +1.
 
@@ -2765,21 +2765,24 @@ export class macroHelpers {
     }
 
     // This method searches the players traits for DeadEye and returns its level.
-    static getDeadEyeLevel() {
+    static getDeadEyeLevel(actor) {
         let deadEyeLevel = 0;
 
-        // Loop through the list of traits and find any examples of deadeye
-        for (let i = 0; i < this.items.contents.length; i++){
-            if (this.items.contents[i].type === "Trait"){
-                if (this.items.contents[i].name.toLowerCase().replace(/\s/g,'').includes("deadeye") ) { // Does it include the text deadeye after stripping capitals and whitespace?
-                    if (this.items.contents[i].name.includes("1")) {
-                        deadEyeLevel = 1;
-                    }
-                    else if (this.items.contents[i].name.includes("2")) {
-                        deadEyeLevel = 2;
-                    }
-                    else if (this.items.contents[i].name.includes("3")) {
-                        deadEyeLevel = 3;
+        if (actor && actor.items && actor.items.contents) {
+            // Loop through the list of traits and find any examples of deadeye
+            for (let i = 0; i < actor.items.contents.length; i++){
+                console.log("looping")
+                if (actor.items.contents[i].type === "Trait"){
+                    if (actor.items.contents[i].name.toLowerCase().replace(/\s/g,'').includes("deadeye") ) { // Does it include the text deadeye after stripping capitals and whitespace?
+                        if (actor.items.contents[i].name.includes("1")) {
+                            deadEyeLevel = 1;
+                        }
+                        else if (actor.items.contents[i].name.includes("2")) {
+                            deadEyeLevel = 2;
+                        }
+                        else if (actor.items.contents[i].name.includes("3")) {
+                            deadEyeLevel = 3;
+                        }
                     }
                 }
             }
