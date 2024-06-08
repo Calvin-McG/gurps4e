@@ -1234,7 +1234,8 @@ export class gurpsItemSheet extends ItemSheet {
             "armourDivisor": "1",
             "area": "",
             "areaRadius": 2,
-            "exDivisor": 3
+            "exDivisor": 3,
+            "leveledDam": this.item.type === "Spell" // Spells default new attacks to leveled damage
         };
 
         this.item.update({ ["system.melee." + newKey]: newRow }); // Add the new row to the list of melee keys
@@ -1269,7 +1270,8 @@ export class gurpsItemSheet extends ItemSheet {
             "rcl": "1",
             "area": "",
             "areaRadius": 2,
-            "exDivisor": 3
+            "exDivisor": 3,
+            "leveledDam": this.item.type === "Spell" // Spells default new attacks to leveled damage
         };
 
         this.item.update({ ["system.ranged." + newKey]: newRow });
@@ -1304,7 +1306,8 @@ export class gurpsItemSheet extends ItemSheet {
             "ruleOf": 16,
             "area": "",
             "areaRadius": 2,
-            "exDivisor": 3
+            "exDivisor": 3,
+            "leveledDam": this.item.type === "Spell" // Spells default new attacks to leveled damage
         };
         this.item.update({ ["system.affliction." + newKey]: newRow });
     }
