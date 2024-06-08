@@ -1100,7 +1100,7 @@ export class macroHelpers {
     // This runs to calculate and display the result of an attacker attempting to cast an affliction.
     // On success it provides buttons for the defender to choose from
     // On a failure it simply reports failure
-    static reportAfflictionResult(target, attacker, attack, totalModifiers) {
+    static reportAfflictionResult(target, attacker, attack, totalModifiers, sceneID) {
         let label = attacker.name + " casts " + attack.weapon + " " + attack.name + " on " + target.name + "."; // Label for the roll
 
         rollHelpers.skillRoll(attack.level, totalModifiers, label, false).then( rollInfo => { // Make the roll
@@ -1135,7 +1135,7 @@ export class macroHelpers {
                 flags = { // Compile flags that will be passed along through the chat messages
                     target: target.id,
                     attacker: attacker.id,
-                    scene: target.scene.id,
+                    scene: sceneID ?? target.scene.id,
                     attack: attack,
                     margin: rollInfo.margin,
                     effectiveSkill: (+attack.level + +totalModifiers)
@@ -1293,11 +1293,10 @@ export class macroHelpers {
                 margin = Math.max(margin, 0); // Even if rule of 16/13/X drops it down, the effective margin will always be at least zero
             }
         }
-
+        let messageContent = attacker.name + " has an effective margin of success of <span style='font-weight: bold'>" + margin + "</span> after modifiers and the Rule of <span style='font-weight: bold'>" + attack.ruleOf + "</span><br><br>"; // Inform the user of the attacker's effective margin of success and mention the Rule of X
         rollHelpers.skillRoll(resistanceLevel, (+mod + +attack.resistanceRollPenalty), label, false).then( rollInfo => { // Make the defender's roll
-            let messageContent = rollInfo.content; // Start the message with the string returned by the skillRoll helper
+            messageContent += rollInfo.content; // Start the message with the string returned by the skillRoll helper
             messageContent += "<br>"
-            messageContent += attacker.name + " has an effective margin of success of <span style='font-weight: bold'>" + margin + "</span> after modifiers and the Rule of <span style='font-weight: bold'>" + attack.ruleOf + "</span><br><br>"; // Inform the user of the attacker's effective margin of success and mention the Rule of X
 
             if (rollInfo.success == false) { // Target failed the roll entirely
                 messageContent += "<span style='font-weight: bold; color: rgb(199, 137, 83);'>" + target.name + " fails to resist</span></br>"; // Tell everyone
@@ -2117,7 +2116,7 @@ export class macroHelpers {
 
                 if (areaAttack) { // Scatter logic for area attacks.
                     if (rollInfo.malfunction === false || (rollInfo.malfunction === true && malfunctionType === "stoppage")) { // Either the weapon didn't malfunction, or it did malfunction but it was a stoppage which still fires a single shot.
-                        this.finalizeAreaAttack(messageContent, rollInfo.margin < 0 ? Math.abs(rollInfo.margin) : 0, target, attacker, attack, rangeDamageMult, rayPointOfAim, template);
+                        this.finalizeAreaAttack(messageContent, rollInfo.margin < 0 ? Math.abs(rollInfo.margin) : 0, target, attacker, attack, rangeDamageMult, rayPointOfAim, template, totalModifiers);
                     }
                 }
             }
@@ -2172,7 +2171,7 @@ export class macroHelpers {
                 }
 
                 if (areaAttack) { // If it's an area attack.
-                    this.finalizeAreaAttack(messageContent, 0, target, attacker, attack, rangeDamageMult, rayPointOfAim, template); // Switch over to the finalize area logic
+                    this.finalizeAreaAttack(messageContent, 0, target, attacker, attack, rangeDamageMult, rayPointOfAim, template, totalModifiers); // Switch over to the finalize area logic
                     return; // Return early
                 }
                 else { // It's not an area attack, carry on as usual.
@@ -2236,7 +2235,7 @@ export class macroHelpers {
      * @param rayPointOfAim this is a Point {x: number, y: number} only used when making beam/ray attacks and represents the actual point of aim, not the origin or end of the beam.
      * @param template The template being used for this attack
      */
-    static async finalizeAreaAttack(messageContent, scatterDistance, target, attacker, attack, rangeDamageMult, rayPointOfAim, template) {
+    static async finalizeAreaAttack(messageContent, scatterDistance, target, attacker, attack, rangeDamageMult, rayPointOfAim, template, totalModifiers) {
         let flags = {};
 
         // Begin scatter logic
@@ -2317,11 +2316,7 @@ export class macroHelpers {
                 scene: attacker.scene.id,
                 attack: attack,
                 targetList: targetList,
-                //relativePosition: relativePosition,
-                //rof: rof,
-                //locationIDs: locationIDs,
-                //totalModifiers: totalModifiers,
-                //targetHex: targetHex,
+                totalModifiers: totalModifiers,
                 rangeDamageMult: rangeDamageMult
             }
 
@@ -2345,6 +2340,7 @@ export class macroHelpers {
         let scene = game.scenes.get(flags.scene); // Get the scene object
         let template = flags.template; // Get the template object
         let rangeDamageMult = flags.rangeDamageMult;
+        let totalModifiers = flags.totalModifiers ?? 0;
 
         // Fetch the target list again as the template or tokens may have moved
         let targetList = [];
@@ -2364,8 +2360,17 @@ export class macroHelpers {
         }
 
         targetList.forEach( targetId => {
-            this.generateAreaAttack(game.scenes.get(flags.scene).tokens.get(targetId), attack, attacker, template, rangeDamageMult, scene);
+            if (attack.type.toString().toLowerCase() === "affliction") { // If we can positively identify this as an affliction
+                this.generateAreaAffliction(game.scenes.get(flags.scene).tokens.get(targetId), attack, attacker, scene, totalModifiers);
+            }
+            else { // If we cannot positively identify this as an affliction, assume it's a ranged or melee attack
+                this.generateAreaAttack(game.scenes.get(flags.scene).tokens.get(targetId), attack, attacker, template, rangeDamageMult, scene);
+            }
         })
+    }
+
+    static async generateAreaAffliction(target, attack, attacker, scene, totalModifiers) {
+        this.reportAfflictionResult(target, attacker, attack, totalModifiers, scene.id)
     }
 
     /**
