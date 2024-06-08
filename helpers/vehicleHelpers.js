@@ -3305,9 +3305,7 @@ export class vehicleHelpers {
             title: "Vehicle Catalogue",
             content: htmlContent,
             buttons: buttons,
-            default: "cancel",
-            render: html => console.info("Register interactivity in the rendered dialog"),
-            close: html => console.info("This always is logged no matter which option is chosen")
+            default: "cancel"
         },{
             resizable: true,
             width: "1300",

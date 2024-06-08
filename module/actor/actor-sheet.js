@@ -190,9 +190,7 @@ export class gurpsActorSheet extends ActorSheet {
 						callback: () => {}
 					},
 				},
-				default: "cancel",
-				render: html => console.info("Register interactivity in the rendered dialog"),
-				close: html => console.info("This always is logged no matter which option is chosen")
+				default: "cancel"
 			},{
 				resizable: true,
 				width: "250"
@@ -301,9 +299,7 @@ export class gurpsActorSheet extends ActorSheet {
 						callback: () => actorHelpers.computeRollFromEvent(event, 0)
 					}
 				},
-				default: "mod",
-				render: html => console.log("Register interactivity in the rendered dialog"),
-				close: html => console.log("This always is logged no matter which option is chosen")
+				default: "mod"
 			})
 			modModal.render(true)
 		}

@@ -180,8 +180,8 @@ export class macroHelpers {
                 }
             },
             default: "mod",
-            render: html => console.log("Register interactivity in the rendered dialog"),
-            close: html => console.log("This always is logged no matter which option is chosen")
+            render: html => console.log("This always is logged when the dialog is rendered"),
+            close: html => console.log("This always is logged when the dialog is closed no matter which option is chosen")
         })
         modModal.render(true)
     }
@@ -506,9 +506,7 @@ export class macroHelpers {
                 title: "SHOW ME YOUR MOVES",
                 content: htmlContent,
                 buttons: buttons,
-                default: "cancel",
-                render: html => console.info("Register interactivity in the rendered dialog"),
-                close: html => console.info("This always is logged no matter which option is chosen")
+                default: "cancel"
             },{
                 resizable: true,
                 width: "500"
@@ -1069,9 +1067,7 @@ export class macroHelpers {
                     }
                 }
             },
-            default: "randTorso",
-            render: html => console.info("Register interactivity in the rendered dialog"),
-            close: html => console.info("This always is logged no matter which option is chosen")
+            default: "randTorso"
         },{
             resizable: true,
             width: "500"
@@ -1150,9 +1146,7 @@ export class macroHelpers {
                     }
                 }
             },
-            default: "mod",
-            render: html => console.info("Register interactivity in the rendered dialog"),
-            close: html => console.info("This always is logged no matter which option is chosen")
+            default: "mod"
         })
         modModal.render(true)
     }
@@ -1259,9 +1253,7 @@ export class macroHelpers {
                     callback: () => this.makeKnockbackRoll(skill, 0 - penalty, message, target, flags.target)
                 }
             },
-            default: "mod",
-            render: html => console.log("Register interactivity in the rendered dialog"),
-            close: html => console.log("This always is logged no matter which option is chosen")
+            default: "mod"
         })
         modModal.render(true)
     }
@@ -1330,9 +1322,7 @@ export class macroHelpers {
                     callback: () => {} // Do nothing
                 }
             },
-            default: "mod",
-            render: html => console.info("Register interactivity in the rendered dialog"),
-            close: html => console.info("This always is logged no matter which option is chosen")
+            default: "mod"
         })
         modModal.render(true);
     }
@@ -1432,9 +1422,7 @@ export class macroHelpers {
                     callback: () => {} // Do nothing
                 }
             },
-            default: "mod",
-            render: html => console.info("Register interactivity in the rendered dialog"),
-            close: html => console.info("This always is logged no matter which option is chosen")
+            default: "mod"
         })
         modModal.render(true);
     }
@@ -1607,9 +1595,7 @@ export class macroHelpers {
                         }
                     }
                 },
-                default: "randTorso",
-                render: html => console.info("Register interactivity in the rendered dialog"),
-                close: html => console.info("This always is logged no matter which option is chosen")
+                default: "randTorso"
             },{
                 resizable: true,
                 width: "500"
@@ -2011,9 +1997,7 @@ export class macroHelpers {
             title: "Attack Modifier Dialog",
             content: modModalContent,
             buttons: buttons,
-            default: "mod",
-            render: html => console.info("Register interactivity in the rendered dialog"),
-            close: html => console.info("This always is logged no matter which option is chosen")
+            default: "mod"
         })
         modModal.render(true)
     }
@@ -3242,9 +3226,7 @@ export class macroHelpers {
             title: "Active Defences",
             content: activeDefenceModalContent,
             buttons: buttons,
-            default: "dodge",
-            render: html => console.info("Register interactivity in the rendered dialog"),
-            close: html => console.info("This always is logged no matter which option is chosen")
+            default: "dodge"
         }, options)
         activeDefenceModal.render(true)
     }

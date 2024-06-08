@@ -1016,9 +1016,7 @@ export class gurpsItemSheet extends ItemSheet {
                     }
                 },
             },
-            default: "cancel",
-            render: html => console.info("Register interactivity in the rendered dialog"),
-            close: html => console.info("This always is logged no matter which option is chosen")
+            default: "cancel"
         },{
             resizable: true,
             width: "250"
@@ -1086,9 +1084,7 @@ export class gurpsItemSheet extends ItemSheet {
                     }
                 },
             },
-            default: "cancel",
-            render: html => console.info("Register interactivity in the rendered dialog"),
-            close: html => console.info("This always is logged no matter which option is chosen")
+            default: "cancel"
         },{
             resizable: true,
             width: "250"
@@ -1427,9 +1423,7 @@ export class gurpsItemSheet extends ItemSheet {
                     }
                 },
             },
-            default: "cancel",
-            render: html => console.info("Register interactivity in the rendered dialog"),
-            close: html => console.info("This always is logged no matter which option is chosen")
+            default: "cancel"
         },{
             resizable: true,
             width: "250"
@@ -1459,9 +1453,7 @@ export class gurpsItemSheet extends ItemSheet {
                     }
                 },
             },
-            default: "cancel",
-            render: html => console.info("Register interactivity in the rendered dialog"),
-            close: html => console.info("This always is logged no matter which option is chosen")
+            default: "cancel"
         },{
             resizable: true,
             width: "250"
@@ -1491,9 +1483,7 @@ export class gurpsItemSheet extends ItemSheet {
                     }
                 },
             },
-            default: "cancel",
-            render: html => console.info("Register interactivity in the rendered dialog"),
-            close: html => console.info("This always is logged no matter which option is chosen")
+            default: "cancel"
         },{
             resizable: true,
             width: "250"
@@ -1523,9 +1513,7 @@ export class gurpsItemSheet extends ItemSheet {
                     }
                 },
             },
-            default: "cancel",
-            render: html => console.info("Register interactivity in the rendered dialog"),
-            close: html => console.info("This always is logged no matter which option is chosen")
+            default: "cancel"
         },{
             resizable: true,
             width: "250"
@@ -1555,9 +1543,7 @@ export class gurpsItemSheet extends ItemSheet {
                     }
                 },
             },
-            default: "cancel",
-            render: html => console.info("Register interactivity in the rendered dialog"),
-            close: html => console.info("This always is logged no matter which option is chosen")
+            default: "cancel"
         },{
             resizable: true,
             width: "250"
@@ -1587,9 +1573,7 @@ export class gurpsItemSheet extends ItemSheet {
                     }
                 },
             },
-            default: "cancel",
-            render: html => console.info("Register interactivity in the rendered dialog"),
-            close: html => console.info("This always is logged no matter which option is chosen")
+            default: "cancel"
         },{
             resizable: true,
             width: "250"
