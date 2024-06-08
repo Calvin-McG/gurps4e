@@ -1,51 +1,38 @@
 export class postureHelpers {
 
-    // Take the token document and update it's posture
-    // Valid postures are found in CONFIG.postures on config-gurps4e.js
-    static setPostureTokenDoc(tokenDoc, postureString) {
-        this.setPostureTokenObj(tokenDoc.object ?? tokenDoc, postureString);
-    }
-
-    // Take the token object and update it's posture
-    // Valid postures are found in CONFIG.postures on config-gurps4e.js
-    static setPostureTokenObj(tokenObj, postureString) {
-        // First, clear existing posture
-        this.removeAllPosture(tokenObj);
+    /**
+     *
+     * Valid postures are found in CONFIG.statusEffects on config-gurps4e.js
+     * @param actor An Actor object
+     * @param postureString A string describing the posture to assume
+     */
+    static setPostureActor(actor, postureString) {
+        // First, clear any existing postures
+        this.removeAllPosture(actor);
 
         // Then normalize postureString to match how the file names are stored
         // First, drop to lowercase, then trim whitespace from edges, then remove whitespace from interior
         let filename = postureString.toLowerCase().trim().replace(/\s/g,'');
 
-        // Then assemble the path to the effect
-        let posturePath = "systems/gurps4e/icons/postures/" + filename + ".png";
-
-        tokenObj.toggleEffect(posturePath, { active: true });
+        actor.toggleStatusEffect(filename, { active: true }); // Toggle the selected posture on.
     }
 
-    // This method is used to the set the posture of a virtual token that is directly linked to an actor, instead of being a separate copy.
-    static setPostureActor(actor, postureString, tokenId) {
-        let dependentTokens = actor.getDependentTokens() // Get the full list of dependent tokens the actor has
-        dependentTokens.forEach( dependentToken => { // Loop through them
-            if (dependentToken.id === tokenId || typeof tokenId === "undefined") { // Find the one that matches the id of the token for which we are changing posture
-                this.setPostureTokenDoc(dependentToken, postureString); // Call the method to change posture by token document
-            }
-        })
-    }
-
-    // This method removes all posture settings from the token
-    static removeAllPosture(tokenObj) {
-        tokenObj.toggleEffect("systems/gurps4e/icons/postures/standing.png",        { active: false });
-        tokenObj.toggleEffect("systems/gurps4e/icons/postures/sitting.png",         { active: false });
-        tokenObj.toggleEffect("systems/gurps4e/icons/postures/crouching.png",       { active: false });
-        tokenObj.toggleEffect("systems/gurps4e/icons/postures/crawling.png",        { active: false });
-        tokenObj.toggleEffect("systems/gurps4e/icons/postures/kneeling.png",        { active: false });
-        tokenObj.toggleEffect("systems/gurps4e/icons/postures/lyingback.png",       { active: false });
-        tokenObj.toggleEffect("systems/gurps4e/icons/postures/lyingprone.png",      { active: false });
-        tokenObj.toggleEffect("systems/gurps4e/icons/postures/sittingchair.png",    { active: false });
+    /**
+     * This method strips all postures from the passed actor
+     * @param actor An Actor object
+     */
+    static removeAllPosture(actor) {
+        actor.toggleStatusEffect("standing",     { active: false });
+        actor.toggleStatusEffect("sitting",      { active: false });
+        actor.toggleStatusEffect("crouching",    { active: false });
+        actor.toggleStatusEffect("crawling",     { active: false });
+        actor.toggleStatusEffect("kneeling",     { active: false });
+        actor.toggleStatusEffect("lyingback",    { active: false });
+        actor.toggleStatusEffect("lyingprone",   { active: false });
+        actor.toggleStatusEffect("sittingchair", { active: false });
     }
 
     static getPosture(tokenEffects) {
-
         let posture = {
             name: "standing",
             defenceMod: 0,
@@ -56,7 +43,7 @@ export class postureHelpers {
         }
 
         for (let x = 0; x < tokenEffects.length; x++) {
-            if (tokenEffects[x] === ("systems/gurps4e/icons/postures/sitting.png") || tokenEffects === ("systems/gurps4e/icons/postures/sittingchair.png")) {
+            if (tokenEffects[x].img === ("systems/gurps4e/icons/postures/sitting.png")) {
                 posture = {
                     name: "sitting",
                     desc: "sitting",
@@ -67,7 +54,7 @@ export class postureHelpers {
                     mpPerHex: 1000
                 }
             }
-            else if (tokenEffects[x] === ("systems/gurps4e/icons/postures/crouching.png")) {
+            else if (tokenEffects[x].img === ("systems/gurps4e/icons/postures/crouching.png")) {
                 posture = {
                     name: "crouching",
                     desc: "crouching",
@@ -78,7 +65,7 @@ export class postureHelpers {
                     mpPerHex: 1.5
                 }
             }
-            else if (tokenEffects[x] === ("systems/gurps4e/icons/postures/crawling.png")) {
+            else if (tokenEffects[x].img === ("systems/gurps4e/icons/postures/crawling.png")) {
                 posture = {
                     name: "crawling",
                     desc: "crawling",
@@ -89,7 +76,7 @@ export class postureHelpers {
                     mpPerHex: 3
                 }
             }
-            else if (tokenEffects[x] === ("systems/gurps4e/icons/postures/kneeling.png")) {
+            else if (tokenEffects[x].img === ("systems/gurps4e/icons/postures/kneeling.png")) {
                 posture = {
                     name: "kneeling",
                     desc: "kneeling",
@@ -100,7 +87,7 @@ export class postureHelpers {
                     mpPerHex: 3
                 }
             }
-            else if (tokenEffects[x] === ("systems/gurps4e/icons/postures/lyingback.png")) {
+            else if (tokenEffects[x].img === ("systems/gurps4e/icons/postures/lyingback.png")) {
                 posture = {
                     name: "lyingback",
                     desc: "lying supine",
@@ -111,7 +98,7 @@ export class postureHelpers {
                     mpPerHex: 100
                 }
             }
-            else if (tokenEffects[x] === ("systems/gurps4e/icons/postures/lyingprone.png")) {
+            else if (tokenEffects[x].img === ("systems/gurps4e/icons/postures/lyingprone.png")) {
                 posture = {
                     name: "lyingprone",
                     desc: "lying prone",

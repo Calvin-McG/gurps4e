@@ -1220,12 +1220,7 @@ export class macroHelpers {
 
         ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_STYLES.OTHER });
 
-        if (typeof target.token !== "undefined" && target.token !== null) { // A token is present if the token and actor are not directly linked. (As in, the token is a separate copy of the actor)
-            postureHelpers.setPostureTokenDoc(target.token, "lyingback");
-        }
-        else { // The token is directly linked to the actor, meaning the token on the scene is a direct representation of that specific actor
-            postureHelpers.setPostureActor(target, "lyingback", tokenId);
-        }
+        postureHelpers.setPostureActor(target, "lyingback");
     }
 
     // This is run when a defender clicks the "Quick Contest" button after being the target of an affliction
@@ -2393,7 +2388,7 @@ export class macroHelpers {
         let bombardmentSkill = 0;
         let collateral = false;
         let dissipation = false;
-        let posture = postureHelpers.getPosture(target.effects) ?? { // Get the posture from the token, defaulting to standing if we can't fetch it properly.
+        let posture = postureHelpers.getPosture(target.appliedEffects) ?? { // Get the posture from the token, defaulting to standing if we can't fetch it properly.
             name: "standing",
             defenceMod: 0,
             meleeAttackMod: 0,
@@ -2915,8 +2910,7 @@ export class macroHelpers {
         let currentEnc = actorHelpers.fetchCurrentEnc(targetToken.actor);
         let hpState = actorHelpers.fetchHpState(targetToken.actor);
         let fpState = actorHelpers.fetchFpState(targetToken.actor);
-
-        let posture = postureHelpers.getPosture(targetToken.effects);
+        let posture = postureHelpers.getPosture(targetToken.actor.appliedEffects);
 
         // If any facing, target hex, enc warning, hpState, fpState, or posture warning applies
         if (facing[0] === 0 || facing[0] === -1 || targetHex || currentEnc.penalty < 0 || (hpState.toLowerCase() !== "healthy" && hpState.toLowerCase() !== "injured") || posture.defenceMod < 0 || unarmedParryVsArmedSwingWarn) {
@@ -3273,7 +3267,7 @@ export class macroHelpers {
         let targetToken = game.scenes.get(flags.scene).tokens.get(flags.target)
         let target = targetToken.actor;
 
-        let posture = postureHelpers.getPosture(targetToken.effects);
+        let posture = postureHelpers.getPosture(target.appliedEffects);
 
         let totalModifier;
         let additionalMessageContent = "";
