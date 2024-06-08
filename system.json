@@ -12,6 +12,13 @@
   "authors": [{
     "name": "Calvin"
   }],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
   "esmodules": [
     "./gurps4e.js",
     "./module/hooks/init.js",

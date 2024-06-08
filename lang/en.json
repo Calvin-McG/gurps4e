@@ -1,0 +1,13 @@
+{
+  "TYPES.Item.Custom Armour": "Custom Armour",
+  "TYPES.Item.Custom Jewelry": "Custom Jewelry",
+  "TYPES.Item.Custom Weapon": "Custom Guns, Bows, Crossbows, and Lasers",
+  "TYPES.Item.Equipment": "Equipment",
+  "TYPES.Item.Ritual": "Ritual",
+  "TYPES.Item.Rollable": "Skills and Techniques",
+  "TYPES.Item.Spell": "Spell",
+  "TYPES.Item.Trait": "Advantages, Disadvantages, Quirks, and Perks",
+  "TYPES.Item.Travel Fare": "Travel Fare (Don't use, this is getting removed)",
+  "TYPES.Actor.fullchar": "Character",
+  "TYPES.Actor.Simple Vehicle": "Vehicle"
+}
