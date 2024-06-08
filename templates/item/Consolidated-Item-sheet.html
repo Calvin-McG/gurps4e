@@ -1019,42 +1019,48 @@
             </div>
             <div class="tab">
                 <table>
-                    <tr class="equipment-header">
-                        <td class="resource-label melee-id">ID</td>
-                        <td class="resource-label">Name</td>
-                        <td class="resource-label">Level</td>
-                        <td class="resource-label">Skill Name / Mod</td>
-                        <td class="resource-label">Parry - Type</td>
-                        <td class="resource-label">Block</td>
-                        <td class="resource-label">Damage</td>
-                        <td class="resource-label">Type</td>
-                        <td class="resource-label">AD</td>
-                        <td class="resource-label">Reach</td>
-                        <td class="resource-label">Area</td>
-                        <td class="resource-label">ST</td>
-                        <td class="resource-label">Flags</td>
-                        <td class="resource-label"></td>
+                    <tr class="attack-table-header">
+                        <th class="attack-column melee-id attack-shrink-column">ID</th>
+                        <th class="attack-column attack-shrink-column">Name</th>
+                        <th class="attack-column attack-shrink-column">Lv</th>
+                        <th class="attack-column attack-shrink-column">Skill Name / Mod</th>
+                        <th class="attack-column" style="width: 4.3em;">Parry - Type</th>
+                        <th class="attack-column attack-shrink-column">Block</th>
+                        <th class="attack-column attack-shrink-column">Damage</th>
+                        <th class="attack-column attack-shrink-column">Type</th>
+                        <th class="attack-column attack-shrink-column">AD</th>
+                        <th class="attack-column attack-shrink-column">Reach</th>
+                        <th class="attack-column attack-shrink-column">Area</th>
+                        <th class="attack-column attack-shrink-column">ST</th>
+                        <th class="attack-column">Flags</th>
+                        <th class="attack-column attack-shrink-column"></th>
                     </tr>
                     {{#each item.system.melee as |melee id|}}
                     <tr class="equipment-entry">
                         <td class="resource-label melee-id">{{id}}</td>
-                        <td><input type="text" name="system.melee.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
-                        <td class="resource-label">{{melee.level}}</td>
-                        <td class="equipmentInputInput">
-                            <input type="text" name="system.melee.{{id}}.skill" value="{{melee.skill}}" title="{{melee.skill}}" style="text-align:left;" />/
-                            <input type="text" name="system.melee.{{id}}.skillMod" value="{{melee.skillMod}}" data-dtype="Number" class="melee-skillMod"/>
+                        <td><input type="text" name="system.melee.{{id}}.name" value="{{name}}" title="{{name}}" class="attack-name-input"/></td>
+                        <td class="resource-label">
+                            <div style="width: 2em">
+                                {{melee.level}}
+                            </div>
                         </td>
                         <td>
-                            <input type="text" name="system.melee.{{id}}.parryMod" value="{{melee.parryMod}}" style="width: 50%"/>
-                            <input type="text" name="system.melee.{{id}}.parryType" value="{{melee.parryType}}" class="melee-parryType"/>
+                            <div style="display: flex; flex-direction: row;">
+                                <input type="text" name="system.melee.{{id}}.skill" value="{{melee.skill}}" title="{{melee.skill}}" class="attack-skill-input"/>/
+                                <input type="text" name="system.melee.{{id}}.skillMod" value="{{melee.skillMod}}" data-dtype="Number" class="attack-two-digit-input"/>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" name="system.melee.{{id}}.parryMod" value="{{melee.parryMod}}" class="attack-two-digit-input"/>
+                            <input type="text" name="system.melee.{{id}}.parryType" value="{{melee.parryType}}" class="attack-two-digit-input"/>
                         </td>
                         <td class="melee-block">
-                            <input type="text" name="system.melee.{{id}}.blockMod" value="{{melee.blockMod}}"/>
+                            <input type="text" name="system.melee.{{id}}.blockMod" value="{{melee.blockMod}}" class="attack-two-digit-input"/>
                         </td>
-                        <td><input type="text" name="system.melee.{{id}}.damageInput" value="{{melee.damageInput}}" title="{{melee.damageInput}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="system.melee.{{id}}.damageInput" value="{{melee.damageInput}}" title="{{melee.damageInput}}" class="attack-damage-input"/></td>
                         <td>
                         <span class="tooltip">
-                            <input type="text" name="system.melee.{{id}}.damageType" value="{{melee.damageType}}" title="{{melee.damageType}}" style="text-align:left;" />
+                            <input type="text" name="system.melee.{{id}}.damageType" value="{{melee.damageType}}" title="{{melee.damageType}}" style="text-align:left; width: 7em" />
                             <span class="tooltiptext" style="margin-left: -200px">
                                 <div>
                                     <span style="text-decoration: underline">Valid entries are:</span><br>
@@ -1082,7 +1088,7 @@
                         </td>
                         <td class="melee-ad">
                         <span class="tooltip">
-                            <input type="text" name="system.melee.{{id}}.armourDivisor" value="{{melee.armourDivisor}}" title="{{melee.armourDivisor}}" style="text-align:left;" />
+                            <input type="text" name="system.melee.{{id}}.armourDivisor" value="{{melee.armourDivisor}}" title="{{melee.armourDivisor}}" class="attack-two-digit-input" />
                             <span class="tooltiptext" style="margin-left: -200px">
                                 <div>
                                     Default is 1<br>
@@ -1093,18 +1099,18 @@
                             </span>
                         </span>
                         </td>
-                        <td class="melee-reach"><input type="text" name="system.melee.{{id}}.reach" value="{{melee.reach}}" title="{{melee.reach}}" style="text-align:left;" /></td>
+                        <td class="melee-reach"><input type="text" name="system.melee.{{id}}.reach" value="{{melee.reach}}" title="{{melee.reach}}" style="text-align:left; width: 3em;" /></td>
                         <td class="resource-label">
-                            <select name="system.melee.{{id}}.area">
+                            <select name="system.melee.{{id}}.area" style="width: 5em">
                                 {{selectOptions ../areaTypes selected=melee.area}}
                             </select>
                             {{#if (eq melee.area "area")}}
-                            <input type="number" name="system.melee.{{id}}.areaRadius" value="{{melee.areaRadius}}" data-dtype="Number" style="width: 60px;"/>
+                            <input type="number" name="system.melee.{{id}}.areaRadius" value="{{melee.areaRadius}}" data-dtype="Number" class="attack-two-digit-input"/>
                             {{else if (eq melee.area "ex")}}
-                            <input type="number" name="system.melee.{{id}}.exDivisor" value="{{melee.exDivisor}}" placeholder="3" data-dtype="Number" style="width: 60px;"/>
+                            <input type="number" name="system.melee.{{id}}.exDivisor" value="{{melee.exDivisor}}" placeholder="3" data-dtype="Number" class="attack-one-digit-input"/>
                             {{/if}}
                         </td>
-                        <td class="melee-st"><input type="text" name="system.melee.{{id}}.st" value="{{melee.st}}"/></td>
+                        <td class="melee-st"><input type="text" name="system.melee.{{id}}.st" value="{{melee.st}}" class="attack-three-digit-input"/></td>
                         <td>
                             <span class="tooltip">
                                 <input type="text" name="system.melee.{{id}}.flags" value="{{melee.flags}}" title="{{melee.flags}}" style="text-align:left;" />
@@ -1147,40 +1153,48 @@
             </div>
             <div class="tab">
                 <table>
-                    <tr class="equipment-header">
-                        <td class="resource-label melee-id">ID</td>
-                        <td class="resource-label">Name</td>
-                        <td class="resource-label">Level</td>
-                        <td class="resource-label">Skill Name / Mod</td>
-                        <td class="resource-label">Acc</td>
-                        <td class="resource-label">Damage</td>
-                        <td class="resource-label">Type</td>
-                        <td class="resource-label">Divisor</td>
-                        <td class="resource-label">Range</td>
-                        <td class="resource-label">Area</td>
-                        <td class="resource-label">Rof</td>
-                        <td class="resource-label">Shots</td>
-                        <td class="resource-label">Bulk</td>
-                        <td class="resource-label">Rcl</td>
-                        <td class="resource-label melee-st">ST</td>
-                        <td class="resource-label">Malf</td>
-                        <td class="resource-label">Flags</td>
-                        <td class="resource-label"></td>
+                    <tr class="attack-table-header">
+                        <th class="attack-column melee-id attack-shrink-column">ID</th>
+                        <th class="attack-column attack-shrink-column">Name</th>
+                        <th class="attack-column attack-shrink-column">Lv</th>
+                        <th class="attack-column attack-shrink-column">Skill Name / Mod</th>
+                        <th class="attack-column attack-shrink-column">Acc</th>
+                        <th class="attack-column attack-shrink-column">Damage</th>
+                        <th class="attack-column attack-shrink-column">Type</th>
+                        <th class="attack-column attack-shrink-column">AD</th>
+                        <th class="attack-column attack-shrink-column">Range</th>
+                        <th class="attack-column attack-shrink-column">Area</th>
+                        <th class="attack-column attack-shrink-column">Rof</th>
+                        <th class="attack-column attack-shrink-column">Shots</th>
+                        <th class="attack-column attack-shrink-column">Bulk</th>
+                        <th class="attack-column attack-shrink-column">Rcl</th>
+                        <th class="attack-column attack-shrink-column">ST</th>
+                        <th class="attack-column attack-shrink-column">Malf</th>
+                        <th class="attack-column">Flags</th>
+                        <th class="attack-column attack-shrink-column"></th>
                     </tr>
                     {{#each item.system.ranged as |ranged id|}}
                     <tr class="equipment-entry">
                         <td class="resource-label melee-id">{{id}}</td>
-                        <td><input type="text" name="system.ranged.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
-                        <td class="resource-label">{{ranged.level}}</td>
-                        <td class="equipmentInputInput">
-                            <input type="text" name="system.ranged.{{id}}.skill" value="{{ranged.skill}}" title="{{ranged.skill}}" style="text-align:left;" />/
-                            <input type="text" name="system.ranged.{{id}}.skillMod" value="{{ranged.skillMod}}" data-dtype="Number" class="melee-skillMod"/>
+                        <td><input type="text" name="system.ranged.{{id}}.name" value="{{name}}" title="{{name}}" class="attack-name-input"/></td>
+                        <td class="resource-label">
+                            <div style="width: 2em">
+                                {{ranged.level}}
+                            </div>
                         </td>
-                        <td class="ranged-acc"><input type="text" name="system.ranged.{{id}}.acc" value="{{ranged.acc}}" data-dtype="Number"/> + <input type="text" name="system.ranged.{{id}}.scopeAcc" value="{{ranged.scopeAcc}}" data-dtype="Number"/></td>
-                        <td><input type="text" name="system.ranged.{{id}}.damageInput" value="{{ranged.damageInput}}" title="{{ranged.damageInput}}" style="text-align:left;" /></td>
+                        <td>
+                            <div style="display: flex; flex-direction: row;">
+                                <input type="text" name="system.ranged.{{id}}.skill" value="{{ranged.skill}}" title="{{ranged.skill}}" class="attack-skill-input"/>/
+                                <input type="text" name="system.ranged.{{id}}.skillMod" value="{{ranged.skillMod}}" data-dtype="Number" class="attack-two-digit-input"/>
+                            </div>
+                        </td>
+                        <td class="ranged-acc">
+                            <input type="text" name="system.ranged.{{id}}.acc" value="{{ranged.acc}}" data-dtype="Number"/>+<input type="text" name="system.ranged.{{id}}.scopeAcc" value="{{ranged.scopeAcc}}" data-dtype="Number"/>
+                        </td>
+                        <td><input type="text" name="system.ranged.{{id}}.damageInput" value="{{ranged.damageInput}}" title="{{ranged.damageInput}}" class="attack-damage-input"/></td>
                         <td>
                             <span class="tooltip">
-                                <input type="text" name="system.ranged.{{id}}.damageType" value="{{ranged.damageType}}" title="{{ranged.damageType}}" style="text-align:left;" />
+                                <input type="text" name="system.ranged.{{id}}.damageType" value="{{ranged.damageType}}" title="{{ranged.damageType}}" style="text-align:left; width: 7em" />
                                 <span class="tooltiptext" style="margin-left: -200px">
                                     <div>
                                     <span style="text-decoration: underline">Valid entries are:</span><br>
@@ -1208,7 +1222,7 @@
                         </td>
                         <td class="melee-ad">
                             <span class="tooltip">
-                                <input type="text" name="system.ranged.{{id}}.armourDivisor" value="{{ranged.armourDivisor}}" title="{{ranged.armourDivisor}}" style="text-align:left;" />
+                                <input type="text" name="system.ranged.{{id}}.armourDivisor" value="{{ranged.armourDivisor}}" title="{{ranged.armourDivisor}}" class="attack-two-digit-input" />
                                 <span class="tooltiptext" style="margin-left: -200px">
                                     <div>
                                         Default is 1<br>
@@ -1220,26 +1234,26 @@
                             </span>
                         </td>
                         <td>
-                            <input type="text" name="system.ranged.{{id}}.halfRangeInput" value="{{ranged.halfRangeInput}}" title="{{ranged.halfRangeInput}}" style="text-align:center; width: 40%" placeholder="1/2 D" />
+                            <input type="text" name="system.ranged.{{id}}.halfRangeInput" value="{{ranged.halfRangeInput}}" title="{{ranged.halfRangeInput}}" class="attack-three-digit-input" placeholder="1/2 D" />
                             <span style="font-weight: bold">/</span>
-                            <input type="text" name="system.ranged.{{id}}.maxRangeInput" value="{{ranged.maxRangeInput}}" title="{{ranged.maxRangeInput}}" style="text-align:center; width: 40%" placeholder="Max" />
+                            <input type="text" name="system.ranged.{{id}}.maxRangeInput" value="{{ranged.maxRangeInput}}" title="{{ranged.maxRangeInput}}" style="text-align:center; width: 4em" placeholder="Max" />
                         </td>
                         <td class="resource-label">
-                            <select name="system.ranged.{{id}}.area">
+                            <select name="system.ranged.{{id}}.area" style="width: 5em">
                                 {{selectOptions ../areaTypes selected=ranged.area}}
                             </select>
                             {{#if (eq ranged.area "area")}}
-                            <input type="number" name="system.ranged.{{id}}.areaRadius" value="{{ranged.areaRadius}}" data-dtype="Number" style="width: 60px;"/>
+                            <input type="number" name="system.ranged.{{id}}.areaRadius" value="{{ranged.areaRadius}}" data-dtype="Number" class="attack-two-digit-input"/>
                             {{else if (eq ranged.area "ex")}}
-                            <input type="number" name="system.ranged.{{id}}.exDivisor" value="{{ranged.exDivisor}}" placeholder="3" data-dtype="Number" style="width: 60px;"/>
+                            <input type="number" name="system.ranged.{{id}}.exDivisor" value="{{ranged.exDivisor}}" placeholder="3" data-dtype="Number" style="width: 1em;"/>
                             {{/if}}
                         </td>
-                        <td><input type="text" name="system.ranged.{{id}}.rof" value="{{ranged.rof}}" title="{{ranged.rof}}" style="text-align:left;" /></td>
-                        <td><input type="text" name="system.ranged.{{id}}.shots" value="{{ranged.shots}}" title="{{ranged.shots}}" style="text-align:left;" /></td>
-                        <td><input type="text" name="system.ranged.{{id}}.bulk" value="{{ranged.bulk}}" title="{{ranged.bulk}}" style="text-align:left;" /></td>
-                        <td><input type="text" name="system.ranged.{{id}}.rcl" value="{{ranged.rcl}}" title="{{ranged.rcl}}" style="text-align:left;" /></td>
-                        <td class="melee-st"><input type="text" name="system.ranged.{{id}}.st" value="{{ranged.st}}"/></td>
-                        <td><input type="text" name="system.ranged.{{id}}.malf" value="{{ranged.malf}}"/></td>
+                        <td><input type="text" name="system.ranged.{{id}}.rof" value="{{ranged.rof}}" title="{{ranged.rof}}" class="attack-two-digit-input"/></td>
+                        <td><input type="text" name="system.ranged.{{id}}.shots" value="{{ranged.shots}}" title="{{ranged.shots}}" class="attack-shots-input"/></td>
+                        <td><input type="text" name="system.ranged.{{id}}.bulk" value="{{ranged.bulk}}" title="{{ranged.bulk}}" class="attack-two-digit-input"/></td>
+                        <td><input type="text" name="system.ranged.{{id}}.rcl" value="{{ranged.rcl}}" title="{{ranged.rcl}}" class="attack-two-digit-input"/></td>
+                        <td class="melee-st"><input type="text" name="system.ranged.{{id}}.st" value="{{ranged.st}}" class="attack-three-digit-input"/></td>
+                        <td><input type="text" name="system.ranged.{{id}}.malf" value="{{ranged.malf}}" class="attack-three-digit-input"/></td>
                         <td>
                             <span class="tooltip">
                                 <input type="text" name="system.ranged.{{id}}.flags" value="{{ranged.flags}}" title="{{ranged.flags}}" style="text-align:left;" />
@@ -1282,44 +1296,50 @@
             </div>
             <div class="tab">
                 <table>
-                    <tr class="equipment-header">
-                        <td class="resource-label">Name</td>
-                        <td class="resource-label">Level</td>
-                        <td class="resource-label">Skill Name / Mod</td>
-                        <td class="resource-label">Damage</td>
-                        <td class="resource-label">Type</td>
-                        <td class="resource-label">Divisor</td>
-                        <td class="resource-label">Effect Description</td>
-                        <td class="resource-label">Range Penalties</td>
-                        <td class="resource-label">Area</td>
-                        <td class="resource-label" style="width: 240px">
+                    <tr class="attack-table-header">
+                        <th class="attack-column attack-shrink-column">Name</th>
+                        <th class="attack-column attack-shrink-column">Lv</th>
+                        <th class="attack-column attack-shrink-column">Skill Name / Mod</th>
+                        <th class="attack-column attack-shrink-column">Damage</th>
+                        <th class="attack-column attack-shrink-column">Type</th>
+                        <th class="attack-column attack-shrink-column">AD</th>
+                        <th class="attack-column">Effect Description</th>
+                        <th class="attack-column attack-shrink-column">Range Penalties</th>
+                        <th class="attack-column attack-shrink-column">Area</th>
+                        <th class="attack-column attack-shrink-column">
                             <span class="tooltip">
                                 Resist With
                                 <span class="tooltiptext" style="margin-left: -100px;">For both Quick Contests and Resistance Rolls.<br>
                                     Penalty applies to the target's roll in either case.</span>
                             </span>
-                        </td>
-                        <td class="resource-label">
+                        </th>
+                        <th class="attack-column attack-shrink-column">
                             <span class="tooltip">
                                 Rule Of
                                 <span class="tooltiptext" style="margin-left: -100px;">This should be 13 for Fright and 16 for everything else except in special cases.</span>
                             </span>
-                        </td>
-                        <td class="resource-label">Flags</td>
-                        <td class="resource-label"></td>
+                        </th>
+                        <th class="attack-column">Flags</th>
+                        <th class="attack-column attack-shrink-column"></th>
                     </tr>
                     {{#each item.system.affliction as |affliction id|}}
                     <tr class="equipment-entry">
-                        <td><input type="text" name="system.affliction.{{id}}.name" value="{{name}}" title="{{name}}" style="text-align:left;" /></td>
-                        <td class="resource-label">{{affliction.level}}</td>
-                        <td class="equipmentInputInput">
-                            <input type="text" name="system.affliction.{{id}}.skill" value="{{affliction.skill}}" title="{{affliction.skill}}" style="text-align:left;" />/
-                            <input type="text" name="system.affliction.{{id}}.skillMod" value="{{affliction.skillMod}}" data-dtype="Number"/>
+                        <td><input type="text" name="system.affliction.{{id}}.name" value="{{name}}" title="{{name}}" class="attack-name-input"/></td>
+                        <td class="resource-label">
+                            <div style="width: 2em">
+                                {{affliction.level}}
+                            </div>
                         </td>
-                        <td><input type="text" name="system.affliction.{{id}}.damageInput" value="{{affliction.damageInput}}" title="{{affliction.damageInput}}" style="text-align:left; width: 40px;" /></td>
+                        <td>
+                            <div style="display: flex; flex-direction: row;">
+                                <input type="text" name="system.affliction.{{id}}.skill" value="{{affliction.skill}}" title="{{affliction.skill}}"  class="attack-skill-input"/>/
+                                <input type="text" name="system.affliction.{{id}}.skillMod" value="{{affliction.skillMod}}" data-dtype="Number" class="attack-two-digit-input"/>
+                            </div>
+                        </td>
+                        <td><input type="text" name="system.affliction.{{id}}.damageInput" value="{{affliction.damageInput}}" title="{{affliction.damageInput}}" class="attack-damage-input"/></td>
                         <td>
                             <span class="tooltip">
-                                <input type="text" name="system.affliction.{{id}}.damageType" value="{{affliction.damageType}}" title="{{affliction.damageType}}" style="text-align:left; width: 40px;" />
+                                <input type="text" name="system.affliction.{{id}}.damageType" value="{{affliction.damageType}}" title="{{affliction.damageType}}" style="text-align:left; width: 7em;" />
                                 <span class="tooltiptext" style="margin-left: -200px">
                                     <div>
                                         <span style="text-decoration: underline">Valid entries are:</span><br>
@@ -1347,7 +1367,7 @@
                         </td>
                         <td>
                             <span class="tooltip">
-                                <input type="text" name="system.affliction.{{id}}.armourDivisor" value="{{affliction.armourDivisor}}" title="{{affliction.armourDivisor}}" style="text-align:left; width: 40px;" />
+                                <input type="text" name="system.affliction.{{id}}.armourDivisor" value="{{affliction.armourDivisor}}" title="{{affliction.armourDivisor}}" class="attack-two-digit-input"/>
                                 <span class="tooltiptext" style="margin-left: -200px">
                                     <div>
                                         Default is 1<br>
@@ -1365,25 +1385,27 @@
                             </select>
                         </td>
                         <td class="resource-label">
-                            <select name="system.affliction.{{id}}.area">
+                            <select name="system.affliction.{{id}}.area" style="width: 5em">
                                 {{selectOptions ../areaTypes selected=affliction.area}}
                             </select>
                             {{#if (eq affliction.area "area")}}
-                            <input type="number" name="system.affliction.{{id}}.areaRadius" value="{{affliction.areaRadius}}" data-dtype="Number" style="width: 60px;"/>
+                            <input type="number" name="system.affliction.{{id}}.areaRadius" value="{{affliction.areaRadius}}" data-dtype="Number" class="attack-two-digit-input"/>
                             {{else if (eq affliction.area "ex")}}
-                            <input type="number" name="system.affliction.{{id}}.exDivisor" value="{{affliction.exDivisor}}" placeholder="3" data-dtype="Number" style="width: 60px;"/>
+                            <input type="number" name="system.affliction.{{id}}.exDivisor" value="{{affliction.exDivisor}}" placeholder="3" data-dtype="Number" class="attack-one-digit-input"/>
                             {{/if}}
                         </td>
-                        <td style="display: flex; width: 240px" >
-                            <select name="system.affliction.{{id}}.resistanceType">
-                                {{selectOptions ../resistanceTypes selected=affliction.resistanceType}}
-                            </select>
-                            <select name="system.affliction.{{id}}.resistanceRoll" class="resistanceRoll">
-                                {{selectOptions ../resistanceAttr selected=affliction.resistanceRoll}}
-                            </select>
-                            <input type="text" placeholder="-0" name="system.affliction.{{id}}.resistanceRollPenalty" value="{{affliction.resistanceRollPenalty}}" title="{{affliction.resistanceRollPenalty}}" style="text-align:left; width: 40px; margin: unset" />
+                        <td>
+                            <div class="attack-resistance-container">
+                                <select name="system.affliction.{{id}}.resistanceType" class="attack-resistance-type-input">
+                                    {{selectOptions ../resistanceTypes selected=affliction.resistanceType}}
+                                </select>
+                                <select name="system.affliction.{{id}}.resistanceRoll" class="attack-resistance-attr-input">
+                                    {{selectOptions ../resistanceAttr selected=affliction.resistanceRoll}}
+                                </select>
+                                <input type="text" placeholder="-0" name="system.affliction.{{id}}.resistanceRollPenalty" value="{{affliction.resistanceRollPenalty}}" title="{{affliction.resistanceRollPenalty}}" class="attack-resistance-roll-penalty-input"/>
+                            </div>
                         </td>
-                        <td><input type="text" name="system.affliction.{{id}}.ruleOf" value="{{affliction.ruleOf}}" title="{{affliction.ruleOf}}" style="text-align:left; width: 40px;" /></td>
+                        <td><input type="text" name="system.affliction.{{id}}.ruleOf" value="{{affliction.ruleOf}}" title="{{affliction.ruleOf}}" class="attack-two-digit-input"/></td>
                         <td>
                             <span class="tooltip">
                                 <input type="text" name="system.affliction.{{id}}.flags" value="{{affliction.flags}}" title="{{affliction.flags}}" style="text-align:left;" />

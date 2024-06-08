@@ -885,6 +885,14 @@
 	align-self: center;
 }
 
+.attack-table-header {
+
+}
+
+.attack-table-header th {
+
+}
+
 .equipment-header td {
 	text-align: center;
 	padding: 0 0.5em;
@@ -2024,16 +2032,67 @@
 	display: none;
 }
 
-.melee-parryType {
-	max-width: 30px;
-}
-
 .ranged-acc {
 	min-width: 70px;
 }
 
 .ranged-acc input {
-	max-width: 25px;
+	width: 2em !important;
+}
+
+.attack-shrink-column {
+	width: 1%;
+}
+
+.attack-resistance-container {
+	display: flex;
+	width: 8.8em;
+	flex-wrap: wrap;
+}
+
+.attack-resistance-type-input {
+	width: 8.78em;
+}
+
+.attack-resistance-attr-input {
+	width: 5.1em;
+}
+
+.attack-resistance-roll-penalty-input {
+	text-align:left !important;
+	width: 2.5em !important;
+	margin: unset !important;
+}
+
+.attack-skill-input {
+	text-align:left !important;
+	width: 9em !important;
+}
+
+.attack-name-input {
+	text-align:left !important;
+	width: 9em !important;
+}
+
+.attack-damage-input {
+	text-align:left !important;
+	width: 4.1em !important;
+}
+
+.attack-shots-input {
+	width: 4.5em !important;
+}
+
+.attack-three-digit-input {
+	width: 2.5em !important;
+}
+
+.attack-two-digit-input {
+	width: 2em !important;
+}
+
+.attack-one-digit-input {
+	width: 1em !important;
 }
 
 .simple-vehicle-location {
