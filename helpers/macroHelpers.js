@@ -749,19 +749,34 @@ export class macroHelpers {
             this.levelSelectDialog(attacker, attack, target, template); // Open the level selection dialog
         }
         else { // Either it's not a leveled attack, or it is a leveled attack but the user has provided a level
+            let newAttack = attack;
+
+            if (newAttack.leveledDam && typeof level === "number") { // It's a levelled attack and we have a level
+                if (isNaN(level)) {
+                    console.error("User entered something other than a number. Proceeding as a level 1 attack.") // Let the user know, but carry on as for a level 1 attack.
+                }
+                else {
+                    let points = generalHelpers.diceAndAddsToPoints(attack.damage) // Convert the input string to a base number of points.
+                    newAttack.damage = generalHelpers.pointsToDiceAndAddsString((points * level)); // Multiply damage by the given level.
+                }
+            }
+            else if (newAttack.leveledDam && typeof level !== "number") { // It's a levelled attack and we have still don't have a valid level
+                console.error("Attempted to make an attack with a malformed level. Proceeding as a level 1 attack.") // Let the user know, but carry on as for a level 1 attack.
+            }
+
             if (typeof template !== "undefined" && template !== null) { // We ended up with a target template
-                this.correctTemplate(attacker, attack, template); // Attack an area
+                this.correctTemplate(attacker, newAttack, template); // Attack an area
             }
             else if (typeof target !== "undefined" && target !== null) { // We ended up with a valid target and might be making an area attack against them
-                if (typeof attack.area === "string" && attack.area !== "") { // Area is a string and not blank
-                    this.templateOnActor(attacker, attack, target); // Create a template on an actor
+                if (typeof newAttack.area === "string" && newAttack.area !== "") { // Area is a string and not blank
+                    this.templateOnActor(attacker, newAttack, target); // Create a template on an actor
                 }
                 else { // It's not an area attack, attack normally.
-                    if (attack.type === "affliction") { // Afflictions have their own method
-                        this.afflictionOnTarget(attacker, attack, target); // Run the normal affliction method
+                    if (newAttack.type === "affliction") { // Afflictions have their own method
+                        this.afflictionOnTarget(attacker, newAttack, target); // Run the normal affliction method
                     }
                     else { // Ranged and melee use the normal method
-                        this.attackOnTarget(attacker, attack, target); // Run the normal attack method
+                        this.attackOnTarget(attacker, newAttack, target); // Run the normal attack method
                     }
                 }
             }
