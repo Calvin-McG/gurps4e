@@ -2388,7 +2388,7 @@ export class macroHelpers {
         let bombardmentSkill = 0;
         let collateral = false;
         let dissipation = false;
-        let posture = postureHelpers.getPosture(target.appliedEffects) ?? { // Get the posture from the token, defaulting to standing if we can't fetch it properly.
+        let posture = postureHelpers.getPosture(target.actor.appliedEffects) ?? { // Get the posture from the token, defaulting to standing if we can't fetch it properly.
             name: "standing",
             defenceMod: 0,
             meleeAttackMod: 0,
@@ -3267,7 +3267,7 @@ export class macroHelpers {
         let targetToken = game.scenes.get(flags.scene).tokens.get(flags.target)
         let target = targetToken.actor;
 
-        let posture = postureHelpers.getPosture(target.appliedEffects);
+        let posture = postureHelpers.getPosture(targetToken.actor.appliedEffects);
 
         let totalModifier;
         let additionalMessageContent = "";
