@@ -31,9 +31,10 @@ export class macroHelpers {
      * @param attackType    Optional String: The type of attack (melee, affliction, or ranged)
      * @param itemName      Optional String: The name of the item from which to fetch the attacks
      * @param attackName    Optional String: The name of the attack on the given item
+     * @param level         Optional Number: The selected level of the attack. Only relevant for leveled attacks.
      */
-    static castASpellMacro(token, attackType, itemName, attackName) {
-        this.checkTargetCountAndBeginAttackro(token, attackType, itemName, attackName, true)
+    static castASpellMacro(token, attackType, itemName, attackName, level) {
+        this.checkTargetCountAndBeginAttackro(token, attackType, itemName, attackName, level, true)
     }
 
     /**
@@ -45,9 +46,10 @@ export class macroHelpers {
      * @param attackType    Optional String: The type of attack (melee, affliction, or ranged)
      * @param itemName      Optional String: The name of the item from which to fetch the attacks
      * @param attackName    Optional String: The name of the attack on the given item
+     * @param level         Optional Number: The selected level of the attack. Only relevant for leveled attacks.
      */
-    static makeAnAttackMacro(token, attackType, itemName, attackName) {
-        this.checkTargetCountAndBeginAttackro(token, attackType, itemName, attackName)
+    static makeAnAttackMacro(token, attackType, itemName, attackName, level) {
+        this.checkTargetCountAndBeginAttackro(token, attackType, itemName, attackName, level)
     }
 
     /**
@@ -60,9 +62,10 @@ export class macroHelpers {
      * @param attackType    Optional String: The type of attack (melee, affliction, or ranged)
      * @param itemName      Optional String: The name of the item from which to fetch the attacks
      * @param attackName    Optional String: The name of the attack on the given item
-     * @param spell         Optional Boolean: If true we show only spells, if not true we show only things that are not spells.
+     * @param level         Optional Number: The selected level of the attack. Only relevant for leveled attacks.
+     * @param spellAttack   Optional Boolean: If true we show only spells, if not true we show only things that are not spells.
      */
-    static checkTargetCountAndBeginAttackro(token, attackType, itemName, attackName, spellAttack) {
+    static checkTargetCountAndBeginAttackro(token, attackType, itemName, attackName, level, spellAttack) {
         let selfToken = token; // Get owned token
 
         if (typeof selfToken === "undefined" || selfToken === null) {
@@ -79,7 +82,7 @@ export class macroHelpers {
             }
 
             else { // There are zero to one targets.
-                this.singleTargetDialog(selfToken, targetArray[0], attackType, itemName, attackName, spellAttack);
+                this.singleTargetDialog(selfToken, targetArray[0], attackType, itemName, attackName, level, spellAttack);
             }
         }
     }
@@ -256,9 +259,10 @@ export class macroHelpers {
      * @param attackType    Optional String: The type of attack (melee, affliction, or ranged)
      * @param itemName      Optional String: The name of the item from which to fetch the attacks
      * @param attackName    Optional String: The name of the attack on the given item
+     * @param level         Optional Number: The selected level of the attack. Only relevant for leveled attacks.
      * @param spellAttack   Optional Boolean: If true we show only spells, if not true we show only things that are not spells.
      */
-    static singleTargetDialog(selfToken, targetToken, attackType, itemName, attackName, spellAttack){
+    static singleTargetDialog(selfToken, targetToken, attackType, itemName, attackName, level, spellAttack){
         let attacks;
         // Check area logic first
         let targetTemplate;
@@ -308,13 +312,13 @@ export class macroHelpers {
 
         if (getToStabbin === true) { // If we're skipping the modal, go right to attackOnTarget
             if (attacks.melee.length === 1){
-                this.determineAttackFormat(selfToken, attacks.melee[0], targetToken, targetTemplate)
+                this.determineAttackFormat(selfToken, attacks.melee[0], targetToken, targetTemplate, level)
             }
             else if (attacks.ranged.length === 1){
-                this.determineAttackFormat(selfToken, attacks.ranged[0], targetToken, targetTemplate)
+                this.determineAttackFormat(selfToken, attacks.ranged[0], targetToken, targetTemplate, level)
             }
             else if (attacks.affliction.length === 1){
-                this.determineAttackFormat(selfToken, attacks.affliction[0], targetToken, targetTemplate)
+                this.determineAttackFormat(selfToken, attacks.affliction[0], targetToken, targetTemplate, level)
             }
         }
         else { // If we're not skipping the modal, show it
@@ -336,7 +340,7 @@ export class macroHelpers {
                             }
                         }
                         if (typeof attack !== "undefined") {
-                            this.determineAttackFormat(selfToken, attacks.melee[attack], targetToken, targetTemplate)
+                            this.determineAttackFormat(selfToken, attacks.melee[attack], targetToken, targetTemplate, level)
                         }
                     }
                 }
@@ -388,7 +392,7 @@ export class macroHelpers {
                             }
                         }
                         if (typeof attack !== "undefined") {
-                            this.determineAttackFormat(selfToken, attacks.ranged[attack], targetToken, targetTemplate)
+                            this.determineAttackFormat(selfToken, attacks.ranged[attack], targetToken, targetTemplate, level)
                         }
                     }
                 }
@@ -459,7 +463,7 @@ export class macroHelpers {
                             }
                         }
                         if (typeof attack !== "undefined") {
-                            this.determineAttackFormat(selfToken, attacks.affliction[attack], targetToken, targetTemplate)
+                            this.determineAttackFormat(selfToken, attacks.affliction[attack], targetToken, targetTemplate, level)
                         }
                     }
                 }
@@ -730,30 +734,73 @@ export class macroHelpers {
         return { "melee": meleeAttacks, "ranged": rangedAttacks, "affliction": afflictionAttacks}
     }
 
-    // This method takes in an attacker, attack, target, and template (target and template are both optional)
-    // If it's got a template, it runs the logic to attack a template.
-    // If there is not a template, it checks whether that attack has the area property, it decides whether to call attackOnTarget or templateOnActor
-    // Or afflictionOnTarget
-    static determineAttackFormat(attacker, attack, target, template) {
-        if (typeof template !== "undefined" && template !== null) { // We ended up with a target template
-            this.correctTemplate(attacker, attack, template); // Attack an area
+    /**
+     * If it's got a template, it runs the logic to attack a template.
+     * If there is not a template, it checks whether that attack has the area property,
+     * it then decides whether to call afflictionOnTarget, attackOnTarget, or templateOnActor
+     * @param attacker Required Token object - The token making the attack
+     * @param attack Required attack object - The attack being made
+     * @param target Optional Token object - The token being attacked
+     * @param template Optional MeasuredTemplate - The template being attacked
+     * @param level Optional number - The specified level of the attack
+     */
+    static determineAttackFormat(attacker, attack, target, template, level) {
+        if (attack.leveledDam && typeof level === "undefined") { // It's a leveled attack, but the user hasn't provided the level
+            this.levelSelectDialog(attacker, attack, target, template); // Open the level selection dialog
         }
-        else if (typeof target !== "undefined" && target !== null) { // We ended up with a valid target and might be making an area attack against them
-            if (typeof attack.area === "string" && attack.area !== "") { // Area is a string and not blank
-                this.templateOnActor(attacker, attack, target); // Create a template on an actor
+        else { // Either it's not a leveled attack, or it is a leveled attack but the user has provided a level
+            if (typeof template !== "undefined" && template !== null) { // We ended up with a target template
+                this.correctTemplate(attacker, attack, template); // Attack an area
             }
-            else { // It's not an area attack, attack normally.
-                if (attack.type === "affliction") { // Afflictions have their own method
-                    this.afflictionOnTarget(attacker, attack, target); // Run the normal affliction method
+            else if (typeof target !== "undefined" && target !== null) { // We ended up with a valid target and might be making an area attack against them
+                if (typeof attack.area === "string" && attack.area !== "") { // Area is a string and not blank
+                    this.templateOnActor(attacker, attack, target); // Create a template on an actor
                 }
-                else { // Ranged and melee use the normal method
-                    this.attackOnTarget(attacker, attack, target); // Run the normal attack method
+                else { // It's not an area attack, attack normally.
+                    if (attack.type === "affliction") { // Afflictions have their own method
+                        this.afflictionOnTarget(attacker, attack, target); // Run the normal affliction method
+                    }
+                    else { // Ranged and melee use the normal method
+                        this.attackOnTarget(attacker, attack, target); // Run the normal attack method
+                    }
                 }
             }
+            else { // We ended up with neither a template nor token to attack
+                return this.noTargetsDialog(); // Load the noTarget dialog and return early.
+            }
         }
-        else { // We ended up with neither a template nor token to attack
-            return this.noTargetsDialog(); // Load the noTarget dialog and return early.
-        }
+    }
+
+    /**
+     * Called when determineAttackFormat finds it has a leveled attack without a pre-set level.
+     * Presents the user with a modal where they can either select a level or cancel the attack flow.
+     * @param attacker Required Token object - The token making the attack
+     * @param attack Required attack object - The attack being made
+     * @param target Optional Token object - The token being attacked
+     * @param template Optional MeasuredTemplate - The template being attacked
+     */
+    static levelSelectDialog(attacker, attack, target, template) {
+        let levelModal = new Dialog({ // Bring up a modal to allow them to input the level for their attack
+            title: "Level Input Dialog",
+            content: "<input type='number' id='level' name='level' value='1'/>",
+            buttons: {
+                level: {
+                    icon: '<i class="fas fa-check"></i>',
+                    label: "Select Level",
+                    callback: (html) => {
+                        let level = parseInt(html.find('#level').val()) ?? 1; // Get the input level, or default to 1 if they fucked it.
+                        this.determineAttackFormat(attacker, attack, target, template, level); // Go back to the original method with the new level.
+                    }
+                },
+                noLevel: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: "Cancel Attack",
+                    callback: () => {}
+                }
+            },
+            default: "level"
+        })
+        levelModal.render(true)
     }
 
     static setTemplateDistance(attack) {

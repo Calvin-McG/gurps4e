@@ -1032,6 +1032,7 @@
                         <th class="attack-column attack-shrink-column">Reach</th>
                         <th class="attack-column attack-shrink-column">Area</th>
                         <th class="attack-column attack-shrink-column">ST</th>
+                        <th class="attack-column attack-shrink-column">Is Damage Leveled?</th>
                         <th class="attack-column">Flags</th>
                         <th class="attack-column attack-shrink-column"></th>
                     </tr>
@@ -1112,6 +1113,9 @@
                         </td>
                         <td class="melee-st"><input type="text" name="system.melee.{{id}}.st" value="{{melee.st}}" class="attack-three-digit-input"/></td>
                         <td>
+                            <input type="checkbox" name="system.melee.{{id}}.leveledDam" {{checked melee.leveledDam}} data-dtype="Boolean"/>
+                        </td>
+                        <td>
                             <span class="tooltip">
                                 <input type="text" name="system.melee.{{id}}.flags" value="{{melee.flags}}" title="{{melee.flags}}" style="text-align:left;" />
                                 <span class="tooltiptext" style="margin-left: -200px">
@@ -1170,6 +1174,7 @@
                         <th class="attack-column attack-shrink-column">Rcl</th>
                         <th class="attack-column attack-shrink-column">ST</th>
                         <th class="attack-column attack-shrink-column">Malf</th>
+                        <th class="attack-column attack-shrink-column">Is Damage Leveled?</th>
                         <th class="attack-column">Flags</th>
                         <th class="attack-column attack-shrink-column"></th>
                     </tr>
@@ -1255,6 +1260,9 @@
                         <td class="melee-st"><input type="text" name="system.ranged.{{id}}.st" value="{{ranged.st}}" class="attack-three-digit-input"/></td>
                         <td><input type="text" name="system.ranged.{{id}}.malf" value="{{ranged.malf}}" class="attack-three-digit-input"/></td>
                         <td>
+                            <input type="checkbox" name="system.ranged.{{id}}.leveledDam" {{checked ranged.leveledDam}} data-dtype="Boolean"/>
+                        </td>
+                        <td>
                             <span class="tooltip">
                                 <input type="text" name="system.ranged.{{id}}.flags" value="{{ranged.flags}}" title="{{ranged.flags}}" style="text-align:left;" />
                                 <span class="tooltiptext" style="margin-left: -200px">
@@ -1319,6 +1327,7 @@
                                 <span class="tooltiptext" style="margin-left: -100px;">This should be 13 for Fright and 16 for everything else except in special cases.</span>
                             </span>
                         </th>
+                        <th class="attack-column attack-shrink-column">Is Damage Leveled?</th>
                         <th class="attack-column">Flags</th>
                         <th class="attack-column attack-shrink-column"></th>
                     </tr>
@@ -1408,6 +1417,9 @@
                             </div>
                         </td>
                         <td><input type="text" name="system.affliction.{{id}}.ruleOf" value="{{affliction.ruleOf}}" title="{{affliction.ruleOf}}" class="attack-two-digit-input"/></td>
+                        <td>
+                            <input type="checkbox" name="system.affliction.{{id}}.leveledDam" {{checked affliction.leveledDam}} data-dtype="Boolean"/>
+                        </td>
                         <td>
                             <span class="tooltip">
                                 <input type="text" name="system.affliction.{{id}}.flags" value="{{affliction.flags}}" title="{{affliction.flags}}" style="text-align:left;" />
