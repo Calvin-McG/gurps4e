@@ -27,13 +27,13 @@ export class macroHelpers {
      *
      * By this point we only know the user's selected token, target token, and possibly some or all of the attack's name.
      *
-     * @param token Required Token object: responsible for making the attack
-     * @param attackType Optional String: The type of attack (melee, affliction, or ranged)
-     * @param itemName Optional String: The name of the item from which to fetch the attacks
-     * @param attackName Optional String: The name of the attack on the given item
+     * @param token         Required Token object: The token responsible for casting the spell
+     * @param attackType    Optional String: The type of attack (melee, affliction, or ranged)
+     * @param itemName      Optional String: The name of the item from which to fetch the attacks
+     * @param attackName    Optional String: The name of the attack on the given item
      */
     static castASpellMacro(token, attackType, itemName, attackName) {
-        this.checkTargetCountAndBeginAttackro(token, attackType, itemName, attackName)
+        this.checkTargetCountAndBeginAttackro(token, attackType, itemName, attackName, true)
     }
 
     /**
@@ -41,10 +41,10 @@ export class macroHelpers {
      *
      * By this point we only know the user's selected token, target token, and possibly some or all of the attack's name.
      *
-     * @param token Required Token object: responsible for making the attack
-     * @param attackType Optional String: The type of attack (melee, affliction, or ranged)
-     * @param itemName Optional String: The name of the item from which to fetch the attacks
-     * @param attackName Optional String: The name of the attack on the given item
+     * @param token         Required Token object: The token responsible for making the attack
+     * @param attackType    Optional String: The type of attack (melee, affliction, or ranged)
+     * @param itemName      Optional String: The name of the item from which to fetch the attacks
+     * @param attackName    Optional String: The name of the attack on the given item
      */
     static makeAnAttackMacro(token, attackType, itemName, attackName) {
         this.checkTargetCountAndBeginAttackro(token, attackType, itemName, attackName)
@@ -56,12 +56,13 @@ export class macroHelpers {
      *
      * By this point we only know the user's selected token, target token, and possibly some or all of the attack's name.
      *
-     * @param token Required Token object: responsible for making the attack
-     * @param attackType Optional String: The type of attack (melee, affliction, or ranged)
-     * @param itemName Optional String: The name of the item from which to fetch the attacks
-     * @param attackName Optional String: The name of the attack on the given item
+     * @param token         Required Token object: The token responsible for making the attack
+     * @param attackType    Optional String: The type of attack (melee, affliction, or ranged)
+     * @param itemName      Optional String: The name of the item from which to fetch the attacks
+     * @param attackName    Optional String: The name of the attack on the given item
+     * @param spell         Optional Boolean: If true we show only spells, if not true we show only things that are not spells.
      */
-    static checkTargetCountAndBeginAttackro(token, attackType, itemName, attackName) {
+    static checkTargetCountAndBeginAttackro(token, attackType, itemName, attackName, spellAttack) {
         let selfToken = token; // Get owned token
 
         if (typeof selfToken === "undefined" || selfToken === null) {
@@ -78,7 +79,7 @@ export class macroHelpers {
             }
 
             else { // There are zero to one targets.
-                this.singleTargetDialog(selfToken, targetArray[0], attackType, itemName, attackName);
+                this.singleTargetDialog(selfToken, targetArray[0], attackType, itemName, attackName, spellAttack);
             }
         }
     }
@@ -246,9 +247,18 @@ export class macroHelpers {
         return [facing,position]
     }
 
-    // By this point we still only know the user's selected token, target token, and possibly some or all of the attack's name.
-    // Using that we call the method to list all the attacks, at which point we either show a modal, or skip right to the specific attack they selected if the name was complete
-    static singleTargetDialog(selfToken, targetToken, attackType, itemName, attackName){
+    /**
+     * By this point we still only know the user's selected token, target token, and possibly some or all of the attack's name.
+     * Using that we call the method to list all the attacks, at which point we either show a modal, or skip right to the specific attack they selected if the name was complete
+     *
+     * @param selfToken     Required Token object: responsible for making the attack
+     * @param targetToken   Required Token object: the target of the attack
+     * @param attackType    Optional String: The type of attack (melee, affliction, or ranged)
+     * @param itemName      Optional String: The name of the item from which to fetch the attacks
+     * @param attackName    Optional String: The name of the attack on the given item
+     * @param spellAttack   Optional Boolean: If true we show only spells, if not true we show only things that are not spells.
+     */
+    static singleTargetDialog(selfToken, targetToken, attackType, itemName, attackName, spellAttack){
         let attacks;
         // Check area logic first
         let targetTemplate;
@@ -276,16 +286,16 @@ export class macroHelpers {
 
         // Narrow displayed attacks by attack type, and if present, the areaTemplateType.
         if (attackType === "melee") {
-            attacks = this.listAttacks(selfToken.actor, "melee", itemName, attackName, areaTemplateType);
+            attacks = this.listAttacks(selfToken.actor, "melee", itemName, attackName, areaTemplateType, spellAttack);
         }
         else if (attackType === "range" || attackType === "ranged") {
-            attacks = this.listAttacks(selfToken.actor, "ranged", itemName, attackName, areaTemplateType);
+            attacks = this.listAttacks(selfToken.actor, "ranged", itemName, attackName, areaTemplateType, spellAttack);
         }
         else if (attackType === "affliction") {
-            attacks = this.listAttacks(selfToken.actor, "affliction", itemName, attackName, areaTemplateType);
+            attacks = this.listAttacks(selfToken.actor, "affliction", itemName, attackName, areaTemplateType, spellAttack);
         }
         else {
-            attacks = this.listAttacks(selfToken.actor, "all", itemName, attackName, areaTemplateType);
+            attacks = this.listAttacks(selfToken.actor, "all", itemName, attackName, areaTemplateType, spellAttack);
         }
 
         // This block decides whether to skip the attack selection modal and go right to stabbin'
@@ -508,7 +518,19 @@ export class macroHelpers {
         }
     }
 
-    static listAttacks(actor, attackType, itemName, attackName, areaTemplateType){
+    /**
+     * Given an actor and set of optional filters, this method returns the list of attacks on that actor which
+     * match the given filters.
+     *
+     * @param actor             Required Actor Object: The actor attached to the token making the attack
+     * @param attackType        Optional String: The type of attack (melee, affliction, or ranged)
+     * @param itemName          Optional String: The name of the item from which to fetch the attacks
+     * @param attackName        Optional String: The name of the attack on the given item
+     * @param areaTemplateType  Optional String: If present and not blank, filters attacks to only show those that match the given type (circle or ray)
+     * @param spellAttack       Optional Boolean: If true we show only spells, if not true we show only things that are not spells.
+     * @returns {{ranged: *[], melee: *[], affliction: *[]}} Each array contains a list of attacks from the actor which match the above filters
+     */
+    static listAttacks(actor, attackType, itemName, attackName, areaTemplateType, spellAttack){
         // Narrow displayed attacks by attack type.
         let showMelee 		= true;
         let showRange 		= true;
@@ -557,7 +579,10 @@ export class macroHelpers {
         actor.items.forEach((item) => {
             // This if statement keeps out any attack entries we are not interested
             if (!((item.type === "Ritual" && item.system.quantity > 0) || // It's a ritual with a zero quantity, don't show it.
+                (item.type === "Spell" && !spellAttack) || // It's a spell and we're not looking at spells
+                (item.type !== "Spell" && spellAttack) || // It's not a spell and we're only looking at spells
                 (typeof item.system.equipStatus !== "undefined" && item.system.equipStatus !== "equipped"))){ // If it's part of an item that has an equipped status, but it's not equipped, don't show it.
+
                 if (item.system.melee && showMelee) {
                     let meleeKeys = Object.keys(item.system.melee); // Collect all the melee keys
                     for (let m = 0; m < meleeKeys.length; m++){ // Loop through the melee keys
