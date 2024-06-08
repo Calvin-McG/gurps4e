@@ -22,11 +22,46 @@ export class macroHelpers {
         }
     }
 
-    // This is the method called when a user clicks the "Make An Attack" macro
-    // By this point we only know the user's selected token, target token, and possibly some or all of the attack's name.
-    static makeAnAttackMacro(token, attackType, itemName, attackName) {
-        // This macro allows the user to select an attack from their sheet to use against their target(s)
+    /**
+     * This is the method called when a user clicks the "Cast A Spell" macro
+     *
+     * By this point we only know the user's selected token, target token, and possibly some or all of the attack's name.
+     *
+     * @param token Required Token object: responsible for making the attack
+     * @param attackType Optional String: The type of attack (melee, affliction, or ranged)
+     * @param itemName Optional String: The name of the item from which to fetch the attacks
+     * @param attackName Optional String: The name of the attack on the given item
+     */
+    static castASpellMacro(token, attackType, itemName, attackName) {
+        this.checkTargetCountAndBeginAttackro(token, attackType, itemName, attackName)
+    }
 
+    /**
+     * This is the method called when a user clicks the "Make An Attack" macro
+     *
+     * By this point we only know the user's selected token, target token, and possibly some or all of the attack's name.
+     *
+     * @param token Required Token object: responsible for making the attack
+     * @param attackType Optional String: The type of attack (melee, affliction, or ranged)
+     * @param itemName Optional String: The name of the item from which to fetch the attacks
+     * @param attackName Optional String: The name of the attack on the given item
+     */
+    static makeAnAttackMacro(token, attackType, itemName, attackName) {
+        this.checkTargetCountAndBeginAttackro(token, attackType, itemName, attackName)
+    }
+
+    /**
+     * This method can be called by either the "Make An Attack" macro or "Cast A Spell" macro and is responsible for checking
+     * the target count before passing it onto the step where the specific attack type is selected.
+     *
+     * By this point we only know the user's selected token, target token, and possibly some or all of the attack's name.
+     *
+     * @param token Required Token object: responsible for making the attack
+     * @param attackType Optional String: The type of attack (melee, affliction, or ranged)
+     * @param itemName Optional String: The name of the item from which to fetch the attacks
+     * @param attackName Optional String: The name of the attack on the given item
+     */
+    static checkTargetCountAndBeginAttackro(token, attackType, itemName, attackName) {
         let selfToken = token; // Get owned token
 
         if (typeof selfToken === "undefined" || selfToken === null) {
