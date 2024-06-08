@@ -1,82 +1,186 @@
 const GURPS4E = {}
 
-CONFIG.postures = [
-    "systems/gurps4e/icons/postures/standing.png",
-    "systems/gurps4e/icons/postures/sitting.png",
-    "systems/gurps4e/icons/postures/crouching.png",
-    "systems/gurps4e/icons/postures/crawling.png",
-    "systems/gurps4e/icons/postures/kneeling.png",
-    "systems/gurps4e/icons/postures/lyingback.png",
-    "systems/gurps4e/icons/postures/lyingprone.png",
-    "systems/gurps4e/icons/postures/sittingchair.png"
-]
-
-CONFIG.sizemods = [
-    "systems/gurps4e/icons/sizemods/smneg1.png",
-    "systems/gurps4e/icons/sizemods/smneg2.png",
-    "systems/gurps4e/icons/sizemods/smneg3.png",
-    "systems/gurps4e/icons/sizemods/smneg4.png",
-    "systems/gurps4e/icons/sizemods/smpos1.png",
-    "systems/gurps4e/icons/sizemods/smpos2.png",
-    "systems/gurps4e/icons/sizemods/smpos3.png",
-    "systems/gurps4e/icons/sizemods/smpos4.png"
-]
-
-CONFIG.crippled = [
-    "systems/gurps4e/icons/crippled/crippledleftarm.png",
-    "systems/gurps4e/icons/crippled/crippledlefthand.png",
-    "systems/gurps4e/icons/crippled/crippledleftleg.png",
-    "systems/gurps4e/icons/crippled/crippledleftfoot.png",
-    "systems/gurps4e/icons/crippled/crippledrightarm.png",
-    "systems/gurps4e/icons/crippled/crippledrighthand.png",
-    "systems/gurps4e/icons/crippled/crippledrightleg.png",
-    "systems/gurps4e/icons/crippled/crippledrightfoot.png",
-]
 CONFIG.statusEffects = [
-    "systems/gurps4e/icons/postures/standing.png",
-    "systems/gurps4e/icons/postures/sitting.png",
-    "systems/gurps4e/icons/postures/crouching.png",
-    "systems/gurps4e/icons/postures/crawling.png",
-    "systems/gurps4e/icons/postures/kneeling.png",
-    "systems/gurps4e/icons/postures/lyingback.png",
-    "systems/gurps4e/icons/postures/lyingprone.png",
-    "systems/gurps4e/icons/postures/sittingchair.png",
-    "systems/gurps4e/icons/conditions/shock1.png",
-    "systems/gurps4e/icons/conditions/shock2.png",
-    "systems/gurps4e/icons/conditions/shock3.png",
-    "systems/gurps4e/icons/conditions/shock4.png",
-    "systems/gurps4e/icons/conditions/shock6.png",
-    "systems/gurps4e/icons/conditions/shock8.png",
-    "systems/gurps4e/icons/conditions/shock12.png",
-    "systems/gurps4e/icons/conditions/shock16.png",
-    "systems/gurps4e/icons/conditions/reeling.png",
-    "systems/gurps4e/icons/conditions/tired.png",
-    "systems/gurps4e/icons/conditions/collapse.png",
-    "systems/gurps4e/icons/conditions/unconscious.png",
-    "systems/gurps4e/icons/conditions/minus1xhp.png",
-    "systems/gurps4e/icons/conditions/minus2xhp.png",
-    "systems/gurps4e/icons/conditions/minus3xhp.png",
-    "systems/gurps4e/icons/conditions/minus4xhp.png",
-    "systems/gurps4e/icons/conditions/stunned.png",
-    "systems/gurps4e/icons/conditions/surprised.png",
-    "systems/gurps4e/icons/defeated.png",
-    "systems/gurps4e/icons/blank.png",
-    "systems/gurps4e/icons/crippled/crippledleftarm.png",
-    "systems/gurps4e/icons/crippled/crippledlefthand.png",
-    "systems/gurps4e/icons/crippled/crippledleftleg.png",
-    "systems/gurps4e/icons/crippled/crippledleftfoot.png",
-    "systems/gurps4e/icons/crippled/crippledrightarm.png",
-    "systems/gurps4e/icons/crippled/crippledrighthand.png",
-    "systems/gurps4e/icons/crippled/crippledrightleg.png",
-    "systems/gurps4e/icons/crippled/crippledrightfoot.png",
-    "systems/gurps4e/icons/sizemods/smneg1.png",
-    "systems/gurps4e/icons/sizemods/smneg2.png",
-    "systems/gurps4e/icons/sizemods/smneg3.png",
-    "systems/gurps4e/icons/sizemods/smneg4.png",
-    "systems/gurps4e/icons/sizemods/smpos1.png",
-    "systems/gurps4e/icons/sizemods/smpos2.png",
-    "systems/gurps4e/icons/sizemods/smpos3.png",
-    "systems/gurps4e/icons/sizemods/smpos4.png",
+    {
+        "img": "systems/gurps4e/icons/postures/standing.png",
+        "name": "Standing",
+        "id": "standing"
+    },
+    {
+        "img": "systems/gurps4e/icons/postures/sitting.png",
+        "name": "Sitting",
+        "id": "sitting"
+    },
+    {
+        "img": "systems/gurps4e/icons/postures/crouching.png",
+        "name ": "Crouching",
+        "id": "crouching"
+    },
+    {
+        "img": "systems/gurps4e/icons/postures/crawling.png",
+        "name": "Crawling",
+        "id": "crawling"
+    },
+    {
+        "img": "systems/gurps4e/icons/postures/kneeling.png",
+        "name": "Kneeling",
+        "id": "kneeling"
+    },
+    {
+        "img": "systems/gurps4e/icons/postures/lyingback.png",
+        "name": "Lying on back",
+        "id": "lyingback"
+    },
+    {
+        "img": "systems/gurps4e/icons/postures/lyingprone.png",
+        "name": "Prone",
+        "id": "lyingprone"
+    },
+    {
+        "img": "systems/gurps4e/icons/postures/sittingchair.png",
+        "name": "Sitting in a chair",
+        "id": "sittingchair"
+    },
+    {
+        "img": "systems/gurps4e/icons/conditions/shock1.png",
+        "name": "Shock -1",
+        "id": "shock1"
+    },
+    {
+        "img": "systems/gurps4e/icons/conditions/shock2.png",
+        "name": "Shock -2",
+        "id": "shock2"
+    },
+    {
+        "img": "systems/gurps4e/icons/conditions/shock3.png",
+        "name": "Shock -3",
+        "id": "shock3"
+    },
+    {
+        "img": "systems/gurps4e/icons/conditions/shock4.png",
+        "name": "Shock -4",
+        "id": "shock4"
+    },
+    {
+        "img": "systems/gurps4e/icons/conditions/shock6.png",
+        "name": "Shock -6",
+        "id": "shock6"
+    },
+    {
+        "img": "systems/gurps4e/icons/conditions/shock8.png",
+        "name": "Shock -8",
+        "id": "shock8"
+    },
+    {
+        "img": "systems/gurps4e/icons/conditions/shock12.png",
+        "name": "Shock -12",
+        "id": "shock12"
+    },
+    {
+        "img": "systems/gurps4e/icons/conditions/shock16.png",
+        "name": "Shock -16",
+        "id": "shock16"
+    },
+    {
+        "img": "systems/gurps4e/icons/conditions/reeling.png",
+        "name": "Reeling",
+        "id": "reeling"
+    },
+    {
+        "img": "systems/gurps4e/icons/conditions/tired.png",
+        "name": "Tired",
+        "id": "tired"
+    },
+    {
+        "img": "systems/gurps4e/icons/conditions/collapse.png",
+        "name": "Collapse",
+        "id": "collapse"
+    },
+    {
+        "img": "systems/gurps4e/icons/conditions/unconscious.png",
+        "name": "Unconscious",
+        "id": "unconscious"
+    },
+    {
+        "img": "systems/gurps4e/icons/conditions/minus1xhp.png",
+        "name": "-1 x hp",
+        "id": "minus1xhp"
+    },
+    {
+        "img": "systems/gurps4e/icons/conditions/minus2xhp.png",
+        "name": "-2 x hp",
+        "id": "minus2xhp"
+    },
+    {
+        "img": "systems/gurps4e/icons/conditions/minus3xhp.png",
+        "name": "-3 x hp",
+        "id": "minus3xhp"
+    },
+    {
+        "img": "systems/gurps4e/icons/conditions/minus4xhp.png",
+        "name": "-4 x hp",
+        "id": "minus4xhp"
+    },
+    {
+        "img": "systems/gurps4e/icons/conditions/stunned.png",
+        "name": "Stunned",
+        "id": "stunned"
+    },
+    {
+        "img": "systems/gurps4e/icons/conditions/surprised.png",
+        "name": "Surprised",
+        "id": "surprised"
+    },
+    {
+        "img": "systems/gurps4e/icons/defeated.png",
+        "name": "Defeated",
+        "id": "defeated"
+    },
+    {
+        "img": "systems/gurps4e/icons/blank.png",
+        "name": "Blank",
+        "id": "blank"
+    },
+    {
+        "img": "systems/gurps4e/icons/crippled/crippledleftarm.png",
+        "name": "Crippledleftarm",
+        "id": "crippledleftarm"
+    },
+    {
+        "img": "systems/gurps4e/icons/crippled/crippledlefthand.png",
+        "name": "Crippledlefthand",
+        "id": "crippledlefthand"
+    },
+    {
+        "img": "systems/gurps4e/icons/crippled/crippledleftleg.png",
+        "name": "Crippledleftleg",
+        "id": "crippledleftleg"
+    },
+    {
+        "img": "systems/gurps4e/icons/crippled/crippledleftfoot.png",
+        "name": "Crippledleftfoot",
+        "id": "crippledleftfoot"
+    },
+    {
+        "img": "systems/gurps4e/icons/crippled/crippledrightarm.png",
+        "name": "Crippledrightarm",
+        "id": "crippledrightarm"
+    },
+    {
+        "img": "systems/gurps4e/icons/crippled/crippledrighthand.png",
+        "name": "Crippledrighthand",
+        "id": "crippledrighthand"
+    },
+    {
+        "img": "systems/gurps4e/icons/crippled/crippledrightleg.png",
+        "name": "Crippledrightleg",
+        "id": "crippledrightleg"
+    },
+    {
+        "img": "systems/gurps4e/icons/crippled/crippledrightfoot.png",
+        "name": "Crippledrightfoot",
+        "id": "crippledrightfoot"
+    }
 ]
 
 CONFIG.controlIcons.defeated = "systems/gurps4e/icons/defeated.png";
@@ -148,81 +252,4 @@ CONFIG.JournalEntry.noteIcons = {
     "Wood Elves 1": "systems/gurps4e/icons/buildings/welves1.png",
     "Wood Elves 2": "systems/gurps4e/icons/buildings/welves2.png",
     "Wood Elves 3": "systems/gurps4e/icons/buildings/welves3.png"
-}
-
-GURPS4E.locations = {
-    "head": "Head",
-    "skull": "Skull",
-    "face": "Face",
-    "neck": "Neck",
-    "torso": "Torso",
-    "chest": "Chest",
-    "abdomen": "Abdomen",
-    "groin": "Groin",
-    "arms": "Arms",
-    "shoulders": "Shoulders",
-    "upperarms": "Upper Arms",
-    "elbows": "Elbows",
-    "forearms": "Forearms",
-    "hands": "Hands",
-    "legs": "Legs",
-    "thighs": "Thighs",
-    "knees": "Knees",
-    "shins": "Shins",
-    "feet": "Feet"
-}
-
-GURPS4E.defences = {
-    "dodge": "Dodge",
-    "parry": "Parry",
-    "block": "Block"
-}
-
-GURPS4E.traitCategories = {
-    "adv": "Advantage",
-    "disadv": "Disadvantage",
-    "perk": "Perk",
-    "quirk": "Quirk"
-}
-
-GURPS4E.rollableCategories = {
-    "skill": "Skill",
-    "tech": "Technique",
-    "spell": "Spell",
-    "rms": "Ritual Magic Spell"
-}
-
-GURPS4E.tokenSizes = {
-    "tiny": 0.3,
-    "ltl": 0.5,
-    "sml": 0.8,
-    "avg": 1,
-    "lrg": 2,
-    "enor": 3,
-    "mnst": 4
-}
-
-GURPS4E.conditions = {
-	"reeling": "GURPS4E.ConditionName.Reeling",
-	"collapsehp": "GURPS4E.ConditionName.CollapseHP",
-	"minusxhp": "GURPS4E.ConditionName.MinusxHP",
-	"tired": "GURPS4E.ConditionName.Tired",
-	"collapsefp": "GURPS4E.ConditionName.CollapseFP",
-	"stunned": "GURPS4E.ConditionName.Stunned",
-	"surprised": "GURPS4E.ConditionName.Surprised",
-	"unconscious": "GURPS4E.ConditionName.Unconscious",
-	"defeated": "GURPS4E.ConditionName.Defeated"
-}
-
-
-GURPS4E.conditionDescriptions = {
-	"reeling": "GURPS4E.Conditions.Reeling",
-	"collapsehp": "GURPS4E.Conditions.CollapseHP",
-	"minusxhp": "GURPS4E.Conditions.MinusxHP",
-	"tired": "GURPS4E.Conditions.Tired",
-	"collapsefp": "GURPS4E.Conditions.CollapseFP",
-	"stunned": "GURPS4E.Conditions.Stunned",
-	"surprised": "GURPS4E.Conditions.Surprised",
-	"unconscious": "GURPS4E.Conditions.Unconscious",
-	"defeated": "GURPS4E.Conditions.Defeated"
 }
