@@ -1399,10 +1399,12 @@
                                 <select name="system.affliction.{{id}}.resistanceType" class="attack-resistance-type-input">
                                     {{selectOptions ../resistanceTypes selected=affliction.resistanceType}}
                                 </select>
+                                {{#unless (or (eq affliction.resistanceType "") (eq affliction.resistanceType "irresistible"))}}
                                 <select name="system.affliction.{{id}}.resistanceRoll" class="attack-resistance-attr-input">
                                     {{selectOptions ../resistanceAttr selected=affliction.resistanceRoll}}
                                 </select>
                                 <input type="text" placeholder="-0" name="system.affliction.{{id}}.resistanceRollPenalty" value="{{affliction.resistanceRollPenalty}}" title="{{affliction.resistanceRollPenalty}}" class="attack-resistance-roll-penalty-input"/>
+                                {{/unless}}
                             </div>
                         </td>
                         <td><input type="text" name="system.affliction.{{id}}.ruleOf" value="{{affliction.ruleOf}}" title="{{affliction.ruleOf}}" class="attack-two-digit-input"/></td>
