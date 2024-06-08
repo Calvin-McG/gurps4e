@@ -5,6 +5,10 @@
 	font-size: 9pt;
 }
 
+* {
+	scrollbar-color: #ff5200 transparent;
+}
+
 .rollable:hover, .rollable:focus, .plus:hover, .minus:hover {
 	color: #000;
 	text-shadow: 0 0 10px red;
