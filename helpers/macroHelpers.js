@@ -2024,10 +2024,10 @@ export class macroHelpers {
                 callback: (html) => {
                     let mod = html.find('#mod').val();
                     let moveAndAttack = html.find('#moveAndAttack')[0].checked;
-                    let aimTime = html.find('#aimTime') ? html.find('#aimTime').val() : undefined;
-                    let evaluate = html.find('#evaluate')[0] ? html.find('#evaluate')[0].checked : undefined;
-                    let exactRange = html.find('#exactRange')[0] ? html.find('#exactRange')[0].checked : undefined;
-                    let closeRange = html.find('#closeRange')[0] ? html.find('#closeRange')[0].checked : undefined;
+                    let aimTime = html.find('#aimTime') ? html.find('#aimTime').val() : 0;
+                    let evaluate = html.find('#evaluate')[0] ? html.find('#evaluate')[0].checked : false;
+                    let exactRange = html.find('#exactRange')[0] ? html.find('#exactRange')[0].checked : false;
+                    let closeRange = html.find('#closeRange')[0] ? html.find('#closeRange')[0].checked : false;
                     let targetHex = typeof html.find('#targetHex')[0] !== "undefined" ? html.find('#targetHex')[0].checked : ((typeof target === "undefined" && attack.type !== "affliction") ? true : false); // If the targetHex checkbox is present, use it to control the bool. If the checkbox isn't there, instead check to see if there was a target token in the first place and that it's not an affliction
                     this.reportHitResult(target, attacker, attack, relativePosition, rof, location, (+totalModifier + +mod), moveAndAttack, targetHex, aimTime, evaluate, exactRange, closeRange, rangeDamageMult, areaAttack, sizeModModifier, rayPointOfAim, template)
                 }
