@@ -612,19 +612,17 @@ Hooks.once('init', async function() {
 
   Handlebars.registerHelper("displayCurrency", function(num) {
     let returnString = num;
-    if (typeof num === "number") {
+    if (typeof num !== "undefined") {
       returnString = (Math.round(num * 100) / 100).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-
     return returnString
   });
 
   Handlebars.registerHelper("displayCurrencyNoDecimals", function(num) {
     let returnString = num;
-    if (typeof num === "number") {
+    if (typeof num !== "undefined") {
       returnString = (Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
     }
-
     return returnString
   });
 
