@@ -158,4 +158,18 @@ export class generalHelpers {
         }
         return result;
     }
+
+    /**
+     * This method takes in a weight in lbs and returns an HP value
+     * @param weight Required number - Weight in lbs
+     * @param homogenous - Optional Boolean - If true, calculates HP as for Homogenous/Diffuse. If not true, calculates HP for Unliving
+     */
+    static calculateHPFromWeight(weight, homogenous){
+        if (homogenous) {
+            return Math.round(8 * (weight ** (1/3)))
+        }
+        else {
+            return Math.round(4 * (weight ** (1/3)))
+        }
+    }
 }
