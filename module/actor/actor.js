@@ -1,10 +1,7 @@
 import { attributeHelpers } from '../../helpers/attributeHelpers.js';
-import { distanceHelpers } from '../../helpers/distanceHelpers.js';
 import { generalHelpers } from '../../helpers/generalHelpers.js';
-import { rollHelpers } from '../../helpers/rollHelpers.js';
 import { actorHelpers } from "../../helpers/actorHelpers.js";
 import { skillHelpers } from "../../helpers/skillHelpers.js";
-import { postureHelpers } from "../../helpers/postureHelpers.js";
 import { vehicleHelpers } from "../../helpers/vehicleHelpers.js";
 import { attackHelpers } from "../../helpers/attackHelpers.js";
 import { infoHelpers } from "../../helpers/infoHelpers.js";
@@ -63,7 +60,7 @@ export class gurpsActor extends Actor {
 			this.loadBaseVehicles();
 			this.system.vehicle.baseVehicle = vehicleHelpers.getVehicleByCode(this.system.vehicle.baseVehicle.code);
 
-			this.system.vehicle.ht.code = this.system.vehicle.baseVehicle.htCodes;
+			this.applyBaseVehicle();
 		}
 		else {
 			this.system.vehicle.baseVehicle = undefined;
@@ -81,6 +78,93 @@ export class gurpsActor extends Actor {
 
 		this.assessLocations(); // Go through the location string and use the values to update the block of actual locations stored on the vehicle.
 		this.vehicleCost();
+	}
+
+	applyBaseVehicle() {
+		this.system.vehicle.className = this.system.vehicle.baseVehicle.name ?? this.name;
+		this.system.bio.tl.value = this.system.vehicle.baseVehicle.tl ?? game.settings.get("gurps4e", "campaignTL") ?? 0;
+		this.system.vehicle.ht.code = this.system.vehicle.baseVehicle.htCodes ?? "";
+		this.system.vehicle.sthp = this.system.vehicle.baseVehicle.sthp ?? generalHelpers.calculateHPFromWeight(this.system.vehicle.baseVehicle.loadedWeight);
+		this.system.vehicle.sthpCode = this.system.vehicle.baseVehicle.sthpCode === "T" ? "†" : this.system.vehicle.baseVehicle.sthpCode;
+		this.system.vehicle.hnd = this.system.vehicle.baseVehicle.hnd;
+		this.system.vehicle.sr = this.system.vehicle.baseVehicle.sr;
+		this.system.vehicle.ht.value = this.system.vehicle.baseVehicle.ht ?? 11;
+		this.system.vehicle.ht.code = this.system.vehicle.baseVehicle.htCodes ?? "";
+		this.system.vehicle.accelerationInput = this.system.vehicle.baseVehicle.acceleration;
+
+		// Assume Motive Type
+		if (this.system.vehicle.baseVehicle.locations.includes("C") && this.system.vehicle.baseVehicle.locations.includes("R")) {
+			this.system.vehicle.motiveType = "rTrack";
+		}
+		else if (this.system.vehicle.baseVehicle.locations.includes("W") && this.system.vehicle.baseVehicle.locations.includes("R")) {
+			this.system.vehicle.motiveType = "skidsW";
+		}
+		else if (this.system.vehicle.baseVehicle.locations.includes("W") && this.system.vehicle.baseVehicle.locations.includes("C")) {
+			this.system.vehicle.motiveType = "wTrack";
+		}
+		else if (this.system.vehicle.baseVehicle.locations.includes("R")) {
+			this.system.vehicle.motiveType = "skids";
+		}
+		else if (this.system.vehicle.baseVehicle.locations.includes("C")) {
+			this.system.vehicle.motiveType = "track";
+		}
+		else if (this.system.vehicle.baseVehicle.moveCode.includes("‡")) {
+			this.system.vehicle.motiveType = "rail";
+		}
+		else if (this.system.vehicle.baseVehicle.locations.includes("W")) {
+			this.system.vehicle.motiveType = "wheel";
+		}
+		else if (this.system.vehicle.baseVehicle.locations.includes("L")) {
+			this.system.vehicle.motiveType = "leg";
+		}
+		else {
+			this.system.vehicle.motiveType = "immune";
+		}
+
+		// Begin working out movement rates
+		if (this.system.vehicle.baseVehicle.ground) {
+			this.system.vehicle.move.code = this.system.vehicle.baseVehicle.moveCode; // Save the moveCode so we can reference it later
+			this.system.vehicle.move.input = this.system.vehicle.baseVehicle.moveGround; // Save the base vehicle's ground move to the input
+			this.calcGroundVehicleMove(); // Call the normal method to sort out ground move speeds
+		}
+	}
+
+	calcGroundVehicleMove() {
+		let effectiveMoveInput = this.system.vehicle.move.input; // Store moveInput in a separate value because we're going to modify it later
+
+		this.system.vehicle.move.road = this.system.vehicle.move.input; // Road move is always the same as top speed
+
+		if (this.system.vehicle.move.code.includes("*")) { // Vehicle is road bound
+			effectiveMoveInput = Math.min(this.system.vehicle.move.input, this.system.vehicle.accelerationInput * 4) // Road bound vehicles use the lower of Top Speed and 4xAcceleration when working out offroad speed.
+			this.system.vehicle.move.good = effectiveMoveInput; // For road vehicles, top speed on good but non-road terrain is capped at the lower of the actual top speed and 4xAcceleration
+		}
+		else { // Vehicle is not road bound
+			this.system.vehicle.move.good = this.system.vehicle.move.input; // Meaning the good terrain speed is also the same as top speed
+		}
+
+		if (this.system.vehicle.motiveType === "wheel") {
+			this.system.vehicle.move.average = effectiveMoveInput * 0.8;
+		}
+		else {
+			this.system.vehicle.move.average = effectiveMoveInput * 1.6;
+		}
+
+		if (this.system.vehicle.motiveType === "wheel") {
+			this.system.vehicle.move.bad = effectiveMoveInput * 0.4;
+		}
+		else {
+			this.system.vehicle.move.bad = effectiveMoveInput * 0.8;
+		}
+
+		if (this.system.vehicle.motiveType === "wheel" || this.system.vehicle.motiveType === "skids") {
+			this.system.vehicle.move.veryBad = effectiveMoveInput * 0.16;
+		}
+		else if (this.system.vehicle.motiveType.toLowerCase().includes("track")) {
+			this.system.vehicle.move.veryBad = effectiveMoveInput * 0.24;
+		}
+		else {
+			this.system.vehicle.move.veryBad = effectiveMoveInput * 0.32;
+		}
 	}
 
 	vehicleCost() {
@@ -168,8 +252,15 @@ export class gurpsActor extends Actor {
 						"crewSkillLevel": 0
 					},
 					"accelerationInput": 3,
-					"moveInput": 30,
-					"moveCode": "",
+					"move": {
+						"input": 30,
+						"code": "",
+						"road": 30,
+						"good": 30,
+						"average": 12,
+						"bad": 6,
+						"veryBad": 3
+					},
 					"weight": {
 						"lwt": 1,
 						"load": 1,
@@ -547,11 +638,16 @@ export class gurpsActor extends Actor {
 		if (typeof this.system.vehicle.accelerationInput === "undefined") {
 			this.system.vehicle.accelerationInput = 3
 		}
-		if (typeof this.system.vehicle.moveInput === "undefined") {
-			this.system.vehicle.moveInput = 30
-		}
-		if (typeof this.system.vehicle.moveCode === "undefined") {
-			this.system.vehicle.moveInput = ""
+		if (typeof this.system.vehicle.move === "undefined") {
+			this.system.vehicle.move = {
+				"input": 30,
+				"code": "",
+				"road": 30,
+				"good": 30,
+				"average": 12,
+				"bad": 6,
+				"veryBad": 3
+			}
 		}
 
 		// Undefined checks for weight

@@ -16,20 +16,20 @@
           <div class="simple-vehicle-skill-display">{{actor.system.vehicle.skill.operatorSkillName}}</div>
           <table class="simple-vehicle-display-table">
             <tr class="simple-vehicle-header-row">
-              <th>TL</th>
+              <th class="simple-vehicle-shrink-column">TL</th>
               <th>Vehicle</th>
-              <th>ST/HP</th>
-              <th>HnD/SR</th>
-              <th>HT</th>
-              <th>Move</th>
-              <th>LWt.</th>
-              <th>Load</th>
-              <th>SM</th>
-              <th>Occ.</th>
-              <th>DR</th>
-              <th>Range</th>
-              <th>Cost</th>
-              <th>Locations</th>
+              <th class="simple-vehicle-shrink-column">ST/HP</th>
+              <th class="simple-vehicle-shrink-column">HnD/SR</th>
+              <th class="simple-vehicle-shrink-column">HT</th>
+              <th class="simple-vehicle-shrink-column">Move</th>
+              <th class="simple-vehicle-shrink-column">LWt.</th>
+              <th class="simple-vehicle-shrink-column">Load</th>
+              <th class="simple-vehicle-shrink-column">SM</th>
+              <th class="simple-vehicle-shrink-column">Occ.</th>
+              <th class="simple-vehicle-shrink-column">DR</th>
+              <th class="simple-vehicle-shrink-column">Range</th>
+              <th class="simple-vehicle-shrink-column">Cost</th>
+              <th class="simple-vehicle-shrink-column">Locations</th>
             </tr>
             <tr class="simple-vehicle-stat-row">
               <td>{{actor.system.bio.tl.value}}</td>
@@ -50,7 +50,7 @@
                 {{/if}}
               </td>
               <td>{{actor.system.vehicle.range}}</td>
-              <td>{{actor.system.vehicle.finalCost}}</td>
+              <td>{{displayCurrencyNoDecimals actor.system.vehicle.finalCost}}$</td>
               <td>{{actor.system.vehicle.locations}}</td>
             </tr>
           </table>
