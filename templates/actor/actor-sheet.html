@@ -1,146 +1,107 @@
 <form class="{{cssClass}} flexcol" autocomplete="off">
-	<div id="sheet">
+	<div class="actor-sheet">
 
 		{{!-- Sheet Header --}}
-		<header class="sheet-header">
-
-			<div id="personal">
-				<div id="portrait">
-					<img class="portrait" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
-				</div>
-				<div id="actorname">
-					<input class="charname" name="name" type="text" value="{{actor.name}}" placeholder="Name" />
-				</div>
-				<div id="racegender">
-					<div>
-						<div class="bold label right">
-							<input type="text" name="system.bio.race.value"
-								value="{{actor.system.bio.race.value}}" placeholder="Race" />
-						</div>
-					</div>
-                    <div>
-                        <div class="bold label right" style="display: flex;">
+		<header class="actor-sheet-header">
+				<img class="portrait" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+				<div>
+					<input class="actorname" name="name" type="text" value="{{actor.name}}" placeholder="Name"/>
+					<div class="racegender">
+						<input type="text" name="system.bio.race.value" value="{{actor.system.bio.race.value}}" placeholder="Race" style="font-size: 1em; flex: 50%; min-width: 140px;"/>
+						<input type="text" name="system.bio.gender.value" value="{{actor.system.bio.gender.value}}" placeholder="Gender" style="font-size: 1em; flex: 50%; min-width: 140px;"/>
+						<div class="bold" style="flex-basis: 105px;display: flex;">
 							<div style="line-height: 15px;">
 								Height:
 							</div>
-							<div style="width: 48%">
-								<input type="number" name="system.bio.height.value" value="{{actor.system.bio.height.value}}" placeholder="60"/>
-							</div>
-							<div style="line-height: 15px; padding-left: 1em;"> - {{inchesToFtIn actor.system.bio.height.value}}</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="bold label right">
+							<input type="number" name="system.bio.height.value" value="{{actor.system.bio.height.value}}" placeholder="60" style="width: 2.5em"/>
+							<div style="line-height: 15px; white-space: nowrap;"> - {{inchesToFtIn actor.system.bio.height.value}}</div>
+						</div>
+						<div class="bold" style="flex-basis: 50px;">
 							<span>SM:</span>
-                            <input type="number" name="system.bio.sm.value"
-                                   value="{{actor.system.bio.sm.value}}" placeholder="Size Mod"
-								   style="width: 80%;" data-dtype="Number"/>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="bold label right">
-                            <input type="text" name="system.bio.gender.value"
-                                   value="{{actor.system.bio.gender.value}}" placeholder="Gender" />
-                        </div>
-                    </div>
-                    <div>
-                        <div class="bold label right" style="text-align: left">
+							<input type="number" name="system.bio.sm.value"
+								   value="{{actor.system.bio.sm.value}}" placeholder="Size Mod"
+								   style="width: 2em" data-dtype="Number"/>
+						</div>
+						<div class="bold" style="text-align: left; flex-basis: 95px;">
 							<span>Weight:</span>
-                            <input type="number" name="system.bio.weight.value" style="width: 35%"
-                                   value="{{actor.system.bio.weight.value}}" placeholder="Weight" data-dtype="Number"/>
+							<input type="number" name="system.bio.weight.value" style="width: 2.5em"
+								   value="{{actor.system.bio.weight.value}}" placeholder="Weight" data-dtype="Number"/>
 							<span>lbs</span>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="bold label right">
+						</div>
+						<div class="bold" style="flex-basis: 92px">
 							<span>TL:</span>
-                            <input type="number" name="system.bio.tl.value"
-                                   value="{{actor.system.bio.tl.value}}" placeholder="TL"
-                                   style="width: 40%;" data-dtype="Number"/>
+							<input type="number" name="system.bio.tl.value"
+								   value="{{actor.system.bio.tl.value}}" placeholder="TL"
+								   style="width: 1em;" data-dtype="Number"/>
 							<span>Pts:</span>
-                            <input type="number" name="system.bio.tl.points"
-                                   value="{{actor.system.bio.tl.points}}" placeholder="points"
-                                   style="width: 40%;" data-dtype="Number"/>
-                        </div>
-                    </div>
+							<input type="number" name="system.bio.tl.points"
+								   value="{{actor.system.bio.tl.points}}" placeholder="points"
+								   style="width: 2em;" data-dtype="Number"/>
+						</div>
+					</div>
 				</div>
 
 				<!-- Here are the point reserves -->
-				<div id="reserves" class="reserves-block">
-					<div class="reserves-header">
+				<div class="reserves-block">
+					<div class="reserves reserves-header">
+						<label></label>
 						<label class="title">Cur</label>
 						<label class="title">Max</label>
 						<label class="title">Mod</label>
 						<label class="title">Pts</label>
 					</div>
 					<div class="reserves">
-						<label>{{actor.system.reserves.hp.abbr}}</label>
-						<input type="text" name="system.reserves.hp.value" class="atrVal" value="{{actor.system.reserves.hp.value}}" data-dtype="Number"/>
-						<input type="text" name="system.reserves.hp.max" class="atrVal" value="{{actor.system.reserves.hp.max}}" data-dtype="Number" disabled />
-						<input type="text" name="system.reserves.hp.mod" class="atrMod" value="{{actor.system.reserves.hp.mod}}" data-dtype="Number" />
-						<input type="text" name="system.reserves.hp.points" class="atrPoints" value="{{actor.system.reserves.hp.points}}" data-dtype="Number" />
+						<label class="hpRow hpRowLabel">{{actor.system.reserves.hp.abbr}}</label>
+						<input class="hpRow" type="text" name="system.reserves.hp.value" 	value="{{actor.system.reserves.hp.value}}" data-dtype="Number"/>
+						<input class="hpRow" type="text" name="system.reserves.hp.max" 	value="{{actor.system.reserves.hp.max}}" data-dtype="Number" disabled />
+						<input class="hpRow" type="text" name="system.reserves.hp.mod" 	value="{{actor.system.reserves.hp.mod}}" data-dtype="Number" />
+						<input class="hpRow" type="text" name="system.reserves.hp.points" value="{{actor.system.reserves.hp.points}}" data-dtype="Number" />
 
-						<label>{{actor.system.reserves.fp.abbr}}</label>
-						<input type="text" name="system.reserves.fp.value" class="atrVal" value="{{actor.system.reserves.fp.value}}" data-dtype="Number"/>
-						<input type="text" name="system.reserves.fp.max" class="atrVal" value="{{actor.system.reserves.fp.max}}" data-dtype="Number" disabled />
-						<input type="text" name="system.reserves.fp.mod" class="atrMod" value="{{actor.system.reserves.fp.mod}}" data-dtype="Number" />
-						<input type="text" name="system.reserves.fp.points" class="atrPoints" value="{{actor.system.reserves.fp.points}}" data-dtype="Number" />
+						<label class="fpRow hpRowLabel">{{actor.system.reserves.fp.abbr}}</label>
+						<input class="fpRow" type="text" name="system.reserves.fp.value" 	value="{{actor.system.reserves.fp.value}}" data-dtype="Number"/>
+						<input class="fpRow" type="text" name="system.reserves.fp.max" 	value="{{actor.system.reserves.fp.max}}" data-dtype="Number" disabled />
+						<input class="fpRow" type="text" name="system.reserves.fp.mod" 	value="{{actor.system.reserves.fp.mod}}" data-dtype="Number" />
+						<input class="fpRow" type="text" name="system.reserves.fp.points" value="{{actor.system.reserves.fp.points}}" data-dtype="Number" />
 
-						<label>{{actor.system.reserves.er.abbr}}</label>
-						<input type="text" name="system.reserves.er.value" class="atrVal" value="{{actor.system.reserves.er.value}}" data-dtype="Number"/>
-						<input type="text" name="system.reserves.er.max" class="atrVal" value="{{actor.system.reserves.er.max}}" data-dtype="Number" disabled />
-						<input type="text" name="system.reserves.er.mod" class="atrMod" value="{{actor.system.reserves.er.mod}}" data-dtype="Number" />
-						<input type="text" name="system.reserves.er.points" class="atrPoints" value="{{actor.system.reserves.er.points}}" data-dtype="Number" />
+						<label class="erRow hpRowLabel">{{actor.system.reserves.er.abbr}}</label>
+						<input class="erRow" type="text" name="system.reserves.er.value" 	value="{{actor.system.reserves.er.value}}" data-dtype="Number"/>
+						<input class="erRow" type="text" name="system.reserves.er.max" 	value="{{actor.system.reserves.er.max}}" data-dtype="Number" disabled />
+						<input class="erRow" type="text" name="system.reserves.er.mod" 	value="{{actor.system.reserves.er.mod}}" data-dtype="Number" />
+						<input class="erRow" type="text" name="system.reserves.er.points" value="{{actor.system.reserves.er.points}}" data-dtype="Number" />
 					</div>
 				</div>
 
-				<div id="pointTotals">
-
-					<table style="margin: unset">
-						<tr>
-							<td class="">Total:</td>
-							<td class="pointTotal">{{numberFormat actor.system.points.displayTotal decimals=0}}</td>
-						</tr>
-						<tr>
-							<td class="">Attributes:</td>
-							<td class="pointTotal">{{numberFormat actor.system.points.attributes decimals=0}}</td>
-						</tr>
-						<tr>
-							<td class="tooltip">
-								Traits:
-								<span class="tooltiptext" style="margin-left: -130px; bottom:0 !important;">
-									Advantages: {{numberFormat actor.system.points.advantages decimals=0}}<br>
-									Disadvantages: {{numberFormat actor.system.points.disadvantages decimals=0}}<br>
-									Perks: {{numberFormat actor.system.points.perks decimals=0}}<br>
-									Quirks: {{numberFormat actor.system.points.quirks decimals=0}}
-								</span>
-							</td>
-							<td class="pointTotal">{{numberFormat actor.system.points.traits decimals=0}}</td>
-						</tr>
-						<tr>
-							<td class="">Skills:</td>
-							<td class="pointTotal">{{numberFormat actor.system.points.skills decimals=0}}</td>
-						</tr>
+				<div>
+					<h3>Points</h3>
+					<div class="pointTotals">
+						<div class="pointName">Total:</div>
+						<div class="pointTotal">{{numberFormat actor.system.points.displayTotal decimals=0}}</div>
+						<div class="pointName">Attributes:</div>
+						<div class="pointTotal">{{numberFormat actor.system.points.attributes decimals=0}}</div>
+						<div class="pointName tooltip">
+							Traits:
+							<span class="tooltiptext" style="margin-left: -130px; bottom:0 !important;">
+							Advantages: {{numberFormat actor.system.points.advantages decimals=0}}<br>
+							Disadvantages: {{numberFormat actor.system.points.disadvantages decimals=0}}<br>
+							Perks: {{numberFormat actor.system.points.perks decimals=0}}<br>
+							Quirks: {{numberFormat actor.system.points.quirks decimals=0}}
+						</span>
+						</div>
+						<div class="pointTotal">{{numberFormat actor.system.points.traits decimals=0}}</div>
+						<div class="pointName">Skills:</div>
+						<div class="pointTotal">{{numberFormat actor.system.points.skills decimals=0}}</div>
 						{{#if actor.system.points.spells}}
-						<tr>
-							<td class="">Spells:</td>
-							<td class="pointTotal">{{numberFormat actor.system.points.spells decimals=0}}</td>
-						</tr>
+						<div class="pointName">Spells:</div>
+						<div class="pointTotal">{{numberFormat actor.system.points.spells decimals=0}}</div>
 						{{/if}}
 						{{#if actor.system.points.path}}
-						<tr>
-							<td class="">Paths:</td>
-							<td class="pointTotal">{{numberFormat actor.system.points.path decimals=0}}</td>
-						</tr>
+						<div class="pointName">Paths:</div>
+						<div class="pointTotal">{{numberFormat actor.system.points.path decimals=0}}</div>
 						{{/if}}
-						<tr>
-							<td class="">Unspent:</td>
-							<td><input type="number" name="system.points.unspent" class="pointTotal unspentEntry" value="{{actor.system.points.unspent}}" data-dtype="Number"/></td>
-						</tr>
-					</table>
+						<div class="pointName">Unspent:</div>
+						<input type="number" name="system.points.unspent" class="pointTotal unspentEntry" value="{{actor.system.points.unspent}}" data-dtype="Number"/>
+					</div>
 				</div>
-			</div>
-
 		</header>
 
 		{{!-- Sheet Tab Navigation --}}
