@@ -578,6 +578,15 @@ Hooks.once('init', async function() {
     return returnString
   });
 
+  Handlebars.registerHelper("displayCurrencyNoDecimals", function(num) {
+    let returnString = num;
+    if (typeof num === "number") {
+      returnString = (Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    }
+
+    return returnString
+  });
+
   Handlebars.registerHelper("checkPlural", function(num) {
     if (typeof num != "number") { // If it's not a number
       return ""; // Return blank
