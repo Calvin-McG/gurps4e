@@ -2135,14 +2135,34 @@
 	margin: 0 !important;
 }
 
-.simple-vehicle-display-table th, td, tr {
+.simple-vehicle-display-table th {
 	background: none !important;
 	border: none;
 	text-align: left;
 }
 
-.simple-vehicle-display-table th, td {
+.simple-vehicle-display-table td {
+	background: none !important;
+	border: none;
+	text-align: left;
+}
+
+.simple-vehicle-display-table tr {
+	background: none !important;
+	border: none;
+	text-align: left;
+}
+
+.simple-vehicle-display-table th {
 	padding-right: 1em !important;
+}
+
+.simple-vehicle-display-table td {
+	padding-right: 1em !important;
+}
+
+.simple-vehicle-shrink-column {
+	width: 1%;
 }
 
 .simple-vehicle-sheet-header {
