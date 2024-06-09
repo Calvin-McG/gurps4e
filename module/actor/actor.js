@@ -172,6 +172,9 @@ export class gurpsActor extends Actor {
 		if (typeof this.system.vehicle.baseVehicle.dr !== "undefined") { // Do we have a value for base DR?
 			this.system.vehicle.dr = parseInt(this.system.vehicle.baseVehicle.dr) ?? 0 ; // Try to set it, falling back to zero
 		}
+		else {
+			this.system.vehicle.dr = 0;
+		}
 		// End Base DR
 
 		// Facing DR

@@ -42,13 +42,7 @@
               <td>{{round actor.system.vehicle.weight.load 100}}</td>
               <td>{{actor.system.bio.sm.value}}</td>
               <td>{{actor.system.vehicle.crew}}+{{actor.system.vehicle.passengers}}{{actor.system.vehicle.occCode}}</td>
-              <td>
-                {{#if (or (eq actor.system.vehicle.drMethod "single") (eq actor.system.vehicle.drMethod "singlePlus"))}}
-                  {{actor.system.vehicle.dr}}
-                {{else}}
-                  varies
-                {{/if}}
-              </td>
+              <td>{{displaySimpleVehicleArmour actor.system.vehicle}}</td>
               <td>{{actor.system.vehicle.range}}</td>
               <td>{{displayCurrencyNoDecimals actor.system.vehicle.finalCost}}$</td>
               <td>{{actor.system.vehicle.locations}}</td>

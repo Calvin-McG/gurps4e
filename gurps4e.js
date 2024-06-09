@@ -128,6 +128,47 @@ Hooks.once('init', async function() {
     return attackHelpers.formatRange(halfRange, maxRange);
   });
 
+  /**
+   * Takes in an actor.vehicle object and parses the DR values to something readable in a single table cell
+   */
+  Handlebars.registerHelper('displaySimpleVehicleArmour', function(vehicle) {
+    let highestDR = 0;
+    let lowestDR = Infinity;
+    if (typeof vehicle.drFacing !== "undefined") { // There is a drFacing object
+      if (vehicle.drFacing.drFront !== null) {
+        lowestDR  = Math.min(lowestDR,  parseInt(vehicle.drFacing.drFront));
+        highestDR = Math.max(highestDR, parseInt(vehicle.drFacing.drFront));
+      }
+      if (vehicle.drFacing.drRear !== null) {
+        lowestDR  = Math.min(lowestDR,  parseInt(vehicle.drFacing.drRear));
+        highestDR = Math.max(highestDR, parseInt(vehicle.drFacing.drRear));
+      }
+      if (vehicle.drFacing.drSide !== null) {
+        lowestDR  = Math.min(lowestDR,  parseInt(vehicle.drFacing.drSide));
+        highestDR = Math.max(highestDR, parseInt(vehicle.drFacing.drSide));
+      }
+      if (vehicle.drFacing.drTop !== null) {
+        lowestDR  = Math.min(lowestDR,  parseInt(vehicle.drFacing.drTop));
+        highestDR = Math.max(highestDR, parseInt(vehicle.drFacing.drTop));
+      }
+      if (vehicle.drFacing.drBottom !== null) {
+        lowestDR  = Math.min(lowestDR,  parseInt(vehicle.drFacing.drBottom));
+        highestDR = Math.max(highestDR, parseInt(vehicle.drFacing.drBottom));
+      }
+    }
+    else if (typeof vehicle.dr !== "undefined") { // There is an entry for DR
+      lowestDR = parseInt(vehicle.dr);
+      highestDR = parseInt(vehicle.dr);
+    }
+
+    if (lowestDR === highestDR) {
+      return highestDR;
+    }
+    else {
+      return highestDR + "/" + lowestDR;
+    }
+  });
+
   // This helper takes in the base acc and scope acc of a weapon and displays them in the standard GURPS format.
   Handlebars.registerHelper('showFullAcc', function (acc, scopeAcc) {
     let returnString = acc;
