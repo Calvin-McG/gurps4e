@@ -84,10 +84,10 @@ export class gurpsActor extends Actor {
 			this.calcGroundVehicleMove();
 		}
 		else if (this.system.vehicle.craftType === "water") {
-
+			this.calcWaterVehicleMove();
 		}
 		else if (this.system.vehicle.craftType === "air") {
-
+			this.calcAirVehicleMove();
 		}
 	}
 
@@ -102,10 +102,12 @@ export class gurpsActor extends Actor {
 		this.system.vehicle.sr = this.system.vehicle.baseVehicle.sr;
 		this.system.vehicle.ht.value = this.system.vehicle.baseVehicle.ht ?? 11;
 		this.system.vehicle.ht.code = this.system.vehicle.baseVehicle.htCodes ?? "";
-		this.system.vehicle.acceleration.input = this.system.vehicle.baseVehicle.acceleration;
+		this.system.vehicle.acceleration.ground = this.system.vehicle.baseVehicle.acceleration;
 		this.system.vehicle.locations = this.system.vehicle.baseVehicle.locations;
 		this.system.vehicle.crew = this.system.vehicle.baseVehicle.crew;
 		this.system.vehicle.passengers = this.system.vehicle.baseVehicle.passengers;
+		this.system.vehicle.range = this.system.vehicle.baseVehicle.range;
+		this.system.vehicle.baseCost = this.system.vehicle.baseVehicle.cost;
 
 		// Assume Motive Type
 		if (this.system.vehicle.baseVehicle.locations.includes("C") && this.system.vehicle.baseVehicle.locations.includes("R")) {
@@ -141,15 +143,34 @@ export class gurpsActor extends Actor {
 		if (this.system.vehicle.baseVehicle.ground) {
 			this.system.vehicle.craftType = "land";
 
-			this.system.vehicle.move.input = parseFloat(this.system.vehicle.baseVehicle.moveGround); // Save the base vehicle's ground move to the input
+			this.system.vehicle.move.ground = parseFloat(this.system.vehicle.baseVehicle.moveGround); // Save the base vehicle's ground move to the input
 		}
 		else if (this.system.vehicle.baseVehicle.naval) {
 			this.system.vehicle.craftType = "water";
-			this.system.vehicle.move.input = parseFloat(this.system.vehicle.baseVehicle.moveNaval); // Save the base vehicle's naval move to the input
+			if (this.system.vehicle.baseVehicle.sail) {
+				// Naval Move
+				this.system.vehicle.move.naval = this.system.vehicle.baseVehicle.moveNaval ?? this.system.vehicle.baseVehicle.move ?? 0;
+				this.system.vehicle.move.navalWind = this.system.vehicle.baseVehicle.moveNavalWind ?? this.system.vehicle.baseVehicle.move ?? 0;
+
+				// Naval Acceleration
+				this.system.vehicle.acceleration.naval = this.system.vehicle.baseVehicle.accelerationNaval ?? this.system.vehicle.baseVehicle.acceleration ?? 0;
+				this.system.vehicle.acceleration.navalWind = this.system.vehicle.baseVehicle.accelerationWind ?? this.system.vehicle.baseVehicle.acceleration ?? 0;
+
+				this.system.vehicle.sailing = true;
+			}
+			else {
+				// Naval Move
+				this.system.vehicle.move.naval = this.system.vehicle.baseVehicle.moveNaval ?? this.system.vehicle.baseVehicle.move ?? 0;
+
+				// Naval Acceleration
+				this.system.vehicle.acceleration.naval = this.system.vehicle.baseVehicle.accelerationNaval ?? this.system.vehicle.baseVehicle.acceleration ?? 0;
+
+				this.system.vehicle.sailing = false;
+			}
 		}
 		else if (this.system.vehicle.baseVehicle.air) {
 			this.system.vehicle.craftType = "air";
-			this.system.vehicle.move.input = parseFloat(this.system.vehicle.baseVehicle.moveAir); // Save the base vehicle's air move to the input
+			this.system.vehicle.move.ground = parseFloat(this.system.vehicle.baseVehicle.moveAir); // Save the base vehicle's air move to the input
 		}
 
 		// Weight Related Info
@@ -218,11 +239,25 @@ export class gurpsActor extends Actor {
 		// End Locational DR
 	}
 
+	calcWaterVehicleMove() {
+		if (this.system.vehicle.sailing) {
+			this.system.vehicle.move.navalAgainstWind = this.system.vehicle.move.navalWind * (this.system.vehicle.baseVehicle.upwindMultiplier ?? 0.5) // Default upwind move to half downwind move
+			this.system.vehicle.acceleration.navalAgainstWind = this.system.vehicle.acceleration.navalWind * (this.system.vehicle.baseVehicle.upwindMultiplier ?? 0.5) // Default upwind acceleration to half downwind acceleration
+		}
+		else {
+			this.system.vehicle.move.navalAgainstWind = this.system.vehicle.move.naval;
+			this.system.vehicle.acceleration.navalAgainstWind = this.system.vehicle.acceleration.naval;
+		}
+
+		this.system.vehicle.acceleration.output = Math.max(this.system.vehicle.acceleration.naval, this.system.vehicle.acceleration.navalWind);
+		this.system.vehicle.move.output = Math.max(this.system.vehicle.acceleration.naval, this.system.vehicle.acceleration.navalWind);
+	}
+
 	calcGroundVehicleMove() {
-		let effectiveMoveInput = this.system.vehicle.move.input; // Store moveInput in a separate value because we're going to modify it later
+		let effectiveMoveInput = this.system.vehicle.move.ground; // Store moveInput in a separate value because we're going to modify it later
 
 		if (this.system.vehicle.move.code.includes("‡")) { // Vehicle is rail bound
-			this.system.vehicle.move.rail = this.system.vehicle.move.input; // Rail bound vehicles can only move on rails.
+			this.system.vehicle.move.rail = this.system.vehicle.move.ground; // Rail bound vehicles can only move on rails.
 			this.system.vehicle.move.road = 0;
 			this.system.vehicle.move.good = 0;
 			this.system.vehicle.move.average = 0;
@@ -234,16 +269,16 @@ export class gurpsActor extends Actor {
 		}
 		else { // Vehicle is not rail bound, proceed as normal
 			this.system.vehicle.land.railBound = false;
-			this.system.vehicle.move.road = this.system.vehicle.move.input; // Road move is always the same as top speed
+			this.system.vehicle.move.road = this.system.vehicle.move.ground; // Road move is always the same as top speed
 
 			if (this.system.vehicle.move.code.includes("*")) { // Vehicle is road bound
 				this.system.vehicle.land.roadBound = true;
-				effectiveMoveInput = Math.min(parseFloat(this.system.vehicle.move.input), parseFloat(this.system.vehicle.acceleration.input * 4)) // Road bound vehicles use the lower of Top Speed and 4xAcceleration when working out offroad speed.
+				effectiveMoveInput = Math.min(parseFloat(this.system.vehicle.move.ground), parseFloat(this.system.vehicle.acceleration.ground * 4)) // Road bound vehicles use the lower of Top Speed and 4xAcceleration when working out offroad speed.
 				this.system.vehicle.move.good = effectiveMoveInput; // For road vehicles, top speed on good but non-road terrain is capped at the lower of the actual top speed and 4xAcceleration
 			}
 			else { // Vehicle is not road bound
 				this.system.vehicle.land.roadBound = false;
-				this.system.vehicle.move.good = this.system.vehicle.move.input; // Meaning the good terrain speed is also the same as top speed
+				this.system.vehicle.move.good = this.system.vehicle.move.ground; // Meaning the good terrain speed is also the same as top speed
 			}
 
 			if (this.system.vehicle.motiveType === "wheel") {
@@ -272,6 +307,13 @@ export class gurpsActor extends Actor {
 
 			this.system.vehicle.move.output = this.system.vehicle.move.road;
 		}
+
+		this.system.vehicle.acceleration.output = this.system.vehicle.acceleration.ground;
+	}
+
+	calcAirVehicleMove() {
+		this.system.vehicle.move.output = this.system.vehicle.move.air
+		this.system.vehicle.acceleration.output = this.system.vehicle.acceleration.air;
 	}
 
 	vehicleCost() {
@@ -358,15 +400,28 @@ export class gurpsActor extends Actor {
 						"crewSkillName": "",
 						"crewSkillLevel": 0
 					},
-					"accelerationInput": 3,
+					"acceleration": {
+						"ground": 3,
+						"output": 3,
+						"navalWind": 0,
+						"navalAgainstWind": 0,
+						"naval": 0,
+						"air": 0
+					},
 					"move": {
-						"input": 30,
+						"ground": 30,
+						"output": 30,
 						"code": "",
+						"rail": 0,
 						"road": 30,
 						"good": 30,
 						"average": 12,
 						"bad": 6,
-						"veryBad": 3
+						"veryBad": 3,
+						"naval": 0,
+						"navalWind": 0,
+						"navalAgainstWind": 0,
+						"air": 0
 					},
 					"weight": {
 						"lwt": 1,
@@ -742,18 +797,31 @@ export class gurpsActor extends Actor {
 				"code": ""
 			}
 		}
-		if (typeof this.system.vehicle.acceleration.input === "undefined") {
-			this.system.vehicle.acceleration.input = 3
+		if (typeof this.system.vehicle.acceleration === "undefined") {
+			this.system.vehicle.acceleration = {
+				"ground": 3,
+				"output": 3,
+				"navalWind": 0,
+				"navalAgainstWind": 0,
+				"naval": 0,
+				"air": 0
+			}
 		}
 		if (typeof this.system.vehicle.move === "undefined") {
 			this.system.vehicle.move = {
-				"input": 30,
+				"ground": 30,
+				"output": 30,
 				"code": "",
+				"rail": 0,
 				"road": 30,
 				"good": 30,
 				"average": 12,
 				"bad": 6,
-				"veryBad": 3
+				"veryBad": 3,
+				"naval": 0,
+				"navalWind": 0,
+				"navalAgainstWind": 0,
+				"air": 0
 			}
 		}
 
@@ -1073,6 +1141,17 @@ export class gurpsActor extends Actor {
 					"count": 0,
 					"retractable": false
 				}
+			}
+		}
+
+		if (typeof this.system.travel == "undefined") {
+			this.system.travel = {
+				"unit": "mile",
+				"units": [],
+				"distance": 1,
+				"travelTime": "",
+				"travelCost": "",
+				"travellingHours": 8,
 			}
 		}
 	}
