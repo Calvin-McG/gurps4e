@@ -154,8 +154,7 @@
               <tr class="design-row">
                 <td>Base Vehicle</td>
                 <td>
-                  <select name="system.vehicle.baseVehicle.code" class="craftType">
-                    {{log actor.system.vehicle.baseVehicles}}
+                  <select name="system.vehicle.baseVehicle.code" class="baseVehicleSelect">
                     {{selectOptions actor.system.vehicle.baseVehicles selected=actor.system.vehicle.baseVehicle.code valueAttr="code" labelAttr="name"}}
                   </select>
                 </td>

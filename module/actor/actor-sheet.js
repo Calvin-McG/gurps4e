@@ -275,9 +275,16 @@ export class gurpsActorSheet extends ActorSheet {
 		html.find('.makeLearningRoll').click(this._makeLearningRoll.bind(this));
 
 		html.find('.question-container').click(this._showHint.bind(this));
+
+		// For Simple Vehicles
+		html.find('.baseVehicleSelect').change(this._onBaseVehicleSelectChange.bind(this));
 	}
 
 	/* -------------------------------------------- */
+
+	_onBaseVehicleSelectChange(event) {
+		this.actor.updateBaseVehicle(event)
+	}
 
 	_onDelete(event) {
 		if (event.ctrlKey && event.shiftKey) { // If both control and shift were held when clicking the button

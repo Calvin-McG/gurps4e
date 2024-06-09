@@ -2719,6 +2719,42 @@ export class gurpsActor extends Actor {
 		this.update({ ['system.points.total']: total });
 	}
 
+	/**
+	 * This method is called by _onBaseVehicleSelectChange when the user modifies the Base Vehicle dropdown.
+	 * It gets the new base vehicle code from the event target's value and does initialization logic for that base vehicle.
+	 *
+	 * @param event An event object sent by the <select> field
+	 */
+	updateBaseVehicle(event) {
+		if (this.system.vehicle.method.toLowerCase() === "pick") {
+			this.system.vehicle.baseVehicle = vehicleHelpers.getVehicleByCode(event.target.value);
+		}
+
+		// Set the body to contain all crew, if any
+		if (parseInt(this.system.vehicle.baseVehicle.crew) > 0) { // There are crew
+			this.system.vehicle.loc.B.hasCrew = true; // Set the flag
+			this.system.vehicle.loc.B.crewCount = parseInt(this.system.vehicle.baseVehicle.crew); // Set the count
+		}
+		else {
+			this.system.vehicle.loc.B.hasCrew = false; // Set the flag
+			this.system.vehicle.loc.B.crewCount = 0; // Zero the count
+ 		}
+
+		// Set the body to contain all passengers, if any
+		if (parseInt(this.system.vehicle.baseVehicle.passengers) > 0) { // There are passengers
+			this.system.vehicle.loc.B.hasPassengers = true; // Set the flag
+			this.system.vehicle.loc.B.passengerCount = parseInt(this.system.vehicle.baseVehicle.passengers); // Set the count
+		}
+		else {
+			this.system.vehicle.loc.B.hasPassengers = false; // Set the flag
+			this.system.vehicle.loc.B.passengerCount = 0; // Zero the count
+		}
+
+		this.system.reserves.hp.value = parseInt(this.system.vehicle.baseVehicle.sthp) // Set current hp to the base vehicle's STHP
+
+		this.update({ ['system']: this.system });
+	}
+
 	setRPMCoreSkill(skillName) {
 		this.system.rpm.coreSkill = skillName;
 

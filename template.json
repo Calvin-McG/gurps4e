@@ -101,7 +101,7 @@
               "count": 1,
               "locationalDR": false,
               "facingDR": false,
-              "hasPassengers": false,
+              "hasPassengers": true,
               "passengerCount": 0,
               "hasCrew": true,
               "crewCount": 1,
@@ -1168,7 +1168,8 @@
       "templates": [
         "bio",
         "cost",
-        "vehicle"
+        "vehicle",
+        "reserves"
       ]
     }
   },
