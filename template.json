@@ -56,8 +56,15 @@
             "crewSkillLevel": 0
           },
           "accelerationInput": 3,
-          "moveInput": 30,
-          "moveCode": "",
+          "move": {
+            "input": 30,
+            "code": "",
+            "road": 30,
+            "good": 30,
+            "average": 12,
+            "bad": 6,
+            "veryBad": 3
+          },
           "weight": {
             "lwt": 1,
             "load": 1,
