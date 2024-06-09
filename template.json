@@ -1153,6 +1153,14 @@
             }
           }
         }
+      },
+      "travel": {
+        "unit": "mile",
+        "units": [],
+        "distance": 1,
+        "travelTime": "",
+        "travelCost": "",
+        "travellingHours": 8
       }
     },
     "fullchar": {
@@ -1182,7 +1190,8 @@
         "bio",
         "cost",
         "vehicle",
-        "reserves"
+        "reserves",
+        "travel"
       ]
     }
   },

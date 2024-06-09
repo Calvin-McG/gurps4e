@@ -9187,64 +9187,6 @@ export class gurpsItem extends Item {
             "</tr>" +
             "</table>"
       }
-    else if (id === "travel-method") {
-        info = "<table>" +
-            "<tr>" +
-            "<td><p>This setting is mostly to filter down the list of vehicles so it's easier to make a choice.</p></td>" +
-            "</tr>" +
-            "</table>"
-      }
-    else if (id === "fare-tl-range") {
-        info = "<table>" +
-            "<tr>" +
-            "<td><p>This setting controls how low of a TL you're willing to choose from when selecting a vehicle. Setting this to zero only shows vehicles of the item's TL. Setting this to it's maximum value shows you all vehicles from your TL to TL 0.</p></td>" +
-            "</tr>" +
-            "</table>"
-      }
-    else if (id === "travel-distance") {
-        info = "<table>" +
-            "<tr>" +
-            "<td><p>Select the type and number of units. Units are arranged in order of size.</p></td>" +
-            "</tr>" +
-            "</table>"
-      }
-    else if (id === "travel-vehicle") {
-        info = "<table>" +
-            "<tr>" +
-            "<td><p>Select the type of vehicle you'd like to travel on. For more detailed stats, check the vehicle catalogue.</p></td>" +
-            "</tr>" +
-            "</table>"
-      }
-    else if (id === "travel-time") {
-        info = "<table>" +
-            "<tr>" +
-            "<td>" +
-            "<p>This is the travel time, broken down by terrain type or wind direction if applicable.</p>" +
-            "<p>It also accounts for the fact that only air and naval vessels travel 24 hours a day.</p>" +
-            "</td>" +
-            "</tr>" +
-            "</table>"
-      }
-    else if (id === "travel-hours") {
-        info = "<table>" +
-            "<tr>" +
-            "<td>" +
-            "<p>The number of hours per day you're underway. For naval or air vessels this should be 24 hours a day.</p>" +
-            "<p>For ground vehicles this should be 8 hours a day, but you can push it as high as 16 hours a day</p>" +
-            "<p>Vehicles drawn by draft animals need to stop for 1.3 hours after each 8 hour leg to rest. This is factored into the calculation, and is why you might not be able to enter values between 8 and 9.3</p>" +
-            "</td>" +
-            "</tr>" +
-            "</table>"
-      }
-    else if (id === "travel-costs") {
-        info = "<table>" +
-            "<tr>" +
-            "<td>" +
-            "<p>An itemized lists of costs, including the impact of your provisions on the remaining cargo space in the ship.</p>" +
-            "</td>" +
-            "</tr>" +
-            "</table>"
-      }
     else if (id === "chemcial-laser-shots") {
         info = "<table>" +
             "<tr>" +

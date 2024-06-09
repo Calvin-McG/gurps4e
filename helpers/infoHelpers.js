@@ -324,6 +324,43 @@ export class infoHelpers {
 
             info += "</table>"
         }
+        else if (id === "travel-distance") {
+            info = "<table>" +
+                "<tr>" +
+                "<td><p>Select the type and number of units. Units are arranged in order of size.</p></td>" +
+                "</tr>" +
+                "</table>"
+        }
+        else if (id === "travel-hours") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>The number of hours per day you're underway. For naval or air vessels this should be 24 hours a day.</p>" +
+                "<p>For ground vehicles this should be 8 hours a day, but you can push it as high as 16 hours a day</p>" +
+                "<p>Vehicles drawn by draft animals need to stop for 1.3 hours after each 8 hour leg to rest. This is factored into the calculation, and is why you might not be able to enter values between 8 and 9.3</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
+        else if (id === "travel-costs") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>An itemized lists of costs, including the impact of your provisions on the remaining cargo space in the ship.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
+        else if (id === "travel-time") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>This is the travel time, broken down by terrain type or wind direction if applicable.</p>" +
+                "<p>It also accounts for the fact that only air and naval vessels travel 24 hours a day.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
         else if (id === "dr-method") {
             info = "<table>";
 

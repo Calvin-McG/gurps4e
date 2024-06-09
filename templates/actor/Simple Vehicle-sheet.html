@@ -72,6 +72,9 @@
         <a class="item" data-tab="items">Cargo</a>
       </div>
       <div class="header">
+        <a class="item" data-tab="travel">Travel</a>
+      </div>
+      <div class="header">
         <a class="item" data-tab="input">Design - Basics</a>
       </div>
       <div class="header">
@@ -93,6 +96,88 @@
 
           </div>
           <!-- End of vanilla vehicle stat line -->
+        </div>
+      </div>
+
+      {{!-- Travel Tab --}}
+      <div class="tab travel" data-tab="travel" data-group="primary">
+        <div class="design-block">
+          <!-- Start of left pane -->
+          <div style="width: 50%;">
+            <h2 class="bold" style="text-align: center;">Itinerary</h2>
+            <table>
+              <tr class="design-row">
+                <td style="line-height: 27.5px">
+                  Distance
+                </td>
+                <td>
+                  <input style="width: 25%" type="number" name="system.travel.distance" value="{{actor.system.travel.distance}}" data-dtype="Number"/>
+                  <select style="width: 70%" name="system.travel.unit">
+                    {{selectOptions actor.system.travel.units selected=actor.system.travel.unit valueAttr="name" labelAttr="name"}}
+                  </select>
+                </td>
+                <td class="question-container" id="travel-distance">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+
+              <tr class="design-row">
+                <td style="line-height: 27.5px">
+                  Travelling Hours
+                </td>
+                <td>
+                  <input type="number" name="system.travel.travellingHours" value="{{actor.system.travel.travellingHours}}" data-dtype="Number"/>
+                </td>
+                <td class="question-container" id="travel-hours">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+            </table>
+
+            <table>
+              <tr class="design-row">
+              <tr class="design-row">
+                <td style="width: 150px">
+                  Travel Time
+                </td>
+                <td>
+                  {{{actor.system.travel.travelTime}}}
+                </td>
+                <td class="question-container" id="travel-time">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+            </table>
+
+            <table>
+              <tr class="design-row">
+              <tr class="design-row">
+                <td style="width: 150px">
+                  Travel Costs
+                </td>
+                <td>
+                  {{{actor.system.travel.travelCost}}}
+                </td>
+                <td class="question-container" id="travel-costs">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- End of left pane, start of right pane -->
+          <div style="width: 50%;">
+            <h2 class="bold" style="text-align: center;">Info</h2>
+            <div class="equipment-info-container">{{{actor.system.info}}}</div>
+          </div>
+          <!-- End of right pane -->
         </div>
       </div>
 
