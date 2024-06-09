@@ -56,7 +56,7 @@ export class gurpsActor extends Actor {
 	prepareSimpleVehicleData() {
 		this.checkUndefinedVehicles();
 		// This section splits up the logic between Pick and Custom
-		if (this.system.vehicle.method.toLowerCase() === "pick") {
+		if (this.system.vehicle.method === "pick") {
 			this.loadBaseVehicles();
 			this.system.vehicle.baseVehicle = vehicleHelpers.getVehicleByCode(this.system.vehicle.baseVehicle.code);
 
@@ -157,6 +157,62 @@ export class gurpsActor extends Actor {
 		this.system.vehicle.weight.load = parseFloat(this.system.vehicle.baseVehicle.load);
 
 		this.applyBaseVehicleDR()
+	}
+
+	/**
+	 * DR is loaded from the base vehicle based on the following rules:
+	 *
+	 * Locational DR is used first if present
+	 * Facing DR is used next if present
+	 * Base DR is used next, which fallbacks to 0 DR
+	 *
+	 */
+	applyBaseVehicleDR() {
+		// Base DR
+		if (typeof this.system.vehicle.baseVehicle.dr !== "undefined") { // Do we have a value for base DR?
+			this.system.vehicle.dr = parseInt(this.system.vehicle.baseVehicle.dr) ?? 0 ; // Try to set it, falling back to zero
+		}
+		// End Base DR
+
+		// Facing DR
+		if (typeof this.system.vehicle.baseVehicle.drFacing !== "undefined") { // Do we have a value for facing DR?
+			this.system.vehicle.drFacing = { // For each facing, first try the facing value from the base vehicle, then default to null if it's not present
+				"drFront":  this.system.vehicle.baseVehicle.drFacing.drFront  ?? null,
+				"drRear":   this.system.vehicle.baseVehicle.drFacing.drRear   ?? null,
+				"drSide":   this.system.vehicle.baseVehicle.drFacing.drSide   ?? null,
+				"drTop":    this.system.vehicle.baseVehicle.drFacing.drTop 	  ?? null,
+				"drBottom": this.system.vehicle.baseVehicle.drFacing.drBottom ?? null,
+			}
+		}
+		// End Facing DR
+
+		// Locational DR
+		if (typeof this.system.vehicle.baseVehicle.loc !== "undefined") { // There are locations to check
+			this.system.vehicle.baseVehicle.loc.forEach( vehicleLocation => { // Loop through the locations on the base vehicle
+					if (typeof vehicleLocation.dr !== "undefined") { // If the location has a base DR
+						this.system.vehicle.loc[vehicleLocation.code].locationalDR = true;
+						this.system.vehicle.loc[vehicleLocation.code].dr = vehicleLocation.dr ?? undefined; // Save it
+					}
+					else {
+						this.system.vehicle.loc[vehicleLocation.code].locationalDR = false;
+					}
+					if (typeof vehicleLocation.drFacing !== "undefined") {
+						this.system.vehicle.loc[vehicleLocation.code].facingDR = true;
+						this.system.vehicle.loc[vehicleLocation.code].drFacing = {  // For each facing, first try the facing value from the location, then default to null if it's not present
+							"drFront":  vehicleLocation.drFront  ?? null,
+							"drRear":   vehicleLocation.drRear 	 ?? null,
+							"drSide":   vehicleLocation.drSide 	 ?? null,
+							"drTop":    vehicleLocation.drTop 	 ?? null,
+							"drBottom": vehicleLocation.drBottom ?? null,
+						}
+					}
+					else {
+						this.system.vehicle.loc[vehicleLocation.code].facingDR = false;
+					}
+				}
+			) // End Loop
+		}
+		// End Locational DR
 	}
 
 	calcGroundVehicleMove() {

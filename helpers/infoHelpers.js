@@ -329,19 +329,25 @@ export class infoHelpers {
 
             info += "<tr>" +
                 "<td>" +
-                "<p>Single Value - Use a single DR value for all facings and hit locations. If the vehicle has windows, they are assumed to have the default DR 2.</p>" +
+                "<p>Single Value - Use a single DR value for all facings and hit locations. Windows, if present, will have the default DR 2.</p>" +
                 "</td>" +
                 "</tr>";
 
             info += "<tr>" +
                 "<td>" +
-                "<p>Facing - Set DR by facing, including the top and bottom of the vehicle. Windows, if present, will default to DR 2.</p>" +
+                "<p>Facing - Set DR by facing, including the top and bottom of the vehicle. Windows, if present, will have the default DR 2.</p>" +
                 "</td>" +
                 "</tr>";
 
             info += "<tr>" +
                 "<td>" +
-                "<p>Facing Plus - As above, but also lets you give specific locations their own DR, or have them default to the vehicle's DR.</p>" +
+                "<p>Single Plus - Use a single base DR value for the whole vehicle, with some locations having separate DR as well</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>Facing Plus - Set DR by facing, and optionally by location as well</p>" +
                 "</td>" +
                 "</tr>";
 

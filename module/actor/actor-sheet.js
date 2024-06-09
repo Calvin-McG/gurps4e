@@ -94,9 +94,10 @@ export class gurpsActorSheet extends ActorSheet {
 
 	getVehicleDRMethods() {
 		return {
-		"single"	: "Single Value",
-		"facing"	: "Facing",
-		"facingPlus": "Facing Plus Locations",
+			"single"	: "Single Value",
+			"facing"	: "Facing",
+			"singlePlus": "Single Plus Locations",
+			"facingPlus": "Facing Plus Locations",
 		}
 	}
 

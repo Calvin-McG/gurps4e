@@ -43,10 +43,10 @@
               <td>{{actor.system.bio.sm.value}}</td>
               <td>{{actor.system.vehicle.crew}}+{{actor.system.vehicle.passengers}}{{actor.system.vehicle.occCode}}</td>
               <td>
-                {{#if (eq actor.system.vehicle.drMethod "single")}}
-                {{actor.system.vehicle.dr}}
+                {{#if (or (eq actor.system.vehicle.drMethod "single") (eq actor.system.vehicle.drMethod "singlePlus"))}}
+                  {{actor.system.vehicle.dr}}
                 {{else}}
-                varies
+                  varies
                 {{/if}}
               </td>
               <td>{{actor.system.vehicle.range}}</td>
@@ -362,7 +362,7 @@
                 </td>
               </tr>
 
-              {{#if (eq actor.system.vehicle.drMethod "single")}}
+              {{#if (or (eq actor.system.vehicle.drMethod "single") (eq actor.system.vehicle.drMethod "singlePlus"))}}
               <tr class="design-row">
                 <td style="width: 100%">Damage Resistance</td>
                 <td>
@@ -376,7 +376,7 @@
               </tr>
               {{/if}}
             </table>
-            {{#unless (eq actor.system.vehicle.drMethod "single")}}
+            {{#if (or (eq actor.system.vehicle.drMethod "facing") (eq actor.system.vehicle.drMethod "facingPlus"))}}
             <h2 class="bold" style="text-align: center;">Facing DR</h2>
             <table style="background-image: url('systems/gurps4e/icons/svg/car-side.svg'); background-size: contain; background-repeat: no-repeat; background-position: center;">
               <tr>
@@ -410,7 +410,7 @@
                 <td></td>
               </tr>
             </table>
-            {{/unless}}
+            {{/if}}
 
             <h2 class="bold" style="text-align: center;">Movement</h2>
             <table>
@@ -562,7 +562,7 @@
               <h2 class="bold" style="text-align: center;">{{location.Name}} x{{location.count}} ({{location.code}})</h2>
 
               {{!-- Begin Retractable --}}
-              {{#unless (or (eq location.code "B") (eq location.code "V"))}}
+              {{#unless (or (eq location.code "B") (eq location.code "V") (eq ../actor.system.vehicle.method "pick"))}}
               <h3 class="bold" style="text-align: center;">Location Modifiers</h3>
               <table>
                 <tr class="design-row">
@@ -705,16 +705,16 @@
               {{/ifCond}}
               {{!-- Begin Locational Passengers --}}
 
-              {{#if (eq ../actor.system.vehicle.drMethod "facingPlus")}}
+              {{#if (and (or (eq ../actor.system.vehicle.drMethod "facingPlus") (eq ../actor.system.vehicle.drMethod "singlePlus")) (eq ../actor.system.vehicle.method "custom"))}}
               <h3 class="bold" style="text-align: center;">Damage Resistance</h3>
               <table>
                 <tr>
                   <td>Does this location have it's own DR?</td>
                   <td>
-                    <input type="checkbox" name="system.vehicle.loc.{{id}}.locationDR" {{checked location.locationDR}} data-dtype="Boolean" style="width: 3em;"/>
+                    <input type="checkbox" name="system.vehicle.loc.{{id}}.locationalDR" {{checked location.locationalDR}} data-dtype="Boolean" style="width: 3em;"/>
                   </td>
                 </tr>
-                {{#if location.locationDR}}
+                {{#if location.locationalDR}}
                 <tr>
                   <td>Is that DR facing specific?</td>
                   <td>
@@ -727,29 +727,29 @@
                     <td></td>
                     <td>
                       <div style="text-align: center; font-weight: bold; text-decoration: underline;">Top</div>
-                      <input name="system.vehicle.loc.{{id}}.drFacing.drTop" type="number" value="{{location.drFacing.drTop}}" placeholder="2" />
+                      <input name="system.vehicle.loc.{{id}}.drFacing.drTop" type="number" value="{{location.drFacing.drTop}}" />
                     </td>
                     <td></td>
                   </tr>
                   <tr>
                     <td>
                       <div style="text-align: center; font-weight: bold; text-decoration: underline;">Rear</div>
-                      <input name="system.vehicle.loc.{{id}}.drFacing.drRear" type="number" value="{{location.drFacing.drRear}}" placeholder="2" />
+                      <input name="system.vehicle.loc.{{id}}.drFacing.drRear" type="number" value="{{location.drFacing.drRear}}" />
                     </td>
                     <td>
                       <div style="text-align: center; font-weight: bold; text-decoration: underline;">Sides</div>
-                      <input name="system.vehicle.loc.{{id}}.drFacing.drSide" type="number" value="{{location.drFacing.drSide}}" placeholder="2" />
+                      <input name="system.vehicle.loc.{{id}}.drFacing.drSide" type="number" value="{{location.drFacing.drSide}}" />
                     </td>
                     <td>
                       <div style="text-align: center; font-weight: bold; text-decoration: underline;">Front</div>
-                      <input name="system.vehicle.loc.{{id}}.drFacing.drFront" type="number" value="{{location.drFacing.drFront}}" placeholder="2" />
+                      <input name="system.vehicle.loc.{{id}}.drFacing.drFront" type="number" value="{{location.drFacing.drFront}}" />
                     </td>
                   </tr>
                   <tr>
                     <td></td>
                     <td>
                       <div style="text-align: center; font-weight: bold; text-decoration: underline;">Bottom</div>
-                      <input name="system.vehicle.loc.{{id}}.drFacing.drBottom" type="number" value="{{location.drFacing.drBottom}}" placeholder="2" />
+                      <input name="system.vehicle.loc.{{id}}.drFacing.drBottom" type="number" value="{{location.drFacing.drBottom}}" />
                     </td>
                     <td></td>
                   </tr>
