@@ -2110,3 +2110,36 @@
 .consolidated-item-sheet-header td {
 	padding: 0.2em 0.4em;
 }
+
+.simple-vehicle-skill-display {
+	text-align: left;
+	margin-bottom: 0;
+	font-size: large;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+.simple-vehicle-display-table {
+	background: none;
+	border: none;
+	margin: 0 !important;
+}
+
+.simple-vehicle-display-table th, td, tr {
+	background: none !important;
+	border: none;
+	text-align: left;
+}
+
+.simple-vehicle-display-table th, td {
+	padding-right: 1em !important;
+}
+
+.simple-vehicle-sheet-header {
+	display: grid;
+	grid-template-columns: 120px auto 70px;
+}
+
+.simple-vehicle-header-row {
+	font-style: italic;
+}

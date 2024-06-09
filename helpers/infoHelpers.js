@@ -53,12 +53,23 @@ export class infoHelpers {
 
             info += "</table>"
         }
-        else if (id === "vehicle-name") {
+        else if (id === "vehicle-personal-name") {
             info = "<table>";
 
             info += "<tr>" +
                 "<td>" +
-                "<p>The name of the vehicle</p>" +
+                "<p>The specific name of this vehicle. Something like \"Korbit's Mom's Shaggin' Waggin'\"</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+        }
+        else if (id === "vehicle-class-name") {
+            info = "<table>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>The name of the vehicle's class. So while it might be called \"Korbit's Mom's Shaggin' Waggin'\", the class name would be something like \"VW Van with Matress\".</p>" +
                 "</td>" +
                 "</tr>";
 
@@ -225,6 +236,34 @@ export class infoHelpers {
                 "<p>Passengers are everyone else. This is not a hard cap, and additional people can travel in the vehicle in place of 0.1 cargo. " +
                 "Alternately, passenger slots can be traded for an extra 0.1 cargo each.</p>" +
                 "</td>" +
+                "</tr>";
+
+            info += "</table>"
+
+            info += "<table>";
+
+            info += "<tr>" +
+                "<th colspan='2'>Occupancy Codes</th>" +
+                "</tr>";
+
+            info += "<tr>" +
+                "<td>S</td>" +
+                "<td>Sealed</td>" +
+                "</tr>";
+
+            info += "<tr>" +
+                "<td>P</td>" +
+                "<td>Pressure Support</td>" +
+                "</tr>";
+
+            info += "<tr>" +
+                "<td>V</td>" +
+                "<td>Vacum Support</td>" +
+                "</tr>";
+
+            info += "<tr>" +
+                "<td>A</td>" +
+                "<td>Long term accommodations</td>" +
                 "</tr>";
 
             info += "</table>"
@@ -500,6 +539,77 @@ export class infoHelpers {
 
             info += "</table>"
         }
+        else if (id === "location-has-passengers") {
+            info = "<table>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>Setting this true lets actors sit in this part of the vehicle.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+        }
+        else if (id === "location-passenger-count") {
+            info = "<table>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>If you have multiple instances of a location, this is the maximum number of passengers who can fit in each of them.</p>" +
+                "<p>If you only have the one location, this is how many people it fits.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+        }
+        else if (id === "location-has-crew") {
+            info = "<table>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>Setting this true lets actors sit in this part of the vehicle.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+        }
+        else if (id === "location-crew-count") {
+            info = "<table>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>If you have multiple instances of a location, this is the maximum number of passengers who can fit in each of them.</p>" +
+                "<p>If you only have the one location, this is how many people it fits.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+        }
+        else if (id === "count-stab") {
+            info = "<table>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>Normally when firing from a vehicle the combined bonuses from aiming (Accuracy, extra turns of Aim, targeting systems, and bracing) cannot exceed the vehicle's stability rating. " +
+                "This cap also applies before any penalties are deducted.</p>" +
+                "<p>Stabalized weapon mounts remove this bonus cap.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+        }
+        else if (id === "retractable") {
+            info = "<table>";
+
+            info += "<tr>" +
+                "<td>" +
+                "<p>Retracted locations are hidden and cannot be targetted.</p>" +
+                "</td>" +
+                "</tr>";
+
+            info += "</table>"
+        }
+
         return info;
     }
 }

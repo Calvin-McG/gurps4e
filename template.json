@@ -7,6 +7,7 @@
     "templates": {
       "vehicle": {
         "vehicle": {
+          "className": "",
           "craftType": "land",
           "propulsion": "powered",
           "injuryToleranceExpected": true,
@@ -25,10 +26,7 @@
             "roadBound": false,
             "railBound": false
           },
-          "motiveType": {
-            "selected": "",
-            "possible": []
-          },
+          "motiveType": "",
           "sailing": false,
           "method": "pick",
           "tlFilter": {
@@ -68,7 +66,6 @@
           "crew": 1,
           "passengers": 3,
           "occCode": "",
-          "sm": 2,
           "range": 300,
           "baseCost": 10000,
           "locations": "G4W",
@@ -82,6 +79,31 @@
             "drBottom": 0
           },
           "loc": {
+            "B": {
+              "code": "B",
+              "name": "body",
+              "Name": "Body",
+              "dr": 0,
+              "drFacing": {
+                "drFront":  0,
+                "drRear":   0,
+                "drSide":   0,
+                "drTop":    0,
+                "drBottom": 0
+              },
+              "count": 1,
+              "locationalDR": false,
+              "facingDR": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": true,
+              "crewCount": 1,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": 0,
+              "penaltyAdj": 0,
+              "penalty": 0
+            },
             "A": {
               "code": "A",
               "name": "arm",
@@ -97,7 +119,16 @@
               "count": 0,
               "locationalDR": false,
               "facingDR": false,
-              "retractable": false
+              "retractable": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": -2,
+              "penaltyAdj": 0,
+              "penalty": -2
             },
             "C": {
               "code": "C",
@@ -114,7 +145,16 @@
               "count": 0,
               "locationalDR": false,
               "facingDR": false,
-              "retractable": false
+              "retractable": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": -2,
+              "penaltyAdj": 0,
+              "penalty": -2
             },
             "D": {
               "code": "D",
@@ -131,7 +171,16 @@
               "count": 0,
               "locationalDR": false,
               "facingDR": false,
-              "retractable": false
+              "retractable": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": 0,
+              "penaltyAdj": 0,
+              "penalty": 0
             },
             "E": {
               "code": "E",
@@ -148,7 +197,16 @@
               "count": 0,
               "locationalDR": false,
               "facingDR": false,
-              "retractable": false
+              "retractable": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": 0,
+              "penaltyAdj": 0,
+              "penalty": 0
             },
             "G": {
               "code": "G",
@@ -165,7 +223,16 @@
               "count": 0,
               "locationalDR": false,
               "facingDR": false,
-              "retractable": false
+              "retractable": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": -3,
+              "penaltyAdj": 0,
+              "penalty": -3
             },
             "g": {
               "code": "g",
@@ -182,7 +249,16 @@
               "count": 0,
               "locationalDR": false,
               "facingDR": false,
-              "retractable": false
+              "retractable": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": -7,
+              "penaltyAdj": 0,
+              "penalty": -7
             },
             "H": {
               "code": "H",
@@ -199,7 +275,16 @@
               "count": 0,
               "locationalDR": false,
               "facingDR": false,
-              "retractable": false
+              "retractable": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": -2,
+              "penaltyAdj": 0,
+              "penalty": -2
             },
             "L": {
               "code": "L",
@@ -216,7 +301,13 @@
               "count": 0,
               "locationalDR": false,
               "facingDR": false,
-              "retractable": false
+              "retractable": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0
             },
             "M": {
               "code": "M",
@@ -233,7 +324,16 @@
               "count": 0,
               "locationalDR": false,
               "facingDR": false,
-              "retractable": false
+              "retractable": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": -2,
+              "penaltyAdj": 0,
+              "penalty": -2
             },
             "O": {
               "code": "O",
@@ -250,7 +350,16 @@
               "count": 0,
               "locationalDR": false,
               "facingDR": false,
-              "retractable": false
+              "retractable": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": -3,
+              "penaltyAdj": 0,
+              "penalty": -3
             },
             "R": {
               "code": "R",
@@ -267,7 +376,16 @@
               "count": 0,
               "locationalDR": false,
               "facingDR": false,
-              "retractable": false
+              "retractable": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": -4,
+              "penaltyAdj": 0,
+              "penalty": -4
             },
             "S": {
               "code": "S",
@@ -284,7 +402,16 @@
               "count": 0,
               "locationalDR": false,
               "facingDR": false,
-              "retractable": false
+              "retractable": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": -2,
+              "penaltyAdj": 0,
+              "penalty": -2
             },
             "s": {
               "code": "s",
@@ -301,7 +428,16 @@
               "count": 0,
               "locationalDR": false,
               "facingDR": false,
-              "retractable": false
+              "retractable": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": -5,
+              "penaltyAdj": 0,
+              "penalty": -5
             },
             "T": {
               "code": "T",
@@ -318,7 +454,16 @@
               "count": 0,
               "locationalDR": false,
               "facingDR": false,
-              "retractable": false
+              "retractable": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": -2,
+              "penaltyAdj": 0,
+              "penalty": -2
             },
             "t": {
               "code": "t",
@@ -335,7 +480,16 @@
               "count": 0,
               "locationalDR": false,
               "facingDR": false,
-              "retractable": false
+              "retractable": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": -5,
+              "penaltyAdj": 0,
+              "penalty": -5
             },
             "W": {
               "code": "W",
@@ -353,7 +507,16 @@
               "pneumatic": false,
               "locationalDR": false,
               "facingDR": false,
-              "retractable": false
+              "retractable": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": -4,
+              "penaltyAdj": 0,
+              "penalty": -4
             },
             "Wi": {
               "code": "Wi",
@@ -370,7 +533,16 @@
               "count": 0,
               "locationalDR": false,
               "facingDR": false,
-              "retractable": false
+              "retractable": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": -2,
+              "penaltyAdj": 0,
+              "penalty": -2
             },
             "X": {
               "code": "X",
@@ -387,13 +559,44 @@
               "count": 0,
               "locationalDR": false,
               "facingDR": false,
-              "retractable": false
+              "retractable": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": -7,
+              "penaltyAdj": 0,
+              "penalty": -7
+            },
+            "V": {
+              "code": "V",
+              "name": "vital area",
+              "Name": "Vital Area",
+              "dr": 0,
+              "drFacing": {
+                "drFront":  0,
+                "drRear":   0,
+                "drSide":   0,
+                "drTop":    0,
+                "drBottom": 0
+              },
+              "count": 1,
+              "locationalDR": false,
+              "facingDR": false,
+              "hasPassengers": false,
+              "passengerCount": 0,
+              "hasCrew": false,
+              "crewCount": 0,
+              "crewCountStab": 0,
+              "passengerCountStab": 0,
+              "penaltyBase": -3,
+              "penaltyAdj": 0,
+              "penalty": -3
             }
           }
         }
-      },
-      "lc": {
-        "lc": 4
       },
       "cost": {
         "cost": {
@@ -958,7 +1161,6 @@
       "templates": [
         "bio",
         "cost",
-        "lc",
         "vehicle"
       ]
     }

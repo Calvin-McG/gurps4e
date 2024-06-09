@@ -237,7 +237,7 @@ RANGETYPES.dropdownChoices = {
 }
 
 RESISTANCETYPES.dropdownChoices = {
-    "": "Make a Selection",
+    "": "Pick One",
     "contest": "Quick Contest",
     "resistance": "Resistance",
     "irresistible": "Irresistible",
@@ -282,8 +282,8 @@ BODYTYPES.dropdownChoices = {
 }
 
 VEHICLECRAFTTYPES.dropdownChoices = {
-    "ground": "Ground",
-    "naval": "Water",
+    "land": "Land",
+    "water": "Water",
     "air": "Air",
 }
 
@@ -320,3 +320,4 @@ POWERCELLS.dropdownChoices = {
     "E": "E cell",
     "F": "F cell",
 }
+

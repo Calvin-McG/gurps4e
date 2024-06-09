@@ -69,6 +69,8 @@ export class gurpsActor extends Actor {
 			this.system.vehicle.baseVehicle = undefined;
 		}
 
+		this.system.reserves.hp.max = this.system.vehicle.sthp;
+
 		// Convert the ht code string to the set of bools on the ht object.
 		this.system.vehicle.ht.combustible = this.system.vehicle.ht.code.toString().toLowerCase().includes("c");
 		this.system.vehicle.ht.flammable = this.system.vehicle.ht.code.toString().toLowerCase().includes("f");
@@ -78,6 +80,11 @@ export class gurpsActor extends Actor {
 		this.vehicleWeightHandling();
 
 		this.assessLocations(); // Go through the location string and use the values to update the block of actual locations stored on the vehicle.
+		this.vehicleCost();
+	}
+
+	vehicleCost() {
+		this.system.vehicle.finalCost = this.system.vehicle.baseCost
 	}
 
 	// This method parses the location string and use the values to update the block of actual locations stored on the vehicle.
@@ -130,10 +137,7 @@ export class gurpsActor extends Actor {
 						"roadBound": false,
 						"railBound": false
 					},
-					"motiveType": {
-						"selected": "",
-						"possible": []
-					},
+					"motiveType": "",
 					"method": "pick",
 					"tlFilter": {
 						"lo": 0,
@@ -177,6 +181,7 @@ export class gurpsActor extends Actor {
 					"sm": 2,
 					"range": 300,
 					"baseCost": 10000,
+					"finalCost": 10000,
 					"locations": "G4W",
 					"drMethod": "single",
 					"dr": 0,

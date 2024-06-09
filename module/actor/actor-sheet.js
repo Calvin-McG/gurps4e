@@ -17,7 +17,118 @@ export class gurpsActorSheet extends ActorSheet {
 		context.hikingWeatherMultipliers = this.getHikingWeatherMultipliers();
 		context.learningStyles = this.getLearningStyles();
 		context.learningLanguageMultipliers = this.getLearningLanguageMultipliers();
+		if (this.actor.type.toLowerCase() === "fullchar") {
+
+		}
+		else if (this.actor.type.toLowerCase() === "simple vehicle") {
+			context.vehicleCraftTypes = CONFIG.VEHICLECRAFTTYPES.dropdownChoices;
+			context.vehicleMethod = this.getVehicleDesignMethods();
+			context.vehicleSTTypes = this.getVehicleSTTypes();
+			context.vehicleMoveTypes = this.getVehicleMoveTypes();
+			context.vehicleOccupancyCodes = this.getVehicleOccupancyCodes();
+			context.vehicleDRMethods = this.getVehicleDRMethods();
+			context.vehiclePropulsionMethods = this.getVehiclePropulsionMethods();
+			context.vehicleAnimalLocations = this.getVehicleAnimalLocations();
+			context.vehicleAnimalTypes = this.getVehicleAnimalTypes();
+			context.vehicleMotiveTypes = this.getVehicleMotiveTypes();
+		}
 		return context;
+	}
+
+	getVehicleMotiveTypes() {
+		let types = {}
+
+		if (this.actor.system.vehicle.craftType === "land") {
+			types.wheel  = "Wheeled";
+			types.rail   = "Railway";
+			types.track  = "Tracked";
+			types.skids  = "Skids or Runners";
+			types.wTrack = "Wheels and Tracks";
+			types.rTrack = "Skids and Tracks";
+			types.skidsW = "Wheels and Skids";
+			types.leg    = "Legs";
+			types.immune = "Immune";
+		}
+		else if (this.actor.system.vehicle.craftType === "water") {
+			types.wheel = "Paddlewheels";
+			types.immune = "Immune";
+		}
+		else if (this.actor.system.vehicle.craftType === "air") {
+			types.wing = "Wings";
+			types.heli = "Helicopter Blades";
+		}
+
+		return types;
+	}
+
+	getVehicleAnimalTypes() {
+		return {
+			"equine"		:	"Equine - Horses, Donkeys, Mules.",
+			"canine"		:	"Canine - Dogs",
+			"feline"		:	"Feline - Cats",
+			"ursine"		:	"Ursine - Bears",
+			"rhinocerotidae":	"Rhinocerotidae - Rhinos",
+			"elephantidae"	:	"Elephantidae - Elephants",
+			"cetacean"		:	"Cetacean - Dolphins, Porpises, Whales",
+			"selachimorphan":	"Selachimorphan - Sharks",
+			"strigiformes"	:	"Strigiformes - Owls",
+			"accipitridae"	:	"Accipitridae - Eagles",
+		}
+	}
+
+	getVehicleAnimalLocations() {
+		return {
+			"draft"		: "Exterior, pulling the vehicle",
+			"internal"	: "Interior, operating a conveyor or other mechanism."
+		}
+	}
+
+	getVehiclePropulsionMethods() {
+		return {
+			"powered"	: "Powered",
+			"unpowered"	: "Unpowered",
+			"wind"		: "Sailing",
+			"animals"	: "Animals",
+		}
+	}
+
+	getVehicleDRMethods() {
+		return {
+		"single"	: "Single Value",
+		"facing"	: "Facing",
+		"facingPlus": "Facing Plus Locations",
+		}
+	}
+
+	getVehicleOccupancyCodes() {
+		return {
+			"" : "",
+			"S": "S - Sealed",
+			"P": "P - Pressure Support",
+			"V": "V - Vacuum Support"
+		}
+	}
+
+	getVehicleMoveTypes() {
+		return {
+			"": "",
+			"*": "* - Road-bound",
+			"‡": "‡ - Rail-bound",
+		}
+	}
+
+	getVehicleSTTypes() {
+		return {
+			"": "",
+			"†": "† - Unpowered"
+		}
+	}
+
+	getVehicleDesignMethods() {
+		return {
+			"pick": "Pick & Modify",
+			"custom": "Full Custom",
+		}
 	}
 
 	getLearningLanguageMultipliers() {
@@ -74,7 +185,7 @@ export class gurpsActorSheet extends ActorSheet {
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
 			classes: ["gurps4e", "sheet", "actor"],
-			width: 780,
+			width: 820,
 			height: 780,
 			tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "stats" }],
 			dragDrop: [
