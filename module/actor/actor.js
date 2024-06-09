@@ -225,15 +225,19 @@ export class gurpsActor extends Actor {
 			this.system.vehicle.move.average = 0;
 			this.system.vehicle.move.bad = 0;
 			this.system.vehicle.move.veryBad = 0;
+			this.system.vehicle.land.railBound = true;
 		}
 		else { // Vehicle is not rail bound, proceed as normal
+			this.system.vehicle.land.railBound = false;
 			this.system.vehicle.move.road = this.system.vehicle.move.input; // Road move is always the same as top speed
 
 			if (this.system.vehicle.move.code.includes("*")) { // Vehicle is road bound
+				this.system.vehicle.land.roadBound = true;
 				effectiveMoveInput = Math.min(parseFloat(this.system.vehicle.move.input), parseFloat(this.system.vehicle.accelerationInput * 4)) // Road bound vehicles use the lower of Top Speed and 4xAcceleration when working out offroad speed.
 				this.system.vehicle.move.good = effectiveMoveInput; // For road vehicles, top speed on good but non-road terrain is capped at the lower of the actual top speed and 4xAcceleration
 			}
 			else { // Vehicle is not road bound
+				this.system.vehicle.land.roadBound = false;
 				this.system.vehicle.move.good = this.system.vehicle.move.input; // Meaning the good terrain speed is also the same as top speed
 			}
 
