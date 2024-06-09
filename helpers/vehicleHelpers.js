@@ -1429,7 +1429,7 @@ export class vehicleHelpers {
                 "rangeWind": "-1", // Sails
                 "rangeMuscle": "FP", // Oars
                 "cost": "56700",
-                "locations": "MOSu",
+                "locations": "MOS",
                 "draft": "3",
                 "naval": true,
                 "sail": true,
@@ -1459,7 +1459,7 @@ export class vehicleHelpers {
                 "rangeWind": "-1", // Sails
                 "rangeMuscle": "FP", // Oars
                 "cost": "106000",
-                "locations": "MOSu",
+                "locations": "MOS",
                 "draft": "7",
                 "naval": true,
                 "sail": true,
@@ -1574,7 +1574,7 @@ export class vehicleHelpers {
                 "dr": "10",
                 "range": "-1",
                 "cost": "108000",
-                "locations": "2MOSu",
+                "locations": "2MOS",
                 "draft": "4",
                 "naval": true,
                 "sail": true,
@@ -1602,7 +1602,7 @@ export class vehicleHelpers {
                 "dr": "10/5",
                 "range": "-1",
                 "cost": "110000",
-                "locations": "MOSu",
+                "locations": "MOS",
                 "draft": "4",
                 "naval": true,
                 "sail": true,
@@ -1630,7 +1630,7 @@ export class vehicleHelpers {
                 "dr": "15",
                 "range": "-1",
                 "cost": "630000",
-                "locations": "3M2Su",
+                "locations": "3M2S",
                 "draft": "9",
                 "naval": true,
                 "sail": true,
@@ -1657,7 +1657,7 @@ export class vehicleHelpers {
                 "dr": "0/1",
                 "range": "-1",
                 "cost": "75",
-                "locations": "Go",
+                "locations": "GO",
                 "stall": "0",
                 "air": true,
                 "cite": "F142"
@@ -1711,7 +1711,7 @@ export class vehicleHelpers {
                 "dr": "1",
                 "range": "FP",
                 "cost": "2500",
-                "locations": "Owi",
+                "locations": "OWi",
                 "stall": "5",
                 "air": true,
                 "cite": "F142"
