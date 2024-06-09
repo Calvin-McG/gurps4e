@@ -59,6 +59,7 @@
           "move": {
             "input": 30,
             "code": "",
+            "rail": 0,
             "road": 30,
             "good": 30,
             "average": 12,

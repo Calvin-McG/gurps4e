@@ -78,6 +78,17 @@ export class gurpsActor extends Actor {
 
 		this.assessLocations(); // Go through the location string and use the values to update the block of actual locations stored on the vehicle.
 		this.vehicleCost();
+
+		// Calculate special movement info based on the given inputs.
+		if (this.system.vehicle.craftType === "land") {
+			this.calcGroundVehicleMove();
+		}
+		else if (this.system.vehicle.craftType === "water") {
+
+		}
+		else if (this.system.vehicle.craftType === "air") {
+
+		}
 	}
 
 	applyBaseVehicle() {
@@ -108,7 +119,7 @@ export class gurpsActor extends Actor {
 		else if (this.system.vehicle.baseVehicle.locations.includes("C")) {
 			this.system.vehicle.motiveType = "track";
 		}
-		else if (this.system.vehicle.baseVehicle.moveCode.includes("‡")) {
+		else if (typeof this.system.vehicle.baseVehicle.moveCode !== "undefined" && this.system.vehicle.baseVehicle.moveCode.includes("‡")) {
 			this.system.vehicle.motiveType = "rail";
 		}
 		else if (this.system.vehicle.baseVehicle.locations.includes("W")) {
@@ -121,49 +132,74 @@ export class gurpsActor extends Actor {
 			this.system.vehicle.motiveType = "immune";
 		}
 
-		// Begin working out movement rates
+		// Movement related information
+		this.system.vehicle.move.code = this.system.vehicle.baseVehicle.moveCode ?? ""; // Save the moveCode so we can reference it later
 		if (this.system.vehicle.baseVehicle.ground) {
-			this.system.vehicle.move.code = this.system.vehicle.baseVehicle.moveCode; // Save the moveCode so we can reference it later
-			this.system.vehicle.move.input = this.system.vehicle.baseVehicle.moveGround; // Save the base vehicle's ground move to the input
-			this.calcGroundVehicleMove(); // Call the normal method to sort out ground move speeds
+			this.system.vehicle.craftType = "land";
+
+			this.system.vehicle.move.input = parseFloat(this.system.vehicle.baseVehicle.moveGround); // Save the base vehicle's ground move to the input
 		}
+		else if (this.system.vehicle.baseVehicle.naval) {
+			this.system.vehicle.craftType = "water";
+			this.system.vehicle.move.input = parseFloat(this.system.vehicle.baseVehicle.moveNaval); // Save the base vehicle's naval move to the input
+		}
+		else if (this.system.vehicle.baseVehicle.air) {
+			this.system.vehicle.craftType = "air";
+			this.system.vehicle.move.input = parseFloat(this.system.vehicle.baseVehicle.moveAir); // Save the base vehicle's air move to the input
+		}
+
+		// Weight Related Info
+		this.system.vehicle.weight.lwt = parseFloat(this.system.vehicle.baseVehicle.loadedWeight);
+		this.system.vehicle.weight.load = parseFloat(this.system.vehicle.baseVehicle.load);
+
+		this.applyBaseVehicleDR()
 	}
 
 	calcGroundVehicleMove() {
 		let effectiveMoveInput = this.system.vehicle.move.input; // Store moveInput in a separate value because we're going to modify it later
 
-		this.system.vehicle.move.road = this.system.vehicle.move.input; // Road move is always the same as top speed
+		if (this.system.vehicle.move.code.includes("‡")) { // Vehicle is rail bound
+			this.system.vehicle.move.rail = this.system.vehicle.move.input; // Rail bound vehicles can only move on rails.
+			this.system.vehicle.move.road = 0;
+			this.system.vehicle.move.good = 0;
+			this.system.vehicle.move.average = 0;
+			this.system.vehicle.move.bad = 0;
+			this.system.vehicle.move.veryBad = 0;
+		}
+		else { // Vehicle is not rail bound, proceed as normal
+			this.system.vehicle.move.road = this.system.vehicle.move.input; // Road move is always the same as top speed
 
-		if (this.system.vehicle.move.code.includes("*")) { // Vehicle is road bound
-			effectiveMoveInput = Math.min(this.system.vehicle.move.input, this.system.vehicle.accelerationInput * 4) // Road bound vehicles use the lower of Top Speed and 4xAcceleration when working out offroad speed.
-			this.system.vehicle.move.good = effectiveMoveInput; // For road vehicles, top speed on good but non-road terrain is capped at the lower of the actual top speed and 4xAcceleration
-		}
-		else { // Vehicle is not road bound
-			this.system.vehicle.move.good = this.system.vehicle.move.input; // Meaning the good terrain speed is also the same as top speed
-		}
+			if (this.system.vehicle.move.code.includes("*")) { // Vehicle is road bound
+				effectiveMoveInput = Math.min(parseFloat(this.system.vehicle.move.input), parseFloat(this.system.vehicle.accelerationInput * 4)) // Road bound vehicles use the lower of Top Speed and 4xAcceleration when working out offroad speed.
+				this.system.vehicle.move.good = effectiveMoveInput; // For road vehicles, top speed on good but non-road terrain is capped at the lower of the actual top speed and 4xAcceleration
+			}
+			else { // Vehicle is not road bound
+				this.system.vehicle.move.good = this.system.vehicle.move.input; // Meaning the good terrain speed is also the same as top speed
+			}
 
-		if (this.system.vehicle.motiveType === "wheel") {
-			this.system.vehicle.move.average = effectiveMoveInput * 0.8;
-		}
-		else {
-			this.system.vehicle.move.average = effectiveMoveInput * 1.6;
-		}
+			if (this.system.vehicle.motiveType === "wheel") {
+				this.system.vehicle.move.average = effectiveMoveInput * 0.8;
+			}
+			else {
+				this.system.vehicle.move.average = effectiveMoveInput * 1.6;
+			}
 
-		if (this.system.vehicle.motiveType === "wheel") {
-			this.system.vehicle.move.bad = effectiveMoveInput * 0.4;
-		}
-		else {
-			this.system.vehicle.move.bad = effectiveMoveInput * 0.8;
-		}
+			if (this.system.vehicle.motiveType === "wheel") {
+				this.system.vehicle.move.bad = effectiveMoveInput * 0.4;
+			}
+			else {
+				this.system.vehicle.move.bad = effectiveMoveInput * 0.8;
+			}
 
-		if (this.system.vehicle.motiveType === "wheel" || this.system.vehicle.motiveType === "skids") {
-			this.system.vehicle.move.veryBad = effectiveMoveInput * 0.16;
-		}
-		else if (this.system.vehicle.motiveType.toLowerCase().includes("track")) {
-			this.system.vehicle.move.veryBad = effectiveMoveInput * 0.24;
-		}
-		else {
-			this.system.vehicle.move.veryBad = effectiveMoveInput * 0.32;
+			if (this.system.vehicle.motiveType === "wheel" || this.system.vehicle.motiveType === "skids") {
+				this.system.vehicle.move.veryBad = effectiveMoveInput * 0.16;
+			}
+			else if (this.system.vehicle.motiveType.toLowerCase().includes("track")) {
+				this.system.vehicle.move.veryBad = effectiveMoveInput * 0.24;
+			}
+			else {
+				this.system.vehicle.move.veryBad = effectiveMoveInput * 0.32;
+			}
 		}
 	}
 
