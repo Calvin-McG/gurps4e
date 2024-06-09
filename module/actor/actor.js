@@ -66,7 +66,7 @@ export class gurpsActor extends Actor {
 			this.system.vehicle.baseVehicle = undefined;
 		}
 
-		this.system.reserves.hp.max = this.system.vehicle.sthp;
+		this.system.reserves.hp.max = parseInt(this.system.vehicle.sthp);
 
 		// Convert the ht code string to the set of bools on the ht object.
 		this.system.vehicle.ht.combustible = this.system.vehicle.ht.code.toString().toLowerCase().includes("c");
@@ -94,6 +94,7 @@ export class gurpsActor extends Actor {
 	applyBaseVehicle() {
 		this.system.vehicle.className = this.system.vehicle.baseVehicle.name ?? this.name;
 		this.system.bio.tl.value = this.system.vehicle.baseVehicle.tl ?? game.settings.get("gurps4e", "campaignTL") ?? 0;
+		this.system.bio.sm.value = parseInt(this.system.vehicle.baseVehicle.sm);
 		this.system.vehicle.ht.code = this.system.vehicle.baseVehicle.htCodes ?? "";
 		this.system.vehicle.sthp = this.system.vehicle.baseVehicle.sthp ?? generalHelpers.calculateHPFromWeight(this.system.vehicle.baseVehicle.loadedWeight);
 		this.system.vehicle.sthpCode = this.system.vehicle.baseVehicle.sthpCode === "T" ? "†" : this.system.vehicle.baseVehicle.sthpCode;
@@ -102,6 +103,9 @@ export class gurpsActor extends Actor {
 		this.system.vehicle.ht.value = this.system.vehicle.baseVehicle.ht ?? 11;
 		this.system.vehicle.ht.code = this.system.vehicle.baseVehicle.htCodes ?? "";
 		this.system.vehicle.accelerationInput = this.system.vehicle.baseVehicle.acceleration;
+		this.system.vehicle.locations = this.system.vehicle.baseVehicle.locations;
+		this.system.vehicle.crew = this.system.vehicle.baseVehicle.crew;
+		this.system.vehicle.passengers = this.system.vehicle.baseVehicle.passengers;
 
 		// Assume Motive Type
 		if (this.system.vehicle.baseVehicle.locations.includes("C") && this.system.vehicle.baseVehicle.locations.includes("R")) {
