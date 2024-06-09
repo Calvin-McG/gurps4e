@@ -55,16 +55,25 @@
             "crewSkillName": "",
             "crewSkillLevel": 0
           },
-          "accelerationInput": 3,
+          "acceleration": {
+            "input": 3,
+            "output": 3,
+            "navalWind": 0,
+            "naval": 0
+          },
           "move": {
             "input": 30,
+            "output": 30,
             "code": "",
             "rail": 0,
             "road": 30,
             "good": 30,
             "average": 12,
             "bad": 6,
-            "veryBad": 3
+            "veryBad": 3,
+            "naval": 0,
+            "navalWind": 0,
+            "navalAgainstWind": 0
           },
           "weight": {
             "lwt": 1,

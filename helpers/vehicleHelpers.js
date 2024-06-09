@@ -1327,9 +1327,9 @@ export class vehicleHelpers {
                 "ht": "11",
                 "htCodes": "c",
                 "moveNavalWind": "7", // Sails
-                "moveNavalMuscle": "4", // Oars
+                "moveNaval": "4", // Oars
                 "accelerationWind": "0.2", // Sails
-                "accelerationMuscle": "0.05", // Oars
+                "acceleration": "0.05", // Oars
                 "skill": "Shiphandling/TL1(Ship)",
                 "loadedWeight": "5",
                 "load": "2.8",
@@ -1385,9 +1385,9 @@ export class vehicleHelpers {
                 "ht": "11",
                 "htCodes": "c",
                 "moveNavalWind": "6", // Sails
-                "moveNavalMuscle": "4", // Oars
+                "moveNaval": "4", // Oars
                 "accelerationWind": "0.5", // Sails
-                "accelerationMuscle": "0.1", // Oars
+                "acceleration": "0.1", // Oars
                 "skill": "Shiphandling/TL2(Ship)",
                 "loadedWeight": "13",
                 "load": "7",
@@ -1416,9 +1416,9 @@ export class vehicleHelpers {
                 "ht": "12",
                 "htCodes": "c",
                 "moveNavalWind": "6", // Sails
-                "moveNavalMuscle": "5", // Oars
+                "moveNaval": "5", // Oars
                 "accelerationWind": "0.3", // Sails
-                "accelerationMuscle": "0.1", // Oars
+                "acceleration": "0.1", // Oars
                 "skill": "Shiphandling/TL2(Ship)",
                 "loadedWeight": "27",
                 "load": "21",
@@ -1447,8 +1447,8 @@ export class vehicleHelpers {
                 "htCodes": "c",
                 "moveNavalWind": "5",
                 "accelerationWind": "0.1",
-                "moveNavalMuscle": "1",
-                "accelerationMuscle": "0.04",
+                "moveNaval": "1",
+                "acceleration": "0.04",
                 "skill": "Shiphandling/TL3(Ship)",
                 "loadedWeight": "600",
                 "load": "510",
@@ -1506,7 +1506,7 @@ export class vehicleHelpers {
                 "htCodes": "c",
                 "moveNavalWind": "5",
                 "accelerationWind": "0.2",
-                "moveNavalMuscle": "3",
+                "moveNaval": "3",
                 "accelerationWindMuscle": "0.25",
                 "skill": "Shiphandling/TL3(Ship)",
                 "loadedWeight": "60",

@@ -37,7 +37,7 @@
               <td>{{actor.system.vehicle.sthp}}{{actor.system.vehicle.sthpCode}}</td>
               <td>{{actor.system.vehicle.hnd}}/{{actor.system.vehicle.sr}}</td>
               <td>{{actor.system.vehicle.ht.value}}{{actor.system.vehicle.ht.code}}</td>
-              <td>{{actor.system.vehicle.accelerationInput}}/{{actor.system.vehicle.move.input}}{{actor.system.vehicle.move.code}}</td>
+              <td>{{actor.system.vehicle.acceleration.output}}/{{actor.system.vehicle.move.output}}{{actor.system.vehicle.move.code}}</td>
               <td>{{round actor.system.vehicle.weight.lwt 100}}</td>
               <td>{{round actor.system.vehicle.weight.load 100}}</td>
               <td>{{actor.system.bio.sm.value}}</td>
@@ -230,7 +230,7 @@
               <tr class="design-row">
                 <td>Move</td>
                 <td style="display: flex">
-                  <input name="system.vehicle.accelerationInput" type="number" value="{{actor.system.vehicle.accelerationInput}}" placeholder="3" />
+                  <input name="system.vehicle.acceleration.input" type="number" value="{{actor.system.vehicle.acceleration.input}}" placeholder="3" />
                   <span style="font-size: xx-large; padding: 0 0.2em;">/</span>
                   <input name="system.vehicle.move.input" type="number" value="{{actor.system.vehicle.move.input}}" placeholder="30" />
                   <select name="system.vehicle.move.code" class="craftType" style="height: unset">

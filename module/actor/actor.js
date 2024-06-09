@@ -102,7 +102,7 @@ export class gurpsActor extends Actor {
 		this.system.vehicle.sr = this.system.vehicle.baseVehicle.sr;
 		this.system.vehicle.ht.value = this.system.vehicle.baseVehicle.ht ?? 11;
 		this.system.vehicle.ht.code = this.system.vehicle.baseVehicle.htCodes ?? "";
-		this.system.vehicle.accelerationInput = this.system.vehicle.baseVehicle.acceleration;
+		this.system.vehicle.acceleration.input = this.system.vehicle.baseVehicle.acceleration;
 		this.system.vehicle.locations = this.system.vehicle.baseVehicle.locations;
 		this.system.vehicle.crew = this.system.vehicle.baseVehicle.crew;
 		this.system.vehicle.passengers = this.system.vehicle.baseVehicle.passengers;
@@ -229,6 +229,8 @@ export class gurpsActor extends Actor {
 			this.system.vehicle.move.bad = 0;
 			this.system.vehicle.move.veryBad = 0;
 			this.system.vehicle.land.railBound = true;
+
+			this.system.vehicle.move.output = this.system.vehicle.move.rail;
 		}
 		else { // Vehicle is not rail bound, proceed as normal
 			this.system.vehicle.land.railBound = false;
@@ -236,7 +238,7 @@ export class gurpsActor extends Actor {
 
 			if (this.system.vehicle.move.code.includes("*")) { // Vehicle is road bound
 				this.system.vehicle.land.roadBound = true;
-				effectiveMoveInput = Math.min(parseFloat(this.system.vehicle.move.input), parseFloat(this.system.vehicle.accelerationInput * 4)) // Road bound vehicles use the lower of Top Speed and 4xAcceleration when working out offroad speed.
+				effectiveMoveInput = Math.min(parseFloat(this.system.vehicle.move.input), parseFloat(this.system.vehicle.acceleration.input * 4)) // Road bound vehicles use the lower of Top Speed and 4xAcceleration when working out offroad speed.
 				this.system.vehicle.move.good = effectiveMoveInput; // For road vehicles, top speed on good but non-road terrain is capped at the lower of the actual top speed and 4xAcceleration
 			}
 			else { // Vehicle is not road bound
@@ -267,6 +269,8 @@ export class gurpsActor extends Actor {
 			else {
 				this.system.vehicle.move.veryBad = effectiveMoveInput * 0.32;
 			}
+
+			this.system.vehicle.move.output = this.system.vehicle.move.road;
 		}
 	}
 
@@ -738,8 +742,8 @@ export class gurpsActor extends Actor {
 				"code": ""
 			}
 		}
-		if (typeof this.system.vehicle.accelerationInput === "undefined") {
-			this.system.vehicle.accelerationInput = 3
+		if (typeof this.system.vehicle.acceleration.input === "undefined") {
+			this.system.vehicle.acceleration.input = 3
 		}
 		if (typeof this.system.vehicle.move === "undefined") {
 			this.system.vehicle.move = {
