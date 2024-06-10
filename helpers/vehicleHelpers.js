@@ -1,3 +1,5 @@
+import {economicHelpers} from "./economicHelpers.js";
+
 export class vehicleHelpers {
 
     static getVehicleTravelCostOutput(downwindVehicleRunningCosts, label, cargoSpacePounds) {
@@ -32,7 +34,10 @@ export class vehicleHelpers {
     }
 
     // This method uses the rules from Pyramid 3/95 page 18
-    static getVehicleRunningCosts(vehicleCost, crewSize, journeyLength, travellingHours){
+    static getVehicleRunningCosts(system, journeyLength, travellingHours){
+        let vehicleCost = system.vehicle.finalCost;
+        let crewSize = system.vehicle.crew ?? 1;
+
         let costs = {
             "maintenance": 0,
             "crewPay": 0,
@@ -40,8 +45,18 @@ export class vehicleHelpers {
             "provisionsWeight": 0,
         }
 
+        let hourlyRate = 17.16
+
+        let crewTL = system.travel.crewTL;
+        let crewHourlyPay = economicHelpers.getMonthlyPayByTL(crewTL);
+        let crewWealthMult = system.travel.crewWealthMult;
+
+        if (crewHourlyPay && crewWealthMult) {
+            hourlyRate = crewHourlyPay * crewWealthMult;
+        }
+
         costs.maintenance = 0.0006 * vehicleCost* (journeyLength / travellingHours);
-        costs.crewPay = 17.16 * (journeyLength / travellingHours) * parseInt(crewSize);
+        costs.crewPay = hourlyRate * (journeyLength / travellingHours) * parseInt(crewSize);
         costs.provisionsCost = 6 * (journeyLength / travellingHours) * parseInt(crewSize); // 2$ and 0.5lbs each, three a day per crewman.
         costs.provisionsWeight = 5.5 * (journeyLength / travellingHours) * parseInt(crewSize); // Weight of provisions counts against cargo capacity, and includes 4 extra pounds per crewman for water.
 

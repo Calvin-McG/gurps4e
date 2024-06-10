@@ -6,6 +6,7 @@ import {vehicleHelpers} from "../../helpers/vehicleHelpers.js";
 import {attackHelpers} from "../../helpers/attackHelpers.js";
 import {infoHelpers} from "../../helpers/infoHelpers.js";
 import {distanceHelpers} from "../../helpers/distanceHelpers.js";
+import {economicHelpers} from "../../helpers/economicHelpers.js";
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -212,6 +213,7 @@ export class gurpsActor extends Actor {
 	}
 
 	travelDetails() {
+		this.system.travel.wealthLevels = economicHelpers.getWealthLevels();
 		this.system.travel.units = distanceHelpers.listUnits(); // Get the list of units for players to select among
 
 		let distanceInYards = distanceHelpers.convertToYards(this.system.travel.distance, this.system.travel.unit);
@@ -252,17 +254,17 @@ export class gurpsActor extends Actor {
 			let cargoSpacePounds = this.system.vehicle.weight.load * 2000;
 			if (this.system.vehicle.craftType === "water") {
 				let poweredTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.naval, travellingHoursMinusRest)
-				let poweredVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew ?? 1, poweredTime[1], travellingHoursMinusRest);
+				let poweredVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system, poweredTime[1], travellingHoursMinusRest);
 
 				this.system.travel.travelTime = "Travelling under power: " + poweredTime[0] + "<br/>";;
 				this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(poweredVehicleRunningCosts, "Travelling under power", cargoSpacePounds)
 
 				if (this.system.vehicle.sailing) {
 					let downwindTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.navalWind, travellingHoursMinusRest)
-					let downwindVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew ?? 1, downwindTime[1], travellingHoursMinusRest);
+					let downwindVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system, downwindTime[1], travellingHoursMinusRest);
 
 					let upwindTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.navalAgainstWind, travellingHoursMinusRest)
-					let upwindVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew ?? 1, upwindTime[1], travellingHoursMinusRest);
+					let upwindVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system, upwindTime[1], travellingHoursMinusRest);
 
 					this.system.travel.travelTime += "Travelling with the wind: " + downwindTime[0] + "<br/>";
 					this.system.travel.travelTime += "Travelling against the wind: " + upwindTime[0];
@@ -275,43 +277,43 @@ export class gurpsActor extends Actor {
 				if (this.system.travel.terrainQuality === "rail" || this.system.vehicle.land.railBound) {
 					let railTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.rail, travellingHoursMinusRest)
 					this.system.travel.travelTime = railTime[0] + "<br/>";
-					let railVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, railTime[1], travellingHoursMinusRest);
+					let railVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system, railTime[1], travellingHoursMinusRest);
 					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(railVehicleRunningCosts, "Travelling by rail", cargoSpacePounds);
 				}
 				else if (this.system.travel.terrainQuality === "road") {
 					let roadTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.road, travellingHoursMinusRest)
 					this.system.travel.travelTime = roadTime[0] + "<br/>";
-					let roadVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, roadTime[1], travellingHoursMinusRest);
+					let roadVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system, roadTime[1], travellingHoursMinusRest);
 					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(roadVehicleRunningCosts, "Travelling by road", cargoSpacePounds);
 				}
 				else if (this.system.travel.terrainQuality === "good") {
 					let goodTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.good, travellingHoursMinusRest)
 					this.system.travel.travelTime = goodTime[0] + "<br/>";
-					let goodVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, goodTime[1], travellingHoursMinusRest);
+					let goodVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system, goodTime[1], travellingHoursMinusRest);
 					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(goodVehicleRunningCosts, "Travelling on good terrain", cargoSpacePounds);
 				}
 				else if (this.system.travel.terrainQuality === "average") {
 					let averageTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.average, travellingHoursMinusRest)
 					this.system.travel.travelTime = averageTime[0] + "<br/>";
-					let averageVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, averageTime[1], travellingHoursMinusRest);
+					let averageVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system, averageTime[1], travellingHoursMinusRest);
 					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(averageVehicleRunningCosts, "Travelling on average terrain", cargoSpacePounds);
 				}
 				else if (this.system.travel.terrainQuality === "bad") {
 					let badTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.bad, travellingHoursMinusRest)
 					this.system.travel.travelTime = badTime[0] + "<br/>";
-					let badVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, badTime[1], travellingHoursMinusRest);
+					let badVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system, badTime[1], travellingHoursMinusRest);
 					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(badVehicleRunningCosts, "Travelling on bad terrain", cargoSpacePounds);
 				}
 				else if (this.system.travel.terrainQuality === "veryBad") {
 					let veryBadTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.veryBad, travellingHoursMinusRest)
 					this.system.travel.travelTime = veryBadTime[0] + "<br/>";
-					let veryBadVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, veryBadTime[1], travellingHoursMinusRest);
+					let veryBadVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system, veryBadTime[1], travellingHoursMinusRest);
 					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(veryBadVehicleRunningCosts, "Travelling on very bad terrain", cargoSpacePounds);
 				}
 			}
 			else if (this.system.vehicle.craftType === "air") {
 				let airTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.air, travellingHoursMinusRest)
-				let airVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, airTime[1], travellingHoursMinusRest);
+				let airVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system, airTime[1], travellingHoursMinusRest);
 				this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(airVehicleRunningCosts, undefined, cargoSpacePounds);
 				this.system.travel.travelTime = airTime[0]
 			}
@@ -1395,7 +1397,9 @@ export class gurpsActor extends Actor {
 				"travelTime": "",
 				"travelCost": "",
 				"travellingHours": 8,
-				"terrainQuality": "road"
+				"terrainQuality": "road",
+				"crewWealthMult": 1,
+				"crewTL": 6
 			}
 		}
 	}

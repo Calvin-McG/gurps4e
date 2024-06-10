@@ -1171,7 +1171,9 @@
         "travelTime": "",
         "travelCost": "",
         "travellingHours": 8,
-        "terrainQuality": "road"
+        "terrainQuality": "road",
+        "crewWealthMult": 1,
+        "crewTL": 6
       }
     },
     "fullchar": {

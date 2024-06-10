@@ -131,6 +131,35 @@
                 </td>
               </tr>
 
+              <tr class="design-row">
+                <td style="line-height: 27.5px">
+                  Crew Wealth Level
+                </td>
+                <td>
+                  <select style="width: 70%" name="system.travel.crewWealthMult">
+                    {{selectOptions actor.system.travel.wealthLevels selected=actor.system.travel.crewWealthMult valueAttr="multiplier" labelAttr="Name"}}
+                  </select>
+                </td>
+                <td class="question-container" id="travel-crew-wealth">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+
+              <tr class="design-row">
+                <td style="line-height: 27.5px">
+                  Crew Tech Level
+                </td>
+                <td>
+                  <input style="width: 25%" type="number" name="system.travel.crewTL" value="{{actor.system.travel.crewTL}}" data-dtype="Number"/>
+                </td>
+                <td class="question-container" id="travel-crew-tech">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+
               {{#if (eq actor.system.vehicle.craftType "land")}}
                 <tr class="design-row">
                   <td style="line-height: 27.5px">
