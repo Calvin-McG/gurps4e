@@ -437,6 +437,15 @@ export class infoHelpers {
                 "</tr>" +
                 "</table>"
         }
+        else if (id === "vehicle-thr") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>This is your vehicle's thrust stat, used in Ram maneuvers and wipeouts.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
         else if (id === "simple-vehicle-naval-sail-move") {
             info = "<table>" +
                 "<tr>" +

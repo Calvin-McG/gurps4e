@@ -48,6 +48,7 @@
           "baseVehicles": [],
           "sthp": 10,
           "sthpCode": "",
+          "thr": "1d6-2",
           "hnd": 1,
           "sr": 3,
           "ht": {

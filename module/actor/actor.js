@@ -113,8 +113,12 @@ export class gurpsActor extends Actor {
 		}
 
 		this.vehicleChaseDetails();
-
+		this.vehicleAttacks();
 		this.travelDetails();
+	}
+
+	vehicleAttacks() {
+		this.system.vehicle.thr = attributeHelpers.strikingStrengthToThrust(this.system.vehicle.sthp)
 	}
 
 	clearLocationCounts() {
