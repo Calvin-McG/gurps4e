@@ -245,24 +245,25 @@ export class gurpsActor extends Actor {
 
 			// Travel Time Calculation
 			let cargoSpacePounds = this.system.vehicle.weight.load * 2000;
-
 			if (this.system.vehicle.craftType === "water") {
-				let downwindTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.navalWind, travellingHoursMinusRest)
-				let downwindVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew ?? 1, downwindTime[1], travellingHoursMinusRest);
+				let poweredTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.naval, travellingHoursMinusRest)
+				let poweredVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew ?? 1, poweredTime[1], travellingHoursMinusRest);
+
+				this.system.travel.travelTime = "Travelling under power: " + poweredTime[0] + "<br/>";;
+				this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(poweredVehicleRunningCosts, "Travelling under power", cargoSpacePounds)
 
 				if (this.system.vehicle.sailing) {
+					let downwindTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.navalWind, travellingHoursMinusRest)
+					let downwindVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew ?? 1, downwindTime[1], travellingHoursMinusRest);
+
 					let upwindTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.navalAgainstWind, travellingHoursMinusRest)
 					let upwindVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew ?? 1, upwindTime[1], travellingHoursMinusRest);
 
-					this.system.travel.travelTime = "Travelling with the wind: " + downwindTime[0];
-					this.system.travel.travelTime += "<br/>Travelling against the wind: " + upwindTime[0];
+					this.system.travel.travelTime += "Travelling with the wind: " + downwindTime[0] + "<br/>";
+					this.system.travel.travelTime += "Travelling against the wind: " + upwindTime[0];
 
-					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(downwindVehicleRunningCosts, "Travelling with the wind", cargoSpacePounds)
+					this.system.travel.travelCost += vehicleHelpers.getVehicleTravelCostOutput(downwindVehicleRunningCosts, "Travelling with the wind", cargoSpacePounds)
 					this.system.travel.travelCost += vehicleHelpers.getVehicleTravelCostOutput(upwindVehicleRunningCosts, "Travelling against the wind", cargoSpacePounds)
-				}
-				else {
-					this.system.travel.travelTime = downwindTime[0];
-					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(downwindVehicleRunningCosts)
 				}
 			}
 			else if (this.system.vehicle.craftType === "land") {
@@ -306,7 +307,7 @@ export class gurpsActor extends Actor {
 			else if (this.system.vehicle.craftType === "air") {
 				let airTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.air, travellingHoursMinusRest)
 				let airVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, airTime[1], travellingHoursMinusRest);
-				this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(airVehicleRunningCosts, cargoSpacePounds);
+				this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(airVehicleRunningCosts, undefined, cargoSpacePounds);
 				this.system.travel.travelTime = airTime[0]
 			}
 		}
@@ -333,6 +334,7 @@ export class gurpsActor extends Actor {
 		this.system.vehicle.range = this.system.vehicle.baseVehicle.range;
 		this.system.vehicle.baseCost = this.system.vehicle.baseVehicle.cost;
 		this.system.vehicle.skill.operatorSkillName = this.system.vehicle.baseVehicle.skill;
+		this.system.vehicle.upwindMultiplier = this.system.vehicle.baseVehicle.upwindMultiplier;
 
 		// Assume Motive Type
 		if (this.system.vehicle.baseVehicle.locations.includes("C") && this.system.vehicle.baseVehicle.locations.includes("R")) {
@@ -467,8 +469,8 @@ export class gurpsActor extends Actor {
 
 	calcWaterVehicleMove() {
 		if (this.system.vehicle.sailing) {
-			this.system.vehicle.move.navalAgainstWind = this.system.vehicle.move.navalWind * (this.system.vehicle.baseVehicle.upwindMultiplier ?? 0.5) // Default upwind move to half downwind move
-			this.system.vehicle.acceleration.navalAgainstWind = this.system.vehicle.acceleration.navalWind * (this.system.vehicle.baseVehicle.upwindMultiplier ?? 0.5) // Default upwind acceleration to half downwind acceleration
+			this.system.vehicle.move.navalAgainstWind = this.system.vehicle.move.navalWind * (this.system.vehicle.upwindMultiplier ?? 0.5) // Default upwind move to half downwind move
+			this.system.vehicle.acceleration.navalAgainstWind = this.system.vehicle.acceleration.navalWind * (this.system.vehicle.upwindMultiplier ?? 0.5) // Default upwind acceleration to half downwind acceleration
 		}
 		else {
 			this.system.vehicle.move.navalAgainstWind = this.system.vehicle.move.naval;

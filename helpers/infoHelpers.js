@@ -419,6 +419,33 @@ export class infoHelpers {
                 "</tr>" +
                 "</table>"
         }
+        else if (id === "simple-vehicle-sailing") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>Sailing vessels have two speeds, one when under sail, and another for their non-sailing movement.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
+        else if (id === "simple-vehicle-naval-powered-move") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>These are your movement values when using your non-sailing propulsion. That might mean oars, or a nuclear powerplant.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
+        else if (id === "simple-vehicle-naval-sail-move") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>These are your movement values when using your sails.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
         else if (id === "vehicle-chase-total-mod") {
             info = "<table>" +
                 "<tr>" +

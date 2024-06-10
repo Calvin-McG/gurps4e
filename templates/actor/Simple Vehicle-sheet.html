@@ -120,21 +120,23 @@
                 </td>
               </tr>
 
-              <tr class="design-row">
-                <td style="line-height: 27.5px">
-                  Terrain Quality
-                </td>
-                <td>
-                  <select style="width: 70%" name="system.travel.terrainQuality">
-                    {{selectOptions terrainQualities selected=actor.system.travel.terrainQuality}}
-                  </select>
-                </td>
-                <td class="question-container" id="travel-terrain-quality">
-                  <div class="question-button">
-                    <i class="fas fa-question"></i>
-                  </div>
-                </td>
-              </tr>
+              {{#if (eq actor.system.vehicle.craftType "land")}}
+                <tr class="design-row">
+                  <td style="line-height: 27.5px">
+                    Terrain Quality
+                  </td>
+                  <td>
+                    <select style="width: 70%" name="system.travel.terrainQuality">
+                      {{selectOptions terrainQualities selected=actor.system.travel.terrainQuality}}
+                    </select>
+                  </td>
+                  <td class="question-container" id="travel-terrain-quality">
+                    <div class="question-button">
+                      <i class="fas fa-question"></i>
+                    </div>
+                  </td>
+                </tr>
+              {{/if}}
             </table>
 
             <table>
@@ -311,6 +313,7 @@
                   </div>
                 </td>
               </tr>
+              {{#if (eq actor.system.vehicle.craftType "land")}}
               <tr class="design-row">
                 <td>Move</td>
                 <td style="display: flex">
@@ -327,6 +330,61 @@
                   </div>
                 </td>
               </tr>
+              {{else if (eq actor.system.vehicle.craftType "air")}}
+              <tr class="design-row">
+                <td>Move</td>
+                <td style="display: flex">
+                  <input name="system.vehicle.acceleration.air" type="number" value="{{actor.system.vehicle.acceleration.air}}" placeholder="3" />
+                  <span style="font-size: xx-large; padding: 0 0.2em;">/</span>
+                  <input name="system.vehicle.move.air" type="number" value="{{actor.system.vehicle.move.air}}" placeholder="30" />
+                </td>
+                <td class="question-container" id="moveInput">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              {{else if (eq actor.system.vehicle.craftType "water")}}
+              <tr class="design-row">
+                <td style="width: 100%">Is this a sailing vessel?</td>
+                <td>
+                  <input type="checkbox" name="system.vehicle.sailing" {{checked actor.system.vehicle.sailing}} data-dtype="Boolean" style="width: 3em;"/>
+                </td>
+                <td class="question-container" id="simple-vehicle-sailing">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              {{#if actor.system.vehicle.sailing}}
+              <tr class="design-row">
+                <td>Naval Sailing Movement</td>
+                <td style="display: flex">
+                  <input name="system.vehicle.acceleration.navalWind" type="number" value="{{actor.system.vehicle.acceleration.navalWind}}" placeholder="3" />
+                  <span style="font-size: xx-large; padding: 0 0.2em;">/</span>
+                  <input name="system.vehicle.move.navalWind" type="number" value="{{actor.system.vehicle.move.navalWind}}" placeholder="30" />
+                </td>
+                <td class="question-container" id="simple-vehicle-naval-sail-move">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              {{/if}}
+              <tr class="design-row">
+                <td>Naval Powered Movement</td>
+                <td style="display: flex">
+                  <input name="system.vehicle.acceleration.naval" type="number" value="{{actor.system.vehicle.acceleration.naval}}" placeholder="3" />
+                  <span style="font-size: xx-large; padding: 0 0.2em;">/</span>
+                  <input name="system.vehicle.move.naval" type="number" value="{{actor.system.vehicle.move.naval}}" placeholder="30" />
+                </td>
+                <td class="question-container" id="simple-vehicle-naval-powered-move">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              {{/if}}
               <tr class="design-row">
                 <td>Loaded Weight (Lwt.)</td>
                 <td style="display: flex">
