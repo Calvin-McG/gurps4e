@@ -72,7 +72,8 @@ export class gurpsActor extends Actor {
 
 	prepareSimpleVehicleData() {
 		this.checkUndefinedVehicles();
-
+		this.system.cost.costFactor = 1;
+		this.system.cost.finalCostMod = 0;
 		// This section splits up the logic between Pick and Custom
 		if (this.system.vehicle.method === "pick") {
 			this.loadBaseVehicles();
@@ -332,7 +333,7 @@ export class gurpsActor extends Actor {
 		this.system.vehicle.crew = this.system.vehicle.baseVehicle.crew;
 		this.system.vehicle.passengers = this.system.vehicle.baseVehicle.passengers;
 		this.system.vehicle.range = this.system.vehicle.baseVehicle.range;
-		this.system.vehicle.baseCost = this.system.vehicle.baseVehicle.cost;
+		this.system.cost.baseCost = this.system.vehicle.baseVehicle.cost;
 		this.system.vehicle.skill.operatorSkillName = this.system.vehicle.baseVehicle.skill;
 		this.system.vehicle.upwindMultiplier = this.system.vehicle.baseVehicle.upwindMultiplier;
 
@@ -546,7 +547,7 @@ export class gurpsActor extends Actor {
 	}
 
 	vehicleCost() {
-		this.system.vehicle.finalCost = this.system.vehicle.baseCost
+		this.system.cost.finalCost = (this.system.cost.baseCost * this.system.cost.costFactor) + this.system.cost.finalCostMod
 	}
 
 	// This method parses the location string and use the values to update the block of actual locations stored on the vehicle.
@@ -1051,6 +1052,15 @@ export class gurpsActor extends Actor {
 				"navalWind": 0,
 				"navalAgainstWind": 0,
 				"air": 0
+			}
+		}
+
+		if (typeof this.system.cost === "undefined") {
+			this.system.cost = {
+				"baseCost": 0,
+				"costFactor": 1,
+				"finalCost": 0,
+				"finalCostMod": 0
 			}
 		}
 
