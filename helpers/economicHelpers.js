@@ -1,5 +1,73 @@
 export class economicHelpers {
 
+    static getWealthLevels(){
+        return [
+            {
+                "Name": "Dead Broke",
+                "name": "dead broke",
+                "code": "deadbroke",
+                "points": -25,
+                "multiplier": 0
+            },
+            {
+                "Name": "Poor",
+                "name": "poor",
+                "code": "poor",
+                "points": -15,
+                "multiplier": 1/5
+            },
+            {
+                "Name": "Struggling",
+                "name": "struggling",
+                "code": "struggling",
+                "points": -10,
+                "multiplier": 1/2
+            },
+            {
+                "Name": "Average",
+                "name": "average",
+                "code": "average",
+                "points": 0,
+                "multiplier": 1
+            },
+            {
+                "Name": "Comfortable",
+                "name": "comfortable",
+                "code": "comfortable",
+                "points": 10,
+                "multiplier": 2
+            },
+            {
+                "Name": "Wealthy",
+                "name": "wealthy",
+                "code": "wealthy",
+                "points": 20,
+                "multiplier": 5
+            },
+            {
+                "Name": "Very Wealthy",
+                "name": "very wealthy",
+                "code": "verywealthy",
+                "points": 30,
+                "multiplier": 20
+            },
+            {
+                "Name": "Filthy Rich",
+                "name": "filthy rich",
+                "code": "filthyrich",
+                "points": 50,
+                "multiplier": 100
+            },
+            {
+                "Name": "Multimillionaire",
+                "name": "multimillionaire",
+                "code": "multimillionaire",
+                "points": 75,
+                "multiplier": 1000
+            }
+        ]
+    }
+
     static getColByStatus(status){
         let col = 0;
         switch(status) {
