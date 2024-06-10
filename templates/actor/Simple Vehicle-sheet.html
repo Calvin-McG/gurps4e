@@ -60,7 +60,10 @@
     {{!-- Sheet Tab Navigation --}}
     <nav id="tabselect" class="sheet-tabs tabs" data-group="primary">
       <div class="header">
-        <a class="item" data-tab="stats">Travel</a>
+        <a class="item" data-tab="stats">Notes</a>
+      </div>
+      <div class="header">
+        <a class="item" data-tab="travel">Travel</a>
       </div>
       <div class="header">
         <a class="item" data-tab="chase">Chase</a>
@@ -82,8 +85,16 @@
     {{!-- Sheet Body --}}
     <section class="sheet-body">
 
+      {{!-- Notes Tab --}}
+      <div class="tab stats" data-tab="stats" data-group="primary">
+        <h2 class="bold" style="text-align: center;">Notes</h2>
+        <div class="tab">
+          <textarea style="height: 100%; resize: none; min-height: 35em" name="system.biography">{{{actor.system.biography}}}</textarea>
+        </div>
+      </div>
+
       {{!-- Travel Tab --}}
-      <div class="tab travel" data-tab="stats" data-group="primary">
+      <div class="tab travel" data-tab="travel" data-group="primary">
         <div class="design-block">
           <!-- Start of left pane -->
           <div style="width: 50%;">
@@ -1045,6 +1056,23 @@
                 </td>
               </tr>
             </table>
+
+            <table>
+              <tr class="design-row">
+                <td>Thrust:</td>
+                <td>
+                  {{actor.system.vehicle.thr}}
+                  <label class="fa fa-dice-six rollable" data-level="{{actor.system.vehicle.thr}}"
+                         data-label="Makes a &lt;b&gt;Vehicle Thrust Damage&lt;/b&gt; roll." data-type="damage"></label>
+                </td>
+                <td class="question-container" id="vehicle-thr">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+            </table>
+
           </div>
           <!-- End of left pane, start of right pane -->
           <div style="width: 50%;">
