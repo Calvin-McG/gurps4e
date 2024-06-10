@@ -446,6 +446,24 @@ export class infoHelpers {
                 "</tr>" +
                 "</table>"
         }
+        else if (id === "travel-crew-wealth") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>The average wealth level being paid to the crew. Only impacts travel costs.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
+        else if (id === "travel-crew-tech") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>This only impacts the amount the crew is being paid, and has nothing to do with their ability to operate the vehicle.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
         else if (id === "simple-vehicle-naval-sail-move") {
             info = "<table>" +
                 "<tr>" +
