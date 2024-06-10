@@ -220,6 +220,7 @@ export class gurpsActor extends Actor {
 		this.system.vehicle.passengers = this.system.vehicle.baseVehicle.passengers;
 		this.system.vehicle.range = this.system.vehicle.baseVehicle.range;
 		this.system.vehicle.baseCost = this.system.vehicle.baseVehicle.cost;
+		this.system.vehicle.skill.operatorSkillName = this.system.vehicle.baseVehicle.skill;
 
 		// Assume Motive Type
 		if (this.system.vehicle.baseVehicle.locations.includes("C") && this.system.vehicle.baseVehicle.locations.includes("R")) {
