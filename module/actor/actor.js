@@ -53,6 +53,7 @@ export class gurpsActor extends Actor {
 				this.prepareSimpleVehicleData();
 				break;
 		}
+		this.setupEquipmentCategories();
 	}
 
 	checkUndefinedChase() {
@@ -67,6 +68,7 @@ export class gurpsActor extends Actor {
 
 	prepareSimpleVehicleData() {
 		this.checkUndefinedVehicles();
+
 		// This section splits up the logic between Pick and Custom
 		if (this.system.vehicle.method === "pick") {
 			this.loadBaseVehicles();
@@ -77,8 +79,10 @@ export class gurpsActor extends Actor {
 		else {
 			this.system.vehicle.baseVehicle = undefined;
 		}
-
 		this.system.reserves.hp.max = parseInt(this.system.vehicle.sthp);
+
+		// Total up the weight and value in the vehicle
+		this.sumWeightAndValue()
 
 		// Convert the ht code string to the set of bools on the ht object.
 		this.system.vehicle.ht.combustible = this.system.vehicle.ht.code.toString().toLowerCase().includes("c");
@@ -1336,7 +1340,7 @@ export class gurpsActor extends Actor {
 		this.recalcSenses();
 
 		// Set up categories for each type
-		this.setupCategories();
+		this.setupOtherCategories();
 
 		// Store the character's armour values for convenient use later.
 		this.storeArmour()
@@ -1348,6 +1352,9 @@ export class gurpsActor extends Actor {
 
 		// Update part specific HP
 		this.partHP();
+
+		// Update the total weight and value of everything on the sheet
+		this.sumWeightAndValue();
 
 		// Recalculate encumbrance values, along with effective dodge and move. Do this before info but after everything else so move and dodge is correct.
 		this.recalcEncValues();
@@ -2898,6 +2905,39 @@ export class gurpsActor extends Actor {
 		this.system.info.hiking.averageMoveYps = this.system.info.hiking.averageMoveMph / 2;
 	}
 
+	sumWeightAndValue() {
+		let carriedWeight = 0;
+		let carriedCost = 0;
+
+		// Running loop to total up weight and value for the sheet, and to gather the total number of RPM stuff prepared
+		for (let l = 0; l < this.items.contents.length; l++){
+			if (this.items.contents[l].system.equipStatus !== "notCarried" && // It's either carried or equipped
+				(this.items.contents[l].type === "Equipment" || // It's one of these item types.
+					this.items.contents[l].type === "Custom Weapon" ||
+					this.items.contents[l].type === "Custom Armour" ||
+					this.items.contents[l].type === "Custom Jewelry")){
+				carriedWeight = (+this.items.contents[l].system.weight * +this.items.contents[l].system.quantity) + +carriedWeight;
+				carriedCost = (+this.items.contents[l].system.cost * +this.items.contents[l].system.quantity) + +carriedCost;
+			}
+		}
+
+		carriedCost += +this.system.bio.money;
+
+		carriedWeight = Math.round(carriedWeight * 100) / 100;
+		carriedCost = Math.round(carriedCost * 100) / 100;
+
+		if (isNaN(carriedWeight)) {
+			carriedWeight = 0;
+		}
+		if (isNaN(carriedCost)) {
+			carriedCost = 0;
+		}
+
+		// Assign total weight and cost
+		this.system.bio.carriedWeight = carriedWeight;
+		this.system.bio.carriedValue = carriedCost
+	}
+
 	recalcEncValues() {
 		var st = this.system.primaryAttributes.lifting.value;
 
@@ -2918,8 +2958,6 @@ export class gurpsActor extends Actor {
 		var move = this.system.primaryAttributes.move.value;
 		var dodge = this.system.primaryAttributes.dodge.value;
 		let dodgeMod = 0;
-		var carriedWeight = 0;
-		var carriedCost = 0;
 		let finalDodge = 0;
 
 		if (this.system.enhanced.dodge){
@@ -2948,54 +2986,7 @@ export class gurpsActor extends Actor {
 		this.system.encumbrance.heavy.dodge	= Math.ceil((Math.max(dodge + dodgeMod - 3, 1)) * dodgeMultiplier);
 		this.system.encumbrance.xheavy.dodge	= Math.ceil((Math.max(dodge + dodgeMod - 4, 1)) * dodgeMultiplier);
 
-		// Running loop to total up weight and value for the sheet, and to gather the total number of RPM stuff prepared
-		this.system.rpm.totalConditional = 0;
-		this.system.rpm.totalElixir = 0;
-		for (let l = 0; l < this.items.contents.length; l++){
-			if (this.items.contents[l].system.equipStatus !== "notCarried" &&
-				(this.items.contents[l].type === "Equipment" ||
-				this.items.contents[l].type === "Custom Weapon" ||
-				this.items.contents[l].type === "Custom Armour" ||
-				this.items.contents[l].type === "Custom Jewelry")){
-				carriedWeight = (+this.items.contents[l].system.weight * +this.items.contents[l].system.quantity) + +carriedWeight;
-				carriedCost = (+this.items.contents[l].system.cost * +this.items.contents[l].system.quantity) + +carriedCost;
-			}
-
-			if (this.system.showRPM) { // If the RPM tab is enabled for the parent actor, total up the number of ritual types for each cap.
-				if (this.items.contents[l].type === "Ritual") {
-					if (this.items.contents[l].system.ritualType === "conditional" || this.items.contents[l].system.ritualType === "charm" || this.items.contents[l].system.ritualType === "conditionalCharm") {
-						this.system.rpm.totalConditional += this.items.contents[l].system.quantity;
-					}
-					else if (this.items.contents[l].system.ritualType === "elixir") {
-						let rpmElixirLimit = game.settings.get("gurps4e", "rpmElixirLimit"); // Get the rule that defines how elixirs are limited
-						if (rpmElixirLimit === "withConditional") {
-							this.system.rpm.totalConditional += this.items.contents[l].system.quantity;
-						}
-						else if (rpmElixirLimit === "byAlchemySkill") {
-							this.system.rpm.totalElixir += this.items.contents[l].system.quantity;
-						}
-					}
-				}
-			}
-		}
-
-		carriedCost += +this.system.bio.money;
-
-		carriedWeight = Math.round(carriedWeight * 100) / 100;
-		carriedCost = Math.round(carriedCost * 100) / 100;
-
-		if (isNaN(carriedWeight)) {
-			carriedWeight = 0;
-		}
-		if (isNaN(carriedCost)) {
-			carriedCost = 0;
-		}
-
-		// Assign total weight and cost
-		this.system.bio.carriedWeight = carriedWeight;
-		this.system.bio.carriedValue = carriedCost
-
-		if (carriedWeight <= this.system.encumbrance.none.lbs) {
+		if (this.system.bio.carriedWeight <= this.system.encumbrance.none.lbs) {
 			finalDodge = this.system.encumbrance.none.dodge;
 			this.system.encumbrance.current = {
 				ref: "none",
@@ -3005,7 +2996,7 @@ export class gurpsActor extends Actor {
 				penalty: 0
 			};
 		}
-		else if (carriedWeight <= this.system.encumbrance.light.lbs){
+		else if (this.system.bio.carriedWeight <= this.system.encumbrance.light.lbs){
 			finalDodge = this.system.encumbrance.light.dodge;
 			this.system.encumbrance.current = {
 				ref: "light",
@@ -3015,7 +3006,7 @@ export class gurpsActor extends Actor {
 				penalty: -1
 			};
 		}
-		else if (carriedWeight <= this.system.encumbrance.medium.lbs){
+		else if (this.system.bio.carriedWeight <= this.system.encumbrance.medium.lbs){
 			finalDodge = this.system.encumbrance.medium.dodge;
 			this.system.encumbrance.current = {
 				ref: "medium",
@@ -3025,7 +3016,7 @@ export class gurpsActor extends Actor {
 				penalty: -2
 			};
 		}
-		else if (carriedWeight <= this.system.encumbrance.heavy.lbs){
+		else if (this.system.bio.carriedWeight <= this.system.encumbrance.heavy.lbs){
 			finalDodge = this.system.encumbrance.heavy.dodge;
 			this.system.encumbrance.current = {
 				ref: "heavy",
@@ -3035,7 +3026,7 @@ export class gurpsActor extends Actor {
 				penalty: -3
 			};
 		}
-		else if (carriedWeight <= this.system.encumbrance.xheavy.lbs){
+		else if (this.system.bio.carriedWeight <= this.system.encumbrance.xheavy.lbs){
 			finalDodge = this.system.encumbrance.xheavy.dodge;
 			this.system.encumbrance.current = {
 				ref: "xheavy",
@@ -3157,20 +3148,35 @@ export class gurpsActor extends Actor {
 		this.system.points.displayTotal = unspent + +this.system.points.attributes + +this.system.points.traits + +this.system.points.skills + +this.system.points.spells + +this.system.points.path;
 	}
 
-	setupCategories() {
-		this.system.traitCategories = [];
+	setupEquipmentCategories() {
 		this.system.equipmentCategories = [];
+		this.system.equipmentCategories.push("");
+
+		for (let w = 0; w < this.items.contents.length; w++) {
+			if(this.items.contents[w].system.subCategory){
+				if(this.items.contents[w].system.subCategory.trim() != ""){ // If subcategory is not blank
+					if (this.items.contents[w].type == "Equipment" || this.items.contents[w].type == "Custom Weapon" || this.items.contents[w].type == "Custom Armour" || this.items.contents[w].type == "Custom Jewelry"){
+						if (!this.system.equipmentCategories.includes(this.items.contents[w].system.subCategory.trim())) {//Make sure the item array doesn't already contain the category.
+							this.system.equipmentCategories.push(this.items.contents[w].system.subCategory.trim())
+						}
+					}
+				}
+			}
+		}
+	}
+
+	setupOtherCategories() {
+		this.system.traitCategories = [];
 		this.system.rollableCategories = [];
 		this.system.spellCategories = [];
 
 		this.system.traitCategories.push("");
-		this.system.equipmentCategories.push("");
 		this.system.rollableCategories.push("");
 		this.system.spellCategories.push("");
 
 		for (let w = 0; w < this.items.contents.length; w++) {
 			if(this.items.contents[w].system.subCategory){
-				if(this.items.contents[w].system.subCategory.trim() != ""){//If subcategory is not blank
+				if(this.items.contents[w].system.subCategory.trim() != ""){ // If subcategory is not blank
 					if(this.items.contents[w].type == "Trait"){
 						if(!this.system.traitCategories.includes(this.items.contents[w].system.subCategory.trim())){//Make sure the trait array doesn't already contain the category.
 							this.system.traitCategories.push(this.items.contents[w].system.subCategory.trim())
@@ -3184,11 +3190,6 @@ export class gurpsActor extends Actor {
 					else if (this.items.contents[w].type == "Spell"){
 						if (!this.system.spellCategories.includes(this.items.contents[w].system.subCategory.trim())) {//Make sure the spell array doesn't already contain the category.
 							this.system.spellCategories.push(this.items.contents[w].system.subCategory.trim())
-						}
-					}
-					else if (this.items.contents[w].type == "Equipment" || this.items.contents[w].type == "Custom Weapon" || this.items.contents[w].type == "Custom Armour" || this.items.contents[w].type == "Custom Jewelry"){
-						if (!this.system.equipmentCategories.includes(this.items.contents[w].system.subCategory.trim())) {//Make sure the item array doesn't already contain the category.
-							this.system.equipmentCategories.push(this.items.contents[w].system.subCategory.trim())
 						}
 					}
 				}
@@ -3695,6 +3696,28 @@ export class gurpsActor extends Actor {
 				this.system.rpm.byAlchemySkill = false;
 
 				this.system.rpm.expiryDuration = (this.system.rpm.magery + this.system.rpm.uncappedAlchemySkillLevel) * 2; // We're limiting elixirs by expiration date, so calculate it here. Result is number of days
+			}
+
+			// Running loop to gather the total number of RPM stuff prepared
+			this.system.rpm.totalConditional = 0;
+			this.system.rpm.totalElixir = 0;
+			for (let l = 0; l < this.items.contents.length; l++){
+				if (this.system.showRPM) { // If the RPM tab is enabled for the parent actor, total up the number of ritual types for each cap.
+					if (this.items.contents[l].type === "Ritual") {
+						if (this.items.contents[l].system.ritualType === "conditional" || this.items.contents[l].system.ritualType === "charm" || this.items.contents[l].system.ritualType === "conditionalCharm") {
+							this.system.rpm.totalConditional += this.items.contents[l].system.quantity;
+						}
+						else if (this.items.contents[l].system.ritualType === "elixir") {
+							let rpmElixirLimit = game.settings.get("gurps4e", "rpmElixirLimit"); // Get the rule that defines how elixirs are limited
+							if (rpmElixirLimit === "withConditional") {
+								this.system.rpm.totalConditional += this.items.contents[l].system.quantity;
+							}
+							else if (rpmElixirLimit === "byAlchemySkill") {
+								this.system.rpm.totalElixir += this.items.contents[l].system.quantity;
+							}
+						}
+					}
+				}
 			}
 		}
 	}

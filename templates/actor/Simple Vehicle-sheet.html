@@ -1020,6 +1020,99 @@
         </div>
       </div>
 
+      {{!-- Items Tab --}}
+      <div id="items" class="tab items" data-tab="items" data-group="primary">
+        {{!-- List of Items --}}
+        <table class="items-list">
+          <tr class="bold">
+            <td class="item-image"></td>
+            <td class="item-name">Name</td>
+            <td class="item-notes">Notes</td>
+            <td class="item-title actor-sheet-digit-col">TL</td>
+            <td class="item-title actor-sheet-digit-col">LC</td>
+            <td class="item-title actor-sheet-digit-col">Qty</td>
+            <td class="item-title actor-sheet-digit-col">$</td>
+            <td class="item-title actor-sheet-digit-col">lbs</td>
+            <td class="item-title">Status</td>
+            <td class="item-controls"></td>
+          </tr>
+          {{#each actor.system.equipmentCategories as |category cat|}}
+          {{#unless (eq category "")}}
+          <tr class="item-header trait-category-header">
+            <td colspan="10">
+              <a class="accordion" id="e-accordion-clickable-{{category}}">{{category}}</a>
+            </td>
+          </tr>
+          {{/unless}}
+
+          {{#each ../items as |item id|}}
+          {{#if (or (eq type "Equipment") (eq type "Custom Weapon") (eq type "Custom Armour") (eq type "Custom Jewelry")) }}
+          {{#if (eq item.system.subCategory category)}}
+          <tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item._id}}">
+            <td class="item-image" style="width: 24px; padding: 0 !important; margin: 0 !important;">
+              <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
+            </td>
+            <td class="item-name"><span>{{item.name}}</span></td>
+            <td class="item-notes"><span>{{item.system.shortNotes}}</span></td>
+            <td class="actor-sheet-digit-col"><span>{{item.system.tl}}</span></td>
+            <td class="actor-sheet-digit-col"><span>{{item.system.lc}}</span></td>
+            <td class="actor-sheet-digit-col"><span>{{item.system.quantity}}</span></td>
+            <td class="actor-sheet-digit-col"><span>{{displayCurrency item.system.ttlCost}} $</span></td>
+            <td class="actor-sheet-digit-col"><span>{{round item.system.ttlWeight 100}} lb{{checkPlural item.system.ttlWeight}}</span></td>
+            <td style="width: 62px;"><span>{{equipStatusToString item.system.equipStatus}}</span></td>
+            <td class="item-controls" style="width: 30px;">
+              <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+              <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+            </td>
+          </tr>
+          {{/if}}
+          {{/if}}
+          {{/each}}
+          {{/each}}
+          <tr class="item-money">
+            <td class="item-image"></td>
+            <td class="item-name"><span></span></td>
+            <td class="item-notes"><span></span></td>
+            <td><span></span></td>
+            <td><span></span></td>
+            <td><span class="bold">Money:</span></td>
+            <td style="text-align: center;">
+							<span>
+								<input type="number" name="system.bio.money" style="width: 25%" value="{{actor.system.bio.money}}" data-dtype="Number" /> $
+							</span>
+            </td>
+            <td style="text-align: center;"><span></span></td>
+            <td><span></span></td>
+            <td class="item-controls"></td>
+          </tr>
+          <tr class="">
+            <td class="item-image"></td>
+            <td class="item-name"><span></span></td>
+            <td class="item-notes"><span></span></td>
+            <td><span></span></td>
+            <td><span></span></td>
+            <td><span class="bold">Totals:</span></td>
+            <td style="text-align: center;"><span>{{round actor.system.bio.carriedValue 100}} $</span></td>
+            <td style="text-align: center;"><span>{{round actor.system.bio.carriedWeight 100}} lb{{checkPlural actor.system.bio.carriedWeight}} / {{multiply actor.system.vehicle.weight.load 1 2000}} lbs</span></td>
+            <td><span></span></td>
+            <td class="item-controls"></td>
+          </tr>
+          <tr class="">
+            <td class="item-image"></td>
+            <td class="item-name"><span></span></td>
+            <td class="item-notes"><span></span></td>
+            <td><span></span></td>
+            <td><span></span></td>
+            <td><span class="bold"></span></td>
+            <td style="text-align: center;"><span></span></td>
+            <td style="text-align: center;"><span>{{divide actor.system.bio.carriedWeight 100 2000}} tons / {{round actor.system.vehicle.weight.load 100}} ton{{checkPlural actor.system.vehicle.weight.load}}</span></td>
+            <td><span></span></td>
+            <td class="item-controls"></td>
+          </tr>
+
+        </table>
+      </div>
+
     </section>
   </div>
 </form>
