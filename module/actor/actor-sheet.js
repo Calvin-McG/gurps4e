@@ -204,7 +204,7 @@ export class gurpsActorSheet extends ActorSheet {
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
 			classes: ["gurps4e", "sheet", "actor"],
-			width: 820,
+			width: 850,
 			height: 780,
 			tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "stats" }],
 			dragDrop: [
