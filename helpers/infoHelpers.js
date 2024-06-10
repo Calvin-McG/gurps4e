@@ -446,6 +446,15 @@ export class infoHelpers {
                 "</tr>" +
                 "</table>"
         }
+        else if (id === "base-vehicle-ref") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>This is where you can find the base vehicle's book entry.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
         else if (id === "vehicle-stall") {
             info = "<table>" +
                 "<tr>" +
