@@ -1175,7 +1175,8 @@
         "travellingHours": 8,
         "terrainQuality": "road",
         "crewWealthMult": 1,
-        "crewTL": 6
+        "crewTL": 6,
+        "cruise": 19
       }
     },
     "fullchar": {

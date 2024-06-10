@@ -455,6 +455,16 @@ export class infoHelpers {
                 "</tr>" +
                 "</table>"
         }
+        else if (id === "travel-cruising-speed") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>Ground vehicles generally don't spend their whole time at top speed. " +
+                "Cruising speed is your base move divided by 1.6</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
         else if (id === "vehicle-draft") {
             info = "<table>" +
                 "<tr>" +

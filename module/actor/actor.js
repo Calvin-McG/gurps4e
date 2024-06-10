@@ -275,36 +275,42 @@ export class gurpsActor extends Actor {
 			}
 			else if (this.system.vehicle.craftType === "land") {
 				if (this.system.travel.terrainQuality === "rail" || this.system.vehicle.land.railBound) {
+					this.system.travel.cruise = this.system.vehicle.move.rail / 1.6;
 					let railTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.rail, travellingHoursMinusRest)
 					this.system.travel.travelTime = railTime[0] + "<br/>";
 					let railVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system, railTime[1], travellingHoursMinusRest);
 					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(railVehicleRunningCosts, "Travelling by rail", cargoSpacePounds);
 				}
 				else if (this.system.travel.terrainQuality === "road") {
+					this.system.travel.cruise = this.system.vehicle.move.road / 1.6;
 					let roadTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.road, travellingHoursMinusRest)
 					this.system.travel.travelTime = roadTime[0] + "<br/>";
 					let roadVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system, roadTime[1], travellingHoursMinusRest);
 					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(roadVehicleRunningCosts, "Travelling by road", cargoSpacePounds);
 				}
 				else if (this.system.travel.terrainQuality === "good") {
+					this.system.travel.cruise = this.system.vehicle.move.good / 1.6;
 					let goodTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.good, travellingHoursMinusRest)
 					this.system.travel.travelTime = goodTime[0] + "<br/>";
 					let goodVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system, goodTime[1], travellingHoursMinusRest);
 					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(goodVehicleRunningCosts, "Travelling on good terrain", cargoSpacePounds);
 				}
 				else if (this.system.travel.terrainQuality === "average") {
+					this.system.travel.cruise = this.system.vehicle.move.average / 1.6;
 					let averageTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.average, travellingHoursMinusRest)
 					this.system.travel.travelTime = averageTime[0] + "<br/>";
 					let averageVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system, averageTime[1], travellingHoursMinusRest);
 					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(averageVehicleRunningCosts, "Travelling on average terrain", cargoSpacePounds);
 				}
 				else if (this.system.travel.terrainQuality === "bad") {
+					this.system.travel.cruise = this.system.vehicle.move.bad / 1.6;
 					let badTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.bad, travellingHoursMinusRest)
 					this.system.travel.travelTime = badTime[0] + "<br/>";
 					let badVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system, badTime[1], travellingHoursMinusRest);
 					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(badVehicleRunningCosts, "Travelling on bad terrain", cargoSpacePounds);
 				}
 				else if (this.system.travel.terrainQuality === "veryBad") {
+					this.system.travel.cruise = this.system.vehicle.move.veryBad / 1.6;
 					let veryBadTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.veryBad, travellingHoursMinusRest)
 					this.system.travel.travelTime = veryBadTime[0] + "<br/>";
 					let veryBadVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system, veryBadTime[1], travellingHoursMinusRest);
