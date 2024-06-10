@@ -408,6 +408,17 @@ export class infoHelpers {
                 "</tr>" +
                 "</table>"
         }
+        else if (id === "chase-wind-condition") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>For wind powered vehicles, traveling against the wind generally slows you down to about half your normal speed. " +
+                "What 'With' and 'Against' means varies per vehicle though. Large square rigged ships probably consider themselves to be against the wind at anything greater than 45 degrees, while " +
+                "Xebecs and other ships with wing-like sails could travel at full speed even at 135 degrees to the wind.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
         else if (id === "vehicle-chase-total-mod") {
             info = "<table>" +
                 "<tr>" +

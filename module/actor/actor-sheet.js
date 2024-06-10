@@ -32,8 +32,16 @@ export class gurpsActorSheet extends ActorSheet {
 			context.vehicleAnimalTypes = this.getVehicleAnimalTypes();
 			context.vehicleMotiveTypes = this.getVehicleMotiveTypes();
 			context.terrainQualities = this.getTerrainQualities();
+			context.chaseWindTypes = this.getChaseWindTypes();
 		}
 		return context;
+	}
+
+	getChaseWindTypes() {
+		return {
+			"with": "With the wind",
+			"against": "Against the wind"
+		}
 	}
 
 	getTerrainQualities() {

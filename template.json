@@ -8,7 +8,11 @@
       "chase": {
         "hndModifier": 0,
         "topSpeedBonus": 0,
-        "totalModifier": 0
+        "totalModifier": 0,
+        "acceleration": 0,
+        "move": 0,
+        "topSpeed": 0,
+        "windCondition": "with"
       },
       "vehicle": {
         "vehicle": {

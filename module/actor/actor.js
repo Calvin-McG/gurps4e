@@ -61,7 +61,11 @@ export class gurpsActor extends Actor {
 			this.system.chase = {
 				"hndModifier": 0,
 				"topSpeedBonus": 0,
-				"totalModifier": 0
+				"totalModifier": 0,
+				"acceleration": 0,
+				"move": 0,
+				"topSpeed": 0,
+				"windCondition": "with"
 			}
 		}
 	}
@@ -145,23 +149,58 @@ export class gurpsActor extends Actor {
 	vehicleChaseDetails() {
 		this.system.chase.hndModifier = parseInt(this.system.vehicle.hnd);
 
-		if (this.system.chase.terrainQuality === "rail") {
-			this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.rail));
+		if (this.system.vehicle.craftType === "land") {
+			if (this.system.chase.terrainQuality === "rail") {
+				this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.rail));
+				this.system.chase.move = this.system.vehicle.move.rail;
+			}
+			else if (this.system.chase.terrainQuality === "road") {
+				this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.road));
+				this.system.chase.move = this.system.vehicle.move.road;
+			}
+			else if (this.system.chase.terrainQuality === "good") {
+				this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.good));
+				this.system.chase.move = this.system.vehicle.move.good;
+			}
+			else if (this.system.chase.terrainQuality === "average") {
+				this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.average));
+				this.system.chase.move = this.system.vehicle.move.average;
+			}
+			else if (this.system.chase.terrainQuality === "bad") {
+				this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.bad));
+				this.system.chase.move = this.system.vehicle.move.bad;
+			}
+			else if (this.system.chase.terrainQuality === "veryBad") {
+				this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.veryBad));
+				this.system.chase.move = this.system.vehicle.move.veryBad;
+			}
+
+			this.system.chase.acceleration = this.system.vehicle.acceleration.ground;
 		}
-		else if (this.system.chase.terrainQuality === "road") {
-			this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.road));
+		else if (this.system.vehicle.craftType === "water") {
+			// First, store the base naval movement and acceleration as the defaults
+			let effectiveMove = this.system.vehicle.move.naval;
+			let effectiveAcceleration = this.system.vehicle.acceleration.naval;
+
+			// Then, if the results from the sailing stats would be higher, override with them
+			if (this.system.vehicle.sailing && this.system.chase.windCondition === "with") { // Sailing vessel with the wind
+				effectiveMove = Math.max(effectiveMove, this.system.vehicle.move.navalWind);
+				effectiveAcceleration = Math.max(effectiveAcceleration, this.system.vehicle.acceleration.navalWind)
+			}
+			else if (this.system.vehicle.sailing && this.system.chase.windCondition === "against") { // Sailing vessel against the wind
+				effectiveMove = Math.max(effectiveMove, this.system.vehicle.move.navalAgainstWind);
+				effectiveAcceleration = Math.max(effectiveAcceleration, this.system.vehicle.acceleration.navalAgainstWind)
+			}
+
+			// By this point we have the naval vessel's best options for acceleration and move, whether that be with or against the wind, or without sails at all.
+			this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(effectiveMove));
+			this.system.chase.move = effectiveMove;
+			this.system.chase.acceleration = effectiveAcceleration;
 		}
-		else if (this.system.chase.terrainQuality === "good") {
-			this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.good));
-		}
-		else if (this.system.chase.terrainQuality === "average") {
-			this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.average));
-		}
-		else if (this.system.chase.terrainQuality === "bad") {
-			this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.bad));
-		}
-		else if (this.system.chase.terrainQuality === "veryBad") {
-			this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.veryBad));
+		else if (this.system.vehicle.craftType === "air") {
+			this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.air));
+			this.system.chase.move = this.system.vehicle.move.air;
+			this.system.chase.acceleration = this.system.vehicle.acceleration.air;
 		}
 
 		this.system.chase.totalModifier = this.system.chase.hndModifier + this.system.chase.topSpeedBonus;
@@ -436,7 +475,7 @@ export class gurpsActor extends Actor {
 		}
 
 		this.system.vehicle.acceleration.output = Math.max(this.system.vehicle.acceleration.naval, this.system.vehicle.acceleration.navalWind);
-		this.system.vehicle.move.output = Math.max(this.system.vehicle.acceleration.naval, this.system.vehicle.acceleration.navalWind);
+		this.system.vehicle.move.output = Math.max(this.system.vehicle.move.naval, this.system.vehicle.move.navalWind);
 	}
 
 	calcGroundVehicleMove() {
