@@ -446,6 +446,24 @@ export class infoHelpers {
                 "</tr>" +
                 "</table>"
         }
+        else if (id === "vehicle-stall") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>An aircraft must maintain this minimum speed or begin to stall. A stall of 0 means the vehicle can hover in place.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
+        else if (id === "vehicle-draft") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>This is your vehicle's depth below the water-line in feet.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
         else if (id === "travel-crew-wealth") {
             info = "<table>" +
                 "<tr>" +

@@ -590,6 +590,8 @@ export class gurpsActor extends Actor {
 				{
 					"craftType": "land",
 					"propulsion": "powered",
+					"draft": 12,
+					"stall": 10,
 					"injuryToleranceExpected": true,
 					"animal": {
 						"location": "draft",

@@ -30,6 +30,11 @@
               <th class="simple-vehicle-shrink-column">Range</th>
               <th class="simple-vehicle-shrink-column">Cost</th>
               <th class="simple-vehicle-shrink-column">Locations</th>
+              {{#if (eq actor.system.vehicle.craftType "water")}}
+              <th class="simple-vehicle-shrink-column">Draft</th>
+              {{else if (eq actor.system.vehicle.craftType "air")}}
+              <th class="simple-vehicle-shrink-column">Stall</th>
+              {{/if}}
             </tr>
             <tr class="simple-vehicle-stat-row">
               <td>{{actor.system.bio.tl.value}}</td>
@@ -46,6 +51,11 @@
               <td>{{actor.system.vehicle.range}}</td>
               <td>{{displayCurrencyNoDecimals actor.system.cost.finalCost}}$</td>
               <td>{{actor.system.vehicle.locations}}</td>
+              {{#if (eq actor.system.vehicle.craftType "water")}}
+              <td>{{actor.system.vehicle.draft}} ft</td>
+              {{else if (eq actor.system.vehicle.craftType "air")}}
+              <td>{{actor.system.vehicle.stall}}</td>
+              {{/if}}
             </tr>
           </table>
         </div>
@@ -520,6 +530,34 @@
                   </div>
                 </td>
               </tr>
+              {{#if (eq actor.system.vehicle.craftType "water")}}
+              <tr class="design-row">
+                <td style="width: 100%">Draft</td>
+                <td style="display: flex">
+                  <input name="system.vehicle.draft" type="number" value="{{actor.system.vehicle.draft}}" placeholder="12" data-dtype="Number"/>
+                  <span style="font-weight: bold; font-size: large; padding-left: 1em;"> feet</span>
+                </td>
+                <td class="question-container" id="vehicle-draft">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              {{else if (eq actor.system.vehicle.craftType "air")}}
+              <tr class="design-row">
+                <td style="width: 100%">Stall Speed</td>
+                <td style="display: flex">
+                  <input name="system.vehicle.stall" type="number" value="{{actor.system.vehicle.stall}}" placeholder="10" data-dtype="Number"/>
+                  <span style="font-weight: bold; font-size: large; padding-left: 1em;"> yrd/s</span>
+                </td>
+                <td class="question-container" id="vehicle-stall">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              {{/if}}
+
             </table>
 
             <h2 class="bold" style="text-align: center;">Damage Resistance</h2>
