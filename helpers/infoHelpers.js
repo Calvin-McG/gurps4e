@@ -370,6 +370,53 @@ export class infoHelpers {
                 "</tr>" +
                 "</table>"
         }
+        else if (id === "vehicle-chase-handling") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>Per Action 2: Page 34.</p>" +
+                "<p>Handling directly modifies Chase rolls.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
+        else if (id === "vehicle-chase-speed-bonus") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>Per Action 2: Page 34.</p>" +
+                "<p>The vehicle's top speed gives a bonus to Chase rolls, based on that top speed compared against the SSR Table's 'Size' column.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
+        else if (id === "vehicle-chase-effective-move") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>This is your effective acceleration and move on the given terrain.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
+        else if (id === "vehicle-chase-effective-top-speed") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>This is your top speed on the given terrain.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
+        else if (id === "vehicle-chase-total-mod") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>Only includes modifiers intrinsic to the vehicle, not any bonuses from Area Knowledge or special maneuvers.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
         else if (id === "dr-method") {
             info = "<table>";
 

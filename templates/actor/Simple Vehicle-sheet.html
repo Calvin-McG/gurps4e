@@ -910,14 +910,100 @@
         <div class="design-block">
           <!-- Start of left pane -->
           <div style="width: 50%;">
-            <h2 class="bold" style="text-align: center;">A Header would be here</h2>
+            <h2 class="bold" style="text-align: center;">Chase Rolls</h2>
             <table>
               <tr class="design-row">
-                <td>A Label would be here</td>
+                <td>Handling Modifier:</td>
                 <td>
-                  An input would be here
+                  {{actor.system.chase.hndModifier}}
                 </td>
-                <td class="question-container" id="placeholder">
+                <td class="question-container" id="vehicle-chase-handling">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td style="line-height: 27.5px">
+                  Chase Terrain
+                </td>
+                <td>
+                  <select style="width: 70%" name="system.chase.terrainQuality">
+                    {{selectOptions terrainQualities selected=actor.system.chase.terrainQuality}}
+                  </select>
+                </td>
+                <td class="question-container" id="travel-terrain-quality">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Effective Acceleration / Move</td>
+                <td>
+                  {{round actor.system.vehicle.acceleration.ground 1}} /
+                  {{#if (eq actor.system.chase.terrainQuality "rail")}}
+                  {{round actor.system.vehicle.move.rail 1}}
+                  {{else if (eq actor.system.chase.terrainQuality "road")}}
+                  {{round actor.system.vehicle.move.road 1}}
+                  {{else if (eq actor.system.chase.terrainQuality "good")}}
+                  {{round actor.system.vehicle.move.good 10}}
+                  {{else if (eq actor.system.chase.terrainQuality "average")}}
+                  {{round actor.system.vehicle.move.average 10}}
+                  {{else if (eq actor.system.chase.terrainQuality "bad")}}
+                  {{round actor.system.vehicle.move.bad 100}}
+                  {{else if (eq actor.system.chase.terrainQuality "veryBad")}}
+                  {{round actor.system.vehicle.move.veryBad 100}}
+                  {{/if}} yards per second
+                </td>
+                <td class="question-container" id="vehicle-chase-effective-move">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Effective Top Speed</td>
+                <td>
+                  {{#if (eq actor.system.chase.terrainQuality "rail")}}
+                    {{multiply actor.system.vehicle.move.rail 1 2}}
+                  {{else if (eq actor.system.chase.terrainQuality "road")}}
+                    {{multiply actor.system.vehicle.move.road 1 2}}
+                  {{else if (eq actor.system.chase.terrainQuality "good")}}
+                    {{multiply actor.system.vehicle.move.good 10 2}}
+                  {{else if (eq actor.system.chase.terrainQuality "average")}}
+                    {{multiply actor.system.vehicle.move.average 10 2}}
+                  {{else if (eq actor.system.chase.terrainQuality "bad")}}
+                    {{multiply actor.system.vehicle.move.bad 100 2}}
+                  {{else if (eq actor.system.chase.terrainQuality "veryBad")}}
+                    {{multiply actor.system.vehicle.move.veryBad 100 2}}
+                  {{/if}} mph
+                </td>
+                <td class="question-container" id="vehicle-chase-effective-top-speed">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Speed Modifier:</td>
+                <td>
+                  {{#ifCond actor.system.chase.topSpeedBonus '>' 0}}+{{/ifCond}}
+                  {{actor.system.chase.topSpeedBonus}}
+                </td>
+                <td class="question-container" id="vehicle-chase-speed-bonus">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Total Modifier:</td>
+                <td>
+                  {{#ifCond actor.system.chase.totalModifier '>' 0}}+{{/ifCond}}
+                  {{actor.system.chase.totalModifier}}
+                </td>
+                <td class="question-container" id="vehicle-chase-total-mod">
                   <div class="question-button">
                     <i class="fas fa-question"></i>
                   </div>

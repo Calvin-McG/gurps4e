@@ -49,8 +49,19 @@ export class gurpsActor extends Actor {
 				this.prepareActorData();
 				break;
 			case "Simple Vehicle":
+				this.checkUndefinedChase();
 				this.prepareSimpleVehicleData();
 				break;
+		}
+	}
+
+	checkUndefinedChase() {
+		if (typeof this.system.chase === "undefined") {
+			this.system.chase = {
+				"hndModifier": 0,
+				"topSpeedBonus": 0,
+				"totalModifier": 0
+			}
 		}
 	}
 
@@ -91,7 +102,34 @@ export class gurpsActor extends Actor {
 			this.calcAirVehicleMove();
 		}
 
+		this.vehicleChaseDetails();
+
 		this.travelDetails();
+	}
+
+	vehicleChaseDetails() {
+		this.system.chase.hndModifier = parseInt(this.system.vehicle.hnd);
+
+		if (this.system.chase.terrainQuality === "rail") {
+			this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.rail));
+		}
+		else if (this.system.chase.terrainQuality === "road") {
+			this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.road));
+		}
+		else if (this.system.chase.terrainQuality === "good") {
+			this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.good));
+		}
+		else if (this.system.chase.terrainQuality === "average") {
+			this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.average));
+		}
+		else if (this.system.chase.terrainQuality === "bad") {
+			this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.bad));
+		}
+		else if (this.system.chase.terrainQuality === "veryBad") {
+			this.system.chase.topSpeedBonus = -1 * parseInt(distanceHelpers.distancePenalty(this.system.vehicle.move.veryBad));
+		}
+
+		this.system.chase.totalModifier = this.system.chase.hndModifier + this.system.chase.topSpeedBonus;
 	}
 
 	travelDetails() {

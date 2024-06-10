@@ -5,6 +5,11 @@
       "Simple Vehicle"
     ],
     "templates": {
+      "chase": {
+        "hndModifier": 0,
+        "topSpeedBonus": 0,
+        "totalModifier": 0
+      },
       "vehicle": {
         "vehicle": {
           "className": "",
@@ -1192,7 +1197,8 @@
         "cost",
         "vehicle",
         "reserves",
-        "travel"
+        "travel",
+        "chase"
       ]
     }
   },
