@@ -361,6 +361,15 @@ export class infoHelpers {
                 "</tr>" +
                 "</table>"
         }
+        else if (id === "travel-terrain-quality") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>For ground vehicles, specify the type of terrain you will be moving over.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
         else if (id === "dr-method") {
             info = "<table>";
 

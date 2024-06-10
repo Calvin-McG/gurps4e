@@ -1,5 +1,36 @@
 export class vehicleHelpers {
 
+    static getVehicleTravelCostOutput(downwindVehicleRunningCosts, label, cargoSpacePounds) {
+        let output = "<table>";
+
+        if (typeof label !== "undefined") {
+            output +="<tr><th colspan='2'>" + label + "</th></tr>";
+        }
+
+        output += "<tr><td>Maintenance Costs</td><td>"  + Math.floor(downwindVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
+            "<tr><td>Crew Salaries</td><td>"      + Math.floor(downwindVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
+            "<tr><td>Provisions Cost</td><td>"    + Math.floor(downwindVehicleRunningCosts.provisionsCost * 100) / 100 + " $</td></tr>" +
+            "<tr><td style='font-weight: bold'>Total Running Costs</td><td style='font-weight: bold'>" + Math.floor((downwindVehicleRunningCosts.maintenance + downwindVehicleRunningCosts.crewPay + downwindVehicleRunningCosts.provisionsCost) * 100) / 100 + " $</td></tr>" +
+            "<tr><td>Provisions Weight</td><td>"  + Math.floor(downwindVehicleRunningCosts.provisionsWeight * 100) / 100 + " lbs</td></tr>" +
+            "<tr><td>Free Cargo Space</td><td>"   + Math.floor((cargoSpacePounds - downwindVehicleRunningCosts.provisionsWeight) * 100) / 100 + " lbs</td></tr>" +
+            "</table>";
+
+        return output;
+    }
+
+    static getVehicleRunningTime(distanceInMiles, move, travellingHoursMinusRest) {
+        let downwindHoursDecimal = 0;
+        let downwindDays = 0;
+        let downwindHours = 0;
+        let downwindMinutes = 0;
+
+        downwindHoursDecimal = (distanceInMiles / move * 2);
+        downwindDays = Math.floor(downwindHoursDecimal / travellingHoursMinusRest);
+        downwindHours = Math.floor(downwindHoursDecimal - (downwindDays * travellingHoursMinusRest));
+        downwindMinutes = Math.floor((downwindHoursDecimal - Math.floor(downwindHoursDecimal)) * 60);
+        return [downwindDays + " days, " + downwindHours + " hours, " + downwindMinutes + " minutes.", downwindHoursDecimal];
+    }
+
     // This method uses the rules from Pyramid 3/95 page 18
     static getVehicleRunningCosts(vehicleCost, crewSize, journeyLength, travellingHours){
         let costs = {

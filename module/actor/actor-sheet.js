@@ -31,8 +31,26 @@ export class gurpsActorSheet extends ActorSheet {
 			context.vehicleAnimalLocations = this.getVehicleAnimalLocations();
 			context.vehicleAnimalTypes = this.getVehicleAnimalTypes();
 			context.vehicleMotiveTypes = this.getVehicleMotiveTypes();
+			context.terrainQualities = this.getTerrainQualities();
 		}
 		return context;
+	}
+
+	getTerrainQualities() {
+		let terrainQualities = {
+			"rail": "Rail"
+		}
+
+		// Only non-railbound vehicles can select non-rail terrain types.
+		if (this.actor.system.vehicle && this.actor.system.vehicle.land && !this.actor.system.vehicle.land.railBound) {
+			terrainQualities.road = "Road";
+			terrainQualities.good = "Good";
+			terrainQualities.average = "Average";
+			terrainQualities.bad = "Bad";
+			terrainQualities.veryBad = "Very Bad";
+		}
+
+		return terrainQualities;
 	}
 
 	getVehicleMotiveTypes() {

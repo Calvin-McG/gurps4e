@@ -135,185 +135,75 @@ export class gurpsActor extends Actor {
 			let cargoSpacePounds = this.system.vehicle.weight.load * 2000;
 
 			if (this.system.vehicle.craftType === "water") {
-				let downwindTime = "";
-
-				let downwindHoursDecimal = 0;
-				let downwindDays = 0;
-				let downwindHours = 0;
-				let downwindMinutes = 0;
-
-				downwindHoursDecimal = (distanceInMiles / this.system.vehicle.move.navalWind * 2);
-				downwindDays = Math.floor(downwindHoursDecimal / travellingHoursMinusRest);
-				downwindHours = Math.floor(downwindHoursDecimal - (downwindDays * travellingHoursMinusRest));
-				downwindMinutes = Math.floor((downwindHoursDecimal - Math.floor(downwindHoursDecimal)) * 60);
-				downwindTime = downwindDays + " days, " + downwindHours + " hours, " + downwindMinutes + " minutes.";
-
-				let downwindVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew ?? 1, downwindHoursDecimal, travellingHoursMinusRest);
+				let downwindTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.navalWind, travellingHoursMinusRest)
+				let downwindVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew ?? 1, downwindTime[1], travellingHoursMinusRest);
 
 				if (this.system.vehicle.sailing) {
-					let upwindTime = "";
-					let upwindHoursDecimal = 0;
-					let upwindDays = 0;
-					let upwindHours = 0;
-					let upwindMinutes = 0;
+					let upwindTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.navalAgainstWind, travellingHoursMinusRest)
+					let upwindVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew ?? 1, upwindTime[1], travellingHoursMinusRest);
 
-					upwindHoursDecimal = (distanceInMiles / (this.system.vehicle.navalAgainstWind * 2));
-					upwindDays = Math.floor(upwindHoursDecimal / travellingHoursMinusRest);
-					upwindHours = Math.floor(upwindHoursDecimal - (upwindDays * travellingHoursMinusRest));
-					upwindMinutes = Math.floor((upwindHoursDecimal - Math.floor(upwindHoursDecimal)) * 60);
-					upwindTime = upwindDays + " days, " + upwindHours + " hours, " + upwindMinutes + " minutes.";
+					this.system.travel.travelTime = "Travelling with the wind: " + downwindTime[0];
+					this.system.travel.travelTime += "<br/>Travelling against the wind: " + upwindTime[0];
 
-					this.system.travel.travelTime = "Travelling with the wind: " + downwindTime;
-					this.system.travel.travelTime += "<br/>Travelling against the wind: " + upwindTime;
-
-					let upwindVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, upwindHoursDecimal, travellingHoursMinusRest);
-
-					this.system.travel.travelCost = "<table>" +
-						"<tr><th colspan='2'>Travelling with the wind</th></tr>" +
-						"<tr><td>Maintenance Costs</td><td>"  + Math.floor(downwindVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
-						"<tr><td>Crew Salaries</td><td>"      + Math.floor(downwindVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
-						"<tr><td>Provisions Cost</td><td>"    + Math.floor(downwindVehicleRunningCosts.provisionsCost * 100) / 100 + " $</td></tr>" +
-						"<tr><td style='font-weight: bold'>Total Running Costs</td><td style='font-weight: bold'>" + Math.floor((downwindVehicleRunningCosts.maintenance + downwindVehicleRunningCosts.crewPay + downwindVehicleRunningCosts.provisionsCost) * 100) / 100 + " $</td></tr>" +
-						"<tr><td>Provisions Weight</td><td>"  + Math.floor(downwindVehicleRunningCosts.provisionsWeight * 100) / 100 + " lbs</td></tr>" +
-						"<tr><td>Free Cargo Space</td><td>"   + Math.floor((cargoSpacePounds - downwindVehicleRunningCosts.provisionsWeight) * 100) / 100 + " lbs</td></tr>" +
-						"</table>";
-
-					this.system.travel.travelCost += "<table>" +
-						"<tr><th colspan='2'>Travelling against the wind</th></tr>" +
-						"<tr><td>Maintenance Costs</td><td>"  + Math.floor(upwindVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
-						"<tr><td>Crew Salaries</td><td>"      + Math.floor(upwindVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
-						"<tr><td>Provisions Cost</td><td>"    + Math.floor(upwindVehicleRunningCosts.provisionsCost * 100) / 100 + " $</td></tr>" +
-						"<tr><td style='font-weight: bold'>Total Running Costs</td><td style='font-weight: bold'>" + Math.floor((upwindVehicleRunningCosts.maintenance + upwindVehicleRunningCosts.crewPay + upwindVehicleRunningCosts.provisionsCost) * 100) / 100 + " $</td></tr>" +
-						"<tr><td>Provisions Weight</td><td>"  + Math.floor(upwindVehicleRunningCosts.provisionsWeight * 100) / 100 + " lbs</td></tr>" +
-						"<tr><td>Free Cargo Space</td><td>"   + Math.floor((cargoSpacePounds - upwindVehicleRunningCosts.provisionsWeight) * 100) / 100 + " lbs</td></tr>" +
-						"<tr><td></td><td></td></tr>" +
-						"</table>";
-
+					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(downwindVehicleRunningCosts, "Travelling with the wind", cargoSpacePounds)
+					this.system.travel.travelCost += vehicleHelpers.getVehicleTravelCostOutput(upwindVehicleRunningCosts, "Travelling against the wind", cargoSpacePounds)
 				}
 				else {
-					this.system.travel.travelTime = downwindTime;
-
-					this.system.travel.travelCost = "<table>" +
-						"<tr><td>Maintenance Costs</td><td>"  + Math.floor(downwindVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
-						"<tr><td>Crew Salaries</td><td>"      + Math.floor(downwindVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
-						"<tr><td>Provisions Cost</td><td>"    + Math.floor(downwindVehicleRunningCosts.provisionsCost * 100) / 100 + " $</td></tr>" +
-						"<tr><td style='font-weight: bold'>Total Running Costs</td><td style='font-weight: bold'>" + Math.floor((downwindVehicleRunningCosts.maintenance + downwindVehicleRunningCosts.crewPay + downwindVehicleRunningCosts.provisionsCost) * 100) / 100 + " $</td></tr>" +
-						"<tr><td>Provisions Weight</td><td>"  + Math.floor(downwindVehicleRunningCosts.provisionsWeight * 100) / 100 + " lbs</td></tr>" +
-						"<tr><td>Free Cargo Space</td><td>"   + Math.floor((cargoSpacePounds - downwindVehicleRunningCosts.provisionsWeight) * 100) / 100 + " lbs</td></tr>" +
-						"</table>";
+					this.system.travel.travelTime = downwindTime[0];
+					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(downwindVehicleRunningCosts)
 				}
 			}
 			else if (this.system.vehicle.craftType === "land") {
-				let roadTime = "";
-
-				let roadHoursDecimal = 0;
-				let roadDays = 0;
-				let roadHours = 0;
-				let roadMinutes = 0;
-				this.system.travel.travelCost = "";
-
-				roadHoursDecimal = (distanceInMiles / (this.system.vehicle.move.road * 2));
-				roadDays = Math.floor(roadHoursDecimal / travellingHoursMinusRest);
-				roadHours = Math.floor(roadHoursDecimal - (roadDays * travellingHoursMinusRest));
-				roadMinutes = Math.floor((roadHoursDecimal - Math.floor(roadHoursDecimal)) * 60);
-				roadTime = "Travelling by road: " + roadDays + " days, " + roadHours + " hours, " + roadMinutes + " minutes.";
-
-				let roadVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, roadHoursDecimal, travellingHoursMinusRest);
-
-				this.system.travel.travelCost += "<table>" +
-					"<tr><th colspan='2'>Travelling by road</th></tr>" +
-					"<tr><td>Maintenance Costs</td><td>"  + Math.floor(roadVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
-					"<tr><td>Crew Salaries</td><td>"      + Math.floor(roadVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
-					"<tr><td>Provisions Cost</td><td>"    + Math.floor(roadVehicleRunningCosts.provisionsCost * 100) / 100 + " $</td></tr>" +
-					"<tr><td style='font-weight: bold'>Total Running Costs</td><td style='font-weight: bold'>" + Math.floor((roadVehicleRunningCosts.maintenance + roadVehicleRunningCosts.crewPay + roadVehicleRunningCosts.provisionsCost) * 100) / 100 + " $</td></tr>" +
-					"<tr><td>Provisions Weight</td><td>"  + Math.floor(roadVehicleRunningCosts.provisionsWeight * 100) / 100 + " lbs</td></tr>" +
-					"<tr><td>Free Cargo Space</td><td>"   + Math.floor((cargoSpacePounds - roadVehicleRunningCosts.provisionsWeight) * 100) / 100 + " lbs</td></tr>" +
-					"<tr><td></td><td></td></tr>" +
-					"</table>";
-
-				let goodTime = "";
-
-				let goodHoursDecimal = 0;
-				let goodDays = 0;
-				let goodHours = 0;
-				let goodMinutes = 0;
-
-				goodHoursDecimal = (distanceInMiles / (this.system.vehicle.move.good * 2));
-				goodDays = Math.floor(goodHoursDecimal / travellingHoursMinusRest);
-				goodHours = Math.floor(goodHoursDecimal - (goodDays * travellingHoursMinusRest));
-				goodMinutes = Math.floor((goodHoursDecimal - Math.floor(goodHoursDecimal)) * 60);
-				goodTime = "Travelling on good terrain: " + goodDays + " days, " + goodHours + " hours, " + goodMinutes + " minutes.";
-
-				let goodVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, goodHoursDecimal, travellingHoursMinusRest);
-
-				this.system.travel.travelCost += "<table>" +
-					"<tr><th colspan='2'>Travelling on good terrain</th></tr>" +
-					"<tr><td>Maintenance Costs</td><td>"  + Math.floor(goodVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
-					"<tr><td>Crew Salaries</td><td>"      + Math.floor(goodVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
-					"<tr><td>Provisions Cost</td><td>"    + Math.floor(goodVehicleRunningCosts.provisionsCost * 100) / 100 + " $</td></tr>" +
-					"<tr><td style='font-weight: bold'>Total Running Costs</td><td style='font-weight: bold'>" + Math.floor((goodVehicleRunningCosts.maintenance + goodVehicleRunningCosts.crewPay + goodVehicleRunningCosts.provisionsCost) * 100) / 100 + " $</td></tr>" +
-					"<tr><td>Provisions Weight</td><td>"  + Math.floor(goodVehicleRunningCosts.provisionsWeight * 100) / 100 + " lbs</td></tr>" +
-					"<tr><td>Free Cargo Space</td><td>"   + Math.floor((cargoSpacePounds - goodVehicleRunningCosts.provisionsWeight) * 100) / 100 + " lbs</td></tr>" +
-					"<tr><td></td><td></td></tr>" +
-					"</table>";
-
-				let averageTime = "";
-
-				let averageHoursDecimal = 0;
-				let averageDays = 0;
-				let averageHours = 0;
-				let averageMinutes = 0;
-
-				averageHoursDecimal = (distanceInMiles / (this.system.vehicle.move.average * 2));
-				averageDays = Math.floor(averageHoursDecimal / travellingHoursMinusRest);
-				averageHours = Math.floor(averageHoursDecimal - (averageDays * travellingHoursMinusRest));
-				averageMinutes = Math.floor((averageHoursDecimal - Math.floor(averageHoursDecimal)) * 60);
-				averageTime = "Travelling on average terrain: " + averageDays + " days, " + averageHours + " hours, " + averageMinutes + " minutes.";
-
-				let averageVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, averageHoursDecimal, travellingHoursMinusRest);
-
-				this.system.travel.travelCost += "<table>" +
-					"<tr><th colspan='2'>Travelling on average terrain</th></tr>" +
-					"<tr><td>Maintenance Costs</td><td>"  + Math.floor(averageVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
-					"<tr><td>Crew Salaries</td><td>"      + Math.floor(averageVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
-					"<tr><td>Provisions Cost</td><td>"    + Math.floor(averageVehicleRunningCosts.provisionsCost * 100) / 100 + " $</td></tr>" +
-					"<tr><td style='font-weight: bold'>Total Running Costs</td><td style='font-weight: bold'>" + Math.floor((averageVehicleRunningCosts.maintenance + averageVehicleRunningCosts.crewPay + averageVehicleRunningCosts.provisionsCost) * 100) / 100 + " $</td></tr>" +
-					"<tr><td>Provisions Weight</td><td>"  + Math.floor(averageVehicleRunningCosts.provisionsWeight * 100) / 100 + " lbs</td></tr>" +
-					"<tr><td>Free Cargo Space</td><td>"   + Math.floor((cargoSpacePounds - averageVehicleRunningCosts.provisionsWeight) * 100) / 100 + " lbs</td></tr>" +
-					"<tr><td></td><td></td></tr>" +
-					"</table>";
-
-				this.system.travel.travelTime = roadTime + "<br/>" + goodTime + "<br/>" + averageTime;
-
+				if (this.system.travel.terrainQuality === "rail" || this.system.vehicle.land.railBound) {
+					if (this.system.vehicle.land.railBound) { // Railbound vehicles have a proper rail move
+						let railTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.rail, travellingHoursMinusRest)
+						this.system.travel.travelTime = railTime[0] + "<br/>";
+						let railVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, railTime[1], travellingHoursMinusRest);
+						this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(railVehicleRunningCosts, "Travelling by rail", cargoSpacePounds);
+					}
+					else { // Other vehicles treat railways as good terrain
+						let goodTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.good, travellingHoursMinusRest)
+						this.system.travel.travelTime = goodTime[0] + "<br/>";
+						let goodVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, goodTime[1], travellingHoursMinusRest);
+						this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(goodVehicleRunningCosts, "Travelling on along railways", cargoSpacePounds);
+					}
+				}
+				else if (this.system.travel.terrainQuality === "road") {
+					let roadTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.road, travellingHoursMinusRest)
+					this.system.travel.travelTime = roadTime[0] + "<br/>";
+					let roadVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, roadTime[1], travellingHoursMinusRest);
+					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(roadVehicleRunningCosts, "Travelling by road", cargoSpacePounds);
+				}
+				else if (this.system.travel.terrainQuality === "good") {
+					let goodTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.good, travellingHoursMinusRest)
+					this.system.travel.travelTime = goodTime[0] + "<br/>";
+					let goodVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, goodTime[1], travellingHoursMinusRest);
+					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(goodVehicleRunningCosts, "Travelling on good terrain", cargoSpacePounds);
+				}
+				else if (this.system.travel.terrainQuality === "average") {
+					let averageTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.average, travellingHoursMinusRest)
+					this.system.travel.travelTime = averageTime[0] + "<br/>";
+					let averageVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, averageTime[1], travellingHoursMinusRest);
+					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(averageVehicleRunningCosts, "Travelling on average terrain", cargoSpacePounds);
+				}
+				else if (this.system.travel.terrainQuality === "bad") {
+					let badTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.bad, travellingHoursMinusRest)
+					this.system.travel.travelTime = badTime[0] + "<br/>";
+					let badVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, badTime[1], travellingHoursMinusRest);
+					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(badVehicleRunningCosts, "Travelling on bad terrain", cargoSpacePounds);
+				}
+				else if (this.system.travel.terrainQuality === "veryBad") {
+					let veryBadTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.veryBad, travellingHoursMinusRest)
+					this.system.travel.travelTime = veryBadTime[0] + "<br/>";
+					let veryBadVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, veryBadTime[1], travellingHoursMinusRest);
+					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(veryBadVehicleRunningCosts, "Travelling on very bad terrain", cargoSpacePounds);
+				}
 			}
 			else if (this.system.vehicle.craftType === "air") {
-				let airTime = "";
-
-				let airHoursDecimal = 0;
-				let airDays = 0;
-				let airHours = 0;
-				let airMinutes = 0;
-
-				airHoursDecimal = (distanceInMiles / (this.system.vehicle.move.air * 2));
-				airDays = Math.floor(airHoursDecimal / travellingHoursMinusRest);
-				airHours = Math.floor(airHoursDecimal - (airDays * travellingHoursMinusRest));
-				airMinutes = Math.floor((airHoursDecimal - Math.floor(airHoursDecimal)) * 60);
-				airTime = airDays + " days, " + airHours + " hours, " + airMinutes + " minutes.";
-
-				let airVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, airHoursDecimal, travellingHoursMinusRest);
-
-				this.system.travel.travelCost += "<table>" +
-					"<tr><th colspan='2'>Travelling by road</th></tr>" +
-					"<tr><td>Maintenance Costs</td><td>"  + Math.floor(airVehicleRunningCosts.maintenance * 100) / 100 + " $</td></tr>" +
-					"<tr><td>Crew Salaries</td><td>"      + Math.floor(airVehicleRunningCosts.crewPay * 100) / 100 + " $</td></tr>" +
-					"<tr><td>Provisions Cost</td><td>"    + Math.floor(airVehicleRunningCosts.provisionsCost * 100) / 100 + " $</td></tr>" +
-					"<tr><td style='font-weight: bold'>Total Running Costs</td><td style='font-weight: bold'>" + Math.floor((airVehicleRunningCosts.maintenance + airVehicleRunningCosts.crewPay + airVehicleRunningCosts.provisionsCost) * 100) / 100 + " $</td></tr>" +
-					"<tr><td>Provisions Weight</td><td>"  + Math.floor(airVehicleRunningCosts.provisionsWeight * 100) / 100 + " lbs</td></tr>" +
-					"<tr><td>Free Cargo Space</td><td>"   + Math.floor((cargoSpacePounds - airVehicleRunningCosts.provisionsWeight) * 100) / 100 + " lbs</td></tr>" +
-					"<tr><td></td><td></td></tr>" +
-					"</table>";
-
-				this.system.travel.travelTime = airTime;
+				let airTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.air, travellingHoursMinusRest)
+				let airVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, airTime[1], travellingHoursMinusRest);
+				this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(airVehicleRunningCosts, cargoSpacePounds);
+				this.system.travel.travelTime = airTime[0]
 			}
 		}
 		else {
@@ -1382,6 +1272,7 @@ export class gurpsActor extends Actor {
 				"travelTime": "",
 				"travelCost": "",
 				"travellingHours": 8,
+				"terrainQuality": "road"
 			}
 		}
 	}

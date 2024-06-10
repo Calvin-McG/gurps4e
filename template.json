@@ -1160,7 +1160,8 @@
         "distance": 1,
         "travelTime": "",
         "travelCost": "",
-        "travellingHours": 8
+        "travellingHours": 8,
+        "terrainQuality": "road"
       }
     },
     "fullchar": {
