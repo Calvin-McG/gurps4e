@@ -395,7 +395,8 @@ export class gurpsActor extends Actor {
 		}
 		else if (this.system.vehicle.baseVehicle.air) {
 			this.system.vehicle.craftType = "air";
-			this.system.vehicle.move.ground = parseFloat(this.system.vehicle.baseVehicle.moveAir); // Save the base vehicle's air move to the input
+			this.system.vehicle.move.air = parseFloat(this.system.vehicle.baseVehicle.moveAir); // Save the base vehicle's air move to the input
+			this.system.vehicle.acceleration.air = this.system.vehicle.baseVehicle.accelerationAir ?? this.system.vehicle.baseVehicle.acceleration ?? 0;
 		}
 
 		// Weight Related Info
