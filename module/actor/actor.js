@@ -92,6 +92,7 @@ export class gurpsActor extends Actor {
 		// This section is for logic that applies to both methods
 		this.vehicleWeightHandling();
 
+		this.clearLocationCounts(); // Set all location counts to zero in preparation for them being reset.
 		this.assessLocations(); // Go through the location string and use the values to update the block of actual locations stored on the vehicle.
 		this.vehicleCost();
 
@@ -109,6 +110,36 @@ export class gurpsActor extends Actor {
 		this.vehicleChaseDetails();
 
 		this.travelDetails();
+	}
+
+	clearLocationCounts() {
+		this.system.vehicle.loc.B.count = 1;
+		this.system.vehicle.loc.A.count = 0;
+		this.system.vehicle.loc.C.count = 0;
+		this.system.vehicle.loc.D.count = 0;
+		this.system.vehicle.loc.E.count = 0;
+		this.system.vehicle.loc.G.count = 0;
+		this.system.vehicle.loc.g.count = 0;
+		this.system.vehicle.loc.H.count = 0;
+		this.system.vehicle.loc.L.count = 0;
+		this.system.vehicle.loc.M.count = 0;
+		this.system.vehicle.loc.O.count = 0;
+		this.system.vehicle.loc.R.count = 0;
+		this.system.vehicle.loc.S.count = 0;
+		this.system.vehicle.loc.s.count = 0;
+		this.system.vehicle.loc.T.count = 0;
+		this.system.vehicle.loc.t.count = 0;
+		this.system.vehicle.loc.W.count = 0;
+		this.system.vehicle.loc.Wi.count = 0;
+		this.system.vehicle.loc.X.count = 0;
+
+		// Either it's unpowered but the injury tolerance is not what is expected, OR, it's powered and the injury tolerance is what is expected.
+		if ((this.system.vehicle.sthpCode.includes("†") && !this.system.vehicle.injuryToleranceExpected) || (!this.system.vehicle.sthpCode.includes("†") && this.system.vehicle.injuryToleranceExpected)) {
+			this.system.vehicle.loc.V.count = 1;
+		}
+		else {
+			this.system.vehicle.loc.V.count = 0;
+		}
 	}
 
 	vehicleChaseDetails() {
@@ -251,7 +282,7 @@ export class gurpsActor extends Actor {
 		this.system.bio.sm.value = parseInt(this.system.vehicle.baseVehicle.sm);
 		this.system.vehicle.ht.code = this.system.vehicle.baseVehicle.htCodes ?? "";
 		this.system.vehicle.sthp = this.system.vehicle.baseVehicle.sthp ?? generalHelpers.calculateHPFromWeight(this.system.vehicle.baseVehicle.loadedWeight);
-		this.system.vehicle.sthpCode = this.system.vehicle.baseVehicle.sthpCode === "T" ? "†" : this.system.vehicle.baseVehicle.sthpCode;
+		this.system.vehicle.sthpCode = this.system.vehicle.baseVehicle.sthpCode === "T" ? "†" : this.system.vehicle.baseVehicle.sthpCode ?? "";
 		this.system.vehicle.hnd = this.system.vehicle.baseVehicle.hnd;
 		this.system.vehicle.sr = this.system.vehicle.baseVehicle.sr;
 		this.system.vehicle.ht.value = this.system.vehicle.baseVehicle.ht ?? 11;
@@ -488,8 +519,8 @@ export class gurpsActor extends Actor {
 			}
 			let count = isNaN(parseInt(locationString)) ? 1 : parseInt(locationString); // parseInt will take only the number at the start of the string and discard the rest. If it comes through NaN, then there was no number, so treat it as one.
 			let locationCode = locationString.replace(count.toString(), ""); // Replace the number we just fetched with nothing. If it doesn't match, like if we retrieved a 1, that's fine because nothing happens.
-			let locationObject = foundry.utils.getProperty(this.system.vehicle.loc,locationCode) // Get the object matching the location we're currently itterating over.
-			locationObject.count += count; // It might be that a location string is entered twice. If so, make sure to include both counts in our total.
+			let locationObject = foundry.utils.getProperty(this.system.vehicle.loc,locationCode) // Get the object matching the location we're currently iterating over.
+			locationObject.count = count; // It might be that a location string is entered twice. If so, make sure to include both counts in our total.
 			locationObject.retractable = retractable ? retractable : locationObject.retractable; // If retractable is true, set the locationObject to also have it true. If it's false, don't change it. This covers cases where there are two sets of the same location, one of which is retractable and one which is not.
 		});
 	}
