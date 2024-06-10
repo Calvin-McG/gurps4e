@@ -1042,7 +1042,7 @@
         <div class="design-block">
           <!-- Start of left pane -->
           <div style="width: 50%;">
-            <h2 class="bold" style="text-align: center;">Chase Rolls</h2>
+            <h2 class="bold" style="text-align: center;">Chase Stats</h2>
             <table>
               <tr class="design-row">
                 <td>Handling Modifier:</td>
@@ -1146,6 +1146,31 @@
                          data-label="Makes a &lt;b&gt;Vehicle Thrust Damage&lt;/b&gt; roll." data-type="damage"></label>
                 </td>
                 <td class="question-container" id="vehicle-thr">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+            </table>
+
+            <table>
+              <tr class="design-row">
+                <td>Safe Deceleration:</td>
+                <td>
+                  {{actor.system.vehicle.deceleration.safe}}
+                </td>
+                <td class="question-container" id="vehicle-deceleration-safe">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Maximum Deceleration:</td>
+                <td>
+                  {{actor.system.vehicle.deceleration.maximum}}
+                </td>
+                <td class="question-container" id="vehicle-deceleration-max">
                   <div class="question-button">
                     <i class="fas fa-question"></i>
                   </div>

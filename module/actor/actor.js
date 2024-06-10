@@ -492,6 +492,9 @@ export class gurpsActor extends Actor {
 
 		this.system.vehicle.acceleration.output = Math.max(this.system.vehicle.acceleration.naval, this.system.vehicle.acceleration.navalWind);
 		this.system.vehicle.move.output = Math.max(this.system.vehicle.move.naval, this.system.vehicle.move.navalWind);
+
+		this.system.vehicle.deceleration.safe = Math.max((5 + parseInt(this.system.vehicle.hnd)), 1); // Water vehicle safe decel is 5 + Hnd, minimum 1
+		this.system.vehicle.deceleration.maximum = Math.max(this.system.vehicle.acceleration.output * 2, this.system.vehicle.deceleration.safe); // All vehicles have a max deceleration of double their base move.
 	}
 
 	calcGroundVehicleMove() {
@@ -551,11 +554,22 @@ export class gurpsActor extends Actor {
 		}
 
 		this.system.vehicle.acceleration.output = this.system.vehicle.acceleration.ground;
+
+		if (this.system.vehicle.motiveType === "wheel") { // Wheel safe deceleration is 5 yards per second.
+			this.system.vehicle.deceleration.safe = 5;
+		}
+		else { // All other ground vehicles can safely decelerate at 10 yards per second.
+			this.system.vehicle.deceleration.safe = 10;
+		}
+		this.system.vehicle.deceleration.maximum = this.system.vehicle.acceleration.ground * 2; // All vehicles have a max deceleration of double their base move.
 	}
 
 	calcAirVehicleMove() {
 		this.system.vehicle.move.output = this.system.vehicle.move.air
 		this.system.vehicle.acceleration.output = this.system.vehicle.acceleration.air;
+
+		this.system.vehicle.deceleration.safe = Math.max((5 + parseInt(this.system.vehicle.hnd)), 1); // Air vehicle safe decel is 5 + Hnd, minimum 1
+		this.system.vehicle.deceleration.maximum = Math.max(this.system.vehicle.acceleration.output * 2, this.system.vehicle.deceleration.safe); // All vehicles have a max deceleration of double their base move.
 	}
 
 	vehicleCost() {
@@ -651,6 +665,10 @@ export class gurpsActor extends Actor {
 						"navalAgainstWind": 0,
 						"naval": 0,
 						"air": 0
+					},
+					"deceleration": {
+						"safe": 5,
+						"maximum": 10
 					},
 					"move": {
 						"ground": 30,
@@ -1075,6 +1093,13 @@ export class gurpsActor extends Actor {
 				"costFactor": 1,
 				"finalCost": 0,
 				"finalCostMod": 0
+			}
+		}
+
+		if (typeof this.system.vehicle.deceleration === "undefined") {
+			this.system.vehicle.deceleration = {
+				"safe": 5,
+				"maximum": 10
 			}
 		}
 

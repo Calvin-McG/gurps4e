@@ -455,6 +455,25 @@ export class infoHelpers {
                 "</tr>" +
                 "</table>"
         }
+        else if (id === "vehicle-deceleration-safe") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>This is the amount by which you can decelerate without it requiring a control roll.</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
+        else if (id === "vehicle-deceleration-max") {
+            info = "<table>" +
+                "<tr>" +
+                "<td>" +
+                "<p>This is the maximum deceleration your vehicle is capable of. " +
+                "Attempting it requires a control roll with penalties as described in Basic 395 'Pushing The Envelope'</p>" +
+                "</td>" +
+                "</tr>" +
+                "</table>"
+        }
         else if (id === "travel-cruising-speed") {
             info = "<table>" +
                 "<tr>" +

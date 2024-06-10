@@ -75,6 +75,10 @@
             "naval": 0,
             "air": 0
           },
+          "deceleration": {
+            "safe": 5,
+            "maximum": 10
+          },
           "move": {
             "ground": 30,
             "output": 30,
