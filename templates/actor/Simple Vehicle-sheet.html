@@ -637,7 +637,7 @@
             {{#each actor.system.vehicle.loc as |location id|}}
             {{#ifCond location.count '>=' 1 }}
             <div class="simple-vehicle-location">
-              <h2 class="bold" style="text-align: center;">{{location.Name}} x{{location.count}} ({{location.code}})</h2>
+              <h2 class="bold" style="text-align: center;">{{location.Name}} x{{location.count}} ({{location.code}}) [{{location.penalty}} to hit]</h2>
 
               {{!-- Begin Retractable --}}
               {{#unless (or (eq location.code "B") (eq location.code "V") (eq ../actor.system.vehicle.method "pick"))}}
