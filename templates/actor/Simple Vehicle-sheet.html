@@ -87,9 +87,9 @@
       <div class="header">
         <a class="item" data-tab="locations">Design - Locations</a>
       </div>
-      <div class="header">
-        <a class="item" data-tab="upgrades"> Design - Upgrades</a>
-      </div>
+<!--      <div class="header">-->
+<!--        <a class="item" data-tab="enhancements"> Design - Enhancements</a>-->
+<!--      </div>-->
     </nav>
 
     {{!-- Sheet Body --}}
@@ -354,7 +354,7 @@
               <tr class="design-row">
                 <td>Hnd/SR</td>
                 <td style="display: flex">
-                  <input name="system.vehicle.hnd" type="number" value="{{actor.system.vehicle.hnd}}" placeholder="1" />
+                  <input name="system.vehicle.hndInput" type="number" value="{{actor.system.vehicle.hndInput}}" placeholder="1" />
                   <span style="font-size: xx-large; padding: 0 0.2em;">/</span>
                   <input name="system.vehicle.sr" type="number" value="{{actor.system.vehicle.sr}}" placeholder="3" />
                 </td>
@@ -1008,19 +1008,118 @@
         </div>
       </div>
 
-      {{!-- Upgrades Tab --}}
-      <div class="tab upgrades" data-tab="upgrades" data-group="primary">
+      {{!-- Enhancements Tab --}}
+      <div class="tab enhancements" data-tab="enhancements" data-group="primary">
         <div class="design-block">
           <!-- Start of left pane -->
           <div style="width: 50%;">
-            <h2 class="bold" style="text-align: center;">A Header would be here</h2>
+            <h2 class="bold" style="text-align: center;">Upgrades</h2>
             <table>
               <tr class="design-row">
-                <td>A Label would be here</td>
+                <td>Agile / Superior Handling</td>
                 <td>
-                  An input would be here
+                  <input type="range" min="0" max="2" step="1" name="system.vehicle.upgrades.agile" value="{{actor.system.vehicle.upgrades.agile}}" data-dtype="Number">
                 </td>
-                <td class="question-container" id="placeholder">
+                <td class="question-container" id="vehicle-upgrade-agile">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Armoured</td>
+                <td>
+                  <input type="range" min="0" max="32" step="8" name="system.vehicle.upgrades.armoured" value="{{actor.system.vehicle.upgrades.armoured}}" data-dtype="Number">
+                </td>
+                <td class="question-container" id="vehicle-upgrade-armoured">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Fast</td>
+                <td>
+                  <input type="range" min="0" max="5" step="1" name="system.vehicle.upgrades.fast" value="{{actor.system.vehicle.upgrades.fast}}" data-dtype="Number">
+                </td>
+                <td class="question-container" id="vehicle-upgrade-fast">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Heavy</td>
+                <td>
+                  <input type="range" min="0" max="3" step="1" name="system.vehicle.upgrades.heavy" value="{{actor.system.vehicle.upgrades.heavy}}" data-dtype="Number">
+                </td>
+                <td class="question-container" id="vehicle-upgrade-heavy">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Inconspicuous</td>
+                <td>
+                  <input type="checkbox" name="system.vehicle.upgrades.inconspicuous" {{checked actor.system.vehicle.upgrades.inconspicuous}} data-dtype="Boolean" style="width: 3em;"/>
+                </td>
+                <td class="question-container" id="vehicle-upgrade-inconspicuous">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Luxury / Attractive</td>
+                <td>
+                  <input type="range" min="0" max="3" step="1" name="system.vehicle.upgrades.luxury" value="{{actor.system.vehicle.upgrades.luxury}}" data-dtype="Number">
+                </td>
+                <td class="question-container" id="vehicle-upgrade-luxury">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Peppy</td>
+                <td>
+                  <input type="range" min="0" max="7" step="1" name="system.vehicle.upgrades.peppy" value="{{actor.system.vehicle.upgrades.peppy}}" data-dtype="Number">
+                </td>
+                <td class="question-container" id="vehicle-upgrade-peppy">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Rugged</td>
+                <td>
+                  <input type="range" min="0" max="2" step="1" name="system.vehicle.upgrades.rugged" value="{{actor.system.vehicle.upgrades.rugged}}" data-dtype="Number">
+                </td>
+                <td class="question-container" id="vehicle-upgrade-rugged">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Stable</td>
+                <td>
+                  <input type="range" min="0" max="2" step="1" name="system.vehicle.upgrades.stable" value="{{actor.system.vehicle.upgrades.stable}}" data-dtype="Number">
+                </td>
+                <td class="question-container" id="vehicle-upgrade-stable">
+                  <div class="question-button">
+                    <i class="fas fa-question"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr class="design-row">
+                <td>Electric</td>
+                <td>
+                  <input type="checkbox" name="system.vehicle.upgrades.electric" {{checked actor.system.vehicle.upgrades.electric}} data-dtype="Boolean" style="width: 3em;"/>
+                </td>
+                <td class="question-container" id="vehicle-upgrade-electric">
                   <div class="question-button">
                     <i class="fas fa-question"></i>
                   </div>

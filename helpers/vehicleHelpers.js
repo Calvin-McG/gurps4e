@@ -82,6 +82,66 @@ export class vehicleHelpers {
             {
                 "tl": "1",
                 "tlMod": "",
+                "name": "Penteconter, 120’",
+                "code": "penteconter",
+                "sthp": "86",
+                "sthpCode": "T",
+                "hnd": "-4",
+                "sr": "3",
+                "ht": "11",
+                "htCodes": "c",
+                "moveNavalWind": "4", // Sails
+                "accelerationWind": "1", // Sails
+                "moveNaval": "4", // Oars
+                "accelerationNaval": "1", // Oars
+                "skill": "Shiphandling/TL1(Ship)",
+                "loadedWeight": "12.5",
+                "load": "7.5",
+                "sm": "8",
+                "crew": "55",
+                "passengers": "0",
+                "dr": "3",
+                "range": "F",
+                "cost": "70000",
+                "locations": "MO",
+                "draft": "6",
+                "naval": true,
+                "sail": true,
+                "cite": "V-WG23"
+            },
+            {
+                "tl": "1",
+                "tlMod": "",
+                "name": "Triaconter, 80’",
+                "code": "triaconter",
+                "sthp": "72",
+                "sthpCode": "T",
+                "hnd": "-3",
+                "sr": "3",
+                "ht": "11",
+                "htCodes": "c",
+                "moveNavalWind": "4", // Sails
+                "accelerationWind": "1", // Sails
+                "moveNaval": "4", // Oars
+                "accelerationNaval": "1", // Oars
+                "skill": "Shiphandling/TL1(Ship)",
+                "loadedWeight": "7.5",
+                "load": "4.5",
+                "sm": "7",
+                "crew": "35",
+                "passengers": "0",
+                "dr": "2",
+                "range": "F",
+                "cost": "50000",
+                "locations": "MO",
+                "draft": "4",
+                "naval": true,
+                "sail": true,
+                "cite": "V-WG23"
+            },
+            {
+                "tl": "1",
+                "tlMod": "",
                 "name": "Double Canoe, 30'",
                 "code": "doubleCanoe",
                 "sthp": "60",

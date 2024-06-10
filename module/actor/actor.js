@@ -71,6 +71,56 @@ export class gurpsActor extends Actor {
 		}
 	}
 
+	vehicleUpgrades() {
+		if (this.system.vehicle.upgrades.agile > 0) {
+			this.system.vehicle.hndBonus = this.system.vehicle.upgrades.agile;
+			if (this.system.vehicle.upgrades.agile === 1) {
+				this.system.cost.costFactor += 1
+			}
+			else if (this.system.vehicle.upgrades.agile === 2) {
+				this.system.cost.costFactor += 3
+			}
+		}
+		if (this.system.vehicle.upgrades.armoured > 0) {
+
+		}
+		if (this.system.vehicle.upgrades.fast > 0) {
+
+		}
+		if (this.system.vehicle.upgrades.fuelEfficient > 0) {
+
+		}
+		if (this.system.vehicle.upgrades.heavy > 0) {
+
+		}
+		if (this.system.vehicle.upgrades.inconspicuous) {
+
+		}
+		if (this.system.vehicle.upgrades.luxury > 0) {
+
+		}
+		if (this.system.vehicle.upgrades.peppy > 0) {
+
+		}
+		if (this.system.vehicle.upgrades.rugged > 0) {
+
+		}
+		if (this.system.vehicle.upgrades.stable > 0) {
+
+		}
+		if (this.system.vehicle.upgrades.electric) {
+
+		}
+	}
+
+	vehicleAccessories() {
+		// this.system.vehicle.accessories;
+	}
+
+	vehicleEquipment() {
+		// this.system.vehicle.equipment;
+	}
+
 	prepareSimpleVehicleData() {
 		this.checkUndefinedVehicles();
 		this.system.cost.costFactor = 1;
@@ -87,6 +137,12 @@ export class gurpsActor extends Actor {
 		}
 		this.system.reserves.hp.max = parseInt(this.system.vehicle.sthp);
 
+		this.vehicleUpgrades();
+		this.vehicleAccessories();
+		this.vehicleEquipment();
+
+		this.system.vehicle.hnd = this.system.vehicle.hndBonus + this.system.vehicle.hndInput
+
 		// Total up the weight and value in the vehicle
 		this.sumWeightAndValue()
 
@@ -95,7 +151,6 @@ export class gurpsActor extends Actor {
 		this.system.vehicle.ht.flammable = this.system.vehicle.ht.code.toString().toLowerCase().includes("f");
 		this.system.vehicle.ht.explosive = this.system.vehicle.ht.code.toString().toLowerCase().includes("x");
 
-		// This section is for logic that applies to both methods
 		this.vehicleWeightHandling();
 
 		this.clearLocationCounts(); // Set all location counts to zero in preparation for them being reset.
@@ -641,6 +696,8 @@ export class gurpsActor extends Actor {
 					"sthp": 10,
 					"sthpCode": "",
 					"hnd": 1,
+					"hndInput": 1,
+					"hndBonus": 0,
 					"sr": 3,
 					"ht": {
 						"value": 11,
@@ -1018,6 +1075,86 @@ export class gurpsActor extends Actor {
 					}
 				}
 		}
+
+		if (typeof this.system.vehicle.upgrades === "undefined") {
+			this.system.vehicle.upgrades = {
+				"agile": 0,
+				"armoured": 0,
+				"fast": 0,
+				"fuelEfficient": 0,
+				"heavy": 0,
+				"inconspicuous": false,
+				"luxury": 0,
+				"peppy": 0,
+				"rugged": 0,
+				"stable": 0,
+				"electric": false
+			};
+		}
+
+		if (typeof this.system.vehicle.accessories === "undefined") {
+			this.system.vehicle.accessories = {
+				"antiSurveillanceSystem": false,
+				"externalWeaponMount": false,
+				"gunPorts": 0,
+				"hiddenCompartment": 0,
+				"highSecurityLocks": false,
+				"improvedBrakes": false,
+				"lightBar": 0,
+				"multiPlate": false,
+				"reinforcedBumpers": false,
+				"runFlatTires": false,
+				"safteyFuelSystem": false,
+				"searchLight": false,
+				"stealthSound": false,
+				"stealthIR": false,
+				"stealthRadar": false,
+				"tintedWindows": false,
+				"winch": false,
+				"carAlarm": false,
+				"cellPhoneJammer": false,
+				"cellularMonitoringSystem": false,
+				"computer": false,
+				"dashCam": false,
+				"directionalMicrophone": false,
+				"extraScreen": false,
+				"hud": false,
+				"jammer": false,
+				"lowLightCamera": false,
+				"paSystem": false,
+				"phoneCellular": 0,
+				"phoneSatellite": 0,
+				"radar": false,
+				"radarDetector": false,
+				"radioFive": 0,
+				"radioThirtyFive": 0,
+				"scanner": false,
+				"siren": 0,
+				"soundSystem": false,
+				"stolenVehicleRecoverySystem": false
+			};
+		}
+
+		if (typeof this.system.vehicle.equipment === "undefined") {
+			this.system.vehicle.equipment = {
+				"centralTireInflationSystem": false,
+				"ejectionSeat": 0,
+				"electrifiedHull": 0,
+				"extraControls": 0,
+				"fireSuppressionSystem": false,
+				"internalWeaponMount": 0,
+				"hiddenTurret": 0,
+				"nbcCountermeasures": false,
+				"nosSystem": false,
+				"nosTanks": 0,
+				"oilSlick": false,
+				"remoteControls": false,
+				"safe": false,
+				"selfDestruct": false,
+				"smokescreen": false
+			};
+		}
+
 		if (typeof this.system.vehicle.craftType === "undefined") {
 			this.system.vehicle.craftType = "land";
 		}
@@ -1094,6 +1231,16 @@ export class gurpsActor extends Actor {
 				"finalCost": 0,
 				"finalCostMod": 0
 			}
+		}
+
+		if (typeof this.system.vehicle.hnd === "undefined") {
+			this.system.vehicle.hnd = 1;
+		}
+		if (typeof this.system.vehicle.hndBonus === "undefined") {
+			this.system.vehicle.hndBonus = 0;
+		}
+		if (typeof this.system.vehicle.hndInput === "undefined") {
+			this.system.vehicle.hndInput = 1;
 		}
 
 		if (typeof this.system.vehicle.deceleration === "undefined") {
