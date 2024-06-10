@@ -7,7 +7,6 @@
   "TYPES.Item.Rollable": "Skills and Techniques",
   "TYPES.Item.Spell": "Spell",
   "TYPES.Item.Trait": "Advantages, Disadvantages, Quirks, and Perks",
-  "TYPES.Item.Travel Fare": "Travel Fare (Don't use, this is getting removed)",
   "TYPES.Actor.fullchar": "Character",
   "TYPES.Actor.Simple Vehicle": "Vehicle"
 }

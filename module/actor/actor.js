@@ -2924,8 +2924,7 @@ export class gurpsActor extends Actor {
 				(this.items.contents[l].type === "Equipment" ||
 				this.items.contents[l].type === "Custom Weapon" ||
 				this.items.contents[l].type === "Custom Armour" ||
-				this.items.contents[l].type === "Custom Jewelry" ||
-				this.items.contents[l].type === "Travel Fare")){
+				this.items.contents[l].type === "Custom Jewelry")){
 				carriedWeight = (+this.items.contents[l].system.weight * +this.items.contents[l].system.quantity) + +carriedWeight;
 				carriedCost = (+this.items.contents[l].system.cost * +this.items.contents[l].system.quantity) + +carriedCost;
 			}
@@ -3155,7 +3154,7 @@ export class gurpsActor extends Actor {
 							this.system.spellCategories.push(this.items.contents[w].system.subCategory.trim())
 						}
 					}
-					else if (this.items.contents[w].type == "Equipment" || this.items.contents[w].type == "Custom Weapon" || this.items.contents[w].type == "Custom Armour" || this.items.contents[w].type == "Custom Jewelry" || this.items.contents[w].type == "Travel Fare"){
+					else if (this.items.contents[w].type == "Equipment" || this.items.contents[w].type == "Custom Weapon" || this.items.contents[w].type == "Custom Armour" || this.items.contents[w].type == "Custom Jewelry"){
 						if (!this.system.equipmentCategories.includes(this.items.contents[w].system.subCategory.trim())) {//Make sure the item array doesn't already contain the category.
 							this.system.equipmentCategories.push(this.items.contents[w].system.subCategory.trim())
 						}

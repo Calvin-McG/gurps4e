@@ -946,7 +946,7 @@
 						{{/unless}}
 
 						{{#each ../items as |item id|}}
-							{{#if (or (eq type "Equipment") (eq type "Custom Weapon") (eq type "Custom Armour") (eq type "Travel Fare") (eq type "Custom Jewelry")) }}
+							{{#if (or (eq type "Equipment") (eq type "Custom Weapon") (eq type "Custom Armour") (eq type "Custom Jewelry")) }}
 								{{#if (eq item.system.subCategory category)}}
 									<tr class="item accordion-div-{{category}} accordion-open" data-item-id="{{item._id}}">
 										<td class="item-image" style="width: 24px; padding: 0 !important; margin: 0 !important;">

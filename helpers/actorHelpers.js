@@ -2041,8 +2041,7 @@ export class actorHelpers {
                 (actor.items.contents[l].type === "Equipment" ||
                     actor.items.contents[l].type === "Custom Weapon" ||
                     actor.items.contents[l].type === "Custom Armour" ||
-                    actor.items.contents[l].type === "Custom Jewelry" ||
-                    actor.items.contents[l].type === "Travel Fare")){
+                    actor.items.contents[l].type === "Custom Jewelry")){
                 carriedWeight = (+actor.items.contents[l].system.weight * +actor.items.contents[l].system.quantity) + +carriedWeight;
             }
         }

@@ -1205,8 +1205,7 @@
       "Ritual",
       "Custom Weapon",
       "Custom Armour",
-      "Custom Jewelry",
-      "Travel Fare"
+      "Custom Jewelry"
     ],
     "templates": {
       "trainingTime": {
@@ -1484,17 +1483,6 @@
         "melee",
         "ranged",
         "affliction"
-      ]
-    },
-    "Travel Fare": {
-      "templates": [
-        "base",
-        "countable",
-        "subCategory",
-        "weighable",
-        "tl",
-        "lc",
-        "equipStatus"
       ]
     },
     "Custom Armour": {
