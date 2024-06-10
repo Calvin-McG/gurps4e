@@ -155,18 +155,10 @@ export class gurpsActor extends Actor {
 			}
 			else if (this.system.vehicle.craftType === "land") {
 				if (this.system.travel.terrainQuality === "rail" || this.system.vehicle.land.railBound) {
-					if (this.system.vehicle.land.railBound) { // Railbound vehicles have a proper rail move
-						let railTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.rail, travellingHoursMinusRest)
-						this.system.travel.travelTime = railTime[0] + "<br/>";
-						let railVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, railTime[1], travellingHoursMinusRest);
-						this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(railVehicleRunningCosts, "Travelling by rail", cargoSpacePounds);
-					}
-					else { // Other vehicles treat railways as good terrain
-						let goodTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.good, travellingHoursMinusRest)
-						this.system.travel.travelTime = goodTime[0] + "<br/>";
-						let goodVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, goodTime[1], travellingHoursMinusRest);
-						this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(goodVehicleRunningCosts, "Travelling on along railways", cargoSpacePounds);
-					}
+					let railTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.rail, travellingHoursMinusRest)
+					this.system.travel.travelTime = railTime[0] + "<br/>";
+					let railVehicleRunningCosts = vehicleHelpers.getVehicleRunningCosts(this.system.vehicle.finalCost, this.system.vehicle.crew, railTime[1], travellingHoursMinusRest);
+					this.system.travel.travelCost = vehicleHelpers.getVehicleTravelCostOutput(railVehicleRunningCosts, "Travelling by rail", cargoSpacePounds);
 				}
 				else if (this.system.travel.terrainQuality === "road") {
 					let roadTime = vehicleHelpers.getVehicleRunningTime(distanceInMiles, this.system.vehicle.move.road, travellingHoursMinusRest)
@@ -425,6 +417,7 @@ export class gurpsActor extends Actor {
 				this.system.vehicle.move.veryBad = effectiveMoveInput * 0.32;
 			}
 
+			this.system.vehicle.move.rail = this.system.vehicle.move.good; // Non-railbound vehicles treat rails as good terrain.
 			this.system.vehicle.move.output = this.system.vehicle.move.road;
 		}
 
