@@ -1,4 +1,10 @@
+========================================================================================================================
 Now if you want to get all tokens within that range.
 let caster = canvas.tokens.controlled[0];
 canvas.tokens.placeables.filter(target => (canvas.grid.measurePath([caster.center, target.center].distance) <= distance;
 And you can apply filters after the distance && caster.id != target.id
+========================================================================================================================
+game.user is the current user and game.user.character is the current user's selected actor,
+but those don't intrinsically have anything to do with a button click on any given actor sheet.
+If you want to know what actor sheet called a method, you should pass either the sheet or the actor through to the method call
+========================================================================================================================
