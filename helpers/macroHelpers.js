@@ -1219,7 +1219,7 @@ export class macroHelpers {
     static reportAfflictionResult(target, attacker, attack, totalModifiers, sceneID) {
         let label = attacker.name + " casts " + attack.weapon + " " + attack.name + " on " + target.name + "."; // Label for the roll
 
-        rollHelpers.skillRoll(attack.level, totalModifiers, label, false).then( rollInfo => { // Make the roll
+        rollHelpers.skillRoll(attack.level, totalModifiers, label, false, true).then( rollInfo => { // Make the roll
             let messageContent = rollInfo.content; // Begin message content with the result from the skill roll
             let flags = {} // Init flags which will be used to pass data between chat messages
 
@@ -1321,7 +1321,7 @@ export class macroHelpers {
     }
 
     static async makeKnockbackRoll(skill, mod, message, target, tokenId) {
-        let currentRoll = await rollHelpers.skillRoll(skill, mod, "Rolls against " + message + " to not fall down.", false);
+        let currentRoll = await rollHelpers.skillRoll(skill, mod, "Rolls against " + message + " to not fall down.", false, true);
 
         let html = currentRoll.content;
 
@@ -1406,7 +1406,7 @@ export class macroHelpers {
             }
         }
         let messageContent = attacker.name + " has an effective margin of success of <span style='font-weight: bold'>" + margin + "</span> after modifiers and the Rule of <span style='font-weight: bold'>" + attack.ruleOf + "</span><br><br>"; // Inform the user of the attacker's effective margin of success and mention the Rule of X
-        rollHelpers.skillRoll(resistanceLevel, (+mod + +attack.resistanceRollPenalty), label, false).then( rollInfo => { // Make the defender's roll
+        rollHelpers.skillRoll(resistanceLevel, (+mod + +attack.resistanceRollPenalty), label, false, true).then( rollInfo => { // Make the defender's roll
             messageContent += rollInfo.content; // Start the message with the string returned by the skillRoll helper
             messageContent += "<br>"
 
@@ -1495,7 +1495,7 @@ export class macroHelpers {
         let resistanceLevel = +actorHelpers.fetchStat(target, attack.resistanceRoll); // Fetch the resistance level based on the attack's target attribute
         let effectiveResistanceLevel = resistanceLevel + +mod + +attack.resistanceRollPenalty; // Figure out the effective level based on the above, the modifier from the attack, and the modifier provided by the user
 
-        rollHelpers.skillRoll(resistanceLevel, (+mod + +attack.resistanceRollPenalty), label, false).then( rollInfo => { // Make the defender's resistance roll
+        rollHelpers.skillRoll(resistanceLevel, (+mod + +attack.resistanceRollPenalty), label, false, true).then( rollInfo => { // Make the defender's resistance roll
             let messageContent = rollInfo.content; // Start the message with the string returned by the skillRoll helper
             messageContent += "<br>"
 
@@ -2621,7 +2621,7 @@ export class macroHelpers {
             // End logic for roll level
 
             // Make the roll to find out how many hits we made
-            let areaRoll = await rollHelpers.skillRoll(rollLevel + rollModifier, 0, "", false);
+            let areaRoll = await rollHelpers.skillRoll(rollLevel + rollModifier, 0, "", false, true);
 
             // Begin message logic and number of hits
             messageContent += "Damage for " + this.createTemplateLabel(template) + " targeting " + target.name;
@@ -3423,7 +3423,7 @@ export class macroHelpers {
 
         // If Will rolls are required for Feverish Defences and they've elected to make such a roll
         if (feverishWillRoll && options.feverishDefence) {
-            let willRoll = await rollHelpers.skillRoll(target.system.primaryAttributes.will.value, feverishDefenceMod, "Rolls against Will for a Feverish Defence.", false);
+            let willRoll = await rollHelpers.skillRoll(target.system.primaryAttributes.will.value, feverishDefenceMod, "Rolls against Will for a Feverish Defence.", false, true);
 
             willRollHtml = willRoll.content;
 
@@ -3513,7 +3513,7 @@ export class macroHelpers {
             }
             // An acrobatic defence is permitted, continue
             else {
-                let acroRoll = await rollHelpers.skillRoll(acroSkillValue, acroMod, acroLabel, false);
+                let acroRoll = await rollHelpers.skillRoll(acroSkillValue, acroMod, acroLabel, false, true);
 
                 acroRollHtml = acroRoll.content;
 
@@ -3641,7 +3641,7 @@ export class macroHelpers {
             label += " at an encumbrance level of " + target.system.encumbrance.current.title
         }
 
-        rollHelpers.skillRoll(selection, totalModifier, label, false).then( rollInfo => {
+        rollHelpers.skillRoll(selection, totalModifier, label, false, true).then( rollInfo => {
             let attacksStopped;
 
             if (defenceQty.toLowerCase() === "all") {

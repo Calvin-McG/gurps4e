@@ -19,7 +19,6 @@ export class rollHelpers {
         if (!isPlayer || combatExempt || isNaN(bad)) { // If not a player OR this is a combat related roll and therefore exempt OR BAD ended up NaN and we need to discard it.
             bad = 0; // Default back to zero.
         }
-        console.log(bad)
 
         let effectiveSkill = +level + +modifier + +bad;
         let roll = new Roll("3d6");
@@ -187,7 +186,7 @@ export class rollHelpers {
             }
         }
 
-        let rollResult = await roll.roll({evaluateSync: true}) // Make the roll
+        let rollResult = await roll.roll({evaluateSync: true}) // Make the roll // TODO - decide whether RPM should take BAD
 
         let result = rollResult.total; // Get the result
 

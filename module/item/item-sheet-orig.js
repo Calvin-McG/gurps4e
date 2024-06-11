@@ -817,7 +817,7 @@ export class gurpsItemSheet extends ItemSheet {
         // Their effective skill hits two
         // They crit fail
         while (energyGathered < energyNeeded && effectiveSkill > 2 && !critFail) {
-            currentRoll = await rollHelpers.skillRoll(effectiveSkill, 0, "", false);
+            currentRoll = await rollHelpers.skillRoll(effectiveSkill, 0, "", false); // TODO - decide whether RPM should take BAD
 
             // Add to the time taken (Do this before roll stuff so previousCrit doesn't get triggered early)
             if (previousCrit) { // If they got a crit on the last cycle, it always takes only a single second, regardless of the level of their time adeptedness
@@ -924,7 +924,7 @@ export class gurpsItemSheet extends ItemSheet {
     }
 
     _makeQuirkRoll(event) {
-        rollHelpers.skillRoll(this.item.system.level, this.item.system.quirkRollMod, "Crafts a " + event.currentTarget.id + " charm.", false).then( rollInfo => { // Make the roll
+        rollHelpers.skillRoll(this.item.system.level, this.item.system.quirkRollMod, "Crafts a " + event.currentTarget.id + " charm.", false).then( rollInfo => { // Make the roll // TODO - decide whether RPM should take BAD
 
             let html = rollInfo.content;
 
