@@ -18,6 +18,8 @@ Hooks.once("init", () => {
     // First an array containing all tab buttons is found, then we pick the last, then we append our new tab button
     html.find('a.item').slice(3,4).after('<a class="item" data-tab="calvin"><i class="fas fa-cloud-sun"></i> Environmental</a>')
 
+    let campaignTL = game.settings.get("gurps4e", "campaignTL");
+
     // Create the tab content
     let tabContent = "<div class=\"tab active\" data-tab=\"calvin\">";
 
@@ -37,13 +39,27 @@ Hooks.once("init", () => {
     // tabContent += "<p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Any value is possible and will correcly impact token encumberence, jump distance, falls, and whatever else I remembered to code in.</p>" +
     //     "<p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;However, if you're concerned with attribute penalties, they apply on multiples of 0.2G for actors without modified G-Tolerance. Once there are actors with modified G-Tolerance, multiples of 0.05G become relevant.</p>";
 
-    tabContent += "</div>" +
-        "<hr>";
+    tabContent += "</div><hr>";
     // End Gravity
 
     tabContent += "<h1 style='text-align: center; background-color: fuchsia; font-weight: bold'>Nothing below this line works</h1>";
 
-    tabContent += "<hr>";
+    // Start Scene TL
+    tabContent +=
+        "<div class='form-group-scene form-group'>" +
+        "      <div class='scene-option-input input-row'>" +
+        "        <h2 class='scene-option' style='width: 100%;'>Tech Level</h2>" +
+        "        <div class='scene-option form-fields'>" +
+        `          <input type="number" value="${app.document.flags?.gurps4e?.tl ?? campaignTL}" step="1" name="flags.gurps4e.tl" placeholder="Tech Level" min="0">` +
+        "        </div>" +
+        "      </div>" +
+        "      <div class='scene-option-subtitle'>The tech level of the scene.</div>";
+
+    // tabContent += "<p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Any value is possible and will correcly impact token encumberence, jump distance, falls, and whatever else I remembered to code in.</p>" +
+    //     "<p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;However, if you're concerned with attribute penalties, they apply on multiples of 0.2G for actors without modified G-Tolerance. Once there are actors with modified G-Tolerance, multiples of 0.05G become relevant.</p>";
+
+    tabContent += "</div><hr>";
+    // End Scene TL
 
     // Start Beaufort
     tabContent +=
