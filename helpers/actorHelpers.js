@@ -18,8 +18,11 @@ export class actorHelpers {
     // 	type: "skill"
     // }
     static computeRollFromDataset(dataset, modifier){
-        if (dataset.type === 'skill' || dataset.type === 'defense' || dataset.type === 'defence') {
-            rollHelpers.skillRoll(dataset.level, modifier, dataset.label, true);
+        if (dataset.type === 'skill') { // It's a normal skill roll
+            rollHelpers.skillRoll(dataset.level, modifier, dataset.label, true, dataset?.combatexempt?.length ?? false); // Still check for and pass combatExempt
+        }
+        else if (dataset.type === 'defense' || dataset.type === 'defence') { // It's a defence
+            rollHelpers.skillRoll(dataset.level, modifier, dataset.label, true, true); // Always pass combatExempt as true;
         }
 
         else if (dataset.type === 'damage') {

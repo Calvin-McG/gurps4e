@@ -264,7 +264,7 @@
 								   data-dtype="Number" />
 							<label for="system.primaryAttributes.dodge.value" class="fa fa-dice-six rollable"
 								   data-level="{{actor.system.primaryAttributes.dodge.value}}" data-label="Makes a &lt;b&gt;{{actor.system.primaryAttributes.dodge.abbr}}&lt;/b&gt; check."
-								   data-type="skill"></label>
+								   data-type="skill" data-combatExempt="true"></label>
 						</div>
 					</div>
 					{{!-- End DX Column --}}
@@ -526,7 +526,7 @@
 						</div>
 					</div>
 					{{/if}}
-					{{!-- End 	TK Column --}}
+					{{!-- End TK Column --}}
 
 				</div>
 
@@ -666,7 +666,7 @@
 							<td>{{enc.move}}</td>
 							<td>{{enc.dodge}}
 								<label class="fa fa-dice-six rollable" data-level="{{enc.dodge}}"
-									   data-label="Makes a &lt;b&gt;Dodge&lt;/b&gt; roll at an encumbrance level of {{enc.title}}" data-type="skill"></label>
+									   data-label="Makes a &lt;b&gt;Dodge&lt;/b&gt; roll at an encumbrance level of {{enc.title}}" data-type="defence" data-combatExempt="true"></label>
 							</td>
 						</tr>
 						{{/unless}}
@@ -787,20 +787,20 @@
 						<td class="actor-sheet-digit-col">
 							{{melee.skill}}:
 							{{melee.level}}
-							<label class="fa fa-dice-six rollable" data-level="{{melee.level}}" data-label="Makes a &lt;b&gt;{{item.name}} {{melee.name}}&lt;/b&gt; Skill roll." data-type="skill"></label>
+							<label class="fa fa-dice-six rollable" data-level="{{melee.level}}" data-label="Makes a &lt;b&gt;{{item.name}} {{melee.name}}&lt;/b&gt; Skill roll." data-type="skill" data-combatExempt="true"></label>
 						</td>
 						<td class="actor-sheet-digit-col">
 							{{melee.parry}}{{melee.parryType}}
 							{{#if (isInt melee.parry)}}
 							<label class="fa fa-dice-six rollable" data-level="{{melee.parry}}"
-								   data-label="Makes a &lt;b&gt;{{item.name}}&lt;/b&gt; Parry roll." data-type="skill"></label>
+								   data-label="Makes a &lt;b&gt;{{item.name}}&lt;/b&gt; Parry roll." data-type="defence" data-combatExempt="true"></label>
 							{{/if}}
 						</td>
 						<td class="actor-sheet-digit-col">
 							{{melee.block}}
 							{{#if (isInt melee.block)}}
 							<label class="fa fa-dice-six rollable" data-level="{{melee.block}}"
-								   data-label="&lt;b&gt;{{item.name}}&lt;/b&gt; Block roll." data-type="skill"></label>
+								   data-label="&lt;b&gt;{{item.name}}&lt;/b&gt; Block roll." data-type="defence" data-combatExempt="true"></label>
 							{{/if}}
 						</td>
 						<td class="actor-sheet-digit-col">
@@ -849,7 +849,7 @@
 						<td class="actor-sheet-digit-col">
 							{{ranged.skill}}: {{ranged.level}}
 							<label for="ranged.skill" class="fa fa-dice-six rollable" data-level="{{ranged.level}}"
-								   data-label="Makes a &lt;b&gt;{{item.name}} {{ranged.name}}&lt;/b&gt; Skill roll." data-type="skill"></label>
+								   data-label="Makes a &lt;b&gt;{{item.name}} {{ranged.name}}&lt;/b&gt; Skill roll." data-type="skill" data-combatExempt="true"></label>
 						</td>
 						<td class="actor-sheet-digit-col">{{showFullAcc ranged.acc ranged.scopeAcc}}</td>
 						<td class="actor-sheet-digit-col">
@@ -897,7 +897,7 @@
 						<td class="actor-sheet-digit-col">
 							{{affliction.skill}}: {{affliction.level}}
 							<label class="fa fa-dice-six rollable" data-level="{{affliction.level}}"
-								   data-label="Casts &lt;b&gt;{{item.name}} {{affliction.name}}&lt;/b&gt;" data-type="skill"></label>
+								   data-label="Casts &lt;b&gt;{{item.name}} {{affliction.name}}&lt;/b&gt;" data-type="skill" data-combatExempt="true"></label>
 						</td>
 						<td class="actor-sheet-digit-col">
 							{{affliction.damage}} {{affliction.damageType}} ({{affliction.armourDivisor}})
