@@ -241,7 +241,6 @@ Hooks.once("init", () => {
     // Add the tab content
     // First an array containing all tab divs are found, then we pick the last, then we append our new tab with the tabContent created above.
     html.find('div.tab').slice(3,4).after(tabContent);
-    console.log(app.document.flags?.gurps4e);
   })
 
   function _setGurps4eInitiative() {
