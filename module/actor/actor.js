@@ -45,7 +45,6 @@ export class gurpsActor extends Actor {
 	 */
 	prepareData() {
 		this.sceneflags = canvas.scene?.flags?.gurps4e;
-		console.log(this.sceneflags);
 		super.prepareData();
 		switch (this.type) {
 			case "fullchar":
