@@ -1,7 +1,26 @@
 export class rollHelpers {
 
-    static async skillRoll(level, modifier, label, chat){
-        let effectiveSkill = +level + +modifier;
+    /**
+     *
+     * @param level The base skill level
+     * @param modifier The modifier on the roll
+     * @param label A label to include as part of the chat message
+     * @param chat Boolean, whether to display the chat message as part of this call, or return the results for a more detailed chat message elsewhere.
+     * @param combatExempt Boolean, if true, BAD does not apply.
+     * @returns {Promise<{result: *, margin: number, crit: boolean, success: boolean, type: *, content: string}>}
+     */
+    static async skillRoll(level, modifier, label, chat, combatExempt){
+        let bad = canvas.scene?.flags?.gurps4e?.bad ?? 0; // Get BAD from the scene flags, falling back to zero
+        bad = parseInt(bad); // Parse to an int, just in case.
+        modifier = parseInt(modifier); // Parse to int for better equality handling and addition below
+        let isPlayer = true ?? !game.user.isGM; // game.user.isGM returns true for GMs, and false for players, so take the opposite.
+
+        if (!isPlayer || combatExempt || isNaN(bad)) { // If not a player OR this is a combat related roll and therefore exempt OR BAD ended up NaN and we need to discard it.
+            bad = 0; // Default back to zero.
+        }
+        console.log(bad)
+
+        let effectiveSkill = +level + +modifier + +bad;
         let roll = new Roll("3d6");
         let crit = false;
         let success = false;
@@ -13,29 +32,70 @@ export class rollHelpers {
         let html = "<div>" + label + "</div>";
 
         html += "</br>";
+        html += "<span class='tooltip'>Rolls a " + skillRoll + " vs " + (+level + +modifier + +bad);
 
-        if(modifier >= 0) { //modifier is zero or positive
-            html += "<span class='tooltip'>Rolls a " + skillRoll + " vs " + (+level + +modifier) +
-                "<span class='tooltiptext'>" + level + " + " + modifier + "</span>" +
-                "</span>";
+        // Begin assembling tooltip text
+        html += "<span class='tooltiptext' style='margin-left: -40px !important;'>" + level;
+
+        // Modifier display
+        if(modifier !== 0) {
+            if(modifier > 0) { // Modifier is positive
+                html += " + ";
+            }
+            else if (modifier < 0) { // Modifier is negative, use Math.abs to allow repositioning the negative symbol.
+                html += " - ";
+            }
+            html += Math.abs(modifier)
         }
-        else {
-            html += "<span class='tooltip'>Rolls a " + skillRoll + " vs " + (+level + +modifier) +
-                "<span class='tooltiptext'>" + level + " - " + Math.abs(modifier) + "</span>" +
-                "</span>"; // Run Math.abs to allow repositioning the negative symbol.
+
+        // BAD display
+        if (bad !== 0) {
+            if(bad > 0) { // BAD is positive
+                html += " + ";
+            }
+            else if (bad < 0) { // BAD is negative, use Math.abs to allow repositioning the negative symbol.
+                html += " - ";
+            }
+            html += Math.abs(bad) + "<span style='font-size: 0.5em; position: relative; top: -0.5em'>(BAD)</span>";
         }
+
+        html += " = " + (+level + +modifier + +bad);
+
+        html += "</span></span>";
+        // End assembling tooltip text
 
         //Code block for display of dice
         html += "<div>";
         html += this.dieToIcon(roll.terms[0].results[0].result);
         html += this.dieToIcon(roll.terms[0].results[1].result);
         html += this.dieToIcon(roll.terms[0].results[2].result);
-        if (modifier >= 0){ // Modifier is positive
-            html += "<label class='damage-dice-adds'>+</label><label class='damage-dice-adds'>" + modifier + "</label>"
+
+        html += "<label class='damage-dice-adds'>"
+
+        if (modifier !== 0) {
+            if (modifier > 0) { // Modifier is positive
+                html += "+"
+            }
+            else if (modifier < 0) { // Modifier is negative
+                html += "-"
+            }
+            html += "</label>"
+            html += "<label class='damage-dice-adds'>" + Math.abs(modifier) + "</label>"
         }
-        else { // Modifier is negative
-            html += "<label class='damage-dice-adds'>-</label><label class='damage-dice-adds'>" + Math.abs(modifier) + "</label>"
+
+        if (bad !== 0) {
+            html += "<label class='damage-dice-adds'>"
+            if(bad > 0) { // BAD is positive
+                html += "+";
+            }
+            else if (bad < 0) { // BAD is negative, use Math.abs to allow repositioning the negative symbol.
+                html += "-";
+            }
+            html += Math.abs(bad) + "<span style='font-size: x-small; position: relative; top: -2.5em'>(BAD)</span>";
+            html += "</label>"
         }
+
+
         html += "</div>"
 
         if (skillRoll == 18) { //18 is always a crit fail
