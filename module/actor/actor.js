@@ -44,6 +44,8 @@ export class gurpsActor extends Actor {
 	 * Augment the basic actor data with additional dynamic system.
 	 */
 	prepareData() {
+		this.sceneflags = canvas.scene?.flags?.gurps4e;
+		console.log(this.sceneflags);
 		super.prepareData();
 		switch (this.type) {
 			case "fullchar":
@@ -2886,10 +2888,8 @@ export class gurpsActor extends Actor {
 			this.system.info.fall.height = 0; // Set it to zero
 		}
 
-		// Get the campaign gravity
-		let gravity = game.settings.get("gurps4e", "gravity");
-
-		if (gravity !== 'number') {
+		let gravity = parseFloat(this.sceneflags?.gravity) ?? game.settings.get("gurps4e", "gravity"); // Get scene gravity, falling back to campaign gravity.
+		if (typeof gravity !== 'number' || isNaN(gravity)) {
 			gravity = 1;
 		}
 		else if (this.system.info.fall.height < 0){ // If it's less than zero

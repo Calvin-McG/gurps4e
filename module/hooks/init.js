@@ -16,11 +16,10 @@ Hooks.once("init", () => {
   Hooks.on('renderSceneConfig', (app, html, options) => {
     // Add the tab button to the header
     // First an array containing all tab buttons is found, then we pick the last, then we append our new tab button
-    html.find('a.item').slice(-1).after('<a class="item" data-tab="calvin"><i class="fas fa-cloud-sun"></i> Environmental</a>')
+    html.find('a.item').slice(3,4).after('<a class="item" data-tab="calvin"><i class="fas fa-cloud-sun"></i> Environmental</a>')
 
     // Create the tab content
     let tabContent = "<div class=\"tab active\" data-tab=\"calvin\">";
-
 
     // Start Gravity
     tabContent +=
@@ -33,178 +32,181 @@ Hooks.once("init", () => {
         "      </div>" +
         "      <div class='scene-option-subtitle'>The gravity of the scene, in multiples of Earth gravity.</div>" +
         "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Rules for gravity can be found on Basic 350.</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Any value is possible and will correcly impact token encumberence, jump distance, falls, and whatever else I remembered to code in.</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;However, if you're concerned with attribute penalties, they apply on multiples of 0.2G for actors without modified G-Tolerance. Once there are actors with modified G-Tolerance, multiples of 0.05G become relevant.</p>" +
-        "</div>" +
+        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Currently only fall damage is handled.</p>";
+
+    // tabContent += "<p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Any value is possible and will correcly impact token encumberence, jump distance, falls, and whatever else I remembered to code in.</p>" +
+    //     "<p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;However, if you're concerned with attribute penalties, they apply on multiples of 0.2G for actors without modified G-Tolerance. Once there are actors with modified G-Tolerance, multiples of 0.05G become relevant.</p>";
+
+    tabContent += "</div>" +
         "<hr>";
+
     // End Gravity
-
-    // Start Beaufort
-    tabContent +=
-        "<div class=\"form-group-scene form-group\">" +
-        "      <div class='scene-option-input input-row'>" +
-        "    <h2 class='scene-option' style='width: 100%;'>Beaufort Wind Scale</h2>" +
-        "    <div class=\"scene-option form-fields\">" +
-        `      <select value="${app.document.flags?.gurps4e?.beaufort ?? 1}" name="flags.gurps4e.beaufort" id="flags.gurps4e.beaufort">`;
-
-    let beaufortScale = weatherHelpers.returnBeaufortScale();
-    let forecast = "";
-    for (let y = 0; y < beaufortScale.length; y++){
-      // If the beaufort degree for the scene matches the one we've reached on the loop, mark it selected
-      if (beaufortScale[y].degree === parseInt(app.document.flags.gurps4e.beaufort)) {
-        tabContent += "<option value='" + beaufortScale[y].degree + "' selected>" + beaufortScale[y].degree + " - " + beaufortScale[y].description +"</option>"
-
-        forecast = "<div class='scene-option-forecast'>" +
-            "<h2>Current Forecast (Save and reopen to update)</h2>" +
-            "<p>Wind speeds range from " + beaufortScale[y].windMphL + " to " + beaufortScale[y].windMphH + " mph</p>" +
-            "<p>Wave height ranges from " + beaufortScale[y].windMphL + " to " + beaufortScale[y].windMphH + " feet</p>" +
-            "<p><span style='font-weight: 500; text-decoration: underline'>Sea effect:</span> " + beaufortScale[y].sea + "</p>" +
-            "<p><span style='font-weight: 500; text-decoration: underline'>Land effect:</span> " + beaufortScale[y].land + "</p>" +
-            "</div>";
-      }
-      // Otherwise not
-      else {
-        tabContent += "<option value='" + beaufortScale[y].degree + "'>" + beaufortScale[y].degree + " - " + beaufortScale[y].description +"</option>"
-      }
-    }
-
-    tabContent += "</select>" +
-        "      </div>" +
-        "    </div>";
-
-    tabContent += "<div class='scene-option-subtitle'>A single number used to categorize the effect of wind speed.</div>";
-    tabContent += "<p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Beaufort scale appears on Magic 194, though the version in use here is slightly tweaked.</p>" +
-        "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;In real life, Beaufort values above 12 are only in use by the PRC and ROC for very powerful typhoons, though they are roughly analagous to hurricane categorizations in use by the rest of the world. For that reason, the scale here follows the Beaufort scale up to 12, at which point it transitions to the hurricaine categorization system.</p>" +
-        "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Theoretical categories 6 and 7 are included, using wind speed values provided by NOAA research scientist Jim Kossin.</p>" +
-        "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Tornado scale is also included for reference, though if an actual tornado is present then the damage is likely to be a worse than listed since the wind is picking stuff up instead of just blowing it around.</p>" +
-        "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;The UI is already pretty cluttered so if you want detailed info, look up the Fujita Scale on Wikipedia.</p>" +
-        "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Some names of beaufort degrees have also been changed to match current NOAA names, though the actual wind and wave values are identical.</p>" +
-        "</div>" +
-        "<hr>";
-    // End Beaufort
-
-    // Start Forecast
-    tabContent += forecast;
-    tabContent += "<hr>";
-    // End Forecast
-
-    // Start Atmospheric Pressure
-    tabContent +=
-        "<div class='form-group-scene form-group'>" +
-        "      <div class='scene-option-input input-row'>" +
-        "        <h2 class='scene-option' style='width: 100%;'>Atmospheric Pressure <span class=\"units\">(atm)</span></h2>" +
-        "        <div class='scene-option form-fields'>" +
-        `          <input type="number" value="${app.document.flags?.gurps4e?.atm ?? 1}" step="0.01" name="flags.gurps4e.atm" placeholder="Atmospheric Pressure" min="0">` +
-        "        </div>" +
-        "      </div>" +
-        "      <div class='scene-option-subtitle'>The atmospheric pressure of the scene, in multiples of Earth's sea-level atmospheric pressure.</div>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Full rules for atmospheric pressure can be found on Basic 429, but a basic summary is listed below:</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Any value is possible and will correcly impact those cases that can take decimal values (Like laser range and damage) But the below ranges will be most relevant.</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Trace Atmosphere: Less than 0.01 atm - Essentially a vaccum. Without pressure support you can operate for half the time you can hold your breath. (Likely 4 to 7 seconds in combat, or 15 to 30 if walking)</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Very Thin Atmosphere: 0.01 to 0.5 atm - Without some breathing aparatus or appropriate advantage you can operate for however long you can hold your breath.  (Likely 8 to 14 seconds in combat, or 24 to 60 if walking)</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Thin Atmosphere: 0.51 to 0.8 atm - It's gonna suck, but with decent HT rolls, goggles, and frequent resting you can operate here as long as you don't crit fail your HT roll. (Mean time to crit fail is 37 days for HTs less than 12, 149 days for HT 12+)</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Standard Atmosphere: 0.81 to 1.2 atm - Values in this range give no modifiers. On Earth, 5700ft is the point where the atmosphere shifts from Standard to Thin</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Dense Atmosphere: 1.21 to 1.5 atm - -1 HT, otherwise it's not a big deal unless you're on some freaky planet with more than double Earth's O2.</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Very Dense Atmosphere: 1.51 to 10 atm - You need equipment or advantages to deal with the pressure or you can't breathe.</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Superdense Atmosphere: More than 10 atm - You will be crushed without protection.</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Characters with a different native pressure are also correctly accounted for because I am very clever. Though their baseline is different, the same multiples apply and have the same sorts of penalties.</p>" +
-        "</div>" +
-        "<hr>";
-    // End Atmospheric Pressure
-
-    // Start Altitude
-    tabContent +=
-        "<div class='form-group-scene form-group'>" +
-        "      <div class='scene-option-input input-row'>" +
-        "        <h2 class='scene-option' style='width: 100%;'>Altitude <span class=\"units\">(ft)</span></h2>" +
-        "        <div class='scene-option form-fields'>" +
-        `          <input type="number" value="${app.document.flags?.gurps4e?.alt ?? 0}" step="1" name="flags.gurps4e.alt" placeholder="Altitude Above Sealevel" min="0">` +
-        "        </div>" +
-        "      </div>" +
-        "      <div class='scene-option-subtitle'>An alternative way of setting atmospheric pressure, by instead specifying altitude above sea-level</div>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;If the value is anything other than zero it overrides any value set above in the Atmospheric Pressure input.</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Any value is possible and will correcly impact those cases that can take decimal values (Like laser range and damage) But the below ranges will be most relevant.</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Trace Atmosphere: More than 84500 ft - Essentially a vaccum. Without pressure support you can operate for half the time you can hold your breath. (Likely 4 to 7 seconds in combat, or 15 to 30 if walking)</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Very Thin Atmosphere: 17470 to 84500 ft - Without some breathing aparatus or appropriate advantage you can operate for however long you can hold your breath.  (Likely 8 to 14 seconds in combat, or 24 to 60 if walking)</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Thin Atmosphere: 5700 to 17470 ft - It's gonna suck, but with decent HT rolls, goggles, and frequent resting you can operate here as long as you don't crit fail your HT roll. (Mean time to crit fail is 37 days for HTs less than 12, 149 days for HT 12+)</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Standard Atmosphere: 0 to 5700 ft - Values in this range give no modifiers. On Earth, 5700ft is the point where the atmosphere shifts from Standard to Thin</p>" +
-        "</div>" +
-        "<hr>";
-
-    console.log((1-2.25577*(10**-5)* ((app.document.flags?.gurps4e?.alt ?? 0) / 3.28084) )**5.25588);
-
-    // End Altitude
-
-    // Start Lighting
-    tabContent +=
-        "<div class='form-group-scene form-group'>" +
-        "      <div class='scene-option-input input-row'>" +
-        "        <h2 class='scene-option' style='width: 100%;'>Lighting</h2>" +
-        "        <div class='scene-option form-fields'>" +
-        `          <input type="number" value="${app.document.flags?.gurps4e?.light ?? 0}" step="1" name="flags.gurps4e.light" placeholder="Lighting Penalty" max='0' min="-10">` +
-        "        </div>" +
-        "      </div>" +
-        "      <div class='scene-option-subtitle'>The base penalty of unlit areas of the scene</div>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;The actual lighting penalty will be the better of this base penalty, and the penalty of any applicable lightsource. Examples of what each lighting penalty mean are below.</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Light sources do not add together, so if the base lighting gives a -2 penalty, and they are carrying a light source that grants a -2 penalty, it does not add up to a -1 penalty.</p>";
-
-    // Fetch the lighting table and then print it out
-    let lightingTableContent = lightingHelpers.returnLightingTable();
-    for (let z = 0; z < lightingTableContent.length; z++){
-      tabContent += "<p style='width: 100%'><span style='font-weight: 500; font-style: italic'>Penalty:</span> " + lightingTableContent[z].penalty + ", <span style='font-weight: 500; font-style: italic'>Natural Light:</span> " + lightingTableContent[z].natural + ", <span style='font-weight: 500; font-style: italic'>Artificial Light:</span> " + lightingTableContent[z].artificial + "</p>";
-    }
-
-    tabContent += "</div><hr>";
-    // End Lighting
-
-    // Start Temperature
-    tabContent +=
-        "<div class='form-group-scene form-group'>" +
-        "      <div class='scene-option-input input-row'>" +
-        "        <h2 class='scene-option' style='width: 100%;'>Temperature <span class=\"units\">(°F)</span></h2>" +
-        "        <div class='scene-option form-fields'>" +
-        `          <input type="number" value="${app.document.flags?.gurps4e?.f ?? 72}" step="1" name="flags.gurps4e.f" placeholder="Temperature °F" max='100000000000000000000000000000000' min="-460">` +
-        "        </div>" +
-        "      </div>" +
-        "      <div class='scene-option-subtitle'>The temperature of the scene</div>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;At the moment, there's no distinction between interior and exterior spaces in the same scene. But you don't need to make rolls for everyone if you don't want to, and you can always apply a modifier if it would be appropriate.</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Where appropriate, this setting will apply relevant modifiers for characters who are cold blooded. This starts at 65° or 50° depending on the severity of the disadvantage, and every further 10° will increase the penalty.</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Normal humans have a temperature tolerance that ranges from 35° to 90°. In that range, no rolls are required. Outside that range, rolls are required to avoid FP loss. Every multiple of 10° outside that range adds an extra -1 to the HT roll. Crit fails on these HT rolls typically carry further negative modifiers.</p>";
-
-    tabContent += "</div><hr>";
-    // End Temperature
-
-    // Start Temperature
-    tabContent +=
-        "<div class='form-group-scene form-group'>" +
-        "      <div class='scene-option-input input-row'>" +
-        "        <h2 class='scene-option' style='width: 100%;'>Precipitation <span class=\"units\">(yrds visibility)</span></h2>" +
-        "        <div class='scene-option form-fields'>" +
-        `          <input type="number" value="${app.document.flags?.gurps4e?.precipitationYrds ?? 2000}" step="1" name="flags.gurps4e.precipitationYrds" placeholder="Yards visibility" min="0">` +
-        `          <select value="${app.document.flags?.gurps4e?.precipitationType ?? "snow"}" name="flags.gurps4e.precipitationType" id="flags.gurps4e.precipitationType">` +
-        "            <option value='rain'>Rain</option>" +
-        "            <option value='snow'>Snow</option>" +
-        "            <option value='sleet'>Sleet</option>" +
-        "            <option value='hail'>Hail</option>" +
-        "          </select>" +
-        "        </div>" +
-        "      </div>" +
-        "      <div class='scene-option-subtitle'>The temperature of the scene</div>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;At the moment, there's no distinction between interior and exterior spaces in the same scene. But you don't need to make rolls for everyone if you don't want to, and you can always apply a modifier if it would be appropriate.</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Where appropriate, this setting will apply relevant modifiers for characters who are cold blooded. This starts at 65° or 50° depending on the severity of the disadvantage, and every further 10° will increase the penalty.</p>" +
-        "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Normal humans have a temperature tolerance that ranges from 35° to 90°. In that range, no rolls are required. Outside that range, rolls are required to avoid FP loss. Every multiple of 10° outside that range adds an extra -1 to the HT roll. Crit fails on these HT rolls typically carry further negative modifiers.</p>";
-
-    tabContent += "</div><hr>";
-    // End Temperature
-
+    //
+    // // Start Beaufort
+    // tabContent +=
+    //     "<div class=\"form-group-scene form-group\">" +
+    //     "      <div class='scene-option-input input-row'>" +
+    //     "    <h2 class='scene-option' style='width: 100%;'>Beaufort Wind Scale</h2>" +
+    //     "    <div class=\"scene-option form-fields\">" +
+    //     `      <select value="${app.document.flags?.gurps4e?.beaufort ?? 1}" name="flags.gurps4e.beaufort" id="flags.gurps4e.beaufort">`;
+    //
+    // let beaufortScale = weatherHelpers.returnBeaufortScale();
+    // let forecast = "";
+    // for (let y = 0; y < beaufortScale.length; y++){
+    //   // If the beaufort degree for the scene matches the one we've reached on the loop, mark it selected
+    //   if (beaufortScale[y].degree === parseInt(app.document.flags.gurps4e.beaufort)) {
+    //     tabContent += "<option value='" + beaufortScale[y].degree + "' selected>" + beaufortScale[y].degree + " - " + beaufortScale[y].description +"</option>"
+    //
+    //     forecast = "<div class='scene-option-forecast'>" +
+    //         "<h2>Current Forecast (Save and reopen to update)</h2>" +
+    //         "<p>Wind speeds range from " + beaufortScale[y].windMphL + " to " + beaufortScale[y].windMphH + " mph</p>" +
+    //         "<p>Wave height ranges from " + beaufortScale[y].windMphL + " to " + beaufortScale[y].windMphH + " feet</p>" +
+    //         "<p><span style='font-weight: 500; text-decoration: underline'>Sea effect:</span> " + beaufortScale[y].sea + "</p>" +
+    //         "<p><span style='font-weight: 500; text-decoration: underline'>Land effect:</span> " + beaufortScale[y].land + "</p>" +
+    //         "</div>";
+    //   }
+    //   // Otherwise not
+    //   else {
+    //     tabContent += "<option value='" + beaufortScale[y].degree + "'>" + beaufortScale[y].degree + " - " + beaufortScale[y].description +"</option>"
+    //   }
+    // }
+    //
+    // tabContent += "</select>" +
+    //     "      </div>" +
+    //     "    </div>";
+    //
+    // tabContent += "<div class='scene-option-subtitle'>A single number used to categorize the effect of wind speed.</div>";
+    // tabContent += "<p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Beaufort scale appears on Magic 194, though the version in use here is slightly tweaked.</p>" +
+    //     "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;In real life, Beaufort values above 12 are only in use by the PRC and ROC for very powerful typhoons, though they are roughly analagous to hurricane categorizations in use by the rest of the world. For that reason, the scale here follows the Beaufort scale up to 12, at which point it transitions to the hurricaine categorization system.</p>" +
+    //     "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Theoretical categories 6 and 7 are included, using wind speed values provided by NOAA research scientist Jim Kossin.</p>" +
+    //     "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Tornado scale is also included for reference, though if an actual tornado is present then the damage is likely to be a worse than listed since the wind is picking stuff up instead of just blowing it around.</p>" +
+    //     "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;The UI is already pretty cluttered so if you want detailed info, look up the Fujita Scale on Wikipedia.</p>" +
+    //     "    <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Some names of beaufort degrees have also been changed to match current NOAA names, though the actual wind and wave values are identical.</p>" +
+    //     "</div>" +
+    //     "<hr>";
+    // // End Beaufort
+    //
+    // // Start Forecast
+    // tabContent += forecast;
+    // tabContent += "<hr>";
+    // // End Forecast
+    //
+    // // Start Atmospheric Pressure
+    // tabContent +=
+    //     "<div class='form-group-scene form-group'>" +
+    //     "      <div class='scene-option-input input-row'>" +
+    //     "        <h2 class='scene-option' style='width: 100%;'>Atmospheric Pressure <span class=\"units\">(atm)</span></h2>" +
+    //     "        <div class='scene-option form-fields'>" +
+    //     `          <input type="number" value="${app.document.flags?.gurps4e?.atm ?? 1}" step="0.01" name="flags.gurps4e.atm" placeholder="Atmospheric Pressure" min="0">` +
+    //     "        </div>" +
+    //     "      </div>" +
+    //     "      <div class='scene-option-subtitle'>The atmospheric pressure of the scene, in multiples of Earth's sea-level atmospheric pressure.</div>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Full rules for atmospheric pressure can be found on Basic 429, but a basic summary is listed below:</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Any value is possible and will correcly impact those cases that can take decimal values (Like laser range and damage) But the below ranges will be most relevant.</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Trace Atmosphere: Less than 0.01 atm - Essentially a vaccum. Without pressure support you can operate for half the time you can hold your breath. (Likely 4 to 7 seconds in combat, or 15 to 30 if walking)</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Very Thin Atmosphere: 0.01 to 0.5 atm - Without some breathing aparatus or appropriate advantage you can operate for however long you can hold your breath.  (Likely 8 to 14 seconds in combat, or 24 to 60 if walking)</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Thin Atmosphere: 0.51 to 0.8 atm - It's gonna suck, but with decent HT rolls, goggles, and frequent resting you can operate here as long as you don't crit fail your HT roll. (Mean time to crit fail is 37 days for HTs less than 12, 149 days for HT 12+)</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Standard Atmosphere: 0.81 to 1.2 atm - Values in this range give no modifiers. On Earth, 5700ft is the point where the atmosphere shifts from Standard to Thin</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Dense Atmosphere: 1.21 to 1.5 atm - -1 HT, otherwise it's not a big deal unless you're on some freaky planet with more than double Earth's O2.</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Very Dense Atmosphere: 1.51 to 10 atm - You need equipment or advantages to deal with the pressure or you can't breathe.</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Superdense Atmosphere: More than 10 atm - You will be crushed without protection.</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Characters with a different native pressure are also correctly accounted for because I am very clever. Though their baseline is different, the same multiples apply and have the same sorts of penalties.</p>" +
+    //     "</div>" +
+    //     "<hr>";
+    // // End Atmospheric Pressure
+    //
+    // // Start Altitude
+    // tabContent +=
+    //     "<div class='form-group-scene form-group'>" +
+    //     "      <div class='scene-option-input input-row'>" +
+    //     "        <h2 class='scene-option' style='width: 100%;'>Altitude <span class=\"units\">(ft)</span></h2>" +
+    //     "        <div class='scene-option form-fields'>" +
+    //     `          <input type="number" value="${app.document.flags?.gurps4e?.alt ?? 0}" step="1" name="flags.gurps4e.alt" placeholder="Altitude Above Sealevel" min="0">` +
+    //     "        </div>" +
+    //     "      </div>" +
+    //     "      <div class='scene-option-subtitle'>An alternative way of setting atmospheric pressure, by instead specifying altitude above sea-level</div>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;If the value is anything other than zero it overrides any value set above in the Atmospheric Pressure input.</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Any value is possible and will correcly impact those cases that can take decimal values (Like laser range and damage) But the below ranges will be most relevant.</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Trace Atmosphere: More than 84500 ft - Essentially a vaccum. Without pressure support you can operate for half the time you can hold your breath. (Likely 4 to 7 seconds in combat, or 15 to 30 if walking)</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Very Thin Atmosphere: 17470 to 84500 ft - Without some breathing aparatus or appropriate advantage you can operate for however long you can hold your breath.  (Likely 8 to 14 seconds in combat, or 24 to 60 if walking)</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Thin Atmosphere: 5700 to 17470 ft - It's gonna suck, but with decent HT rolls, goggles, and frequent resting you can operate here as long as you don't crit fail your HT roll. (Mean time to crit fail is 37 days for HTs less than 12, 149 days for HT 12+)</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Standard Atmosphere: 0 to 5700 ft - Values in this range give no modifiers. On Earth, 5700ft is the point where the atmosphere shifts from Standard to Thin</p>" +
+    //     "</div>" +
+    //     "<hr>";
+    //
+    // console.log((1-2.25577*(10**-5)* ((app.document.flags?.gurps4e?.alt ?? 0) / 3.28084) )**5.25588);
+    //
+    // // End Altitude
+    //
+    // // Start Lighting
+    // tabContent +=
+    //     "<div class='form-group-scene form-group'>" +
+    //     "      <div class='scene-option-input input-row'>" +
+    //     "        <h2 class='scene-option' style='width: 100%;'>Lighting</h2>" +
+    //     "        <div class='scene-option form-fields'>" +
+    //     `          <input type="number" value="${app.document.flags?.gurps4e?.light ?? 0}" step="1" name="flags.gurps4e.light" placeholder="Lighting Penalty" max='0' min="-10">` +
+    //     "        </div>" +
+    //     "      </div>" +
+    //     "      <div class='scene-option-subtitle'>The base penalty of unlit areas of the scene</div>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;The actual lighting penalty will be the better of this base penalty, and the penalty of any applicable lightsource. Examples of what each lighting penalty mean are below.</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Light sources do not add together, so if the base lighting gives a -2 penalty, and they are carrying a light source that grants a -2 penalty, it does not add up to a -1 penalty.</p>";
+    //
+    // // Fetch the lighting table and then print it out
+    // let lightingTableContent = lightingHelpers.returnLightingTable();
+    // for (let z = 0; z < lightingTableContent.length; z++){
+    //   tabContent += "<p style='width: 100%'><span style='font-weight: 500; font-style: italic'>Penalty:</span> " + lightingTableContent[z].penalty + ", <span style='font-weight: 500; font-style: italic'>Natural Light:</span> " + lightingTableContent[z].natural + ", <span style='font-weight: 500; font-style: italic'>Artificial Light:</span> " + lightingTableContent[z].artificial + "</p>";
+    // }
+    //
+    // tabContent += "</div><hr>";
+    // // End Lighting
+    //
+    // // Start Temperature
+    // tabContent +=
+    //     "<div class='form-group-scene form-group'>" +
+    //     "      <div class='scene-option-input input-row'>" +
+    //     "        <h2 class='scene-option' style='width: 100%;'>Temperature <span class=\"units\">(°F)</span></h2>" +
+    //     "        <div class='scene-option form-fields'>" +
+    //     `          <input type="number" value="${app.document.flags?.gurps4e?.f ?? 72}" step="1" name="flags.gurps4e.f" placeholder="Temperature °F" max='100000000000000000000000000000000' min="-460">` +
+    //     "        </div>" +
+    //     "      </div>" +
+    //     "      <div class='scene-option-subtitle'>The temperature of the scene</div>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;At the moment, there's no distinction between interior and exterior spaces in the same scene. But you don't need to make rolls for everyone if you don't want to, and you can always apply a modifier if it would be appropriate.</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Where appropriate, this setting will apply relevant modifiers for characters who are cold blooded. This starts at 65° or 50° depending on the severity of the disadvantage, and every further 10° will increase the penalty.</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Normal humans have a temperature tolerance that ranges from 35° to 90°. In that range, no rolls are required. Outside that range, rolls are required to avoid FP loss. Every multiple of 10° outside that range adds an extra -1 to the HT roll. Crit fails on these HT rolls typically carry further negative modifiers.</p>";
+    //
+    // tabContent += "</div><hr>";
+    // // End Temperature
+    //
+    // // Start Temperature
+    // tabContent +=
+    //     "<div class='form-group-scene form-group'>" +
+    //     "      <div class='scene-option-input input-row'>" +
+    //     "        <h2 class='scene-option' style='width: 100%;'>Precipitation <span class=\"units\">(yrds visibility)</span></h2>" +
+    //     "        <div class='scene-option form-fields'>" +
+    //     `          <input type="number" value="${app.document.flags?.gurps4e?.precipitationYrds ?? 2000}" step="1" name="flags.gurps4e.precipitationYrds" placeholder="Yards visibility" min="0">` +
+    //     `          <select value="${app.document.flags?.gurps4e?.precipitationType ?? "snow"}" name="flags.gurps4e.precipitationType" id="flags.gurps4e.precipitationType">` +
+    //     "            <option value='rain'>Rain</option>" +
+    //     "            <option value='snow'>Snow</option>" +
+    //     "            <option value='sleet'>Sleet</option>" +
+    //     "            <option value='hail'>Hail</option>" +
+    //     "          </select>" +
+    //     "        </div>" +
+    //     "      </div>" +
+    //     "      <div class='scene-option-subtitle'>The temperature of the scene</div>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;At the moment, there's no distinction between interior and exterior spaces in the same scene. But you don't need to make rolls for everyone if you don't want to, and you can always apply a modifier if it would be appropriate.</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Where appropriate, this setting will apply relevant modifiers for characters who are cold blooded. This starts at 65° or 50° depending on the severity of the disadvantage, and every further 10° will increase the penalty.</p>" +
+    //     "      <p class='scene-option-notes notes'>&nbsp;&nbsp;&nbsp;&nbsp;Normal humans have a temperature tolerance that ranges from 35° to 90°. In that range, no rolls are required. Outside that range, rolls are required to avoid FP loss. Every multiple of 10° outside that range adds an extra -1 to the HT roll. Crit fails on these HT rolls typically carry further negative modifiers.</p>";
+    //
+    // tabContent += "</div><hr>";
+    // // End Temperature
+    //
     // Closing div
     tabContent += "</div>"
 
     // Add the tab content
     // First an array containing all tab divs are found, then we pick the last, then we append our new tab with the tabContent created above.
-    html.find('div.tab').slice(-1).after(tabContent);
-
-    console.log(game.scenes.get(html.find('a.document-id-link').slice(-1)[0].attributes[2].nodeValue.split(" ")[1]))
+    html.find('div.tab').slice(3,4).after(tabContent);
+    console.log(app.document.flags?.gurps4e);
   })
 
   function _setGurps4eInitiative() {
