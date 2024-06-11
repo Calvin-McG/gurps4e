@@ -84,6 +84,7 @@ ROLLABLEDIFFICULTY.dropdownChoices = {
     "H": "Hard",
     "VH": "Very Hard",
     "W": "Wildcard",
+    "T": "Set to Ten",
 }
 
 TECHNIQUEDIFFICULTY.dropdownChoices = {

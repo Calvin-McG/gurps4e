@@ -127,6 +127,18 @@ export class skillHelpers {
             let per = attributeHelpers.calcPerOrWill(iq, actor.system.primaryAttributes.perception);
             let will = attributeHelpers.calcPerOrWill(iq, actor.system.primaryAttributes.will);
 
+            // Begin BAD related calculations
+            let bad = canvas.scene?.flags?.gurps4e?.bad ?? 0; // Get BAD from the scene flags, falling back to zero
+            let naughty = item.naughty ?? false; // Get the naughty checkbox
+            if (naughty) { // If the box is checked
+                bad = Math.abs(parseInt(bad)); // Parse BAD to an int and make positive
+            }
+            else {
+                bad = 0; // Set bad to zero
+            }
+            mod += bad; // Add BAD to the modifier
+            // End BAD related calculations
+
             if (category === 'skill') { // It's a skill
 
                 // Figure out defaults
@@ -173,7 +185,10 @@ export class skillHelpers {
                 attrDefaultArray.push(0);
                 skillDefaultArray.push(0);
 
-                if (points <= 0 || (difficulty == "W" && points < 3)) { // They haven't spent any points, or have spent too few points to make a difference for a Wildcard skill. Display default, after account for dabbler
+                if (difficulty === "T") { // It's a skill with the "Set to Ten" difficulty
+                    level = 10 + mod; // Set it to 10
+                }
+                else if (points <= 0 || (difficulty === "W" && points < 3)) { // They haven't spent any points, or have spent too few points to make a difference for a Wildcard skill. Display default, after account for dabbler
                     let bestAttrDefault = Math.max(...attrDefaultArray); // Get all the attr defaults and pick the highest
                     let bestSkillDefault = Math.max(...skillDefaultArray); // Get all the skill defaults and pick the highest
                     if (bestAttrDefault > 0) { // If there's an actual attribute default
@@ -281,10 +296,15 @@ export class skillHelpers {
 
     static computeSkillLevelWithoutDefaults(actor, difficulty, baseAttr, points, mod) {
         let level = 0;
+        console.log(difficulty);
         if (actor.system) { // Make sure there's an actor before computing skill level
-            let base = this.getBaseAttrValue(baseAttr, actor) // Get the base value of the relevant attribute
-            // Compute skill value based on points spent on the skill
-            level = base + this.pointsToBonus(points, difficulty) + mod;
+            if (difficulty === "T") {
+                level = 10;
+            }
+            else {
+                let base = this.getBaseAttrValue(baseAttr, actor) // Get the base value of the relevant attribute
+                level = base + this.pointsToBonus(points, difficulty) + mod; // Compute skill value based on points spent on the skill
+            }
         }
 
         return level;
@@ -343,6 +363,8 @@ export class skillHelpers {
         let baseAttrValue = this.getBaseAttrValue(baseAttr, actor)
 
         switch (difficulty){
+            case "T":
+                return 10;
             case "E":
                 return baseAttrValue;
             case "A":
@@ -425,12 +447,12 @@ export class skillHelpers {
         let points = pts;
         let bonus = 0;
 
-        //Correct for Wilcard point costs
+        // Correct for Wilcard point costs
         if (difficulty == "W"){
             points = Math.floor(points/3)//Wildcards cost triple, but otherwise behave as VH skills
         }
 
-        //Get base skill modifier for points spent
+        // Get base skill modifier for points spent
         if (points == 1){
             bonus = 0;
         }
@@ -443,6 +465,9 @@ export class skillHelpers {
 
         //Correct for difficulty
         switch (difficulty){
+            case "T":
+                bonus = 0;
+                break;
             case "E":
                 bonus = bonus;
                 break;
