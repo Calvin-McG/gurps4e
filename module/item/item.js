@@ -5631,7 +5631,6 @@ export class gurpsItem extends Item {
       attackKey.area = "ex"; // Overwrite the attack key to ex
       attackKey.damageType = attackKey.damageType.replace(/[e][x]\d*/g, ""); // Remove ex from the damageType string
       let exDivisor = exString.toString().match(/\d/g);
-      console.log(exDivisor);
       if (exDivisor === null) { // If there was no digit
         attackKey.exDivisor = 3; // Default to 3
       }
