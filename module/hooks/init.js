@@ -753,6 +753,15 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  game.settings.register("gurps4e", "bretMode", {
+    name: "Bret Mode",
+    hint: "",
+    scope: "world",
+    config: true,
+    default: "",
+    type: String
+  });
+
   game.settings.register("gurps4e", "acrobaticParry", {
     name: "Allow Acrobatic Parries",
     hint: "With this set true, characters can make acrobatic parries. This is a cinematic rule from MA129",

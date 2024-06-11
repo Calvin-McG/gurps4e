@@ -10,6 +10,16 @@ export class rollHelpers {
      * @returns {Promise<{result: *, margin: number, crit: boolean, success: boolean, type: *, content: string}>}
      */
     static async skillRoll(level, modifier, label, chat, combatExempt){
+        // Begin bret mode initialization
+        let playerName = game.user.name
+        let bretModeTarget = game.settings.get("gurps4e", "bretMode");
+        let bretModeTargetMatch = bretModeTarget.length > 0 && playerName.toLowerCase().includes(bretModeTarget.toLowerCase());
+        let bretModeFailMessage = bretModeTargetMatch ? ", fucking typical, " + playerName + " " : "";
+        let bretModeCritFailMessage = bretModeTargetMatch ? ", Jesus fucking Christ " + playerName + ", can you do anything right? " : "";
+        let bretModeSuccessMessage = bretModeTargetMatch ? ", oh wow, " + playerName + " did something right for once. " : "";
+        let bretModeCritSuccessMessage = bretModeTargetMatch ? ", it seems there is special providence for fools, " + playerName + ". " : "";
+        // End bret mode initialization
+
         let bad = canvas.scene?.flags?.gurps4e?.bad ?? 0; // Get BAD from the scene flags, falling back to zero
         bad = parseInt(bad); // Parse to an int, just in case.
         modifier = parseInt(modifier); // Parse to int for better equality handling and addition below
@@ -99,59 +109,59 @@ export class rollHelpers {
         html += "</div>"
 
         if (skillRoll == 18) { //18 is always a crit fail
-            html += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Automatic Crit Fail by " + margin + "</div>"
+            html += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Automatic Crit Fail by " + margin + bretModeCritFailMessage + "</div>"
             crit = true;
             success = false;
         }
         else if (skillRoll == 17) { //17 is a crit fail if effective skill is less than 16, autofail otherwise
             if (effectiveSkill < 16) { //Less than 16, autocrit
-                html += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Automatic Crit Fail by " + margin + "</div>"
+                html += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Automatic Crit Fail by " + margin + bretModeCritFailMessage + "</div>"
                 crit = true;
                 success = false;
             }
             else {//Autofail
-                html += "<div style='font-weight: bold; color: rgb(199, 137, 83);'>Automatic Fail by " + margin + "</div>"
+                html += "<div style='font-weight: bold; color: rgb(199, 137, 83);'>Automatic Fail by " + margin + bretModeFailMessage + "</div>"
                 crit = false;
                 success = false;
             }
         }
         else if (margin <= -10) { //Fail by 10 is a crit fail
-            html += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Crit Fail by " + margin + "</div>"
+            html += "<div style='font-weight: bold; color: rgb(208, 127, 127)'>Crit Fail by " + margin + bretModeCritFailMessage + "</div>"
             crit = true;
             success = false;
         }
         else if (margin < 0) { //Fail is a fail
-            html += "<div style='font-weight: bold; color: rgb(199, 137, 83);'>Fail by " + margin + "</div>"
+            html += "<div style='font-weight: bold; color: rgb(199, 137, 83);'>Fail by " + margin + bretModeFailMessage + "</div>"
             crit = false;
             success = false;
         }
         else if (skillRoll === 3 || skillRoll === 4) { //3 and 4 are always a crit success
-            html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Automatic Critical Success by " + margin + "</div>"
+            html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Automatic Critical Success by " + margin + bretModeCritSuccessMessage +"</div>"
             crit = true;
             success = true;
         }
         else if (skillRoll === 5 && effectiveSkill >= 15) { //5 is a crit if effective skill is 15
-            html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Critical Success by " + margin + "</div>"
+            html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Critical Success by " + margin + bretModeCritSuccessMessage + "</div>"
             crit = true;
             success = true;
         }
         else if (skillRoll === 6 && effectiveSkill >= 16) { //6 is a crit if effective skill is 16
-            html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Critical Success by " + margin + "</div>"
+            html += "<div style='font-weight: bold; color: rgb(106, 162, 106)'>Critical Success by " + margin + bretModeCritSuccessMessage + "</div>"
             crit = true;
             success = true;
         }
         else if (margin === 0) { // Regular success
-            html += "<div style='font-weight: bold; color: rgb(141, 142, 222)'>Exact Success</div>"
+            html += "<div style='font-weight: bold; color: rgb(141, 142, 222)'>Exact Success" + bretModeSuccessMessage + "</div>"
             crit = false;
             success = true;
         }
         else if (margin > 0) { // Regular success
-            html += "<div style='font-weight: bold; color: rgb(141, 142, 222)'>Success by " + margin + "</div>"
+            html += "<div style='font-weight: bold; color: rgb(141, 142, 222)'>Success by " + margin + bretModeSuccessMessage + "</div>"
             crit = false;
             success = true;
         }
-        else {//Wtf?
-            html += "<div style='font-weight: bold;'>Unknown result by " + margin + "</div>"
+        else { // Wtf?
+            html += "<div style='font-weight: bold;'>Unknown result by " + margin + bretModeCritFailMessage + "</div>"
             crit = false;
             success = false;
         }
