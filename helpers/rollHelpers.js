@@ -13,7 +13,8 @@ export class rollHelpers {
         let bad = canvas.scene?.flags?.gurps4e?.bad ?? 0; // Get BAD from the scene flags, falling back to zero
         bad = parseInt(bad); // Parse to an int, just in case.
         modifier = parseInt(modifier); // Parse to int for better equality handling and addition below
-        let isPlayer = true ?? !game.user.isGM; // game.user.isGM returns true for GMs, and false for players, so take the opposite.
+        level = parseInt(level); // Parse to int for better equality handling and addition below
+        let isPlayer = !game.user.isGM; // game.user.isGM returns true for GMs, and false for players, so take the opposite.
 
         if (!isPlayer || combatExempt || isNaN(bad)) { // If not a player OR this is a combat related roll and therefore exempt OR BAD ended up NaN and we need to discard it.
             bad = 0; // Default back to zero.
