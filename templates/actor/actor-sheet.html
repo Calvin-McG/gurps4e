@@ -954,9 +954,9 @@
 										</td>
 										<td class="item-name"><span>{{item.name}}</span></td>
 										<td class="item-notes"><span>{{item.system.shortNotes}}</span></td>
-										<td class="actor-sheet-digit-col"><span>{{item.system.tl}}</span></td>
-										<td class="actor-sheet-digit-col"><span>{{item.system.lc}}</span></td>
-										<td class="actor-sheet-digit-col"><span>{{item.system.quantity}}</span></td>
+										<td class="actor-sheet-digit-col"><div style="min-width: 2ch">{{item.system.tl}}</div></td>
+										<td class="actor-sheet-digit-col"><div style="min-width: 1ch">{{item.system.lc}}</div></td>
+										<td class="actor-sheet-digit-col"><div style="min-width: 2ch">{{item.system.quantity}}</div></td>
 										<td class="actor-sheet-digit-col"><div style="min-width: 7ch">{{displayCurrencyComplex item.system.ttlCost}} $</div></td>
 										<td class="actor-sheet-digit-col"><div style="min-width: 6ch">{{round item.system.ttlWeight 100}} lb{{checkPlural item.system.ttlWeight}}</div></td>
 										<td><span>{{equipStatusToString item.system.equipStatus}}</span></td>
