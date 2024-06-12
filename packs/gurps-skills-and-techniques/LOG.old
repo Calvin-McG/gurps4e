@@ -1,1 +1,5 @@
-2024/06/11-01:49:48.833 61f0 Delete type=3 #1
+2024/06/11-18:19:24.072 5fc Log #160: 0 ops saved to Table #161 OK
+2024/06/11-18:19:24.073 5fc Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-skills-and-techniques/000160.log: OK
+2024/06/11-18:19:24.075 5fc Table #75: 372 entries OK
+2024/06/11-18:19:24.077 5fc Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-skills-and-techniques/MANIFEST-000159: OK
+2024/06/11-18:19:24.080 5fc **** Repaired leveldb C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-skills-and-techniques; recovered 1 files; 396449 bytes. Some data may have been lost. ****
