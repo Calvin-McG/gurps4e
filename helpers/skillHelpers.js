@@ -296,7 +296,6 @@ export class skillHelpers {
 
     static computeSkillLevelWithoutDefaults(actor, difficulty, baseAttr, points, mod) {
         let level = 0;
-        console.log(difficulty);
         if (actor.system) { // Make sure there's an actor before computing skill level
             if (difficulty === "T") {
                 level = 10;
