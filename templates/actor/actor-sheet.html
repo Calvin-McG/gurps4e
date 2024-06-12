@@ -4494,6 +4494,116 @@
 						</table>
 						{{/if}}
 					</div>
+
+					{{#if actor.system.showVanillaMagic}}
+					<div>
+						<h1 class="bold" style="text-align: center;">
+							<label for="infoPower">
+								<div>
+									{{#if actor.system.info.power.show }}
+									Magical Power Conversion
+									{{else}}
+									Magical Power Conversion (Hidden)
+									{{/if}}
+								</div>
+							</label>
+						</h1>
+						<input style="display: none" id="infoPower" type="checkbox" name="system.info.power.show" {{checked actor.system.info.power.show}} data-dtype="Boolean"/>
+						{{#if actor.system.info.power.show }}
+
+						<table>
+							<tr class="item">
+								<th colspan="3" style="font-size: larger">Horsepower to FP</th>
+							</tr>
+							<tr class="item">
+								<td>Vehicle Horsepower</td>
+								<td style="text-align: center" colspan="2"><input type="number" min="0" name="system.info.power.hp" value="{{actor.system.info.power.hp}}" data-dtype="Number" /></td>
+							</tr>
+							<tr class="item">
+								<td>Energy Output</td>
+								<td style="text-align: center">{{round actor.system.info.power.hpToFPSec 100}}FP per second</td>
+								<td style="text-align: center">{{round actor.system.info.power.hpSecToFP 10}} seconds per FP</td>
+							</tr>
+						</table>
+
+						<table>
+							<tr class="item">
+								<th colspan="3" style="font-size: larger">Vehicle stats to FP</th>
+							</tr>
+							<tr class="item">
+								<td>Weight in Tons / Acceleration / Move</td>
+								<td style="text-align: center" colspan="2">
+									<input type="number" min="0" name="system.info.power.vehicleTons" value="{{actor.system.info.power.vehicleTons}}" data-dtype="Number" />
+									<input type="number" min="0" name="system.info.power.vehicleAccel" value="{{actor.system.info.power.vehicleAccel}}" data-dtype="Number" />
+									<input type="number" min="0" name="system.info.power.vehicleMove" value="{{actor.system.info.power.vehicleMove}}" data-dtype="Number" />
+								</td>
+							</tr>
+							<tr class="item">
+								<td>Energy Output</td>
+								<td style="text-align: center">{{round actor.system.info.power.vehicleStatsToFPSec 100}}FP per second</td>
+								<td style="text-align: center">{{round actor.system.info.power.vehicleStatsSecToFP 10}} seconds per FP</td>
+							</tr>
+						</table>
+
+						<table>
+							<tr class="item">
+								<th colspan="3" style="font-size: larger">Kilowatt-Hours to FP</th>
+							</tr>
+							<tr class="item">
+								<td>Kilowatt-Hours</td>
+								<td style="text-align: center" colspan="2">
+									<input type="number" min="0" name="system.info.power.kwh" value="{{actor.system.info.power.kwh}}" data-dtype="Number" />
+								</td>
+							</tr>
+							<tr class="item">
+								<td>Energy Output</td>
+								<td style="text-align: center" colspan="2">{{round actor.system.info.power.kwhFP 100}}FP</td>
+							</tr>
+						</table>
+
+						<table>
+							<tr class="item">
+								<th colspan="3" style="font-size: larger">Kilojoules to FP</th>
+							</tr>
+							<tr class="item">
+								<td>Kilojoules</td>
+								<td style="text-align: center" colspan="2">
+									<input type="number" min="0" name="system.info.power.kj" value="{{actor.system.info.power.kj}}" data-dtype="Number" />
+								</td>
+							</tr>
+							<tr class="item">
+								<td>Efficiency</td>
+								<td style="text-align: center" colspan="1">
+									<input type="number" min="0" name="system.info.power.efficiency" value="{{actor.system.info.power.efficiency}}" data-dtype="Number" />
+								</td>
+								<td style="text-align: center">This should be your skill with Steal Power</td>
+							</tr>
+							<tr class="item">
+								<td>Energy Output</td>
+								<td style="text-align: center" colspan="2">{{round actor.system.info.power.kjFP 100}}FP</td>
+							</tr>
+						</table>
+
+						<table>
+							<tr class="item">
+								<th colspan="3" style="font-size: larger">Kilowatts to FP</th>
+							</tr>
+							<tr class="item">
+								<td>Kilowatts</td>
+								<td style="text-align: center" colspan="2">
+									<input type="number" min="0" name="system.info.power.kw" value="{{actor.system.info.power.kw}}" data-dtype="Number" />
+								</td>
+							</tr>
+							<tr class="item">
+								<td>Energy Output</td>
+								<td style="text-align: center">{{round actor.system.info.power.kwFPSec 100}}FP per second</td>
+								<td style="text-align: center">{{round actor.system.info.power.kwSecFP 100}} seconds per FP</td>
+							</tr>
+						</table>
+
+						{{/if}}
+					</div>
+					{{/if}}
 				</div>
 			</div>
 		</section>

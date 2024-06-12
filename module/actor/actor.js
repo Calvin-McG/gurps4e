@@ -176,29 +176,37 @@ export class gurpsActor extends Actor {
 	}
 
 	vehicleInfo() {
-		let m = parseFloat(this.system.vehicle.weight.lwt) * 907.185;
-		let t = 0;
-		let a = 0;
+		let move = 0;
+		let accel = 0;
 		if (this.system.vehicle.craftType === "land") {
-			t = this.system.vehicle.move.road / this.system.vehicle.acceleration.ground;
-			a = this.system.vehicle.acceleration.ground * 0.9144;
+			move = this.system.vehicle.move.road;
+			accel = this.system.vehicle.acceleration.ground;
 		}
 		else if (this.system.vehicle.craftType === "water") {
-			t = this.system.vehicle.move.naval / this.system.vehicle.acceleration.naval;
-			a = this.system.vehicle.acceleration.naval * 0.9144;
+			move = this.system.vehicle.move.naval;
+			accel =this.system.vehicle.acceleration.naval;
 		}
 		else if (this.system.vehicle.craftType === "air") {
-			t = this.system.vehicle.move.air / this.system.vehicle.acceleration.air;
-			a = this.system.vehicle.acceleration.air * 0.9144;
+			move = this.system.vehicle.move.air;
+			accel =this.system.vehicle.acceleration.air;
 		}
+
+		let horsePowerObject = this.calcVehicleHorsePower(this.system.vehicle.weight.lwt, move, accel);
+
+		this.system.vehicle.kiloWatts = horsePowerObject[0];
+		this.system.vehicle.horsePower = horsePowerObject[1];
+	}
+
+	calcVehicleHorsePower(lwt, move, accel) {
+		let m = parseFloat(lwt) * 907.185;
+		let t = move / accel;
+		let a = accel * 0.9144;
+
 		let d = 0.5 * a * t * t;
-
 		let F = a * m;
-
 		let watts = (F * d) / t;
 
-		this.system.vehicle.kiloWatts = Math.ceil(watts / 1000);
-		this.system.vehicle.horsePower = Math.ceil(watts / 745.7);
+		return [Math.ceil(watts / 1000), Math.ceil(watts / 745.7)]; // kw, hp
 	}
 
 	vehicleAttacks() {
@@ -2826,6 +2834,52 @@ export class gurpsActor extends Actor {
 		this.calcHikingInfo();
 		this.calcThrowingInfo();
 		this.calcLearningInfo();
+
+		if (this.system.showVanillaMagic) {
+			this.calcMagicPowerConversion();
+		}
+	}
+
+	calcMagicPowerConversion() {
+		if (typeof this.system.info.power === "undefined") {
+			this.system.info.power = {
+				"show": false,
+				"hp": 0,
+				"hpToFPSec": 0, // FP per second
+				"hpSecToFP": 0, // Seconds to 1 FP
+				"vehicleTons": 0,
+				"vehicleAccel": 0,
+				"vehicleMove": 0,
+				"vehicleStatsToFPSec": 0, // FP per second
+				"vehicleStatsSecToFP": 0, // Seconds to 1 FP
+				"kwh": 1,
+				"kwhFP": 0,
+				"kw": 360,
+				"kwFPSec": 0, // FP per second
+				"kwSecFP": 0, // Seconds to 1 FP
+				"kj": 360,
+				"kjFP": 0,
+				"efficiency": 15
+			}
+		}
+
+		// Begin vehicle horsepower to energy
+		this.system.info.power.hpToFPSec = this.system.info.power.hp / 1.341 / 360
+		this.system.info.power.hpSecToFP = 1 / this.system.info.power.hpToFPSec
+
+		// Begin vehicle stats to horsepower to energy
+		this.system.info.power.vehicleStatsToFPSec = this.calcVehicleHorsePower(this.system.info.power.vehicleTons, this.system.info.power.vehicleMove, this.system.info.power.vehicleAccel)[1] / 1.341 / 360
+		this.system.info.power.vehicleStatsSecToFP = 1 / this.system.info.power.vehicleStatsToFPSec
+
+		// kWh to energy
+		this.system.info.power.kwhFP = this.system.info.power.kwh * 10
+
+		// kW to energy
+		this.system.info.power.kwFPSec = this.system.info.power.kw / 360
+		this.system.info.power.kwSecFP = 1 / this.system.info.power.kwFPSec
+
+		// kJ to energy
+		this.system.info.power.kjFP = (this.system.info.power.kj / 360) * (this.system.info.power.efficiency / 100)
 	}
 
 	calcLearningInfo() {
