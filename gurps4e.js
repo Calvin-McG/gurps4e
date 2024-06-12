@@ -639,6 +639,22 @@ Hooks.once('init', async function() {
     return returnString
   });
 
+  /**
+   * This helper formats a number to a currency with commas and decimals. Decimals are only shown if the value is less than 100
+   */
+  Handlebars.registerHelper("displayCurrencyComplex", function(num) {
+    let returnString = num;
+    if (typeof num !== "undefined") {
+      if (num >= 100) {
+        returnString = (Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+      }
+      else {
+        returnString = (Math.round(num * 100) / 100).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+    }
+    return returnString
+  });
+
   Handlebars.registerHelper("checkPlural", function(num) {
     if (typeof num != "number") { // If it's not a number
       return ""; // Return blank

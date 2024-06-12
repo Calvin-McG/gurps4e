@@ -928,13 +928,13 @@
 						<td class="item-image"></td>
 						<td class="item-name">Name</td>
 						<td class="item-notes">Notes</td>
-						<td class="item-title actor-sheet-digit-col">TL</td>
-						<td class="item-title actor-sheet-digit-col">LC</td>
-						<td class="item-title actor-sheet-digit-col">Qty</td>
-						<td class="item-title actor-sheet-digit-col">$</td>
-						<td class="item-title actor-sheet-digit-col">lbs</td>
-						<td class="item-title">Status</td>
-						<td class="item-controls"></td>
+						<td class="item-title actor-sheet-digit-col actor-sheet-shrink-column">TL</td>
+						<td class="item-title actor-sheet-digit-col actor-sheet-shrink-column">LC</td>
+						<td class="item-title actor-sheet-digit-col actor-sheet-shrink-column">Qty</td>
+						<td class="item-title actor-sheet-digit-col actor-sheet-shrink-column">$</td>
+						<td class="item-title actor-sheet-digit-col actor-sheet-shrink-column">lbs</td>
+						<td class="item-title actor-sheet-shrink-column">Status</td>
+						<td class="item-controls actor-sheet-shrink-column"></td>
 					</tr>
 					{{#each actor.system.equipmentCategories as |category cat|}}
 						{{#unless (eq category "")}}
@@ -957,9 +957,9 @@
 										<td class="actor-sheet-digit-col"><span>{{item.system.tl}}</span></td>
 										<td class="actor-sheet-digit-col"><span>{{item.system.lc}}</span></td>
 										<td class="actor-sheet-digit-col"><span>{{item.system.quantity}}</span></td>
-										<td class="actor-sheet-digit-col"><span>{{displayCurrency item.system.ttlCost}} $</span></td>
-										<td class="actor-sheet-digit-col"><span>{{round item.system.ttlWeight 100}} lb{{checkPlural item.system.ttlWeight}}</span></td>
-										<td style="width: 62px;"><span>{{equipStatusToString item.system.equipStatus}}</span></td>
+										<td class="actor-sheet-digit-col"><div style="min-width: 7ch">{{displayCurrencyComplex item.system.ttlCost}} $</div></td>
+										<td class="actor-sheet-digit-col"><div style="min-width: 6ch">{{round item.system.ttlWeight 100}} lb{{checkPlural item.system.ttlWeight}}</div></td>
+										<td><span>{{equipStatusToString item.system.equipStatus}}</span></td>
 										<td class="item-controls" style="width: 30px;">
 											<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
 											<a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
@@ -973,29 +973,21 @@
 						<td class="item-image"></td>
 						<td class="item-name"><span></span></td>
 						<td class="item-notes"><span></span></td>
-						<td><span></span></td>
-						<td><span></span></td>
 						<td><span class="bold">Money:</span></td>
-						<td style="text-align: center;">
-							<span>
-								<input type="number" name="system.bio.money" style="width: 25%" value="{{actor.system.bio.money}}" data-dtype="Number" /> $
+						<td style="text-align: center;" colspan="6">
+							<span style="display: flex">
+								<input style="margin: 0 1em" type="number" name="system.bio.money" value="{{actor.system.bio.money}}" data-dtype="Number" />
+								<span style="margin-right: 1em; font-weight: bold">$</span>
 							</span>
 						</td>
-						<td style="text-align: center;"><span></span></td>
-						<td><span></span></td>
-						<td class="item-controls"></td>
 					</tr>
 					<tr class="">
 						<td class="item-image"></td>
 						<td class="item-name"><span></span></td>
 						<td class="item-notes"><span></span></td>
-						<td><span></span></td>
-						<td><span></span></td>
 						<td><span class="bold">Totals:</span></td>
-						<td style="text-align: center;"><span>{{round actor.system.bio.carriedValue 100}} $</span></td>
-						<td style="text-align: center;"><span>{{round actor.system.bio.carriedWeight 100}} lb{{checkPlural actor.system.bio.carriedWeight}}</span></td>
-						<td><span></span></td>
-						<td class="item-controls"></td>
+						<td style="text-align: center; min-width: 7ch" colspan="3"><span>{{displayCurrencyComplex actor.system.bio.carriedValue}} $</span></td>
+						<td style="text-align: center; min-width: 6ch" colspan="3"><span>{{round actor.system.bio.carriedWeight 100}} lb{{checkPlural actor.system.bio.carriedWeight}}</span></td>
 					</tr>
 
 				</table>

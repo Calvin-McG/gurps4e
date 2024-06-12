@@ -2173,3 +2173,7 @@
 .simple-vehicle-header-row {
 	font-style: italic;
 }
+
+.actor-sheet-shrink-column {
+	width: 1%;
+}
