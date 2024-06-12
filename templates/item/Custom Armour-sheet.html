@@ -29,8 +29,8 @@
                 </div>
                 <div id="value" class="equipmentStatLong">
                     <label class="resource-label">Value:</label>
-                    <label class="resource-label">{{round item.system.cost 100}}$</label>
-                    <label class="resource-label"> / {{round item.system.ttlCost 100}}$ total</label>
+                    <label class="resource-label">{{displayCurrencyComplex item.system.cost}}$</label>
+                    <label class="resource-label"> / {{displayCurrencyComplex item.system.ttlCost}}$ total</label>
                 </div>
                 <div id="weight" class="equipmentStatLong">
                     <label class="resource-label">Weight:</label>
@@ -468,63 +468,63 @@
                     </div>
                     <table>
                         <tr class="hit-locations">
-                            <th class="question-container" id="armour-location" style="width: 100px;">
+                            <th class="question-container custom-armour-shrink-column" id="armour-location">
                                 Location
                                 <span class="small-question-button">
                                     <i class="fas fa-question"></i>
                                 </span>
                             </th>
-                            <th class="question-container" id="armour-sub-location" style="width: 100px;">
+                            <th class="question-container custom-armour-shrink-column" id="armour-sub-location">
                                 Sublocation
                                 <span class="small-question-button">
                                     <i class="fas fa-question"></i>
                                 </span>
                             </th>
-                            <th class="question-container" id="armour-coverage" style="width: 80px;">
+                            <th class="question-container custom-armour-shrink-column" id="armour-coverage">
                                 Coverage
                                 <span class="small-question-button">
                                     <i class="fas fa-question"></i>
                                 </span>
                             </th>
-                            <th class="question-container" id="armour-voider" style="width: 50px;">
+                            <th class="question-container custom-armour-shrink-column" id="armour-voider">
                                 Voider?
                                 <span class="small-question-button">
                                     <i class="fas fa-question"></i>
                                 </span>
                             </th>
-                            <th class="question-container" id="armour-material" style="width: 190px;">
+                            <th class="question-container custom-armour-shrink-column" id="armour-material">
                                 Armour Material
                                 <span class="small-question-button">
                                     <i class="fas fa-question"></i>
                                 </span>
                             </th>
                             {{#if item.system.armourDesign.allowMagicalMaterialsForCustom}}
-                            <th class="question-container" id="armour-material-essential" style="width: 60px;">
+                            <th class="question-container custom-armour-shrink-column" id="armour-material-essential">
                                 Essential
                                 <span class="small-question-button">
                                     <i class="fas fa-question"></i>
                                 </span>
                             </th>
                             {{/if}}
-                            <th class="question-container" id="armour-construction" style="width: 135px;">
+                            <th class="question-container custom-armour-shrink-column" id="armour-construction">
                                 Construction
                                 <span class="small-question-button">
                                     <i class="fas fa-question"></i>
                                 </span>
                             </th>
-                            <th class="question-container" id="armour-selectedDR" style="width: 85px;">
+                            <th class="question-container custom-armour-shrink-column" id="armour-selectedDR">
                                 Selected DR
                                 <span class="small-question-button">
                                     <i class="fas fa-question"></i>
                                 </span>
                             </th>
-                            <th class="question-container" id="armour-cost">
+                            <th class="question-container custom-armour-shrink-column" id="armour-cost">
                                 $
                                 <span class="small-question-button">
                                     <i class="fas fa-question"></i>
                                 </span>
                             </th>
-                            <th class="question-container" id="armour-weight">
+                            <th class="question-container custom-armour-shrink-column" id="armour-weight">
                                 lbs
                                 <span class="small-question-button">
                                     <i class="fas fa-question"></i>
@@ -544,7 +544,7 @@
                                 {{subLocation.label}}
                             </td>
                             <td>
-                                {{round subLocation.surfaceArea 100}}
+                                <span style="min-width: 3ch">{{round subLocation.surfaceArea 100}}</span>
                             </td>
                             <td>
                                 {{boolToYN subLocation.voider}}
@@ -565,13 +565,17 @@
                                 </select>
                             </td>
                             <td style="{{{valueInRangeStyle subLocation.construction.minDR subLocation.selectedDR subLocation.material.maxDR}}}" class="custom-armour-selected-dr">
-                                {{subLocation.construction.minDR}} / <input type="number" name="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.selectedDR" value="{{subLocation.selectedDR}}" data-dtype="Number" style="width: 30px;"/> / {{subLocation.material.maxDR}}
+                                <div class="custom-armour-group">
+                                    <div class="custom-armour-dr-min">{{subLocation.construction.minDR}} / </div>
+                                    <input type="number" name="system.armour.bodyType.body.{{partId}}.subLocation.{{locationId}}.selectedDR" value="{{subLocation.selectedDR}}" data-dtype="Number" class="custom-armour-dr-input"/>
+                                    <div class="custom-armour-dr-max">/ {{subLocation.material.maxDR}}</div>
+                                </div>
                             </td>
                             <td>
-                                {{round subLocation.cost 100}}
+                                <div class="custom-armour-cost-column">{{displayCurrencyComplex subLocation.cost}}</div>
                             </td>
                             <td>
-                                {{round subLocation.weight 100}}
+                                <div class="custom-armour-weight-column">{{round subLocation.weight 100}}</div>
                             </td>
                         </tr>
                         {{/showVoider}}
@@ -602,13 +606,17 @@
                                 </select>
                             </td>
                             <td style="{{{valueInRangeStyle bodyPart.construction.minDR bodyPart.selectedDR bodyPart.material.maxDR}}}" class="custom-armour-selected-dr">
-                                {{bodyPart.construction.minDR}} / <input type="number" name="system.armour.bodyType.body.{{partId}}.selectedDR" value="{{bodyPart.selectedDR}}" data-dtype="Number" style="width: 30px;"/> / {{bodyPart.material.maxDR}}
+                                <div class="custom-armour-group">
+                                    <div class="custom-armour-dr-min">{{bodyPart.construction.minDR}} / </div>
+                                    <input type="number" name="system.armour.bodyType.body.{{partId}}.selectedDR" value="{{bodyPart.selectedDR}}" data-dtype="Number" class="custom-armour-dr-input"/>
+                                    <div class="custom-armour-dr-max">/ {{bodyPart.material.maxDR}}</div>
+                                </div>
                             </td>
                             <td>
-                                {{round bodyPart.cost 100}}
+                                <div class="custom-armour-cost-column">{{displayCurrencyComplex bodyPart.cost}}</div>
                             </td>
                             <td>
-                                {{round bodyPart.weight 100}}
+                                <div class="custom-armour-weight-column">{{round bodyPart.weight 100}}</div>
                             </td>
                         </tr>
                         {{/if}}

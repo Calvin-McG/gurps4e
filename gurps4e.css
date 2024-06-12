@@ -2177,3 +2177,36 @@
 .actor-sheet-shrink-column {
 	width: 1%;
 }
+
+.custom-armour-shrink-column {
+	width: 1%;
+}
+
+.custom-armour-cost-column {
+	min-width: 3ch;
+	margin: 0 0.25ch;
+	text-align: right;
+}
+
+.custom-armour-weight-column {
+	min-width: 3ch;
+	margin: 0 0.25ch;
+	text-align: right;
+}
+
+.custom-armour-dr-input {
+	padding: 0 !important;
+	margin: unset !important;
+}
+
+.custom-armour-dr-min {
+}
+
+.custom-armour-dr-max {
+}
+
+.custom-armour-group {
+	display: grid;
+	grid-template-columns: 3ch auto 4ch;
+}
+
