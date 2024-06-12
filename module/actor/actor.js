@@ -24,13 +24,17 @@ export class gurpsActor extends Actor {
 				if (this.name.match("^Character.*")) {
 					this.name = "New Character " + Math.floor(Math.random() * 101);
 				}
-				this.img = "icons/svg/mystery-man.svg"; // This icon comes from the foundry default set
+				if (this.img === "icons/svg/mystery-man.svg") {
+					this.img = "icons/svg/mystery-man.svg"; // This icon comes from the foundry default set
+				}
 				break;
 			case "Simple Vehicle":
 				if (this.name.match("^Vehicle.*")) {
 					this.name = "New Vehicle " + Math.floor(Math.random() * 101);
 				}
-				this.img = "systems/gurps4e/icons/svg/car.svg"; // This icon comes from the GURPS set
+				if (this.img === "icons/svg/mystery-man.svg") {
+					this.img = "systems/gurps4e/icons/svg/car.svg"; // This icon comes from the GURPS set
+				}
 				break;
 		}
 
