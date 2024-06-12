@@ -1007,6 +1007,19 @@
             <a class="item" data-tab="armour">Armour</a>
         </div>
         {{/unless}}
+        {{#if (eq item.type "Rollable") }}
+        <div class="header">
+            <a class="item" data-tab="defaults">Defaults</a>
+        </div>
+        <div class="header">
+            <a class="item" data-tab="dabbler">Dabbler</a>
+        </div>
+        {{/if}}
+        {{#if (or (eq item.type "Rollable") (eq item.type "Spell")) }}
+        <div class="header">
+            <a class="item" data-tab="training">Training Time</a>
+        </div>
+        {{/if}}
     </nav>
 
     {{!-- Sheet Body --}}
@@ -1649,5 +1662,125 @@
             </div>
         </div>
         {{/unless}}
+
+        {{!-- Training Time Tab --}}
+        {{#if (or (eq item.type "Rollable") (eq item.type "Spell")) }}
+        <div class="tab stats" data-tab="training" data-group="primary">
+            <h3 class="bold">Hours of Training</h3>
+            <div class="tab">
+                <table>
+                    <tr class="equipment-entry">
+                        <td>Talent Modifier:</td>
+                        <td><input type="number" name="system.trainingTime.modifier" value="{{item.system.trainingTime.modifier}}" data-dtype="Number"/></td>
+                    </tr>
+                    <tr class="equipment-entry">
+                        <td>Hours Per Point:</td>
+                        <td>{{item.system.trainingTime.neededHours}}</td>
+                    </tr>
+                </table>
+                <table>
+                    <tr class="equipment-header">
+                        <td>Training Type</td>
+                        <td>Hours</td>
+                        <td>Effective Hours</td>
+                    </tr>
+                    <tr class="equipment-entry">
+                        <td>On The Job</td>
+                        <td><input type="number" name="system.trainingTime.onTheJob" value="{{item.system.trainingTime.onTheJob}}" data-dtype="Number"/></td>
+                        <td>{{divide item.system.trainingTime.onTheJob 100 4}}</td>
+                    </tr>
+                    <tr class="equipment-entry">
+                        <td>Self Study</td>
+                        <td><input type="number" name="system.trainingTime.selfStudy" value="{{item.system.trainingTime.selfStudy}}" data-dtype="Number"/></td>
+                        <td>{{divide item.system.trainingTime.selfStudy 100 2}}</td>
+                    </tr>
+                    <tr class="equipment-entry">
+                        <td>Education</td>
+                        <td><input type="number" name="system.trainingTime.education" value="{{item.system.trainingTime.education}}" data-dtype="Number"/></td>
+                        <td>{{divide item.system.trainingTime.education 100 1}}</td>
+                    </tr>
+                    <tr class="equipment-entry">
+                        <td>Intensive Training</td>
+                        <td><input type="number" name="system.trainingTime.intensiveTraining" value="{{item.system.trainingTime.intensiveTraining}}" data-dtype="Number"/></td>
+                        <td>{{divide item.system.trainingTime.intensiveTraining 100 0.5}}</td>
+                    </tr>
+                    <tr class="equipment-header">
+                        <td>Total Hours</td>
+                        <td></td>
+                        <td>{{item.system.trainingTime.effectiveHours}}</td>
+                    </tr>
+                </table>
+                {{#ifCond item.system.trainingTime.totalPoints '>=' 1}}
+                <table>
+                    <tr class="equipment-header" style="font-size: x-large;">
+                        <td>Final Result:</td>
+                        <td>
+                            +{{item.system.trainingTime.totalPoints}} Points
+                        </td>
+                    </tr>
+                </table>
+                {{/ifCond}}
+                {{#ifCond item.system.trainingTime.dabblerPoints '>=' 1}}
+                <table>
+                    <tr class="equipment-header" style="font-size: x-large;">
+                        <td>Final Result:</td>
+                        <td>
+                            +{{item.system.trainingTime.dabblerPoints}} Dabbler Points
+                        </td>
+                    </tr>
+                </table>
+                {{/ifCond}}
+                {{#ifCond item.system.trainingTime.totalPoints '==' 0}}
+                {{#ifCond item.system.trainingTime.dabblerPoints '==' 0}}
+                <table>
+                    <tr class="equipment-header" style="font-size: x-large;">
+                        <td>Final Result:</td>
+                        <td>
+                            0 Points
+                        </td>
+                    </tr>
+                </table>
+                {{/ifCond}}
+                {{/ifCond}}
+            </div>
+        </div>
+        {{/if}}
+
+        {{#if (eq item.type "Rollable") }}
+        {{!-- Defaults Tab --}}
+        <div class="tab stats" data-tab="defaults" data-group="primary">
+            <h3 class="addDefaultRow" style="text-align: right;">Add Default</h3>
+            <div class="tab">
+                <table>
+                    <tr class="equipment-header">
+                        <td>Name</td>
+                        <td>Modifier</td>
+                        <td></td>
+                    </tr>
+                    {{#each item.system.defaults as |defaults id|}}
+                    <tr class="equipment-entry">
+                        <td><input type="text" name="system.defaults.{{id}}.skill" value="{{skill}}" title="{{skill}}" style="text-align:left;" /></td>
+                        <td><input type="text" name="system.defaults.{{id}}.mod" value="{{mod}}" title="{{mod}}" style="text-align:left;" /></td>
+                        <td><a class="default-delete" id="default{{id}}" title="Delete Item"><i class="fas fa-trash"></i></a></td>
+                    </tr>
+                    {{/each}}
+                </table>
+            </div>
+        </div>
+
+        {{!-- Dabbler Tab --}}
+        <div class="tab stats" data-tab="dabbler" data-group="primary">
+            <div class="flexrow">
+                <label class="resource-label">Dabbler Points</label>
+                <select name="system.dabblerPoints">
+                    {{selectOptions dabblerOptions selected=item.system.dabblerPoints}}
+                </select>
+            </div>
+            <hr>
+            <div>
+                <label>You may have 0, 1, 2, or 4 dabbler points in a skill. See Power Ups 2 - Perks, page 16 for an explanation of what the hell this is.</label>
+            </div>
+        </div>
+        {{/if}}
     </section>
 </form>
