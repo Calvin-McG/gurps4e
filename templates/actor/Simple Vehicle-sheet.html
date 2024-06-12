@@ -87,6 +87,9 @@
       <div class="header">
         <a class="item" data-tab="locations">Design - Locations</a>
       </div>
+      <div class="header">
+        <a class="item" data-tab="info">Info</a>
+      </div>
 <!--      <div class="header">-->
 <!--        <a class="item" data-tab="enhancements"> Design - Enhancements</a>-->
 <!--      </div>-->
@@ -100,6 +103,16 @@
         <h2 class="bold" style="text-align: center;">Notes</h2>
         <div class="tab">
           <textarea style="height: 100%; resize: none; min-height: 35em" name="system.biography">{{{actor.system.biography}}}</textarea>
+        </div>
+      </div>
+
+      {{!-- Info Tab --}}
+      <div class="tab info" data-tab="info" data-group="primary">
+        <h2 class="bold" style="text-align: center;">Information</h2>
+        <div class="tab">
+          <p>
+            This vehicle has a {{actor.system.vehicle.horsePower}}hp powerplant, which generates {{actor.system.vehicle.kiloWatts}}kW
+          </p>
         </div>
       </div>
 

@@ -172,6 +172,33 @@ export class gurpsActor extends Actor {
 		this.vehicleChaseDetails();
 		this.vehicleAttacks();
 		this.travelDetails();
+		this.vehicleInfo();
+	}
+
+	vehicleInfo() {
+		let m = parseFloat(this.system.vehicle.weight.lwt) * 907.185;
+		let t = 0;
+		let a = 0;
+		if (this.system.vehicle.craftType === "land") {
+			t = this.system.vehicle.move.road / this.system.vehicle.acceleration.ground;
+			a = this.system.vehicle.acceleration.ground * 0.9144;
+		}
+		else if (this.system.vehicle.craftType === "water") {
+			t = this.system.vehicle.move.naval / this.system.vehicle.acceleration.naval;
+			a = this.system.vehicle.acceleration.naval * 0.9144;
+		}
+		else if (this.system.vehicle.craftType === "air") {
+			t = this.system.vehicle.move.air / this.system.vehicle.acceleration.air;
+			a = this.system.vehicle.acceleration.air * 0.9144;
+		}
+		let d = 0.5 * a * t * t;
+
+		let F = a * m;
+
+		let watts = (F * d) / t;
+
+		this.system.vehicle.kiloWatts = Math.ceil(watts / 1000);
+		this.system.vehicle.horsePower = Math.ceil(watts / 745.7);
 	}
 
 	vehicleAttacks() {

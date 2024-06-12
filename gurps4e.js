@@ -155,6 +155,10 @@ Hooks.once('init', async function() {
         lowestDR  = Math.min(lowestDR,  parseInt(vehicle.drFacing.drBottom));
         highestDR = Math.max(highestDR, parseInt(vehicle.drFacing.drBottom));
       }
+      if (typeof vehicle.dr !== "undefined") { // There is an entry for DR
+        lowestDR = parseInt(vehicle.dr);
+        highestDR = parseInt(vehicle.dr);
+      }
     }
     else if (typeof vehicle.dr !== "undefined") { // There is an entry for DR
       lowestDR = parseInt(vehicle.dr);
