@@ -1216,7 +1216,7 @@ export class gurpsItemSheet extends ItemSheet {
         let keys = Object.keys(this.item.system.melee); // Get the existing set of melee keys
         let newKey = 0; // Init the new key
         if (keys.length){ // The list of keys is not empty
-            newKey = (+keys[keys.length-1] + +1); // Add the new one in at the end
+            newKey = keys.length; // Add the new one in at the end
         }
         else { // The list of keys is empty
             newKey = 0; // Add the new one at the start of the empty list
@@ -1249,7 +1249,7 @@ export class gurpsItemSheet extends ItemSheet {
         let keys = Object.keys(this.item.system.ranged);
         let newKey = 0;
         if (keys.length){//Array is not empty
-            newKey = (+keys[keys.length-1] + +1);
+            newKey = keys.length;
         }
         else {
             newKey = 0;
