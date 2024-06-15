@@ -5709,6 +5709,20 @@ export class gurpsItem extends Item {
     else if (attackKey.skill.toLowerCase() === "self" && typeof this.system.level === "number") { // The user has entered "Self" and the item we're on has it's own level
       level = this.system.level + +attackKey.skillMod; // Set the attack level to the same level
     }
+    else if (attackKey.skill.toLowerCase() === "unarmed") { // The user has entered "unarmed"
+      level = dx + +attackKey.skillMod; // Set the base level to the Actor's DX.
+      for (let i = 0; i < this.actor.items.contents.length; i++) { // Loop through the items
+        if (this.actor.items.contents[i].type === "Rollable") { // Look only at rollables
+          if (this.actor.items.contents[i].name.toLowerCase() === "karate" || this.actor.items.contents[i].name.toLowerCase() === "brawling" || this.actor.items.contents[i].name.toLowerCase() === "boxing") {
+            let currentLevel = +skillHelpers.computeSkillLevel(this.actor, this.actor.items.contents[i].system) + +attackKey.skillMod; // Get the level of the current unarmed skill
+            if (currentLevel > level || (currentLevel >= level && this.actor.items.contents[i].system.weaponMaster)) { // Is the level higher than the one already stored? Or is the level the same but flagged WM?
+              level = currentLevel; // Set the level to the new level
+              weaponMastery = this.actor.items.contents[i].system.weaponMaster; // Set the weapon master flag.
+            }
+          }
+        }
+      }
+    }
     else {
       // Loop through all the skills on the sheet, find the one they picked and set that skill as the baseline for the equipment
       for (let i = 0; i < this.actor.items.contents.length; i++) {
