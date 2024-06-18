@@ -1840,6 +1840,26 @@ export class gurpsActor extends Actor {
 			}
 		}
 
+		if (typeof this.system.reserves.erA === "undefined") {
+			this.system.reserves.erA = {
+				"abbr": "ERA",
+				"value": 0,
+				"mod": 0,
+				"max": 0,
+				"points": 0
+			}
+		}
+
+		if (typeof this.system.reserves.erB === "undefined") {
+			this.system.reserves.erB = {
+				"abbr": "ERB",
+				"value": 0,
+				"mod": 0,
+				"max": 0,
+				"points": 0
+			}
+		}
+
 		if (this.system.bio.sm) {
 			this.system.bio.sm.value = Math.floor(this.system.bio.sm.value); // Remove decimal places from SM.
 		}
@@ -2649,55 +2669,55 @@ export class gurpsActor extends Actor {
 	recalcAtrValues(){
 		let smDiscount = attributeHelpers.calcSMDiscount(this.system.bio.sm);
 
-		//ST
+		// ST
 		let st = attributeHelpers.calcStOrHt(this.system.primaryAttributes.strength, smDiscount);
 		this.system.primaryAttributes.strength.value = st;
 
-		//DX
+		// DX
 		let dx = attributeHelpers.calcDxOrIq(this.system.primaryAttributes.dexterity);
 		this.system.primaryAttributes.dexterity.value = dx;
 
-		//IQ
+		// IQ
 		let iq = attributeHelpers.calcDxOrIq(this.system.primaryAttributes.intelligence);
 		this.system.primaryAttributes.intelligence.value = iq;
 
-		//HT
+		// HT
 		let ht = attributeHelpers.calcStOrHt(this.system.primaryAttributes.health, 1);
 		this.system.primaryAttributes.health.value = ht;
 
-		//Per
+		// Per
 		let per = attributeHelpers.calcPerOrWill(iq, this.system.primaryAttributes.perception);
 		this.system.primaryAttributes.perception.value = per;
 
-		//Will
+		// Will
 		let will = attributeHelpers.calcPerOrWill(iq, this.system.primaryAttributes.will);
 		this.system.primaryAttributes.will.value = will;
 
-		//Fright
+		// Fright
 		let fr = attributeHelpers.calcFright(will, this.system.primaryAttributes.fright);
 		this.system.primaryAttributes.fright.value = fr;
 
-		//Speed
+		// Speed
 		let speed = attributeHelpers.calcSpeed(dx, ht, this.system.primaryAttributes.speed);
 		this.system.primaryAttributes.speed.value = speed;
 
-		//Move
+		// Move
 		let move = attributeHelpers.calcMove(speed, this.system.primaryAttributes.move);
 		this.system.primaryAttributes.move.value = move;
 
-		//Dodge
+		// Dodge
 		let dodge = attributeHelpers.calcDodge(speed, this.system.primaryAttributes.dodge);
 		this.system.primaryAttributes.dodge.value = dodge;
 
-		//Lifting ST
+		// Lifting ST
 		let lst = attributeHelpers.calcLiftingSt(st, this.system.primaryAttributes.lifting, smDiscount)
 		this.system.primaryAttributes.lifting.value = lst;
 
-		//Striking ST
+		// Striking ST
 		let sst = attributeHelpers.calcStrikingSt(st, this.system.primaryAttributes.striking, smDiscount);
 		this.system.primaryAttributes.striking.value = sst;
 
-		//Knockback
+		// Knockback
 		let kb = {
 			id: "kb",
 			abbr: "Knockback",
@@ -2706,29 +2726,26 @@ export class gurpsActor extends Actor {
 		}
 		this.system.primaryAttributes.knockback = kb;
 
-		//Swing and Thrust
+		// Swing and Thrust
 		this.system.baseDamage.thrust = attributeHelpers.strikingStrengthToThrust(sst);
 		this.system.baseDamage.swing = attributeHelpers.strikingStrengthToSwing(sst);
 
-		//HT Subdue
-		let hts = attributeHelpers.calcHealthSubdue(ht, this.system.primaryAttributes.subdue);
-		this.system.primaryAttributes.subdue.value = hts;
+		// HT to subdue
+		this.system.primaryAttributes.subdue.value = attributeHelpers.calcHealthSubdue(ht, this.system.primaryAttributes.subdue);
 
-		//HT Kill
-		var htk = attributeHelpers.calcHealthKill(ht, this.system.primaryAttributes.death);
-		this.system.primaryAttributes.death.value = htk;
+		// HT to kill
+		this.system.primaryAttributes.death.value = attributeHelpers.calcHealthKill(ht, this.system.primaryAttributes.death);
 
-		//HP
-		var hp = attributeHelpers.calcHP(st, this.system.reserves.hp, smDiscount);
-		this.system.reserves.hp.max = hp;
+		// HP
+		this.system.reserves.hp.max = attributeHelpers.calcHP(st, this.system.reserves.hp, smDiscount);
 
-		//FP
-		var fp = attributeHelpers.calcFP(ht, this.system.reserves.fp);
-		this.system.reserves.fp.max = fp;
+		// FP
+		this.system.reserves.fp.max = attributeHelpers.calcFP(ht, this.system.reserves.fp);
 
-		//ER
-		var er = attributeHelpers.calcER(this.system.reserves.er);
-		this.system.reserves.er.max = er;
+		// Energy Reserves
+		this.system.reserves.er.max = attributeHelpers.calcER(this.system.reserves.er);
+		this.system.reserves.erA.max = attributeHelpers.calcER(this.system.reserves.erA);
+		this.system.reserves.erB.max = attributeHelpers.calcER(this.system.reserves.erB);
 	}
 
 	recalcSenses() {
@@ -3492,6 +3509,8 @@ export class gurpsActor extends Actor {
 			+this.system.reserves.hp.points +
 			+this.system.reserves.fp.points +
 			+this.system.reserves.er.points +
+			+this.system.reserves.erA.points +
+			+this.system.reserves.erB.points +
 			+this.system.bio.tl.points;
 		this.system.points.attributes = attributePoints;
 	}
@@ -4088,6 +4107,8 @@ export class gurpsActor extends Actor {
 
 	resetDamage() {
 		this.system.reserves.er.value = this.system.reserves.er.max;
+		this.system.reserves.erA.value = this.system.reserves.erA.max;
+		this.system.reserves.erB.value = this.system.reserves.erB.max;
 		this.system.reserves.hp.value = this.system.reserves.hp.max;
 		this.system.reserves.fp.value = this.system.reserves.fp.max;
 

@@ -955,6 +955,20 @@
             "mod": 0,
             "max": 0,
             "points": 0
+          },
+          "erA": {
+            "abbr": "ERA",
+            "value": 0,
+            "mod": 0,
+            "max": 0,
+            "points": 0
+          },
+          "erB": {
+            "abbr": "ERB",
+            "value": 0,
+            "mod": 0,
+            "max": 0,
+            "points": 0
           }
         }
       },
