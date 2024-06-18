@@ -1,6 +1,6 @@
-2024/06/14-23:31:05.414 64dc Log #275: 0 ops saved to Table #276 OK
-2024/06/14-23:31:05.415 64dc Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-macros/000275.log: OK
-2024/06/14-23:31:05.428 64dc Table #207: 13 entries OK
-2024/06/14-23:31:05.435 64dc Table #243: 2 entries OK
-2024/06/14-23:31:05.438 64dc Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-macros/MANIFEST-000274: OK
-2024/06/14-23:31:05.442 64dc **** Repaired leveldb C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-macros; recovered 2 files; 4227 bytes. Some data may have been lost. ****
+2024/06/18-00:11:11.200 40e8 Log #278: 0 ops saved to Table #279 OK
+2024/06/18-00:11:11.201 40e8 Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-macros/000278.log: OK
+2024/06/18-00:11:11.209 40e8 Table #207: 13 entries OK
+2024/06/18-00:11:11.214 40e8 Table #243: 2 entries OK
+2024/06/18-00:11:11.216 40e8 Archiving C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-macros/MANIFEST-000277: OK
+2024/06/18-00:11:11.219 40e8 **** Repaired leveldb C:\Users\calvi\AppData\Local\FoundryVTT\Data\systems\gurps4e\packs\gurps-macros; recovered 2 files; 4227 bytes. Some data may have been lost. ****

@@ -2,7 +2,7 @@
   "name": "gurps4e",
   "title": "GURPS4E",
   "description": "A GURPS4E system that automates as much as possible",
-  "version": "7.0.6",
+  "version": "7.1.0",
   "compatibility": {
     "minimum": 12,
     "verified": "12.327",
