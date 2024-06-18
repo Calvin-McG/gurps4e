@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Martel:wght@400;800&family=Roboto:wght@300;400;500&display=swap");
 /* Global styles */
 .window-app {
-	font-family: "Roboto", sans-serif;
+	font-family: "Signika", sans-serif;
 	font-size: 9pt;
 }
 
@@ -231,6 +231,7 @@
 	display: grid;
 	grid-template-columns: repeat(8, 72px);
 	border-top: 2px groove darkgoldenrod;
+	border-bottom: none !important;
 }
 
 #modifiers {
@@ -620,8 +621,8 @@
 	font-size: 80%;
 	font-weight: bold;
 	color: rgb(144, 144, 144);
-	width: 72px;
-	height: 20px;
+	width: 82px;
+	min-height: 20px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -662,7 +663,7 @@
 
 /* Styles limited to gurps4e sheets */
 .gurps4e .item-form {
-	font-family: "Roboto", sans-serif;
+	font-family: "Signika", sans-serif;
 }
 
 .gurps4e .sheet-body,
@@ -1923,6 +1924,11 @@
 	line-height: 27.5px;
 	border: black 1px solid;
 	border-radius: 5px;
+}
+
+.sheet-tabs .header {
+	font-weight: 800;
+	color: #3b3b3b;
 }
 
 .small-question-button {
