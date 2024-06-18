@@ -99,8 +99,8 @@ export class generalHelpers {
             }
         }
         else { // Otherwise run the logic normally
-            diceAndAdds.dice = Math.floor(points/3.5);
-            diceAndAdds.adds = Math.floor(3.5*(points/3.5-Math.floor(points/3.5)));
+            diceAndAdds.dice = Math.round(points/3.5);
+            diceAndAdds.adds = Math.round(points - (diceAndAdds.dice * 3.5));
         }
 
         return diceAndAdds;
