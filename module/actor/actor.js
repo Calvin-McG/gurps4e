@@ -2918,10 +2918,12 @@ export class gurpsActor extends Actor {
 		let throwing = skillHelpers.getSkillLevelByName("Throwing", this);
 		let throwingArt = skillHelpers.getSkillLevelByName("Throwing Art", this);
 
-		let throwingSkill = Math.max(throwing, throwingArt);
-		let trainingBonus = 0;
+		let throwingSkill = Math.max(throwing ?? 0, throwingArt ?? 0);
 
-		trainingBonus = attackHelpers.getTrainingSTBonus(this.system.primaryAttributes.dexterity.value, throwingSkill, (throwing > throwingArt ? "Throwing" : "Throwing Art"), st)
+		let trainingBonusThrowing = attackHelpers.getTrainingSTBonus(this.system.primaryAttributes.dexterity.value, throwingSkill, "Throwing", st);
+		let trainingBonusThrowingArt = attackHelpers.getTrainingSTBonus(this.system.primaryAttributes.dexterity.value, throwingSkill, "Throwing Art", st);
+
+		let trainingBonus = Math.max(trainingBonusThrowing, trainingBonusThrowingArt);
 
 		this.system.info.throw.throwingDistanceST = st + trainingBonus; // The training bonus applies only to distance, not damage
 		this.system.info.throw.effectiveBasicLift = Math.round(((st * st)/5)); // Get basic lift.
