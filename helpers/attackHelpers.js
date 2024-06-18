@@ -192,12 +192,15 @@ export class attackHelpers {
 
         if (damBonus) { // damBonus is true, we're looking for just the bonus damage per dice
             switch(skillName.toLowerCase()) {
+                case "vFast":
+                case "throwing art":
+                case "karate":
+                    progression = "vFast";
+                        break;
                 case "boxing":
                 case "weapon master":
-                case "karate":
                 case "sumo wrestling":
                 case "sumo":
-                case "throwing art":
                 case "fast":
                     progression = "fast";
                     break;
@@ -215,12 +218,18 @@ export class attackHelpers {
         }
         else { // damBonus is false, meaning we're looking for the ST bonus which can include throwing range.
             switch(skillName.toLowerCase()) {
+                case "vFast":
+                case "throwing art":
+                    progression = "vFast";
+                    break;
                 case "fast":
+                case "throwing":
+                case "thrown":
+                case "throw":
                     progression = "fast";
                     break;
                 case "average":
                 case "brawling":
-                case "throwing art":
                     progression = "average";
                     break;
                 case "boxing":
@@ -230,9 +239,6 @@ export class attackHelpers {
                 case "sumo":
                 case "judo":
                 case "slow":
-                case "throwing":
-                case "thrown":
-                case "throw":
                     progression = "slow";
                     break;
                 default:
@@ -241,7 +247,10 @@ export class attackHelpers {
             }
         }
 
-        if (progression === "fast") {
+        if (progression === "vFast") {
+            adjustment = 1;
+        }
+        else if (progression === "fast") {
             adjustment = 0;
         }
         else if (progression === "average") {
