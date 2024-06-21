@@ -259,13 +259,13 @@ Hooks.once("init", () => {
     game.vehicleAPI = vehicleHelpers;
   }
 
-  Hooks.on('hotbarDrop', (bar, droppedData, slot) => createMacro(droppedData, slot));
-  async function createMacro(droppedData, slot) {
-    if (droppedData.type !== "item") { // It's not an item being dragged down to the hotbar
-      let macro = await _createMacroForRollable(droppedData);
-      return game.user.assignHotbarMacro(macro, slot);
-    }
-  }
+  // Hooks.on('hotbarDrop', (bar, droppedData, slot) => createMacro(droppedData, slot));
+  // async function createMacro(droppedData, slot) {
+  //   if (droppedData.type !== "item") { // It's not an item being dragged down to the hotbar
+  //     let macro = await _createMacroForRollable(droppedData);
+  //     return game.user.assignHotbarMacro(macro, slot);
+  //   }
+  // }
 
   async function _createMacroForRollable(droppedData) {
     const command = `game.gurpsAPI.onRollableMacroRaw("${droppedData.label}", "${droppedData.level}", "${droppedData.type}");`;
