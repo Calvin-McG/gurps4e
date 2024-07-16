@@ -745,13 +745,13 @@ export class macroHelpers {
      * @param level Optional number - The specified level of the attack
      */
     static determineAttackFormat(attacker, attack, target, template, level) {
-        if (attack.leveledDam && typeof level === "undefined") { // It's a leveled attack, but the user hasn't provided the level
+        if (attack && attack.leveledDam && typeof level === "undefined") { // It's a leveled attack, but the user hasn't provided the level
             this.levelSelectDialog(attacker, attack, target, template); // Open the level selection dialog
         }
         else { // Either it's not a leveled attack, or it is a leveled attack but the user has provided a level
             let newAttack = attack;
 
-            if (newAttack.leveledDam && typeof level === "number") { // It's a levelled attack and we have a level
+            if (newAttack && newAttack.leveledDam && typeof level === "number") { // It's a levelled attack and we have a level
                 if (isNaN(level)) {
                     console.error("User entered something other than a number. Proceeding as a level 1 attack.") // Let the user know, but carry on as for a level 1 attack.
                 }
@@ -760,7 +760,7 @@ export class macroHelpers {
                     newAttack.damage = generalHelpers.pointsToDiceAndAddsString((points * level)); // Multiply damage by the given level.
                 }
             }
-            else if (newAttack.leveledDam && typeof level !== "number") { // It's a levelled attack and we have still don't have a valid level
+            else if (newAttack && newAttack.leveledDam && typeof level !== "number") { // It's a levelled attack and we have still don't have a valid level
                 console.error("Attempted to make an attack with a malformed level. Proceeding as a level 1 attack.") // Let the user know, but carry on as for a level 1 attack.
             }
 
