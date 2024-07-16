@@ -4167,7 +4167,7 @@ export class macroHelpers {
                 injury = Math.floor( (damageThroughArmour / damageReduction) ); // Damage divided by damageReduction, rounded down.
             }
             else if (damageType.type === "fat") { // Attack is doing fatigue damage
-                totalFatInj += Math.floor(actualDamage * location.personalWoundMultFat);
+                totalFatInj += Math.floor(damageThroughArmour * location.personalWoundMultFat);
             }
             else {
                 injury = Math.floor(((damageThroughArmour * foundry.utils.getProperty(location, damageType.woundModId)) / damageReduction) ); // Damage, times the relevant wound modifier, divided by damageReduction, rounded down.
