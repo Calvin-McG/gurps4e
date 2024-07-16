@@ -172,7 +172,7 @@ export class macroHelpers {
                     icon: '<i class="fas fa-check"></i>',
                     label: "Apply Modifier",
                     callback: (html) => {
-                        let mod = html.find('#mod').val()
+                        let mod = html.find('#mod') ? html.find('#mod').val() : 0
                         actorHelpers.computeRollFromDataset(dataSet, mod)
                     }
                 },
@@ -1189,7 +1189,7 @@ export class macroHelpers {
                     icon: '<i class="fas fa-check"></i>',
                     label: "Apply Modifier",
                     callback: (html) => {
-                        let mod = html.find('#mod').val();
+                        let mod = html.find('#mod') ? html.find('#mod').val() : 0
                         this.reportAfflictionResult(target, attacker, attack, (+totalModifier + +mod))
                     }
                 },
@@ -1305,7 +1305,7 @@ export class macroHelpers {
                     icon: '<i class="fas fa-check"></i>',
                     label: "Apply Modifier",
                     callback: (html) => {
-                        let mod = html.find('#mod').val()
+                        let mod = html.find('#mod') ? html.find('#mod').val() : 0
                         this.makeKnockbackRoll(skill, mod - penalty, message, target, flags.target)
                     }
                 },
@@ -1367,7 +1367,7 @@ export class macroHelpers {
                     icon: '<i class="fas fa-check"></i>',
                     label: "Apply Modifier",
                     callback: (html) => {
-                        let mod = html.find('#mod').val(); // Get the modifier from the input field
+                        let mod = html.find('#mod') ? html.find('#mod').val() : 0; // Get the modifier from the input field
                         this.reportQuickContestResult(target, attacker, attack, flags, +mod)
                     }
                 },
@@ -1467,7 +1467,7 @@ export class macroHelpers {
                     icon: '<i class="fas fa-check"></i>',
                     label: "Apply Modifier",
                     callback: (html) => {
-                        let mod = html.find('#mod').val(); // Get the modifier from the input field
+                        let mod = html.find('#mod') ? html.find('#mod').val() : 0; // Get the modifier from the input field
                         this.reportResistanceRollResult(target, attacker, attack, flags, +mod)
                     }
                 },
@@ -2037,7 +2037,7 @@ export class macroHelpers {
                 icon: '<i class="fas fa-check"></i>',
                 label: "Make Attack",
                 callback: (html) => {
-                    let mod = html.find('#mod').val();
+                    let mod = html.find('#mod') ? html.find('#mod').val() : 0;
                     let moveAndAttack = html.find('#moveAndAttack')[0].checked;
                     let aimTime = html.find('#aimTime') ? html.find('#aimTime').val() : 0;
                     let evaluate = html.find('#evaluate')[0] ? html.find('#evaluate')[0].checked : false;

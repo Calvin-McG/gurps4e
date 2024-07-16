@@ -1922,7 +1922,7 @@ export class actorHelpers {
             let smDiscount = attributeHelpers.calcSMDiscount(actor.system.bio.sm)
             return attributeHelpers.calcStOrHt(actor.system.primaryAttributes.strength, smDiscount);
         }
-        else if (stat.toLowerCase() === "dexterity" || stat.toLowerCase() == "dx") {
+        else if (stat.toLowerCase() === "dexterity" || stat.toLowerCase() === "dx") {
             return attributeHelpers.calcDxOrIq(actor.system.primaryAttributes.dexterity);
         }
         else if (stat.toLowerCase() === "intelligence" || stat.toLowerCase() === "iq") {
@@ -1941,7 +1941,7 @@ export class actorHelpers {
             return attributeHelpers.calcFright(actor.system.primaryAttributes.fright);
         }
         else {
-            console.error("actorHelpers.fetchStat found an incorrect stat name");
+            console.error("actorHelpers.fetchStat found an incorrect stat name (" + stat + ")");
             return -99
         }
     }

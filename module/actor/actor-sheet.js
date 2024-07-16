@@ -434,7 +434,7 @@ export class gurpsActorSheet extends ActorSheet {
 						icon: '<i class="fas fa-check"></i>',
 						label: "Apply Modifier",
 						callback: (html) => {
-							let mod = html.find('#mod').val()
+							let mod = html.find('#mod') ? html.find('#mod').val() : 0
 							actorHelpers.computeRollFromEvent(event, mod)
 						}
 					},
