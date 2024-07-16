@@ -1285,7 +1285,7 @@
 
                             <tr class="design-row">
                                 <td style="width: 150px">
-                                    Cartridge Type
+                                    Burn Length Calculation Method
                                 </td>
                                 <td>
                                     <select name="system.firearmDesign.cartridgeType">
@@ -1307,7 +1307,7 @@
                                     {{#if (eq item.system.firearmDesign.cartridgeType "custom")}}
                                         <input type="range" min="0.01" max="1" step="0.01" name="system.firearmDesign.burnRatio" value="{{item.system.firearmDesign.burnRatio}}" data-dtype="Number"><br/>
                                     {{/if}}
-                                    {{round item.system.firearmDesign.burnRatio 100}}% / {{round item.system.firearmDesign.burnLength 100}} mm / {{mmToIn item.system.firearmDesign.burnLength 100}} in
+                                    {{round item.system.firearmDesign.burnRatio 100}} / {{round item.system.firearmDesign.burnLength 100}} mm / {{mmToIn item.system.firearmDesign.burnLength 100}} in
                                 </td>
                                 <td class="question-container" id="burn-length">
                                     <div class="question-button">

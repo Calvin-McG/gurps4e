@@ -14,33 +14,44 @@ export class itemHelpers {
         firearmStats.barrelBoreMetres   = firearmDesign.projectileCalibre / 1000 // F21 / F14
         let chamberBoreMetres           = firearmDesign.chamberBore / 1000
         let chamberPressurePascals      = psi * 6896;
-        let burnLengthMeters            = firearmDesign.burnRatio * firearmDesign.caseLength / 1000;
         let boreCrossSection            = Math.PI * ( firearmStats.barrelBoreMetres / 2) ** 2; // I13
         let bulletCrossSection          = Math.PI * ( firearmStats.barrelBoreMetres / 2) ** 2; // I17
         firearmStats.barrelLengthMetres = firearmDesign.barrelLength / 1000; // F17
         let caseLengthMetres            = firearmDesign.caseLength / 1000;
         let chamberCrossSection         = Math.PI * ( chamberBoreMetres / 2 ) ** 2
         let chamberVolume               = chamberCrossSection * ( caseLengthMetres * 7/8 - firearmStats.barrelBoreMetres);
-        let fallOffVolume               = chamberVolume + boreCrossSection * burnLengthMeters;
-        let acclerationDistance         = firearmStats.barrelLengthMetres - caseLengthMetres - burnLengthMeters + firearmStats.barrelBoreMetres;
         let totalAcceleratedKgs         = firearmDesign.projectileMass / 15430; // F22 or F18
 
         // Burn length calculations
         if (firearmDesign.cartridgeType === "pistol") {
             firearmStats.burnRatio = 7 / 24;
+            firearmStats.burnLengthMeters = firearmStats.burnRatio * firearmDesign.caseLength / 1000;
         }
         else if (firearmDesign.cartridgeType === "rifle") {
-            firearmStats.burnRatio = 7 / 16
+            firearmStats.burnRatio = 7 / 16;
+            firearmStats.burnLengthMeters = firearmStats.burnRatio * firearmDesign.caseLength / 1000;
         }
-        // else if (firearmDesign.cartridgeType === "theoretical") {
-        //
-        // }
+        else if (firearmDesign.cartridgeType === "custom") {
+            firearmStats.burnRatio = firearmDesign.burnRatio;
+            firearmStats.burnLengthMeters = firearmStats.burnRatio * firearmDesign.caseLength / 1000;
+        }
+        else if (firearmDesign.cartridgeType === "theoretical") {
+            let barrelRadiusMetres = (firearmStats.barrelBoreMetres / 2);
+            let barrelVolumeMetres = Math.PI * barrelRadiusMetres * barrelRadiusMetres * firearmStats.barrelLengthMetres;
+            let powderBurnRate = 8; // Ranges from 1 to 3 grams per square mm per second.
+            firearmStats.burnLengthMeters = barrelVolumeMetres / ( chamberBoreMetres / powderBurnRate );
+            firearmStats.burnRatio = firearmStats.burnLengthMeters / (firearmDesign.caseLength / 1000);
+        }
         else { // Default to pistol burn length, just in case
             firearmStats.burnRatio = 7 / 24;
+            firearmStats.burnLengthMeters = firearmStats.burnRatio * firearmDesign.caseLength / 1000;
         }
 
+        let fallOffVolume               = chamberVolume + boreCrossSection * firearmStats.burnLengthMeters;
+        let acclerationDistance         = firearmStats.barrelLengthMetres - caseLengthMetres - firearmStats.burnLengthMeters + firearmStats.barrelBoreMetres;
+
         // Kinetic Energy in Joules
-        firearmStats.kineticEnergy = Math.abs( chamberPressurePascals * ( boreCrossSection * burnLengthMeters + fallOffVolume * Math.log( boreCrossSection * acclerationDistance / fallOffVolume + 1) ) ); //Measured in joules - D27 or K12
+        firearmStats.kineticEnergy = Math.abs( chamberPressurePascals * ( boreCrossSection * firearmStats.burnLengthMeters + fallOffVolume * Math.log( boreCrossSection * acclerationDistance / fallOffVolume + 1) ) ); //Measured in joules - D27 or K12
 
         // Velocity
         let metresPerSecond = Math.sqrt((2* Math.abs(firearmStats.kineticEnergy) / totalAcceleratedKgs )); // D25

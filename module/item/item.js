@@ -2543,6 +2543,7 @@ export class gurpsItem extends Item {
       let firearmStats = itemHelpers.calcCustomFirearmStats(this.system.firearmDesign, this.system.tl); // Prerequisite Calculations
 
       this.system.firearmDesign.burnRatio = firearmStats.burnRatio;
+      this.system.firearmDesign.burnLength = firearmStats.burnLengthMeters * 1000; // Convert metres to mm
 
       this.system.firearmDesign.yardsPerSecond = firearmStats.yardsPerSecond;
       this.system.firearmDesign.highEnergy = firearmStats.highEnergy;
@@ -8574,7 +8575,9 @@ export class gurpsItem extends Item {
         info = "<table>" +
             "<tr>" +
             "<td>" +
-            "<p>Burn length is some genuinely complicated shit, so this is an easy way to handle it. If you're making a pistol, pick pistol. If you're making a rifle, pick rifle. High velocity pistols like the FN57 might choose rifle instead. Custom should only be used if you <i>know</i> a different value for burn length is appropriate.</p>" +
+            "<p>Burn length is some genuinely complicated shit, so this is an easy way to handle it. If you're making a pistol, pick pistol. If you're making a rifle, pick rifle. High velocity pistols like the FN57 might choose rifle instead.</p>" +
+            "<p>Custom should only be used if you <i>know</i> a different value for burn length is appropriate.</p>" +
+            "<p>Theoretical uses a formula to calculate burn length directly. However, in real life this formula is acknowledged to be an approximation of reality, not an exact calculation. So it might be wrong, but it's probably not any more wrong than any of the other options.</p>" +
             "</td>" +
             "</tr>";
         info += "</table>"

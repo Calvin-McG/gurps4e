@@ -539,6 +539,7 @@ export class gurpsItemSheet extends ItemSheet {
             "pistol": "Pistol",
             "rifle": "Rifle",
             "custom": "Custom",
+            "theoretical": "Theoretical"
         }
     }
 
