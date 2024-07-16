@@ -3584,7 +3584,7 @@ export class macroHelpers {
             label += "and drop ";
             totalModifier += 3;
             if (typeof target.token !== "undefined" && target.token !== null) { // A token is present if the token and actor are not directly linked. (As in, the token is a separate copy of the actor)
-                postureHelpers.setPostureTokenDoc(target.token, "lyingprone");
+                postureHelpers.setPostureActor(target, "lyingprone");
             }
             else { // The token is directly linked to the actor, meaning the token on the scene is a direct representation of that specific actor
                 postureHelpers.setPostureActor(target, "lyingprone");
