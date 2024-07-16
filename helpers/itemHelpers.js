@@ -10,20 +10,34 @@ export class itemHelpers {
     static calcCustomFirearmStats(firearmDesign, tl, psiOverride) {
         let firearmStats = {}
 
-        let psi                     = psiOverride ?? firearmDesign.chamberPressure; // If we have an override PSI, use that. Otherwise default to base pressure.
-        firearmStats.barrelBoreMetres        = firearmDesign.projectileCalibre / 1000 // F21 / F14
-        let chamberBoreMetres       = firearmDesign.chamberBore / 1000
-        let chamberPressurePascals  = psi * 6896;
-        let burnLengthMeters        = firearmDesign.burnLength / 1000;
-        let boreCrossSection        = Math.PI * ( firearmStats.barrelBoreMetres / 2) ** 2; // I13
-        let bulletCrossSection      = Math.PI * ( firearmStats.barrelBoreMetres / 2) ** 2; // I17
-        firearmStats.barrelLengthMetres      = firearmDesign.barrelLength / 1000; // F17
-        let caseLengthMetres        = firearmDesign.caseLength / 1000;
-        let chamberCrossSection     = Math.PI * ( chamberBoreMetres / 2 ) ** 2
-        let chamberVolume           = chamberCrossSection * ( caseLengthMetres * 7/8 - firearmStats.barrelBoreMetres);
-        let fallOffVolume           = chamberVolume + boreCrossSection * burnLengthMeters;
-        let acclerationDistance     = firearmStats.barrelLengthMetres - caseLengthMetres - burnLengthMeters + firearmStats.barrelBoreMetres;
-        let totalAcceleratedKgs     = firearmDesign.projectileMass / 15430; // F22 or F18
+        let psi                         = psiOverride ?? firearmDesign.chamberPressure; // If we have an override PSI, use that. Otherwise default to base pressure.
+        firearmStats.barrelBoreMetres   = firearmDesign.projectileCalibre / 1000 // F21 / F14
+        let chamberBoreMetres           = firearmDesign.chamberBore / 1000
+        let chamberPressurePascals      = psi * 6896;
+        let burnLengthMeters            = firearmDesign.burnRatio * firearmDesign.caseLength / 1000;
+        let boreCrossSection            = Math.PI * ( firearmStats.barrelBoreMetres / 2) ** 2; // I13
+        let bulletCrossSection          = Math.PI * ( firearmStats.barrelBoreMetres / 2) ** 2; // I17
+        firearmStats.barrelLengthMetres = firearmDesign.barrelLength / 1000; // F17
+        let caseLengthMetres            = firearmDesign.caseLength / 1000;
+        let chamberCrossSection         = Math.PI * ( chamberBoreMetres / 2 ) ** 2
+        let chamberVolume               = chamberCrossSection * ( caseLengthMetres * 7/8 - firearmStats.barrelBoreMetres);
+        let fallOffVolume               = chamberVolume + boreCrossSection * burnLengthMeters;
+        let acclerationDistance         = firearmStats.barrelLengthMetres - caseLengthMetres - burnLengthMeters + firearmStats.barrelBoreMetres;
+        let totalAcceleratedKgs         = firearmDesign.projectileMass / 15430; // F22 or F18
+
+        // Burn length calculations
+        if (firearmDesign.cartridgeType === "pistol") {
+            firearmStats.burnRatio = 7 / 24;
+        }
+        else if (firearmDesign.cartridgeType === "rifle") {
+            firearmStats.burnRatio = 7 / 16
+        }
+        // else if (firearmDesign.cartridgeType === "theoretical") {
+        //
+        // }
+        else { // Default to pistol burn length, just in case
+            firearmStats.burnRatio = 7 / 24;
+        }
 
         // Kinetic Energy in Joules
         firearmStats.kineticEnergy = Math.abs( chamberPressurePascals * ( boreCrossSection * burnLengthMeters + fallOffVolume * Math.log( boreCrossSection * acclerationDistance / fallOffVolume + 1) ) ); //Measured in joules - D27 or K12

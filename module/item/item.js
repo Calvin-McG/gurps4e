@@ -2540,18 +2540,9 @@ export class gurpsItem extends Item {
       }
 
       // Begin calculations proper
-
-      // Burn length calculations
-      if (this.system.firearmDesign.cartridgeType === "pistol") {
-        this.system.firearmDesign.burnRatio = 7 / 24;
-      }
-      else if (this.system.firearmDesign.cartridgeType === "rifle") {
-        this.system.firearmDesign.burnRatio = 7 / 16
-      }
-
-      this.system.firearmDesign.burnLength = this.system.firearmDesign.burnRatio * this.system.firearmDesign.caseLength;
-
       let firearmStats = itemHelpers.calcCustomFirearmStats(this.system.firearmDesign, this.system.tl); // Prerequisite Calculations
+
+      this.system.firearmDesign.burnRatio = firearmStats.burnRatio;
 
       this.system.firearmDesign.yardsPerSecond = firearmStats.yardsPerSecond;
       this.system.firearmDesign.highEnergy = firearmStats.highEnergy;
