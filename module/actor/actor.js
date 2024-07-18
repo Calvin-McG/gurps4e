@@ -48,8 +48,17 @@ export class gurpsActor extends Actor {
 	 * Augment the basic actor data with additional dynamic system.
 	 */
 	prepareData() {
-		this.sceneflags = canvas.scene?.flags?.gurps4e;
 		super.prepareData();
+	}
+
+	prepareBaseData() {
+		super.prepareBaseData();
+		this.sceneflags = canvas.scene?.flags?.gurps4e;
+	}
+
+	prepareDerivedData() {
+		super.prepareDerivedData()
+
 		switch (this.type) {
 			case "fullchar":
 				this.prepareActorData();
