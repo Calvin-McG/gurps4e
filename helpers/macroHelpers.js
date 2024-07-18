@@ -4192,18 +4192,17 @@ export class macroHelpers {
 
             // Run the logic to apply damage, if any.
             actualWounding = (injury + bluntTraumaWounding)
-            if (actualWounding > 0) {// Check to see if there is any injury or bluntTraumaWounding, as fatigue attacks will actually have this set to 0;
+            if (actualWounding > 0) { // Check to see if there is any injury or bluntTraumaWounding, as fatigue attacks will actually have this set to 0;
                 // Apply damage to the location if it tracks HP, including a check to see if there's a sublocation involved
                 if (location.id.toLowerCase().includes("sublocation")) { // This is a sub location, we will be checking the parent for an HP value
                     let subLocation = location.id.split(".")[0]
                     let parentLocation = foundry.utils.getProperty(target.system.bodyType.body, subLocation);
-                    if (parentLocation.hp){ // If the parent location tracks HP (Such as when we've struck a thigh but want to apply damage to the leg as a whole)
+                    if (parentLocation.hp) { // If the parent location tracks HP (Such as when we've struck a thigh but want to apply damage to the leg as a whole)
                         // Cap injury + bluntTraumaWounding with the woundCap
-                        if (typeof woundCap !== "undefined"){
+                        if (typeof woundCap !== "undefined") {
                             if (woundCap < 0){ // If the wound cap is less than zero for some reason, fix it
                                 woundCap = 0;
                             }
-
                             if (woundCap !== Infinity) { // If the wound cap is not infinity
                                 woundCap = parentLocation.hp.value; // Bring the wound cap down to the HP left in the location.
                                 // Example of above: An ST/HP 10 actor has legs with 6 HP each, and the legs also have an injury cap of 6 HP.
@@ -4236,13 +4235,12 @@ export class macroHelpers {
                     }
                 }
                 else { // This is not a sublocation
-                    if (location.hp){ // Apply damage to the location if it tracks HP
+                    if (location.hp) { // Apply damage to the location if it tracks HP
                         // Cap actualWounding with the woundCap
                         if (typeof woundCap !== "undefined"){
                             if (woundCap < 0){ // If the wound cap is less than zero for some reason, fix it
                                 woundCap = 0;
                             }
-
                             if (woundCap !== Infinity) { // If the wound cap is not infinity
                                 woundCap = location.hp.value; // Bring the wound cap down to the HP left in the location.
                                 // Example of above: An ST/HP 10 actor has legs with 6 HP each, and the legs also have an injury cap of 6 HP.
@@ -4260,13 +4258,20 @@ export class macroHelpers {
                                     }
                                 }
                             }
-
                             actualWounding = Math.min(woundCap, actualWounding); // Actual wounding is injury plus blunt trauma, capped by any wound cap.
                         }
 
                         location.hp.value -= actualWounding
                         location.hp.value = Math.max(location.hp.value, -location.hp.max) // Value should be the higher of it's actual value and full negative HP.
                     }
+                }
+
+                // Wound cap for chest and abdomen
+                if (woundCap !== Infinity) { // If the wound cap is not infinity
+                    if (actualWounding > woundCap) { // Only print wound cap related messages if it would become relevant.
+                        html += "<div>Injury is capped at " + woundCap + " due to striking the " + location.label + ".</div>";
+                    }
+                    actualWounding = Math.min(woundCap, actualWounding); // Actual wounding is injury plus blunt trauma, capped by any wound cap.
                 }
             }
 
