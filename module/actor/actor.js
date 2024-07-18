@@ -4140,7 +4140,7 @@ export class gurpsActor extends Actor {
 			}
 		}
 
-		this.update({ 'data': this.system });
+		this.update({ 'system': this.system });
 	}
 
 	test(){
