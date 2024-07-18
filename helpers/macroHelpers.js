@@ -4338,8 +4338,7 @@ export class macroHelpers {
                 // }
             }
         }
-
-        target.update({ 'data': target.system }); // Update the target object to properly save the new values for hp, fp, and any location specific effects.
+        target.update({ 'system': target.system }); // Update the target object to properly save the new values for hp, fp, and any location specific effects.
         // console.log(target.token.effects);
         // console.log(typeof target.token.effects);
         ChatMessage.create({ content: html, user: game.user.id, type: CONST.CHAT_MESSAGE_STYLES.OTHER, flags: flags }); // Create a chat message telling the user all about what happened above.
