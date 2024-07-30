@@ -592,16 +592,6 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
-  // How to get the user who owns the actor: game.users.get((Object.keys(game.actors.getName("character name goes here").data.permission)[1])).data.name
-  // game.settings.register("gurps4e", "bretMode", {
-  //   name: "Bret Mode",
-  //   hint: "Bret Mode",
-  //   scope: "world",
-  //   config: true,
-  //   default: true,
-  //   type: Boolean
-  // });
-
   game.settings.register("gurps4e", "allowTL4BreechLoaders", {
     name: "Allow Breech Loaders at TL4",
     hint: "Breech loaders are technically TL4, rather than TL5. Though the players should generally need to invent it as a same-TL invention for it to be available unless you are in late TL4.",
@@ -759,6 +749,42 @@ Hooks.once("init", () => {
     config: true,
     default: "",
     type: String
+  });
+
+  game.settings.register("gurps4e", "bretModeCoefficientSuccess", {
+    name: "Bret Mode",
+    hint: "",
+    scope: "world",
+    config: true,
+    default: 0.1,
+    type: Number
+  });
+
+  game.settings.register("gurps4e", "bretModeCoefficientCritSuccess", {
+    name: "Bret Mode",
+    hint: "",
+    scope: "world",
+    config: true,
+    default: 1,
+    type: Number
+  });
+
+  game.settings.register("gurps4e", "bretModeCoefficientFail", {
+    name: "Bret Mode",
+    hint: "",
+    scope: "world",
+    config: true,
+    default: 0.1,
+    type: Number
+  });
+
+  game.settings.register("gurps4e", "bretModeCoefficientCritFail", {
+    name: "Bret Mode",
+    hint: "",
+    scope: "world",
+    config: true,
+    default: 1,
+    type: Number
   });
 
   game.settings.register("gurps4e", "acrobaticParry", {

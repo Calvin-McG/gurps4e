@@ -13,11 +13,16 @@ export class rollHelpers {
         // Begin bret mode initialization
         let playerName = game.user.name
         let bretModeTarget = game.settings.get("gurps4e", "bretMode");
+        let bretModeCoefficientSuccess = 1 - game.settings.get("gurps4e", "bretModeCoefficientSuccess");
+        let bretModeCoefficientCritSuccess = 1 - game.settings.get("gurps4e", "bretModeCoefficientCritSuccess");
+        let bretModeCoefficientFail = 1 - game.settings.get("gurps4e", "bretModeCoefficientFail");
+        let bretModeCoefficientCritFail = 1 - game.settings.get("gurps4e", "bretModeCoefficientCritFail");
+        let bretModeRandom = Math.random();
         let bretModeTargetMatch = bretModeTarget.length > 0 && playerName.toLowerCase().includes(bretModeTarget.toLowerCase());
-        let bretModeFailMessage = bretModeTargetMatch ? ", fucking typical, " + playerName + " " : "";
-        let bretModeCritFailMessage = bretModeTargetMatch ? ", Jesus fucking Christ " + playerName + ", can you do anything right? " : "";
-        let bretModeSuccessMessage = bretModeTargetMatch ? ", oh wow, " + playerName + " did something right for once. " : "";
-        let bretModeCritSuccessMessage = bretModeTargetMatch ? ", it seems there is special providence for fools, " + playerName + ". " : "";
+        let bretModeFailMessage = bretModeTargetMatch && bretModeRandom >= bretModeCoefficientSuccess ? ", fucking typical, " + playerName + " " : "";
+        let bretModeCritFailMessage = bretModeTargetMatch && bretModeRandom >= bretModeCoefficientCritSuccess ? ", Jesus fucking Christ " + playerName + ", can you do anything right? " : "";
+        let bretModeSuccessMessage = bretModeTargetMatch && bretModeRandom >= bretModeCoefficientFail ? ", oh wow, " + playerName + " did something right for once. " : "";
+        let bretModeCritSuccessMessage = bretModeTargetMatch && bretModeRandom >= bretModeCoefficientCritFail ? ", it seems there is special providence for fools, " + playerName + ". " : "";
         // End bret mode initialization
 
         let bad = canvas.scene?.flags?.gurps4e?.bad ?? 0; // Get BAD from the scene flags, falling back to zero
