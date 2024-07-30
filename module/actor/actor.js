@@ -3023,10 +3023,10 @@ export class gurpsActor extends Actor {
 
 	// Calculates jump based information based on the rules in B352
 	calcJumpInfo() {
+		// First, fetch necessary values to work out alternative Move values for Jump. (Based on Lift ST and Skill)
 		this.system.info.jump.liftingSTBasedJump = Math.floor(this.system.primaryAttributes.lifting.value / 4); // 1/4 lifting strength can also be used to figure jump distance. Really only matters for really fuckin strong characters
-		this.system.info.jump.moveBasedJump = this.system.primaryAttributes.move.value; // Basic Move is what most people use to figure jump distance.
+
 		this.system.info.jump.jumpingSkill = skillHelpers.getSkillLevelByName("Jumping", this) // Get jumping skill for use later.
-		let encMult = this.system.encumbrance.current.mult;
 		if (typeof this.system.info.jump.jumpingSkill !== 'number') { // If it didn't return a number
 			this.system.info.jump.jumpingSkill = 0 // Set it to zero, as the skill has no default.
 			this.system.info.jump.skillBasedJump = 0; // They have no skill based jump
@@ -3034,14 +3034,16 @@ export class gurpsActor extends Actor {
 		else { // It did return a number
 			this.system.info.jump.skillBasedJump = Math.floor(this.system.info.jump.jumpingSkill / 2); // Half jump skill can also be used to figure jump distance.
 		}
-		this.system.info.jump.effectiveJump = Math.max(this.system.info.jump.liftingSTBasedJump, this.system.info.jump.moveBasedJump, this.system.info.jump.skillBasedJump);
 
-
+		// Undefined and other checks for user inputs.
 		if (typeof this.system.info.jump.superJump !== 'number') { // If superJump is something other than a number
 			this.system.info.jump.superJump = 0;
 		}
 		else if (this.system.info.jump.superJump < 0){ // If it's less than zero
 			this.system.info.jump.superJump = 0; // Set it to zero
+		}
+		else {
+			this.system.info.jump.superJump = Math.floor(this.system.info.jump.superJump);
 		}
 
 		if (typeof this.system.info.jump.enhancedMove !== 'number') { // If enhancedMove is something other than a number
@@ -3057,19 +3059,60 @@ export class gurpsActor extends Actor {
 		else if (this.system.info.jump.runningStart < 0){ // If it's less than zero
 			this.system.info.jump.runningStart = 0; // Set it to zero
 		}
+		// End of undefined checks.
 
-		// Use the better of their enhanced move boosted Jump, or their running start boosted jump.
-		this.system.info.jump.effectiveJump = Math.max(this.system.info.jump.effectiveJump * (1 + this.system.info.jump.enhancedMove), (this.system.info.jump.effectiveJump + this.system.info.jump.runningStart));
+		// This is the effective Basic Move, for the purpose of figuring jump values.
+		this.system.info.jump.basicMoveForJumpCalcs = Math.max(this.system.info.jump.liftingSTBasedJump, this.system.primaryAttributes.move.value, this.system.info.jump.skillBasedJump);
 
+		// Work out the actual multiplier applied by the current superJump value.
 		let superJumpMult = 2 ** this.system.info.jump.superJump;
 
-		this.system.info.jump.preparedHighJump = ((6 * this.system.info.jump.effectiveJump) - 10) * superJumpMult * encMult; // This figure is given in inches. (For some fucking reason)
+		// Maximum running jump is always double maximum standing jump.
+		// Here we assume a standing jump is a prepared standing jump.
+		this.system.info.jump.runningHighJumpCap  = ((6 * this.system.info.jump.basicMoveForJumpCalcs) - 10) * superJumpMult * this.system.encumbrance.current.mult * 2;
+		this.system.info.jump.runningBroadJumpCap = ((2 * this.system.info.jump.basicMoveForJumpCalcs) - 3) * superJumpMult * this.system.encumbrance.current.mult * 2;
+
+		// Sprinting is 20% higher than Basic Move rounded down, but always at least one more than Basic Move.
+		let sprintMove = Math.max(Math.floor(this.system.primaryAttributes.move.value * 1.2), this.system.primaryAttributes.move.value + 1);
+
+		// Work out values for unprepared, prepared, running, and sprinting jumps.
+		// High Jumps, denominated in inches for some fucking reason.
+		this.system.info.jump.preparedHighJump   = ((6 * this.system.info.jump.basicMoveForJumpCalcs) - 10) * superJumpMult * this.system.encumbrance.current.mult;
 		this.system.info.jump.unpreparedHighJump = this.system.info.jump.preparedHighJump / 2;
+		this.system.info.jump.runningHighJump    = ((6 * (this.system.info.jump.basicMoveForJumpCalcs + this.system.primaryAttributes.move.value)) - 10) * superJumpMult * this.system.encumbrance.current.mult;
+		this.system.info.jump.sprintingHighJump  = ((6 * (this.system.info.jump.basicMoveForJumpCalcs + sprintMove)) - 10) * superJumpMult * this.system.encumbrance.current.mult;
 
-		this.system.info.jump.preparedBroadJump = ((2 * this.system.info.jump.effectiveJump) - 3) * superJumpMult * encMult; // This figure is given in feet.
+		// Broad Jumps, denominated in feet.
+		this.system.info.jump.preparedBroadJump   = ((2 * this.system.info.jump.basicMoveForJumpCalcs) - 3) * superJumpMult * this.system.encumbrance.current.mult;
 		this.system.info.jump.unpreparedBroadJump = this.system.info.jump.preparedBroadJump / 2;
+		this.system.info.jump.runningBroadJump    = ((2 * (this.system.info.jump.basicMoveForJumpCalcs + this.system.primaryAttributes.move.value)) - 3) * superJumpMult * this.system.encumbrance.current.mult;
+		this.system.info.jump.sprintingBroadJump  = ((2 * (this.system.info.jump.basicMoveForJumpCalcs + sprintMove)) - 3) * superJumpMult * this.system.encumbrance.current.mult;
 
-		this.system.info.jump.velocity = Math.max(this.system.info.jump.preparedBroadJump/5 , this.system.info.jump.moveBasedJump) // Jump velocity is the higher of Basic Move and one fifth highest broad jump.
+		// Cap running and sprinting jumps by the value calculated above.
+		this.system.info.jump.runningHighJump   = Math.min(this.system.info.jump.runningHighJump,   this.system.info.jump.runningHighJumpCap)
+		this.system.info.jump.sprintingHighJump = Math.min(this.system.info.jump.sprintingHighJump, this.system.info.jump.runningHighJumpCap)
+
+		this.system.info.jump.runningBroadJump   = Math.min(this.system.info.jump.runningBroadJump,   this.system.info.jump.runningBroadJumpCap)
+		this.system.info.jump.sprintingBroadJump = Math.min(this.system.info.jump.sprintingBroadJump, this.system.info.jump.runningBroadJumpCap)
+
+		// Jump velocity is the higher of Basic Move and one fifth maximum broad jump.
+		// This switch works out what is meant by maximum broad jump and then sets the value for jump velocity accordingly.
+		switch (game.settings.get("gurps4e", "jumpVelocityMethod")) {
+			case 'current':
+				this.system.info.jump.velocity = Math.max(this.system.info.jump.preparedBroadJump/5 , this.system.primaryAttributes.move.value)
+				break;
+			case 'theoretical':
+				this.system.info.jump.velocity = Math.max(this.system.info.jump.sprintingBroadJump/5 , this.system.primaryAttributes.move.value)
+				break;
+			default: // Captures superJumpTheoretical and any errors.
+				// If the superJumpMult is greater than 1, then they have Super Jump, so use the theoretical value. Otherwise use the current.
+				this.system.info.jump.velocity = (superJumpMult > 1) ? Math.max(this.system.info.jump.sprintingBroadJump/5 , this.system.primaryAttributes.move.value) : Math.max(this.system.info.jump.preparedBroadJump/5 , this.system.primaryAttributes.move.value)
+		}
+
+		// This is the effective move for their current state, including boosts from prior movement and enhanced move. Use the better of their enhanced move boosted Jump, or their running start boosted jump.
+		this.system.info.jump.currentJumpMove = Math.max(this.system.info.jump.basicMoveForJumpCalcs * (1 + this.system.info.jump.enhancedMove), (this.system.info.jump.basicMoveForJumpCalcs + this.system.info.jump.runningStart));
+		this.system.info.jump.currentHighJump  = Math.min(this.system.info.jump.sprintingHighJump, ((6 * this.system.info.jump.currentJumpMove) - 10) * superJumpMult * this.system.encumbrance.current.mult);
+		this.system.info.jump.currentBroadJump = Math.min(this.system.info.jump.sprintingBroadJump,((2 * this.system.info.jump.currentJumpMove) - 3) * superJumpMult * this.system.encumbrance.current.mult);
 	}
 
 	// Calculates breath holding stats based on the rules from B351

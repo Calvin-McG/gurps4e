@@ -805,6 +805,23 @@ Hooks.once("init", () => {
     type: Boolean
   });
 
+  game.settings.register("gurps4e", "jumpVelocityMethod", {
+    name: "Jump Velocity Method",
+    hint: "Basic 89 says that \"Your Move while jumping is the greater of your normal ground Move and 1/5 your maximum long jump distance.\" " +
+        "This game option is specifically concerned with the meaning of the word \"maximum\" in that sentence. The \"Theoretical\" setting interprets maximum to mean the longest jump your character could ever achieve. In most cases that means basing your Jump Velocity off of whatever your broad jump distance would be if you ran and then sprinted on the two previous turns. " +
+        "The \"Current\" setting bases your Jump Velocity off of whatever your broad jump distance would be for your current velocity, which at least some of the time will be zero. " +
+        "The \"Super Jump Only\" setting bases uses the theoretical maximum for characters with Super Jump, and uses the current value for anyone without Super Jump. ",
+    scope: "world",
+    config: true,
+    type: String,
+    choices: {
+      "current": "Current",
+      "theoretical": "Theoretical",
+      "superJumpTheoretical": "Super Jump Only",
+    },
+    default: "superJumpTheoretical",
+  });
+
   game.settings.register("gurps4e", "lightingTableType", {
     name: "Lighting Table Type",
     hint: "Powers: Enhanced Senses contains a table of lighting levels. Almost everyone except the writer agrees that it's bad and wrong. " +

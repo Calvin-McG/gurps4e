@@ -3914,7 +3914,7 @@
 							</tr>
 							<tr class="item">
 								<td>Movement</td>
-								<td style="width: 5%; font-weight: bold; text-align: center">{{actor.system.info.jump.moveBasedJump}}</td>
+								<td style="width: 5%; font-weight: bold; text-align: center">{{actor.system.primaryAttributes.move.value}}</td>
 								<td>This is just Basic Move with no modifiers</td>
 							</tr>
 							<tr class="item">
@@ -3957,49 +3957,94 @@
 							<tr class="item">
 								<td>Effective Movement</td>
 								<td style="width: 5%; font-weight: bold; text-align: center">
-									{{actor.system.info.jump.effectiveJump}}
+									{{actor.system.info.jump.currentJumpMove}}
 								</td>
-								<td>This number is used in the jump calculation in place of Basic Move.</td>
+								<td>This number is used in the jump calculation for "Current Jump"</td>
+							</tr>
+							<tr class="item">
+								<td>Jump Velocity</td>
+								<td style="width: 5%; font-weight: bold; text-align: center">
+									{{actor.system.info.jump.velocity}} feet
+								</td>
+								<td>This is the speed at which you fly through the air. Jumps longer than this mean you're still in the air at the end of your turn.</td>
 							</tr>
 						</table>
 
 						<table>
-							<tr class="item">
-								<td>Prepared Broad Jump</td>
-								<td style="width: 5%; font-weight: bold; text-align: center">
-									{{actor.system.info.jump.preparedBroadJump}} feet
-								</td>
-								<td>You must have either Concentrated or Moved in both of the previous two turns to use this.</td>
+							<tr>
+								<th colspan="3">Current Jump</th>
 							</tr>
 							<tr class="item">
-								<td>Unprepared Broad Jump</td>
-								<td style="width: 5%; font-weight: bold; text-align: center">
-									{{actor.system.info.jump.unpreparedBroadJump}} feet
+								<td>Broad Jump</td>
+								<td style="font-weight: bold; text-align: center">
+									{{actor.system.info.jump.currentBroadJump}} / {{divide actor.system.info.jump.currentBroadJump 10 2}} feet
 								</td>
-								<td></td>
+								<td>Use the first value if you have Concentrated or Moved in both of the previous two turns. Otherwise use the second.</td>
 							</tr>
 							<tr class="item">
-								<td>Jump Move</td>
-								<td style="width: 5%; font-weight: bold; text-align: center">
-									{{actor.system.info.jump.velocity}} yards
+								<td>High Jump</td>
+								<td style="font-weight: bold; text-align: center">
+									{{actor.system.info.jump.currentHighJump}} / {{divide actor.system.info.jump.currentHighJump 1 2}} inches
 								</td>
-								<td>This is the speed at which you fly through the air. Jumps longer than this mean you're still in the air at the end of your turn.</td>
-							</tr>
-							<tr class="item">
-								<td>Prepared High Jump</td>
-								<td style="width: 5%; font-weight: bold; text-align: center">
-									{{actor.system.info.jump.preparedHighJump}} inches
-								</td>
-								<td>You must have either Concentrated or Moved in both of the previous two turns to use this.</td>
-							</tr>
-							<tr class="item">
-								<td>Unprepared High Jump</td>
-								<td style="width: 5%; font-weight: bold; text-align: center">
-									{{actor.system.info.jump.unpreparedHighJump}} inches
-								</td>
-								<td></td>
+								<td>Use the first value if you have Concentrated or Moved in both of the previous two turns. Otherwise use the second.</td>
 							</tr>
 						</table>
+
+						<table>
+							<tr>
+								<th colspan="4">Possible Jumps</th>
+							</tr>
+							<tr>
+								<th>State</th>
+								<th>Broad</th>
+								<th>High</th>
+								<th>Description</th>
+							</tr>
+							<tr class="item">
+								<td>Unprepared</td>
+								<td style="font-weight: bold; text-align: center">
+									{{actor.system.info.jump.unpreparedBroadJump}} feet / {{divide actor.system.info.jump.unpreparedBroadJump 1 3}} yards
+								</td>
+								<td style="font-weight: bold; text-align: center">
+									{{actor.system.info.jump.unpreparedHighJump}} inches / {{divide actor.system.info.jump.unpreparedHighJump 10 12}} feet
+								</td>
+								<td>A jump made with no prior movement or preparation.</td>
+							</tr>
+							<tr class="item">
+								<td>Prepared</td>
+								<td style="font-weight: bold; text-align: center">
+									{{actor.system.info.jump.preparedBroadJump}} feet / {{divide actor.system.info.jump.preparedBroadJump 1 3}} yards
+								</td>
+								<td style="font-weight: bold; text-align: center">
+									{{actor.system.info.jump.preparedHighJump}} inches / {{divide actor.system.info.jump.preparedHighJump 10 12}} feet
+								</td>
+								<td>A jump made after two consecutive Concentrate maneuvers.</td>
+							</tr>
+							<tr class="item">
+								<td>Running</td>
+								<td style="font-weight: bold; text-align: center">
+									{{actor.system.info.jump.runningBroadJump}} feet / {{divide actor.system.info.jump.runningBroadJump 1 3}} yards
+								</td>
+								<td style="font-weight: bold; text-align: center">
+									{{actor.system.info.jump.runningHighJump}} inches / {{divide actor.system.info.jump.runningHighJump 10 12}} feet
+								</td>
+								<td>A jump made after a Concentrate or Move, followed by another Move maneuver.</td>
+							</tr>
+							{{#unless (eq actor.system.info.jump.sprintingBroadJump actor.system.info.jump.runningBroadJump)}}
+							<tr class="item">
+								<td>Sprinting</td>
+								<td style="font-weight: bold; text-align: center">
+									{{actor.system.info.jump.sprintingBroadJump}} feet / {{divide actor.system.info.jump.sprintingBroadJump 1 3}} yards
+								</td>
+								<td style="font-weight: bold; text-align: center">
+									{{actor.system.info.jump.sprintingHighJump}} inches / {{divide actor.system.info.jump.sprintingHighJump 10 12}} feet
+								</td>
+								<td>A jump made after two consecutive Move maneuvers.</td>
+							</tr>
+							{{/unless}}
+						</table>
+
+
 						{{/if}}
 					</div>
 
